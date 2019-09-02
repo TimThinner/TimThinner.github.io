@@ -1,0 +1,152 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<!--Import Google Open Sans Font-->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+		<!--Import Google Material Icons Font-->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import Materialize Styles-->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		<!--Import My Styles-->
+		<link rel="stylesheet" href="styles.css">
+		<title>The Off-Canvas Menu</title>
+	</head>
+	<body>
+		<!-- navbar -->
+		<header>
+			<nav class="nav-wrapper">
+				<div class="container">
+					<a href="#" class="brand-logo"><!--Timo Kinnunen--></a>
+					<a href="#" class="sidenav-trigger" data-target="mobile-menu">
+						<i class="material-icons">menu</i>
+					</a>
+					<ul class="right hide-on-med-and-down">
+						<li><a href="#workshop">Workshop</a></li>
+						<li><a href="#events">Events</a></li>
+						<li><a href="#podcast">Podcast</a></li>
+						<li><a href="#newsletter">Newsletter</a></li>
+						<li><a href="#about">About</a></li>
+					</ul>
+					<ul class="sidenav" id="mobile-menu">
+						<li><a class="sidenav-close" href="#"><i class="material-icons">close</i></a></li>
+						<li><a href="#workshop">Workshop</a></li>
+						<li><a href="#events">Events</a></li>
+						<li><a href="#podcast">Podcast</a></li>
+						<li><a href="#newsletter">Newsletter</a></li>
+						<li><a href="#about">About</a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<section class="container">
+			<div class="row">
+				<div class="col s12">
+					<h1 class="title">NAVIGATION: The Off-Canvas Menu</h1>
+				</div>
+			</div>
+		</section>
+		<!--
+		Components => Navbar => Mobile Collapse Button
+		-->
+		<section class="container">
+			<div class="row">
+				<div class="col s12 m6">
+					<p>A variant of the show/hide toggle is what's colloquially referred to as the <i>off-canvas menu</i>. While this pattern first gained traction in native mobile applications, it's recently seen use in responsive and mobile websites.</p>
+				</div>
+				<div class="col s12 m6">
+					<div hidden>
+						<span id="new-window-0">Opens in a new window</span>
+						<span id="new-window-1">Opens an external site</span>
+						<span id="new-window-2">Opens an external site in a new window</span>
+					</div>
+					<p>The <a href="https://materializecss.com/" target="_blank" rel="noopener" aria-describedby="new-window-2">Materialize CSS <i class="material-icons">open_in_new</i></a> implements this with "sidenav" and "sidenav-trigger" -classes as used in this example. Resize the browser window below breakpoint width (993px) and see how navbar menu is replaced with the "hamburger" menu.</p>
+				</div>
+			</div>
+		</section>
+		<section class="container" id="workshop">
+			<div class="row">
+				<div class="col s12">
+					<h4>Workshop</h4>
+					<p>I love cheese, especially roquefort halloumi. Fromage frais danish fontina croque monsieur cheese slices cheese and biscuits fondue red leicester when the cheese comes out everybody's happy. Brie dolcelatte manchego chalk and cheese cheddar airedale babybel cheese on toast. Camembert de normandie stinking bishop gouda blue castello cheesy feet red leicester st. agur blue cheese taleggio. Croque monsieur camembert de normandie cheesecake.</p>
+				</div>
+			</div>
+		</section>
+		<section class="container" id="events">
+			<div class="row">
+				<div class="col s12">
+					<h4>Events</h4>
+					<p>Say cheese paneer edam. Taleggio cow squirty cheese queso cream cheese queso smelly cheese fondue. Goat mozzarella cottage cheese caerphilly cheese on toast airedale who moved my cheese pepper jack. Hard cheese emmental cheese strings who moved my cheese taleggio cheese and wine goat.</p>
+				</div>
+			</div>
+		</section>
+		<section class="container" id="podcast">
+			<div class="row">
+				<div class="col s12">
+					<h4>Podcast</h4>
+					<p>Boursin squirty cheese melted cheese. Cheese and wine macaroni cheese taleggio boursin cut the cheese danish fontina fromage cauliflower cheese. Monterey jack cheese strings roquefort when the cheese comes out everybody's happy taleggio roquefort blue castello taleggio. Fromage cheesy grin cheesecake pepper jack caerphilly.</p>
+				</div>
+			</div>
+		</section>
+		<section class="container" id="newsletter">
+			<div class="row">
+				<div class="col s12">
+					<h4>Newsletter</h4>
+					<p>Who moved my cheese cheese and wine cheesy feet. Red leicester macaroni cheese bavarian bergkase smelly cheese parmesan mascarpone smelly cheese brie. Bavarian bergkase feta swiss stinking bishop macaroni cheese emmental taleggio red leicester. Danish fontina taleggio cauliflower cheese.</p>
+				</div>
+			</div>
+		</section>
+		<section class="container" id="about">
+			<div class="row">
+				<div class="col s12">
+					<h4>About</h4>
+					<p>Queso when the cheese comes out everybody's happy camembert de normandie. Fromage cheese triangles brie parmesan fondue st. agur blue cheese cauliflower cheese bavarian bergkase. Monterey jack goat roquefort rubber cheese feta squirty cheese everyone loves danish fontina. Fromage frais.</p>
+				</div>
+			</div>
+		</section>
+		<section class="container">
+			<div class="row">
+				<div class="col s12">
+					<a href="../index.html#TheOffCanvasMenu" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>
+				</div>
+			</div>
+		</section>
+		<!-- Compiled and minified JavaScript -->
+		<script
+			src="https://code.jquery.com/jquery-2.2.4.min.js"
+			integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+			crossorigin="anonymous"></script>
+		<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$('.sidenav').sidenav();
+				$("#mobile-menu li").click(function(){
+					$('.sidenav').sidenav('close');
+				});
+			});
+		</script>
+		<script>
+		/*
+			SEE: Smooth Scrolling
+			https://css-tricks.com/snippets/jquery/smooth-scrolling/
+		*/
+		$(function() {
+			$('a[href*="#"]:not([href="#"])').click(function() {
+				if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+					var target = $(this.hash);
+					target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+					if (target.length) {
+						$('html, body').animate({
+							scrollTop: target.offset().top
+						}, 500);
+						// leave the page-anchor (#nnn) to the location url, return false would not show it.
+						//return false;
+					}
+				}
+			});
+		});
+		</script>
+	</body>
+</html>

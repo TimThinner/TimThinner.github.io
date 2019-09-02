@@ -1,0 +1,139 @@
+/*
+Screen Sizes
+	Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+	<= 600px 				> 600px				> 992px				> 1200px
+
+Class Prefix 		.s 		.m 		.l 		.xl
+Container Width 	90% 	85% 	70% 	70%
+Number of Columns 	12 		12 		12 		12
+
+0.7*1920 = 1344, if max 4 thumbnails per row, one will be 336 px
+
+Mobile    2 (2 x 300)
+Tablet    3 (3 x 300)
+Desktop   4 (4 x 300)
+
+*/
+
+/*
+#e1f5fe light-blue lighten-5
+#b3e5fc light-blue lighten-4
+#81d4fa light-blue lighten-3
+#4fc3f7 light-blue lighten-2
+#29b6f6 light-blue lighten-1
+#03a9f4 light-blue
+#039be5 light-blue darken-1
+#0288d1 light-blue darken-2
+#0277bd light-blue darken-3
+#01579b light-blue darken-4
+*/
+
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	background-color: #eee;
+	color: #333;
+}
+@media screen and (min-width: 601px) {
+	html, body {
+		font-size: 18px;
+	}
+}
+.section-title {
+	/*font-family: 'Fredericka the Great', cursive;*/
+	font-size: 30px;
+	border-top: 1px solid #555;
+	border-bottom: 1px solid #555;
+	padding: 8px 0 8px 0;
+	text-align:center;
+}
+.subsection {
+	font-size: 32px;
+	margin-top: 14px;
+	text-align:center;
+	margin-top:0;
+	margin-bottom:0;
+	padding: 8px;
+	/*color:#555;*/
+	text-shadow: 1px 1px 2px black;
+	color:#eee;
+	background-color: #aaa;
+}
+@media screen and (min-width: 601px) and (max-width: 992px) {
+	.subsection {
+		font-size: 42px;
+		margin-top: 20px;
+		padding: 12px;
+	}
+}
+@media screen and (min-width: 993px) and (max-width: 1200px) {
+	.subsection {
+		font-size: 52px;
+		margin-top: 25px;
+		padding: 16px;
+	}
+}
+@media screen and (min-width: 1201px) {
+	.subsection {
+		font-size: 62px;
+		margin-top: 30px;
+		padding: 20px;
+	}
+}
+.back-button {
+	float: left;
+	padding: 0.3em 0.6em;
+	margin-top: -5px;
+	background-color: #eee;
+	color: #333;
+	/*box-shadow: 2px 2px 4px #808080;*/
+	border: 1px solid #555;
+	border-radius: 1em;
+}
+.back-button:hover { 
+	background-color: #ccc;
+	color: #29b6f6;
+	border: 1px solid #aaa;
+}
+.footer {
+	padding: 2em;
+	margin-top: 2em;
+	text-align: center;
+	border-top: 1px solid #555;
+}
+.my-video {
+	position: relative;
+}
+.my-video-title {
+	color: #fff;
+	position: absolute;
+	bottom: 6px;
+	left: 0;
+	max-width: 100%;
+	padding: 12px 24px 12px 24px;
+	background-color: rgba(0,0,0,0.25);
+	text-shadow: 2px 2px 4px black;
+}
+.card .card-image .my-card-title {
+	color: #fff;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	max-width: 100%;
+	padding: 12px 24px 12px 24px;
+	background-color: rgba(0,0,0,0.25);
+	text-shadow: 2px 2px 4px black;
+}
+.material-icons {
+	vertical-align: middle;
+}
+.quotation {
+	background-color: #ddd;
+	padding: 12px;
+	border: 1px solid #aaa;
+	border-radius: 1em;
+}
+.leading {
+	font-weight: bold;
+	text-transform: uppercase;
+}

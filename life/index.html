@@ -1,0 +1,241 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<!-- Import Google Material Icons Font -->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!-- Import Materialize Styles -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		<!-- Import Google Open Sans Font -->
+		<link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
+		<!-- Leaflet CSS for the map view -->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+			integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+			crossorigin=""/>
+		<!-- Import my styles -->
+		<link rel="stylesheet" href="styles.css">
+		<link rel="stylesheet" href="mapstyles.css">
+		<link rel="stylesheet" href="./js/leaflet-gesture-handling.min.css" type="text/css">
+		<title>Timo Kinnunen</title>
+	</head>
+	<body>
+		<section class="container">
+			<div class="row">
+				<div class="col s12" style="text-align:center;">
+					<h3 class="section-title"><a href="../index.html#life" class="back-button"><i class="material-icons">arrow_back</i></a>LIFE</h3>
+				</div>
+			</div>
+		</section>
+		<!--<i class="material-icons" style="font-size:42px;">sentiment_very_satisfied</i>-->
+		<section class="container">
+			<div class="row center">
+				<div class="col s12">
+					<h1 class="life-subtitle" style="margin-top:0">There are places I'll remember</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 m6 center"> <!--pull-m6-->
+					<figure class="picture-item">
+						<!--<a href="javascript:void(0);">-->
+							<img src="./img/HomeLesvos_tn.jpg" class="responsive-img" alt="" />
+						<!--</a>-->
+					</figure>
+				</div>
+				<div class="col s12 m6 center"> <!-- push-m6 -->
+					<h1 class="life-subtitle">All my life</h1>
+					<p class="life-description">though some have changed</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 m6 center">
+					<h3 class="life-subtitle">Some forever, not for better</h3>
+					<p class="life-description">Some have gone, and some remain</p>
+				</div>
+				<div class="col s12 m6 center">
+					<figure class="picture-item">
+						<!--<a href="javascript:void(0);">-->
+						<img src="./img/HomeMaspalomas_tn.jpg" class="responsive-img" alt="" />
+						<!--</a>-->
+					</figure>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 m6 center">
+					<h3 class="life-subtitle">All these places had their moments</h3>
+				</div>
+				<div class="col s12 m6 center">
+					<p class="life-description">
+						With lovers and friends, I still can recall<br/>
+						Some are dead, and some are living<br/>
+						In my life, I've loved them all<br/><br/>
+						<span>&mdash; John Lennon &mdash;</span></p>
+				</div>
+			</div>
+			<!--
+				<div class="col s12">
+					<h3 class="life-subtitle life-align-right">All these places had their moments</h3>
+					<p class="life-description life-align-right">
+						With lovers and friends, I still can recall<br/>
+						Some are dead, and some are living<br/>
+						In my life, I've loved them all<br/><br/>
+						<span>&mdash; John Lennon &mdash;</span></p>
+				</div>-->
+			</div>
+		</section>
+		<section class="container">
+			<div class="row">
+				<div class="col s12">
+					<table class="striped">
+						<thead>
+							<tr>
+								<th>Year</th>
+								<th>Trip</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>2013</td>
+								<td>1. Epsilon, Faliraki, Rhodes</td>
+							</tr>
+							<tr>
+								<td>2014</td>
+								<td>2. Maleme Imperial, Hania, Crete</td>
+							</tr>
+							<tr>
+								<td>2015</td>
+								<td>3. Candia Park Village, Agios Nicolaos, Crete</td>
+							</tr>
+							<tr>
+								<td>2016</td>
+								<td>4. Windmill Bay, Zakynthos</td>
+							</tr>
+							<tr>
+								<td>2017</td>
+								<td>5. Porto Galini, Lefkada<br/>6. Palm Oasis, Playa del Ingles, Gran Canaria</td>
+							</tr>
+							<tr>
+								<td>2018</td>
+								<td>7. Anaxos Hill, Lesvos<br/>8. Stellina Village Resort, Agii Apostoli, Hania, Crete<br/>9. Marola Portosin, Playa de las Americas, Tenerife</td>
+							</tr>
+							<tr>
+								<td>2019</td>
+								<td>10. Eden Mar, Funchal, Madeira<br/>11. Porto, Portugal<br/>12. Casablanca, Puerto de la Cruz, Tenerife</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+		<!--
+																lat			long
+		2013 	1. Epsilon, Faliraki, Rhodes					36.3576		28.2107
+		2014 	2. Maleme Imperial, Hania, Crete				35.5254		23.8438
+		2015 	3. Candia Park Village, Agios Nicolaos, Crete	35.2181		25.7121
+		2016 	4. Windmill Bay, Zakynthos						37.7617		20.9319
+		2017 	5. Porto Galini, Lefkada						38.7366		20.7309
+				6. Palm Oasis, Playa del Ingles, Gran Canaria	27.7646		-15.5990
+		2018 	7. Anaxos Hill, Lesvos							39.3218		26.1505
+				8. Stellina Village Resort, Agii Apostoli, Hania, Crete		35.5106		23.9883
+				9. Marola Portosin, Playa de las Americas, Tenerife	28.0570		-16.7231
+		-->
+		<section class="container">
+			<div class="row">
+				<div class="col s12" id="mapid">
+				</div >
+				<!--<div class="col s12">
+				<p style="color:#888;font-size:80%;">NOTE: The scrollWheelZoom is disabled <b>in the map</b>, if you want to zoom in/out in the laptop, use +/- control in the upper left corner. In smartphones and tablets the pinch gesture works just fine.</p>
+				</div>-->
+			</div>
+		</section>
+		
+		
+		<!--
+		<section class="container">
+			<div class="row">
+				<div class="col s4 center">
+					<figure class="picture-item">
+						<img src="./img/IMG_3328.JPG" class="responsive-img" alt="" />
+					</figure>
+				</div>
+				<div class="col s4 center">
+					<figure class="picture-item">
+						<img src="./img/IMG_2838_2.jpg" class="responsive-img" alt="" />
+					</figure>
+				</div>
+				<div class="col s4 center">
+					<figure class="picture-item">
+						<img src="./img/IMG_2925.JPG" class="responsive-img" alt="" />
+					</figure>
+				</div>
+				<div class="col s4 center">
+					<figure class="picture-item">
+						<img src="./img/IMG_8299.JPG" class="responsive-img" alt="" />
+					</figure>
+				</div>
+				<div class="col s4 center">
+					<figure class="picture-item">
+						<img src="./img/IMG_3921.JPG" class="responsive-img" alt="" />
+					</figure>
+				</div>
+				<div class="col s4 center">
+					<figure class="picture-item">
+						<img src="./img/TheFish.jpg" class="responsive-img" alt="" />
+					</figure>
+				</div>
+				<div class="col s4 center">
+					<figure class="picture-item">
+						<img src="./img/IMG_9985_2.JPG" class="responsive-img" alt="" />
+					</figure>
+				</div>
+				<div class="col s4 center">
+					<figure class="picture-item">
+						<img src="./img/IMG_7250.JPG" class="responsive-img" alt="" />
+					</figure>
+				</div>
+				<div class="col s4 center">
+					<figure class="picture-item">
+						<img src="./img/TheAijat2016.jpg" class="responsive-img" alt="" />
+					</figure>
+				</div>
+			</div>
+		</section>
+		-->
+		
+		
+		<section class="container">
+			<div class="row">
+				<div class="col s12">
+					<a href="../index.html#life" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>
+				</div>
+			</div>
+		</section>
+		<section class="container">
+			<div class="row">
+				<div class="col s12 footer">
+					<p>Copyright &copy; Timo Kinnunen 2019</p>
+				</div>
+			</div>
+		</section>
+		
+		<script
+			src="https://code.jquery.com/jquery-2.2.4.min.js"
+			integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+			crossorigin="anonymous"></script>
+		<!-- Compiled and minified JavaScript -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		
+		<!-- Make sure you put this AFTER Leaflet's CSS -->
+		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+			integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+			crossorigin=""></script>
+		
+		<script src="./js/leaflet-gesture-handling.min.js"></script>
+		<script src="./js/moment.js"></script>
+		<script src="./js/models.js"></script>
+		<script src="./js/view.js"></script>
+		<script src="./js/controller.js"></script>
+	</body>
+</html>

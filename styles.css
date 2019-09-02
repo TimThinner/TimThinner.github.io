@@ -1,0 +1,159 @@
+/*
+Screen Sizes
+	Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+	<= 600px 				> 600px				> 992px				> 1200px
+
+Class Prefix 		.s 		.m 		.l 		.xl
+Container Width 	90% 	85% 	70% 	70%
+Number of Columns 	12 		12 		12 		12
+
+0.7*1920 = 1344, if max 4 thumbnails per row, one will be 336 px
+
+Mobile    2 (2 x 300)
+Tablet    3 (3 x 300)
+Desktop   4 (4 x 300)
+
+*/
+
+/*
+#e1f5fe light-blue lighten-5
+#b3e5fc light-blue lighten-4
+#81d4fa light-blue lighten-3
+#4fc3f7 light-blue lighten-2
+#29b6f6 light-blue lighten-1
+#03a9f4 light-blue
+#039be5 light-blue darken-1
+#0288d1 light-blue darken-2
+#0277bd light-blue darken-3
+#01579b light-blue darken-4
+*/
+
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	background-color: #333;
+	color: #ddd;
+	/*line-height: 1.5;*/
+}
+@media screen and (min-width: 601px) {
+	html, body {
+		margin-top: 1rem;
+		font-size: 18px;
+	}
+}
+h3.greeting {
+	font-family: 'Fredericka the Great', cursive;
+	text-align:right;
+	font-size: 30px;
+	margin-top: 30px;
+}
+h3.about {
+	font-family: 'Fredericka the Great', cursive;
+	font-size: 16px;
+	text-align:right;
+}
+h3.section-title {
+	font-family: 'Fredericka the Great', cursive;
+	font-size: 30px;
+	border-top: 1px solid #555;
+	border-bottom: 1px solid #555;
+	padding: 8px 0 8px 0;
+	text-align:center;
+}
+@media screen and (min-width: 601px) and (max-width: 992px) {
+	h3.greeting {
+		font-size: 36px;
+		margin-top: 36px;
+	}
+	h3.about {
+		font-size: 18px;
+	}
+}
+@media screen and (min-width: 993px) and (max-width: 1200px) {
+	h3.greeting {
+		font-size: 46px;
+		margin-top: 46px;
+	}
+	h3.about {
+		font-size: 20px;
+	}
+}
+@media screen and (min-width: 1201px) {
+	h3.greeting {
+		font-size: 60px;
+		margin-top: 60px;
+	}
+	h3.about {
+		font-size: 22px;
+	}
+}
+
+/*
+Screen Sizes
+	Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+	<= 600px 				> 600px				> 992px				> 1200px
+*/
+
+
+/*THE BASELINE */
+.episodes {
+	/*background-color: rgba(0,255,255,0.1);*/
+}
+.episodes .episode-wrapper {
+	margin-right: 2%; /* or maybe use 1.6 % ? */
+	float: left;
+	/*width: 100%;*/
+	width: 32%; /* Always three items in one row */
+	/*padding-top: 0.25em;
+	padding-bottom: 0.25em;*/
+}
+ /* Always three items in one row */
+.episodes .episode-wrapper:nth-child( 3n ) { 
+	margin-right: 0;
+}
+ /* Always three items in one row */
+.episodes .episode-wrapper:nth-child( 3n+1 ) { 
+	clear:left;
+}
+.episode-item {
+	background-color: #333;
+	border: 1px solid #555;
+	border-radius: 0.5em;
+	padding: 0;
+	cursor: pointer;
+	color: #eee;
+	/*box-shadow: 2px 2px 4px #808080;*/
+	text-align: center;
+}
+/*.episode-item :active*/
+.episode-item:hover {
+	background-color: #000;
+	color: #29b6f6;
+	border: 1px solid #aaa;
+	font-weight: bold;
+}
+.to-top-button {
+	float: right;
+	padding: 0.3em 0.6em;
+	margin-top: -5px;
+	background-color: #333;
+	color: #eee;
+	/*box-shadow: 2px 2px 4px #808080;*/
+	border: 1px solid #555;
+	border-radius: 1em;
+}
+/*.to-top-button:active*/
+.to-top-button:hover { 
+	background-color: #000;
+	color: #29b6f6;
+	border: 1px solid #aaa;
+}
+.footer {
+	padding: 2em;
+	margin-top: 2em;
+	text-align: center;
+	border-top: 1px solid #555;
+}
+.material-icons {
+	vertical-align: middle;
+}

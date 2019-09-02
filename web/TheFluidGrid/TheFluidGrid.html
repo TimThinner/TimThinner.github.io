@@ -1,0 +1,147 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<!--Import Google Material Icons Font-->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import Materialize Styles-->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		<!--Import Google Open Sans Font-->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+		<!--Import My Styles-->
+		<link rel="stylesheet" href="styles.css">
+		<title>The Fluid Grid</title>
+	</head>
+	<body>
+		<section class="container">
+			<div class="row">
+				<div class="col s12">
+					<div hidden>
+						<span id="new-window-0">Opens in a new window</span>
+						<span id="new-window-1">Opens an external site</span>
+						<span id="new-window-2">Opens an external site in a new window</span>
+					</div>
+					<h4 style="text-align:center;">The Fluid Grid</h4>
+					<p style="text-align:center;">without CSS-framework!</p>
+					<p>Here's a clever way to make flexible galleries using <b>Media Queries</b> and you can <b>define your own breakpoints</b>. The MaterializeCSS "container"-class limits the width of viewport to 70% of full browser window width, so for example if your monitor max width is 1920 pixels then 1920*0.7 = 1344 pixels is the max width for content. Therefore we could squeeze maybe <b>max eight</b> pictures for one row and define our <b>own breakpoints</b> with Media Queries like this (check .doc-cell definitions in <a href="./styles.css">styles.css</a>):</p>
+					<table class="centered striped"> <!-- responsive-table -->
+						<thead>
+							<tr>
+								<th>Browser Screen Width</th>
+								<th>Number of Columns</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>W  &lt;= 400px</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<td>401px &lt;= W  &lt;= 600px</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>601px &lt;= W  &lt;= 800px</td>
+								<td>3</td>
+							</tr>
+							<tr>
+								<td>801px &lt;= W  &lt;= 1000px</td>
+								<td>4</td>
+							</tr>
+							<tr>
+								<td>1001px &lt;= W  &lt;= 1200px</td>
+								<td>5</td>
+							</tr>
+							<tr>
+								<td>1201px &lt;= W  &lt;= 1400px</td>
+								<td>6</td>
+							</tr>
+							<tr>
+								<td>1401px &lt;= W  &lt;= 1600px</td>
+								<td>7</td>
+							</tr>
+							<tr>
+								<td>1601px &lt;= W</td>
+								<td>8</td>
+							</tr>
+						</tbody>
+					</table>
+					<p><b>Notice that Media Queries are evaluated based on browser screen width (W = <span id="vpw"></span>px), not container width!</b> Also if vertical scrollbar is visible, its width (17px in my browser) should be added to measured W-value above for correct breakpoint observation.</p>
+					<p>All pictures shown here are fetched from <a href="https://picsum.photos/" target="_blank" rel="noopener" aria-describedby="new-window-2">Lorem Picsum <i class="material-icons">open_in_new</i></a></p>
+				</div>
+				<div class="col s12" style="margin-top:-10px">
+					
+				</div>
+			</div>
+		</section>
+		<section class="container">
+			<div class="row">
+				<div class="col s12">
+					<div class="doc-grid">
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=900" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=901" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=902" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=903" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=904" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=905" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=906" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=907" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=908" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=909" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=910" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=911" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=912" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=913" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=914" class="responsive-img" alt="">
+						</div>
+						<div class="doc-cell">
+							<img src="https://picsum.photos/500?image=915" class="responsive-img" alt="">
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="container">
+			<div class="row">
+				<div class="col s12">
+					<a href="../index.html#TheFluidGrid" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>
+				</div>
+			</div>
+		</section>
+		<script
+			src="https://code.jquery.com/jquery-2.2.4.min.js"
+			integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+			crossorigin="anonymous"></script>
+		<script src="TheFluidGrid.js"></script>
+	</body>
+</html>

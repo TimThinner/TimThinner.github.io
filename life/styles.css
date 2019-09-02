@@ -1,0 +1,142 @@
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	background-color: #f0f0ff; /*#227;*/
+	color: #55a;
+}
+@media screen and (min-width: 601px) {
+	html, body {
+		font-size: 18px;
+	}
+}
+h3.section-title {
+	font-family: 'Fredericka the Great', cursive;
+	font-size: 30px;
+	border-top: 1px solid #aaa;
+	border-bottom: 1px solid #aaa;
+	padding: 8px 0 8px 0;
+	text-align:center;
+}
+/*
+Screen Sizes
+	Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+	<= 600px 				> 600px				> 992px				> 1200px
+*/
+
+/* Materialize CSS sets margins, we must reset them */
+figure.picture-item {
+	/*margin: 1em 40px;*/
+	margin: 0 0 16px 0;
+}
+/*figure.picture-item a img {*/
+figure.picture-item img {
+	max-width: 100%;
+	height: auto;
+	border: 8px solid #ffffff;
+	box-shadow: 0 0 6px #707070;
+}
+
+.back-button {
+	float: left;
+	padding: 0.3em 0.6em;
+	margin-top: -5px;
+	background-color: #f0f0ff;
+	color: #88c;
+	/*box-shadow: 2px 2px 4px #808080;*/
+	border: 1px solid #aaa;
+	border-radius: 1em;
+}
+/*
+#e3f2fd blue lighten-5
+#bbdefb blue lighten-4
+#90caf9 blue lighten-3
+#64b5f6 blue lighten-2
+#42a5f5 blue lighten-1
+#2196f3 blue
+*/
+.back-button:hover { 
+	background-color: #e0e0ff;
+	color: #29b6f6;
+	border: 1px solid #aaa;
+}
+.footer {
+	padding: 2em;
+	margin-top: 2em;
+	text-align: center;
+	border-top: 1px solid #aaa;
+}
+.life-subtitle {
+	color:#77c;
+	font-family: 'Tangerine', serif;
+	line-height: 0.9;
+	/*text-shadow: 1px 1px 1px #000;*/
+	font-weight:normal;
+	font-style:normal;
+}
+.life-description {
+	color:#88c;
+	font-family: 'Tangerine', serif;
+	line-height: 0.9;
+	/*text-shadow: 4px 4px 4px #aaf;*/
+	font-weight:normal;
+	font-style:normal;
+	font-size: 200%;
+}
+/*
+@media screen and (min-width: 601px) and (max-width: 992px) {
+	.life-description {
+		text-align: left;
+	}
+}
+*/
+@media screen and (min-width: 601px) and (max-width: 992px) {
+	figure.picture-item a img {
+		border: 10px solid #ffffff;
+	}
+}
+@media screen and (min-width: 993px) and (max-width: 1200px) {
+	figure.picture-item a img {
+		border: 12px solid #ffffff;
+	}
+}
+@media screen and (min-width: 1201px) {
+	figure.picture-item a img {
+		border: 14px solid #ffffff;
+	}
+}
+
+.life-align-right {
+	text-align: left;
+}
+@media screen and (min-width: 601px) {
+	.life-align-right {
+		text-align: right;
+	}
+}
+.material-icons {
+	vertical-align: middle;
+}
+
+/*table {
+	border: 1px solid #aaa;
+}*/
+table tr td, table tr th {
+	padding-left: 12px;
+}
+
+/* Overwrite MaterializeCSS Table striped color: */
+table.striped > tbody > tr:nth-child(odd) {
+	/*background-color: rgba(242, 242, 242, 0.5);*/
+	/*background-color: rgba(200, 200, 200, 0.5);*/
+	background-color: #e4e4ff;
+}
+/* Overwrite MaterializeCSS Table padding: */
+td, th {
+	padding: 5px 2px;
+}
+td:nth-child( 2n ) {
+	width: 75%;
+} 
+td:nth-child( 2n+1 ) {
+	width: 25%;
+}

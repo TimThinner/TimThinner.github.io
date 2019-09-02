@@ -1,0 +1,55 @@
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	background-color: #eee;
+	color: #333;
+}
+@media screen and (min-width: 601px) {
+	html, body {
+		font-size: 18px;
+	}
+}
+h1.title {
+	/*border: 1px solid #f00;*/
+	text-align:center;
+	font-size:32px;
+}
+@media screen and (min-width: 601px) {
+	h1.title {
+		font-size:42px;
+	}
+}
+.nav-wrapper {
+	background-color: rgba(0,0,0,0.75);
+}
+.sidenav {
+	background-color: rgba(0,0,0,0.5);
+}
+nav .sidenav li > a {
+	color: white;
+	height: 56px;
+	line-height: 56px;
+}
+nav li a.sidenav-close i.material-icons {
+	color: #FF8000;
+	font-size: 32px;
+	line-height: 56px;
+}
+@media screen and (min-width: 601px) {
+	nav .sidenav li > a {
+		height: 64px;
+		line-height: 64px;
+	}
+	nav li a.sidenav-close i.material-icons {
+		line-height: 64px;
+	}
+}
+.sidenav li {
+	border-bottom:1px solid #555;
+}
+.sidenav li > a {
+	color: white;
+}
+.material-icons {
+	vertical-align: middle;
+}

@@ -1,0 +1,79 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<!--Import Google Open Sans Font-->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+		<!--Import Google Material Icons Font-->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import Materialize Styles-->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		<!--Import My Styles-->
+		<link rel="stylesheet" href="TheShowHideToggle.css">
+		<title>The Show/Hide Toggle</title>
+		<!--
+			NAVIGATION: The Show/Hide Toggle
+			See example here:
+			https://responsivewebdesign.com/about/#bio-marcotte
+			
+			Why let someone know when a link opens a new window? Find out how to warn people ahead of time and why it’s so important
+			https://medium.com/@svinkle/why-let-someone-know-when-a-link-opens-a-new-window-8699d20ed3b1
+		-->
+	</head>
+	<body>
+		<section class="container">
+			<div class="head">
+				<h1 class="logo">
+					<a href="#"><img src="logo-rwd.svg"  alt="Responsive Web Design" /></a>
+				</h1>
+				<div id="nav" class="nav">
+					<!--
+						If MaterializeCSS is included, don't use nav-element here at all, 
+						because MaterializeCSS styling is just hard to overwrite...
+					-->
+					<!--<nav>-->
+						<div><a class="skip" href="#menu"><p></p></a></div>
+						<ul id="menu" class="menu-navigation">
+							<li class="menu-wrapper"><a class="menu-item" href="#">Workshop</a></li>
+							<li class="menu-wrapper"><a class="menu-item" href="#">Events</a></li>
+							<li class="menu-wrapper"><a class="menu-item" href="#">Podcast</a></li>
+							<li class="menu-wrapper"><a class="menu-item" href="#">Newsletter</a></li>
+							<li class="menu-wrapper"><a class="menu-item" href="#">About</a></li>
+						</ul>
+					<!--</nav>-->
+				</div>
+			</div>
+		</section>
+		<section class="container">
+			<div class="row">
+				<div class="col s12" style="margin-top:-10px">
+					<p class="width-gadget">WIDTH = <span id="vpw"></span>px</p>
+				</div>
+				<div class="col s12" style="margin-top:-40px">
+					<div hidden>
+						<span id="new-window-0">Opens in a new window</span>
+						<span id="new-window-1">Opens an external site</span>
+						<span id="new-window-2">Opens an external site in a new window</span>
+					</div>
+					<h1 class="title">NAVIGATION: The Show/Hide Toggle</h1>
+					<p><i>This is an example from Ethan Marcotte's book <b>RESPONSIVE DESIGN: PATTERNS &amp; PRINCIPLES</b> (A BOOK APART book &#8470; 15).</i></p>
+					<p>The Show/Hide Toggle is one of the most common ways of handling complex navigation systems in a responsive design: when the menu doesn't fit, conceal it. This pattern requires two elements at minimum: the navigation, which is concealed at certain breakpoints; and a "trigger" element, which the user interacts with to reveal the navigation.</p>
+					<p>Resize browser viewport to experiment how menu is shown and hidden at breakpoint (600px). Here's a real world example for you: <a href="https://responsivewebdesign.com/about/" target="_blank" rel="noopener" aria-describedby="new-window-2">ABOUT Ethan Marcotte <i class="material-icons">open_in_new</i></a></p>
+				</div>
+			</div>
+		</section>
+		<section class="container">
+			<div class="row">
+				<div class="col s12">
+					<a href="../index.html#TheShowHideToggle" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>
+				</div>
+			</div>
+		</section>
+		<script
+			src="https://code.jquery.com/jquery-2.2.4.min.js"
+			integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+			crossorigin="anonymous"></script>
+		<script src="TheShowHideToggle.js"></script>
+	</body>
+</html>

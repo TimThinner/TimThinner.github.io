@@ -95,6 +95,13 @@ class MapView {
 				this.mapMarkers.push(marker);
 			}
 		});
+		
+		// define rectangle geographical bounds
+		var bounds = [[41.1428, -16.9314], [27.7646, 28.2107]];
+		// create an orange rectangle
+		L.rectangle(bounds, {color: "#ff7800", weight: 1, fillOpacity: 0.05}).addTo(self.mymap);
+		// zoom the map to the rectangle bounds
+		//self.mymap.fitBounds(bounds);
 	}
 	
 	notify(options) {
@@ -138,9 +145,6 @@ class MapView {
 		var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 		var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
 		L.tileLayer(osmUrl, {minZoom: 1, maxZoom: 18, attribution: osmAttrib}).addTo(this.mymap);
-		
-		
-		
 		
 		setTimeout(() => this.fetchMapData(), 100);
 		

@@ -67,10 +67,25 @@ class MapView {
 		});
 		
 		var maplist = this.model.getMapData();
+		// What are the two corners of bounding box?
+		// LEFT-UPPER CORNER:
+		// maxLat,minLon
+		//					RIGHT-LOWER CORNER:
+		//					minLat,maxLon
+		let maxLat = 0;
+		let minLon = 180;
+		let minLat = 90;
+		let maxLon = -180;
 		Object.keys(maplist).map(key => {
 			
 			var lat = maplist[key].latitude;
 			var lon = maplist[key].longitude;
+			
+			if (lat > maxLat) { maxLat = lat; }
+			if (lat < minLat) { minLat = lat; }
+			if (lon > maxLon) { maxLon = lon; }
+			if (lon < minLon) { minLon = lon; }
+			
 			var pic =  maplist[key].picture;
 			var title =  maplist[key].title;
 			
@@ -95,9 +110,7 @@ class MapView {
 				this.mapMarkers.push(marker);
 			}
 		});
-		
-		// define rectangle geographical bounds
-		var bounds = [[41.1428, -16.9314], [27.7646, 28.2107]];
+		var bounds = [[maxLat, minLon], [minLat, maxLon]];
 		// create an orange rectangle
 		L.rectangle(bounds, {color: "#ff7800", weight: 1, fillOpacity: 0.05}).addTo(self.mymap);
 		// zoom the map to the rectangle bounds

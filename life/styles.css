@@ -32,10 +32,10 @@ figure.picture-item {
 figure.picture-item img {
 	max-width: 100%;
 	height: auto;
-	border-top: 8px solid #ffffff;
-	border-right: 8px solid #ffffff;
-	border-left: 8px solid #ffffff;
-	border-bottom: 32px solid #ffffff;
+	border-top: 8px solid white;
+	border-right: 8px solid white;
+	border-left: 8px solid white;
+	border-bottom: 32px solid white;
 	box-shadow: 0 0 6px #707070;
 }
 figcaption {
@@ -100,10 +100,10 @@ figcaption {
 */
 @media screen and (min-width: 601px) and (max-width: 992px) {
 	figure.picture-item img {
-		border-top: 10px solid #ffffff;
-		border-right: 10px solid #ffffff;
-		border-left: 10px solid #ffffff;
-		border-bottom: 32px solid #ffffff;
+		border-top: 10px solid white;
+		border-right: 10px solid white;
+		border-left: 10px solid white;
+		border-bottom: 32px solid white;
 	}
 	figcaption {
 		font-size: 14px;
@@ -121,10 +121,10 @@ figcaption {
 }
 @media screen and (min-width: 993px) and (max-width: 1200px) {
 	figure.picture-item img {
-		border-top: 12px solid #ffffff;
-		border-right: 12px solid #ffffff;
-		border-left: 12px solid #ffffff;
-		border-bottom: 34px solid #ffffff;
+		border-top: 12px solid white;
+		border-right: 12px solid white;
+		border-left: 12px solid white;
+		border-bottom: 34px solid white;
 	}
 	figcaption {
 		font-size: 16px;
@@ -142,10 +142,10 @@ figcaption {
 }
 @media screen and (min-width: 1201px) {
 	figure.picture-item img {
-		border-top: 14px solid #ffffff;
-		border-right: 14px solid #ffffff;
-		border-left: 14px solid #ffffff;
-		border-bottom: 36px solid #ffffff;
+		border-top: 14px solid white;
+		border-right: 14px solid white;
+		border-left: 14px solid white;
+		border-bottom: 36px solid white;
 	}
 	figcaption {
 		font-size: 16px;

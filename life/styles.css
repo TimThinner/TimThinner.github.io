@@ -28,14 +28,23 @@ figure.picture-item {
 	/*margin: 1em 40px;*/
 	margin: 0 0 16px 0;
 }
-/*figure.picture-item a img {*/
+
 figure.picture-item img {
 	max-width: 100%;
 	height: auto;
-	border: 8px solid #ffffff;
+	border-top: 8px solid #ffffff;
+	border-right: 8px solid #ffffff;
+	border-left: 8px solid #ffffff;
+	border-bottom: 32px solid #ffffff;
 	box-shadow: 0 0 6px #707070;
 }
-
+figcaption {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	color: #888;
+	text-align:center;
+	margin-top: -28px;
+}
 .back-button {
 	float: left;
 	padding: 0.3em 0.6em;
@@ -65,19 +74,19 @@ figure.picture-item img {
 	text-align: center;
 	border-top: 1px solid #aaa;
 }
+/* h1 font-size: 4.2rem; h3 font-size: 2.92rem; */
 .life-subtitle {
 	color:#77c;
 	font-family: 'Tangerine', serif;
 	line-height: 0.9;
-	/*text-shadow: 1px 1px 1px #000;*/
 	font-weight:normal;
 	font-style:normal;
 }
+/* p */
 .life-description {
 	color:#88c;
 	font-family: 'Tangerine', serif;
 	line-height: 0.9;
-	/*text-shadow: 4px 4px 4px #aaf;*/
 	font-weight:normal;
 	font-style:normal;
 	font-size: 200%;
@@ -90,18 +99,66 @@ figure.picture-item img {
 }
 */
 @media screen and (min-width: 601px) and (max-width: 992px) {
-	figure.picture-item a img {
-		border: 10px solid #ffffff;
+	figure.picture-item img {
+		border-top: 10px solid #ffffff;
+		border-right: 10px solid #ffffff;
+		border-left: 10px solid #ffffff;
+		border-bottom: 32px solid #ffffff;
+	}
+	figcaption {
+		font-size: 14px;
+		margin-top: -28px;
+	}
+	h1.life-subtitle {
+		font-size: 4.2rem;
+	}
+	h3.life-subtitle {
+		font-size: 3.0rem;
+	}
+	.life-description {
+		font-size: 2.0rem;
 	}
 }
 @media screen and (min-width: 993px) and (max-width: 1200px) {
-	figure.picture-item a img {
-		border: 12px solid #ffffff;
+	figure.picture-item img {
+		border-top: 12px solid #ffffff;
+		border-right: 12px solid #ffffff;
+		border-left: 12px solid #ffffff;
+		border-bottom: 34px solid #ffffff;
+	}
+	figcaption {
+		font-size: 16px;
+		margin-top: -30px;
+	}
+	h1.life-subtitle {
+		font-size: 4.8rem;
+	}
+	h3.life-subtitle {
+		font-size: 3.4rem;
+	}
+	.life-description {
+		font-size: 2.4rem;
 	}
 }
 @media screen and (min-width: 1201px) {
-	figure.picture-item a img {
-		border: 14px solid #ffffff;
+	figure.picture-item img {
+		border-top: 14px solid #ffffff;
+		border-right: 14px solid #ffffff;
+		border-left: 14px solid #ffffff;
+		border-bottom: 36px solid #ffffff;
+	}
+	figcaption {
+		font-size: 16px;
+		margin-top: -30px;
+	}
+	h1.life-subtitle {
+		font-size: 6.0rem;
+	}
+	h3.life-subtitle {
+		font-size: 4.0rem;
+	}
+	.life-description {
+		font-size: 3.0rem;
 	}
 }
 

@@ -194,3 +194,7 @@ td:nth-child( 2n ) {
 td:nth-child( 2n+1 ) {
 	width: 25%;
 }
+.my-circle {
+	border-radius: 50%;
+	box-shadow: 0 0 6px #707070;
+}

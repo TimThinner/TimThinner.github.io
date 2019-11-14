@@ -110,9 +110,13 @@ class MapView {
 				this.mapMarkers.push(marker);
 			}
 		});
+		
+		/*
 		var bounds = [[maxLat, minLon], [minLat, maxLon]];
 		// create an orange rectangle
 		L.rectangle(bounds, {color: "#ff7800", weight: 1, fillOpacity: 0.05}).addTo(self.mymap);
+		*/
+		
 		// zoom the map to the rectangle bounds
 		//self.mymap.fitBounds(bounds);
 	}

@@ -28,7 +28,9 @@ figure.picture-item {
 	/*margin: 1em 40px;*/
 	margin: 0 0 16px 0;
 }
-
+figure.picture-item-round {
+	margin: 16px 0 0 0;
+}
 figure.picture-item img {
 	max-width: 100%;
 	height: auto;
@@ -36,7 +38,11 @@ figure.picture-item img {
 	border-right: 8px solid white;
 	border-left: 8px solid white;
 	border-bottom: 32px solid white;
-	box-shadow: 0 0 6px #707070;
+	box-shadow: 0 0 8px #707070;
+}
+.my-circle {
+	border-radius: 50%;
+	box-shadow: 0 0 8px #707070;
 }
 figcaption {
 	font-family: 'Open Sans', sans-serif;
@@ -193,8 +199,4 @@ td:nth-child( 2n ) {
 } 
 td:nth-child( 2n+1 ) {
 	width: 25%;
-}
-.my-circle {
-	border-radius: 50%;
-	box-shadow: 0 0 6px #707070;
 }

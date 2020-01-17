@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="600" height="1000" viewBox="0 0 600 1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
+<style>
+.hex {
+	cursor: pointer;
+	fill-opacity: 0.05;
+	stroke: #fff;
+	stroke-width: 1;
+	fill: #012265;
+	transition: transform, fill-opacity, stroke-width;
+	transition-duration: 0.5s;
+}
+.grid {
+	stroke-width: 0.2;
+	stroke: #fff;
+}
+.grid-head {
+	opacity: 0.5;
+	stroke-width: 2.5;
+	stroke: #fff;
+}
+</style>
+	<defs>
+		<radialGradient id="grad" cx="50%" cy="58%" r="75%"><!-- fx="50%" fy="50%">-->
+			<stop offset="5%" style="stop-color:#b4dcf4; stop-opacity:1" />
+			<stop offset="40%" style="stop-color:#4dace6; stop-opacity:1" />
+			<stop offset="90%" style="stop-color:#012265; stop-opacity:1" />
+		</radialGradient>
+	</defs>
+	<rect x="0" y="0" width="600" height="1000" fill="url(#grad)" stroke-width="0" stroke="#000" />
+	
+	<text x="90" y="100" opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="82px" fill="#fff">Making City</text>
+	<path class="grid-head" d="M0 43 H94" />
+	<path class="grid-head" d="M350 100 H600" />
+	<text x="350" y="134" opacity="0.4" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff">Positive Energy Districts</text>
+	
+	<g id="grid">
+	<path class="grid" d="M0 100 H600" />
+	<path class="grid" d="M0 200 H600" />
+	<path class="grid" d="M0 300 H600" />
+	<path class="grid" d="M0 400 H600" />
+	<path class="grid" d="M0 500 H600" />
+	<path class="grid" d="M0 600 H600" />
+	<path class="grid" d="M0 700 H600" />
+	<path class="grid" d="M0 800 H600" />
+	<path class="grid" d="M0 900 H600" />
+	<!--
+	<circle cx="500" cy="500" r="100" stroke-width="0.1" stroke="#fff" fill="none" />
+	<circle cx="500" cy="500" r="200" stroke-width="0.1" stroke="#fff" fill="none" />
+	<circle cx="500" cy="500" r="300" stroke-width="0.1" stroke="#fff" fill="none" />
+	<circle cx="500" cy="500" r="400" stroke-width="0.1" stroke="#fff" fill="none" />
+	<circle cx="500" cy="500" r="500" stroke-width="0.1" stroke="#fff" fill="none" />
+	-->
+	<path class="grid" d="M100 0 V1000" />
+	<path class="grid" d="M200 0 V1000" />
+	<path class="grid" d="M300 0 V1000" />
+	<path class="grid" d="M400 0 V1000" />
+	<path class="grid" d="M500 0 V1000" />
+	</g>
+	
+	<!-- A rx ry x-axis-rotation large-arc-flag sweep-flag x y -->
+	<g>
+	<path d="M 300,300 A 100,130 0 0,1 300,780 A 100,130 0 0,1 300,300" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />
+	<path d="M 300,340 A 70,100 0 0,1 300,740 A 70,100 0 0,1 300,340" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />
+	
+	<path d="M 300,312 A 104,135 0 0,1 300,770 A 104,135 0 0,1 300,312"
+		style="opacity:0.4;stroke:#cf0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path d="M 300,750 A 94,128 0 0,0 300,330 A 94,128 0 0,0 300,750"
+		style="opacity:0.4;stroke:#f80;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	</g>
+	
+	<!-- Hexagon Labels -->
+	<text x="220" y="270" opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff">District A</text>
+	
+	<!-- Hexagons -->
+	<polygon class="hex" id="hex-a" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(300,260)" />
+	<polygon class="hex" id="hex-b" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(470,460)" />
+	<polygon class="hex" id="hex-c" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(440,720)" />
+	<polygon class="hex" id="hex-d" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(160,720)" />
+	<polygon class="hex" id="hex-e" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(130,460)" />
+</svg>

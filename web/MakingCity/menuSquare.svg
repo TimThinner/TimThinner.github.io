@@ -41,6 +41,24 @@
 	<image x="540" y="170" width="55" height="50" xlink:href="solarpanel.svg" />
 	<image x="740" y="200" width="100" height="150" xlink:href="powerline.svg" />
 	
+	<!-- Shopping Center in District B -->
+	<image x="710" y="400" width="185" height="100" xlink:href="shoppingcenter.svg" />
+	
+	<!-- Houses in District C -->
+	<image x="630" y="730" width="50" height="65" xlink:href="house.svg" />
+	<image x="680" y="730" width="50" height="65" xlink:href="house.svg" />
+	<image x="730" y="730" width="50" height="65" xlink:href="house.svg" />
+	
+	<!-- Houses in District D -->
+	<image x="230" y="730" width="50" height="65" xlink:href="house.svg" />
+	<image x="280" y="730" width="50" height="65" xlink:href="house.svg" />
+	<image x="330" y="730" width="50" height="65" xlink:href="house.svg" />
+	
+	<!-- Houses in District E -->
+	<image x="120" y="430" width="50" height="65" xlink:href="house.svg" />
+	<image x="170" y="430" width="50" height="65" xlink:href="house.svg" />
+	<image x="220" y="430" width="50" height="65" xlink:href="house.svg" />
+	
 	<g id="grid">
 	<path class="grid" d="M0 100 H1000" />
 	<path class="grid" d="M0 200 H1000" />
@@ -84,8 +102,12 @@
 	</path>
 	</g>
 	
-	<!-- Hexagon Labels -->
+	<!-- Hexagon Labels: District A - Distict E -->
 	<text x="374" y="340" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff" stroke="#555" stroke-width="1">District A</text>
+	<text x="670" y="550" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff" stroke="#555" stroke-width="1">District B</text>
+	<text x="576" y="860" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff" stroke="#555" stroke-width="1">District C</text>
+	<text x="170" y="860" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff" stroke="#555" stroke-width="1">District D</text>
+	<text x="76" y="550" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff" stroke="#555" stroke-width="1">District E</text>
 	
 	<!-- Hexagons -->
 	<polygon class="hex" id="hex-a" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(500,300)" />

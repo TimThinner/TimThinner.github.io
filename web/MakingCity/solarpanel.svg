@@ -9,10 +9,10 @@
 </style>
 <g opacity="0.75">
 	<polyline points="70,10 210,10 140,130 0,130 70,10" stroke="#333" stroke-width="4" fill="none" />
-	<polyline points="80,20 100,20 40,120 20,120" class="panel" />
-	<polyline points="110,20 130,20 70,120 50,120" class="panel" />
-	<polyline points="140,20 160,20 100,120 80,120"  class="panel" />
-	<polyline points="170,20 190,20 130,120 110,120"  class="panel" />
+	<polyline class="panel" points="80,20 100,20 40,120 20,120 80,20" />
+	<polyline class="panel" points="110,20 130,20 70,120 50,120 110.20" />
+	<polyline class="panel" points="140,20 160,20 100,120 80,120 140,20" />
+	<polyline class="panel" points="170,20 190,20 130,120 110,120 170,20" />
 	<polyline points="90,130 120,170 60,170" stroke="#333" stroke-width="4" fill="#333" />
 </g>
 </svg>

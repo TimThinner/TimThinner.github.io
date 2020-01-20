@@ -36,9 +36,27 @@
 	<text x="350" y="134" opacity="0.4" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff">Positive Energy Districts</text>
 	
 	<image x="224" y="200" width="140" height="70" xlink:href="schoolbuilding.svg" />
-	<image x="300" y="170" width="55" height="50" xlink:href="solarpanel.svg" />
-	<image x="340" y="170" width="55" height="50" xlink:href="solarpanel.svg" />
+	<image x="300" y="160" width="55" height="50" xlink:href="solarpanel.svg" />
+	<image x="340" y="160" width="55" height="50" xlink:href="solarpanel.svg" />
 	<image x="440" y="190" width="100" height="150" xlink:href="powerline.svg" />
+	
+	<!-- Shopping Center in District B -->
+	<image x="400" y="380" width="148" height="80" xlink:href="shoppingcenter.svg" />
+	
+	<!-- Houses in District C -->
+	<image x="370" y="650" width="50" height="65" xlink:href="house.svg" />
+	<image x="420" y="650" width="50" height="65" xlink:href="house.svg" />
+	<image x="470" y="650" width="50" height="65" xlink:href="house.svg" />
+	
+	<!-- Houses in District D -->
+	<image x="90" y="650" width="50" height="65" xlink:href="house.svg" />
+	<image x="140" y="650" width="50" height="65" xlink:href="house.svg" />
+	<image x="190" y="650" width="50" height="65" xlink:href="house.svg" />
+	
+	<!-- Houses in District E -->
+	<image x="60" y="400" width="50" height="65" xlink:href="house.svg" />
+	<image x="110" y="400" width="50" height="65" xlink:href="house.svg" />
+	<image x="160" y="400" width="50" height="65" xlink:href="house.svg" />
 	
 	<g id="grid">
 	<path class="grid" d="M0 100 H600" />
@@ -79,8 +97,13 @@
 	</path>
 	</g>
 	
-	<!-- Hexagon Labels -->
+	<!-- Hexagon Labels: District A - Distict E -->
 	<text x="220" y="300" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District A</text>
+	<text x="390" y="490" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District B</text>
+	<text x="362" y="746" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District C</text>
+	<text x="82" y="746" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District D</text>
+	<text x="50" y="490" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District E</text>
+	
 	
 	<!-- Hexagons -->
 	<polygon class="hex" id="hex-a" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(300,260)" />

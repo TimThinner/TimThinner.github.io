@@ -11,7 +11,7 @@
 	transition-duration: 0.5s;
 }
 .grid {
-	stroke-width: 0.2;
+	stroke-width: 0.1;
 	stroke: #fff;
 }
 .grid-head {
@@ -33,6 +33,12 @@
 	<path class="grid-head" d="M0 39 H168" />
 	<path class="grid-head" d="M566 130 H1000" />
 	<text x="600" y="180" opacity="0.4" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#fff">Positive Energy Districts</text>
+	
+	
+	<image x="400" y="200" width="150" height="75" xlink:href="schoolbuilding.svg" />
+	<image x="500" y="170" width="55" height="50" xlink:href="solarpanel.svg" />
+	<image x="540" y="170" width="55" height="50" xlink:href="solarpanel.svg" />
+	<image x="740" y="200" width="100" height="150" xlink:href="powerline.svg" />
 	
 	<g id="grid">
 	<path class="grid" d="M0 100 H1000" />
@@ -78,7 +84,7 @@
 	</g>
 	
 	<!-- Hexagon Labels -->
-	<text x="374" y="320" opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff">District A</text>
+	<text x="374" y="340" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff" stroke="#555" stroke-width="1">District A</text>
 	
 	<!-- Hexagons -->
 	<polygon class="hex" id="hex-a" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(500,300)" />

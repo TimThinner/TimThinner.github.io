@@ -13,6 +13,7 @@
 .grid {
 	stroke-width: 0.1;
 	stroke: #fff;
+	opacity: 0.5;
 }
 .grid-head {
 	opacity: 0.5;

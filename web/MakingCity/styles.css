@@ -58,3 +58,13 @@ html, body {
 	top: 0;
 	left: 0;
 }
+.error-message {
+	border: 1px solid #f88;
+	background-color: #fee;
+	padding-left: 1rem;
+}
+.success-message {
+	border: 1px solid #8f8;
+	background-color: #efe;
+	padding-left: 1rem;
+}

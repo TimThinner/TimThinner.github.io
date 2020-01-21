@@ -13,7 +13,6 @@
 .grid {
 	stroke-width: 0.1;
 	stroke: #fff;
-	opacity: 0.75;
 }
 .grid-head {
 	opacity: 0.5;
@@ -42,6 +41,8 @@
 	
 	<!-- Shopping Center in District B -->
 	<image x="1080" y="410" width="185" height="100" xlink:href="shoppingcenter.svg" />
+	<image x="1140" y="370" width="55" height="50" xlink:href="solarpanel.svg" />
+	<image x="1180" y="370" width="55" height="50" xlink:href="solarpanel.svg" />
 	
 	<!-- Houses in District C -->
 	<image x="1000" y="730" width="50" height="65" xlink:href="house.svg" />
@@ -122,4 +123,7 @@
 	<polygon class="hex" id="hex-c" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(1070,820)" />
 	<polygon class="hex" id="hex-d" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(670,820)" />
 	<polygon class="hex" id="hex-e" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(570,510)" />
+	
+	<text id="update-counter" x="1600" y="990" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff"></text>
+	
 </svg>

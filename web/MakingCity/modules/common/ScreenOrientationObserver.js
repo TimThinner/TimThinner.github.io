@@ -12,8 +12,8 @@ export default class ScreenOrientationObserver {
 	unsubscribe(fn) {
 		this.observers = this.observers.filter((subscriber) => subscriber !== fn);
 	}
-	renderAll(options) {
-		this.observers.forEach((subscriber) => subscriber.render(options));
+	renderAll() {
+		this.observers.forEach((subscriber) => subscriber.render());
 	}
 	
 	resize() {
@@ -40,13 +40,13 @@ export default class ScreenOrientationObserver {
 		if (typeof this.mode === 'undefined') {
 			console.log('ScreenOrientationObserver => FIRST TIME RENDER');
 			this.mode = _mode;
-			this.renderAll({mode:this.mode});
+			this.renderAll(); // {mode:this.mode}
 			
 		} else {
 			if (this.mode !== _mode) {
 				console.log('ScreenOrientationObserver => MODE CHANGE RENDER');
 				this.mode = _mode;
-				this.renderAll({mode:this.mode});
+				this.renderAll(); // {mode:this.mode}
 			}
 		}
 	}

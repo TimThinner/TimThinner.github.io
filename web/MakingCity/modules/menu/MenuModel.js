@@ -20,7 +20,10 @@ export default class MenuModel extends EventObserver {
 		
 		this.ready = true;
 		this.data = 'MODEL DATA';
-		setTimeout(() => this.notifyAll({model:'MenuModel',method:'fetched',status:200,message:'OK'}), 100);
+		
+		//this.errorMessage = 'Fetch failed !!!';
+		//setTimeout(() => this.notifyAll({model:'MenuModel',method:'fetched',status:400,message:'Fetch failed !!!'}), 100);
+		setTimeout(() => this.notifyAll({model:'MenuModel',method:'fetched',status:200,message:''}), 100);
 		
 	}
 	

@@ -6,6 +6,8 @@ export default class MenuView {
 		this.controller = controller;
 		this.el = controller.el;
 		this.model = controller.master.modelRepo.get('MenuModel');
+		this.model.subscribe(this);
+		
 		this.svgObject = undefined;
 		
 		this.hexagonTranslations = { 
@@ -32,25 +34,82 @@ export default class MenuView {
 			}
 		};
 		this.screen = new ScreenOrientationObserver();
-		
+		this.rendered = false;
+		this.updateCounter = 0;
 	}
 	
 	hide() {
 		this.screen.stop();
 		this.screen.unsubscribe(this);
+		this.rendered = false;
+		this.updateCounter = 0;
 		$(this.el).empty();
 	}
 	
 	remove() {
 		this.screen.stop();
 		this.screen.unsubscribe(this);
+		this.model.unsubscribe(this);
+		this.rendered = false;
+		this.updateCounter = 0;
 		$(this.el).empty();
+	}
+	
+	start() {
+		this.screen.subscribe(this);
+		this.screen.start();
+	}
+	
+	changeCounterValue() {
+		if (typeof this.svgObject !== 'undefined') {
+			const textElement = this.svgObject.getElementById('update-counter');
+			while (textElement.firstChild) {
+				textElement.removeChild(textElement.firstChild);
+			}
+			this.updateCounter++;
+			var txt = document.createTextNode("Updated "+this.updateCounter+" times");
+			textElement.appendChild(txt);
+			//textElement.setAttributeNS(null, 'fill', '#0a0');
+		}
+	}
+	
+	updateLatestValues() {
+		console.log("UPDATE!");
+		this.changeCounterValue();
+	}
+	
+	notify(options) {
+		const self = this;
+		if (options.model==='MenuModel' && options.method==='fetched') {
+			if (options.status === 200) {
+				console.log('MenuView => MenuModel fetched!');
+				if (this.controller.visible) {
+					if (this.rendered) {
+						$('#menu-view-failure').empty();
+						this.updateLatestValues();
+					} else {
+						this.render();
+					}
+				}
+			} else {
+				if (this.controller.visible) {
+					if (this.rendered) {
+						$('#menu-view-failure').empty();
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#menu-view-failure');
+					} else {
+						this.render();
+					}
+				}
+			}
+		}
 	}
 	
 	addSVGEventHandlers(mode) {
 		const self = this;
 		this.svgObject = document.getElementById('svg-object').contentDocument;
 		if (typeof this.svgObject !== 'undefined') {
+			
 			console.log("svgObject is now ready!");
 			
 			const hexA = this.svgObject.getElementById('hex-a');
@@ -148,11 +207,6 @@ export default class MenuView {
 		}
 	}
 	
-	start() {
-		this.screen.subscribe(this);
-		this.screen.start();
-	}
-	
 	showSpinner(el) {
 		const html =
 			'<div id="preload-spinner" style="text-align:center;"><p>&nbsp;</p>'+
@@ -174,19 +228,16 @@ export default class MenuView {
 		$(html).appendTo(el);
 	}
 	
-	render(options) {
-		
+	render() {
 		const self = this;
-		
 		$(this.el).empty();
 		if (this.model.ready) {
 			
-			let mode = 'SQUARE';
-			if (typeof options !== 'undefined') {
-				if (typeof options.mode !== 'undefined') {
-					mode = options.mode;
-				}
-			}
+			console.log('MenuView => render MenuModel IS READY!');
+			
+			this.rendered = true;
+			const mode = this.screen.mode;
+			
 			let svgFile, svgClass;
 			if (mode === 'LANDSCAPE') {
 				console.log('LANDSCAPE');
@@ -205,9 +256,8 @@ export default class MenuView {
 			if (this.model.errorMessage.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<h3 style="color:#444">ERROR:</h3>'+
-							'<h5 style="color:#f44">'+this.model.errorMessage+'</h5>'+
+						'<div class="col s12 center" id="menu-view-failure">'+
+							'<div class="error-message"><p>'+this.model.errorMessage+'</p></div>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
@@ -218,6 +268,20 @@ export default class MenuView {
 							'<div class="'+svgClass+'">'+
 								'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
 							'</div>'+
+						'</div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s12 center" id="menu-view-failure"></div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s12 center">'+
+							'<h3>Positive Energy Districts</h3>'+
+						'</div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s12">'+
+							"<p>Lancashire babybel melted cheese. Cheesy feet airedale feta pepper jack cheesy feet cheese triangles cheese on toast mozzarella. Edam babybel dolcelatte brie everyone loves fromage gouda cheesy grin. Bocconcini pecorino blue castello bavarian bergkase when the cheese comes out everybody's happy fromage frais cheeseburger fromage frais. Stinking bishop mascarpone st. agur blue cheese queso.</p>"+
+							'<p>Swiss fondue the big cheese. Cauliflower cheese red leicester swiss fondue smelly cheese cheese and biscuits cream cheese lancashire. Cauliflower cheese camembert de normandie croque monsieur goat boursin caerphilly taleggio cauliflower cheese. Emmental edam cheesy feet squirty cheese stinking bishop swiss smelly cheese the big cheese. Everyone loves fromage frais.</p>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
@@ -230,8 +294,11 @@ export default class MenuView {
 				});
 			}
 		} else {
+			
+			console.log('MenuView => render MenuModel IS NOT READY!!!!!!!!!!!!!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
+			
 		}
 	}
 }

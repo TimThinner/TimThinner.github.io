@@ -1,5 +1,9 @@
 /*
 
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super
+super([arguments]); // calls the parent constructor.
+super.functionOnParent([arguments]);
+
 */
 export default class DistrictAView {
 	
@@ -7,17 +11,58 @@ export default class DistrictAView {
 		this.controller = controller;
 		this.el = controller.el;
 		this.model = controller.master.modelRepo.get('DistrictAModel');
+		this.model.subscribe(this);
 		this.svgObject = undefined;
+		this.rendered = false;
+		this.visible = false;
+	}
+	
+	show() {
+		this.visible = true;
+		this.render();
 	}
 	
 	hide() {
-		$(this.el).empty();
+		this.visible = false;
 		this.svgObject = undefined;
+		this.rendered = false;
+		$(this.el).empty();
 	}
 	
 	remove() {
-		$(this.el).empty();
+		this.visible = false;
+		this.model.unsubscribe(this);
 		this.svgObject = undefined;
+		this.rendered = false;
+		$(this.el).empty();
+	}
+	
+	updateLatestValues() {
+		console.log("UPDATE!");
+	}
+	
+	notify(options) {
+		if (this.visible) {
+			if (options.model==='DistrictAModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					console.log('DistrictAView => DistrictAModel fetched!');
+					if (this.rendered) {
+						$('#district-a-view-failure').empty();
+						this.updateLatestValues();
+					} else {
+						this.render();
+					}
+				} else { // Error in fetching.
+					if (this.rendered) {
+						$('#district-a-view-failure').empty();
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#district-a-view-failure');
+					} else {
+						this.render();
+					}
+				}
+			}
+		}
 	}
 	
 	addSVGEventHandlers() {
@@ -62,43 +107,97 @@ export default class DistrictAView {
 		}
 	}
 	
-	render() {
-		const self = this;
-		$(this.el).empty();
-		if (this.model.ready) {
-			const html =
-				'<div class="row">'+
-					'<div class="col s12">'+
-						'<div class="svg-landscape-container">'+
-							'<object type="image/svg+xml" data="DA.svg" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
+	showSpinner(el) {
+		const html =
+			'<div id="preload-spinner" style="text-align:center;"><p>&nbsp;</p>'+
+				'<div class="preloader-wrapper active">'+
+					'<div class="spinner-layer spinner-blue-only">'+
+						'<div class="circle-clipper left">'+
+							'<div class="circle"></div>'+
+						'</div>'+
+						'<div class="gap-patch">'+
+							'<div class="circle"></div>'+
+						'</div>'+
+						'<div class="circle-clipper right">'+
+							'<div class="circle"></div>'+
 						'</div>'+
 					'</div>'+
 				'</div>'+
-				'<div class="row">'+
-					'<div class="col s12 center">'+
-						'<p>This view <b>will</b> contain all charts and graphs for District A. Click the button "Toggle direction" to change energy flow back to GRID.</p>'+
-					'</div>'+
-				'</div>'+
-				'<div class="row">'+
-					'<div class="col s6 center">'+
-						'<a href="javascript:void(0);" id="back" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>'+
-					'</div>'+
-					'<div class="col s6 center">'+
-						'<a id="toggle-direction" class="waves-effect waves-light btn-large">Toggle direction</a>'+
-					'</div>'+
-				'</div>';
-			$(html).appendTo(this.el);
+				'<p>&nbsp;</p>'+
+			'</div>';
+		$(html).appendTo(el);
+	}
+	
+	render() {
+		const self = this;
+		
+		
+		console.log('DistrictAView => render%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+		
+		$(this.el).empty();
+		if (this.model.ready) {
 			
-			// AND WAIT for SVG object to fully load, before assigning event handlers!
-			const svgObj = document.getElementById("svg-object");
-			svgObj.addEventListener('load', function(){
-				console.log('ADD SVG EVENT HANDLERS!');
-				self.addSVGEventHandlers();
-			});
-			
+			if (this.model.errorMessage.length > 0) {
+				const html =
+					'<div class="row">'+
+						'<div class="col s12 center" id="district-a-view-failure">'+
+							'<div class="error-message"><p>'+this.model.errorMessage+'</p></div>'+
+						'</div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s12 center">'+
+							'<p>UUPS! Something went wrong.</p>'+
+						'</div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s6 center">'+
+							'<a href="javascript:void(0);" id="back" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>'+
+						'</div>'+
+					'</div>';
+				$(html).appendTo(this.el);
+			} else {
+				const html =
+					'<div class="row">'+
+						'<div class="col s12">'+
+							'<div class="svg-landscape-container">'+
+								'<object type="image/svg+xml" data="DA.svg" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s12 center" id="district-a-view-failure"></div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s12 center">'+
+							'<p>This view <b>will</b> contain all charts and graphs for District A. Click the button "Toggle direction" to change energy flow back to GRID.</p>'+
+						'</div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s6 center">'+
+							'<a href="javascript:void(0);" id="back" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>'+
+						'</div>'+
+						'<div class="col s6 center">'+
+							'<a id="toggle-direction" class="waves-effect waves-light btn-large">Toggle direction</a>'+
+						'</div>'+
+					'</div>';
+				$(html).appendTo(this.el);
+				
+				// AND WAIT for SVG object to fully load, before assigning event handlers!
+				const svgObj = document.getElementById("svg-object");
+				svgObj.addEventListener('load', function(){
+					console.log('ADD SVG EVENT HANDLERS!');
+					self.addSVGEventHandlers();
+				});
+			}
 			$('#back').on('click',function() {
 				self.controller.menuModel.setSelected('menu');
 			});
+			this.rendered = true;
+			
+		} else {
+			console.log('DistrictAView => render MenuModel IS NOT READY!!!!');
+			// this.el = '#content'
+			this.showSpinner(this.el);
 		}
 	}
 }

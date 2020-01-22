@@ -1,19 +1,12 @@
-export default class ScreenOrientationObserver {
+import EventObserver from './EventObserver.js';
+
+export default class ResizeObserverModel extends EventObserver {
 	
 	constructor() {
+		super();
 		this.resize_handler_set = false;
 		this.resizeTimeout      = null;
 		this.mode               = undefined;
-		this.observers = [];
-	}
-	subscribe(fn) {
-		this.observers.push(fn);
-	}
-	unsubscribe(fn) {
-		this.observers = this.observers.filter((subscriber) => subscriber !== fn);
-	}
-	renderAll() {
-		this.observers.forEach((subscriber) => subscriber.render());
 	}
 	
 	resize() {
@@ -38,15 +31,16 @@ export default class ScreenOrientationObserver {
 			}
 		}
 		if (typeof this.mode === 'undefined') {
-			console.log('ScreenOrientationObserver => FIRST TIME RENDER');
+			console.log('ResizeObserverModel => FIRST TIME RENDER');
 			this.mode = _mode;
-			this.renderAll(); // {mode:this.mode}
+			setTimeout(() => this.notifyAll({model:'ResizeObserverModel',method:'resize',status:200,message:''}), 100);
+			
 			
 		} else {
 			if (this.mode !== _mode) {
-				console.log('ScreenOrientationObserver => MODE CHANGE RENDER');
+				console.log('ResizeObserverModel => MODE CHANGE RENDER');
 				this.mode = _mode;
-				this.renderAll(); // {mode:this.mode}
+				setTimeout(() => this.notifyAll({model:'ResizeObserverModel',method:'resize',status:200,message:''}), 100);
 			}
 		}
 	}

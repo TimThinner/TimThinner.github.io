@@ -13,6 +13,12 @@ export default class DistrictAController {
 		this.menuModel = undefined;
 	}
 	
+	show() {
+		if (this.visible && this.view) {
+			this.view.show();
+		}
+	}
+	
 	remove() {
 		if (this.view) {
 			this.view.remove();
@@ -33,14 +39,6 @@ export default class DistrictAController {
 		}
 	}
 	
-	show() {
-		if (this.visible) {
-			if (this.view) {
-				this.view.render();
-			}
-		}
-	}
-	
 	notify(options) {
 		
 		if (options.model==='MenuModel' && options.method==='selected') {
@@ -54,10 +52,6 @@ export default class DistrictAController {
 			} else {
 				this.visible = false;
 				this.hide();
-			}
-		} else if (options.model==='DistrictAModel' && options.method==='fetched') {
-			if (options.status === 200) {
-				this.show();
 			}
 		}
 	}
@@ -77,7 +71,9 @@ export default class DistrictAController {
 		if (this.menuModel) {
 			this.menuModel.subscribe(this);
 		}
-		this.model.fetch();
 		this.view = new DistrictAView(this);
+		
+		this.model.fetch();
+		this.show();
 	}
 }

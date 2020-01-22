@@ -1,4 +1,4 @@
-import ScreenOrientationObserver from  '../common/ScreenOrientationObserver.js';
+//import ResizeObserverModel from  '../common/ResizeObserverModel.js';
 
 export default class MenuView {
 	
@@ -8,7 +8,12 @@ export default class MenuView {
 		this.model = controller.master.modelRepo.get('MenuModel');
 		this.model.subscribe(this);
 		
+		controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
+		
+		
 		this.svgObject = undefined;
+		this.rendered = false;
+		this.visible = false;
 		
 		this.hexagonTranslations = { 
 			'SQUARE' : {
@@ -33,31 +38,29 @@ export default class MenuView {
 				'E':'translate(130,460)'
 			}
 		};
-		this.screen = new ScreenOrientationObserver();
-		this.rendered = false;
 		this.updateCounter = 0;
 	}
 	
+	show() {
+		this.visible = true;
+		this.render();
+	}
+	
 	hide() {
-		this.screen.stop();
-		this.screen.unsubscribe(this);
+		this.visible = false;
+		this.svgObject = undefined;
 		this.rendered = false;
 		this.updateCounter = 0;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		this.screen.stop();
-		this.screen.unsubscribe(this);
+		this.visible = false;
 		this.model.unsubscribe(this);
+		this.svgObject = undefined;
 		this.rendered = false;
 		this.updateCounter = 0;
 		$(this.el).empty();
-	}
-	
-	start() {
-		this.screen.subscribe(this);
-		this.screen.start();
 	}
 	
 	changeCounterValue() {
@@ -79,20 +82,18 @@ export default class MenuView {
 	}
 	
 	notify(options) {
-		const self = this;
-		if (options.model==='MenuModel' && options.method==='fetched') {
-			if (options.status === 200) {
-				console.log('MenuView => MenuModel fetched!');
-				if (this.controller.visible) {
+		if (this.visible) {
+			
+			if (options.model==='MenuModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					console.log('MenuView => MenuModel fetched!');
 					if (this.rendered) {
 						$('#menu-view-failure').empty();
 						this.updateLatestValues();
 					} else {
 						this.render();
 					}
-				}
-			} else {
-				if (this.controller.visible) {
+				} else { // Error in fetching.
 					if (this.rendered) {
 						$('#menu-view-failure').empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
@@ -101,6 +102,10 @@ export default class MenuView {
 						this.render();
 					}
 				}
+			} else if (options.model==='ResizeObserverModel' && options.method==='resize') {
+				//if (options.status === 200) {
+				this.render();
+				//}
 			}
 		}
 	}
@@ -169,8 +174,6 @@ export default class MenuView {
 				event.target.setAttributeNS(null,'transform',self.hexagonTranslations[mode]['C']+' scale(1.0)');
 			}, false);
 			
-			
-			
 			const hexD = this.svgObject.getElementById('hex-d');
 			hexD.addEventListener("click", function(){
 				
@@ -230,13 +233,16 @@ export default class MenuView {
 	
 	render() {
 		const self = this;
+		
+		
+		console.log('MenuView => render%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+		
 		$(this.el).empty();
 		if (this.model.ready) {
 			
 			console.log('MenuView => render MenuModel IS READY!');
 			
-			this.rendered = true;
-			const mode = this.screen.mode;
+			const mode = this.controller.master.modelRepo.get('ResizeObserverModel').mode;
 			
 			let svgFile, svgClass;
 			if (mode === 'LANDSCAPE') {
@@ -258,6 +264,11 @@ export default class MenuView {
 					'<div class="row">'+
 						'<div class="col s12 center" id="menu-view-failure">'+
 							'<div class="error-message"><p>'+this.model.errorMessage+'</p></div>'+
+						'</div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s12 center">'+
+							'<p>UUPS! Something went wrong.</p>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
@@ -293,12 +304,13 @@ export default class MenuView {
 					self.addSVGEventHandlers(mode);
 				});
 			}
+			
+			this.rendered = true;
+			
 		} else {
-			
-			console.log('MenuView => render MenuModel IS NOT READY!!!!!!!!!!!!!!!!');
 			// this.el = '#content'
+			console.log('MenuView => render MenuModel IS NOT READY!!!!');
 			this.showSpinner(this.el);
-			
 		}
 	}
 }

@@ -12,9 +12,9 @@ export default class MenuController {
 		this.view    = undefined;
 		this.timers = [
 			{
-				name: 'POWER',
+				name: 'EXAMPLE',
 				timer: undefined,
-				interval: 1000
+				interval: 10000
 			}
 		];
 	}
@@ -58,9 +58,9 @@ export default class MenuController {
 			if (item.name === name) {
 				if (item.interval > 0) {
 					console.log(['POLLER FETCH ',name]);
-					if (name === 'POWER') {
+					if (name === 'EXAMPLE') {
 						this.model.fetch();
-					} 
+					}
 					item.timer = setTimeout(()=>{
 						this.poller(name);
 					}, item.interval);
@@ -70,16 +70,10 @@ export default class MenuController {
 	}
 	
 	show() {
+		console.log('MenuController show()!!!!!');
 		if (this.visible && this.view) {
-			/* View start calls ScreenOrientationObserver to do 4 things:
-				subscribe view as an observer
-				this.mode = undefined;
-				this.setResizeHandler();
-				this.resize(); // resize now
-			*/
-			this.view.start();
-			/* Start the timer poller */
-			this.poller('POWER');
+			this.view.show();
+			this.poller('EXAMPLE'); // Start the timer poller
 		}
 	}
 	
@@ -112,6 +106,11 @@ export default class MenuController {
 		//this.model.fetch();
 		//setTimeout(() => this.model.fetch(), 2000);
 		this.view = new MenuView(this);
-		this.show(); // Try if this view can be shown right now!
+		
+		// If view is shown immediately and poller is used, like in this case, 
+		// we can just call show() and let it start fetching... 
+		if (this.visible) {
+			this.show(); // Try if this view can be shown right now!
+		}
 	}
 }

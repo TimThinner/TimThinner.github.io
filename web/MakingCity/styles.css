@@ -2,7 +2,7 @@ html, body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
 	color: #333;
-	background-color: #eee;
+	background-color: #ccc;
 }
 @media screen and (min-width: 601px) {
 	html, body {
@@ -11,21 +11,21 @@ html, body {
 }
 /* Materialize CSS */
 .container {
-	background-color: #fff;
+	background-color: #eee;
 	margin: 0 auto;
 	/*max-width: 1280px;*/
-	max-width: 1600px;
+	max-width: 1280px;
 	width: 100%; /* 90%; */
 	padding: 0 1rem 1rem 1rem;
 }
 @media only screen and (min-width: 601px) {
 	.container {
-		width: 98%;/*width: 95%;*/ /* 85%; */
+		width: 100%;/*width: 95%;*/ /* 85%; */
 	}
 }
 @media only screen and (min-width: 993px) {
 	.container {
-		width: 96%;/*width: 90%;*/ /*70%;*/
+		width: 100%;/*width: 90%;*/ /*70%;*/
 	}
 }
 .svg-square-container { 
@@ -68,3 +68,19 @@ html, body {
 	background-color: #efe;
 	padding-left: 1rem;
 }
+.flag-wrapper {
+	background-color: #000;
+}
+.flag {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	float: right;
+	height: 2rem;
+	margin-left: 12px;
+	cursor: pointer;
+	border: 2px solid #404040;
+}
+.flag.selected {
+	border: 2px solid #80f080;
+}
+

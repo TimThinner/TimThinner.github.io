@@ -99,13 +99,35 @@
 	</g>
 	
 	<!-- Hexagon Labels: District A - Distict E -->
-	<text x="220" y="300" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District A</text>
-	<text x="390" y="490" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District B</text>
-	<text x="362" y="746" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District C</text>
-	<text x="82" y="746" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District D</text>
-	<text x="50" y="490" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District E</text>
+	<!-- Center TEXT within given sub-svg element -->
+	<svg x="170" y="260" width="260px" height="90px">
+		<rect x="1" y="1" width="258" height="88" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />
+		<text id="district-a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District A</text>
+	</svg>
+	<svg x="340" y="460" width="260px" height="90px">
+		<rect x="1" y="1" width="258" height="88" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />
+		<text id="district-b" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District B</text>
+	</svg>
+	<svg x="310" y="720" width="260px" height="90px">
+		<rect x="1" y="1" width="258" height="88" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />
+		<text id="district-c" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District C</text>
+	</svg>
+	<svg x="30" y="720" width="260px" height="90px">
+		<rect x="1" y="1" width="258" height="88" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />
+		<text id="district-d" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District D</text>
+	</svg>
+	<svg x="0" y="460" width="260px" height="90px">
+		<rect x="1" y="1" width="258" height="88" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />
+		<text id="district-e" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District E</text>
+	</svg>
 	
-	
+	<!--
+	<text id="district-a" x="220" y="300" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District A</text>
+	<text id="district-b" x="390" y="490" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District B</text>
+	<text id="district-c" x="362" y="746" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District C</text>
+	<text id="district-d" x="82" y="746" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District D</text>
+	<text id="district-e" x="50" y="490" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District E</text>
+	-->
 	<!-- Hexagons -->
 	<polygon class="hex" id="hex-a" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(300,260)" />
 	<polygon class="hex" id="hex-b" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(470,460)" />

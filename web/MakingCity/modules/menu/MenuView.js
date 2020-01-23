@@ -1,19 +1,16 @@
-//import ResizeObserverModel from  '../common/ResizeObserverModel.js';
-
-export default class MenuView {
+import View from '../common/View.js';
+export default class MenuView extends View {
 	
 	constructor(controller) {
-		this.controller = controller;
-		this.el = controller.el;
-		this.model = controller.master.modelRepo.get('MenuModel');
+		super(controller);
+		
+		this.model = this.controller.master.modelRepo.get('MenuModel');
 		this.model.subscribe(this);
 		
-		controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
-		
+		this.controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
 		
 		this.svgObject = undefined;
 		this.rendered = false;
-		this.visible = false;
 		
 		this.hexagonTranslations = { 
 			'SQUARE' : {
@@ -42,12 +39,10 @@ export default class MenuView {
 	}
 	
 	show() {
-		this.visible = true;
 		this.render();
 	}
 	
 	hide() {
-		this.visible = false;
 		this.svgObject = undefined;
 		this.rendered = false;
 		this.updateCounter = 0;
@@ -55,7 +50,6 @@ export default class MenuView {
 	}
 	
 	remove() {
-		this.visible = false;
 		this.model.unsubscribe(this);
 		this.svgObject = undefined;
 		this.rendered = false;
@@ -63,30 +57,32 @@ export default class MenuView {
 		$(this.el).empty();
 	}
 	
-	changeCounterValue() {
+	increaseCounterValue() {
+		this.updateCounter++;
 		if (typeof this.svgObject !== 'undefined') {
 			const textElement = this.svgObject.getElementById('update-counter');
 			while (textElement.firstChild) {
 				textElement.removeChild(textElement.firstChild);
 			}
-			this.updateCounter++;
 			var txt = document.createTextNode("Updated "+this.updateCounter+" times");
 			textElement.appendChild(txt);
 			//textElement.setAttributeNS(null, 'fill', '#0a0');
+		} else {
+			console.log('SVG OBJECT IS NOT READY YET!');
 		}
 	}
 	
 	updateLatestValues() {
 		console.log("UPDATE!");
-		this.changeCounterValue();
+		this.increaseCounterValue();
 	}
 	
 	notify(options) {
-		if (this.visible) {
+		if (this.controller.visible) {
 			
 			if (options.model==='MenuModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('MenuView => MenuModel fetched!');
+					//console.log('MenuView => MenuModel fetched!');
 					if (this.rendered) {
 						$('#menu-view-failure').empty();
 						this.updateLatestValues();
@@ -115,7 +111,7 @@ export default class MenuView {
 		this.svgObject = document.getElementById('svg-object').contentDocument;
 		if (typeof this.svgObject !== 'undefined') {
 			
-			console.log("svgObject is now ready!");
+			//console.log("svgObject is now ready!");
 			
 			const hexA = this.svgObject.getElementById('hex-a');
 			hexA.addEventListener("click", function(){
@@ -210,55 +206,66 @@ export default class MenuView {
 		}
 	}
 	
-	showSpinner(el) {
-		const html =
-			'<div id="preload-spinner" style="text-align:center;"><p>&nbsp;</p>'+
-				'<div class="preloader-wrapper active">'+
-					'<div class="spinner-layer spinner-blue-only">'+
-						'<div class="circle-clipper left">'+
-							'<div class="circle"></div>'+
-						'</div>'+
-						'<div class="gap-patch">'+
-							'<div class="circle"></div>'+
-						'</div>'+
-						'<div class="circle-clipper right">'+
-							'<div class="circle"></div>'+
-						'</div>'+
-					'</div>'+
-				'</div>'+
-				'<p>&nbsp;</p>'+
-			'</div>';
-		$(html).appendTo(el);
+	fillSVGElement(svgObject, id, txt) {
+		const textElement = svgObject.getElementById(id);
+		if (textElement) {
+			while (textElement.firstChild) {
+				textElement.removeChild(textElement.firstChild);
+			}
+			const txtnode = document.createTextNode(txt);
+			textElement.appendChild(txtnode);
+		}
+	}
+	
+	localizeSVGTexts() {
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (typeof svgObject !== 'undefined') {
+			
+			const LM = this.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
+			const localized_d_a = LM['translation'][sel]['MENU_D_A_LABEL'];
+			const localized_d_b = LM['translation'][sel]['MENU_D_B_LABEL'];
+			const localized_d_c = LM['translation'][sel]['MENU_D_C_LABEL'];
+			const localized_d_d = LM['translation'][sel]['MENU_D_D_LABEL'];
+			const localized_d_e = LM['translation'][sel]['MENU_D_E_LABEL'];
+			
+			this.fillSVGElement(svgObject, 'district-a', localized_d_a);
+			this.fillSVGElement(svgObject, 'district-b', localized_d_b);
+			this.fillSVGElement(svgObject, 'district-c', localized_d_c);
+			this.fillSVGElement(svgObject, 'district-d', localized_d_d);
+			this.fillSVGElement(svgObject, 'district-e', localized_d_e);
+		}
+	}
+	
+	fillLocalizedTexts() {
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_title = LM['translation'][sel]['MENU_TITLE'];
+		const localized_descr = LM['translation'][sel]['MENU_DESCRIPTION'];
+		$('#menu-title').empty().append(localized_title);
+		$('#menu-description').empty().append(localized_descr);
 	}
 	
 	render() {
 		const self = this;
-		
-		
-		console.log('MenuView => render%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-		
 		$(this.el).empty();
 		if (this.model.ready) {
-			
-			console.log('MenuView => render MenuModel IS READY!');
-			
 			const mode = this.controller.master.modelRepo.get('ResizeObserverModel').mode;
-			
 			let svgFile, svgClass;
 			if (mode === 'LANDSCAPE') {
-				console.log('LANDSCAPE');
-				svgFile = 'menuLandscape.svg';
+				//console.log('LANDSCAPE');
+				svgFile = './svg/menuLandscape.svg';
 				svgClass = 'svg-landscape-container';
 			} else if (mode === 'PORTRAIT') {
-				console.log('PORTRAIT');
-				svgFile = 'menuPortrait.svg';
+				//console.log('PORTRAIT');
+				svgFile = './svg/menuPortrait.svg';
 				svgClass = 'svg-portrait-container';
 			} else {
-				console.log('SQUARE');
-				svgFile = 'menuSquare.svg';
+				//console.log('SQUARE');
+				svgFile = './svg/menuSquare.svg';
 				svgClass = 'svg-square-container';
 			}
-			console.log(['this.model.data=',this.model.data]);
+			//console.log(['this.model.data=',this.model.data]);
 			if (this.model.errorMessage.length > 0) {
 				const html =
 					'<div class="row">'+
@@ -273,9 +280,18 @@ export default class MenuView {
 					'</div>';
 				$(html).appendTo(this.el);
 			} else {
+				const LM = this.controller.master.modelRepo.get('LanguageModel');
 				const html =
 					'<div class="row">'+
-						'<div class="col s12">'+
+						'<div class="col s12" style="background-color:#012265;">'+
+							'<div class="flag-wrapper">'+
+								'<img id="language-fi" class="flag" src="./img/flag_fi.png" />'+
+								'<img id="language-en" class="flag" src="./img/flag_en_sel.png" />'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+					'<div class="row" style="margin-top:-20px">'+
+						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
 							'<div class="'+svgClass+'">'+
 								'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
 							'</div>'+
@@ -286,22 +302,50 @@ export default class MenuView {
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s12 center">'+
-							'<h3>Positive Energy Districts</h3>'+
+							'<h3 id="menu-title"></h3>'+
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s12">'+
-							"<p>Lancashire babybel melted cheese. Cheesy feet airedale feta pepper jack cheesy feet cheese triangles cheese on toast mozzarella. Edam babybel dolcelatte brie everyone loves fromage gouda cheesy grin. Bocconcini pecorino blue castello bavarian bergkase when the cheese comes out everybody's happy fromage frais cheeseburger fromage frais. Stinking bishop mascarpone st. agur blue cheese queso.</p>"+
-							'<p>Swiss fondue the big cheese. Cauliflower cheese red leicester swiss fondue smelly cheese cheese and biscuits cream cheese lancashire. Cauliflower cheese camembert de normandie croque monsieur goat boursin caerphilly taleggio cauliflower cheese. Emmental edam cheesy feet squirty cheese stinking bishop swiss smelly cheese the big cheese. Everyone loves fromage frais.</p>'+
+							'<p id="menu-description"></p>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
 				
+				this.fillLocalizedTexts();
+				$('#language-'+LM.selected).addClass('selected');
+				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!
 				const svgObj = document.getElementById("svg-object");
 				svgObj.addEventListener('load', function(){
-					console.log('ADD SVG EVENT HANDLERS!');
+					//console.log('ADD SVG EVENT HANDLERS!');
 					self.addSVGEventHandlers(mode);
+					self.localizeSVGTexts();
+					
+					$("#language-fi").on('click',function(){
+						if ($(this).hasClass('selected')) {
+							//console.log('This is selected!');
+						} else {
+							// Select 'fi'
+							$("#language-en").removeClass('selected');
+							$("#language-fi").addClass('selected');
+							LM.selected = 'fi';
+							self.fillLocalizedTexts();
+							self.localizeSVGTexts();
+						}
+					});
+					$('#language-en').on('click',function(){
+						if ($(this).hasClass('selected')) {
+							//console.log('This is selected!');
+						} else {
+							// Select 'en'
+							$("#language-fi").removeClass('selected');
+							$("#language-en").addClass('selected');
+							LM.selected = 'en';
+							self.fillLocalizedTexts();
+							self.localizeSVGTexts();
+						}
+					});
 				});
 			}
 			
@@ -309,7 +353,7 @@ export default class MenuView {
 			
 		} else {
 			// this.el = '#content'
-			console.log('MenuView => render MenuModel IS NOT READY!!!!');
+			//console.log('MenuView => render MenuModel IS NOT READY!!!!');
 			this.showSpinner(this.el);
 		}
 	}

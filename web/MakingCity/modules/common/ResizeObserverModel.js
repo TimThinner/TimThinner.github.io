@@ -5,40 +5,41 @@ export default class ResizeObserverModel extends EventObserver {
 	constructor() {
 		super();
 		this.resize_handler_set = false;
-		this.resizeTimeout      = null;
-		this.mode               = undefined;
+		this.resizeTimeout = null;
+		this.mode = undefined;
+		this.width = undefined;
+		this.height = undefined;
 	}
 	
 	resize() {
-		const vpw = $(window).width();
-		const vph = $(window).height();
-		//console.log(['W=',vpw,' H=',vph]);
-		//let _mode = undefined;
+		this.width = $(window).width();
+		this.height = $(window).height();
+		
 		let _mode = 'SQUARE';
 		// Tolerance +-25% for square
 		let diffe = 0;
-		if (vpw > vph) {
+		if (this.width > this.height) {
 			// Maybe landscape?
-			diffe = vpw-vph;
-			if (diffe > 0.25*vpw) {
+			diffe = this.width - this.height;
+			if (diffe > 0.25*this.width) {
 				_mode = 'LANDSCAPE';
 			}
 		} else {
 			// Maybe portrait?
-			diffe = vph-vpw;
-			if (diffe > 0.25*vph) {
+			diffe = this.height - this.width;
+			if (diffe > 0.25*this.height) {
 				_mode = 'PORTRAIT';
 			}
 		}
 		if (typeof this.mode === 'undefined') {
-			console.log('ResizeObserverModel => FIRST TIME RENDER');
+			//console.log('ResizeObserverModel => FIRST TIME RENDER');
 			this.mode = _mode;
 			setTimeout(() => this.notifyAll({model:'ResizeObserverModel',method:'resize',status:200,message:''}), 100);
 			
 			
 		} else {
 			if (this.mode !== _mode) {
-				console.log('ResizeObserverModel => MODE CHANGE RENDER');
+				//console.log('ResizeObserverModel => MODE CHANGE RENDER');
 				this.mode = _mode;
 				setTimeout(() => this.notifyAll({model:'ResizeObserverModel',method:'resize',status:200,message:''}), 100);
 			}

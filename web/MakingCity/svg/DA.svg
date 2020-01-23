@@ -46,7 +46,7 @@
 	<image x="910" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
 	<image x="1040" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
 	
-	<text x="900" y="300" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#000">SOLAR PANELS</text>
+	<text id="solar-panels" x="900" y="300" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#000">SOLAR PANELS</text>
 	
 	<rect x="1350" y="740" width="300" height="100" fill="#fff" stroke-width="4" stroke="#000" />
 	<rect x="1150" y="620" width="300" height="100" fill="#fff" stroke-width="4" stroke="#000" />

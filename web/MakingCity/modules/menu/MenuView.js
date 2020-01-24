@@ -56,7 +56,7 @@ export default class MenuView extends View {
 		this.updateCounter = 0;
 		$(this.el).empty();
 	}
-	
+	/*
 	increaseCounterValue() {
 		this.updateCounter++;
 		if (typeof this.svgObject !== 'undefined') {
@@ -70,11 +70,11 @@ export default class MenuView extends View {
 		} else {
 			console.log('SVG OBJECT IS NOT READY YET!');
 		}
-	}
+	}*/
 	
 	updateLatestValues() {
 		console.log("UPDATE!");
-		this.increaseCounterValue();
+		//this.increaseCounterValue();
 	}
 	
 	notify(options) {
@@ -206,17 +206,6 @@ export default class MenuView extends View {
 		}
 	}
 	
-	fillSVGElement(svgObject, id, txt) {
-		const textElement = svgObject.getElementById(id);
-		if (textElement) {
-			while (textElement.firstChild) {
-				textElement.removeChild(textElement.firstChild);
-			}
-			const txtnode = document.createTextNode(txt);
-			textElement.appendChild(txtnode);
-		}
-	}
-	
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (typeof svgObject !== 'undefined') {
@@ -229,11 +218,11 @@ export default class MenuView extends View {
 			const localized_d_d = LM['translation'][sel]['MENU_D_D_LABEL'];
 			const localized_d_e = LM['translation'][sel]['MENU_D_E_LABEL'];
 			
-			this.fillSVGElement(svgObject, 'district-a', localized_d_a);
-			this.fillSVGElement(svgObject, 'district-b', localized_d_b);
-			this.fillSVGElement(svgObject, 'district-c', localized_d_c);
-			this.fillSVGElement(svgObject, 'district-d', localized_d_d);
-			this.fillSVGElement(svgObject, 'district-e', localized_d_e);
+			this.fillSVGTextElement(svgObject, 'district-a', localized_d_a);
+			this.fillSVGTextElement(svgObject, 'district-b', localized_d_b);
+			this.fillSVGTextElement(svgObject, 'district-c', localized_d_c);
+			this.fillSVGTextElement(svgObject, 'district-d', localized_d_d);
+			this.fillSVGTextElement(svgObject, 'district-e', localized_d_e);
 		}
 	}
 	
@@ -302,12 +291,12 @@ export default class MenuView extends View {
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s12 center">'+
-							'<h3 id="menu-title"></h3>'+
+							'<h3 id="menu-title" style="color:#777"></h3>'+
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s12">'+
-							'<p id="menu-description"></p>'+
+						'<div class="col s12 center">'+
+							'<h5 id="menu-description" style="color:#777"></h5>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);

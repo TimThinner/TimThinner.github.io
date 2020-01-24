@@ -34,11 +34,12 @@
 	<path class="grid-head" d="M566 130 H1000" />
 	<text x="600" y="180" opacity="0.4" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#fff">Positive Energy Districts</text>
 	
-	
-	<image x="400" y="200" width="150" height="75" xlink:href="schoolbuilding.svg" />
+	<image x="400" y="200" width="200" height="100" xlink:href="schoolbuilding.svg" />
 	<image x="480" y="170" width="55" height="50" xlink:href="solarpanel.svg" />
 	<image x="520" y="170" width="55" height="50" xlink:href="solarpanel.svg" />
 	<image x="740" y="200" width="100" height="150" xlink:href="powerline.svg" />
+	
+	<image x="860" y="180" width="100" height="150" xlink:href="windturbine.svg" />
 	
 	<!-- Shopping Center in District B -->
 	<image x="710" y="400" width="185" height="100" xlink:href="shoppingcenter.svg" />
@@ -60,7 +61,7 @@
 	<image x="170" y="430" width="50" height="65" xlink:href="house.svg" />
 	<image x="220" y="430" width="50" height="65" xlink:href="house.svg" />
 	
-	<g id="grid">
+	<!--<g id="grid">
 	<path class="grid" d="M0 100 H1000" />
 	<path class="grid" d="M0 200 H1000" />
 	<path class="grid" d="M0 300 H1000" />
@@ -70,13 +71,6 @@
 	<path class="grid" d="M0 700 H1000" />
 	<path class="grid" d="M0 800 H1000" />
 	<path class="grid" d="M0 900 H1000" />
-	<!--
-	<circle cx="500" cy="500" r="100" stroke-width="0.1" stroke="#fff" fill="none" />
-	<circle cx="500" cy="500" r="200" stroke-width="0.1" stroke="#fff" fill="none" />
-	<circle cx="500" cy="500" r="300" stroke-width="0.1" stroke="#fff" fill="none" />
-	<circle cx="500" cy="500" r="400" stroke-width="0.1" stroke="#fff" fill="none" />
-	<circle cx="500" cy="500" r="500" stroke-width="0.1" stroke="#fff" fill="none" />
-	-->
 	<path class="grid" d="M100 0 V1000" />
 	<path class="grid" d="M200 0 V1000" />
 	<path class="grid" d="M300 0 V1000" />
@@ -86,7 +80,8 @@
 	<path class="grid" d="M700 0 V1000" />
 	<path class="grid" d="M800 0 V1000" />
 	<path class="grid" d="M900 0 V1000" />
-	</g>
+	</g>-->
+	
 	<!-- A rx ry x-axis-rotation large-arc-flag sweep-flag x y -->
 	<g>
 	<path d="M 500,360 A 148,110 0 0,1 500,780 A 148,110 0 0,1 500,360" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />
@@ -106,23 +101,23 @@
 	<!-- Hexagon Labels: District A - Distict E -->
 	<!-- Center TEXT within given sub-svg element -->
 	<svg x="300" y="300" width="400px" height="130px">
-		<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />
+		<!--<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text id="district-a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff" stroke="#555" stroke-width="1">District A</text>
 	</svg>
 	<svg x="600" y="510" width="400px" height="130px">
-		<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />
+		<!--<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text id="district-b" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff" stroke="#555" stroke-width="1">District B</text>
 	</svg>
 	<svg x="500" y="820" width="400px" height="130px">
-		<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />
+		<!--<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text id="district-c" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff" stroke="#555" stroke-width="1">District C</text>
 	</svg>
 	<svg x="100" y="820" width="400px" height="130px">
-		<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />
+		<!--<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text id="district-d" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff" stroke="#555" stroke-width="1">District D</text>
 	</svg>
 	<svg x="0" y="510" width="400px" height="130px">
-		<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />
+		<!--<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text id="district-e" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#fff" stroke="#555" stroke-width="1">District E</text>
 	</svg>
 	<!--
@@ -138,7 +133,7 @@
 	<polygon class="hex" id="hex-c" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(700,820)" />
 	<polygon class="hex" id="hex-d" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(300,820)" />
 	<polygon class="hex" id="hex-e" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(200,510)" />
-	
+	<!--
 	<text id="update-counter" x="800" y="990" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff"></text>
-	
+	-->
 </svg>

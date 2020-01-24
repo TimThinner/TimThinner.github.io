@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="200" height="300" viewBox="-100 -110 200 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">
+<style>
+.blade {
+	stroke: #333;
+	stroke-width: 2;
+	fill: #fff;
+}
+</style>
+<g opacity="1">
+	<!-- stand -->
+	<polyline points="-12,180 -2,0 2,0 12,180 -12,180" stroke="#333" stroke-width="3" fill="#fff" />
+	<!--	x = 100 x sin 60 = 86,60
+			y = 100 x cos 60 = 50,00
+			x = 100 x sin 180 = 0
+			y = 100 x cos 180 = -100
+			x = 100 x sin 300 = -86,60
+			y = 100 x cos 300 = 50,00
+	-->
+	<!-- A rx ry x-axis-rotation large-arc-flag sweep-flag x y -->
+	<g>
+		<path class="blade" d="M 0,0 A 200,200 0 0,1 86.60,50.00 A 200,200 0 0,1 0,0" />
+		<path class="blade" d="M 0,0 A 200,200 0 0,1 0,-100 A 200,200 0 0,1 0,0" />
+		<path class="blade" d="M 0,0 A 200,200 0 0,1 -86.60,50.00 A 200,200 0 0,1 0,0" />
+		<animateTransform attributeName="transform" 
+						attributeType="XML" 
+						dur="8s" 
+						repeatCount="indefinite" 
+						type="rotate" 
+						from="0" 
+						to="360" ></animateTransform>
+	</g>
+	<circle cx="0" cy="0" r="10" stroke-width="2" stroke="#333" fill="#fff" />
+	<circle cx="0" cy="0" r="6" stroke-width="2" stroke="#333" fill="#fff" />
+</g>
+</svg>

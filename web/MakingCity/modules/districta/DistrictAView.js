@@ -12,6 +12,8 @@ export default class DistrictAView extends View {
 		super(controller);
 		this.model = this.controller.master.modelRepo.get('DistrictAModel');
 		this.model.subscribe(this);
+		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
+		//this.menuModel.subscribe(this);
 		this.rendered = false;
 	}
 	
@@ -26,6 +28,7 @@ export default class DistrictAView extends View {
 	
 	remove() {
 		this.model.unsubscribe(this);
+		//this.menuModel.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -59,9 +62,38 @@ export default class DistrictAView extends View {
 	}
 	
 	addSVGEventHandlers() {
-		
-		$("#toggle-direction").on('click',function(){
+		const self = this;
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (typeof svgObject !== 'undefined') {
 			
+			console.log("svgObject is now ready!");
+			const targetAA = svgObject.getElementById('target-a-a');
+			targetAA.addEventListener("click", function(){
+				console.log('Target AA CLICKED!');
+				self.menuModel.setSelected('DAA');
+			}, false);
+			
+			targetAA.addEventListener("mouseover", function(event){
+				event.target.style.strokeWidth = 9;
+				//event.target.style.stroke = "#0a0";
+				event.target.style.fillOpacity = 0.5;
+				event.target.setAttributeNS(null,'transform','translate(-50,-67) scale(1.1)');
+			}, false);
+			targetAA.addEventListener("mouseout", function(event){
+				event.target.style.strokeWidth = 3;
+				//event.target.style.stroke = "#fff";
+				event.target.style.fillOpacity = 0.05;
+				event.target.setAttributeNS(null,'transform','translate(0,0) scale(1.0)');
+			}, false);
+			
+			
+		} else {
+			console.log("svgObject is NOT ready!");
+		}
+	}
+	
+	addEventHandlers() {
+		$("#toggle-direction").on('click',function(){
 			const svgObject = document.getElementById('svg-object').contentDocument;
 			if (typeof svgObject !== 'undefined') {
 				
@@ -107,14 +139,13 @@ export default class DistrictAView extends View {
 			
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
-			const localized_string = LM['translation'][sel]['SOLAR_PANELS'];
 			
-			const textElement = svgObject.getElementById('solar-panels');
-			while (textElement.firstChild) {
-				textElement.removeChild(textElement.firstChild);
-			}
-			var txt = document.createTextNode(localized_string);
-			textElement.appendChild(txt);
+			const localized_solar_panels = LM['translation'][sel]['SOLAR_PANELS'];
+			const localized_grid_text = LM['translation'][sel]['GRID_TEXT'];
+			
+			this.fillSVGTextElement(svgObject, 'solar-panels', localized_solar_panels);
+			this.fillSVGTextElement(svgObject, 'grid-text', localized_grid_text);
+			
 		}
 	}
 	
@@ -146,7 +177,8 @@ export default class DistrictAView extends View {
 				const LM = this.controller.master.modelRepo.get('LanguageModel');
 				const sel = LM.selected;
 				const localized_string_da_description = LM['translation'][sel]['DA_DESCRIPTION'];
-				
+				const localized_string_da_toggle = LM['translation'][sel]['DA_TOGGLE_DIRECTION'];
+				const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 				const html =
 					'<div class="row">'+
 						'<div class="col s12">'+
@@ -160,18 +192,18 @@ export default class DistrictAView extends View {
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s12 center">'+
-							'<p>'+localized_string_da_description+'</p>'+
+							'<h5 id="menu-description" style="color:#777">'+localized_string_da_description+'</h5>'+
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s6 center">'+
 							//'<a href="javascript:void(0);" id="back" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>'+
-							'<button class="btn waves-effect waves-light" id="back">BACK'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
 						'</div>'+
 						'<div class="col s6 center">'+
-							'<button class="btn waves-effect waves-light" id="toggle-direction">Toggle direction'+
+							'<button class="btn waves-effect waves-light" id="toggle-direction">'+localized_string_da_toggle+
 								'<i class="material-icons right">send</i>'+
 							'</button>'+
 							//'<a id="toggle-direction" class="waves-effect waves-light btn-large">Toggle direction</a>'+
@@ -185,8 +217,9 @@ export default class DistrictAView extends View {
 				// AND WAIT for SVG object to fully load, before assigning event handlers!
 				const svgObj = document.getElementById("svg-object");
 				svgObj.addEventListener('load', function(){
-					//setTimeout(() => self.addSVGEventHandlers(), 4000);
+					
 					self.addSVGEventHandlers();
+					self.addEventHandlers();
 					self.localizeSVGTexts();
 					$("#toggle-direction").prop("disabled", false);
 				});

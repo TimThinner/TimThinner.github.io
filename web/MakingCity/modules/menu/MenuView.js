@@ -12,30 +12,7 @@ export default class MenuView extends View {
 		this.svgObject = undefined;
 		this.rendered = false;
 		
-		this.hexagonTranslations = { 
-			'SQUARE' : {
-				'A':'translate(500,300)',
-				'B':'translate(800,510)',
-				'C':'translate(700,820)',
-				'D':'translate(300,820)',
-				'E':'translate(200,510)'
-			},
-			'LANDSCAPE' : {
-				'A':'translate(870,300)',
-				'B':'translate(1170,510)',
-				'C':'translate(1070,820)',
-				'D':'translate(670,820)',
-				'E':'translate(570,510)'
-			},
-			'PORTRAIT' : {
-				'A':'translate(300,260)',
-				'B':'translate(470,460)',
-				'C':'translate(440,720)',
-				'D':'translate(160,720)',
-				'E':'translate(130,460)'
-			}
-		};
-		this.updateCounter = 0;
+		//this.updateCounter = 0;
 	}
 	
 	show() {
@@ -45,7 +22,7 @@ export default class MenuView extends View {
 	hide() {
 		this.svgObject = undefined;
 		this.rendered = false;
-		this.updateCounter = 0;
+		//this.updateCounter = 0;
 		$(this.el).empty();
 	}
 	
@@ -53,7 +30,7 @@ export default class MenuView extends View {
 		this.model.unsubscribe(this);
 		this.svgObject = undefined;
 		this.rendered = false;
-		this.updateCounter = 0;
+		//this.updateCounter = 0;
 		$(this.el).empty();
 	}
 	/*
@@ -106,6 +83,20 @@ export default class MenuView extends View {
 		}
 	}
 	
+	setHoverEffect(event, scale){
+		if (scale === 'scale(1.0)') {
+			event.target.style.strokeWidth = 1;
+			event.target.style.fillOpacity = 0.05;
+		} else {
+			event.target.style.strokeWidth = 5;
+			event.target.style.fillOpacity = 0.2;
+		}
+		const oldtra = event.target.getAttributeNS(null,'transform');
+		const index = oldtra.indexOf("scale"); // transform="translate(500,670) scale(1.1)" />
+		const newtra = oldtra.slice(0, index) + scale;
+		event.target.setAttributeNS(null,'transform',newtra);
+	}
+	
 	addSVGEventHandlers(mode) {
 		const self = this;
 		this.svgObject = document.getElementById('svg-object').contentDocument;
@@ -115,94 +106,39 @@ export default class MenuView extends View {
 			
 			const hexA = this.svgObject.getElementById('hex-a');
 			hexA.addEventListener("click", function(){
-				
 				console.log('HEXAGON A CLICKED!');
 				self.model.setSelected('DA');
-				
-				
 			}, false);
-			hexA.addEventListener("mouseover", function(event){
-				event.target.style.strokeWidth = 5;
-				event.target.style.fillOpacity = 0.2;
-				event.target.setAttributeNS(null,'transform',self.hexagonTranslations[mode]['A']+' scale(1.1)');
-			}, false);
-			hexA.addEventListener("mouseout", function(event){
-				event.target.style.strokeWidth = 1;
-				event.target.style.fillOpacity = 0.05;
-				event.target.setAttributeNS(null,'transform',self.hexagonTranslations[mode]['A']+' scale(1.0)');
-			}, false);
-			
+			hexA.addEventListener("mouseover", function(event){ self.setHoverEffect(event, 'scale(1.1)'); }, false);
+			hexA.addEventListener("mouseout", function(event){ self.setHoverEffect(event, 'scale(1.0)'); }, false);
 			
 			const hexB = this.svgObject.getElementById('hex-b');
 			hexB.addEventListener("click", function(){
-				
 				console.log('HEXAGON B CLICKED!');
-				
-				
 			}, false);
-			hexB.addEventListener("mouseover", function(event){
-				event.target.style.strokeWidth = 5;
-				event.target.style.fillOpacity = 0.2;
-				event.target.setAttributeNS(null,'transform',self.hexagonTranslations[mode]['B']+' scale(1.1)');
-			}, false);
-			hexB.addEventListener("mouseout", function(event){
-				event.target.style.strokeWidth = 1;
-				event.target.style.fillOpacity = 0.05;
-				event.target.setAttributeNS(null,'transform',self.hexagonTranslations[mode]['B']+' scale(1.0)');
-			}, false);
-			
+			hexB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			hexB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
 			const hexC = this.svgObject.getElementById('hex-c');
 			hexC.addEventListener("click", function(){
-				
 				console.log('HEXAGON C CLICKED!');
-				
-				
 			}, false);
-			hexC.addEventListener("mouseover", function(event){
-				event.target.style.strokeWidth = 5;
-				event.target.style.fillOpacity = 0.2;
-				event.target.setAttributeNS(null,'transform',self.hexagonTranslations[mode]['C']+' scale(1.1)');
-			}, false);
-			hexC.addEventListener("mouseout", function(event){
-				event.target.style.strokeWidth = 1;
-				event.target.style.fillOpacity = 0.05;
-				event.target.setAttributeNS(null,'transform',self.hexagonTranslations[mode]['C']+' scale(1.0)');
-			}, false);
+			hexC.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			hexC.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
 			const hexD = this.svgObject.getElementById('hex-d');
 			hexD.addEventListener("click", function(){
-				
 				console.log('HEXAGON D CLICKED!');
-				
 			}, false);
-			hexD.addEventListener("mouseover", function(event){
-				event.target.style.strokeWidth = 5;
-				event.target.style.fillOpacity = 0.2;
-				event.target.setAttributeNS(null,'transform',self.hexagonTranslations[mode]['D']+' scale(1.1)');
-			}, false);
-			hexD.addEventListener("mouseout", function(event){
-				event.target.style.strokeWidth = 1;
-				event.target.style.fillOpacity = 0.05;
-				event.target.setAttributeNS(null,'transform',self.hexagonTranslations[mode]['D']+' scale(1.0)');
-			}, false);
+			hexD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			hexD.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
 			const hexE = this.svgObject.getElementById('hex-e');
 			hexE.addEventListener("click", function(){
-				
 				console.log('HEXAGON E CLICKED!');
-				
 			}, false);
-			hexE.addEventListener("mouseover", function(event){
-				event.target.style.strokeWidth = 5;
-				event.target.style.fillOpacity = 0.2;
-				event.target.setAttributeNS(null,'transform',self.hexagonTranslations[mode]['E']+' scale(1.1)');
-			}, false);
-			hexE.addEventListener("mouseout", function(event){
-				event.target.style.strokeWidth = 1;
-				event.target.style.fillOpacity = 0.05;
-				event.target.setAttributeNS(null,'transform',self.hexagonTranslations[mode]['E']+' scale(1.0)');
-			}, false);
+			hexE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			hexE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 		}
 	}
 	
@@ -239,21 +175,6 @@ export default class MenuView extends View {
 		const self = this;
 		$(this.el).empty();
 		if (this.model.ready) {
-			const mode = this.controller.master.modelRepo.get('ResizeObserverModel').mode;
-			let svgFile, svgClass;
-			if (mode === 'LANDSCAPE') {
-				//console.log('LANDSCAPE');
-				svgFile = './svg/menuLandscape.svg';
-				svgClass = 'svg-landscape-container';
-			} else if (mode === 'PORTRAIT') {
-				//console.log('PORTRAIT');
-				svgFile = './svg/menuPortrait.svg';
-				svgClass = 'svg-portrait-container';
-			} else {
-				//console.log('SQUARE');
-				svgFile = './svg/menuSquare.svg';
-				svgClass = 'svg-square-container';
-			}
 			//console.log(['this.model.data=',this.model.data]);
 			if (this.model.errorMessage.length > 0) {
 				const html =
@@ -269,6 +190,21 @@ export default class MenuView extends View {
 					'</div>';
 				$(html).appendTo(this.el);
 			} else {
+				const mode = this.controller.master.modelRepo.get('ResizeObserverModel').mode;
+				let svgFile, svgClass;
+				if (mode === 'LANDSCAPE') {
+					//console.log('LANDSCAPE');
+					svgFile = './svg/menuLandscape.svg';
+					svgClass = 'svg-landscape-container';
+				} else if (mode === 'PORTRAIT') {
+					//console.log('PORTRAIT');
+					svgFile = './svg/menuPortrait.svg';
+					svgClass = 'svg-portrait-container';
+				} else {
+					//console.log('SQUARE');
+					svgFile = './svg/menuSquare.svg';
+					svgClass = 'svg-square-container';
+				}
 				const LM = this.controller.master.modelRepo.get('LanguageModel');
 				const html =
 					'<div class="row">'+

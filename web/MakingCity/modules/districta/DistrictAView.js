@@ -12,6 +12,10 @@ export default class DistrictAView extends View {
 		super(controller);
 		this.model = this.controller.master.modelRepo.get('DistrictAModel');
 		this.model.subscribe(this);
+		
+		// Start listening notify -messages from ResizeObserverModel:
+		this.controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
+		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		//this.menuModel.subscribe(this);
 		this.rendered = false;
@@ -57,8 +61,26 @@ export default class DistrictAView extends View {
 						this.render();
 					}
 				}
+			} else if (options.model==='ResizeObserverModel' && options.method==='resize') {
+				//if (options.status === 200) {
+				this.render();
+				//}
 			}
 		}
+	}
+	
+	setHoverEffect(event, scale){
+		if (scale === 'scale(1.0)') {
+			event.target.style.strokeWidth = 3;
+			event.target.style.fillOpacity = 0.05;
+		} else {
+			event.target.style.strokeWidth = 9;
+			event.target.style.fillOpacity = 0.5;
+		}
+		const oldtra = event.target.getAttributeNS(null,'transform');
+		const index = oldtra.indexOf("scale"); // transform="translate(500,670) scale(1.1)" />
+		const newtra = oldtra.slice(0, index) + scale;
+		event.target.setAttributeNS(null,'transform',newtra);
 	}
 	
 	addSVGEventHandlers() {
@@ -66,25 +88,48 @@ export default class DistrictAView extends View {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (typeof svgObject !== 'undefined') {
 			
-			console.log("svgObject is now ready!");
+			//console.log("svgObject is now ready!");
 			const targetAA = svgObject.getElementById('target-a-a');
 			targetAA.addEventListener("click", function(){
-				console.log('Target AA CLICKED!');
 				self.menuModel.setSelected('DAA');
 			}, false);
+			targetAA.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetAA.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			targetAA.addEventListener("mouseover", function(event){
-				event.target.style.strokeWidth = 9;
-				//event.target.style.stroke = "#0a0";
-				event.target.style.fillOpacity = 0.5;
-				event.target.setAttributeNS(null,'transform','translate(-50,-67) scale(1.1)');
+			const targetAB = svgObject.getElementById('target-a-b');
+			targetAB.addEventListener("click", function(){
+				//self.menuModel.setSelected('DAA');
 			}, false);
-			targetAA.addEventListener("mouseout", function(event){
-				event.target.style.strokeWidth = 3;
-				//event.target.style.stroke = "#fff";
-				event.target.style.fillOpacity = 0.05;
-				event.target.setAttributeNS(null,'transform','translate(0,0) scale(1.0)');
+			targetAB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetAB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			
+			const targetAC = svgObject.getElementById('target-a-c');
+			targetAC.addEventListener("click", function(){
+				//self.menuModel.setSelected('DAA');
 			}, false);
+			targetAC.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetAC.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			
+			const targetAD = svgObject.getElementById('target-a-d');
+			targetAD.addEventListener("click", function(){
+				//self.menuModel.setSelected('DAA');
+			}, false);
+			targetAD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetAD.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			
+			const targetAE = svgObject.getElementById('target-a-e');
+			targetAE.addEventListener("click", function(){
+				//self.menuModel.setSelected('DAA');
+			}, false);
+			targetAE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetAE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			
+			const targetAF = svgObject.getElementById('target-a-f');
+			targetAF.addEventListener("click", function(){
+				//self.menuModel.setSelected('DAA');
+			}, false);
+			targetAF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetAF.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
 			
 		} else {
@@ -93,9 +138,26 @@ export default class DistrictAView extends View {
 	}
 	
 	addEventHandlers() {
+		const self = this;
 		$("#toggle-direction").on('click',function(){
 			const svgObject = document.getElementById('svg-object').contentDocument;
 			if (typeof svgObject !== 'undefined') {
+				const mode = self.controller.master.modelRepo.get('ResizeObserverModel').mode;
+				console.log(['mode=',mode]);
+				/* 
+				DAPortrait: 		<path id="p1" d="M 140,400 L 300,400 
+				DASquare.svg: 		<path id="p1" d="M 300,400 L 500,400 
+				DALandscape.svg:	<path id="p1" d="M 300,400 L 1000,400 
+				*/
+				const ps = {
+					'PORTRAIT' : {'forward':'M 140,400 L 300,400','reverse':'M 300,400 L 140,400' },
+					'SQUARE'   : {'forward':'M 300,400 L 500,400','reverse':'M 500,400 L 300,400' },
+					'LANDSCAPE': {'forward':'M 300,400 L 1000,400','reverse':'M 1000,400 L 300,400' }
+				}
+				const modef = ps[mode]['forward'];
+				
+				const len = modef.length;
+				console.log(['modef=',modef,' len=',len]);
 				
 				let pathElement = svgObject.getElementById('p1');
 				//<text id="grid-power" x="400" y="380" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#f00">120.0 kW</text>
@@ -103,9 +165,10 @@ export default class DistrictAView extends View {
 				
 				let d = pathElement.getAttributeNS(null, 'd');
 				//console.log(['d=',d]);
-				const head = d.slice(0,20);
-				const tail = d.slice(20);
-				if (head === 'M 300,400 L 1000,400') {
+				const head = d.slice(0,len);
+				const tail = d.slice(len);
+				
+				if (head === modef) {
 					// Change text GREEN and value 2.5 kW
 					while (textElement.firstChild) {
 						textElement.removeChild(textElement.firstChild);
@@ -114,7 +177,7 @@ export default class DistrictAView extends View {
 					textElement.appendChild(txt);
 					textElement.setAttributeNS(null, 'fill', '#0a0');
 					
-					const new_d = "M 1000,400 L 300,400" + tail;
+					const new_d = ps[mode]['reverse'] + tail;
 					pathElement.setAttributeNS(null, 'd', new_d);
 					
 				} else {
@@ -126,7 +189,7 @@ export default class DistrictAView extends View {
 					textElement.appendChild(txt);
 					textElement.setAttributeNS(null, 'fill', '#f00');
 					
-					const new_d = "M 300,400 L 1000,400" + tail;
+					const new_d = modef + tail;
 					pathElement.setAttributeNS(null, 'd', new_d);
 				}
 			}
@@ -172,8 +235,21 @@ export default class DistrictAView extends View {
 					'</div>';
 				$(html).appendTo(this.el);
 			} else {
-				
-				
+				const mode = this.controller.master.modelRepo.get('ResizeObserverModel').mode;
+				let svgFile, svgClass;
+				if (mode === 'LANDSCAPE') {
+					//console.log('LANDSCAPE');
+					svgFile = './svg/DALandscape.svg';
+					svgClass = 'svg-landscape-container';
+				} else if (mode === 'PORTRAIT') {
+					//console.log('PORTRAIT');
+					svgFile = './svg/DAPortrait.svg';
+					svgClass = 'svg-portrait-container';
+				} else {
+					//console.log('SQUARE');
+					svgFile = './svg/DASquare.svg';
+					svgClass = 'svg-square-container';
+				}
 				const LM = this.controller.master.modelRepo.get('LanguageModel');
 				const sel = LM.selected;
 				const localized_string_da_description = LM['translation'][sel]['DA_DESCRIPTION'];
@@ -181,9 +257,9 @@ export default class DistrictAView extends View {
 				const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 				const html =
 					'<div class="row">'+
-						'<div class="col s12">'+
-							'<div class="svg-landscape-container">'+
-								'<object type="image/svg+xml" data="./svg/DA.svg" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
+						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
+							'<div class="'+svgClass+'">'+
+								'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
 							'</div>'+
 						'</div>'+
 					'</div>'+

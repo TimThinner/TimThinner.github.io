@@ -28,30 +28,34 @@ html, body {
 		width: 100%;/*width: 90%;*/ /*70%;*/
 	}
 }
+/* svg width="1000" height="1000" viewBox="0 0 1000 1000" */
 .svg-square-container { 
 	display: inline-block;
 	position: relative;
 	width: 100%;
-	padding-bottom: 100%;
+	padding-bottom: 90%;
 	vertical-align: middle;
 	overflow: hidden;
 }
+/* svg width="1800" height="1000" viewBox="0 0 1800 1000" */
 .svg-landscape-container { 
 	display: inline-block;
 	position: relative;
 	width: 100%;
-	padding-bottom: 55.56%;
+	padding-bottom: 50%;
 	vertical-align: middle;
 	overflow: hidden;
 }
+/* svg width="600" height="1000" viewBox="0 0 600 1000" */
 .svg-portrait-container { 
 	display: inline-block;
 	position: relative;
 	width: 100%;
-	padding-bottom: 166.67%;
+	padding-bottom: 150%;
 	vertical-align: middle;
 	overflow: hidden;
 }
+
 .svg-content { 
 	display: inline-block;
 	position: absolute;

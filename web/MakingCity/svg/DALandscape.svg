@@ -56,11 +56,11 @@
 	<!--
 	<rect x="800" y="100" width="400" height="200" fill="#fff" stroke-width="4" stroke="#000" />
 	-->
-	<image x="880" y="10" width="147" height="133" xlink:href="solarpanel.svg" />
-	<image x="1010" y="10" width="147" height="133" xlink:href="solarpanel.svg" />
-	<image x="780" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
+	<image x="890" y="20" width="147" height="133" xlink:href="solarpanel.svg" />
+	<image x="1000" y="20" width="147" height="133" xlink:href="solarpanel.svg" />
+	<image x="800" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
 	<image x="910" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
-	<image x="1040" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
+	<image x="1020" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
 	
 	<image x="1580" y="210" width="100" height="150" xlink:href="windturbine.svg" />
 	<image x="1450" y="170" width="150" height="225" xlink:href="windturbine.svg" />

@@ -1,79 +1,49 @@
+import Controller from '../common/Controller.js';
 import MenuModel from  './MenuModel.js';
 import MenuView from './MenuView.js';
 
-export default class MenuController {
+export default class MenuController extends Controller {
 	
 	constructor(options) {
+		super();
 		this.name    = options.name;
 		this.master  = options.master;
 		this.visible = options.visible;
 		this.el      = options.el;
-		this.model   = undefined;
+		this.models  = {};
+		//this.timers  = {};
 		this.view    = undefined;
-		this.timers = [
-			{
-				name: 'EXAMPLE',
-				timer: undefined,
-				interval: 10000
-			}
-		];
 	}
+	
 	/*
 		NOTE: remove is not called because there is no LOGIN, LOGOUT.
 		But it is defined here just in case this implementation includes 
 		authentication.
 	*/
 	remove() {
-		//console.log('!!!!!!!!! REMOVE !!!!!!!!!!!!');
-		this.timers.forEach(item=>{
-			if (item.timer) {
-				clearTimeout(item.timer);
-				item.timer = undefined;
-			}
-		});
-		if (this.model) {
-			this.model.unsubscribe(this);
-			this.model.unsubscribe(this.master);
-		}
+		super.remove(); // Handles the timer stuff.
+		
 		if (this.view) {
 			this.view.remove();
 			this.view = undefined;
 		}
-	}
-	
-	hide() {
-		this.timers.forEach(item=>{
-			if (item.timer) {
-				clearTimeout(item.timer);
-				item.timer = undefined;
-			}
-		});
-		if (this.view) {
-			this.view.hide();
-		}
-	}
-	
-	poller(name) {
-		this.timers.forEach(item=>{
-			if (item.name === name) {
-				if (item.interval > 0) {
-					//console.log(['POLLER FETCH ',name]);
-					if (name === 'EXAMPLE') {
-						this.model.fetch();
-					}
-					item.timer = setTimeout(()=>{
-						this.poller(name);
-					}, item.interval);
-				}
-			}
+		Object.keys(this.models).forEach(key => {
+			this.models[key].unsubscribe(this);
+			this.models[key].unsubscribe(this.master);
 		});
 	}
 	
 	show() {
-		//console.log('MenuController show()!!!!!');
 		if (this.visible && this.view) {
 			this.view.show();
-			this.poller('EXAMPLE'); // Start the timer poller
+			this.poller('MenuModel'); // Start the timer poller
+		}
+	}
+	
+	hide() {
+		super.hide(); // Handles the timer stuff.
+		if (this.view) {
+			this.view.hide();
 		}
 	}
 	
@@ -94,23 +64,25 @@ export default class MenuController {
 	}
 	
 	restore() {
-		//console.log('MenuController restore');
+		console.log('MenuController restore');
 	}
 	
 	init() {
-		this.model = new MenuModel();
-		this.model.subscribe(this);
-		this.model.subscribe(this.master);
+		const model = new MenuModel();
+		model.subscribe(this);
+		model.subscribe(this.master);
+		this.master.modelRepo.add('MenuModel',model);
+		this.models['MenuModel'] = model;
+		this.timers['MenuModel'] = {timer: undefined, interval: 10000};
 		
-		this.master.modelRepo.add('MenuModel',this.model);
-		//this.model.fetch();
-		//setTimeout(() => this.model.fetch(), 2000);
+		model.fetch();
+		
+		//setTimeout(() => model.fetch(), 2000);
+		
 		this.view = new MenuView(this);
 		
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
-		if (this.visible) {
-			this.show(); // Try if this view can be shown right now!
-		}
+		this.show(); // Try if this view can be shown right now!
 	}
 }

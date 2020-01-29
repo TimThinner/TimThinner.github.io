@@ -35,15 +35,15 @@ class MasterController {
 		
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
-		this.controllers['menu'].restore();
+		//this.controllers['menu'].restore();
 		
 		this.controllers['DA'] = new DistrictAController({name:'DA', master:this, el:'#content', visible:false});
 		this.controllers['DA'].init();
-		this.controllers['DA'].restore();
+		//this.controllers['DA'].restore();
 		
 		this.controllers['DAA'] = new DistrictAAController({name:'DAA', master:this, el:'#content', visible:false});
 		this.controllers['DAA'].init();
-		this.controllers['DAA'].restore();
+		//this.controllers['DAA'].restore();
 	}
 }
 new MasterController().init();

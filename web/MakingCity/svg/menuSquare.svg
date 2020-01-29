@@ -116,11 +116,11 @@
 		<!--<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text class="district-title" id="district-b" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District B</text>
 	</svg>
-	<svg x="480" y="740" width="400px" height="130px">
+	<svg x="480" y="745" width="400px" height="130px">
 		<!--<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text class="district-title" id="district-c" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District C</text>
 	</svg>
-	<svg x="120" y="740" width="400px" height="130px">
+	<svg x="120" y="745" width="400px" height="130px">
 		<!--<rect x="1" y="1" width="398" height="128" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text class="district-title" id="district-d" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District D</text>
 	</svg>
@@ -138,8 +138,8 @@
 	<!-- Hexagons -->
 	<polygon class="hex" id="hex-a" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(500,300) scale(1.0)" />
 	<polygon class="hex" id="hex-b" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(740,460) scale(1.0)" />
-	<polygon class="hex" id="hex-c" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(680,740) scale(1.0)" />
-	<polygon class="hex" id="hex-d" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(320,740) scale(1.0)" />
+	<polygon class="hex" id="hex-c" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(680,745) scale(1.0)" />
+	<polygon class="hex" id="hex-d" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(320,745) scale(1.0)" />
 	<polygon class="hex" id="hex-e" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(260,460) scale(1.0)" />
 	<!--
 	<text id="update-counter" x="800" y="990" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff"></text>

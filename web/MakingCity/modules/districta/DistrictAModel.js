@@ -5,16 +5,27 @@ export default class DistrictAModel extends EventObserver {
 	
 	constructor() {
 		super();
+		this.src = undefined;
 		this.ready = false;
 		this.errorMessage = '';
+		this.fetching = false;
 	}
 	
 	fetch() {
-		this.ready = true;
-		//setTimeout(() => this.notifyAll({model:'DistrictAModel',method:'fetched',status:200,message:'OK'}), 100);
+		if (this.fetching) {
+			console.log('FETCHING ALREADY IN PROCESS!');
+			return;
+		}
+		this.fetching = true;
+		this.src = 'DA-model';
+		const url = this.backend + '/' + this.src;
+		console.log (['fetch url=',url]);
 		
-		//this.errorMessage = 'OH OHOHO';
-		//setTimeout(() => this.notifyAll({model:'DistrictAModel',method:'fetched',status:400,message:'OH OH!'}), 100);
-		setTimeout(() => this.notifyAll({model:'DistrictAModel',method:'fetched',status:200,message:'OK'}), 100);
+		// ..and in the fetch ... then or catch parts of code we set this to false...
+		setTimeout(() => {
+			this.fetching = false;
+			this.ready = true;
+			this.notifyAll({model:'DistrictAModel',method:'fetched',status:200,message:'OK'});
+		}, 200);
 	}
 }

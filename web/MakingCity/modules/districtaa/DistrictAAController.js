@@ -1,46 +1,53 @@
+import Controller from '../common/Controller.js';
 import DistrictAAModel from  './DistrictAAModel.js';
-import DistrictAAView from './DistrictAAView.js';
+import DistrictAAWrapperView from './DistrictAAWrapperView.js';
 
-export default class DistrictAAController {
+export default class DistrictAAController extends Controller {
 	
 	constructor(options) {
+		super();
 		this.name    = options.name;
 		this.master  = options.master;
 		this.visible = options.visible;
 		this.el      = options.el;
-		this.model   = undefined;
+		this.models  = {};
+		//this.timers  = {};
 		this.view    = undefined;
 		this.menuModel = undefined;
 	}
 	
-	show() {
-		if (this.visible && this.view) {
-			this.view.show();
-		}
-	}
-	
 	remove() {
+		super.remove(); // Handles the timer stuff.
+		
 		if (this.view) {
 			this.view.remove();
 			this.view = undefined;
 		}
-		if (this.model) {
-			this.model.unsubscribe(this);
-			this.model.unsubscribe(this.master);
-		}
+		Object.keys(this.models).forEach(key => {
+			this.models[key].unsubscribe(this);
+			this.models[key].unsubscribe(this.master);
+		});
 		if (this.menuModel) {
 			this.menuModel.unsubscribe(this);
 		}
 	}
 	
+	show() {
+		if (this.visible && this.view) {
+			this.view.show();
+			this.poller('DistrictAAModel'); // Start the timer poller
+		}
+	}
+	
 	hide() {
+		super.hide(); // Handles the timer stuff.
+		
 		if (this.view) {
 			this.view.hide();
 		}
 	}
 	
 	notify(options) {
-		
 		if (options.model==='MenuModel' && options.method==='selected') {
 			console.log(['Selected = ',options.selected]);
 			if (this.name === options.selected) {
@@ -61,19 +68,20 @@ export default class DistrictAAController {
 	}
 	
 	init() {
-		this.model = new DistrictAAModel();
-		this.model.subscribe(this);
-		this.model.subscribe(this.master);
+		const model = new DistrictAAModel();
+		model.subscribe(this);
+		model.subscribe(this.master);
+		this.master.modelRepo.add('DistrictAAModel',model);
+		this.models['DistrictAAModel'] = model;
+		this.timers['DistrictAAModel'] = {timer: undefined, interval: 10000};
 		
-		this.master.modelRepo.add('DistrictAAModel',this.model);
+		model.fetch();
 		
 		this.menuModel = this.master.modelRepo.get('MenuModel');
 		if (this.menuModel) {
 			this.menuModel.subscribe(this);
 		}
-		this.view = new DistrictAAView(this);
-		
-		this.model.fetch();
+		this.view = new DistrictAAWrapperView(this);
 		this.show();
 	}
 }

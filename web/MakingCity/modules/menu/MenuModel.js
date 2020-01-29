@@ -7,24 +7,28 @@ export default class MenuModel extends EventObserver {
 		this.src = undefined;
 		this.ready = false;
 		this.errorMessage = '';
+		this.fetching = false;
+		
 		this.data = '';
 		this.selected = undefined;
 	}
 	
 	fetch() {
-		this.src = 'foobar';
+		if (this.fetching===true) {
+			console.log('FETCHING ALREADY IN PROCESS!');
+			return;
+		}
+		this.fetching = true;
+		this.src = 'menu';
 		const url = this.backend + '/' + this.src;
 		console.log (['fetch url=',url]);
-		// Simulate small delay => fetch OK.
-		
-		
-		this.ready = true;
-		this.data = 'MODEL DATA';
-		
-		//this.errorMessage = 'Fetch failed !!!';
-		//setTimeout(() => this.notifyAll({model:'MenuModel',method:'fetched',status:400,message:'Fetch failed !!!'}), 100);
-		setTimeout(() => this.notifyAll({model:'MenuModel',method:'fetched',status:200,message:''}), 100);
-		
+		// ..and in the fetch ... then or catch parts of code we set this to false...
+		setTimeout(() => {
+			this.fetching = false;
+			this.ready = true;
+			this.data = 'MODEL DATA';
+			this.notifyAll({model:'MenuModel',method:'fetched',status:200,message:'OK'});
+		}, 200);
 	}
 	
 	setSelected(sel) {

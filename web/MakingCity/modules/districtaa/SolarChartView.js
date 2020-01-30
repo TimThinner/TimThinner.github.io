@@ -6,20 +6,31 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../common/View.js';
-export default class TestChartView extends View {
+export default class SolarChartView extends View {
 	
+	// One CHART can have ONLY one timer.
+	// Its name is given in constructor.
+	// That timer can control 0,1, n models.
 	constructor(mother, el) {
 		super(mother.controller); // mother is the WrapperView
 		
 		this.mother = mother;
 		// NOTE: Each view inside wrapperview is rendered within its own element, therefore 
-		// we must deliver that element as separate variable.
+		// we must deliver that element as separate variable. For example this el is #subview-1
+		// 
 		this.el = el;
 		
-		this.model = this.controller.master.modelRepo.get('DistrictAAModel');
-		this.model.subscribe(this);
-		this.timerName = 'DistrictAAModel';
+		// Which models I have to listen? Select which ones to use here:
 		
+		Object.keys(this.controller.models).forEach(key => {
+			if (key === 'SolarModel') {
+				this.models[key] = this.controller.models[key];
+				this.models[key].subscribe(this);
+			}
+		});
+		
+		// What is the timer name?
+		this.timerName = 'SolarChartView';
 		this.chart = undefined;
 		this.rendered = false;
 	}
@@ -44,7 +55,9 @@ export default class TestChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
-		this.model.unsubscribe(this);
+		Object.keys(this.models).forEach(key => {
+			this.models[key].unsubscribe(this);
+		});
 	}
 	
 	updateLatestValues() {
@@ -54,31 +67,38 @@ export default class TestChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if (options.model==='DistrictAAModel' && options.method==='fetched') {
+			if (options.model==='SolarModel' && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
-						//console.log('TestChartView => DistrictAAModel fetched!');
-						$('#test-chart-view-failure').empty();
+						
+						$('#solar-chart-view-failure').empty();
 						
 						this.updateLatestValues();
 						
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... CHART UPDATED!');
+							console.log('fetched ..... SolarChartView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								if (s.name === 'POWER') {
-									s.data = self.model.powerValues;
+									
+									// TODO
+									s.data = self.models['SolarModel'].powerValues;
+									//s.data = self.model.powerValues;
 								} else {
-									s.data = self.model.energyValues;
+									
+									
+									// TODO
+									s.data = self.models['SolarModel'].energyValues;
+									//s.data = self.model.energyValues;
 								}
 							});
 						} else {
-							console.log('fetched ..... renderChart()');
+							console.log('fetched ..... SolarChartView renderChart()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#test-chart-view-failure').empty();
+						$('#solar-chart-view-failure').empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#test-chart-view-failure');
+						$(html).appendTo('#solar-chart-view-failure');
 					}
 				}
 			}
@@ -87,6 +107,7 @@ export default class TestChartView extends View {
 	
 	renderChart() {
 		const self = this;
+		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -95,11 +116,11 @@ export default class TestChartView extends View {
 			
 			am4core.options.autoSetClassName = true;
 			
-			console.log(['powerValues=',self.model.powerValues]);
-			console.log(['energyValues=',self.model.energyValues]);
+			//console.log(['powerValues=',self.model.powerValues]);
+			//console.log(['energyValues=',self.model.energyValues]);
 			
 			// Create chart
-			self.chart = am4core.create("test-chart", am4charts.XYChart);
+			self.chart = am4core.create("solar-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -175,7 +196,12 @@ export default class TestChartView extends View {
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			series1.data = self.model.powerValues;
+			
+			// TODO
+			series1.data = self.models['SolarModel'].powerValues;
+			//series1.data = self.model.powerValues;
+			
+			
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "power";
 			series1.name = "POWER";
@@ -217,7 +243,10 @@ export default class TestChartView extends View {
 			series2.tooltip.background.strokeWidth = 1;
 			series2.tooltip.label.fill = series2.stroke;
 			
-			series2.data = self.model.energyValues;
+			// TODO
+			//series2.data = self.model.energyValues;
+			series2.data = self.models['SolarModel'].energyValues;
+			
 			series2.dataFields.dateX = "time";
 			series2.dataFields.valueY = "energy";
 			series2.name = "ENERGY";
@@ -330,12 +359,12 @@ export default class TestChartView extends View {
 				//console.log(['updateFields minZoomed=',minZoomed]);
 				//console.log(['updateFields maxZoomed=',dateAxis.maxZoomed]);
 				//console.log(['EROTUS=',dateAxis.maxZoomed-minZoomed]);
-				document.getElementById("fromfield").value = self.chart.dateFormatter.format(minZoomed, inputFieldFormat);
-				document.getElementById("tofield").value = self.chart.dateFormatter.format(new Date(dateAxis.maxZoomed), inputFieldFormat);
+				document.getElementById(refreshId+"-fromfield").value = self.chart.dateFormatter.format(minZoomed, inputFieldFormat);
+				document.getElementById(refreshId+"-tofield").value = self.chart.dateFormatter.format(new Date(dateAxis.maxZoomed), inputFieldFormat);
 			}
 			
-			document.getElementById("fromfield").addEventListener("keyup", updateZoom);
-			document.getElementById("tofield").addEventListener("keyup", updateZoom);
+			document.getElementById(refreshId+"-fromfield").addEventListener("keyup", updateZoom);
+			document.getElementById(refreshId+"-tofield").addEventListener("keyup", updateZoom);
 			
 			let zoomTimeout;
 			function updateZoom() {
@@ -345,8 +374,8 @@ export default class TestChartView extends View {
 				}
 				zoomTimeout = setTimeout(function() {
 					resetButtonClass();
-					const start = document.getElementById("fromfield").value;
-					const end = document.getElementById("tofield").value;
+					const start = document.getElementById(refreshId+"-fromfield").value;
+					const end = document.getElementById(refreshId+"-tofield").value;
 					if ((start.length < inputFieldFormat.length) || (end.length < inputFieldFormat.length)) {
 						return;
 					}
@@ -367,8 +396,7 @@ export default class TestChartView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		
-		
+		const refreshId = this.el.slice(1);
 		//const LM = this.controller.master.modelRepo.get('LanguageModel');
 		//const sel = LM.selected;
 		//const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
@@ -380,7 +408,7 @@ export default class TestChartView extends View {
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s12 center" id="test-chart-view-failure"></div>'+
+						'<div class="col s12 center" id="solar-chart-view-failure"></div>'+
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s6 center">'+
@@ -397,12 +425,12 @@ export default class TestChartView extends View {
 					
 					'<div style="width: 100%; overflow: hidden;">'+ // id="controls"
 						'<div class="input-field col s6">'+
-							'<input id="fromfield" type="text" class="amcharts-input">'+
-							'<label for="fromfield" class="active">From</label>'+
+							'<input id="'+refreshId+'-fromfield" type="text" class="amcharts-input">'+
+							'<label for="'+refreshId+'-fromfield" class="active">From</label>'+
 						'</div>'+
 						'<div class="input-field col s6">'+
-							'<input id="tofield" type="text" class="amcharts-input">'+
-							'<label for="tofield" class="active">To</label>'+
+							'<input id="'+refreshId+'-tofield" type="text" class="amcharts-input">'+
+							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 						/*'<div class="col s12">'+
 							'<a href="javascript:void(0);" id="b24h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">24h</a>'+
@@ -417,31 +445,31 @@ export default class TestChartView extends View {
 						'</div>'+*/
 					'</div>'+
 					
-					'<div id="test-chart"></div>'+
+					'<div id="solar-chart"></div>'+
 					
-					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+this.timerName+'-chart-refresh-note"></p>'+
+					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
 					'<p style="font-size:14px;" class="range-field">Adjust the update interval:'+
-						'<input type="range" id="'+this.timerName+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
+						'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
 					'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="test-chart-view-failure"></div>'+
+				'<div class="col s12" id="solar-chart-view-failure"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
 		
-		this.mother.handlePollingInterval(this.timerName); // 'TEST'
+		this.mother.handlePollingInterval(refreshId, this.timerName);
 		
-		if (this.model.ready) {
-			
-			console.log('TestChartView => render model READY!!!!');
-			if (this.model.errorMessage.length > 0) {
+		if (this.areModelsReady()) {
+			console.log('SolarChartView => render models READY!!!!');
+			const errorMessages = this.modelsErrorMessages();
+			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="test-chart-view-failure">'+
-							'<div class="error-message"><p>'+this.model.errorMessage+'</p></div>'+
+						'<div class="col s12 center" id="solar-chart-view-failure">'+
+							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
@@ -454,8 +482,8 @@ export default class TestChartView extends View {
 				this.renderChart();
 			}
 		} else {
-			console.log('TestChartView => render model IS NOT READY!!!!');
-			this.showSpinner('#test-chart');
+			console.log('SolarChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#solar-chart');
 		}
 	}
 }

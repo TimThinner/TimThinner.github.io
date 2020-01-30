@@ -35,7 +35,7 @@ export default class DistrictAController extends Controller {
 	show() {
 		if (this.visible && this.view) {
 			this.view.show();
-			this.poller('DistrictAModel'); // Start the timer poller
+			this.poller('DistrictAView'); // Start the timer poller
 		}
 	}
 	
@@ -68,9 +68,9 @@ export default class DistrictAController extends Controller {
 		model.subscribe(this.master);
 		this.master.modelRepo.add('DistrictAModel',model);
 		this.models['DistrictAModel'] = model;
-		this.timers['DistrictAModel'] = {timer: undefined, interval: 10000};
-		
 		model.fetch();
+		
+		this.timers['DistrictAView'] = {timer: undefined, interval: 30000, models:['DistrictAModel']};
 		
 		this.menuModel = this.master.modelRepo.get('MenuModel');
 		if (this.menuModel) {

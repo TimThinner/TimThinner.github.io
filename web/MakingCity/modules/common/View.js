@@ -2,6 +2,30 @@ export default class View {
 	constructor(controller) {
 		this.controller = controller;
 		this.el = controller.el;
+		this.models = {};
+	}
+	
+	
+	areModelsReady() {
+		let retval = true;
+		Object.keys(this.models).forEach(key => {
+			if (this.models[key].ready===true) {
+				
+			} else {
+				retval = false;
+			}
+		});
+		return retval;
+	}
+	
+	modelsErrorMessages() {
+		let retval = '';
+		Object.keys(this.models).forEach(key => {
+			if (this.models[key].errorMessage.length > 0) {
+				retval += this.models[key].errorMessage + ' ';
+			}
+		});
+		return retval.slice(0, -1);
 	}
 	
 	fillSVGTextElement(svgObject, id, txt) {

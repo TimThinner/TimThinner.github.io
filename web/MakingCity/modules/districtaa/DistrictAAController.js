@@ -1,5 +1,6 @@
 import Controller from '../common/Controller.js';
-import DistrictAAModel from  './DistrictAAModel.js';
+import SolarModel from  './SolarModel.js';
+import FooModel from  './FooModel.js';
 import DistrictAAWrapperView from './DistrictAAWrapperView.js';
 
 export default class DistrictAAController extends Controller {
@@ -35,7 +36,8 @@ export default class DistrictAAController extends Controller {
 	show() {
 		if (this.visible && this.view) {
 			this.view.show();
-			this.poller('DistrictAAModel'); // Start the timer poller
+			this.poller('SolarChartView'); // Start the timer poller
+			this.poller('FooChartView'); // Start the timer poller
 		}
 	}
 	
@@ -68,14 +70,22 @@ export default class DistrictAAController extends Controller {
 	}
 	
 	init() {
-		const model = new DistrictAAModel();
-		model.subscribe(this);
-		model.subscribe(this.master);
-		this.master.modelRepo.add('DistrictAAModel',model);
-		this.models['DistrictAAModel'] = model;
-		this.timers['DistrictAAModel'] = {timer: undefined, interval: 10000};
+		const smodel = new SolarModel();
+		smodel.subscribe(this);
+		smodel.subscribe(this.master);
+		this.master.modelRepo.add('SolarModel',smodel);
+		this.models['SolarModel'] = smodel;
+		smodel.fetch();
 		
-		model.fetch();
+		const fmodel = new FooModel();
+		fmodel.subscribe(this);
+		fmodel.subscribe(this.master);
+		this.master.modelRepo.add('FooModel',fmodel);
+		this.models['FooModel'] = fmodel;
+		fmodel.fetch();
+		
+		this.timers['SolarChartView'] = {timer: undefined, interval: 10000, models:['SolarModel']};
+		this.timers['FooChartView'] = {timer: undefined, interval: 10000, models:['FooModel']};
 		
 		this.menuModel = this.master.modelRepo.get('MenuModel');
 		if (this.menuModel) {

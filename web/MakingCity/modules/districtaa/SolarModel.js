@@ -18,7 +18,7 @@ export class SolarEnergyModel {
 	}
 }
 
-export default class DistrictAAModel extends EventObserver {
+export default class SolarModel extends EventObserver {
 	
 	constructor() {
 		super();
@@ -69,7 +69,7 @@ export default class DistrictAAModel extends EventObserver {
 			return;
 		}
 		
-		this.src = 'DAA-model';
+		this.src = 'solar-model';
 		const url = this.backend + '/' + this.src;
 		console.log (['fetch url=',url]);
 		
@@ -117,7 +117,7 @@ export default class DistrictAAModel extends EventObserver {
 		setTimeout(() => {
 			this.fetching = false;
 			this.ready = true;
-			this.notifyAll({model:'DistrictAAModel',method:'fetched',status:200,message:'OK'});
+			this.notifyAll({model:'SolarModel',method:'fetched',status:200,message:'OK'});
 		}, 200);
 	}
 }

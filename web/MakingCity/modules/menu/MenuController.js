@@ -36,7 +36,7 @@ export default class MenuController extends Controller {
 	show() {
 		if (this.visible && this.view) {
 			this.view.show();
-			this.poller('MenuModel'); // Start the timer poller
+			this.poller('MenuView'); // Start the timer poller
 		}
 	}
 	
@@ -73,7 +73,8 @@ export default class MenuController extends Controller {
 		model.subscribe(this.master);
 		this.master.modelRepo.add('MenuModel',model);
 		this.models['MenuModel'] = model;
-		this.timers['MenuModel'] = {timer: undefined, interval: 10000};
+		//this.timers['MenuModel'] = {timer: undefined, interval: 10000};
+		this.timers['MenuView'] = {timer: undefined, interval: 30000, models:['MenuModel']};
 		
 		model.fetch();
 		

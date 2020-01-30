@@ -1,11 +1,7 @@
 
-/*
-import ClosedDealsChartView from './ClosedDealsChartView.js';
-import AsksBidsChartView from './AsksBidsChartView.js';
-import LatenciesChartView from './LatenciesChartView.js';
-*/
 import View from '../common/View.js';
-import TestChartView from './TestChartView.js';
+import SolarChartView from './SolarChartView.js';
+import FooChartView from './FooChartView.js';
 
 export default class DistrictAAWrapperView extends View {
 	
@@ -19,8 +15,8 @@ export default class DistrictAAWrapperView extends View {
 		//   - Chart which contains LATENCY
 		
 		this.subviews = [];
-		this.subviews.push(new TestChartView(this, '#subview-1'));
-		//this.subviews.push(new AsksBidsChartView(this, '#subview-2'));
+		this.subviews.push(new SolarChartView(this, '#subview-1'));
+		this.subviews.push(new FooChartView(this, '#subview-2'));
 		//this.subviews.push(new LatenciesChartView(this, '#subview-3'));
 	}
 	
@@ -46,22 +42,22 @@ export default class DistrictAAWrapperView extends View {
 	/*
 		Called by subviews.
 	*/
-	handlePollingInterval(name) {
+	handlePollingInterval(id, name) {
 		const self = this;
 		const initialPollingInterval = this.controller.getPollingInterval(name)/1000;
-		$("#"+name+"-chart-refresh-interval").val(initialPollingInterval);
+		$("#"+id+"-chart-refresh-interval").val(initialPollingInterval);
 		if (initialPollingInterval > 0) {
-			$("#"+name+"-chart-refresh-note").empty().append('chart is automatically updated once every '+initialPollingInterval+' seconds');
+			$("#"+id+"-chart-refresh-note").empty().append('chart is automatically updated once every '+initialPollingInterval+' seconds');
 		} else {
-			$("#"+name+"-chart-refresh-note").empty().append('chart is NOT automatically updated.');
+			$("#"+id+"-chart-refresh-note").empty().append('chart is NOT automatically updated.');
 		}
-		$("#"+name+"-chart-refresh-interval").change(function(){
+		$("#"+id+"-chart-refresh-interval").change(function(){
 			const val = $(this).val(); // "20"
 			const vali = parseInt(val, 10) * 1000;
 			if (vali > 0) {
-				$("#"+name+"-chart-refresh-note").empty().append('chart is automatically updated once every '+val+' seconds');
+				$("#"+id+"-chart-refresh-note").empty().append('chart is automatically updated once every '+val+' seconds');
 			} else {
-				$("#"+name+"-chart-refresh-note").empty().append('chart is NOT automatically updated.');
+				$("#"+id+"-chart-refresh-note").empty().append('chart is NOT automatically updated.');
 			}
 			self.controller.changePollingInterval(name, vali);
 		});
@@ -78,19 +74,19 @@ export default class DistrictAAWrapperView extends View {
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h3 style="margin-top:0;">TESTING D-A-A CHARTVIEW</h3>'+
-					'<h5 style="color:#aaa">This is only a simulated view with random numbers</h5>'+
+					'<h3 style="margin-top:0;">CHARTS</h3>'+
+					'<h5 style="color:#aaa">These are only simulated views with random numbers</h5>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center" id="subview-1">'+
 				'</div>'+
 			'</div>'+
-			/*
 			'<div class="row">'+
 				'<div class="col s12 center" id="subview-2">'+
 				'</div>'+
 			'</div>'+
+			/*
 			'<div class="row">'+
 				'<div class="col s12 center" id="subview-3">'+
 				'</div>'+

@@ -16,6 +16,8 @@ export default class DistrictAView extends View {
 		// Start listening notify -messages from ResizeObserverModel:
 		this.controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
 		
+		
+		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		//this.menuModel.subscribe(this);
 		this.rendered = false;

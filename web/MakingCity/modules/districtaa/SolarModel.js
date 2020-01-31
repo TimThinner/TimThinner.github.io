@@ -1,4 +1,4 @@
-import EventObserver from '../common/EventObserver.js';
+import Model from '../common/Model.js';
 
 /*
 Once in every minute of this current day, give values for power (kW) and energy (kWh)
@@ -18,15 +18,10 @@ export class SolarEnergyModel {
 	}
 }
 
-export default class SolarModel extends EventObserver {
+export default class SolarModel extends Model {
 	
 	constructor() {
 		super();
-		this.src = undefined;
-		this.ready = false;
-		this.errorMessage = '';
-		this.fetching = false;
-		
 		this.powerValues = [];
 		this.energyValues = [];
 	}

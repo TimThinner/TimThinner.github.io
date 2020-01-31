@@ -1,14 +1,10 @@
 
-import EventObserver from '../common/EventObserver.js';
+import Model from '../common/Model.js';
 
-export default class DistrictAModel extends EventObserver {
+export default class DistrictAModel extends Model {
 	
 	constructor() {
 		super();
-		this.src = undefined;
-		this.ready = false;
-		this.errorMessage = '';
-		this.fetching = false;
 	}
 	
 	fetch() {

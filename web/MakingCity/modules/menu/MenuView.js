@@ -175,7 +175,7 @@ export default class MenuView extends View {
 		const self = this;
 		$(this.el).empty();
 		if (this.model.ready) {
-			//console.log(['this.model.data=',this.model.data]);
+			
 			if (this.model.errorMessage.length > 0) {
 				const html =
 					'<div class="row">'+

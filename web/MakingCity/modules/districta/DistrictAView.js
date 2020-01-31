@@ -16,10 +16,7 @@ export default class DistrictAView extends View {
 		// Start listening notify -messages from ResizeObserverModel:
 		this.controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
 		
-		
-		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
-		//this.menuModel.subscribe(this);
 		this.rendered = false;
 	}
 	
@@ -34,7 +31,7 @@ export default class DistrictAView extends View {
 	
 	remove() {
 		this.model.unsubscribe(this);
-		//this.menuModel.unsubscribe(this);
+		
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -145,7 +142,7 @@ export default class DistrictAView extends View {
 			const svgObject = document.getElementById('svg-object').contentDocument;
 			if (typeof svgObject !== 'undefined') {
 				const mode = self.controller.master.modelRepo.get('ResizeObserverModel').mode;
-				console.log(['mode=',mode]);
+				//console.log(['mode=',mode]);
 				/* 
 				DAPortrait: 		<path id="p1" d="M 140,400 L 300,400 
 				DASquare.svg: 		<path id="p1" d="M 300,400 L 500,400 
@@ -159,7 +156,7 @@ export default class DistrictAView extends View {
 				const modef = ps[mode]['forward'];
 				
 				const len = modef.length;
-				console.log(['modef=',modef,' len=',len]);
+				//console.log(['modef=',modef,' len=',len]);
 				
 				let pathElement = svgObject.getElementById('p1');
 				//<text id="grid-power" x="400" y="380" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#f00">120.0 kW</text>
@@ -307,7 +304,7 @@ export default class DistrictAView extends View {
 			});
 			this.rendered = true;
 		} else {
-			//console.log('DistrictAView => render MenuModel IS NOT READY!!!!');
+			console.log('DistrictAView => render DistrictAModel IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

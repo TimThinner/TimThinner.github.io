@@ -1,15 +1,9 @@
 
-import EventObserver from '../common/EventObserver.js';
+import Model from '../common/Model.js';
 
-export default class MenuModel extends EventObserver {
+export default class MenuModel extends Model {
 	constructor() {
 		super();
-		this.src = undefined;
-		this.ready = false;
-		this.errorMessage = '';
-		this.fetching = false;
-		
-		this.data = '';
 		this.selected = undefined;
 	}
 	
@@ -26,7 +20,6 @@ export default class MenuModel extends EventObserver {
 		setTimeout(() => {
 			this.fetching = false;
 			this.ready = true;
-			this.data = 'MODEL DATA';
 			this.notifyAll({model:'MenuModel',method:'fetched',status:200,message:'OK'});
 		}, 200);
 	}

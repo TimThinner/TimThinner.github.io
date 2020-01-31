@@ -1,10 +1,10 @@
 export default class View {
+	
 	constructor(controller) {
 		this.controller = controller;
 		this.el = controller.el;
 		this.models = {};
 	}
-	
 	
 	areModelsReady() {
 		let retval = true;

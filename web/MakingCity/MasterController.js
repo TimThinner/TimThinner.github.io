@@ -11,14 +11,14 @@ class MasterController {
 	constructor() {
 		this.controllers = {};
 		this.modelRepo = new ModelRepo();
-		this.model = undefined;
-		this.languageModel = undefined;
+		//this.model = undefined;
+		//this.languageModel = undefined;
 	}
-	
+	/*
 	restore() {
 		console.log('MasterController restore!');
 	}
-	
+	*/
 	notify(options) {
 		console.log(['MasterController NOTIFY: model=',options.model,' method=',options.method]);
 	}
@@ -26,12 +26,12 @@ class MasterController {
 	init() {
 		console.log('MasterController init!');
 		
-		this.model = new ResizeObserverModel();
-		this.modelRepo.add('ResizeObserverModel',this.model);
-		this.model.start(); // Start tracking resize events
+		const ROM = new ResizeObserverModel();
+		this.modelRepo.add('ResizeObserverModel',ROM); //this.model);
+		ROM.start(); //this.model.start(); // Start tracking resize events
 		
-		this.languageModel = new LanguageModel();
-		this.modelRepo.add('LanguageModel',this.languageModel);
+		const LM = new LanguageModel(); //this.languageModel = new LanguageModel();
+		this.modelRepo.add('LanguageModel',LM);//this.languageModel);
 		
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();

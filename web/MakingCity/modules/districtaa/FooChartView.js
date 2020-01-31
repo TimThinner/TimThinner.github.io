@@ -11,10 +11,10 @@ export default class FooChartView extends View {
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
 	// That timer can control 0,1, n models.
-	constructor(mother, el) {
-		super(mother.controller); // mother is the WrapperView
+	constructor(wrapper, el) {
+		super(wrapper.controller);
 		
-		this.mother = mother;
+		this.wrapper = wrapper;
 		// NOTE: Each view inside wrapperview is rendered within its own element, therefore 
 		// we must deliver that element as separate variable. For example this el is #subview-1
 		// 
@@ -385,7 +385,7 @@ export default class FooChartView extends View {
 					'<div id="foo-chart"></div>'+
 					
 					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
-					'<p style="font-size:14px;" class="range-field">Adjust the update interval:'+
+					'<p style="font-size:14px;text-align:left;" class="range-field">Adjust the update interval:'+
 						'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
 					'</p>'+
 				'</div>'+
@@ -397,7 +397,7 @@ export default class FooChartView extends View {
 		
 		this.rendered = true;
 		
-		this.mother.handlePollingInterval(refreshId, this.timerName);
+		this.wrapper.handlePollingInterval(refreshId, this.timerName);
 		
 		if (this.areModelsReady()) {
 			console.log('FooChartView => render models READY!!!!');

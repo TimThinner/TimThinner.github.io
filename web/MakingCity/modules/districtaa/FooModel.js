@@ -1,4 +1,4 @@
-import EventObserver from '../common/EventObserver.js';
+import Model from '../common/Model.js';
 /*
 
 */
@@ -9,15 +9,10 @@ export class FoobarModel {
 	}
 }
 
-export default class FooModel extends EventObserver {
+export default class FooModel extends Model {
 	
 	constructor() {
 		super();
-		this.src = undefined;
-		this.ready = false;
-		this.errorMessage = '';
-		this.fetching = false;
-		
 		this.values = [];
 	}
 	

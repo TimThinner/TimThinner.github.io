@@ -27,9 +27,7 @@ export default class SolarModel extends Model {
 	}
 	
 	simulate() {
-		const self = this;
 		const now = moment();
-		//let start = moment().subtract(24,'hours');
 		let start = moment();
 		start.hours(0);
 		start.minutes(0);
@@ -44,17 +42,7 @@ export default class SolarModel extends Model {
 			const p = coeff[h] * (Math.round(Math.random()*50) + 100); // W!
 			myJson.push({time:start.format(),power:p});
 		}
-		
-		this.powerValues = [];
-		this.energyValues = [];
-		
-		$.each(myJson, function(i,v){
-			const p = new SolarPowerModel(v);
-			self.powerValues.push(p);
-			
-			const e = new SolarEnergyModel( {time:v.time,energy:v.power/6000} );
-			self.energyValues.push(e);
-		});
+		return myJson;
 	}
 	
 	fetch() {
@@ -64,6 +52,8 @@ export default class SolarModel extends Model {
 			return;
 		}
 		
+		const debug_time_start = moment().valueOf();
+		this.fetching = true;
 		this.src = 'solar-model';
 		const url = this.backend + '/' + this.src;
 		console.log (['fetch url=',url]);
@@ -75,44 +65,26 @@ export default class SolarModel extends Model {
 		// power is more or less random value between 100-1100 (W) for example.
 		// energy will cumulate so that if values are in 1 minute interval e = e + p/60, for example.
 		
-		this.simulate();
-		
-		
-		/*
-		const now = moment();
-		let start = moment().subtract(24,'hours');
-		const myJson = [];
-		//let k = Math.round(now.seconds()/10) + now.minutes()*6;
-		//let k = now.seconds() + now.minutes()*6;
-		
-		let e = 42000000.00; // kWh
-		
-		//const coeff = Math.PI/180;
-		while(now.isAfter(start)) {
-			start.add(1, 'minutes');
-			//const p = 100+Math.sin(k*coeff)*100;
-			//e = 100+Math.cos(k*coeff)*100;
-			const p = 100 + Math.round(Math.random()*1000); // W!
-			e += (p/1000)/60; // kWh!
-			myJson.push({time:start.format(),power:p,energy:e});
-			//if (k < 360) {
-			//	k++;
-			//} else {
-			//	k=0;
-			//}
-		}
-		this.values = []; // Start with fresh array.
-		$.each(myJson, function(i,v){
-			const p = new SolarPowerModel(v);
-			self.values.push(p);
-		});
-		*/
-		
-		
+		const myJson = this.simulate();
 		setTimeout(() => {
+			this.powerValues = [];
+			this.energyValues = [];
+			
+			myJson.forEach(item => {
+				
+				const p = new SolarPowerModel(item);
+				this.powerValues.push(p);
+				
+				const e = new SolarEnergyModel({time:item.time,energy:item.power/6000});
+				this.energyValues.push(e);
+			});
+			
+			const debug_time_elapse = moment().valueOf()-debug_time_start;
+			console.log(['debug_time_elapse=',debug_time_elapse]);
+			
 			this.fetching = false;
 			this.ready = true;
 			this.notifyAll({model:'SolarModel',method:'fetched',status:200,message:'OK'});
-		}, 200);
+		}, 100);
 	}
 }

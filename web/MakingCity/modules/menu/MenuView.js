@@ -4,8 +4,15 @@ export default class MenuView extends View {
 	constructor(controller) {
 		super(controller);
 		
-		this.model = this.controller.master.modelRepo.get('MenuModel');
-		this.model.subscribe(this);
+		//this.model = this.controller.master.modelRepo.get('MenuModel');
+		//this.model.subscribe(this);
+		
+		Object.keys(this.controller.models).forEach(key => {
+			if (key === 'MenuModel') {
+				this.models[key] = this.controller.models[key];
+				this.models[key].subscribe(this);
+			}
+		});
 		
 		this.controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
 		
@@ -27,7 +34,13 @@ export default class MenuView extends View {
 	}
 	
 	remove() {
-		this.model.unsubscribe(this);
+		//this.model.unsubscribe(this);
+		Object.keys(this.models).forEach(key => {
+			this.models[key].unsubscribe(this);
+		});
+		
+		
+		
 		this.svgObject = undefined;
 		this.rendered = false;
 		//this.updateCounter = 0;
@@ -107,7 +120,12 @@ export default class MenuView extends View {
 			const hexA = this.svgObject.getElementById('hex-a');
 			hexA.addEventListener("click", function(){
 				console.log('HEXAGON A CLICKED!');
-				self.model.setSelected('DA');
+				//self.model.setSelected('DA');
+				
+				self.models['MenuModel'].setSelected('DA');
+				
+				
+				
 			}, false);
 			hexA.addEventListener("mouseover", function(event){ self.setHoverEffect(event, 'scale(1.1)'); }, false);
 			hexA.addEventListener("mouseout", function(event){ self.setHoverEffect(event, 'scale(1.0)'); }, false);
@@ -174,13 +192,14 @@ export default class MenuView extends View {
 	render() {
 		const self = this;
 		$(this.el).empty();
-		if (this.model.ready) {
-			
-			if (this.model.errorMessage.length > 0) {
+		
+		if (this.areModelsReady()) {
+			const errorMessages = this.modelsErrorMessages();
+			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
 						'<div class="col s12 center" id="menu-view-failure">'+
-							'<div class="error-message"><p>'+this.model.errorMessage+'</p></div>'+
+							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+

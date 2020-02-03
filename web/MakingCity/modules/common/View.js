@@ -25,7 +25,10 @@ export default class View {
 				retval += this.models[key].errorMessage + ' ';
 			}
 		});
-		return retval.slice(0, -1);
+		if (retval.length > 0) {
+			return retval.slice(0, -1);
+		}
+		return retval;
 	}
 	
 	fillSVGTextElement(svgObject, id, txt) {

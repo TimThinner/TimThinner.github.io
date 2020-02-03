@@ -10,9 +10,13 @@ export default class DistrictAView extends View {
 	
 	constructor(controller) {
 		super(controller);
-		this.model = this.controller.master.modelRepo.get('DistrictAModel');
-		this.model.subscribe(this);
 		
+		Object.keys(this.controller.models).forEach(key => {
+			if (key === 'DistrictAModel') {
+				this.models[key] = this.controller.models[key];
+				this.models[key].subscribe(this);
+			}
+		});
 		// Start listening notify -messages from ResizeObserverModel:
 		this.controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
 		
@@ -30,8 +34,9 @@ export default class DistrictAView extends View {
 	}
 	
 	remove() {
-		this.model.unsubscribe(this);
-		
+		Object.keys(this.models).forEach(key => {
+			this.models[key].unsubscribe(this);
+		});
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -68,11 +73,16 @@ export default class DistrictAView extends View {
 		}
 	}
 	
+	/*
+	<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#00897b">click me</text>
+	*/
 	setHoverEffect(event, scale){
 		if (scale === 'scale(1.0)') {
+			
 			event.target.style.strokeWidth = 3;
 			event.target.style.fillOpacity = 0.05;
 		} else {
+			
 			event.target.style.strokeWidth = 9;
 			event.target.style.fillOpacity = 0.5;
 		}
@@ -214,12 +224,13 @@ export default class DistrictAView extends View {
 	render() {
 		const self = this;
 		$(this.el).empty();
-		if (this.model.ready) {
-			if (this.model.errorMessage.length > 0) {
+		if (this.areModelsReady()) {
+			const errorMessages = this.modelsErrorMessages();
+			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
 						'<div class="col s12 center" id="district-a-view-failure">'+
-							'<div class="error-message"><p>'+this.model.errorMessage+'</p></div>'+
+							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+

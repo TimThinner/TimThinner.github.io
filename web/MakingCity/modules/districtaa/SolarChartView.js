@@ -108,6 +108,8 @@ export default class SolarChartView extends View {
 	renderChart() {
 		const self = this;
 		const refreshId = this.el.slice(1);
+		
+		
 		am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -262,13 +264,16 @@ export default class SolarChartView extends View {
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
 			
+			
+			console.log(['series1.data=',series1.data]);
+			
 			// Scrollbar
-			const scrollbarX = new am4charts.XYChartScrollbar();
-			scrollbarX.series.push(series1);
+			//const scrollbarX = 
+			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
+			self.chart.scrollbarX.series.push(series1);
 			//scrollbarX.series.push(series2);
-			scrollbarX.marginBottom = 20;
-			self.chart.scrollbarX = scrollbarX;
-			scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			self.chart.scrollbarX.marginBottom = 20;
+			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 			
 			/**
  			* Set up external controls
@@ -389,8 +394,6 @@ export default class SolarChartView extends View {
 			}
 		}); // end am4core.ready()
 	}
-	
-	
 	
 	render() {
 		const self = this;

@@ -19,7 +19,7 @@ export default class DistrictAController extends Controller {
 	init() {
 		const model = new DistrictAModel();
 		model.subscribe(this);
-		model.subscribe(this.master);
+		//model.subscribe(this.master);
 		this.master.modelRepo.add('DistrictAModel',model);
 		this.models['DistrictAModel'] = model;
 		model.fetch();

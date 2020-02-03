@@ -11,7 +11,7 @@ export default class MenuController extends Controller {
 	init() {
 		const model = new MenuModel();
 		model.subscribe(this);
-		model.subscribe(this.master);
+		//model.subscribe(this.master);
 		this.master.modelRepo.add('MenuModel',model);
 		this.models['MenuModel'] = model;
 		model.fetch();

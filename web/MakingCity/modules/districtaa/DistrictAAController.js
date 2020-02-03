@@ -20,14 +20,14 @@ export default class DistrictAAController extends Controller {
 	init() {
 		const smodel = new SolarModel();
 		smodel.subscribe(this);
-		smodel.subscribe(this.master);
+		//smodel.subscribe(this.master);
 		this.master.modelRepo.add('SolarModel',smodel);
 		this.models['SolarModel'] = smodel;
 		smodel.fetch();
 		
 		const fmodel = new FooModel();
 		fmodel.subscribe(this);
-		fmodel.subscribe(this.master);
+		//fmodel.subscribe(this.master);
 		this.master.modelRepo.add('FooModel',fmodel);
 		this.models['FooModel'] = fmodel;
 		fmodel.fetch();

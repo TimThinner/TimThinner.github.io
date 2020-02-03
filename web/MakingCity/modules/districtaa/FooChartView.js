@@ -106,9 +106,7 @@ export default class FooChartView extends View {
 			// Themes end
 			
 			am4core.options.autoSetClassName = true;
-			
-			//console.log(['powerValues=',self.model.powerValues]);
-			//console.log(['energyValues=',self.model.energyValues]);
+			console.log(['values=',self.models['FooModel'].values]);
 			
 			// Create chart
 			self.chart = am4core.create("foo-chart", am4charts.XYChart);
@@ -199,13 +197,49 @@ export default class FooChartView extends View {
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
 			
-			// Scrollbar
-			const scrollbarX = new am4charts.XYChartScrollbar();
-			scrollbarX.series.push(series1);
 			
-			scrollbarX.marginBottom = 20;
-			self.chart.scrollbarX = scrollbarX;
-			scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			console.log(['series1.data=',series1.data]);
+			
+			// Scrollbar
+			//const scrollbarX = new am4charts.XYChartScrollbar();
+			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
+			self.chart.scrollbarX.series.push(series1);
+			self.chart.scrollbarX.marginBottom = 20;
+			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			
+			
+			
+			
+			
+/*
+var scrollbarX = new am4charts.XYChartScrollbar();
+scrollbarX.series.push(series);
+scrollbarX.marginBottom = 20;
+scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+chart.scrollbarX = scrollbarX;
+*/
+/*
+var scrollbarX = new am4charts.XYChartScrollbar();
+scrollbarX.series.push(series1);
+scrollbarX.marginBottom = 20;
+var sbSeries = scrollbarX.scrollbarChart.series.getIndex(0);
+sbSeries.dataFields.valueYShow = undefined;
+chart.scrollbarX = scrollbarX;
+*/
+
+/*
+var scrollbarX = new am4charts.XYChartScrollbar();
+
+var sbSeries = chart.series.push(new am4charts.LineSeries());
+sbSeries.dataFields.valueY = "Close";
+sbSeries.dataFields.dateX = "Date";
+scrollbarX.series.push(sbSeries);
+sbSeries.disabled = true;
+scrollbarX.marginBottom = 20;
+chart.scrollbarX = scrollbarX;
+scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+*/
+			
 			
 			/**
  			* Set up external controls

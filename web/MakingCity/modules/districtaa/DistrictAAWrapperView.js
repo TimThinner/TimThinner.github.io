@@ -33,10 +33,12 @@ export default class DistrictAAWrapperView extends WrapperView {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center" id="subview-1">'+
+				'<p>CHART IS LOADING...</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center" id="subview-2">'+
+				'<p>CHART IS LOADING...</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -52,10 +54,12 @@ export default class DistrictAAWrapperView extends WrapperView {
 			self.controller.menuModel.setSelected('DA');
 		});
 		// Finally render all subviews.
+		//setTimeout(() => {
 		this.subviews.forEach(view => {
 			view.render();
 		});
 		// Init the "Adjust the update interval:" -range input in ALL three charts:
 		M.Range.init(document.querySelectorAll("input[type=range]"));
+		//},300);
 	}
 }

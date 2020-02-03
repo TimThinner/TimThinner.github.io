@@ -32,7 +32,7 @@ export default class Controller {
 		});
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
-			this.models[key].unsubscribe(this.master);
+			//this.models[key].unsubscribe(this.master);
 		});
 		if (this.view) {
 			this.view.remove();
@@ -55,14 +55,14 @@ export default class Controller {
 	show() {
 		if (this.visible && this.view) {
 			this.view.show();
-			// Start polling all timers:
+			// Start polling all timers for THIS CONTROLLER:
 			this.startPollers();
 		}
 	}
 	
 	notify(options) {
 		if (options.model==='MenuModel' && options.method==='selected') {
-			console.log(['Selected = ',options.selected]);
+			console.log(['In ',this.name,' selected = ',options.selected]);
 			if (this.name === options.selected) {
 				setTimeout(() => {
 					this.visible = true;

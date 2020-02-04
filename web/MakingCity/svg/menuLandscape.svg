@@ -41,10 +41,16 @@
 	<path class="grid-head" d="M0 39 H538" />
 	<path class="grid-head" d="M938 130 H1800" />
 	<text x="970" y="180" opacity="0.4" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#fff">Positive Energy Districts</text>
-	
+	<!--
 	<image x="770" y="220" width="200" height="100" xlink:href="schoolbuilding.svg" />
 	<image x="890" y="190" width="55" height="50" xlink:href="solarpanel.svg" />
 	<image x="930" y="190" width="55" height="50" xlink:href="solarpanel.svg" />
+	-->
+	<image x="770" y="220" width="200" height="50" xlink:href="smarket.svg" />
+	<image x="780" y="225" width="85" height="19" xlink:href="S-marketin_logo.svg" />
+	<image x="850" y="180" width="55" height="50" xlink:href="solarpanel.svg" />
+	<image x="890" y="180" width="55" height="50" xlink:href="solarpanel.svg" />
+	
 	
 	<image x="1100" y="180" width="100" height="150" xlink:href="powerline.svg" />
 	<image x="1200" y="160" width="100" height="150" xlink:href="windturbine.svg" />

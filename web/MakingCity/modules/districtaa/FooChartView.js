@@ -70,20 +70,18 @@ export default class FooChartView extends View {
 			if (options.model==='FooModel' && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
-						
 						$('#foo-chart-view-failure').empty();
-						
-						this.updateLatestValues();
-						
+						//this.updateLatestValues();
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... FooChartView CHART UPDATED!');
+							//console.log('fetched ..... FooChartView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								if (s.name === 'FOOBAR') {
 									s.data = self.models['FooModel'].values;
 								}
 							});
+							//this.chart.scrollbarX.deepInvalidate();
 						} else {
-							console.log('fetched ..... render FooChartView()');
+							//console.log('fetched ..... render FooChartView()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
@@ -98,6 +96,10 @@ export default class FooChartView extends View {
 	
 	renderChart() {
 		const self = this;
+		
+		
+		console.log('FOO RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
+		
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
 			// Themes begin
@@ -358,6 +360,10 @@ scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 					}
 				}, 500);
 			}
+			
+			console.log('FOO RENDER CHART END =====================');
+			
+			
 		}); // end am4core.ready()
 	}
 	
@@ -451,6 +457,12 @@ scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 				$(html).appendTo(this.el);
 			} else {
 				this.renderChart();
+				/*
+				setTimeout(() => {
+					console.log('FOO FAKE NOTIFY!');
+					this.notify({model:'FooModel',method:'fetched',status:200,message:'OK'});
+				},1000);
+				*/
 			}
 		} else {
 			console.log('FooChartView => render models ARE NOT READY!!!!');

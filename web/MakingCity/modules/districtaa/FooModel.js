@@ -47,20 +47,26 @@ export default class FooModel extends Model {
 			console.log('FETCHING ALREADY IN PROCESS!');
 			return;
 		}
+		const debug_time_start = moment().valueOf();
 		this.fetching = true;
 		this.src = 'foo-model';
 		const url = this.backend + '/' + this.src;
 		console.log (['fetch url=',url]);
 		const myJson = this.simulate();
 		setTimeout(() => {
+			
 			this.values = []; // Start with fresh array.
 			myJson.forEach(item => {
 				const p = new FoobarModel(item);
 				this.values.push(p);
 			});
+			
+			const debug_time_elapse = moment().valueOf()-debug_time_start;
+			console.log(['FOO debug_time_elapse=',debug_time_elapse]);
+			
 			this.fetching = false;
 			this.ready = true;
 			this.notifyAll({model:'FooModel',method:'fetched',status:200,message:'OK'});
-		}, 100);
+		}, 300);
 	}
 }

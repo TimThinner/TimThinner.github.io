@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="400" height="100" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
+<defs>
+	<g id="window" fill="#fff" opacity="0.5" stroke="#333" stroke-width="4">
+		<path d="M0,0 L20,0 L20,50 L0,50 L0,0" /> <!--M0,15 L20,15-->
+	</g>
+	<radialGradient id="grad" cx="50%" cy="50%" r="75%"><!-- fx="50%" fy="50%">-->
+		<stop offset="10%" style="stop-color:#d7ccc8; stop-opacity:1" />
+		<stop offset="50%" style="stop-color:#a1887f; stop-opacity:1" />
+		<stop offset="90%" style="stop-color:#795548; stop-opacity:1" />
+	</radialGradient>
+</defs>
+<!-- Walls -->
+
+<!--
+<path d="M10,90 L10,10 L390,10 L390,90 L10,90" fill="#4e342e" stroke-width="4" stroke="#333" />
+
+<rect x="10" y="10" width="380" height="80" fill="url(#grad)" stroke-width="3" stroke="#000" />
+-->
+<rect x="10" y="10" width="380" height="80" opacity="0.5" fill="#bcaaa4" stroke-width="3" stroke="#000" />
+<!--
+<path d="M10,50 L10,10 L200,10 L200,50 L10,50" fill="#4e342e" stroke-width="2" stroke="#333" />
+-->
+
+<!-- Front door -->
+<path d="M200,90 L200,10 L300,10 L300,90 L200,90" opacity="0.5" fill="#fdd835" stroke-width="2" stroke="#333" />
+<path d="M210,90 L210,20 L290,20 L290,90 L210,90" opacity="0.5" fill="#fbc02d" stroke-width="2" stroke="#333" />
+<path d="M220,90 L220,30 L280,30 L280,90 L220,90" opacity="0.5" fill="#fdd835" stroke-width="2" stroke="#333" />
+<path d="M210,20 L220,30 M290,20 L280,30" opacity="0.75" fill="none" stroke-width="2" stroke="#333" />
+
+
+<use x="230" y="40" xlink:href="#window" />
+<use x="250" y="40" xlink:href="#window" />
+
+<!--
+<text x="16" y="70" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="42px" fill="#fff" stroke="#333" stroke-width="1">S Market</text>
+-->
+<!-- Windows -->
+
+<!-- S-marketin_logo.svg: SVG-tiedosto; oletustarkkuus 850 × 190 kuvapistettä; tiedostokoko 5 KiB)-->
+<!--
+<image x="20" y="10" width="170" height="38" xlink:href="S-marketin_logo.svg" />
+-->
+<!--
+S-market sininen: #006bb7
+Vanha oli #0b3b6a
+
+efebe9 brown lighten-5
+#d7ccc8 brown lighten-4
+#bcaaa4 brown lighten-3
+#a1887f brown lighten-2
+#8d6e63 brown lighten-1
+#795548 brown
+#6d4c41 brown darken-1
+#5d4037 brown darken-2
+#4e342e brown darken-3
+#3e2723 brown darken-4
+
+#ffeb3b yellow
+#fdd835 yellow darken-1
+#fbc02d yellow darken-2
+#f9a825 yellow darken-3
+
+
+fill:#006bb7;fill-opacity:1;fill-rule:nonzero;stroke:none
+
+-->
+<!--
+<use x="10" y="90" xlink:href="#window" />
+<use x="10" y="140" xlink:href="#window" />
+<use x="60" y="90" xlink:href="#window" />
+<use x="60" y="140" xlink:href="#window" />
+<use x="110" y="90" xlink:href="#window" />
+<use x="110" y="140" xlink:href="#window" />
+<use x="160" y="90" xlink:href="#window" />
+<use x="160" y="140" xlink:href="#window" />
+<use x="210" y="90" xlink:href="#window" />
+<use x="210" y="140" xlink:href="#window" />
+<use x="260" y="90" xlink:href="#window" />
+<use x="260" y="140" xlink:href="#window" />
+<use x="310" y="90" xlink:href="#window" />
+<use x="310" y="140" xlink:href="#window" />-->
+</svg>

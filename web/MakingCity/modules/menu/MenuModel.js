@@ -21,7 +21,7 @@ export default class MenuModel extends Model {
 			this.fetching = false;
 			this.ready = true;
 			this.notifyAll({model:'MenuModel',method:'fetched',status:200,message:'OK'});
-		}, 200);
+		}, 100);
 	}
 	
 	setSelected(sel) {

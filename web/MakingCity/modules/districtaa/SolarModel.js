@@ -80,11 +80,11 @@ export default class SolarModel extends Model {
 			});
 			
 			const debug_time_elapse = moment().valueOf()-debug_time_start;
-			console.log(['debug_time_elapse=',debug_time_elapse]);
+			console.log(['SOLAR debug_time_elapse=',debug_time_elapse]);
 			
 			this.fetching = false;
 			this.ready = true;
 			this.notifyAll({model:'SolarModel',method:'fetched',status:200,message:'OK'});
-		}, 100);
+		}, 300);
 	}
 }

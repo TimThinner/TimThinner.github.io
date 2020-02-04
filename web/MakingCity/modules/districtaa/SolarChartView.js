@@ -33,6 +33,7 @@ export default class SolarChartView extends View {
 		this.timerName = 'SolarChartView';
 		this.chart = undefined;
 		this.rendered = false;
+		
 	}
 	
 	show() {
@@ -46,6 +47,7 @@ export default class SolarChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
+		
 	}
 	
 	remove() {
@@ -55,6 +57,7 @@ export default class SolarChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
+		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -63,36 +66,53 @@ export default class SolarChartView extends View {
 	updateLatestValues() {
 		console.log("UPDATE!");
 	}
-	
+	/*
+	updateFix() {
+		const self = this;
+		console.log('UPDATE FIX FOR CHART !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+		if (typeof this.chart !== 'undefined') {
+			am4core.iter.each(this.chart.series.iterator(), function (s) {
+				if (s.name === 'POWER') {
+					console.log(["self.models['SolarModel'].powerValues=",self.models['SolarModel'].powerValues]);
+					s.data = self.models['SolarModel'].powerValues;
+				} else {
+					console.log(["self.models['SolarModel'].energyValues=",self.models['SolarModel'].energyValues]);
+					s.data = self.models['SolarModel'].energyValues;
+				}
+			});
+			this.chart.invalidate();
+		} else {
+			console.log('FIX: NO CHART!?');
+		}
+	}
+	*/
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
 			if (options.model==='SolarModel' && options.method==='fetched') {
-				if (this.rendered===true) {
+				if (this.rendered) {
 					if (options.status === 200) {
 						
 						$('#solar-chart-view-failure').empty();
 						
-						this.updateLatestValues();
+						//this.updateLatestValues();
 						
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... SolarChartView CHART UPDATED!');
+							//console.log('fetched ..... SolarChartView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								if (s.name === 'POWER') {
-									
-									// TODO
+									//console.log(["self.models['SolarModel'].powerValues=",self.models['SolarModel'].powerValues]);
 									s.data = self.models['SolarModel'].powerValues;
-									//s.data = self.model.powerValues;
 								} else {
-									
-									
-									// TODO
+									//console.log(["self.models['SolarModel'].energyValues=",self.models['SolarModel'].energyValues]);
 									s.data = self.models['SolarModel'].energyValues;
-									//s.data = self.model.energyValues;
 								}
 							});
+							
+							//this.chart.scrollbarX.deepInvalidate();
+							
 						} else {
-							console.log('fetched ..... SolarChartView renderChart()');
+							//console.log('fetched ..... SolarChartView renderChart()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
@@ -107,6 +127,9 @@ export default class SolarChartView extends View {
 	
 	renderChart() {
 		const self = this;
+		
+		console.log('SOLAR RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
+		
 		const refreshId = this.el.slice(1);
 		
 		
@@ -392,6 +415,8 @@ export default class SolarChartView extends View {
 					}
 				}, 500);
 			}
+			console.log('SOLAR RENDER CHART END =====================');
+			
 		}); // end am4core.ready()
 	}
 	
@@ -483,6 +508,13 @@ export default class SolarChartView extends View {
 				$(html).appendTo(this.el);
 			} else {
 				this.renderChart();
+				
+				/*
+				setTimeout(() => {
+					console.log('FAKE SOLAR NOTIFY!');
+					this.notify({model:'SolarModel',method:'fetched',status:200,message:'OK'});
+				},1000);
+				*/
 			}
 		} else {
 			console.log('SolarChartView => render models ARE NOT READY!!!!');

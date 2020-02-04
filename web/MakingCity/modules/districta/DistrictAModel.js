@@ -22,6 +22,6 @@ export default class DistrictAModel extends Model {
 			this.fetching = false;
 			this.ready = true;
 			this.notifyAll({model:'DistrictAModel',method:'fetched',status:200,message:'OK'});
-		}, 200);
+		}, 100);
 	}
 }

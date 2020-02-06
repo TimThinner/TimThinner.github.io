@@ -4,7 +4,7 @@
 .target {
 	cursor: pointer;
 	fill: #009688;
-	stroke-width: 3;
+	stroke-width: 1;
 	stroke: #fff;
 	fill-opacity: 0.05;
 	transition: transform, fill-opacity, stroke-width;
@@ -49,17 +49,17 @@
 	<path id="p1" d="M 300,400 L 500,400 
 	M 500,310 L 500,500 
 	M 500,500 L 200,500 
-	A 50,50 0 0,0 150,550 L 150,620 
-	M 290,500 L 290,740 
-	M 430,500 L 430,620 
-	M 570,500 L 570,740 
-	M 710,500 L 710,620 
+	A 50,50 0 0,0 150,550 L 150,610 
+	M 290,500 L 290,730 
+	M 430,500 L 430,610 
+	M 570,500 L 570,730 
+	M 710,500 L 710,610 
 	M 500,500 L 800,500 
-	A 50,50 0 0,1 850,550 L 850,740" 
+	A 50,50 0 0,1 850,550 L 850,730" 
 	style="opacity:0.5;stroke:#0a0;stroke-width:12px;stroke-dasharray:30px 10px;fill:none;">
 		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 	</path>
-	<text id="grid-power" x="300" y="370" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#f00">120.0 kW</text>
+	<text id="grid-power" x="300" y="380" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#f00"></text>
 	<!--
 	<rect x="800" y="100" width="400" height="200" fill="#fff" stroke-width="4" stroke="#000" />
 	-->
@@ -69,26 +69,33 @@
 	<image x="450" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
 	<image x="550" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
 	
+	<!--
 	<image x="900" y="210" width="100" height="150" xlink:href="windturbine.svg" />
 	<image x="800" y="170" width="150" height="225" xlink:href="windturbine.svg" />
 	<image x="700" y="130" width="200" height="300" xlink:href="windturbine.svg" />
+	-->
 	
 	<svg x="360" y="240" width="300px" height="100px">
 		<!--<rect x="1" y="1" width="298" height="98" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text id="solar-panels" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#000">SOLAR PANELS</text>
 	</svg>
-	
+	<!--
 	<svg x="50" y="620" width="200px" height="100px">
-		<!--<rect x="1" y="1" width="298" height="98" stroke="#fff" stroke-width="1" opacity="0.4" fill="#00f" />-->
+		<rect x="1" y="1" width="298" height="98" stroke="#fff" stroke-width="1" opacity="0.4" fill="#00f" />
 		<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="48px" fill="#00897b">click me</text>
 	</svg>
+	-->
+	<image x="100" y="620" width="100" height="100" xlink:href="lightbulb.svg" />
 	
-	<rect class="target" id="target-a-a" x="-100" y="-50" width="200" height="100" transform="translate(150,670) scale(1.0)" />
-	<rect class="target" id="target-a-b" x="-100" y="-50" width="200" height="100" transform="translate(290,790) scale(1.0)" />
-	<rect class="target" id="target-a-c" x="-100" y="-50" width="200" height="100" transform="translate(430,670) scale(1.0)" />
-	<rect class="target" id="target-a-d" x="-100" y="-50" width="200" height="100" transform="translate(570,790) scale(1.0)" />
-	<rect class="target" id="target-a-e" x="-100" y="-50" width="200" height="100" transform="translate(710,670) scale(1.0)" />
-	<rect class="target" id="target-a-f" x="-100" y="-50" width="200" height="100" transform="translate(850,790) scale(1.0)" />
+	<image x="660" y="620" width="100" height="100" xlink:href="refrigmachines.svg" />
+	<image x="800" y="740" width="100" height="100" xlink:href="refrigequipments.svg" />
+	
+	<rect class="target" id="target-a-a" x="-60" y="-60" width="120" height="120" transform="translate(150,670) scale(1.0)" />
+	<rect class="target" id="target-a-b" x="-60" y="-60" width="120" height="120" transform="translate(290,790) scale(1.0)" />
+	<rect class="target" id="target-a-c" x="-60" y="-60" width="120" height="120" transform="translate(430,670) scale(1.0)" />
+	<rect class="target" id="target-a-d" x="-60" y="-60" width="120" height="120" transform="translate(570,790) scale(1.0)" />
+	<rect class="target" id="target-a-e" x="-60" y="-60" width="120" height="120" transform="translate(710,670) scale(1.0)" />
+	<rect class="target" id="target-a-f" x="-60" y="-60" width="120" height="120" transform="translate(850,790) scale(1.0)" />
 </g>
 <!--
 https://www.youtube.com/watch?v=k6TWzfLGAKo

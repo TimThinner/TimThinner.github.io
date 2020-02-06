@@ -13,7 +13,6 @@ export default class LanguageModel {
 				'MENU_DESCRIPTION':'The project pilots low-carbon energy technologies. The project is funded by EU’s Horizon 2020 programme and is a part of the Smart Cities and Communities (SCC) theme.',
 				'SOLAR_PANELS':'SOLAR PANELS',
 				'GRID_TEXT':'GRID',
-				'DA_TOGGLE_DIRECTION':'TOGGLE DIRECTION',
 				'DA_BACK':'BACK',
 				'DA_DESCRIPTION':'This view will contain all components for District A.'
 			},
@@ -27,7 +26,6 @@ export default class LanguageModel {
 				'MENU_DESCRIPTION':'Hankkeessa pilotoidaan vähähiilisiä energiateknologioita. Hanke saa rahoitusta EU:n Horizon 2020 -ohjelmasta. Se kuuluu Smart Cities and Communities (SCC) -teemaan.',
 				'SOLAR_PANELS':'AURINKOPANEELIT',
 				'GRID_TEXT':'SÄHKÖVERKKO',
-				'DA_TOGGLE_DIRECTION':'VAIHDA SUUNTAA',
 				'DA_BACK':'TAKAISIN',
 				'DA_DESCRIPTION':'Tähän näyttöön kaikki tämän alueen komponentit.'
 			}

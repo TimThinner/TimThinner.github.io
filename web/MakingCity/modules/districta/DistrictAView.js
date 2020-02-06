@@ -12,7 +12,7 @@ export default class DistrictAView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'DistrictAModel') {
+			if (key === 'StatusModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -43,13 +43,32 @@ export default class DistrictAView extends View {
 	
 	updateLatestValues() {
 		console.log("UPDATE!");
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (typeof svgObject !== 'undefined') {
+			this.models['StatusModel'].values.forEach(item => {
+				if (item.meterId === 114) {
+					console.log(['item.avPower=',item.avPower]);
+					
+					const newVal = item.avPower.toFixed(1);
+					// {"meterId":114,"meterName":"SPK_sahko_paamittaus","meterType":1,"dateTime":"2020-02-05 08:13:05","energy":444978.4,"avPower":77.143,"timeDiff":70,"energyDiff":1.5},
+					const textElement = svgObject.getElementById('grid-power');
+					
+					while (textElement.firstChild) {
+						textElement.removeChild(textElement.firstChild);
+					}
+					var txt = document.createTextNode(newVal + " kW");
+					textElement.appendChild(txt);
+					//textElement.setAttributeNS(null, 'fill', '#0a0');
+				}
+			});
+		}
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='DistrictAModel' && options.method==='fetched') {
+			if (options.model==='StatusModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					//console.log('DistrictAView => DistrictAModel fetched!');
+					console.log('DistrictAView => StatusModel fetched!');
 					if (this.rendered) {
 						$('#district-a-view-failure').empty();
 						this.updateLatestValues();
@@ -79,11 +98,11 @@ export default class DistrictAView extends View {
 	setHoverEffect(event, scale){
 		if (scale === 'scale(1.0)') {
 			
-			event.target.style.strokeWidth = 3;
+			event.target.style.strokeWidth = 1;
 			event.target.style.fillOpacity = 0.05;
 		} else {
 			
-			event.target.style.strokeWidth = 9;
+			event.target.style.strokeWidth = 3;
 			event.target.style.fillOpacity = 0.5;
 		}
 		const oldtra = event.target.getAttributeNS(null,'transform');
@@ -146,18 +165,27 @@ export default class DistrictAView extends View {
 		}
 	}
 	
+	
+	/*
+	
+		When new set of measurements is fetched, update values in SVG.
+		
+		grid-power
+	*/
 	addEventHandlers() {
 		const self = this;
+		
+		/*
 		$("#toggle-direction").on('click',function(){
 			const svgObject = document.getElementById('svg-object').contentDocument;
 			if (typeof svgObject !== 'undefined') {
 				const mode = self.controller.master.modelRepo.get('ResizeObserverModel').mode;
 				//console.log(['mode=',mode]);
-				/* 
-				DAPortrait: 		<path id="p1" d="M 140,400 L 300,400 
-				DASquare.svg: 		<path id="p1" d="M 300,400 L 500,400 
-				DALandscape.svg:	<path id="p1" d="M 300,400 L 1000,400 
-				*/
+				 
+				//DAPortrait: 		<path id="p1" d="M 140,400 L 300,400 
+				//DASquare.svg: 		<path id="p1" d="M 300,400 L 500,400 
+				//DALandscape.svg:	<path id="p1" d="M 300,400 L 1000,400 
+				
 				const ps = {
 					'PORTRAIT' : {'forward':'M 140,400 L 300,400','reverse':'M 300,400 L 140,400' },
 					'SQUARE'   : {'forward':'M 300,400 L 500,400','reverse':'M 500,400 L 300,400' },
@@ -203,6 +231,9 @@ export default class DistrictAView extends View {
 				}
 			}
 		});
+		
+		*/
+		
 	}
 	
 	localizeSVGTexts() {
@@ -263,7 +294,7 @@ export default class DistrictAView extends View {
 				const LM = this.controller.master.modelRepo.get('LanguageModel');
 				const sel = LM.selected;
 				const localized_string_da_description = LM['translation'][sel]['DA_DESCRIPTION'];
-				const localized_string_da_toggle = LM['translation'][sel]['DA_TOGGLE_DIRECTION'];
+				//const localized_string_da_toggle = LM['translation'][sel]['DA_TOGGLE_DIRECTION'];
 				const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 				const html =
 					'<div class="row">'+
@@ -283,22 +314,24 @@ export default class DistrictAView extends View {
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s6 center">'+
-							//'<a href="javascript:void(0);" id="back" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
 						'</div>'+
+						
+						/*
 						'<div class="col s6 center">'+
 							'<button class="btn waves-effect waves-light" id="toggle-direction">'+localized_string_da_toggle+
 								'<i class="material-icons right">send</i>'+
 							'</button>'+
-							//'<a id="toggle-direction" class="waves-effect waves-light btn-large">Toggle direction</a>'+
 						'</div>'+
+						*/
+						
 					'</div>';
 				$(html).appendTo(this.el);
 				
 				// This button will be available as soon as SVG is fully loaded.
-				$("#toggle-direction").prop("disabled", true);
+				//$("#toggle-direction").prop("disabled", true);
 				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!
 				const svgObj = document.getElementById("svg-object");
@@ -307,7 +340,8 @@ export default class DistrictAView extends View {
 					self.addSVGEventHandlers();
 					self.addEventHandlers();
 					self.localizeSVGTexts();
-					$("#toggle-direction").prop("disabled", false);
+					self.updateLatestValues();
+					//$("#toggle-direction").prop("disabled", false);
 				});
 			}
 			$('#back').on('click',function() {
@@ -315,7 +349,7 @@ export default class DistrictAView extends View {
 			});
 			this.rendered = true;
 		} else {
-			console.log('DistrictAView => render DistrictAModel IS NOT READY!!!!');
+			console.log('DistrictAView => render StatusModel IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

@@ -5,7 +5,7 @@ export default class Controller {
 	Timers are owned by Controller, and any Controller can initialize one or more timers
 	using a syntax like this:
 	
-	this.timers['DistrictAView'] = {timer: undefined, interval: 30000, models:['DistrictAModel']};
+	this.timers['DistrictAView'] = {timer: undefined, interval: 30000, models:['StatusModel']};
 	
 	If there are many charts in one view, a Controller creates a WrapperView, which holds all subviews.
 	It is important to notice here that one chart can display data from multiple models, but one chart 

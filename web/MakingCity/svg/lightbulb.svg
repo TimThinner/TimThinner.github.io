@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">
+<style>
+.edge {
+	stroke: #777;
+	stroke-width: 12;
+	fill: #fff;
+}
+.help {
+	stroke: #f00;
+	stroke-width: 1;
+	fill: red;
+}
+.ray {
+	stroke: #fff;
+	stroke-width: 8;
+	fill: none;
+}
+</style>
+<defs>
+	<radialGradient id="grad" cx="50%" cy="50%" r="75%"><!-- fx="50%" fy="50%">-->
+		<stop offset="50%" style="stop-color:#fff; stop-opacity:1" />
+		<stop offset="70%" style="stop-color:#ccc; stop-opacity:1" />
+		<stop offset="90%" style="stop-color:#999; stop-opacity:1" />
+	</radialGradient>
+</defs>
+<!--<rect x="1" y="1" width="398" height="398" fill="none" stroke-width="1" stroke="#000" />-->
+<g opacity="1">
+	
+	<!--A rx ry x-axis-rotation large-arc-flag sweep-flag x y   L 100,325 -->
+	<path d="M 150,320 
+	C 150 225, 100 250, 100 150 
+	A 100 100 0 0 1 300 150 
+	C 300 250, 250 225, 250 320 L 250 320" fill="url(#grad)" stroke-width="7" stroke="#777" />
+	
+	<path class="edge" d="M 150,320 L 250,320 
+	A 10 10 0 0 1 250 340 L150,340 
+	A 10 10 0 0 1 150 320"/>
+	
+	<path class="edge" d="M 150,340 L 250,340 
+	A 10 10 0 0 1 250 360 L150,360 
+	A 10 10 0 0 1 150 340"/>
+	<path class="edge" d="M 150,360 L 250,360 
+	A 10 10 0 0 1 250 380 L150,380 
+	A 10 10 0 0 1 150 360"/>
+	<path class="edge" d="M 160,380 L 170,395 L 230,395 L240,380"/>
+	
+	
+	<path class="ray" d="M 40 30 L 200 150"/>
+	<!--<path class="ray" d="M 200 0 L 200 150"/>-->
+	<path class="ray" d="M 360 30 L 200 150"/>
+	<path class="ray" d="M 0 150 L 200 150"/>
+	<path class="ray" d="M 40 270 L 200 150"/>
+	<path class="ray" d="M 360 270 L 200 150"/>
+	<path class="ray" d="M 400 150 L 200 150"/>
+	
+	<!--
+	<circle cx="100" cy="325" r="5" fill="red"/>
+	<circle cx="100" cy="225" r="5" fill="red"/>
+	<path class="help" d="M 100,325 L 100,225" />
+	
+	<circle cx="50" cy="250" r="5" fill="red"/>
+	<circle cx="50" cy="150" r="5" fill="red"/>
+	<path class="help" d="M 50,250 L 50,150" />
+	
+	<circle cx="250" cy="150" r="5" fill="red"/>
+	<circle cx="250" cy="250" r="5" fill="red"/>
+	<path class="help" d="M 250,150 L 250,250" />
+	
+	<circle cx="200" cy="225" r="5" fill="red"/>
+	<circle cx="200" cy="325" r="5" fill="red"/>
+	<path class="help" d="M 200,225 L 200,325" />
+	-->
+</g>
+</svg>

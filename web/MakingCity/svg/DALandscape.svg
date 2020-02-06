@@ -4,7 +4,7 @@
 .target {
 	cursor: pointer;
 	fill: #009688;
-	stroke-width: 3;
+	stroke-width: 1;
 	stroke: #fff;
 	fill-opacity: 0.05;
 	transition: transform, fill-opacity, stroke-width;
@@ -43,16 +43,16 @@
 	<path id="p1" d="M 300,400 L 1000,400 
 	M 1000,310 L 1000,500 
 	M 1000,500 L 550,500 
-	A 50,50 0 0,0 500,550 L 500,620 
-	M 700,500 L 700,740 
-	M 900,500 L 900,620 
-	M 1000,500 L 1100,500 L 1100,740 
-	M 1100,500 L 1300,500 L 1300,620 
-	M 1300,500 L 1450,500 A 50,50 0 0,1 1500,550 L 1500,740" 
+	A 50,50 0 0,0 500,550 L 500,600 
+	M 700,500 L 700,720 
+	M 900,500 L 900,600 
+	M 1000,500 L 1100,500 L 1100,720 
+	M 1100,500 L 1300,500 L 1300,600 
+	M 1300,500 L 1450,500 A 50,50 0 0,1 1500,550 L 1500,720" 
 	style="opacity:0.5;stroke:#0a0;stroke-width:15px;stroke-dasharray:30px 10px;fill:none;">
 		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 	</path>
-	<text id="grid-power" x="400" y="370" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#f00">120.0 kW</text>
+	<text id="grid-power" x="400" y="380" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#f00"></text>
 	<!--
 	<rect x="800" y="100" width="400" height="200" fill="#fff" stroke-width="4" stroke="#000" />
 	-->
@@ -61,28 +61,52 @@
 	<image x="800" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
 	<image x="910" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
 	<image x="1020" y="140" width="147" height="133" xlink:href="solarpanel.svg" />
-	
+	<!--
 	<image x="1580" y="210" width="100" height="150" xlink:href="windturbine.svg" />
 	<image x="1450" y="170" width="150" height="225" xlink:href="windturbine.svg" />
 	<image x="1300" y="130" width="200" height="300" xlink:href="windturbine.svg" />
-	
+	-->
 	<svg x="850" y="240" width="300px" height="100px">
 		<!--<rect x="1" y="1" width="298" height="98" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text id="solar-panels" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#000">SOLAR PANELS</text>
 	</svg>
-	
+	<!--
 	<svg x="350" y="620" width="300px" height="100px">
-		<!--<rect x="1" y="1" width="298" height="98" stroke="#fff" stroke-width="1" opacity="0.4" fill="#00f" />-->
-		<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#00897b">click me</text>
+		<rect x="1" y="1" width="298" height="98" stroke="#fff" stroke-width="1" opacity="0.4" fill="#00f" />
+		<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00897b">click me</text>
 	</svg>
+	-->
+	<!--
+	<svg x="550" y="740" width="300px" height="100px">
+		<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00897b">KITCHEN</text>
+	</svg>
+	<svg x="750" y="620" width="300px" height="100px">
+		<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00897b">VENTILATION</text>
+	</svg>
+	<svg x="950" y="740" width="300px" height="100px">
+		<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00897b">OTHER LOADS</text>
+	</svg>
+	<svg x="1150" y="620" width="300px" height="100px">
+		<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00897b">REFRIGERATING MACH</text>
+	</svg>-->
+	<!--
+	<svg x="1350" y="740" width="300px" height="100px">
+		<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00897b">REFRIGERATING EQUIP</text>
+	</svg>
+	-->
+	<image x="450" y="620" width="100" height="100" xlink:href="lightbulb.svg" />
 	
-	<rect class="target" id="target-a-a" x="-150" y="-50" width="300" height="100" transform="translate(500,670) scale(1.0)" />
-	<rect class="target" id="target-a-b" x="-150" y="-50" width="300" height="100" transform="translate(700,790) scale(1.0)" />
-	<rect class="target" id="target-a-c" x="-150" y="-50" width="300" height="100" transform="translate(900,670) scale(1.0)" />
-	<rect class="target" id="target-a-d" x="-150" y="-50" width="300" height="100" transform="translate(1100,790) scale(1.0)" />
-	<rect class="target" id="target-a-e" x="-150" y="-50" width="300" height="100" transform="translate(1300,670) scale(1.0)" />
-	<rect class="target" id="target-a-f" x="-150" y="-50" width="300" height="100" transform="translate(1500,790) scale(1.0)" />
+	<image x="1250" y="620" width="100" height="100" xlink:href="refrigmachines.svg" />
+	<image x="1450" y="740" width="100" height="100" xlink:href="refrigequipments.svg" />
+	
+	<rect class="target" id="target-a-a" x="-80" y="-70" width="160" height="140" transform="translate(500,670) scale(1.0)" />
+	<rect class="target" id="target-a-b" x="-80" y="-70" width="160" height="140" transform="translate(700,790) scale(1.0)" />
+	<rect class="target" id="target-a-c" x="-80" y="-70" width="160" height="140" transform="translate(900,670) scale(1.0)" />
+	<rect class="target" id="target-a-d" x="-80" y="-70" width="160" height="140" transform="translate(1100,790) scale(1.0)" />
+	<rect class="target" id="target-a-e" x="-80" y="-70" width="160" height="140" transform="translate(1300,670) scale(1.0)" />
+	<rect class="target" id="target-a-f" x="-80" y="-70" width="160" height="140" transform="translate(1500,790) scale(1.0)" />
 </g>
+
 <!--
 https://www.youtube.com/watch?v=k6TWzfLGAKo
 16b65f => 00ff00 => 0a0

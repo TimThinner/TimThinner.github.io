@@ -1,5 +1,5 @@
 export default class Configuration {
 	constructor() {
-		this.backend = 'http://foo.bar.fi:3000';
+		this.backend = 'https://makingcity.vtt.fi';
 	}
 }

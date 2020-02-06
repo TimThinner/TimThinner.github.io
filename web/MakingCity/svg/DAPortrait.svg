@@ -4,7 +4,7 @@
 .target {
 	cursor: pointer;
 	fill: #009688;
-	stroke-width: 3;
+	stroke-width: 1;
 	stroke: #fff;
 	fill-opacity: 0.05;
 	transition: transform, fill-opacity, stroke-width;
@@ -64,7 +64,7 @@
 	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
 		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 	</path>
-	<text id="grid-power" x="140" y="390" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#f00">120.0 kW</text>
+	<text id="grid-power" x="160" y="385" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#f00"></text>
 	<!--
 	<rect x="800" y="100" width="400" height="200" fill="#fff" stroke-width="4" stroke="#000" />
 	-->
@@ -73,20 +73,27 @@
 	<image x="170" y="140" width="110" height="100" xlink:href="solarpanel.svg" />
 	<image x="250" y="140" width="110" height="100" xlink:href="solarpanel.svg" />
 	<image x="330" y="140" width="110" height="100" xlink:href="solarpanel.svg" />
-	
+	<!--
 	<image x="500" y="210" width="100" height="150" xlink:href="windturbine.svg" />
 	<image x="450" y="170" width="150" height="225" xlink:href="windturbine.svg" />
 	<image x="400" y="130" width="200" height="300" xlink:href="windturbine.svg" />
-	
+	-->
 	<svg x="160" y="200" width="300px" height="100px">
 		<!--<rect x="1" y="1" width="298" height="98" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text id="solar-panels" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#000">SOLAR PANELS</text>
 	</svg>
 	
+	
+	<!--
 	<svg x="20" y="620" width="140px" height="100px">
-		<!--<rect x="1" y="1" width="298" height="98" stroke="#fff" stroke-width="1" opacity="0.4" fill="#00f" />-->
+		<rect x="1" y="1" width="298" height="98" stroke="#fff" stroke-width="1" opacity="0.4" fill="#00f" />
 		<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00897b">click me</text>
 	</svg>
+	-->
+	<image x="40" y="620" width="100" height="100" xlink:href="lightbulb.svg" />
+	
+	<image x="376" y="620" width="100" height="100" xlink:href="refrigmachines.svg" />
+	<image x="460" y="740" width="100" height="100" xlink:href="refrigequipments.svg" />
 	
 	<rect class="target" id="target-a-a" x="-70" y="-50" width="140" height="100" transform="translate(90,670) scale(1.0)" />
 	<rect class="target" id="target-a-b" x="-70" y="-50" width="140" height="100" transform="translate(174,790) scale(1.0)" />

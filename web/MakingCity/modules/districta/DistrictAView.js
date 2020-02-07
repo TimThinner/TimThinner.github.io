@@ -40,27 +40,89 @@ export default class DistrictAView extends View {
 		this.rendered = false;
 		$(this.el).empty();
 	}
-	
+	updateOne(svgObject, svgId, val) {
+		const textElement = svgObject.getElementById(svgId);
+		while (textElement.firstChild) {
+			textElement.removeChild(textElement.firstChild);
+		}
+		textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+	}
+/*
+meterId
+116		Solar energy		2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
+114		Total consumption	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
+		Lights & appliances	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
+								4 coloured values in same chart:
+103								Indoor lighting (JK_101)
+102								Outdoor lighting (JK_101)
+110								Indoor lighting (JK_102)
+104								Common spaces (JK_101)
+		Kitchen appliances	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
+								3 coloured values in same chart:
+106								R3 Owen
+107								R4 Owen
+108								Dishwasher
+		HPAC				2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
+								3 coloured values in same chart:
+101								HPAC (JK_101)
+105								HPAC (JK_102)
+		Coolers & freezers	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
+								2 coloured values in same chart:
+113								Refrigerating machines
+112								Refrigerating equipments
+		Other				2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
+								2 coloured values in same chart:
+109								Car heating
+111								VSS lighting
+115		Geothermal energy	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
+	*/
 	updateLatestValues() {
 		console.log("UPDATE!");
+		let solar_power = 0;
+		let total_power = 0;
+		let geothermal_power = 0;
+		let cooler_equipment_power = 0;
+		let cooler_machines_power = 0;
+		let lights_power = 0;
+		let kitchen_power = 0;
+		let hpac_power = 0;
+		let other_power = 0;
+		
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (typeof svgObject !== 'undefined') {
 			this.models['StatusModel'].values.forEach(item => {
-				if (item.meterId === 114) {
-					console.log(['item.avPower=',item.avPower]);
-					
-					const newVal = item.avPower.toFixed(1);
-					// {"meterId":114,"meterName":"SPK_sahko_paamittaus","meterType":1,"dateTime":"2020-02-05 08:13:05","energy":444978.4,"avPower":77.143,"timeDiff":70,"energyDiff":1.5},
-					const textElement = svgObject.getElementById('grid-power');
-					
-					while (textElement.firstChild) {
-						textElement.removeChild(textElement.firstChild);
+				if (item.avPower) {
+					if (item.meterId === 116) {
+						solar_power = item.avPower;
+					} else if (item.meterId === 114) {
+						total_power = item.avPower;
+					} else if (item.meterId === 115) {
+						geothermal_power = item.avPower;
+					} else if (item.meterId === 112) {
+						cooler_equipment_power = item.avPower;
+					} else if (item.meterId === 113) {
+						cooler_machines_power = item.avPower;
+					} else if (item.meterId === 102 || item.meterId === 103 || item.meterId === 104 || item.meterId === 110) {
+						lights_power += item.avPower;
+					} else if (item.meterId === 106 || item.meterId === 107 || item.meterId === 108) {
+						kitchen_power += item.avPower;
+					} else if (item.meterId === 101 || item.meterId === 105) {
+						hpac_power += item.avPower;
+					} else if (item.meterId === 109 || item.meterId === 111) {
+						other_power += item.avPower;
 					}
-					var txt = document.createTextNode(newVal + " kW");
-					textElement.appendChild(txt);
-					//textElement.setAttributeNS(null, 'fill', '#0a0');
 				}
 			});
+			console.log(['total_power=',total_power,' solar_power=',solar_power]);
+			// {"meterId":114,"meterName":"SPK_sahko_paamittaus","meterType":1,"dateTime":"2020-02-05 08:13:05","energy":444978.4,"avPower":77.143,"timeDiff":70,"energyDiff":1.5},
+			this.updateOne(svgObject, 'grid-power', total_power);
+			this.updateOne(svgObject, 'solar-power', solar_power);
+			this.updateOne(svgObject, 'lights-power', lights_power);
+			this.updateOne(svgObject, 'kitchen-power', kitchen_power);
+			this.updateOne(svgObject, 'ventilation-power', hpac_power);
+			this.updateOne(svgObject, 'other-power', other_power);
+			this.updateOne(svgObject, 'cooler-machines-power', cooler_machines_power);
+			this.updateOne(svgObject, 'cooler-equipments-power', cooler_equipment_power);
 		}
 	}
 	
@@ -160,6 +222,24 @@ export default class DistrictAView extends View {
 			targetAF.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
 			
+			const targetAG = svgObject.getElementById('target-a-g');
+			targetAG.addEventListener("click", function(){
+				
+				
+			}, false);
+			targetAG.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetAG.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			
+			
+			const targetAH = svgObject.getElementById('target-a-h');
+			targetAH.addEventListener("click", function(){
+				
+				
+			}, false);
+			targetAH.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetAH.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			
+			
 		} else {
 			console.log("svgObject is NOT ready!");
 		}
@@ -181,10 +261,11 @@ export default class DistrictAView extends View {
 			if (typeof svgObject !== 'undefined') {
 				const mode = self.controller.master.modelRepo.get('ResizeObserverModel').mode;
 				//console.log(['mode=',mode]);
-				 
-				//DAPortrait: 		<path id="p1" d="M 140,400 L 300,400 
-				//DASquare.svg: 		<path id="p1" d="M 300,400 L 500,400 
-				//DALandscape.svg:	<path id="p1" d="M 300,400 L 1000,400 
+				
+				IF NEEDED, New values are:
+				PORT: M 160,400 L 300,400
+				SQUA: M 260,400 L 500,400
+				LAND: M 300,400 L 1000,400
 				
 				const ps = {
 					'PORTRAIT' : {'forward':'M 140,400 L 300,400','reverse':'M 300,400 L 140,400' },
@@ -293,7 +374,7 @@ export default class DistrictAView extends View {
 				}
 				const LM = this.controller.master.modelRepo.get('LanguageModel');
 				const sel = LM.selected;
-				const localized_string_da_description = LM['translation'][sel]['DA_DESCRIPTION'];
+				//const localized_string_da_description = LM['translation'][sel]['DA_DESCRIPTION'];
 				//const localized_string_da_toggle = LM['translation'][sel]['DA_TOGGLE_DIRECTION'];
 				const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 				const html =
@@ -307,11 +388,13 @@ export default class DistrictAView extends View {
 					'<div class="row">'+
 						'<div class="col s12 center" id="district-a-view-failure"></div>'+
 					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<h5 id="menu-description" style="color:#777">'+localized_string_da_description+'</h5>'+
-						'</div>'+
-					'</div>'+
+					
+					//'<div class="row">'+
+					//	'<div class="col s12 center">'+
+					//		'<h5 id="menu-description" style="color:#777">'+localized_string_da_description+'</h5>'+
+					//	'</div>'+
+					//'</div>'+
+					
 					'<div class="row">'+
 						'<div class="col s6 center">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+

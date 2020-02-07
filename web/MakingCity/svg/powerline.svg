@@ -2,8 +2,8 @@
 <svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">
 <style>
 polyline {
-	stroke-width: 4;
-	stroke: #fff;
+	stroke-width: 8;
+	stroke: #000;
 	fill: none;
 }
 </style>

@@ -45,14 +45,14 @@
 	A 10 10 0 0 1 150 360"/>
 	<path class="edge" d="M 160,380 L 170,395 L 230,395 L240,380"/>
 	
-	
-	<path class="ray" d="M 40 30 L 200 150"/>
 	<!--<path class="ray" d="M 200 0 L 200 150"/>-->
+	<!--<path class="ray" d="M 40 30 L 200 150"/>
 	<path class="ray" d="M 360 30 L 200 150"/>
 	<path class="ray" d="M 0 150 L 200 150"/>
 	<path class="ray" d="M 40 270 L 200 150"/>
 	<path class="ray" d="M 360 270 L 200 150"/>
 	<path class="ray" d="M 400 150 L 200 150"/>
+	-->
 	
 	<!--
 	<circle cx="100" cy="325" r="5" fill="red"/>

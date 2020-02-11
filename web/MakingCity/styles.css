@@ -97,6 +97,16 @@ html, body {
 	height: 300px;
 	max-width: 100%;
 }
+#total-power-chart {
+	width: 100%;
+	height: 300px;
+	max-width: 100%;
+}
+#total-energy-chart {
+	width: 100%;
+	height: 300px;
+	max-width: 100%;
+}
 .chart-wrapper {
 	padding: 16px 8px;
 	/*border: 1px solid #ccc;*/

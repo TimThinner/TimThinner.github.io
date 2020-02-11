@@ -1,7 +1,7 @@
 
 import WrapperView from '../common/WrapperView.js';
-import SolarChartView from './SolarChartView.js';
-import FooChartView from './FooChartView.js';
+import TotalPowerChartView from './TotalPowerChartView.js';
+import TotalEnergyChartView from './TotalEnergyChartView.js';
 
 export default class DistrictAAWrapperView extends WrapperView {
 	
@@ -9,11 +9,10 @@ export default class DistrictAAWrapperView extends WrapperView {
 		super(controller);
 		
 		// This is a wrapper for two different "subviews":
-		//   - Chart which contains SOLAR POWER AND ENERGY for current day
-		//   - Chart which contains FOO? for last month
-		
-		this.subviews.push(new SolarChartView(this, '#subview-1'));
-		this.subviews.push(new FooChartView(this, '#subview-2'));
+		//   - Chart which contains TOTAL POWER for current day
+		//   - Chart which contains TOTAL ENERGY for current day
+		this.subviews.push(new TotalPowerChartView(this, '#subview-1'));
+		this.subviews.push(new TotalEnergyChartView(this, '#subview-2'));
 	}
 	
 	render() {
@@ -22,13 +21,14 @@ export default class DistrictAAWrapperView extends WrapperView {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
+		const localized_string_daa_title = LM['translation'][sel]['DAA_TITLE'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h3 style="margin-top:0;">CHARTS</h3>'+
-					'<h5 style="color:#aaa">These are only simulated views with random numbers</h5>'+
+					'<h3 style="margin-top:0;">'+localized_string_daa_title+'</h3>'+
+					//'<h5 style="color:#aaa">These are only simulated views with random numbers</h5>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -38,11 +38,10 @@ export default class DistrictAAWrapperView extends WrapperView {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center" id="subview-2">'+
-				//'<p>CHART IS LOADING...</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s6 center">'+
+				'<div class="col s12">'+
 					'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 						'<i class="material-icons left">arrow_back</i>'+
 					'</button>'+
@@ -55,7 +54,7 @@ export default class DistrictAAWrapperView extends WrapperView {
 		});
 		
 		this.showSpinner('#subview-1');
-		this.showSpinner('#subview-2');
+		//this.showSpinner('#subview-2');
 		
 		// Finally render all subviews.
 		//setTimeout(() => {

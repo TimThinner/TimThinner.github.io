@@ -1,6 +1,7 @@
 import Controller from '../common/Controller.js';
-import SolarModel from  './SolarModel.js';
-import FooModel from  './FooModel.js';
+//import SolarModel from  './SolarModel.js';
+//import FooModel from  './FooModel.js';
+import TotalModel from  './TotalModel.js';
 import DistrictAAWrapperView from './DistrictAAWrapperView.js';
 
 export default class DistrictAAController extends Controller {
@@ -18,6 +19,7 @@ export default class DistrictAAController extends Controller {
 	}
 	
 	init() {
+		/*
 		const smodel = new SolarModel();
 		smodel.subscribe(this);
 		//smodel.subscribe(this.master);
@@ -31,9 +33,21 @@ export default class DistrictAAController extends Controller {
 		this.master.modelRepo.add('FooModel',fmodel);
 		this.models['FooModel'] = fmodel;
 		fmodel.fetch();
+		*/
 		
-		this.timers['SolarChartView'] = {timer: undefined, interval: 10000, models:['SolarModel']};
-		this.timers['FooChartView'] = {timer: undefined, interval: 10000, models:['FooModel']};
+		const totmodel = new TotalModel();
+		totmodel.subscribe(this);
+		//totmodel.subscribe(this.master);
+		this.master.modelRepo.add('TotalModel',totmodel);
+		this.models['TotalModel'] = totmodel;
+		totmodel.fetch();
+		
+		
+		
+		//this.timers['SolarChartView'] = {timer: undefined, interval: 10000, models:['SolarModel']};
+		//this.timers['FooChartView'] = {timer: undefined, interval: 10000, models:['FooModel']};
+		this.timers['TotalChartView'] = {timer: undefined, interval: 60000, models:['TotalModel']};
+		
 		
 		this.menuModel = this.master.modelRepo.get('MenuModel');
 		if (this.menuModel) {

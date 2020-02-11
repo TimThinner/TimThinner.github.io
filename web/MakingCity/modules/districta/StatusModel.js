@@ -28,6 +28,10 @@ export default class StatusModel extends Model {
 		}
 		
 		const debug_time_start = moment().valueOf();
+		console.log(['debug_time_start=',debug_time_start]);
+		
+		const today = moment().format('YYYY-MM-DD');
+		console.log(['today=',today]);
 		
 		let status = 500; // error: 500
 		this.errorMessage = '';

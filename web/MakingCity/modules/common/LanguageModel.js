@@ -14,7 +14,8 @@ export default class LanguageModel {
 				'SOLAR_PANELS':'SOLAR PANELS',
 				'GRID_TEXT':'GRID',
 				'DA_BACK':'BACK',
-				'DA_DESCRIPTION':'This view will contain all components for District A.'
+				'DA_DESCRIPTION':'This view will contain all components for District A.',
+				'DAA_TITLE':'Total Consumption'
 			},
 			'fi':{
 				'MENU_D_A_LABEL':'Alue A',
@@ -27,7 +28,8 @@ export default class LanguageModel {
 				'SOLAR_PANELS':'AURINKOPANEELIT',
 				'GRID_TEXT':'SÄHKÖVERKKO',
 				'DA_BACK':'TAKAISIN',
-				'DA_DESCRIPTION':'Tähän näyttöön kaikki tämän alueen komponentit.'
+				'DA_DESCRIPTION':'Tähän näyttöön kaikki tämän alueen komponentit.',
+				'DAA_TITLE':'Kokonaiskulutus'
 			}
 		}
 	}

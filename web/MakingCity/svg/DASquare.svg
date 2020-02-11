@@ -62,19 +62,20 @@
 	
 	<image x="150" y="330" width="100" height="150" xlink:href="powerline.svg" />
 	<image x="430" y="160" width="147" height="133" xlink:href="solarpanel.svg" />
-	
 	<image x="100" y="620" width="100" height="100" xlink:href="lightbulb.svg" />
+	<image x="240" y="740" width="100" height="100" xlink:href="kitchen.svg" />
+	<image x="375" y="615" width="110" height="110" xlink:href="ventilation.svg" />
 	<image x="510" y="720" width="120" height="120" xlink:href="vehicle.svg" />
 	<image x="660" y="620" width="100" height="100" xlink:href="refrigmachines.svg" />
 	<image x="800" y="740" width="100" height="100" xlink:href="refrigequipments.svg" />
 	
-	<rect class="target" id="target-a-a" x="-60" y="-60" width="120" height="120" transform="translate(150,670) scale(1.0)" />
-	<rect class="target" id="target-a-b" x="-60" y="-60" width="120" height="120" transform="translate(290,790) scale(1.0)" />
-	<rect class="target" id="target-a-c" x="-60" y="-60" width="120" height="120" transform="translate(430,670) scale(1.0)" />
-	<rect class="target" id="target-a-d" x="-60" y="-60" width="120" height="120" transform="translate(570,790) scale(1.0)" />
-	<rect class="target" id="target-a-e" x="-60" y="-60" width="120" height="120" transform="translate(710,670) scale(1.0)" />
-	<rect class="target" id="target-a-f" x="-60" y="-60" width="120" height="120" transform="translate(850,790) scale(1.0)" />
-	<rect class="target" id="target-a-g" x="-60" y="-60" width="120" height="120" transform="translate(500,220) scale(1.0)" />
-	<rect class="target" id="target-a-h" x="-60" y="-60" width="120" height="120" transform="translate(200,400) scale(1.0)" />
+	<rect class="target" id="target-a-a" x="-60" y="-60" width="120" height="120" transform="translate(200,400) scale(1.0)" />
+	<rect class="target" id="target-a-b" x="-60" y="-60" width="120" height="120" transform="translate(500,220) scale(1.0)" />
+	<rect class="target" id="target-a-c" x="-60" y="-60" width="120" height="120" transform="translate(150,670) scale(1.0)" />
+	<rect class="target" id="target-a-d" x="-60" y="-60" width="120" height="120" transform="translate(290,790) scale(1.0)" />
+	<rect class="target" id="target-a-e" x="-60" y="-60" width="120" height="120" transform="translate(430,670) scale(1.0)" />
+	<rect class="target" id="target-a-f" x="-60" y="-60" width="120" height="120" transform="translate(570,790) scale(1.0)" />
+	<rect class="target" id="target-a-g" x="-60" y="-60" width="120" height="120" transform="translate(710,670) scale(1.0)" />
+	<rect class="target" id="target-a-h" x="-60" y="-60" width="120" height="120" transform="translate(850,790) scale(1.0)" />
 </g>
 </svg>

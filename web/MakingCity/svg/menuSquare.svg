@@ -46,8 +46,9 @@
 	<image x="480" y="180" width="55" height="50" xlink:href="solarpanel.svg" />
 	<image x="520" y="180" width="55" height="50" xlink:href="solarpanel.svg" />
 	-->
-	<image x="400" y="220" width="200" height="50" xlink:href="smarket.svg" />
-	<image x="410" y="225" width="85" height="19" xlink:href="S-marketin_logo.svg" />
+	
+	<image x="350" y="220" width="300" height="75" xlink:href="smarket.svg" />
+	<image x="365" y="230" width="121.43" height="27.14" xlink:href="S-marketin_logo.svg" />
 	<image x="480" y="180" width="55" height="50" xlink:href="solarpanel.svg" />
 	<image x="520" y="180" width="55" height="50" xlink:href="solarpanel.svg" />
 	

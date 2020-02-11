@@ -244,14 +244,14 @@ export default class MenuView extends View {
 					'<div class="row">'+
 						'<div class="col s12 center" id="menu-view-failure"></div>'+
 					'</div>'+
+					//'<div class="row">'+
+					//	'<div class="col s12 center">'+
+					//		'<h3 id="menu-title" style="color:#777"></h3>'+
+					//	'</div>'+
+					//'</div>'+
 					'<div class="row">'+
 						'<div class="col s12 center">'+
-							'<h3 id="menu-title" style="color:#777"></h3>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<h5 id="menu-description" style="color:#777"></h5>'+
+							'<p id="menu-description" style="color:#777"></p>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);

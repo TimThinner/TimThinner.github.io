@@ -181,6 +181,7 @@ meterId
 			//console.log("svgObject is now ready!");
 			const targetAA = svgObject.getElementById('target-a-a');
 			targetAA.addEventListener("click", function(){
+				console.log('DAA');
 				self.menuModel.setSelected('DAA');
 			}, false);
 			targetAA.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -188,27 +189,35 @@ meterId
 			
 			const targetAB = svgObject.getElementById('target-a-b');
 			targetAB.addEventListener("click", function(){
-				//self.menuModel.setSelected('DAA');
+				console.log('DAB');
+				
+				
 			}, false);
 			targetAB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetAB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
 			const targetAC = svgObject.getElementById('target-a-c');
 			targetAC.addEventListener("click", function(){
-				//self.menuModel.setSelected('DAA');
+				console.log('DAC');
+				
+				
 			}, false);
 			targetAC.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetAC.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
 			const targetAD = svgObject.getElementById('target-a-d');
 			targetAD.addEventListener("click", function(){
-				//self.menuModel.setSelected('DAA');
+				
+				console.log('DAD');
+				
 			}, false);
 			targetAD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetAD.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
 			const targetAE = svgObject.getElementById('target-a-e');
 			targetAE.addEventListener("click", function(){
+				
+				console.log('DAE');
 				//self.menuModel.setSelected('DAA');
 			}, false);
 			targetAE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -217,6 +226,7 @@ meterId
 			const targetAF = svgObject.getElementById('target-a-f');
 			targetAF.addEventListener("click", function(){
 				//self.menuModel.setSelected('DAA');
+				console.log('DAF');
 			}, false);
 			targetAF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetAF.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
@@ -224,7 +234,7 @@ meterId
 			
 			const targetAG = svgObject.getElementById('target-a-g');
 			targetAG.addEventListener("click", function(){
-				
+				console.log('DAG');
 				
 			}, false);
 			targetAG.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -233,7 +243,7 @@ meterId
 			
 			const targetAH = svgObject.getElementById('target-a-h');
 			targetAH.addEventListener("click", function(){
-				
+				console.log('DAH');
 				
 			}, false);
 			targetAH.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -396,7 +406,7 @@ meterId
 					//'</div>'+
 					
 					'<div class="row">'+
-						'<div class="col s6 center">'+
+						'<div class="col s12">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+

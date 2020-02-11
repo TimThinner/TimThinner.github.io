@@ -15,7 +15,14 @@ export default class LanguageModel {
 				'GRID_TEXT':'GRID',
 				'DA_BACK':'BACK',
 				'DA_DESCRIPTION':'This view will contain all components for District A.',
-				'DAA_TITLE':'Total Consumption'
+				'DAA_TITLE':'Total Consumption',
+				'DAA_POWER':'Power',
+				'DAA_ENERGY':'Energy',
+				'AUTO_UPDATE_MSG_1':'Chart is automatically updated once every',
+				'AUTO_UPDATE_MSG_1_B':'Power consumption values are automatically updated once every',
+				'AUTO_UPDATE_MSG_2':'seconds',
+				'AUTO_UPDATE_MSG_3':'Chart is NOT automatically updated',
+				'ADJUST_UPDATE_INTERVAL':'Adjust the update interval (0-60s):'
 			},
 			'fi':{
 				'MENU_D_A_LABEL':'Alue A',
@@ -29,7 +36,14 @@ export default class LanguageModel {
 				'GRID_TEXT':'SÄHKÖVERKKO',
 				'DA_BACK':'TAKAISIN',
 				'DA_DESCRIPTION':'Tähän näyttöön kaikki tämän alueen komponentit.',
-				'DAA_TITLE':'Kokonaiskulutus'
+				'DAA_TITLE':'Kokonaiskulutus',
+				'DAA_POWER':'Teho',
+				'DAA_ENERGY':'Energia',
+				'AUTO_UPDATE_MSG_1':'Kuvaaja päivittyy automaattisesti kerran',
+				'AUTO_UPDATE_MSG_1_B':'Teholukemat päivittyvät automaattisesti kerran',
+				'AUTO_UPDATE_MSG_2':'sekunnissa',
+				'AUTO_UPDATE_MSG_3':'Kuvaaja EI päivity automaattisesti',
+				'ADJUST_UPDATE_INTERVAL':'Säädä päivitystaajuutta (0-60s):'
 			}
 		}
 	}

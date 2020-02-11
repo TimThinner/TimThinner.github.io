@@ -387,6 +387,8 @@ meterId
 				//const localized_string_da_description = LM['translation'][sel]['DA_DESCRIPTION'];
 				//const localized_string_da_toggle = LM['translation'][sel]['DA_TOGGLE_DIRECTION'];
 				const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+				const localized_string_auto_update_msg_1 = LM['translation'][sel]['AUTO_UPDATE_MSG_1_B'];
+				const localized_string_auto_update_msg_2 = LM['translation'][sel]['AUTO_UPDATE_MSG_2'];
 				const html =
 					'<div class="row">'+
 						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
@@ -394,33 +396,30 @@ meterId
 								'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
 							'</div>'+
 						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="district-a-view-failure"></div>'+
-					'</div>'+
-					
-					//'<div class="row">'+
-					//	'<div class="col s12 center">'+
-					//		'<h5 id="menu-description" style="color:#777">'+localized_string_da_description+'</h5>'+
-					//	'</div>'+
-					//'</div>'+
-					
-					'<div class="row">'+
-						'<div class="col s12">'+
+						'<div class="col s6 center" style="margin-top:14px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
 						'</div>'+
-						
-						/*
-						'<div class="col s6 center">'+
-							'<button class="btn waves-effect waves-light" id="toggle-direction">'+localized_string_da_toggle+
-								'<i class="material-icons right">send</i>'+
+						'<div class="col s6">'+
+							'<p style="font-size:14px;color:#888">'+localized_string_auto_update_msg_1+' 30 '+localized_string_auto_update_msg_2+'.</p>'+
+						'</div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s12 center" id="district-a-view-failure"></div>'+
+					'</div>';
+					
+					/*
+					'<div class="row">'+
+						'<div class="col s6">'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
 						'</div>'+
-						*/
-						
-					'</div>';
+						'<div class="col s6">'+
+							'<p style="color:#aaa">'+localized_string_auto_update_msg_1+' 30 '+localized_string_auto_update_msg_2+'.</p>'+
+						'</div>'+
+					'</div>';*/
 				$(html).appendTo(this.el);
 				
 				// This button will be available as soon as SVG is fully loaded.

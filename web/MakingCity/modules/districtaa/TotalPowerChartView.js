@@ -101,6 +101,11 @@ export default class TotalPowerChartView extends View {
 	renderChart() {
 		const self = this;
 		
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_power = LM['translation'][sel]['DAA_POWER'];
+		
 		console.log('Total Power RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
 		
 		const refreshId = this.el.slice(1);
@@ -171,7 +176,7 @@ export default class TotalPowerChartView extends View {
 			
 			valueAxis.renderer.maxLabelPosition = 0.95;
 			valueAxis.renderer.fontSize = "0.75em";
-			valueAxis.title.text = "Power";
+			valueAxis.title.text = localized_string_power;
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
 				return text + " kW";
 			});
@@ -183,7 +188,9 @@ export default class TotalPowerChartView extends View {
 			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			
 			series1.defaultState.transitionDuration = 0;
-			series1.tooltipText = "{name}: {valueY.value} kW";
+			//series1.tooltipText = "{name}: {valueY.value} kW";
+			series1.tooltipText = localized_string_power + ": {valueY.value} kW";
+			
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
@@ -345,6 +352,10 @@ export default class TotalPowerChartView extends View {
 		const self = this;
 		$(this.el).empty();
 		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_adjust_interval = LM['translation'][sel]['ADJUST_UPDATE_INTERVAL'];
+		
 		const refreshId = this.el.slice(1);
 		const html =
 			'<div class="row">'+
@@ -376,7 +387,7 @@ export default class TotalPowerChartView extends View {
 					'<div id="total-power-chart"></div>'+
 					
 					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
-					'<p style="font-size:14px;text-align:left;" class="range-field">Adjust the update interval:'+
+					'<p style="font-size:14px;text-align:left;" class="range-field">'+localized_string_adjust_interval+
 						'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
 					'</p>'+
 				'</div>'+

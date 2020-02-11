@@ -46,7 +46,7 @@ export default class DistrictAAController extends Controller {
 		
 		//this.timers['SolarChartView'] = {timer: undefined, interval: 10000, models:['SolarModel']};
 		//this.timers['FooChartView'] = {timer: undefined, interval: 10000, models:['FooModel']};
-		this.timers['TotalChartView'] = {timer: undefined, interval: 60000, models:['TotalModel']};
+		this.timers['TotalChartView'] = {timer: undefined, interval: 30000, models:['TotalModel']};
 		
 		
 		this.menuModel = this.master.modelRepo.get('MenuModel');

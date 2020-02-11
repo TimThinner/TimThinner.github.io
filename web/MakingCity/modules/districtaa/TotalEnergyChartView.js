@@ -94,6 +94,9 @@ export default class TotalEnergyChartView extends View {
 	renderChart() {
 		const self = this;
 		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_energy = LM['translation'][sel]['DAA_ENERGY'];
 		
 		console.log('Total Energy RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
 		
@@ -163,7 +166,7 @@ export default class TotalEnergyChartView extends View {
 			
 			valueAxis.renderer.maxLabelPosition = 0.95;
 			valueAxis.renderer.fontSize = "0.75em";
-			valueAxis.title.text = "Energy";
+			valueAxis.title.text = localized_string_energy;
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
 				return text + " kWh";
 			});
@@ -175,7 +178,8 @@ export default class TotalEnergyChartView extends View {
 			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			
 			series1.defaultState.transitionDuration = 0;
-			series1.tooltipText = "{name}: {valueY.value} kWh";
+			//series1.tooltipText = "{name}: {valueY.value} kWh";
+			series1.tooltipText = localized_string_energy + ": {valueY.value} kWh";
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;

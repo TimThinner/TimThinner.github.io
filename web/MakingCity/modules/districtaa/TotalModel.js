@@ -193,6 +193,7 @@ export default class TotalModel extends Model {
 				myce.copyTo(self.energyValues);
 				
 				console.log(['BEFORE SORT self.energyValues=',self.energyValues]);
+				
 				// Then sort array based according to time, oldest entry first.
 				self.energyValues.sort(function(a,b){
 					var bb = moment(b.time);

@@ -201,10 +201,25 @@ export default class SolarEnergyChartView extends View {
 			// Scrollbar
 			//const scrollbarX = new am4charts.XYChartScrollbar();
 			
-			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series1);
-			self.chart.scrollbarX.marginBottom = 20;
-			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			//self.chart.scrollbarX = new am4charts.XYChartScrollbar();
+			//self.chart.scrollbarX.series.push(series1);
+			//self.chart.scrollbarX.marginBottom = 20;
+			//self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			
+			
+			
+			var scrollbarX = new am4charts.XYChartScrollbar();
+			scrollbarX.series.push(series1);
+			scrollbarX.marginBottom = 20;
+			scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			self.chart.scrollbarX = scrollbarX;
+			
+			
+			
+			// When you add a series to an XYChartScrollbar by pushing it into its series list, scrollbar makes an exact copy and places it into series list of its child element: scrollbarChart, which is a separate copy of XYChart.
+			//console.log(['self.chart.scrollbarX=',self.chart.scrollbarX]);
+			//console.log(['self.chart.scrollbarX.background=',self.chart.scrollbarX.background]);
+			//self.chart.scrollbarX.background.fill = am4core.color("#017acd");
 			
 			/**
  			* Set up external controls

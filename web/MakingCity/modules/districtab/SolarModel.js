@@ -96,13 +96,13 @@ export default class SolarModel extends Model {
 		json.forEach(item => { 
 			const datetime = item.created_at;
 			if (test.hasOwnProperty(datetime)) {
-				console.log(['DUPLICATE!!!!!! averagePower=',item.averagePower]);
+				//console.log(['DUPLICATE!!!!!! averagePower=',item.averagePower]);
 				if (item.averagePower > test[datetime].averagePower) {
-					console.log('This has MORE averagePower so probably this is the correct one?');
+					//console.log('This has MORE averagePower so probably this is the correct one?');
 					
 					const huh = newJson.pop();
 					if (huh.created_at === datetime) {
-						console.log('YES, Replacing THE CORRECT ONE!');
+						//console.log('YES, Replacing THE CORRECT ONE!');
 						
 						// Just re-assign item 
 						test[datetime] = item;
@@ -170,6 +170,8 @@ export default class SolarModel extends Model {
 				myce.calculateAverage(); 
 				myce.copyTo(self.energyValues);
 				
+				console.log(['BEFORE SORT self.energyValues=',self.energyValues]);
+				
 				// Then sort array based according to time, oldest entry first.
 				self.energyValues.sort(function(a,b){
 					var bb = moment(b.time);
@@ -177,12 +179,15 @@ export default class SolarModel extends Model {
 					return aa - bb;
 				});
 				
+				console.log(['AFTER SORT self.energyValues=',self.energyValues]);
+				
+				
 				const debug_time_elapse = moment().valueOf()-debug_time_start;
 				console.log(['SolarModel fetch debug_time_elapse=',debug_time_elapse]);
 				
 				self.fetching = false;
 				self.ready = true;
-				self.notifyAll({model:'SolarlModel',method:'fetched',status:status,message:'OK'});
+				self.notifyAll({model:'SolarModel',method:'fetched',status:status,message:'OK'});
 			})
 			.catch(error => {
 				self.fetching = false;

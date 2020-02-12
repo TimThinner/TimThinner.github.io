@@ -1,8 +1,8 @@
 import Controller from '../common/Controller.js';
-import TotalModel from  './TotalModel.js';
-import DistrictAAWrapperView from './DistrictAAWrapperView.js';
+import SolarModel from  './SolarModel.js';
+import DistrictABWrapperView from './DistrictABWrapperView.js';
 
-export default class DistrictAAController extends Controller {
+export default class DistrictABController extends Controller {
 	
 	constructor(options) {
 		super(options);
@@ -17,20 +17,20 @@ export default class DistrictAAController extends Controller {
 	}
 	
 	init() {
-		const model = new TotalModel();
+		const model = new SolarModel();
 		model.subscribe(this);
 		//model.subscribe(this.master);
-		this.master.modelRepo.add('TotalModel',model);
-		this.models['TotalModel'] = model;
+		this.master.modelRepo.add('SolarModel',model);
+		this.models['SolarModel'] = model;
 		model.fetch();
 		
-		this.timers['TotalChartView'] = {timer: undefined, interval: 30000, models:['TotalModel']};
+		this.timers['SolarChartView'] = {timer: undefined, interval: 30000, models:['SolarModel']};
 		
 		this.menuModel = this.master.modelRepo.get('MenuModel');
 		if (this.menuModel) {
 			this.menuModel.subscribe(this);
 		}
-		this.view = new DistrictAAWrapperView(this);
+		this.view = new DistrictABWrapperView(this);
 		this.show();
 	}
 }

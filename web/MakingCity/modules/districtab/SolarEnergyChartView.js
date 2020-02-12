@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../common/View.js';
-export default class SolarChartView extends View {
+export default class SolarEnergyChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -29,11 +29,10 @@ export default class SolarChartView extends View {
 			}
 		});
 		
-		// What is the timer name?
-		this.timerName = 'SolarChartView';
+		
+		
 		this.chart = undefined;
 		this.rendered = false;
-		
 	}
 	
 	show() {
@@ -47,7 +46,6 @@ export default class SolarChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
-		
 	}
 	
 	remove() {
@@ -57,7 +55,6 @@ export default class SolarChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
-		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -66,59 +63,28 @@ export default class SolarChartView extends View {
 	updateLatestValues() {
 		console.log("UPDATE!");
 	}
-	/*
-	updateFix() {
-		const self = this;
-		console.log('UPDATE FIX FOR CHART !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-		if (typeof this.chart !== 'undefined') {
-			am4core.iter.each(this.chart.series.iterator(), function (s) {
-				if (s.name === 'POWER') {
-					console.log(["self.models['SolarModel'].powerValues=",self.models['SolarModel'].powerValues]);
-					s.data = self.models['SolarModel'].powerValues;
-				} else {
-					console.log(["self.models['SolarModel'].energyValues=",self.models['SolarModel'].energyValues]);
-					s.data = self.models['SolarModel'].energyValues;
-				}
-			});
-			this.chart.invalidate();
-		} else {
-			console.log('FIX: NO CHART!?');
-		}
-	}
-	*/
+	
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
 			if (options.model==='SolarModel' && options.method==='fetched') {
-				if (this.rendered) {
+				if (this.rendered===true) {
 					if (options.status === 200) {
-						
-						$('#solar-chart-view-failure').empty();
-						
+						$('#solar-energy-chart-view-failure').empty();
 						//this.updateLatestValues();
-						
 						if (typeof this.chart !== 'undefined') {
-							//console.log('fetched ..... SolarChartView CHART UPDATED!');
+							console.log('fetched ..... SolarEnergyChartView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'POWER') {
-									//console.log(["self.models['SolarModel'].powerValues=",self.models['SolarModel'].powerValues]);
-									s.data = self.models['SolarModel'].powerValues;
-								} else {
-									//console.log(["self.models['SolarModel'].energyValues=",self.models['SolarModel'].energyValues]);
-									s.data = self.models['SolarModel'].energyValues;
-								}
+								s.data = self.models['SolarModel'].energyValues;
 							});
-							
-							//this.chart.scrollbarX.deepInvalidate();
-							
 						} else {
-							//console.log('fetched ..... SolarChartView renderChart()');
+							console.log('fetched ..... render SolarEnergyChartView()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#solar-chart-view-failure').empty();
+						$('#solar-energy-chart-view-failure').empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#solar-chart-view-failure');
+						$(html).appendTo('#solar-energy-chart-view-failure');
 					}
 				}
 			}
@@ -128,11 +94,13 @@ export default class SolarChartView extends View {
 	renderChart() {
 		const self = this;
 		
-		console.log('SOLAR RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_energy = LM['translation'][sel]['DAA_ENERGY'];
+		
+		console.log('Solar Energy RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
 		
 		const refreshId = this.el.slice(1);
-		
-		
 		am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -140,12 +108,10 @@ export default class SolarChartView extends View {
 			// Themes end
 			
 			am4core.options.autoSetClassName = true;
-			
-			//console.log(['powerValues=',self.model.powerValues]);
-			//console.log(['energyValues=',self.model.energyValues]);
+			console.log(['values=',self.models['SolarModel'].energyValues]);
 			
 			// Create chart
-			self.chart = am4core.create("solar-chart", am4charts.XYChart);
+			self.chart = am4core.create("solar-energy-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -172,18 +138,13 @@ export default class SolarChartView extends View {
 			// these two lines makes the axis to be initially zoomed-in
 			//dateAxis.start = 0.5;
 			dateAxis.keepSelection = true;
-			dateAxis.tooltipDateFormat = "HH:mm:ss";
+			//dateAxis.tooltipDateFormat = "HH:mm:ss";
+			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
 			
-			// Axis for 
-			//			this.influxModel.dealsBidsAppKey.forEach(item => {
-			//				this.sumBids += item.totalprice;
-			//			});
-			// and 
-			//			this.influxModel.dealsAsksAppKey.forEach(item => {
-			//				this.sumAsks += item.totalprice;
-			//			});
 			const valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
+			
+			valueAxis.min = 0;
 			valueAxis.zIndex = 1;
 			valueAxis.marginTop = 0;
 			valueAxis.renderer.baseGrid.disabled = true;
@@ -198,19 +159,20 @@ export default class SolarChartView extends View {
 			
 			valueAxis.renderer.maxLabelPosition = 0.95;
 			valueAxis.renderer.fontSize = "0.75em";
-			valueAxis.title.text = "Power";
+			valueAxis.title.text = localized_string_energy;
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " W";
+				return text + " kWh";
 			});
 			
 			//valueAxis.min = 0;
 			//valueAxis.max = 200;
-			
-			
-			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
+			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
+			//const series1 = self.chart.series.push(new am4charts.LineSeries());
+			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			
 			series1.defaultState.transitionDuration = 0;
-			series1.tooltipText = "{name}: {valueY.value} W";
+			//series1.tooltipText = "{name}: {valueY.value} kWh";
+			series1.tooltipText = localized_string_energy + ": {valueY.value} kWh";
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
@@ -223,66 +185,12 @@ export default class SolarChartView extends View {
 			series1.tooltip.label.fill = series1.stroke;
 			
 			// TODO
-			series1.data = self.models['SolarModel'].powerValues;
-			//series1.data = self.model.powerValues;
-			
-			
+			series1.data = self.models['SolarModel'].energyValues;
 			series1.dataFields.dateX = "time";
-			series1.dataFields.valueY = "power";
-			series1.name = "POWER";
+			series1.dataFields.valueY = "energy";
+			series1.name = "ENERGY";
 			series1.yAxis = valueAxis;
 			
-			
-			const valueAxis2 = self.chart.yAxes.push(new am4charts.ValueAxis());
-			valueAxis2.tooltip.disabled = true;
-			valueAxis2.zIndex = 1;
-			valueAxis2.marginTop = 0;
-			valueAxis2.renderer.baseGrid.disabled = true;
-			// height of axis
-			valueAxis2.height = am4core.percent(50);
-			//valueAxis2.min = 0; //valueAxis2.minZoomed;
-			//valueAxis2.max = 200; //valueAxis2.maxZoomed;
-			
-			valueAxis2.renderer.gridContainer.background.fill = am4core.color("#000");
-			valueAxis2.renderer.gridContainer.background.fillOpacity = 0.05;
-			valueAxis2.renderer.inside = false;
-			valueAxis2.renderer.labels.template.verticalCenter = "bottom";
-			valueAxis2.renderer.labels.template.padding(2, 2, 2, 2);
-			
-			valueAxis2.renderer.maxLabelPosition = 0.95;
-			valueAxis2.renderer.fontSize = "0.75em";
-			valueAxis2.title.text = "Energy";
-			valueAxis2.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " kWh";
-			});
-			
-			const series2 = self.chart.series.push(new am4charts.StepLineSeries());
-			series2.tooltipText = "{name}: {valueY.value} kWh";
-			series2.stroke = am4core.color("#f55");
-			series2.fill = series2.stroke;
-			series2.fillOpacity = 0.2;
-			
-			series2.tooltip.getFillFromObject = false;
-			series2.tooltip.getStrokeFromObject = true;
-			series2.tooltip.background.fill = am4core.color("#000");
-			series2.tooltip.background.strokeWidth = 1;
-			series2.tooltip.label.fill = series2.stroke;
-			
-			// TODO
-			//series2.data = self.model.energyValues;
-			series2.data = self.models['SolarModel'].energyValues;
-			
-			series2.dataFields.dateX = "time";
-			series2.dataFields.valueY = "energy";
-			series2.name = "ENERGY";
-			series2.yAxis = valueAxis2;
-			/*
-			self.chart.events.on("ready", function(ev) {
-				valueAxis.min = valueAxis.minZoomed;
-				valueAxis.max = valueAxis.maxZoomed;
-				valueAxis2.min = valueAxis2.minZoomed;
-				valueAxis2.max = valueAxis2.maxZoomed;
-			});*/
 			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
@@ -291,12 +199,18 @@ export default class SolarChartView extends View {
 			console.log(['series1.data=',series1.data]);
 			
 			// Scrollbar
-			//const scrollbarX = 
+			//const scrollbarX = new am4charts.XYChartScrollbar();
+			/*
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series1);
-			//scrollbarX.series.push(series2);
 			self.chart.scrollbarX.marginBottom = 20;
 			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			*/
+			
+			
+			
+			
+			
 			
 			/**
  			* Set up external controls
@@ -370,6 +284,9 @@ export default class SolarChartView extends View {
 				*/
 			}
 			
+			
+			/*
+			
 			dateAxis.events.on("selectionextremeschanged", function() {
 				updateFields();
 			});
@@ -415,10 +332,15 @@ export default class SolarChartView extends View {
 					}
 				}, 500);
 			}
-			console.log('SOLAR RENDER CHART END =====================');
+			*/
+			
+			console.log('Solar Energy RENDER CHART END =====================');
+			
 			
 		}); // end am4core.ready()
 	}
+	
+	
 	
 	render() {
 		const self = this;
@@ -429,28 +351,12 @@ export default class SolarChartView extends View {
 		//const sel = LM.selected;
 		//const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		
-				/*const html =
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<h3>Visualizations for component D-A-A will be here soon!</h3>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="solar-chart-view-failure"></div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s6 center">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);*/
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					//'<h6 style="text-align:center;">Blaa blaa blaa</h6>'+
 					
+					/*
 					'<div style="width: 100%; overflow: hidden;">'+ // id="controls"
 						'<div class="input-field col s6">'+
 							'<input id="'+refreshId+'-fromfield" type="text" class="amcharts-input">'+
@@ -460,7 +366,7 @@ export default class SolarChartView extends View {
 							'<input id="'+refreshId+'-tofield" type="text" class="amcharts-input">'+
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
-						/*'<div class="col s12">'+
+						'<div class="col s12">'+
 							'<a href="javascript:void(0);" id="b24h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">24h</a>'+
 							'<a href="javascript:void(0);" id="b12h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">12h</a>'+
 							'<a href="javascript:void(0);" id="b8h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">8h</a>'+
@@ -470,33 +376,34 @@ export default class SolarChartView extends View {
 							'<a href="javascript:void(0);" id="b15m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">15m</a>'+
 							'<a href="javascript:void(0);" id="b5m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">5m</a>'+
 							'<a href="javascript:void(0);" id="b1m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">1m</a>'+
-						'</div>'+*/
-					'</div>'+
+						'</div>'+
+					'</div>'+*/
 					
-					'<div id="solar-chart"></div>'+
+					'<div id="solar-energy-chart"></div>'+
 					
-					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
-					'<p style="font-size:14px;text-align:left;" class="range-field">Adjust the update interval:'+
-						'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
-					'</p>'+
+					//'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
+					//'<p style="font-size:14px;text-align:left;" class="range-field">Adjust the update interval:'+
+					//	'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
+					//'</p>'+
+					
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="solar-chart-view-failure"></div>'+
+				'<div class="col s12" id="solar-energy-chart-view-failure"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
 		
-		this.wrapper.handlePollingInterval(refreshId, this.timerName);
+		//this.wrapper.handlePollingInterval(refreshId, this.timerName);
 		
 		if (this.areModelsReady()) {
-			console.log('SolarChartView => render models READY!!!!');
+			console.log('SolarEnergyChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="solar-chart-view-failure">'+
+						'<div class="col s12 center" id="solar-energy-chart-view-failure">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
@@ -508,17 +415,10 @@ export default class SolarChartView extends View {
 				$(html).appendTo(this.el);
 			} else {
 				this.renderChart();
-				
-				/*
-				setTimeout(() => {
-					console.log('FAKE SOLAR NOTIFY!');
-					this.notify({model:'SolarModel',method:'fetched',status:200,message:'OK'});
-				},1000);
-				*/
 			}
 		} else {
-			console.log('SolarChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#solar-chart');
+			console.log('SolarEnergyChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#solar-energy-chart');
 		}
 	}
 }

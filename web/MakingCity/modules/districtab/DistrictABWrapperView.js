@@ -1,18 +1,18 @@
 
 import WrapperView from '../common/WrapperView.js';
-import TotalPowerChartView from './TotalPowerChartView.js';
-import TotalEnergyChartView from './TotalEnergyChartView.js';
+import SolarPowerChartView from './SolarPowerChartView.js';
+import SolarEnergyChartView from './SolarEnergyChartView.js';
 
-export default class DistrictAAWrapperView extends WrapperView {
+export default class DistrictABWrapperView extends WrapperView {
 	
 	constructor(controller) {
 		super(controller);
 		
 		// This is a wrapper for two different "subviews":
-		//   - Chart which contains TOTAL POWER for current day
-		//   - Chart which contains TOTAL ENERGY for current day
-		this.subviews.push(new TotalPowerChartView(this, '#subview-1'));
-		this.subviews.push(new TotalEnergyChartView(this, '#subview-2'));
+		//   - Chart which contains SOLAR POWER for current day
+		//   - Chart which contains SOLAR ENERGY for current day
+		this.subviews.push(new SolarPowerChartView(this, '#subview-1'));
+		this.subviews.push(new SolarEnergyChartView(this, '#subview-2'));
 	}
 	
 	render() {
@@ -21,14 +21,13 @@ export default class DistrictAAWrapperView extends WrapperView {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_daa_title = LM['translation'][sel]['DAA_TITLE'];
+		const localized_string_dab_title = LM['translation'][sel]['DAB_TITLE'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h3 style="margin-top:0;">'+localized_string_daa_title+'</h3>'+
-					//'<h5 style="color:#aaa">These are only simulated views with random numbers</h5>'+
+					'<h3 style="margin-top:0;">'+localized_string_dab_title+'</h3>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

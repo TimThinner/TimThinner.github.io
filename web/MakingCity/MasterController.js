@@ -5,6 +5,7 @@ import LanguageModel from './modules/common/LanguageModel.js';
 import MenuController from './modules/menu/MenuController.js';
 import DistrictAController from './modules/districta/DistrictAController.js';
 import DistrictAAController from './modules/districtaa/DistrictAAController.js';
+import DistrictABController from './modules/districtab/DistrictABController.js';
 
 class MasterController {
 	
@@ -44,6 +45,10 @@ class MasterController {
 		this.controllers['DAA'] = new DistrictAAController({name:'DAA', master:this, el:'#content', visible:false});
 		this.controllers['DAA'].init();
 		//this.controllers['DAA'].restore();
+		
+		this.controllers['DAB'] = new DistrictABController({name:'DAB', master:this, el:'#content', visible:false});
+		this.controllers['DAB'].init();
+		//this.controllers['DAB'].restore();
 	}
 }
 new MasterController().init();

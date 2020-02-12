@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../common/View.js';
-export default class FooChartView extends View {
+export default class SolarPowerChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -23,16 +23,17 @@ export default class FooChartView extends View {
 		// Which models I have to listen? Select which ones to use here:
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'FooModel') {
+			if (key === 'SolarModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
 		
 		// What is the timer name?
-		this.timerName = 'FooChartView';
+		this.timerName = 'SolarChartView';
 		this.chart = undefined;
 		this.rendered = false;
+		
 	}
 	
 	show() {
@@ -46,6 +47,7 @@ export default class FooChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
+		
 	}
 	
 	remove() {
@@ -55,6 +57,7 @@ export default class FooChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
+		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -67,27 +70,28 @@ export default class FooChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if (options.model==='FooModel' && options.method==='fetched') {
-				if (this.rendered===true) {
+			if (options.model==='SolarModel' && options.method==='fetched') {
+				if (this.rendered) {
 					if (options.status === 200) {
-						$('#foo-chart-view-failure').empty();
+						
+						$('#solar-power-chart-view-failure').empty();
+						
 						//this.updateLatestValues();
+						
 						if (typeof this.chart !== 'undefined') {
-							//console.log('fetched ..... FooChartView CHART UPDATED!');
+							console.log('fetched ..... SolarPowerChartView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'FOOBAR') {
-									s.data = self.models['FooModel'].values;
-								}
+								s.data = self.models['SolarModel'].values;
 							});
-							//this.chart.scrollbarX.deepInvalidate();
+							
 						} else {
-							//console.log('fetched ..... render FooChartView()');
+							console.log('fetched ..... SolarPowerChartView renderChart()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#foo-chart-view-failure').empty();
+						$('#solar-power-chart-view-failure').empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#foo-chart-view-failure');
+						$(html).appendTo('#solar-power-chart-view-failure');
 					}
 				}
 			}
@@ -98,9 +102,15 @@ export default class FooChartView extends View {
 		const self = this;
 		
 		
-		console.log('FOO RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_power = LM['translation'][sel]['DAA_POWER'];
+		
+		console.log('Solar Power RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
 		
 		const refreshId = this.el.slice(1);
+		
+		
 		am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -108,10 +118,12 @@ export default class FooChartView extends View {
 			// Themes end
 			
 			am4core.options.autoSetClassName = true;
-			console.log(['values=',self.models['FooModel'].values]);
+			
+			//console.log(['powerValues=',self.model.powerValues]);
+			//console.log(['energyValues=',self.model.energyValues]);
 			
 			// Create chart
-			self.chart = am4core.create("foo-chart", am4charts.XYChart);
+			self.chart = am4core.create("solar-power-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -138,16 +150,8 @@ export default class FooChartView extends View {
 			// these two lines makes the axis to be initially zoomed-in
 			//dateAxis.start = 0.5;
 			dateAxis.keepSelection = true;
-			//dateAxis.tooltipDateFormat = "HH:mm:ss";
-			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
-			// Axis for 
-			//			this.influxModel.dealsBidsAppKey.forEach(item => {
-			//				this.sumBids += item.totalprice;
-			//			});
-			// and 
-			//			this.influxModel.dealsAsksAppKey.forEach(item => {
-			//				this.sumAsks += item.totalprice;
-			//			});
+			dateAxis.tooltipDateFormat = "HH:mm:ss";
+			
 			const valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
 			valueAxis.zIndex = 1;
@@ -164,19 +168,21 @@ export default class FooChartView extends View {
 			
 			valueAxis.renderer.maxLabelPosition = 0.95;
 			valueAxis.renderer.fontSize = "0.75em";
-			valueAxis.title.text = "Foobar";
+			valueAxis.title.text = localized_string_power;
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " F";
+				return text + " kW";
 			});
 			
 			//valueAxis.min = 0;
 			//valueAxis.max = 200;
-			//const series1 = self.chart.series.push(new am4charts.ColumnSeries());
-			const series1 = self.chart.series.push(new am4charts.LineSeries());
-			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
+			
+			
+			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			
 			series1.defaultState.transitionDuration = 0;
-			series1.tooltipText = "{name}: {valueY.value} F";
+			//series1.tooltipText = "{name}: {valueY.value} kW";
+			series1.tooltipText = localized_string_power + ": {valueY.value} kW";
+			
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
@@ -189,60 +195,29 @@ export default class FooChartView extends View {
 			series1.tooltip.label.fill = series1.stroke;
 			
 			// TODO
-			series1.data = self.models['FooModel'].values;
+			series1.data = self.models['SolarModel'].values;
+			
+			
+			
 			series1.dataFields.dateX = "time";
-			series1.dataFields.valueY = "foobar";
-			series1.name = "FOOBAR";
+			series1.dataFields.valueY = "averagePower";
+			series1.name = "POWER";
 			series1.yAxis = valueAxis;
+			
 			
 			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
 			
-			
 			console.log(['series1.data=',series1.data]);
 			
 			// Scrollbar
-			//const scrollbarX = new am4charts.XYChartScrollbar();
+			/*
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series1);
 			self.chart.scrollbarX.marginBottom = 20;
 			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-			
-			
-			
-			
-			
-/*
-var scrollbarX = new am4charts.XYChartScrollbar();
-scrollbarX.series.push(series);
-scrollbarX.marginBottom = 20;
-scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-chart.scrollbarX = scrollbarX;
-*/
-/*
-var scrollbarX = new am4charts.XYChartScrollbar();
-scrollbarX.series.push(series1);
-scrollbarX.marginBottom = 20;
-var sbSeries = scrollbarX.scrollbarChart.series.getIndex(0);
-sbSeries.dataFields.valueYShow = undefined;
-chart.scrollbarX = scrollbarX;
-*/
-
-/*
-var scrollbarX = new am4charts.XYChartScrollbar();
-
-var sbSeries = chart.series.push(new am4charts.LineSeries());
-sbSeries.dataFields.valueY = "Close";
-sbSeries.dataFields.dateX = "Date";
-scrollbarX.series.push(sbSeries);
-sbSeries.disabled = true;
-scrollbarX.marginBottom = 20;
-chart.scrollbarX = scrollbarX;
-scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-*/
-			
-			
+			*/
 			/**
  			* Set up external controls
  			*/
@@ -305,6 +280,8 @@ scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 				self.controller.changeFetchParams('DEALS', self.selected);
 			});
 			*/
+			
+			
 			function resetButtonClass() {
 				/*
 				const elems = document.getElementsByClassName("my-zoom-button");
@@ -315,6 +292,7 @@ scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 				*/
 			}
 			
+			/*
 			dateAxis.events.on("selectionextremeschanged", function() {
 				updateFields();
 			});
@@ -360,46 +338,26 @@ scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 					}
 				}, 500);
 			}
-			
-			console.log('FOO RENDER CHART END =====================');
-			
+			*/
+			console.log('SOLAR POWER RENDER CHART END =====================');
 			
 		}); // end am4core.ready()
 	}
-	
-	
 	
 	render() {
 		const self = this;
 		$(this.el).empty();
 		
-		const refreshId = this.el.slice(1);
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		//const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_adjust_interval = LM['translation'][sel]['ADJUST_UPDATE_INTERVAL'];
 		
-				/*const html =
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<h3>Visualizations for component D-A-A will be here soon!</h3>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="foo-chart-view-failure"></div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s6 center">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);*/
+		const refreshId = this.el.slice(1);
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					//'<h6 style="text-align:center;">Blaa blaa blaa</h6>'+
 					
+					/*
 					'<div style="width: 100%; overflow: hidden;">'+ // id="controls"
 						'<div class="input-field col s6">'+
 							'<input id="'+refreshId+'-fromfield" type="text" class="amcharts-input">'+
@@ -409,7 +367,7 @@ scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 							'<input id="'+refreshId+'-tofield" type="text" class="amcharts-input">'+
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
-						/*'<div class="col s12">'+
+						'<div class="col s12">'+
 							'<a href="javascript:void(0);" id="b24h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">24h</a>'+
 							'<a href="javascript:void(0);" id="b12h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">12h</a>'+
 							'<a href="javascript:void(0);" id="b8h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">8h</a>'+
@@ -419,19 +377,20 @@ scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 							'<a href="javascript:void(0);" id="b15m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">15m</a>'+
 							'<a href="javascript:void(0);" id="b5m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">5m</a>'+
 							'<a href="javascript:void(0);" id="b1m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">1m</a>'+
-						'</div>'+*/
+						'</div>'+
 					'</div>'+
+					*/
 					
-					'<div id="foo-chart"></div>'+
+					'<div id="solar-power-chart"></div>'+
 					
 					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
-					'<p style="font-size:14px;text-align:left;" class="range-field">Adjust the update interval:'+
+					'<p style="font-size:14px;text-align:left;" class="range-field">'+localized_string_adjust_interval+
 						'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
 					'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="foo-chart-view-failure"></div>'+
+				'<div class="col s12" id="solar-power-chart-view-failure"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
@@ -440,12 +399,12 @@ scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 		this.wrapper.handlePollingInterval(refreshId, this.timerName);
 		
 		if (this.areModelsReady()) {
-			console.log('FooChartView => render models READY!!!!');
+			console.log('SolarPowerChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="foo-chart-view-failure">'+
+						'<div class="col s12 center" id="solar-power-chart-view-failure">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
@@ -457,16 +416,10 @@ scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 				$(html).appendTo(this.el);
 			} else {
 				this.renderChart();
-				/*
-				setTimeout(() => {
-					console.log('FOO FAKE NOTIFY!');
-					this.notify({model:'FooModel',method:'fetched',status:200,message:'OK'});
-				},1000);
-				*/
 			}
 		} else {
-			console.log('FooChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#foo-chart');
+			console.log('SolarPowerChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#solar-power-chart');
 		}
 	}
 }

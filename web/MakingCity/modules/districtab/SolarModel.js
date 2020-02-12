@@ -1,22 +1,13 @@
 import Model from '../common/Model.js';
 /*
-
-https://makingcity.vtt.fi/data/arina/iss/feeds.json?meterId=114&limit=1440&start=2020-02-12&end=2020-02-12
-
-
-[{"created_at":"2020-02-10T00:01:06","meterId":114,"averagePower":28.8,"totalEnergy":451145,"energyDiff":0.6},
-{"created_at":"2020-02-10T00:02:18","meterId":114,"averagePower":35,"totalEnergy":451145.7,"energyDiff":0.7},
-{"created_at":"2020-02-10T00:03:34","meterId":114,"averagePower":28.421,"totalEnergy":451146.3,"energyDiff":0.6},
-
-...
-
-{"created_at":"2020-02-10T14:02:00","meterId":114,"averagePower":83.836,"totalEnergy":451889.4,"energyDiff":1.7},
-{"created_at":"2020-02-10T14:03:19","meterId":114,"averagePower":82.025,"totalEnergy":451891.2,"energyDiff":1.8},
-{"created_at":"2020-02-10T14:04:33","meterId":114,"averagePower":48.649,"totalEnergy":451892.2,"energyDiff":1},
-{"created_at":"2020-02-10T14:05:51","meterId":114,"averagePower":50.769,"totalEnergy":451893.3,"energyDiff":1.1}
-]
+	https://makingcity.vtt.fi/data/arina/iss/feeds.json?meterId=116&limit=1440&start=2020-02-12&end=2020-02-12
+	
+	{"created_at":"2020-02-12T00:24:02","meterId":116,"averagePower":0,"totalEnergy":342.45,"energyDiff":0},
+	{"created_at":"2020-02-12T00:25:18","meterId":116,"averagePower":0,"totalEnergy":342.45,"energyDiff":0},
+	{"created_at":"2020-02-12T00:26:31","meterId":116,"averagePower":0,"totalEnergy":342.45,"energyDiff":0},
+	{"created_at":"2020-02-12T00:27:45","meterId":116,"averagePower":0.486,"totalEnergy":342.46,"energyDiff":0.01}, ...
 */
-export class Total {
+export class Solar {
 	constructor(obj) {
 		this.time = new Date(obj.created_at); // "2020-02-10T00:01:06"
 		this.meterId = obj.meterId; // Number
@@ -89,8 +80,8 @@ export class CalculatedEnergy {
 	}
 }
 
-
-export default class TotalModel extends Model {
+export default class SolarModel extends Model {
+	
 	constructor() {
 		super();
 		this.values = [];
@@ -104,16 +95,34 @@ export default class TotalModel extends Model {
 		const newJson = [];
 		json.forEach(item => { 
 			const datetime = item.created_at;
-			if (item.averagePower > 0) {
-				if (test.hasOwnProperty(datetime)) {
-					console.log(['DUPLICATE!!!!!! averagePower=',item.averagePower]);
-				} else {
-					test[datetime] = item;
-					newJson.push(item);
+			//if (item.averagePower > 0) {
+			if (test.hasOwnProperty(datetime)) {
+				console.log(['DUPLICATE!!!!!! averagePower=',item.averagePower]);
+				
+				if (item.averagePower > test[datetime].averagePower) {
+					console.log('This has MORE averagePower so probably this is the correct one?');
+					
+					const huh = newJson.pop();
+					if (huh.created_at === datetime) {
+						console.log('YES, Replacing THE CORRECT ONE!');
+						
+						// Just re-assign item 
+						test[datetime] = item;
+						newJson.push(item);
+						
+					} else {
+						console.log('SOMETHING IS FISHY HERE!!!????!!!!');
+					}
 				}
+				
+				
 			} else {
-				console.log('item POWER WAS ZERO!!!!!!!!');
+				test[datetime] = item;
+				newJson.push(item);
 			}
+			//} else {
+				//console.log('item POWER WAS ZERO!!!!!!!!');
+			//}
 		});
 		return newJson;
 	}
@@ -121,7 +130,7 @@ export default class TotalModel extends Model {
 	fetch() {
 		const self = this;
 		if (this.fetching) {
-			console.log('TOTAL FETCHING ALREADY IN PROCESS!');
+			console.log('SOLAR FETCHING ALREADY IN PROCESS!');
 			return;
 		}
 		
@@ -135,7 +144,7 @@ export default class TotalModel extends Model {
 		console.log(['today=',today]);
 		
 		// in 24 hours there is 24 x 60 minutes = 1440
-		this.src = 'data/arina/iss/feeds.json?meterId=114&limit=1440'; //&start=2020-02-10&end=2020-02-10
+		this.src = 'data/arina/iss/feeds.json?meterId=116&limit=1440'; //&start=2020-02-10&end=2020-02-10
 		// append start and end date
 		const url = this.backend + '/' + this.src + '&start='+today+'&end='+today;
 		
@@ -149,25 +158,24 @@ export default class TotalModel extends Model {
 				self.values = []; // Start with fresh empty data.
 				self.energyValues = [];
 				
-				console.log(['Total myJson=',myJson]);
+				console.log(['Solar myJson=',myJson]);
 				const newson = self.removeDuplicates(myJson);
 				
 				let myce = new CalculatedEnergy();
 				myce.resetEnergy();
-				//console.log(['myce.energy=',myce.energy]);
+				
 				$.each(newson, function(i,v){
 					
 					// set cumulative energy for each hour.
 					myce.addEnergy(v);
-					const p = new Total(v);
+					const p = new Solar(v);
 					self.values.push(p);
 					
 				});
-				//console.log(['HUU myce.energy=',myce.energy]);
+				
 				myce.calculateAverage(); 
 				myce.copyTo(self.energyValues);
 				
-				console.log(['BEFORE SORT self.energyValues=',self.energyValues]);
 				// Then sort array based according to time, oldest entry first.
 				self.energyValues.sort(function(a,b){
 					var bb = moment(b.time);
@@ -175,21 +183,19 @@ export default class TotalModel extends Model {
 					return aa - bb;
 				});
 				
-				console.log(['AFTER SORT self.energyValues=',self.energyValues]);
-				console.log(['self.values=',self.values]);
-				
 				const debug_time_elapse = moment().valueOf()-debug_time_start;
-				console.log(['TotalModel fetch debug_time_elapse=',debug_time_elapse]);
+				console.log(['SolarModel fetch debug_time_elapse=',debug_time_elapse]);
 				
 				self.fetching = false;
 				self.ready = true;
-				self.notifyAll({model:'TotalModel',method:'fetched',status:status,message:'OK'});
+				self.notifyAll({model:'SolarlModel',method:'fetched',status:status,message:'OK'});
 			})
 			.catch(error => {
 				self.fetching = false;
 				self.ready = true;
 				self.errorMessage = error;
-				self.notifyAll({model:'TotalModel', method:'fetched', status:status, message:error});
+				self.notifyAll({model:'SolarModel', method:'fetched', status:status, message:error});
 			});
 	}
+	
 }

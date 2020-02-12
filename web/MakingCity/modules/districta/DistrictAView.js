@@ -190,7 +190,7 @@ meterId
 			const targetAB = svgObject.getElementById('target-a-b');
 			targetAB.addEventListener("click", function(){
 				console.log('DAB');
-				
+				self.menuModel.setSelected('DAB');
 				
 			}, false);
 			targetAB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

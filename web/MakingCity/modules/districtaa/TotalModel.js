@@ -97,6 +97,22 @@ export default class TotalModel extends Model {
 		this.energyValues = [];
 	}
 	
+	removeDuplicates(json) {
+		// Check if there are timestamp duplicates?
+		const test = {};
+		const newJson = [];
+		json.forEach(item => { 
+			const datetime = item.created_at;
+			if (test.hasOwnProperty(datetime)) {
+				console.log('DUPLICATE!!!!!!');
+			} else {
+				test[datetime] = item;
+				newJson.push(item);
+			}
+		});
+		return newJson;
+	}
+	
 	fetch() {
 		const self = this;
 		if (this.fetching) {
@@ -129,11 +145,12 @@ export default class TotalModel extends Model {
 				self.energyValues = [];
 				
 				console.log(['Total myJson=',myJson]);
+				const newson = self.removeDuplicates(myJson);
 				
 				let myce = new CalculatedEnergy();
 				myce.resetEnergy();
 				//console.log(['myce.energy=',myce.energy]);
-				$.each(myJson, function(i,v){
+				$.each(newson, function(i,v){
 					if (v.averagePower > 0) {
 						// set cumulative energy for each hour.
 						myce.addEnergy(v);

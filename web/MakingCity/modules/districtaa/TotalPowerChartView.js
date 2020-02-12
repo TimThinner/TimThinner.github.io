@@ -220,12 +220,12 @@ export default class TotalPowerChartView extends View {
 			console.log(['series1.data=',series1.data]);
 			
 			// Scrollbar
-			/*
+			
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series1);
 			self.chart.scrollbarX.marginBottom = 20;
 			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-			*/
+			
 			/**
  			* Set up external controls
  			*/
@@ -297,7 +297,7 @@ export default class TotalPowerChartView extends View {
 				$('#'+self.selected).addClass("selected");
 				*/
 			}
-			/*
+			
 			dateAxis.events.on("selectionextremeschanged", function() {
 				updateFields();
 			});
@@ -342,7 +342,7 @@ export default class TotalPowerChartView extends View {
 						dateAxis.zoomToDates(startDate, endDate);
 					}
 				}, 500);
-			}*/
+			}
 			console.log('TOTAL POWER RENDER CHART END =====================');
 			
 		}); // end am4core.ready()
@@ -360,7 +360,6 @@ export default class TotalPowerChartView extends View {
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					/*
 					'<div style="width: 100%; overflow: hidden;">'+ // id="controls"
 						'<div class="input-field col s6">'+
 							'<input id="'+refreshId+'-fromfield" type="text" class="amcharts-input">'+
@@ -370,6 +369,7 @@ export default class TotalPowerChartView extends View {
 							'<input id="'+refreshId+'-tofield" type="text" class="amcharts-input">'+
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
+						/*
 						'<div class="col s12">'+
 							'<a href="javascript:void(0);" id="b24h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">24h</a>'+
 							'<a href="javascript:void(0);" id="b12h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">12h</a>'+
@@ -381,7 +381,8 @@ export default class TotalPowerChartView extends View {
 							'<a href="javascript:void(0);" id="b5m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">5m</a>'+
 							'<a href="javascript:void(0);" id="b1m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">1m</a>'+
 						'</div>'+
-					'</div>'+*/
+						*/
+					'</div>'+
 					
 					'<div id="total-power-chart"></div>'+
 					

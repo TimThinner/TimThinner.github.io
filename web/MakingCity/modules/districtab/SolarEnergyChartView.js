@@ -200,17 +200,11 @@ export default class SolarEnergyChartView extends View {
 			
 			// Scrollbar
 			//const scrollbarX = new am4charts.XYChartScrollbar();
-			/*
+			
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series1);
 			self.chart.scrollbarX.marginBottom = 20;
 			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-			*/
-			
-			
-			
-			
-			
 			
 			/**
  			* Set up external controls
@@ -285,8 +279,6 @@ export default class SolarEnergyChartView extends View {
 			}
 			
 			
-			/*
-			
 			dateAxis.events.on("selectionextremeschanged", function() {
 				updateFields();
 			});
@@ -332,7 +324,7 @@ export default class SolarEnergyChartView extends View {
 					}
 				}, 500);
 			}
-			*/
+			
 			
 			console.log('Solar Energy RENDER CHART END =====================');
 			
@@ -354,9 +346,6 @@ export default class SolarEnergyChartView extends View {
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					//'<h6 style="text-align:center;">Blaa blaa blaa</h6>'+
-					
-					/*
 					'<div style="width: 100%; overflow: hidden;">'+ // id="controls"
 						'<div class="input-field col s6">'+
 							'<input id="'+refreshId+'-fromfield" type="text" class="amcharts-input">'+
@@ -366,6 +355,7 @@ export default class SolarEnergyChartView extends View {
 							'<input id="'+refreshId+'-tofield" type="text" class="amcharts-input">'+
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
+						/*
 						'<div class="col s12">'+
 							'<a href="javascript:void(0);" id="b24h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">24h</a>'+
 							'<a href="javascript:void(0);" id="b12h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">12h</a>'+
@@ -377,7 +367,8 @@ export default class SolarEnergyChartView extends View {
 							'<a href="javascript:void(0);" id="b5m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">5m</a>'+
 							'<a href="javascript:void(0);" id="b1m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">1m</a>'+
 						'</div>'+
-					'</div>'+*/
+						*/
+					'</div>'+
 					
 					'<div id="solar-energy-chart"></div>'+
 					

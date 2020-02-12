@@ -102,7 +102,32 @@ export default class TotalModel extends Model {
 		// And remove those with averagePower=0 at the same time.
 		const test = {};
 		const newJson = [];
-		json.forEach(item => { 
+		json.forEach(item => {
+		
+			const datetime = item.created_at;
+			if (test.hasOwnProperty(datetime)) {
+				console.log(['DUPLICATE!!!!!! averagePower=',item.averagePower]);
+				if (item.averagePower > test[datetime].averagePower) {
+					console.log('This has MORE averagePower so probably this is the correct one?');
+					
+					const huh = newJson.pop();
+					if (huh.created_at === datetime) {
+						console.log('YES, Replacing THE CORRECT ONE!');
+						
+						// Just re-assign item 
+						test[datetime] = item;
+						newJson.push(item);
+						
+					} else {
+						console.log('SOMETHING IS FISHY HERE!!!????!!!!');
+						newJson.push(huh);
+					}
+				}
+			} else {
+				test[datetime] = item;
+				newJson.push(item);
+			}
+			/*
 			const datetime = item.created_at;
 			if (item.averagePower > 0) {
 				if (test.hasOwnProperty(datetime)) {
@@ -113,7 +138,7 @@ export default class TotalModel extends Model {
 				}
 			} else {
 				console.log('item POWER WAS ZERO!!!!!!!!');
-			}
+			}*/
 		});
 		return newJson;
 	}

@@ -95,10 +95,8 @@ export default class SolarModel extends Model {
 		const newJson = [];
 		json.forEach(item => { 
 			const datetime = item.created_at;
-			//if (item.averagePower > 0) {
 			if (test.hasOwnProperty(datetime)) {
 				console.log(['DUPLICATE!!!!!! averagePower=',item.averagePower]);
-				
 				if (item.averagePower > test[datetime].averagePower) {
 					console.log('This has MORE averagePower so probably this is the correct one?');
 					
@@ -112,17 +110,13 @@ export default class SolarModel extends Model {
 						
 					} else {
 						console.log('SOMETHING IS FISHY HERE!!!????!!!!');
+						newJson.push(huh);
 					}
 				}
-				
-				
 			} else {
 				test[datetime] = item;
 				newJson.push(item);
 			}
-			//} else {
-				//console.log('item POWER WAS ZERO!!!!!!!!');
-			//}
 		});
 		return newJson;
 	}

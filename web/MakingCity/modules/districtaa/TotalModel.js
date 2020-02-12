@@ -1,7 +1,7 @@
 import Model from '../common/Model.js';
 /*
 
-https://makingcity.vtt.fi/data/arina/iss/feeds.json?meterId=114&limit=1000&start=2020-02-10&end=2020-02-10
+https://makingcity.vtt.fi/data/arina/iss/feeds.json?meterId=114&limit=1440&start=2020-02-12&end=2020-02-12
 
 
 [{"created_at":"2020-02-10T00:01:06","meterId":114,"averagePower":28.8,"totalEnergy":451145,"energyDiff":0.6},
@@ -99,15 +99,20 @@ export default class TotalModel extends Model {
 	
 	removeDuplicates(json) {
 		// Check if there are timestamp duplicates?
+		// And remove those with averagePower=0 at the same time.
 		const test = {};
 		const newJson = [];
 		json.forEach(item => { 
 			const datetime = item.created_at;
-			if (test.hasOwnProperty(datetime)) {
-				console.log('DUPLICATE!!!!!!');
+			if (item.averagePower > 0) {
+				if (test.hasOwnProperty(datetime)) {
+					console.log(['DUPLICATE!!!!!! averagePower=',item.averagePower]);
+				} else {
+					test[datetime] = item;
+					newJson.push(item);
+				}
 			} else {
-				test[datetime] = item;
-				newJson.push(item);
+				console.log('item POWER WAS ZERO!!!!!!!!');
 			}
 		});
 		return newJson;
@@ -151,12 +156,12 @@ export default class TotalModel extends Model {
 				myce.resetEnergy();
 				//console.log(['myce.energy=',myce.energy]);
 				$.each(newson, function(i,v){
-					if (v.averagePower > 0) {
-						// set cumulative energy for each hour.
-						myce.addEnergy(v);
-						const p = new Total(v);
-						self.values.push(p);
-					}
+					
+					// set cumulative energy for each hour.
+					myce.addEnergy(v);
+					const p = new Total(v);
+					self.values.push(p);
+					
 				});
 				//console.log(['HUU myce.energy=',myce.energy]);
 				myce.calculateAverage(); 

@@ -2,18 +2,18 @@
 import Model from '../common/Model.js';
 
 export default class MenuModel extends Model {
-	constructor() {
-		super();
+	constructor(options) {
+		super(options);
 		this.selected = undefined;
 	}
 	
 	fetch() {
 		if (this.fetching===true) {
-			console.log('FETCHING ALREADY IN PROCESS!');
+			console.log('MENU FETCHING ALREADY IN PROCESS!');
 			return;
 		}
 		this.fetching = true;
-		this.src = 'menu';
+		//this.src = 'menu';
 		const url = this.backend + '/' + this.src;
 		console.log (['fetch url=',url]);
 		// ..and in the fetch ... then or catch parts of code we set this to false...

@@ -15,8 +15,8 @@ export class Status {
 }
 
 export default class StatusModel extends Model {
-	constructor() {
-		super();
+	constructor(options) {
+		super(options); // name and src
 		this.values = [];
 	}
 	
@@ -36,7 +36,7 @@ export default class StatusModel extends Model {
 		let status = 500; // error: 500
 		this.errorMessage = '';
 		this.fetching = true;
-		this.src = 'data/arina/iss/status';
+		
 		const url = this.backend + '/' + this.src;
 		console.log (['fetch url=',url]);
 		fetch(url)
@@ -46,26 +46,26 @@ export default class StatusModel extends Model {
 			})
 			.then(function(myJson) {
 				self.values = []; // Start with fresh array.
-				console.log(['Status myJson=',myJson]);
+				//console.log(['Status myJson=',myJson]);
 				
 				$.each(myJson, function(i,v){
 					const p = new Status(v);
 					self.values.push(p);
 				});
-				console.log(['self.values=',self.values]);
+				//console.log(['self.values=',self.values]);
 				
 				const debug_time_elapse = moment().valueOf()-debug_time_start;
-				console.log(['Status Model fetch debug_time_elapse=',debug_time_elapse]);
+				console.log([self.name,' fetch debug_time_elapse=',debug_time_elapse]);
 				
 				self.fetching = false;
 				self.ready = true;
-				self.notifyAll({model:'StatusModel',method:'fetched',status:status,message:'OK'});
+				self.notifyAll({model:self.name,method:'fetched',status:status,message:'OK'});
 			})
 			.catch(error => {
 				self.fetching = false;
 				self.ready = true;
 				self.errorMessage = error;
-				self.notifyAll({model:'StatusModel', method:'fetched', status:status, message:error});
+				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
 			});
 	}
 }

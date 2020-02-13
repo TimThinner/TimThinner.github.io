@@ -17,7 +17,7 @@ export default class DistrictAAController extends Controller {
 	}
 	
 	init() {
-		const model = new TotalModel();
+		const model = new TotalModel({name:'TotalModel',src:'data/arina/iss/feeds.json?meterId=114&limit=1440'});
 		model.subscribe(this);
 		//model.subscribe(this.master);
 		this.master.modelRepo.add('TotalModel',model);

@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../common/View.js';
-export default class TotalEnergyChartView extends View {
+export default class LightPowerChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -21,16 +21,14 @@ export default class TotalEnergyChartView extends View {
 		this.el = el;
 		
 		// Which models I have to listen? Select which ones to use here:
-		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'TotalModel') {
+			if (key === 'Light102Model' || key === 'Light103Model' || key === 'Light104Model' || key === 'Light110Model') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
-		
-		
-		
+		// What is the timer name?
+		this.timerName = 'LightChartView';
 		this.chart = undefined;
 		this.rendered = false;
 	}
@@ -46,6 +44,7 @@ export default class TotalEnergyChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
+		
 	}
 	
 	remove() {
@@ -55,36 +54,53 @@ export default class TotalEnergyChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
+		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
 	}
 	
-	updateLatestValues() {
-		console.log("UPDATE!");
-	}
-	
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if (options.model==='TotalModel' && options.method==='fetched') {
-				if (this.rendered===true) {
+			if ((options.model==='Light102Model'|| 
+				options.model==='Light103Model'|| 
+				options.model==='Light104Model'|| 
+				options.model==='Light110Model') && options.method==='fetched') {
+				if (this.rendered) {
 					if (options.status === 200) {
-						$('#total-energy-chart-view-failure').empty();
-						//this.updateLatestValues();
+						
+						$('#light-power-chart-view-failure').empty();
+						
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... TotalEnergyChartView CHART UPDATED!');
+							console.log('fetched ..... LightPowerChartView CHART UPDATED!');
+							// 102								Outdoor lighting (JK_101)
+							// 103								Indoor lighting (JK_101)
+							// 104								Common spaces (JK_101)
+							// 110								Indoor lighting (JK_102)
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['TotalModel'].energyValues;
+								if (s.name === 'Outdoor lighting (JK_101)') {
+									s.data = self.models['Light102Model'].values;
+									
+								} else if (s.name === 'Indoor lighting (JK_101)') {
+									s.data = self.models['Light103Model'].values;
+									
+								} else if (s.name === 'Common spaces (JK_101)') {
+									s.data = self.models['Light104Model'].values;
+									
+								} else {
+									s.data = self.models['Light110Model'].values;
+								}
 							});
+							
 						} else {
-							console.log('fetched ..... render TotalEnergyChartView()');
+							console.log('fetched ..... LightPowerChartView renderChart()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#total-energy-chart-view-failure').empty();
+						$('#light-power-chart-view-failure').empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#total-energy-chart-view-failure');
+						$(html).appendTo('#light-power-chart-view-failure');
 					}
 				}
 			}
@@ -94,13 +110,16 @@ export default class TotalEnergyChartView extends View {
 	renderChart() {
 		const self = this;
 		
+		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_energy = LM['translation'][sel]['DAA_ENERGY'];
+		const localized_string_power = LM['translation'][sel]['DAA_POWER'];
 		
-		console.log('Total Energy RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
+		console.log('Light Power RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
 		
 		const refreshId = this.el.slice(1);
+		
+		
 		am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -108,10 +127,9 @@ export default class TotalEnergyChartView extends View {
 			// Themes end
 			
 			am4core.options.autoSetClassName = true;
-			console.log(['values=',self.models['TotalModel'].energyValues]);
 			
 			// Create chart
-			self.chart = am4core.create("total-energy-chart", am4charts.XYChart);
+			self.chart = am4core.create("light-power-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -138,20 +156,10 @@ export default class TotalEnergyChartView extends View {
 			// these two lines makes the axis to be initially zoomed-in
 			//dateAxis.start = 0.5;
 			dateAxis.keepSelection = true;
-			//dateAxis.tooltipDateFormat = "HH:mm:ss";
-			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
-			// Axis for 
-			//			this.influxModel.dealsBidsAppKey.forEach(item => {
-			//				this.sumBids += item.totalprice;
-			//			});
-			// and 
-			//			this.influxModel.dealsAsksAppKey.forEach(item => {
-			//				this.sumAsks += item.totalprice;
-			//			});
+			dateAxis.tooltipDateFormat = "HH:mm:ss";
+			
 			const valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
-			
-			valueAxis.min = 0;
 			valueAxis.zIndex = 1;
 			valueAxis.marginTop = 0;
 			valueAxis.renderer.baseGrid.disabled = true;
@@ -166,52 +174,124 @@ export default class TotalEnergyChartView extends View {
 			
 			valueAxis.renderer.maxLabelPosition = 0.95;
 			valueAxis.renderer.fontSize = "0.75em";
-			valueAxis.title.text = localized_string_energy;
+			valueAxis.title.text = localized_string_power;
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " kWh";
+				return text + " kW";
 			});
 			
 			//valueAxis.min = 0;
 			//valueAxis.max = 200;
-			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
-			//const series1 = self.chart.series.push(new am4charts.LineSeries());
-			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			
-			series1.defaultState.transitionDuration = 0;
-			//series1.tooltipText = "{name}: {valueY.value} kWh";
-			series1.tooltipText = localized_string_energy + ": {valueY.value} kWh";
+			/*
+			NOTE: 
+			Use this order:
+				Indoor lighting (JK_101)	blue
+				Outdoor lighting (JK_101)	red
+				Indoor lighting (JK_102)	orange
+				Common spaces (JK_101)		green
+			*/
 			
+			// 103								Indoor lighting (JK_101)
+			
+			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
+			//series1.tooltipText = "{name}: {valueY.value} kW";
+			series1.tooltipText = "{valueY.value} kW";
+			series1.stroke = am4core.color("#0ff");
+			series1.fill = series1.stroke;
+			//series1.fillOpacity = 0.5;
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
-			series1.stroke = am4core.color("#0f0");
-			series1.fill = series1.stroke;
-			series1.fillOpacity = 0.2;
-			
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			
-			// TODO
-			series1.data = self.models['TotalModel'].energyValues;
+			series1.data = self.models['Light103Model'].values;
 			series1.dataFields.dateX = "time";
-			series1.dataFields.valueY = "energy";
-			series1.name = "ENERGY";
+			series1.dataFields.valueY = "averagePower";
+			series1.name = "Indoor lighting (JK_101)";
 			series1.yAxis = valueAxis;
 			
+			// 102								Outdoor lighting (JK_101)
+			
+			const series2 = self.chart.series.push(new am4charts.StepLineSeries());
+			series2.defaultState.transitionDuration = 0;
+			series2.tooltipText = "{valueY.value} kW";
+			//series2.tooltipText = "{name}: {valueY.value} kW";
+			//series2.tooltipText = localized_string_power + ": {valueY.value} kW";
+			series2.tooltip.getFillFromObject = false;
+			series2.tooltip.getStrokeFromObject = true;
+			series2.stroke = am4core.color("#f00");
+			series2.fill = series2.stroke;
+			//series2.fillOpacity = 0.4;
+			series2.tooltip.background.fill = am4core.color("#000");
+			series2.tooltip.background.strokeWidth = 1;
+			series2.tooltip.label.fill = series2.stroke;
+			series2.data = self.models['Light102Model'].values;
+			series2.dataFields.dateX = "time";
+			series2.dataFields.valueY = "averagePower";
+			series2.name = "Outdoor lighting (JK_101)";
+			series2.yAxis = valueAxis;
+			
+			// 110								Indoor lighting (JK_102)
+			const series3 = self.chart.series.push(new am4charts.StepLineSeries());
+			//series3.tooltipText = "{name}: {valueY.value} kW";
+			series3.tooltipText = "{valueY.value} kW";
+			series3.stroke = am4core.color("#ff0");
+			series3.fill = series3.stroke;
+			//series3.fillOpacity = 0.3;
+			series3.tooltip.getFillFromObject = false;
+			series3.tooltip.getStrokeFromObject = true;
+			series3.tooltip.background.fill = am4core.color("#000");
+			series3.tooltip.background.strokeWidth = 1;
+			series3.tooltip.label.fill = series3.stroke;
+			series3.data = self.models['Light110Model'].values;
+			series3.dataFields.dateX = "time";
+			series3.dataFields.valueY = "averagePower";
+			series3.name = "Indoor lighting (JK_102)";
+			series3.yAxis = valueAxis;
+			
+			// 104								Common spaces (JK_101)
+			
+			const series4 = self.chart.series.push(new am4charts.StepLineSeries());
+			//series4.tooltipText = "{name}: {valueY.value} kW";
+			series4.tooltipText = "{valueY.value} kW";
+			series4.stroke = am4core.color("#0f0");
+			series4.fill = series4.stroke;
+			//series4.fillOpacity = 0.2;
+			series4.tooltip.getFillFromObject = false;
+			series4.tooltip.getStrokeFromObject = true;
+			series4.tooltip.background.fill = am4core.color("#000");
+			series4.tooltip.background.strokeWidth = 1;
+			series4.tooltip.label.fill = series4.stroke;
+			series4.data = self.models['Light104Model'].values;
+			series4.dataFields.dateX = "time";
+			series4.dataFields.valueY = "averagePower";
+			series4.name = "Common spaces (JK_101)";
+			series4.yAxis = valueAxis;
+			
+			
+			self.chart.legend = new am4charts.Legend();
+			self.chart.legend.useDefaultMarker = true;
+			var marker = self.chart.legend.markers.template.children.getIndex(0);
+			marker.cornerRadius(12, 12, 12, 12);
+			marker.strokeWidth = 2;
+			marker.strokeOpacity = 1;
+			marker.stroke = am4core.color("#000");
+			
+			//self.chart.legend.labels.template.text = "[font-size: 14px]{name}";
+			//createLabel("Hello [font-size: 30px]world[/]!");
+			//createLabel("Hello [red bold font-size: 30px]world[/]!");
 			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
 			
-			
-			console.log(['series1.data=',series1.data]);
+			//console.log(['series1.data=',series1.data]);
 			
 			// Scrollbar
-			//const scrollbarX = new am4charts.XYChartScrollbar();
+			
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series1);
+			self.chart.scrollbarX.series.push(series3);
 			self.chart.scrollbarX.marginBottom = 20;
 			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-			
 			
 			/**
  			* Set up external controls
@@ -275,6 +355,8 @@ export default class TotalEnergyChartView extends View {
 				self.controller.changeFetchParams('DEALS', self.selected);
 			});
 			*/
+			
+			
 			function resetButtonClass() {
 				/*
 				const elems = document.getElementsByClassName("my-zoom-button");
@@ -284,6 +366,7 @@ export default class TotalEnergyChartView extends View {
 				$('#'+self.selected).addClass("selected");
 				*/
 			}
+			
 			
 			dateAxis.events.on("selectionextremeschanged", function() {
 				updateFields();
@@ -330,21 +413,21 @@ export default class TotalEnergyChartView extends View {
 					}
 				}, 500);
 			}
-			console.log('Total Energy RENDER CHART END =====================');
+			
+			console.log('LIGHT POWER RENDER CHART END =====================');
+			
 		}); // end am4core.ready()
 	}
-	
-	
 	
 	render() {
 		const self = this;
 		$(this.el).empty();
 		
-		const refreshId = this.el.slice(1);
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		//const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_adjust_interval = LM['translation'][sel]['ADJUST_UPDATE_INTERVAL'];
 		
+		const refreshId = this.el.slice(1);
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
@@ -357,46 +440,32 @@ export default class TotalEnergyChartView extends View {
 							'<input id="'+refreshId+'-tofield" type="text" class="amcharts-input">'+
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
-						/*
-						'<div class="col s12">'+
-							'<a href="javascript:void(0);" id="b24h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">24h</a>'+
-							'<a href="javascript:void(0);" id="b12h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">12h</a>'+
-							'<a href="javascript:void(0);" id="b8h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">8h</a>'+
-							'<a href="javascript:void(0);" id="b4h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">4h</a>'+
-							'<a href="javascript:void(0);" id="b1h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">1h</a>'+
-							'<a href="javascript:void(0);" id="b30m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">30m</a>'+
-							'<a href="javascript:void(0);" id="b15m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">15m</a>'+
-							'<a href="javascript:void(0);" id="b5m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">5m</a>'+
-							'<a href="javascript:void(0);" id="b1m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">1m</a>'+
-						'</div>'+
-						*/
 					'</div>'+
 					
-					'<div id="total-energy-chart" class="energy-chart"></div>'+
+					'<div id="light-power-chart" class="power-chart-tall"></div>'+
 					
-					//'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
-					//'<p style="font-size:14px;text-align:left;" class="range-field">Adjust the update interval:'+
-					//	'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
-					//'</p>'+
-					
+					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
+					'<p style="font-size:14px;text-align:left;" class="range-field">'+localized_string_adjust_interval+
+						'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
+					'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="total-energy-chart-view-failure"></div>'+
+				'<div class="col s12" id="light-power-chart-view-failure"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
 		
-		//this.wrapper.handlePollingInterval(refreshId, this.timerName);
+		this.wrapper.handlePollingInterval(refreshId, this.timerName);
 		
 		if (this.areModelsReady()) {
-			console.log('TotalEnergyChartView => render models READY!!!!');
+			console.log('LightPowerChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="total-energy-chart-view-failure">'+
+						'<div class="col s12 center" id="light-power-chart-view-failure">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
@@ -410,8 +479,8 @@ export default class TotalEnergyChartView extends View {
 				this.renderChart();
 			}
 		} else {
-			console.log('TotalEnergyChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#total-energy-chart');
+			console.log('LightPowerChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#light-power-chart');
 		}
 	}
 }

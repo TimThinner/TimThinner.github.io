@@ -370,22 +370,9 @@ export default class SolarEnergyChartView extends View {
 							'<input id="'+refreshId+'-tofield" type="text" class="amcharts-input">'+
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
-						/*
-						'<div class="col s12">'+
-							'<a href="javascript:void(0);" id="b24h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">24h</a>'+
-							'<a href="javascript:void(0);" id="b12h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">12h</a>'+
-							'<a href="javascript:void(0);" id="b8h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">8h</a>'+
-							'<a href="javascript:void(0);" id="b4h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">4h</a>'+
-							'<a href="javascript:void(0);" id="b1h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">1h</a>'+
-							'<a href="javascript:void(0);" id="b30m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">30m</a>'+
-							'<a href="javascript:void(0);" id="b15m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">15m</a>'+
-							'<a href="javascript:void(0);" id="b5m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">5m</a>'+
-							'<a href="javascript:void(0);" id="b1m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">1m</a>'+
-						'</div>'+
-						*/
 					'</div>'+
 					
-					'<div id="solar-energy-chart"></div>'+
+					'<div id="solar-energy-chart" class="energy-chart"></div>'+
 					
 					//'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
 					//'<p style="font-size:14px;text-align:left;" class="range-field">Adjust the update interval:'+

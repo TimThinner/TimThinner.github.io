@@ -27,7 +27,7 @@ export default class DistrictABWrapperView extends WrapperView {
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h3 style="margin-top:0;">'+localized_string_dab_title+'</h3>'+
+					'<h3 class="da-wrapper-title">'+localized_string_dab_title+'</h3>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

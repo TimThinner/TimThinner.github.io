@@ -6,6 +6,7 @@ import MenuController from './modules/menu/MenuController.js';
 import DistrictAController from './modules/districta/DistrictAController.js';
 import DistrictAAController from './modules/districtaa/DistrictAAController.js';
 import DistrictABController from './modules/districtab/DistrictABController.js';
+import DistrictACController from './modules/districtac/DistrictACController.js';
 
 class MasterController {
 	
@@ -48,7 +49,9 @@ class MasterController {
 		
 		this.controllers['DAB'] = new DistrictABController({name:'DAB', master:this, el:'#content', visible:false});
 		this.controllers['DAB'].init();
-		//this.controllers['DAB'].restore();
+		
+		this.controllers['DAC'] = new DistrictACController({name:'DAC', master:this, el:'#content', visible:false});
+		this.controllers['DAC'].init();
 	}
 }
 new MasterController().init();

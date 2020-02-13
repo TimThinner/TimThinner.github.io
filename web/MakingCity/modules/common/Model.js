@@ -2,9 +2,10 @@ import EventObserver from './EventObserver.js';
 
 export default class Model extends EventObserver {
 	
-	constructor() {
+	constructor(options) {
 		super();
-		this.src = undefined;
+		this.name = options.name;
+		this.src = options.src;
 		this.ready = false;
 		this.errorMessage = '';
 		this.fetching = false;

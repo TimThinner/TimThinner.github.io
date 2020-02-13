@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../common/View.js';
-export default class TotalEnergyChartView extends View {
+export default class LightEnergyChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -23,14 +23,12 @@ export default class TotalEnergyChartView extends View {
 		// Which models I have to listen? Select which ones to use here:
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'TotalModel') {
+			if (key === 'Light102Model' || key === 'Light103Model' || key === 'Light104Model' || key === 'Light110Model') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
-		
-		
-		
+		//this.timerName = 'LightChartView';
 		this.chart = undefined;
 		this.rendered = false;
 	}
@@ -60,31 +58,48 @@ export default class TotalEnergyChartView extends View {
 		});
 	}
 	
-	updateLatestValues() {
-		console.log("UPDATE!");
-	}
-	
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if (options.model==='TotalModel' && options.method==='fetched') {
+			if ((options.model==='Light102Model'|| 
+				options.model==='Light103Model'|| 
+				options.model==='Light104Model'|| 
+				options.model==='Light110Model') && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
-						$('#total-energy-chart-view-failure').empty();
-						//this.updateLatestValues();
+						$('#light-energy-chart-view-failure').empty();
+						
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... TotalEnergyChartView CHART UPDATED!');
+							
+							console.log('fetched ..... LightEnergyChartView CHART UPDATED!');
+							
+							// 102								Outdoor lighting (JK_101)
+							// 103								Indoor lighting (JK_101)
+							// 104								Common spaces (JK_101)
+							// 110								Indoor lighting (JK_102)
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['TotalModel'].energyValues;
+								if (s.name === 'Outdoor lighting (JK_101)') {
+									s.data = self.models['Light102Model'].energyValues;
+									
+								} else if (s.name === 'Indoor lighting (JK_101)') {
+									s.data = self.models['Light103Model'].energyValues;
+									
+								} else if (s.name === 'Common spaces (JK_101)') {
+									s.data = self.models['Light104Model'].energyValues;
+									
+								} else {
+									s.data = self.models['Light110Model'].energyValues;
+								}
 							});
+							
 						} else {
-							console.log('fetched ..... render TotalEnergyChartView()');
+							console.log('fetched ..... render LightEnergyChartView()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#total-energy-chart-view-failure').empty();
+						$('#light-energy-chart-view-failure').empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#total-energy-chart-view-failure');
+						$(html).appendTo('#light-energy-chart-view-failure');
 					}
 				}
 			}
@@ -98,7 +113,7 @@ export default class TotalEnergyChartView extends View {
 		const sel = LM.selected;
 		const localized_string_energy = LM['translation'][sel]['DAA_ENERGY'];
 		
-		console.log('Total Energy RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
+		console.log('Light Energy RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
 		
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
@@ -108,10 +123,9 @@ export default class TotalEnergyChartView extends View {
 			// Themes end
 			
 			am4core.options.autoSetClassName = true;
-			console.log(['values=',self.models['TotalModel'].energyValues]);
 			
 			// Create chart
-			self.chart = am4core.create("total-energy-chart", am4charts.XYChart);
+			self.chart = am4core.create("light-energy-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -140,14 +154,7 @@ export default class TotalEnergyChartView extends View {
 			dateAxis.keepSelection = true;
 			//dateAxis.tooltipDateFormat = "HH:mm:ss";
 			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
-			// Axis for 
-			//			this.influxModel.dealsBidsAppKey.forEach(item => {
-			//				this.sumBids += item.totalprice;
-			//			});
-			// and 
-			//			this.influxModel.dealsAsksAppKey.forEach(item => {
-			//				this.sumAsks += item.totalprice;
-			//			});
+			
 			const valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
 			
@@ -173,30 +180,100 @@ export default class TotalEnergyChartView extends View {
 			
 			//valueAxis.min = 0;
 			//valueAxis.max = 200;
+			
+			/*
+			NOTE: 
+			Use this order:
+				Indoor lighting (JK_101)	blue
+				Outdoor lighting (JK_101)	red
+				Indoor lighting (JK_102)	orange
+				Common spaces (JK_101)		green
+			*/
+			
+			// 103								Indoor lighting (JK_101)
+			
 			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
-			//const series1 = self.chart.series.push(new am4charts.LineSeries());
-			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
-			
-			series1.defaultState.transitionDuration = 0;
 			//series1.tooltipText = "{name}: {valueY.value} kWh";
-			series1.tooltipText = localized_string_energy + ": {valueY.value} kWh";
-			
+			series1.tooltipText = "{valueY.value} kWh";
+			series1.stroke = am4core.color("#0ff");
+			series1.fill = series1.stroke;
+			series1.fillOpacity = 0.5;
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
-			series1.stroke = am4core.color("#0f0");
-			series1.fill = series1.stroke;
-			series1.fillOpacity = 0.2;
-			
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			
-			// TODO
-			series1.data = self.models['TotalModel'].energyValues;
+			series1.data = self.models['Light103Model'].energyValues;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "energy";
-			series1.name = "ENERGY";
+			series1.name = "Indoor lighting (JK_101)";
 			series1.yAxis = valueAxis;
+			
+			// 102								Outdoor lighting (JK_101)
+			
+			const series2 = self.chart.series.push(new am4charts.ColumnSeries());
+			series2.defaultState.transitionDuration = 0;
+			//series2.tooltipText = "{name}: {valueY.value} kWh";
+			//series2.tooltipText = localized_string_energy + ": {valueY.value} kWh";
+			series2.tooltipText = "{valueY.value} kWh";
+			series2.tooltip.getFillFromObject = false;
+			series2.tooltip.getStrokeFromObject = true;
+			series2.stroke = am4core.color("#f00");
+			series2.fill = series2.stroke;
+			series2.fillOpacity = 0.5;
+			series2.tooltip.background.fill = am4core.color("#000");
+			series2.tooltip.background.strokeWidth = 1;
+			series2.tooltip.label.fill = series2.stroke;
+			series2.data = self.models['Light102Model'].energyValues;
+			series2.dataFields.dateX = "time";
+			series2.dataFields.valueY = "energy";
+			series2.name = "Outdoor lighting (JK_101)";
+			series2.yAxis = valueAxis;
+			
+			// 110								Indoor lighting (JK_102)
+			const series3 = self.chart.series.push(new am4charts.ColumnSeries());
+			//series3.tooltipText = "{name}: {valueY.value} kWh";
+			series3.tooltipText = "{valueY.value} kWh";
+			series3.stroke = am4core.color("#ff0");
+			series3.fill = series3.stroke;
+			series3.fillOpacity = 0.5;
+			series3.tooltip.getFillFromObject = false;
+			series3.tooltip.getStrokeFromObject = true;
+			series3.tooltip.background.fill = am4core.color("#000");
+			series3.tooltip.background.strokeWidth = 1;
+			series3.tooltip.label.fill = series3.stroke;
+			series3.data = self.models['Light110Model'].energyValues;
+			series3.dataFields.dateX = "time";
+			series3.dataFields.valueY = "energy";
+			series3.name = "Indoor lighting (JK_102)";
+			series3.yAxis = valueAxis;
+			
+			// 104								Common spaces (JK_101)
+			
+			const series4 = self.chart.series.push(new am4charts.ColumnSeries());
+			//series4.tooltipText = "{name}: {valueY.value} kWh";
+			series4.tooltipText = "{valueY.value} kWh";
+			series4.stroke = am4core.color("#0f0");
+			series4.fill = series4.stroke;
+			series4.fillOpacity = 0.5;
+			series4.tooltip.getFillFromObject = false;
+			series4.tooltip.getStrokeFromObject = true;
+			series4.tooltip.background.fill = am4core.color("#000");
+			series4.tooltip.background.strokeWidth = 1;
+			series4.tooltip.label.fill = series4.stroke;
+			series4.data = self.models['Light104Model'].energyValues;
+			series4.dataFields.dateX = "time";
+			series4.dataFields.valueY = "energy";
+			series4.name = "Common spaces (JK_101)";
+			series4.yAxis = valueAxis;
+			
+			self.chart.legend = new am4charts.Legend();
+			self.chart.legend.useDefaultMarker = true;
+			var marker = self.chart.legend.markers.template.children.getIndex(0);
+			marker.cornerRadius(12, 12, 12, 12);
+			marker.strokeWidth = 2;
+			marker.strokeOpacity = 1;
+			marker.stroke = am4core.color("#000");
 			
 			
 			// Cursor
@@ -207,11 +284,26 @@ export default class TotalEnergyChartView extends View {
 			
 			// Scrollbar
 			//const scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series1);
-			self.chart.scrollbarX.marginBottom = 20;
-			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 			
+			//self.chart.scrollbarX = new am4charts.XYChartScrollbar();
+			//self.chart.scrollbarX.series.push(series1);
+			//self.chart.scrollbarX.marginBottom = 20;
+			//self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			
+			
+			
+			var scrollbarX = new am4charts.XYChartScrollbar();
+			scrollbarX.series.push(series3);
+			scrollbarX.marginBottom = 20;
+			scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			self.chart.scrollbarX = scrollbarX;
+			
+			
+			
+			// When you add a series to an XYChartScrollbar by pushing it into its series list, scrollbar makes an exact copy and places it into series list of its child element: scrollbarChart, which is a separate copy of XYChart.
+			//console.log(['self.chart.scrollbarX=',self.chart.scrollbarX]);
+			//console.log(['self.chart.scrollbarX.background=',self.chart.scrollbarX.background]);
+			//self.chart.scrollbarX.background.fill = am4core.color("#017acd");
 			
 			/**
  			* Set up external controls
@@ -285,6 +377,7 @@ export default class TotalEnergyChartView extends View {
 				*/
 			}
 			
+			
 			dateAxis.events.on("selectionextremeschanged", function() {
 				updateFields();
 			});
@@ -330,7 +423,11 @@ export default class TotalEnergyChartView extends View {
 					}
 				}, 500);
 			}
-			console.log('Total Energy RENDER CHART END =====================');
+			
+			
+			console.log('Light Energy RENDER CHART END =====================');
+			
+			
 		}); // end am4core.ready()
 	}
 	
@@ -341,9 +438,6 @@ export default class TotalEnergyChartView extends View {
 		$(this.el).empty();
 		
 		const refreshId = this.el.slice(1);
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		//const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		
 		const html =
 			'<div class="row">'+
@@ -357,22 +451,9 @@ export default class TotalEnergyChartView extends View {
 							'<input id="'+refreshId+'-tofield" type="text" class="amcharts-input">'+
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
-						/*
-						'<div class="col s12">'+
-							'<a href="javascript:void(0);" id="b24h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">24h</a>'+
-							'<a href="javascript:void(0);" id="b12h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">12h</a>'+
-							'<a href="javascript:void(0);" id="b8h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">8h</a>'+
-							'<a href="javascript:void(0);" id="b4h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">4h</a>'+
-							'<a href="javascript:void(0);" id="b1h-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">1h</a>'+
-							'<a href="javascript:void(0);" id="b30m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">30m</a>'+
-							'<a href="javascript:void(0);" id="b15m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">15m</a>'+
-							'<a href="javascript:void(0);" id="b5m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">5m</a>'+
-							'<a href="javascript:void(0);" id="b1m-ab" class="amcharts-input my-ab-zoom-button" style="float:right;">1m</a>'+
-						'</div>'+
-						*/
 					'</div>'+
 					
-					'<div id="total-energy-chart" class="energy-chart"></div>'+
+					'<div id="light-energy-chart" class="energy-chart-tall"></div>'+
 					
 					//'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
 					//'<p style="font-size:14px;text-align:left;" class="range-field">Adjust the update interval:'+
@@ -382,7 +463,7 @@ export default class TotalEnergyChartView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="total-energy-chart-view-failure"></div>'+
+				'<div class="col s12" id="light-energy-chart-view-failure"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
@@ -391,12 +472,12 @@ export default class TotalEnergyChartView extends View {
 		//this.wrapper.handlePollingInterval(refreshId, this.timerName);
 		
 		if (this.areModelsReady()) {
-			console.log('TotalEnergyChartView => render models READY!!!!');
+			console.log('LightEnergyChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="total-energy-chart-view-failure">'+
+						'<div class="col s12 center" id="light-energy-chart-view-failure">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
@@ -410,8 +491,8 @@ export default class TotalEnergyChartView extends View {
 				this.renderChart();
 			}
 		} else {
-			console.log('TotalEnergyChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#total-energy-chart');
+			console.log('LightEnergyChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#light-energy-chart');
 		}
 	}
 }

@@ -9,7 +9,7 @@ export default class MenuController extends Controller {
 	}
 	
 	init() {
-		const model = new MenuModel();
+		const model = new MenuModel({name:'MenuModel',src:'menu'});
 		model.subscribe(this);
 		//model.subscribe(this.master);
 		this.master.modelRepo.add('MenuModel',model);

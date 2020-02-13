@@ -17,7 +17,7 @@ export default class DistrictABController extends Controller {
 	}
 	
 	init() {
-		const model = new SolarModel();
+		const model = new SolarModel({name:'SolarModel',src:'data/arina/iss/feeds.json?meterId=116&limit=1440'});
 		model.subscribe(this);
 		//model.subscribe(this.master);
 		this.master.modelRepo.add('SolarModel',model);

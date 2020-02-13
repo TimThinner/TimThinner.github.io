@@ -17,7 +17,7 @@ export default class DistrictAController extends Controller {
 	}
 	
 	init() {
-		const model = new StatusModel();
+		const model = new StatusModel({name:'StatusModel',src:'data/arina/iss/status'});
 		model.subscribe(this);
 		//model.subscribe(this.master);
 		this.master.modelRepo.add('StatusModel',model);

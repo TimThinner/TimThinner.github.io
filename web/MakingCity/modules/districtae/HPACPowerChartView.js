@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../common/View.js';
-export default class KitchenPowerChartView extends View {
+export default class HPACPowerChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -22,13 +22,13 @@ export default class KitchenPowerChartView extends View {
 		
 		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'Kitchen106Model' || key === 'Kitchen107Model' || key === 'Kitchen108Model') {
+			if (key === 'HPAC101Model' || key === 'HPAC105Model') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
 		// What is the timer name?
-		this.timerName = 'KitchenChartView';
+		this.timerName = 'HPACChartView';
 		this.chart = undefined;
 		this.rendered = false;
 	}
@@ -63,39 +63,32 @@ export default class KitchenPowerChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if ((options.model==='Kitchen106Model'|| 
-				options.model==='Kitchen107Model'|| 
-				options.model==='Kitchen108Model') && options.method==='fetched') {
+			if ((options.model==='HPAC101Model'||options.model==='HPAC105Model') && options.method==='fetched') {
 				if (this.rendered) {
 					if (options.status === 200) {
 						
-						$('#kitchen-power-chart-view-failure').empty();
+						$('#hpac-power-chart-view-failure').empty();
 						
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... KitchenPowerChartView CHART UPDATED!');
-							// 106								R3 Owen
-							// 107								R4 Owen
-							// 108								Dishwasher
+							console.log('fetched ..... HPACPowerChartView CHART UPDATED!');
+							// 101								HPAC (JK_101)
+							// 105								HPAC (JK_102)
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'R3 Oven') {
-									s.data = self.models['Kitchen106Model'].values;
-									
-								} else if (s.name === 'R4 Oven') {
-									s.data = self.models['Kitchen107Model'].values;
-									
+								if (s.name === 'HPAC (JK_101)') {
+									s.data = self.models['HPAC101Model'].values;
 								} else {
-									s.data = self.models['Kitchen108Model'].values;
+									s.data = self.models['HPAC105Model'].values;
 								}
 							});
 							
 						} else {
-							console.log('fetched ..... KitchenPowerChartView renderChart()');
+							console.log('fetched ..... HPACPowerChartView renderChart()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#kitchen-power-chart-view-failure').empty();
+						$('#hpac-power-chart-view-failure').empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#kitchen-power-chart-view-failure');
+						$(html).appendTo('#hpac-power-chart-view-failure');
 					}
 				}
 			}
@@ -120,7 +113,7 @@ export default class KitchenPowerChartView extends View {
 			am4core.options.autoSetClassName = true;
 			
 			// Create chart
-			self.chart = am4core.create("kitchen-power-chart", am4charts.XYChart);
+			self.chart = am4core.create("hpac-power-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -176,12 +169,11 @@ export default class KitchenPowerChartView extends View {
 			/*
 			NOTE: 
 			Use this order:
-				R3 Oven 	blue
-				R4 Oven 	red
-				Dishwasher	orange
+				101	HPAC (JK_101)
+				105	HPAC (JK_102)
 			*/
 			
-			// 106								R3 Oven
+			// 101		HPAC (JK_101)
 			
 			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			//series1.tooltipText = "{name}: {valueY.value} kW";
@@ -194,13 +186,13 @@ export default class KitchenPowerChartView extends View {
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			series1.data = self.models['Kitchen106Model'].values;
+			series1.data = self.models['HPAC101Model'].values;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "averagePower";
-			series1.name = "R3 Oven";
+			series1.name = "HPAC (JK_101)";
 			series1.yAxis = valueAxis;
 			
-			// 107								R4 Oven
+			// 105		HPAC (JK_102)
 			
 			const series2 = self.chart.series.push(new am4charts.StepLineSeries());
 			series2.defaultState.transitionDuration = 0;
@@ -209,35 +201,17 @@ export default class KitchenPowerChartView extends View {
 			//series2.tooltipText = localized_string_power + ": {valueY.value} kW";
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
-			series2.stroke = am4core.color("#f80");
+			series2.stroke = am4core.color("#ff0");
 			series2.fill = series2.stroke;
 			//series2.fillOpacity = 0.4;
 			series2.tooltip.background.fill = am4core.color("#000");
 			series2.tooltip.background.strokeWidth = 1;
 			series2.tooltip.label.fill = series2.stroke;
-			series2.data = self.models['Kitchen107Model'].values;
+			series2.data = self.models['HPAC105Model'].values;
 			series2.dataFields.dateX = "time";
 			series2.dataFields.valueY = "averagePower";
-			series2.name = "R4 Oven";
+			series2.name = "HPAC (JK_102)";
 			series2.yAxis = valueAxis;
-			
-			// 108								Dishwasher
-			const series3 = self.chart.series.push(new am4charts.StepLineSeries());
-			//series3.tooltipText = "{name}: {valueY.value} kW";
-			series3.tooltipText = "{valueY.value} kW";
-			series3.stroke = am4core.color("#ff0");
-			series3.fill = series3.stroke;
-			//series3.fillOpacity = 0.3;
-			series3.tooltip.getFillFromObject = false;
-			series3.tooltip.getStrokeFromObject = true;
-			series3.tooltip.background.fill = am4core.color("#000");
-			series3.tooltip.background.strokeWidth = 1;
-			series3.tooltip.label.fill = series3.stroke;
-			series3.data = self.models['Kitchen108Model'].values;
-			series3.dataFields.dateX = "time";
-			series3.dataFields.valueY = "averagePower";
-			series3.name = "Dishwasher";
-			series3.yAxis = valueAxis;
 			
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;
@@ -259,7 +233,7 @@ export default class KitchenPowerChartView extends View {
 			// Scrollbar
 			
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series3);
+			self.chart.scrollbarX.series.push(series1);
 			self.chart.scrollbarX.marginBottom = 20;
 			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 			
@@ -384,7 +358,7 @@ export default class KitchenPowerChartView extends View {
 				}, 500);
 			}
 			
-			console.log('KITCHEN POWER RENDER CHART END =====================');
+			console.log('HPAC POWER RENDER CHART END =====================');
 			
 		}); // end am4core.ready()
 	}
@@ -412,7 +386,7 @@ export default class KitchenPowerChartView extends View {
 						'</div>'+
 					'</div>'+
 					
-					'<div id="kitchen-power-chart" class="power-chart-tall"></div>'+
+					'<div id="hpac-power-chart" class="power-chart-tall"></div>'+
 					
 					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
 					'<p style="font-size:14px;text-align:left;" class="range-field">'+localized_string_adjust_interval+
@@ -421,7 +395,7 @@ export default class KitchenPowerChartView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="kitchen-power-chart-view-failure"></div>'+
+				'<div class="col s12" id="hpac-power-chart-view-failure"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
@@ -430,12 +404,12 @@ export default class KitchenPowerChartView extends View {
 		this.wrapper.handlePollingInterval(refreshId, this.timerName);
 		
 		if (this.areModelsReady()) {
-			console.log('KitchenPowerChartView => render models READY!!!!');
+			console.log('HPACPowerChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="kitchen-power-chart-view-failure">'+
+						'<div class="col s12 center" id="hpac-power-chart-view-failure">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
@@ -449,8 +423,8 @@ export default class KitchenPowerChartView extends View {
 				this.renderChart();
 			}
 		} else {
-			console.log('KitchenPowerChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#kitchen-power-chart');
+			console.log('HPACPowerChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#hpac-power-chart');
 		}
 	}
 }

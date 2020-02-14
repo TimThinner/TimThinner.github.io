@@ -31,26 +31,30 @@ export default class DistrictACController extends Controller {
 		//model_102.subscribe(this.master);
 		this.master.modelRepo.add('Light102Model',model_102);
 		this.models['Light102Model'] = model_102;
-		model_102.fetch();
+		//model_102.fetch();
 		
 		const model_103 = new Light103Model({name:'Light103Model',src:'data/arina/iss/feeds.json?meterId=103&limit=1440'});
 		model_103.subscribe(this);
 		this.master.modelRepo.add('Light103Model',model_103);
 		this.models['Light103Model'] = model_103;
-		model_103.fetch();
+		//model_103.fetch();
 		
 		const model_104 = new Light104Model({name:'Light104Model',src:'data/arina/iss/feeds.json?meterId=104&limit=1440'});
 		model_104.subscribe(this);
 		this.master.modelRepo.add('Light104Model',model_104);
 		this.models['Light104Model'] = model_104;
-		model_104.fetch();
+		//model_104.fetch();
 		
 		const model_110 = new Light110Model({name:'Light110Model',src:'data/arina/iss/feeds.json?meterId=110&limit=1440'});
 		model_110.subscribe(this);
 		this.master.modelRepo.add('Light110Model',model_110);
 		this.models['Light110Model'] = model_110;
-		model_110.fetch();
+		//model_110.fetch();
 		
+		setTimeout(() => { model_102.fetch(); }, 400);
+		setTimeout(() => { model_103.fetch(); }, 500);
+		setTimeout(() => { model_104.fetch(); }, 600);
+		setTimeout(() => { model_110.fetch(); }, 700);
 		
 		this.timers['LightChartView'] = {timer: undefined, interval: 30000, models:['Light102Model','Light103Model','Light104Model','Light110Model']};
 		

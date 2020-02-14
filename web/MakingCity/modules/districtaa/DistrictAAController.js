@@ -22,7 +22,8 @@ export default class DistrictAAController extends Controller {
 		//model.subscribe(this.master);
 		this.master.modelRepo.add('TotalModel',model);
 		this.models['TotalModel'] = model;
-		model.fetch();
+		
+		setTimeout(() => { model.fetch(); }, 200);
 		
 		this.timers['TotalChartView'] = {timer: undefined, interval: 30000, models:['TotalModel']};
 		

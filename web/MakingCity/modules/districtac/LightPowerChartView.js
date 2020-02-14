@@ -110,15 +110,11 @@ export default class LightPowerChartView extends View {
 	renderChart() {
 		const self = this;
 		
-		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_power = LM['translation'][sel]['DAA_POWER'];
 		
-		console.log('Light Power RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
-		
 		const refreshId = this.el.slice(1);
-		
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -219,7 +215,7 @@ export default class LightPowerChartView extends View {
 			//series2.tooltipText = localized_string_power + ": {valueY.value} kW";
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
-			series2.stroke = am4core.color("#f00");
+			series2.stroke = am4core.color("#f80");
 			series2.fill = series2.stroke;
 			//series2.fillOpacity = 0.4;
 			series2.tooltip.background.fill = am4core.color("#000");

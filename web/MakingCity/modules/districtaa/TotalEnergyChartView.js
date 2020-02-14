@@ -98,8 +98,6 @@ export default class TotalEnergyChartView extends View {
 		const sel = LM.selected;
 		const localized_string_energy = LM['translation'][sel]['DAA_ENERGY'];
 		
-		console.log('Total Energy RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
-		
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
 			// Themes begin

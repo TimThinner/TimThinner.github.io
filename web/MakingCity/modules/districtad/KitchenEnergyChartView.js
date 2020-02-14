@@ -108,8 +108,6 @@ export default class KitchenEnergyChartView extends View {
 		const sel = LM.selected;
 		const localized_string_energy = LM['translation'][sel]['DAA_ENERGY'];
 		
-		console.log('Kitchen Energy RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
-		
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
 			// Themes begin
@@ -212,7 +210,7 @@ export default class KitchenEnergyChartView extends View {
 			series2.tooltipText = "{valueY.value} kWh";
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
-			series2.stroke = am4core.color("#f00");
+			series2.stroke = am4core.color("#f80");
 			series2.fill = series2.stroke;
 			series2.fillOpacity = 0.5;
 			series2.tooltip.background.fill = am4core.color("#000");

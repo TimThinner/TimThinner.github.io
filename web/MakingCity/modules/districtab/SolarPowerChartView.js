@@ -101,15 +101,11 @@ export default class SolarPowerChartView extends View {
 	renderChart() {
 		const self = this;
 		
-		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_power = LM['translation'][sel]['DAA_POWER'];
 		
-		console.log('Solar Power RENDER CHART!!!!!!!!????!!!!!!!!!!!!!!!!!!!');
-		
 		const refreshId = this.el.slice(1);
-		
 		
 		am4core.ready(function() {
 			// Themes begin

@@ -209,7 +209,7 @@ meterId
 			const targetAD = svgObject.getElementById('target-a-d');
 			targetAD.addEventListener("click", function(){
 				
-				console.log('DAD');
+				self.menuModel.setSelected('DAD');
 				
 			}, false);
 			targetAD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

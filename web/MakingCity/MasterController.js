@@ -7,6 +7,7 @@ import DistrictAController from './modules/districta/DistrictAController.js';
 import DistrictAAController from './modules/districtaa/DistrictAAController.js';
 import DistrictABController from './modules/districtab/DistrictABController.js';
 import DistrictACController from './modules/districtac/DistrictACController.js';
+import DistrictADController from './modules/districtad/DistrictADController.js';
 
 class MasterController {
 	
@@ -52,6 +53,9 @@ class MasterController {
 		
 		this.controllers['DAC'] = new DistrictACController({name:'DAC', master:this, el:'#content', visible:false});
 		this.controllers['DAC'].init();
+		
+		this.controllers['DAD'] = new DistrictADController({name:'DAD', master:this, el:'#content', visible:false});
+		this.controllers['DAD'].init();
 	}
 }
 new MasterController().init();

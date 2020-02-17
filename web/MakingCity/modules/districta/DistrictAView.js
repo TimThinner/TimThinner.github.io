@@ -227,7 +227,7 @@ meterId
 			const targetAF = svgObject.getElementById('target-a-f');
 			targetAF.addEventListener("click", function(){
 				
-				console.log('DAF');
+				self.menuModel.setSelected('DAF');
 				
 			}, false);
 			targetAF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -236,7 +236,8 @@ meterId
 			const targetAG = svgObject.getElementById('target-a-g');
 			targetAG.addEventListener("click", function(){
 				
-				console.log('DAG');
+				self.menuModel.setSelected('DAG');
+				
 				
 			}, false);
 			targetAG.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -245,7 +246,7 @@ meterId
 			const targetAH = svgObject.getElementById('target-a-h');
 			targetAH.addEventListener("click", function(){
 				
-				console.log('DAH');
+				self.menuModel.setSelected('DAG');
 				
 			}, false);
 			targetAH.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../common/View.js';
-export default class KitchenPowerChartView extends View {
+export default class OtherEnergyChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -21,14 +21,14 @@ export default class KitchenPowerChartView extends View {
 		this.el = el;
 		
 		// Which models I have to listen? Select which ones to use here:
+		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'Kitchen106Model' || key === 'Kitchen107Model' || key === 'Kitchen108Model') {
+			if (key === 'Other109Model' || key === 'Other111Model') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
-		// What is the timer name?
-		this.timerName = 'KitchenChartView';
+		//this.timerName = 'OtherChartView';
 		this.chart = undefined;
 		this.rendered = false;
 	}
@@ -44,7 +44,6 @@ export default class KitchenPowerChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
-		
 	}
 	
 	remove() {
@@ -54,7 +53,6 @@ export default class KitchenPowerChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
-		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -63,39 +61,32 @@ export default class KitchenPowerChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if ((options.model==='Kitchen106Model'|| 
-				options.model==='Kitchen107Model'|| 
-				options.model==='Kitchen108Model') && options.method==='fetched') {
-				if (this.rendered) {
+			if ((options.model==='Other109Model'||options.model==='Other111Model') && options.method==='fetched') {
+				if (this.rendered===true) {
 					if (options.status === 200) {
-						
-						$('#kitchen-power-chart-view-failure').empty();
+						$('#other-energy-chart-view-failure').empty();
 						
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... KitchenPowerChartView CHART UPDATED!');
-							// 106								R3 Owen
-							// 107								R4 Owen
-							// 108								Dishwasher
+							
+							console.log('fetched ..... OtherEnergyChartView CHART UPDATED!');
+							//109								Car heating
+							//111								VSS lighting
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'R3 Oven') {
-									s.data = self.models['Kitchen106Model'].values;
-									
-								} else if (s.name === 'R4 Oven') {
-									s.data = self.models['Kitchen107Model'].values;
-									
+								if (s.name === 'Car heating') {
+									s.data = self.models['Other109Model'].energyValues;
 								} else {
-									s.data = self.models['Kitchen108Model'].values;
+									s.data = self.models['Other111Model'].energyValues;
 								}
 							});
 							
 						} else {
-							console.log('fetched ..... KitchenPowerChartView renderChart()');
+							console.log('fetched ..... render OtherEnergyChartView()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#kitchen-power-chart-view-failure').empty();
+						$('#other-energy-chart-view-failure').empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#kitchen-power-chart-view-failure');
+						$(html).appendTo('#other-energy-chart-view-failure');
 					}
 				}
 			}
@@ -107,10 +98,9 @@ export default class KitchenPowerChartView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_power = LM['translation'][sel]['DAA_POWER'];
+		const localized_string_energy = LM['translation'][sel]['DAA_ENERGY'];
 		
 		const refreshId = this.el.slice(1);
-		
 		am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -120,7 +110,7 @@ export default class KitchenPowerChartView extends View {
 			am4core.options.autoSetClassName = true;
 			
 			// Create chart
-			self.chart = am4core.create("kitchen-power-chart", am4charts.XYChart);
+			self.chart = am4core.create("other-energy-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -147,10 +137,13 @@ export default class KitchenPowerChartView extends View {
 			// these two lines makes the axis to be initially zoomed-in
 			//dateAxis.start = 0.5;
 			dateAxis.keepSelection = true;
-			dateAxis.tooltipDateFormat = "HH:mm:ss";
+			//dateAxis.tooltipDateFormat = "HH:mm:ss";
+			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
 			
 			const valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
+			
+			valueAxis.min = 0;
 			valueAxis.zIndex = 1;
 			valueAxis.marginTop = 0;
 			valueAxis.renderer.baseGrid.disabled = true;
@@ -165,79 +158,52 @@ export default class KitchenPowerChartView extends View {
 			
 			valueAxis.renderer.maxLabelPosition = 0.95;
 			valueAxis.renderer.fontSize = "0.75em";
-			valueAxis.title.text = localized_string_power;
+			valueAxis.title.text = localized_string_energy;
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " kW";
+				return text + " kWh";
 			});
 			
 			//valueAxis.min = 0;
 			//valueAxis.max = 200;
 			
-			/*
-			NOTE: 
-			Use this order:
-				R3 Oven 	blue
-				R4 Oven 	red
-				Dishwasher	orange
-			*/
-			
-			// 106								R3 Oven
-			
-			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
-			//series1.tooltipText = "{name}: {valueY.value} kW";
-			series1.tooltipText = "{valueY.value} kW";
+			// 109		Car heating
+			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
+			//series1.tooltipText = "{name}: {valueY.value} kWh";
+			series1.tooltipText = "{valueY.value} kWh";
 			series1.stroke = am4core.color("#0ff");
 			series1.fill = series1.stroke;
-			//series1.fillOpacity = 0.1;
+			series1.fillOpacity = 0.5;
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			series1.data = self.models['Kitchen106Model'].values;
+			series1.data = self.models['Other109Model'].energyValues;
 			series1.dataFields.dateX = "time";
-			series1.dataFields.valueY = "averagePower";
-			series1.name = "R3 Oven";
+			series1.dataFields.valueY = "energy";
+			series1.name = "Car heating";
 			series1.yAxis = valueAxis;
 			
-			// 107								R4 Oven
-			
-			const series2 = self.chart.series.push(new am4charts.StepLineSeries());
+			// 111		VSS lighting
+			const series2 = self.chart.series.push(new am4charts.ColumnSeries());
 			series2.defaultState.transitionDuration = 0;
-			series2.tooltipText = "{valueY.value} kW";
-			//series2.tooltipText = "{name}: {valueY.value} kW";
-			//series2.tooltipText = localized_string_power + ": {valueY.value} kW";
+			//series2.tooltipText = "{name}: {valueY.value} kWh";
+			//series2.tooltipText = localized_string_energy + ": {valueY.value} kWh";
+			series2.tooltipText = "{valueY.value} kWh";
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
-			series2.stroke = am4core.color("#f80");
+			series2.stroke = am4core.color("#ff0");
 			series2.fill = series2.stroke;
-			//series2.fillOpacity = 0.1;
+			series2.fillOpacity = 0.5;
 			series2.tooltip.background.fill = am4core.color("#000");
 			series2.tooltip.background.strokeWidth = 1;
 			series2.tooltip.label.fill = series2.stroke;
-			series2.data = self.models['Kitchen107Model'].values;
+			series2.data = self.models['Other111Model'].energyValues;
 			series2.dataFields.dateX = "time";
-			series2.dataFields.valueY = "averagePower";
-			series2.name = "R4 Oven";
+			series2.dataFields.valueY = "energy";
+			series2.name = "VSS lighting";
 			series2.yAxis = valueAxis;
 			
-			// 108								Dishwasher
-			const series3 = self.chart.series.push(new am4charts.StepLineSeries());
-			//series3.tooltipText = "{name}: {valueY.value} kW";
-			series3.tooltipText = "{valueY.value} kW";
-			series3.stroke = am4core.color("#ff0");
-			series3.fill = series3.stroke;
-			//series3.fillOpacity = 0.1;
-			series3.tooltip.getFillFromObject = false;
-			series3.tooltip.getStrokeFromObject = true;
-			series3.tooltip.background.fill = am4core.color("#000");
-			series3.tooltip.background.strokeWidth = 1;
-			series3.tooltip.label.fill = series3.stroke;
-			series3.data = self.models['Kitchen108Model'].values;
-			series3.dataFields.dateX = "time";
-			series3.dataFields.valueY = "averagePower";
-			series3.name = "Dishwasher";
-			series3.yAxis = valueAxis;
 			
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;
@@ -247,21 +213,35 @@ export default class KitchenPowerChartView extends View {
 			marker.strokeOpacity = 1;
 			marker.stroke = am4core.color("#000");
 			
-			//self.chart.legend.labels.template.text = "[font-size: 14px]{name}";
-			//createLabel("Hello [font-size: 30px]world[/]!");
-			//createLabel("Hello [red bold font-size: 30px]world[/]!");
 			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
 			
-			//console.log(['series1.data=',series1.data]);
+			
+			console.log(['series1.data=',series1.data]);
 			
 			// Scrollbar
+			//const scrollbarX = new am4charts.XYChartScrollbar();
 			
-			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series3);
-			self.chart.scrollbarX.marginBottom = 20;
-			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			//self.chart.scrollbarX = new am4charts.XYChartScrollbar();
+			//self.chart.scrollbarX.series.push(series1);
+			//self.chart.scrollbarX.marginBottom = 20;
+			//self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			
+			
+			
+			var scrollbarX = new am4charts.XYChartScrollbar();
+			scrollbarX.series.push(series1);
+			scrollbarX.marginBottom = 20;
+			scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			self.chart.scrollbarX = scrollbarX;
+			
+			
+			
+			// When you add a series to an XYChartScrollbar by pushing it into its series list, scrollbar makes an exact copy and places it into series list of its child element: scrollbarChart, which is a separate copy of XYChart.
+			//console.log(['self.chart.scrollbarX=',self.chart.scrollbarX]);
+			//console.log(['self.chart.scrollbarX.background=',self.chart.scrollbarX.background]);
+			//self.chart.scrollbarX.background.fill = am4core.color("#017acd");
 			
 			/**
  			* Set up external controls
@@ -325,8 +305,6 @@ export default class KitchenPowerChartView extends View {
 				self.controller.changeFetchParams('DEALS', self.selected);
 			});
 			*/
-			
-			
 			function resetButtonClass() {
 				/*
 				const elems = document.getElementsByClassName("my-zoom-button");
@@ -384,20 +362,21 @@ export default class KitchenPowerChartView extends View {
 				}, 500);
 			}
 			
-			console.log('KITCHEN POWER RENDER CHART END =====================');
+			
+			console.log('Other Energy RENDER CHART END =====================');
+			
 			
 		}); // end am4core.ready()
 	}
+	
+	
 	
 	render() {
 		const self = this;
 		$(this.el).empty();
 		
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		const localized_string_adjust_interval = LM['translation'][sel]['ADJUST_UPDATE_INTERVAL'];
-		
 		const refreshId = this.el.slice(1);
+		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
@@ -412,30 +391,31 @@ export default class KitchenPowerChartView extends View {
 						'</div>'+
 					'</div>'+
 					
-					'<div id="kitchen-power-chart" class="power-chart-tall"></div>'+
+					'<div id="other-energy-chart" class="energy-chart-tall"></div>'+
 					
-					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
-					'<p style="font-size:14px;text-align:left;" class="range-field">'+localized_string_adjust_interval+
-						'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
-					'</p>'+
+					//'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
+					//'<p style="font-size:14px;text-align:left;" class="range-field">Adjust the update interval:'+
+					//	'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
+					//'</p>'+
+					
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="kitchen-power-chart-view-failure"></div>'+
+				'<div class="col s12" id="other-energy-chart-view-failure"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
 		
-		this.wrapper.handlePollingInterval(refreshId, this.timerName);
+		//this.wrapper.handlePollingInterval(refreshId, this.timerName);
 		
 		if (this.areModelsReady()) {
-			console.log('KitchenPowerChartView => render models READY!!!!');
+			console.log('OtherEnergyChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="kitchen-power-chart-view-failure">'+
+						'<div class="col s12 center" id="other-energy-chart-view-failure">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
@@ -449,8 +429,8 @@ export default class KitchenPowerChartView extends View {
 				this.renderChart();
 			}
 		} else {
-			console.log('KitchenPowerChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#kitchen-power-chart');
+			console.log('OtherEnergyChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#other-energy-chart');
 		}
 	}
 }

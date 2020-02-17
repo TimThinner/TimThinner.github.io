@@ -9,6 +9,8 @@ import DistrictABController from './modules/districtab/DistrictABController.js';
 import DistrictACController from './modules/districtac/DistrictACController.js';
 import DistrictADController from './modules/districtad/DistrictADController.js';
 import DistrictAEController from './modules/districtae/DistrictAEController.js';
+import DistrictAFController from './modules/districtaf/DistrictAFController.js';
+import DistrictAGController from './modules/districtag/DistrictAGController.js';
 
 class MasterController {
 	
@@ -58,6 +60,12 @@ class MasterController {
 		
 		this.controllers['DAE'] = new DistrictAEController({name:'DAE', master:this, el:'#content', visible:false});
 		this.controllers['DAE'].init();
+		
+		this.controllers['DAF'] = new DistrictAFController({name:'DAF', master:this, el:'#content', visible:false});
+		this.controllers['DAF'].init();
+		
+		this.controllers['DAG'] = new DistrictAGController({name:'DAG', master:this, el:'#content', visible:false});
+		this.controllers['DAG'].init();
 	}
 }
 new MasterController().init();

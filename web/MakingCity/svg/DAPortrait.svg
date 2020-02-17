@@ -39,7 +39,9 @@
 </svg>
 <g>
 	<path id="p1" d="M 160,400 L 300,400 
-	M 300,260 L 300,500
+	M 300,260 L 300,500 
+	M 480,260 L 480,350 
+	A 50,50 0 0,1 430,400 L 300,400 
 	M 300,500 L 140,500 
 	A 50,50 0 0,0 90,550 L 90,620 
 	M 174,500 L 174,760 
@@ -52,6 +54,8 @@
 	</path>
 	<text id="grid-power" x="170" y="385" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#f00"></text>
 	<text id="solar-power" x="320" y="300" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#0a0"></text>
+	<text id="geothermal-power" x="490" y="300" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#0a0"></text>
+	
 	<text id="lights-power" x="40" y="600" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
 	<text id="kitchen-power" x="124" y="750" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
 	<text id="ventilation-power" x="208" y="600" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
@@ -68,6 +72,8 @@
 	<image x="376" y="620" width="100" height="100" xlink:href="refrigmachines.svg" />
 	<image x="460" y="760" width="100" height="100" xlink:href="refrigequipments.svg" />
 	
+	<image x="430" y="164" width="100" height="100" xlink:href="geothermal.svg" />
+	
 	<rect class="target" id="target-a-a" x="-60" y="-60" width="140" height="100" transform="translate(80,410) scale(1.0)" />
 	<rect class="target" id="target-a-b" x="-60" y="-60" width="140" height="100" transform="translate(290,220) scale(1.0)" />
 	<rect class="target" id="target-a-c" x="-70" y="-50" width="140" height="100" transform="translate(90,670) scale(1.0)" />
@@ -76,5 +82,7 @@
 	<rect class="target" id="target-a-f" x="-70" y="-50" width="140" height="100" transform="translate(342,810) scale(1.0)" />
 	<rect class="target" id="target-a-g" x="-70" y="-50" width="140" height="100" transform="translate(426,670) scale(1.0)" />
 	<rect class="target" id="target-a-h" x="-70" y="-50" width="140" height="100" transform="translate(510,810) scale(1.0)" />
+	
+	<rect class="target" id="target-a-i" x="-60" y="-60" width="140" height="100" transform="translate(470,220) scale(1.0)" />
 </g>
 </svg>

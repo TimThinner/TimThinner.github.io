@@ -11,6 +11,7 @@ import DistrictADController from './modules/districtad/DistrictADController.js';
 import DistrictAEController from './modules/districtae/DistrictAEController.js';
 import DistrictAFController from './modules/districtaf/DistrictAFController.js';
 import DistrictAGController from './modules/districtag/DistrictAGController.js';
+import DistrictAIController from './modules/districtai/DistrictAIController.js';
 
 class MasterController {
 	
@@ -66,6 +67,9 @@ class MasterController {
 		
 		this.controllers['DAG'] = new DistrictAGController({name:'DAG', master:this, el:'#content', visible:false});
 		this.controllers['DAG'].init();
+		
+		this.controllers['DAI'] = new DistrictAIController({name:'DAI', master:this, el:'#content', visible:false});
+		this.controllers['DAI'].init();
 	}
 }
 new MasterController().init();

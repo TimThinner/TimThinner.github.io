@@ -113,10 +113,11 @@ meterId
 					}
 				}
 			});
-			console.log(['total_power=',total_power,' solar_power=',solar_power]);
+			console.log(['total_power=',total_power,' solar_power=',solar_power,' geothermal_power=',geothermal_power]);
 			// {"meterId":114,"meterName":"SPK_sahko_paamittaus","meterType":1,"dateTime":"2020-02-05 08:13:05","energy":444978.4,"avPower":77.143,"timeDiff":70,"energyDiff":1.5},
 			this.updateOne(svgObject, 'grid-power', total_power);
 			this.updateOne(svgObject, 'solar-power', solar_power);
+			this.updateOne(svgObject, 'geothermal-power', geothermal_power);
 			this.updateOne(svgObject, 'lights-power', lights_power);
 			this.updateOne(svgObject, 'kitchen-power', kitchen_power);
 			this.updateOne(svgObject, 'ventilation-power', hpac_power);
@@ -251,6 +252,17 @@ meterId
 			}, false);
 			targetAH.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetAH.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			
+			
+			const targetAI = svgObject.getElementById('target-a-i');
+			targetAI.addEventListener("click", function(){
+				
+				self.menuModel.setSelected('DAI');
+				
+			}, false);
+			targetAI.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetAI.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			
 			
 		} else {
 			console.log("svgObject is NOT ready!");

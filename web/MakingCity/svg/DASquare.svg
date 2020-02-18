@@ -72,11 +72,10 @@
 	<image x="800" y="750" width="100" height="100" xlink:href="refrigequipments.svg" />
 	<image x="660" y="140" width="120" height="120" xlink:href="geothermal.svg" />
 	
+	<!-- Dynamically inserted POWER CONSUMPTION VALUES: -->
 	<text id="grid-power" x="290" y="335" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#f00"></text>
 	<text id="solar-power" x="510" y="320" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#0a0"></text>
 	<text id="geothermal-power" x="730" y="320" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#0a0"></text>
-	
-	<!-- Dynamically inserted POWER CONSUMPTION VALUES: -->
 	<svg x="90" y="550" width="120px" height="40px">
 		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text id="lights-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>

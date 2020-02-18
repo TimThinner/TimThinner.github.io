@@ -10,6 +10,14 @@
 	transition: transform, fill-opacity, stroke-width;
 	transition-duration: 0.5s;
 }
+.section-title {
+	opacity: 0.75;
+	font-family: "Arial, Helvetica, sans-serif";
+	font-size: 28px;
+	fill: #000;
+	/*stroke: #555;*/
+	stroke-width: 1;
+}
 </style>
 <!--
 <rect fill="#fff" stroke="#eee" stroke-width="10" x="5" y="5" width="1790" height="890"/>
@@ -54,8 +62,8 @@
 	</path>
 	
 	<text id="grid-power" x="400" y="380" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#f00"></text>
-	<text id="solar-power" x="1020" y="340" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#0a0"></text>
-	<text id="geothermal-power" x="1320" y="340" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#0a0"></text>
+	<text id="solar-power" x="1020" y="360" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#0a0"></text>
+	<text id="geothermal-power" x="1320" y="360" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#0a0"></text>
 	
 	<text id="lights-power" x="440" y="580" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a"></text>
 	<text id="kitchen-power" x="640" y="700" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a"></text>
@@ -87,6 +95,42 @@
 	
 	<rect class="target" id="target-a-i" x="-80" y="-70" width="160" height="140" transform="translate(1300,230) scale(1.0)" />
 	
+	<svg x="80" y="470" width="280px" height="40px">
+		<!--<rect x="1" y="1" width="278" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-grid-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="860" y="300" width="280px" height="40px">
+		<!--<rect x="1" y="1" width="278" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-solar-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="1160" y="300" width="280px" height="40px">
+		<!--<rect x="1" y="1" width="278" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-geothermal-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="350" y="740" width="280px" height="40px">
+		<!--<rect x="1" y="1" width="278" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-light-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="560" y="860" width="280px" height="40px">
+		<!--<rect x="1" y="1" width="278" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-kitchen-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="760" y="740" width="280px" height="40px">
+		<!--<rect x="1" y="1" width="278" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-hpac-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="960" y="860" width="280px" height="40px">
+		<!--<rect x="1" y="1" width="278" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-other-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="1160" y="740" width="280px" height="40px">
+		<!--<rect x="1" y="1" width="278" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-cooler-machines-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="1360" y="860" width="280px" height="40px">
+		<!--<rect x="1" y="1" width="278" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-cooler-equipment-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
 	<!--
 	<svg x="1400" y="860" width="400px" height="40px">
 		<rect x="1" y="1" width="398" height="98" stroke="#000" stroke-width="1" opacity="1" fill="#009688" />

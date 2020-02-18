@@ -71,7 +71,7 @@ export default class CoolerEnergyChartView extends View {
 							// 113								Refrigerating machines
 							// 112								Refrigerating equipments
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'Refrigerating machines') {
+								if (s.name === 'Cooler machines') {
 									s.data = self.models['Cooler113Model'].energyValues;
 								} else {
 									s.data = self.models['Cooler112Model'].energyValues;
@@ -181,7 +181,7 @@ export default class CoolerEnergyChartView extends View {
 			series1.data = self.models['Cooler113Model'].energyValues;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "energy";
-			series1.name = "Refrigerating machines";
+			series1.name = "Cooler machines";
 			series1.yAxis = valueAxis;
 			
 			// 112								Refrigerating equipments
@@ -202,7 +202,7 @@ export default class CoolerEnergyChartView extends View {
 			series2.data = self.models['Cooler112Model'].energyValues;
 			series2.dataFields.dateX = "time";
 			series2.dataFields.valueY = "energy";
-			series2.name = "Refrigerating equipments";
+			series2.name = "Cooler equipments";
 			series2.yAxis = valueAxis;
 			
 			

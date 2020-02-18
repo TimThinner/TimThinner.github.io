@@ -10,6 +10,14 @@
 	transition: transform, fill-opacity, stroke-width;
 	transition-duration: 0.5s;
 }
+.section-title {
+	opacity: 0.75;
+	font-family: "Arial, Helvetica, sans-serif";
+	font-size: 20px;
+	fill: #000;
+	/*stroke: #555;*/
+	stroke-width: 1;
+}
 </style>
 <!--
 <rect fill="#fff" stroke="#eee" stroke-width="10" x="5" y="5" width="1790" height="890"/>
@@ -43,46 +51,86 @@
 	M 480,260 L 480,350 
 	A 50,50 0 0,1 430,400 L 300,400 
 	M 300,500 L 140,500 
-	A 50,50 0 0,0 90,550 L 90,620 
+	A 50,50 0 0,0 90,550 L 90,580 
 	M 174,500 L 174,760 
-	M 258,500 L 258,620 
+	M 258,500 L 258,580 
 	M 300,500 L 342,500 L 342,760 
-	M 342,500 L 426,500 L 426,620
+	M 342,500 L 426,500 L 426,580
 	M 426,500 L 460,500 A 50,50 0 0,1 510,550 L 510,760"
 	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
 		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 	</path>
 	<text id="grid-power" x="170" y="385" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#f00"></text>
-	<text id="solar-power" x="320" y="300" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#0a0"></text>
-	<text id="geothermal-power" x="490" y="300" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#0a0"></text>
+	<text id="solar-power" x="320" y="310" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#0a0"></text>
+	<text id="geothermal-power" x="490" y="310" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#0a0"></text>
 	
-	<text id="lights-power" x="40" y="600" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
+	<text id="lights-power" x="40" y="570" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
 	<text id="kitchen-power" x="124" y="750" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
-	<text id="ventilation-power" x="208" y="600" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
+	<text id="ventilation-power" x="208" y="570" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
 	<text id="other-power" x="292" y="750" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
-	<text id="cooler-machines-power" x="376" y="600" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
+	<text id="cooler-machines-power" x="376" y="570" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
 	<text id="cooler-equipments-power" x="460" y="750" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
 	
 	<image x="50" y="345" width="80" height="120" xlink:href="powerline.svg" />
 	<image x="250" y="164" width="110" height="100" xlink:href="solarpanel.svg" />
-	<image x="40" y="615" width="100" height="100" xlink:href="lightbulb.svg" />
+	<image x="40" y="575" width="100" height="100" xlink:href="lightbulb.svg" />
 	<image x="125" y="750" width="100" height="100" xlink:href="kitchen.svg" />
-	<image x="205" y="620" width="100" height="100" xlink:href="ventilation.svg" />
+	<image x="205" y="580" width="100" height="100" xlink:href="ventilation.svg" />
 	<image x="280" y="740" width="120" height="120" xlink:href="vehicle.svg" />
-	<image x="376" y="620" width="100" height="100" xlink:href="refrigmachines.svg" />
+	<image x="376" y="580" width="100" height="100" xlink:href="refrigmachines.svg" />
 	<image x="460" y="760" width="100" height="100" xlink:href="refrigequipments.svg" />
 	
 	<image x="430" y="164" width="100" height="100" xlink:href="geothermal.svg" />
 	
 	<rect class="target" id="target-a-a" x="-60" y="-60" width="140" height="100" transform="translate(80,410) scale(1.0)" />
 	<rect class="target" id="target-a-b" x="-60" y="-60" width="140" height="100" transform="translate(290,220) scale(1.0)" />
-	<rect class="target" id="target-a-c" x="-70" y="-50" width="140" height="100" transform="translate(90,670) scale(1.0)" />
+	<rect class="target" id="target-a-c" x="-70" y="-50" width="140" height="100" transform="translate(90,630) scale(1.0)" />
 	<rect class="target" id="target-a-d" x="-70" y="-50" width="140" height="100" transform="translate(174,810) scale(1.0)" />
-	<rect class="target" id="target-a-e" x="-70" y="-50" width="140" height="100" transform="translate(258,670) scale(1.0)" />
+	<rect class="target" id="target-a-e" x="-70" y="-50" width="140" height="100" transform="translate(258,630) scale(1.0)" />
 	<rect class="target" id="target-a-f" x="-70" y="-50" width="140" height="100" transform="translate(342,810) scale(1.0)" />
-	<rect class="target" id="target-a-g" x="-70" y="-50" width="140" height="100" transform="translate(426,670) scale(1.0)" />
+	<rect class="target" id="target-a-g" x="-70" y="-50" width="140" height="100" transform="translate(426,630) scale(1.0)" />
 	<rect class="target" id="target-a-h" x="-70" y="-50" width="140" height="100" transform="translate(510,810) scale(1.0)" />
 	
 	<rect class="target" id="target-a-i" x="-60" y="-60" width="140" height="100" transform="translate(470,220) scale(1.0)" />
+	
+	
+	<svg x="0" y="450" width="180px" height="40px">
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-grid-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="210" y="260" width="180px" height="40px">
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-solar-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="390" y="260" width="180px" height="40px">
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-geothermal-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	
+	<svg x="0" y="680" width="180px" height="40px">
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-light-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="80" y="860" width="180px" height="40px">
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-kitchen-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="170" y="680" width="180px" height="40px">
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-hpac-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="250" y="860" width="180px" height="40px">
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-other-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="335" y="680" width="180px" height="40px">
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-cooler-machines-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="420" y="860" width="180px" height="40px">
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text class="section-title" id="da-cooler-equipment-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	
 </g>
 </svg>

@@ -348,12 +348,25 @@ meterId
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			
-			const localized_solar_panels = LM['translation'][sel]['SOLAR_PANELS'];
-			const localized_grid_text = LM['translation'][sel]['GRID_TEXT'];
+			const localized_grid_title = LM['translation'][sel]['DAA_TITLE'];
+			const localized_solar_title = LM['translation'][sel]['DAB_TITLE'];
+			const localized_geothermal_title = LM['translation'][sel]['DAI_TITLE'];
+			const localized_light_title = LM['translation'][sel]['DAC_TITLE'];
+			const localized_kitchen_title = LM['translation'][sel]['DAD_TITLE'];
+			const localized_hpac_title = LM['translation'][sel]['DAE_TITLE'];
+			const localized_other_title = LM['translation'][sel]['DAF_TITLE'];
+			const localized_cooler_machines_title = LM['translation'][sel]['DAHA_TITLE'];
+			const localized_cooler_equipment_title = LM['translation'][sel]['DAHB_TITLE'];
 			
-			this.fillSVGTextElement(svgObject, 'solar-panels', localized_solar_panels);
-			this.fillSVGTextElement(svgObject, 'grid-text', localized_grid_text);
-			
+			this.fillSVGTextElement(svgObject, 'da-grid-title', localized_grid_title);
+			this.fillSVGTextElement(svgObject, 'da-solar-title', localized_solar_title);
+			this.fillSVGTextElement(svgObject, 'da-geothermal-title', localized_geothermal_title);
+			this.fillSVGTextElement(svgObject, 'da-light-title', localized_light_title);
+			this.fillSVGTextElement(svgObject, 'da-kitchen-title', localized_kitchen_title);
+			this.fillSVGTextElement(svgObject, 'da-hpac-title', localized_hpac_title);
+			this.fillSVGTextElement(svgObject, 'da-other-title', localized_other_title);
+			this.fillSVGTextElement(svgObject, 'da-cooler-machines-title', localized_cooler_machines_title);
+			this.fillSVGTextElement(svgObject, 'da-cooler-equipment-title', localized_cooler_equipment_title);
 		}
 	}
 	

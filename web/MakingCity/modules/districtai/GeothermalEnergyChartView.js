@@ -142,7 +142,7 @@ export default class GeothermalEnergyChartView extends View {
 			const valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
 			
-			valueAxis.min = 0;
+			//valueAxis.min = 0;
 			valueAxis.zIndex = 1;
 			valueAxis.marginTop = 0;
 			valueAxis.renderer.baseGrid.disabled = true;
@@ -174,13 +174,13 @@ export default class GeothermalEnergyChartView extends View {
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
-			series1.stroke = am4core.color("#0f0");
+			series1.stroke = am4core.color("#000");
 			series1.fill = series1.stroke;
 			series1.fillOpacity = 0.2;
 			
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
-			series1.tooltip.label.fill = series1.stroke;
+			//series1.tooltip.label.fill = series1.stroke;
 			
 			// TODO
 			series1.data = self.models['GeothermalModel'].energyValues;
@@ -189,6 +189,60 @@ export default class GeothermalEnergyChartView extends View {
 			series1.name = "ENERGY";
 			series1.yAxis = valueAxis;
 			
+			/*
+			series1.tooltip.adapter.add("fill", function(fill, target) {
+				console.log(['target=',target]);
+				console.log(['target.tooltipDataItem=',target.tooltipDataItem]);
+				console.log(['target.tooltipDataItem.values=',target.tooltipDataItem.values]);
+				console.log(['target.tooltipDataItem.values.valueY=',target.tooltipDataItem.values.valueY]);
+				console.log(['target.tooltipDataItem.valueY=',target.tooltipDataItem.valueY]);
+				if (target.tooltipDataItem && (target.tooltipDataItem.valueY < 0)) {
+					return am4core.color("#f77");
+				} else {
+					return fill;
+				}
+			});*/
+			
+			
+			series1.adapter.add("tooltipText", function(tooltipText) {
+				if (series1.tooltipDataItem.dataContext.energy < 0) {
+					//series1.stroke = am4core.color("#f77");
+					//series1.fill = series1.stroke;
+					series1.tooltip.stroke = am4core.color("#f77");
+					series1.tooltip.label.fill = series1.tooltip.stroke;
+					//series1.tooltip.background.fill = "red";
+				} else {
+					//series1.stroke = am4core.color("#0f0");
+					//series1.fill = series1.stroke;
+					series1.tooltip.stroke = am4core.color("#0f0");
+					series1.tooltip.label.fill = series1.tooltip.stroke;
+				}
+				return tooltipText;
+			});
+			
+			const columnTemplate = series1.columns.template;
+			console.log(['columnTemplate=',columnTemplate]);
+			//columnTemplate.tooltipText = "{categoryX}: [bold]{valueY}[/]";
+			columnTemplate.fillOpacity = 0.8;
+			columnTemplate.strokeOpacity = 1; // 0
+			columnTemplate.fill = am4core.color("#0f0");
+			
+			columnTemplate.adapter.add("fill", function(fill, target) {
+				if (target.dataItem && (target.dataItem.valueY < 0)) {
+					return am4core.color("#f77");
+				} else {
+					return fill;
+				}
+			});
+			/*
+			columnTemplate.adapter.add("stroke", function(stroke, target) {
+				if (target.dataItem && (target.dataItem.valueY < 0)) {
+					return am4core.color("#f77");
+				} else {
+					return am4core.color("#0f0");
+				}
+			});
+			*/
 			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();

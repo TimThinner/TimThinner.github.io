@@ -140,9 +140,22 @@ class MapListModel extends EventObserver {
 			endDate:  '03.01.2020'
 		});
 		/*
-			10. Eden Mar, Funchal, Madeira
-			11. Porto, Portugal
-			12. Casablanca, Puerto de la Cruz, Tenerife
+		self.mapdata["2020 Budapest, Hungary"] = new MapModel({
+			title: 'Corvin Center Suites',
+			picture: 'img/Casablanca.jpg',
+			latitude:  47.47,
+			longitude: 19.07,
+			startDate: '26.03.2020',
+			endDate:  '29.03.2020'
+		});
+		self.mapdata["2020 London, England"] = new MapModel({
+			title: 'Okehampton Road',
+			picture: 'img/Casablanca.jpg',
+			latitude:  51.538077,
+			longitude: -0.220512,
+			startDate: '29.06.2020',
+			endDate:  '07.07.2020'
+		});
 		*/
 		self.notifyAll({model:'MapListModel',method:'fetch',status:status,message:message});
 	}

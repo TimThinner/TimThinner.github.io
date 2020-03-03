@@ -6,14 +6,14 @@ export default class DistrictAController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		this.menuModel = undefined;
+		//this.menuModel = undefined;
 	}
 	
 	remove() {
 		super.remove();
-		if (this.menuModel) {
-			this.menuModel.unsubscribe(this);
-		}
+		//if (this.menuModel) {
+		//	this.menuModel.unsubscribe(this);
+		//}
 	}
 	
 	init() {
@@ -27,10 +27,13 @@ export default class DistrictAController extends Controller {
 		
 		this.timers['DistrictAView'] = {timer: undefined, interval: 30000, models:['StatusModel']};
 		
-		this.menuModel = this.master.modelRepo.get('MenuModel');
-		if (this.menuModel) {
-			this.menuModel.subscribe(this);
-		}
+		//this.menuModel = this.master.modelRepo.get('MenuModel');
+		//if (this.menuModel) {
+			//this.menuModel.subscribe(this);
+		//}
+		
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
 		
 		this.view = new DistrictAView(this);
 		this.show();

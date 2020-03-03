@@ -10,4 +10,9 @@ export default class Model extends EventObserver {
 		this.errorMessage = '';
 		this.fetching = false;
 	}
+	
+	/* Dummy fetch. */
+	fetch() {
+		// No action.
+	}
 }

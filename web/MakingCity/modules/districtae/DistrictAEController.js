@@ -24,14 +24,14 @@ export default class DistrictAEController extends Controller {
 	}
 	
 	init() {
-		const model_101 = new HPAC101Model({name:'HPAC101Model',src:'data/arina/iss/feeds.json?meterId=101&limit=1440'});
+		const model_101 = new HPAC101Model({name:'HPAC101Model',src:'data/arina/iss/feeds.json?meterId=101'});
 		model_101.subscribe(this);
 		//model_101.subscribe(this.master);
 		this.master.modelRepo.add('HPAC101Model',model_101);
 		this.models['HPAC101Model'] = model_101;
 		//model_101.fetch();
 		
-		const model_105 = new HPAC105Model({name:'HPAC105Model',src:'data/arina/iss/feeds.json?meterId=105&limit=1440'});
+		const model_105 = new HPAC105Model({name:'HPAC105Model',src:'data/arina/iss/feeds.json?meterId=105'});
 		model_105.subscribe(this);
 		//model_105.subscribe(this.master);
 		this.master.modelRepo.add('HPAC105Model',model_105);

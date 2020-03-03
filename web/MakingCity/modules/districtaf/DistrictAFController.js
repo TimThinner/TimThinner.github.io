@@ -24,14 +24,14 @@ export default class DistrictAFController extends Controller {
 	}
 	
 	init() {
-		const model_109 = new Other109Model({name:'Other109Model',src:'data/arina/iss/feeds.json?meterId=109&limit=1440'});
+		const model_109 = new Other109Model({name:'Other109Model',src:'data/arina/iss/feeds.json?meterId=109'});
 		model_109.subscribe(this);
 		//model_109.subscribe(this.master);
 		this.master.modelRepo.add('Other109Model',model_109);
 		this.models['Other109Model'] = model_109;
 		//model_109.fetch();
 		
-		const model_111 = new Other111Model({name:'Other111Model',src:'data/arina/iss/feeds.json?meterId=111&limit=1440'});
+		const model_111 = new Other111Model({name:'Other111Model',src:'data/arina/iss/feeds.json?meterId=111'});
 		model_111.subscribe(this);
 		//model_111.subscribe(this.master);
 		this.master.modelRepo.add('Other111Model',model_111);

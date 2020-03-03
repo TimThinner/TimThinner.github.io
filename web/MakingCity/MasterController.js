@@ -1,8 +1,13 @@
 import ModelRepo from './modules/common/ModelRepo.js';
 import ResizeObserverModel from './modules/common/ResizeObserverModel.js';
 import LanguageModel from './modules/common/LanguageModel.js';
+import UserModel from './modules/user/UserModel.js';
 
 import MenuController from './modules/menu/MenuController.js';
+import UserLoginController from './modules/user/UserLoginController.js';
+import UserSignupController from './modules/user/UserSignupController.js';
+import UserInfoController from './modules/user/UserInfoController.js';
+
 import DistrictAController from './modules/districta/DistrictAController.js';
 import DistrictAAController from './modules/districtaa/DistrictAAController.js';
 import DistrictABController from './modules/districtab/DistrictABController.js';
@@ -40,9 +45,22 @@ class MasterController {
 		const LM = new LanguageModel(); //this.languageModel = new LanguageModel();
 		this.modelRepo.add('LanguageModel',LM);//this.languageModel);
 		
+		const UM = new UserModel({name:'UserModel',src:'user'});
+		this.modelRepo.add('UserModel',UM);
+		
+		// Menu controller MUST be first!
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
 		//this.controllers['menu'].restore();
+		
+		
+		this.controllers['userlogin'] = new UserLoginController({name:'userlogin', master:this, el:'#content', visible:false});
+		this.controllers['userlogin'].init();
+		this.controllers['usersignup'] = new UserSignupController({name:'usersignup', master:this, el:'#content', visible:false});
+		this.controllers['usersignup'].init();
+		this.controllers['userinfo'] = new UserInfoController({name:'userinfo', master:this, el:'#content', visible:false});
+		this.controllers['userinfo'].init();
+		
 		
 		this.controllers['DA'] = new DistrictAController({name:'DA', master:this, el:'#content', visible:false});
 		this.controllers['DA'].init();

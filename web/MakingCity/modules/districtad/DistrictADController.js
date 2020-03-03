@@ -25,21 +25,21 @@ export default class DistrictADController extends Controller {
 	}
 	
 	init() {
-		const model_106 = new Kitchen106Model({name:'Kitchen106Model',src:'data/arina/iss/feeds.json?meterId=106&limit=1440'});
+		const model_106 = new Kitchen106Model({name:'Kitchen106Model',src:'data/arina/iss/feeds.json?meterId=106'});
 		model_106.subscribe(this);
 		//model_106.subscribe(this.master);
 		this.master.modelRepo.add('Kitchen106Model',model_106);
 		this.models['Kitchen106Model'] = model_106;
 		//model_106.fetch();
 		
-		const model_107 = new Kitchen107Model({name:'Kitchen107Model',src:'data/arina/iss/feeds.json?meterId=107&limit=1440'});
+		const model_107 = new Kitchen107Model({name:'Kitchen107Model',src:'data/arina/iss/feeds.json?meterId=107'});
 		model_107.subscribe(this);
 		//model_107.subscribe(this.master);
 		this.master.modelRepo.add('Kitchen107Model',model_107);
 		this.models['Kitchen107Model'] = model_107;
 		//model_107.fetch();
 		
-		const model_108 = new Kitchen108Model({name:'Kitchen108Model',src:'data/arina/iss/feeds.json?meterId=108&limit=1440'});
+		const model_108 = new Kitchen108Model({name:'Kitchen108Model',src:'data/arina/iss/feeds.json?meterId=108'});
 		model_108.subscribe(this);
 		//model_108.subscribe(this.master);
 		this.master.modelRepo.add('Kitchen108Model',model_108);

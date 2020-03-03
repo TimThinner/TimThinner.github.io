@@ -464,7 +464,7 @@ meterId
 				});
 			}
 			$('#back').on('click',function() {
-				self.controller.menuModel.setSelected('menu');
+				self.menuModel.setSelected('menu');
 			});
 			this.rendered = true;
 		} else {

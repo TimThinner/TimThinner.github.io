@@ -1,7 +1,7 @@
 import Model from './Model.js';
 /*
 
-https://makingcity.vtt.fi/data/arina/iss/feeds.json?meterId=114&limit=1440&start=2020-02-12&end=2020-02-12
+https://makingcity.vtt.fi/data/arina/iss/feeds.json?meterId=114&start=2020-02-12&end=2020-02-12
 
 
 [{"created_at":"2020-02-10T00:01:06","meterId":114,"averagePower":28.8,"totalEnergy":451145,"energyDiff":0.6},
@@ -146,7 +146,7 @@ export default class FeedModel extends Model {
 		console.log(['today=',today]);
 		
 		// in 24 hours there is 24 x 60 minutes = 1440
-		//this.src = 'data/arina/iss/feeds.json?meterId=114&limit=1440'; //&start=2020-02-10&end=2020-02-10
+		//this.src = 'data/arina/iss/feeds.json?meterId=114'; //&start=2020-02-10&end=2020-02-10
 		// append start and end date
 		const url = this.backend + '/' + this.src + '&start='+today+'&end='+today;
 		

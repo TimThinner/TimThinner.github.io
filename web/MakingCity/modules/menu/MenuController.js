@@ -16,7 +16,7 @@ export default class MenuController extends Controller {
 		this.models['MenuModel'] = model;
 		model.fetch();
 		
-		this.timers['MenuView'] = {timer: undefined, interval: 10000, models:['MenuModel']};
+		//this.timers['MenuView'] = {timer: undefined, interval: 10000, models:['MenuModel']};
 		
 		this.view = new MenuView(this);
 		

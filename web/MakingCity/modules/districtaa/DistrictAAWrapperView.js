@@ -48,7 +48,8 @@ export default class DistrictAAWrapperView extends WrapperView {
 		$(html).appendTo(this.el);
 		// Assign back-button handler.
 		$('#back').on('click',function() {
-			self.controller.menuModel.setSelected('DA');
+			self.controller.models['MenuModel'].setSelected('DA');
+			//self.controller.menuModel.setSelected('DA');
 		});
 		
 		this.showSpinner('#subview-1');

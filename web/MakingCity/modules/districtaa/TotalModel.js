@@ -1,7 +1,7 @@
 import FeedModel from '../common/FeedModel.js';
 /*
 
-https://makingcity.vtt.fi/data/arina/iss/feeds.json?meterId=114&limit=1440&start=2020-02-12&end=2020-02-12
+https://makingcity.vtt.fi/data/arina/iss/feeds.json?meterId=114&start=2020-02-12&end=2020-02-12
 
 
 [{"created_at":"2020-02-10T00:01:06","meterId":114,"averagePower":28.8,"totalEnergy":451145,"energyDiff":0.6},

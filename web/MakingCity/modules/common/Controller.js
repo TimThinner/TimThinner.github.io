@@ -62,7 +62,7 @@ export default class Controller {
 	
 	notify(options) {
 		if (options.model==='MenuModel' && options.method==='selected') {
-			console.log(['In ',this.name,' selected = ',options.selected]);
+			//console.log(['In ',this.name,' selected = ',options.selected]);
 			if (this.name === options.selected) {
 				setTimeout(() => {
 					this.visible = true;

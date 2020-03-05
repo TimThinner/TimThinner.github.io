@@ -23,16 +23,10 @@ export default class UserInfoView extends UserView {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model === 'UserModel' && options.method === 'logout') {
-				// RESPONSE (OK: 200, error: 500)
-				if (options.status === 200) {
-					// User is now logged in
-					this.controller.models['MenuModel'].setSelected('menu');
-				} else {
-					// Show the reason for failure (message).
-					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-					$(html).appendTo('#info-failed');
-				}
-				$("#logout-submit").prop("disabled", false);
+				// User is now logged out
+				// This notification is already handled in MasterController, 
+				// so there is really no need to do anything here!
+				//$("#logout-submit").prop("disabled", false);
 			}
 		}
 	}
@@ -51,26 +45,18 @@ export default class UserInfoView extends UserView {
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<div class="col s12">'+
-						'<h4 style="text-align:center;">'+localized_string_info_title+'</h4>'+
-					'</div>'+
-					
-					
-					'<div class="col s12 center" id="info-failed"></div>'+
-					'<div class="col s12 center" id="info-success"></div>'+
+					'<h4 style="text-align:center;">'+localized_string_info_title+'</h4>'+
+					'<p style="text-align:center;">Email: '+this.controller.models['UserModel'].email+'</p>'+
 				'</div>'+
 			'</div>'+
-			
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">Cancel</button>'+
+						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_da_cancel+'</button>'+
 					'</div>'+
-					
 					'<div class="col s6 center">'+
 						'<button class="btn waves-effect waves-light" type="submit" id="logout-submit">'+localized_string_logout_button_text+'</button>'+
 					'</div>'+
-					
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
@@ -82,7 +68,8 @@ export default class UserInfoView extends UserView {
 		});
 		
 		$("#logout-submit").on('click', function() {
-			self.controller.models['UserModel'].logout();
+			//$("#logout-submit").prop("disabled", true);
+			self.models['UserModel'].logout();
 		});
 	}
 }

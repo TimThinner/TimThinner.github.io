@@ -4,9 +4,6 @@ export default class MenuView extends View {
 	constructor(controller) {
 		super(controller);
 		
-		//this.model = this.controller.master.modelRepo.get('MenuModel');
-		//this.model.subscribe(this);
-		
 		Object.keys(this.controller.models).forEach(key => {
 			if (key === 'MenuModel') {
 				this.models[key] = this.controller.models[key];
@@ -15,11 +12,8 @@ export default class MenuView extends View {
 		});
 		
 		this.controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
-		
 		this.svgObject = undefined;
 		this.rendered = false;
-		
-		//this.updateCounter = 0;
 	}
 	
 	show() {
@@ -29,69 +23,22 @@ export default class MenuView extends View {
 	hide() {
 		this.svgObject = undefined;
 		this.rendered = false;
-		//this.updateCounter = 0;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		//this.model.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
-		
-		
-		
 		this.svgObject = undefined;
 		this.rendered = false;
-		//this.updateCounter = 0;
 		$(this.el).empty();
-	}
-	/*
-	increaseCounterValue() {
-		this.updateCounter++;
-		if (typeof this.svgObject !== 'undefined') {
-			const textElement = this.svgObject.getElementById('update-counter');
-			while (textElement.firstChild) {
-				textElement.removeChild(textElement.firstChild);
-			}
-			var txt = document.createTextNode("Updated "+this.updateCounter+" times");
-			textElement.appendChild(txt);
-			//textElement.setAttributeNS(null, 'fill', '#0a0');
-		} else {
-			console.log('SVG OBJECT IS NOT READY YET!');
-		}
-	}*/
-	
-	updateLatestValues() {
-		console.log("UPDATE!");
-		//this.increaseCounterValue();
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
-			
-			if (options.model==='MenuModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					//console.log('MenuView => MenuModel fetched!');
-					if (this.rendered) {
-						$('#menu-view-failure').empty();
-						this.updateLatestValues();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#menu-view-failure').empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#menu-view-failure');
-					} else {
-						this.render();
-					}
-				}
-			} else if (options.model==='ResizeObserverModel' && options.method==='resize') {
-				//if (options.status === 200) {
+			if (options.model==='ResizeObserverModel' && options.method==='resize') {
 				this.render();
-				//}
 			}
 		}
 	}
@@ -192,31 +139,10 @@ export default class MenuView extends View {
 	render() {
 		const self = this;
 		$(this.el).empty();
-		/*
-		if (this.areModelsReady()) {
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="menu-view-failure">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<p>UUPS! Something went wrong.</p>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-			} else {
-				
-		*/
 		
 		const USER_MODEL = this.controller.master.modelRepo.get('UserModel');
-		
-		
-		
 		const mode = this.controller.master.modelRepo.get('ResizeObserverModel').mode;
+		
 		let svgFile, svgClass;
 		if (mode === 'LANDSCAPE') {
 			//console.log('LANDSCAPE');
@@ -233,7 +159,7 @@ export default class MenuView extends View {
 		}
 		
 		let filename = 'user_grey.png';
-		if (USER_MODEL.token.length > 0) {
+		if (USER_MODEL.isLoggedIn()) {
 			filename = 'user_color.png';
 		}
 		
@@ -256,11 +182,6 @@ export default class MenuView extends View {
 			'<div class="row">'+
 				'<div class="col s12 center" id="menu-view-failure"></div>'+
 			'</div>'+
-			//'<div class="row">'+
-			//	'<div class="col s12 center">'+
-			//		'<h3 id="menu-title" style="color:#777"></h3>'+
-			//	'</div>'+
-			//'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+
 					'<p id="menu-description" style="color:#777"></p>'+
@@ -303,14 +224,7 @@ export default class MenuView extends View {
 				}
 			});
 			$('#user-auth').on('click',function(){
-				console.log('USER CLICKED!');
-				
-				// 
-				
-				// this.modelRepo.add('UserModel',UM);
-				
-				
-				if (USER_MODEL.token.length > 0) {
+				if (USER_MODEL.isLoggedIn()) {
 					// User is logged in already => Show user info!
 					self.models['MenuModel'].setSelected('userinfo');
 				} else {
@@ -318,16 +232,6 @@ export default class MenuView extends View {
 				}
 			});
 		});
-		
-		
 		this.rendered = true;
-		
-		
-		/*
-		} else {
-			// this.el = '#content'
-			//console.log('MenuView => render MenuModel IS NOT READY!!!!');
-			this.showSpinner(this.el);
-		}*/
 	}
 }

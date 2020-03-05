@@ -6,20 +6,16 @@ export default class DistrictAIController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		this.menuModel = undefined;
 	}
 	
 	remove() {
 		super.remove();
-		if (this.menuModel) {
-			this.menuModel.unsubscribe(this);
-		}
 	}
 	
 	init() {
 		const model = new GeothermalModel({name:'GeothermalModel',src:'data/arina/iss/feeds.json?calc=1&meterId=115'});
 		model.subscribe(this);
-		//model.subscribe(this.master);
+		
 		this.master.modelRepo.add('GeothermalModel',model);
 		this.models['GeothermalModel'] = model;
 		
@@ -27,10 +23,9 @@ export default class DistrictAIController extends Controller {
 		
 		this.timers['GeothermalChartView'] = {timer: undefined, interval: 30000, models:['GeothermalModel']};
 		
-		this.menuModel = this.master.modelRepo.get('MenuModel');
-		if (this.menuModel) {
-			this.menuModel.subscribe(this);
-		}
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
 		this.view = new DistrictAIWrapperView(this);
 		this.show();
 	}

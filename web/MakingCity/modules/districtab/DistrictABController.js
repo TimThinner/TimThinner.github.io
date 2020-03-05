@@ -6,20 +6,16 @@ export default class DistrictABController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		this.menuModel = undefined;
 	}
 	
 	remove() {
 		super.remove();
-		if (this.menuModel) {
-			this.menuModel.unsubscribe(this);
-		}
 	}
 	
 	init() {
 		const model = new SolarModel({name:'SolarModel',src:'data/arina/iss/feeds.json?meterId=116'});
 		model.subscribe(this);
-		//model.subscribe(this.master);
+		
 		this.master.modelRepo.add('SolarModel',model);
 		this.models['SolarModel'] = model;
 		
@@ -27,10 +23,9 @@ export default class DistrictABController extends Controller {
 		
 		this.timers['SolarChartView'] = {timer: undefined, interval: 30000, models:['SolarModel']};
 		
-		this.menuModel = this.master.modelRepo.get('MenuModel');
-		if (this.menuModel) {
-			this.menuModel.subscribe(this);
-		}
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
 		this.view = new DistrictABWrapperView(this);
 		this.show();
 	}

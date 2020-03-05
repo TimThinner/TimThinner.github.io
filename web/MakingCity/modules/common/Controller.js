@@ -32,7 +32,6 @@ export default class Controller {
 		});
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
-			//this.models[key].unsubscribe(this.master);
 		});
 		if (this.view) {
 			this.view.remove();
@@ -86,10 +85,15 @@ export default class Controller {
 	poller(name) {
 		if (this.timers.hasOwnProperty(name)) {
 			if (this.timers[name].interval > 0) {
+				// Feed the UserModel auth-token into fetch call.
+				// We also need to know whether REST-API call will be using token or not?
+				const um = this.master.modelRepo.get('UserModel');
+				const token = um ? um.token : undefined;
 				
-				console.log(['POLLER FETCH ',name]);
+				//console.log(['POLLER FETCH ',name]);
 				this.timers[name].models.forEach(name => {
-					this.models[name].fetch();
+					console.log(['Poller fetch model name=',name,' token=',token]);
+					this.models[name].fetch(token);
 				});
 				
 				this.timers[name].timer = setTimeout(()=>{

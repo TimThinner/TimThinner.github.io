@@ -6,20 +6,15 @@ export default class DistrictAAController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		//this.menuModel = undefined;
 	}
 	
 	remove() {
 		super.remove();
-		//if (this.menuModel) {
-		//	this.menuModel.unsubscribe(this);
-		//}
 	}
 	
 	init() {
 		const model = new TotalModel({name:'TotalModel',src:'data/arina/iss/feeds.json?meterId=114'});
 		model.subscribe(this);
-		//model.subscribe(this.master);
 		this.master.modelRepo.add('TotalModel',model);
 		this.models['TotalModel'] = model;
 		
@@ -29,10 +24,7 @@ export default class DistrictAAController extends Controller {
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
-		//this.menuModel = this.master.modelRepo.get('MenuModel');
-		//if (this.menuModel) {
-			//this.menuModel.subscribe(this);
-		//}
+		
 		this.view = new DistrictAAWrapperView(this);
 		this.show();
 	}

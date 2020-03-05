@@ -28,10 +28,10 @@ export default class StatusModel extends Model {
 		}
 		
 		const debug_time_start = moment().valueOf();
-		console.log(['debug_time_start=',debug_time_start]);
+		//console.log(['debug_time_start=',debug_time_start]);
 		
 		const today = moment().format('YYYY-MM-DD');
-		console.log(['today=',today]);
+		//console.log(['today=',today]);
 		
 		let status = 500; // error: 500
 		this.errorMessage = '';
@@ -55,7 +55,7 @@ export default class StatusModel extends Model {
 				//console.log(['self.values=',self.values]);
 				
 				const debug_time_elapse = moment().valueOf()-debug_time_start;
-				console.log([self.name,' fetch debug_time_elapse=',debug_time_elapse]);
+				//console.log([self.name,' fetch debug_time_elapse=',debug_time_elapse]);
 				
 				self.fetching = false;
 				self.ready = true;

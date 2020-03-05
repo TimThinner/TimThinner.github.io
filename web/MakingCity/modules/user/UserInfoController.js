@@ -11,10 +11,6 @@ export default class UserInfoController extends Controller {
 		super.remove();
 	}
 	
-	restore() {
-		
-	}
-	
 	init() {
 		
 		this.models['UserModel'] = this.master.modelRepo.get('UserModel');

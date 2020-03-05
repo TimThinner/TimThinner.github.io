@@ -77,7 +77,7 @@ meterId
 115		Geothermal energy	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
 	*/
 	updateLatestValues() {
-		console.log("UPDATE!");
+		//console.log("UPDATE!");
 		let solar_power = 0;
 		let total_power = 0;
 		let geothermal_power = 0;
@@ -131,7 +131,7 @@ meterId
 		if (this.controller.visible) {
 			if (options.model==='StatusModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('DistrictAView => StatusModel fetched!');
+					//console.log('DistrictAView => StatusModel fetched!');
 					if (this.rendered) {
 						$('#district-a-view-failure').empty();
 						this.updateLatestValues();
@@ -148,9 +148,7 @@ meterId
 					}
 				}
 			} else if (options.model==='ResizeObserverModel' && options.method==='resize') {
-				//if (options.status === 200) {
 				this.render();
-				//}
 			}
 		}
 	}

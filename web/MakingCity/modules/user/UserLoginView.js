@@ -150,7 +150,7 @@ export default class UserLoginView extends UserView {
 				};
 				// disable the submit button
 				$("#login-submit").prop("disabled", true);
-				self.controller.models['UserModel'].login(data);
+				self.models['UserModel'].login(data);
 			}
 		});
 	}

@@ -23,16 +23,24 @@ export default class UserSignupView extends UserView {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model === 'UserModel' && options.method === 'signup') {
-				// RESPONSE (OK: 200, error: 500)
-				if (options.status === 200) {
-					// User is now logged in
-					this.controller.models['MenuModel'].setSelected('menu');
+				// RESPONSE (OK: 201, error: 500)
+				if (options.status === 201) {
+					// User is now signed as a new user.
+					const html = '<div class="success-message"><p>'+options.message+'</p></div>';
+					$(html).appendTo('#signup-success');
+					setTimeout(() => {
+						this.controller.models['MenuModel'].setSelected('menu');
+						$("#signup-submit").prop("disabled", false);
+						$("#cancel").prop("disabled", false);
+					}, 2000);
+					
 				} else {
 					// Show the reason for failure (message).
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$(html).appendTo('#signup-failed');
+					$("#signup-submit").prop("disabled", false);
+					$("#cancel").prop("disabled", false);
 				}
-				$("#signup-submit").prop("disabled", false);
 			}
 		}
 	}
@@ -108,10 +116,6 @@ export default class UserSignupView extends UserView {
 			}
 		});
 		
-		$("#show-signup-form").on('click', function() {
-			//self.controller.models['MenuModel'].setSelected('usersignup');
-		});
-		
 		$("#cancel").on('click', function() {
 			self.controller.models['MenuModel'].setSelected('menu');
 		});
@@ -144,9 +148,10 @@ export default class UserSignupView extends UserView {
 					email: _email,
 					password: _password
 				};
-				// disable the submit button
+				// disable both buttons
+				$("#cancel").prop("disabled", true);
 				$("#signup-submit").prop("disabled", true);
-				self.controller.models['UserModel'].signup(data);
+				self.models['UserModel'].signup(data);
 			}
 		});
 	}

@@ -23,8 +23,6 @@ class MasterController {
 	constructor() {
 		this.controllers = {};
 		this.modelRepo = new ModelRepo();
-		//this.model = undefined;
-		//this.languageModel = undefined;
 	}
 	/*
 	restore() {
@@ -32,7 +30,16 @@ class MasterController {
 	}
 	*/
 	notify(options) {
-		console.log(['MasterController NOTIFY: model=',options.model,' method=',options.method]);
+		//console.log(['MasterController NOTIFY: model=',options.model,' method=',options.method]);
+		if (options.model==='UserModel' && options.method==='logout') {
+			
+			console.log('MasterController LOGOUT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+			
+			const mm = this.modelRepo.get('MenuModel');
+			if (mm) {
+				mm.setSelected('menu');
+			}
+		}
 	}
 	
 	init() {
@@ -46,13 +53,14 @@ class MasterController {
 		this.modelRepo.add('LanguageModel',LM);//this.languageModel);
 		
 		const UM = new UserModel({name:'UserModel',src:'user'});
+		UM.subscribe(this); // Now we will receive notifications from the UserModel.
 		this.modelRepo.add('UserModel',UM);
+		UM.restore(); // Try to restore previous "session" stored into LocalStorage.
 		
 		// Menu controller MUST be first!
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
 		//this.controllers['menu'].restore();
-		
 		
 		this.controllers['userlogin'] = new UserLoginController({name:'userlogin', master:this, el:'#content', visible:false});
 		this.controllers['userlogin'].init();
@@ -60,7 +68,6 @@ class MasterController {
 		this.controllers['usersignup'].init();
 		this.controllers['userinfo'] = new UserInfoController({name:'userinfo', master:this, el:'#content', visible:false});
 		this.controllers['userinfo'].init();
-		
 		
 		this.controllers['DA'] = new DistrictAController({name:'DA', master:this, el:'#content', visible:false});
 		this.controllers['DA'].init();
@@ -88,6 +95,14 @@ class MasterController {
 		
 		this.controllers['DAI'] = new DistrictAIController({name:'DAI', master:this, el:'#content', visible:false});
 		this.controllers['DAI'].init();
+	}
+	
+	forceLogout() {
+		console.log('MasterController FORCE LOGOUT');
+		const UM = this.modelRepo.get('UserModel');
+		if (UM) {
+			UM.logout(); // which will do the reset(), store() and finally send 'logout' notification.
+		}
 	}
 }
 new MasterController().init();

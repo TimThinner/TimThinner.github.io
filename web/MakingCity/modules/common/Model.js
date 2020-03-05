@@ -13,6 +13,7 @@ export default class Model extends EventObserver {
 	
 	/* Dummy fetch. */
 	fetch() {
-		// No action.
+		console.log('DUMMY FETCH!');
+		this.ready = true;
 	}
 }

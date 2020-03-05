@@ -26,6 +26,21 @@ export class Feed {
 	}
 }
 
+
+
+
+
+/*
+TODO!
+NOTE: This does NOT work when we fetch values for more than one day!
+We need to use YYYYMMDDHH instead of just HH as keys in energy object
+
+
+*/
+
+
+
+
 export class CalculatedEnergy {
 	constructor() {
 		this.energy = {};
@@ -93,6 +108,10 @@ export class CalculatedEnergy {
 export default class FeedModel extends Model {
 	constructor(options) {
 		super(options);
+		// By default FeedModel shows data from today.
+		//this.start = moment().format('YYYY-MM-DD');
+		//this.end = moment().format('YYYY-MM-DD');
+		this.timerange = 1;
 		this.values = [];
 		this.energyValues = [];
 	}
@@ -129,26 +148,158 @@ export default class FeedModel extends Model {
 		return newJson;
 	}
 	
-	fetch() {
+	process(myJson) {
+		const self = this;
+		const newson = this.removeDuplicates(myJson);
+		let myce = new CalculatedEnergy();
+		myce.resetEnergy();
+		//console.log(['myce.energy=',myce.energy]);
+		$.each(newson, function(i,v){
+			// set cumulative energy for each hour.
+			myce.addEnergy(v);
+			const p = new Feed(v);
+			self.values.push(p);
+		});
+		//console.log(['HUU myce.energy=',myce.energy]);
+		myce.calculateAverage(); 
+		myce.copyTo(self.energyValues);
+		
+		//console.log(['BEFORE SORT self.energyValues=',self.energyValues]);
+		
+		// Then sort array based according to time, oldest entry first.
+		self.energyValues.sort(function(a,b){
+			var bb = moment(b.time);
+			var aa = moment(a.time);
+			return aa - bb;
+		});
+		
+		console.log(['AFTER SORT self.energyValues=',self.energyValues]);
+		console.log(['self.values=',self.values]);
+		//const debug_time_elapse = moment().valueOf()-debug_time_start;
+		//console.log([self.name+' fetch debug_time_elapse=',debug_time_elapse]);
+	}
+	
+	
+	
+	
+	
+	
+	/*
+	fetch(token) {
 		const self = this;
 		if (this.fetching) {
 			console.log('FEED '+this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
 		}
-		
-		const debug_time_start = moment().valueOf();
-		
+		//const debug_time_start = moment().valueOf();
 		let status = 500; // error: 500
 		this.errorMessage = '';
 		this.fetching = true;
 		
-		const today = moment().format('YYYY-MM-DD');
-		console.log(['today=',today]);
+		let start_date = moment().format('YYYY-MM-DD');
+		let end_date = moment().format('YYYY-MM-DD');
 		
-		// in 24 hours there is 24 x 60 minutes = 1440
-		//this.src = 'data/arina/iss/feeds.json?meterId=114'; //&start=2020-02-10&end=2020-02-10
+		if (this.timerange > 1) {
+			const diffe = this.timerange-1;
+			start_date = moment().subtract(diffe, 'days').format('YYYY-MM-DD');
+		}
+		
+		if (typeof token !== 'undefined') {
+			
+			var myHeaders = new Headers();
+			var authorizationToken = 'Bearer '+token;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const url = this.mongoBackend + '/feeds/';
+			const body_url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
+			const data = {url:body_url};
+			
+			const myPost = {
+				method: 'POST',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(this.mongoBackend + '/feeds/', myPost);
+			
+			console.log('fetch url='+this.mongoBackend+'/feeds/');
+			console.log('body.url='+body_url);
+			
+			fetch(myRequest)
+				.then(function(response) {
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson) {
+					self.values = []; // Start with fresh empty data.
+					self.energyValues = [];
+					
+					self.process(myJson);
+					
+					self.fetching = false;
+					self.ready = true;
+					self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+				})
+				.catch(error => {
+					self.fetching = false;
+					self.ready = true;
+					self.errorMessage = error;
+					self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
+				});
+			
+			
+			
+		} else {
+			// append start and end date
+			const url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
+			
+			console.log (['fetch url=',url]);
+			fetch(url)
+				.then(function(response) {
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson) {
+					self.values = []; // Start with fresh empty data.
+					self.energyValues = [];
+					
+					self.process(myJson);
+					
+					self.fetching = false;
+					self.ready = true;
+					self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+				})
+				.catch(error => {
+					self.fetching = false;
+					self.ready = true;
+					self.errorMessage = error;
+					self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
+				});
+		}
+	}
+	*/
+	
+	
+	fetch(token) {
+		const self = this;
+		if (this.fetching) {
+			console.log('FEED '+this.name+' FETCHING ALREADY IN PROCESS!');
+			return;
+		}
+		//const debug_time_start = moment().valueOf();
+		let status = 500; // error: 500
+		this.errorMessage = '';
+		this.fetching = true;
+		
+		let start_date = moment().format('YYYY-MM-DD');
+		let end_date = moment().format('YYYY-MM-DD');
+		
+		if (this.timerange > 1) {
+			const diffe = this.timerange-1;
+			start_date = moment().subtract(diffe, 'days').format('YYYY-MM-DD');
+		}
 		// append start and end date
-		const url = this.backend + '/' + this.src + '&start='+today+'&end='+today;
+		const url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
 		
 		console.log (['fetch url=',url]);
 		fetch(url)
@@ -160,38 +311,7 @@ export default class FeedModel extends Model {
 				self.values = []; // Start with fresh empty data.
 				self.energyValues = [];
 				
-				console.log(['FeedModel myJson=',myJson]);
-				const newson = self.removeDuplicates(myJson);
-				
-				let myce = new CalculatedEnergy();
-				myce.resetEnergy();
-				//console.log(['myce.energy=',myce.energy]);
-				$.each(newson, function(i,v){
-					
-					// set cumulative energy for each hour.
-					myce.addEnergy(v);
-					const p = new Feed(v);
-					self.values.push(p);
-					
-				});
-				//console.log(['HUU myce.energy=',myce.energy]);
-				myce.calculateAverage(); 
-				myce.copyTo(self.energyValues);
-				
-				console.log(['BEFORE SORT self.energyValues=',self.energyValues]);
-				
-				// Then sort array based according to time, oldest entry first.
-				self.energyValues.sort(function(a,b){
-					var bb = moment(b.time);
-					var aa = moment(a.time);
-					return aa - bb;
-				});
-				
-				console.log(['AFTER SORT self.energyValues=',self.energyValues]);
-				console.log(['self.values=',self.values]);
-				
-				const debug_time_elapse = moment().valueOf()-debug_time_start;
-				console.log([self.name+' fetch debug_time_elapse=',debug_time_elapse]);
+				self.process(myJson);
 				
 				self.fetching = false;
 				self.ready = true;

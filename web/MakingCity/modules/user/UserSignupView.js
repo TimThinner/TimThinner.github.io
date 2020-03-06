@@ -32,7 +32,7 @@ export default class UserSignupView extends UserView {
 						this.controller.models['MenuModel'].setSelected('menu');
 						$("#signup-submit").prop("disabled", false);
 						$("#cancel").prop("disabled", false);
-					}, 2000);
+					}, 1000);
 					
 				} else {
 					// Show the reason for failure (message).
@@ -53,10 +53,10 @@ export default class UserSignupView extends UserView {
 		const sel = LM.selected;
 		const localized_string_da_cancel = LM['translation'][sel]['DA_CANCEL'];
 		
-		const localized_string_signup_title = 'Signup';
-		const localized_string_signup_email = 'Email';
-		const localized_string_signup_password = 'Password';
-		const localized_string_signup_button_text =  'Signup';
+		const localized_string_signup_title = LM['translation'][sel]['USER_SIGNUP_TITLE'];
+		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_user_password = LM['translation'][sel]['USER_PASSWORD'];
+		const localized_string_signup_button_text = LM['translation'][sel]['USER_SIGNUP_BTN_TXT'];
 		
 		const html = 
 			/*'<nav>'+
@@ -73,11 +73,11 @@ export default class UserSignupView extends UserView {
 					
 					'<div class="input-field col s12 m6">'+
 						'<input id="signup-email" type="email" class="validate" required="" aria-required="true" />'+
-						'<label for="signup-email">'+localized_string_signup_email+'</label>'+
+						'<label for="signup-email">'+localized_string_user_email+'</label>'+
 					'</div>'+
 					'<div class="input-field col s12 m6">'+
 						'<input id="signup-password" type="password" class="validate" required="" aria-required="true" />'+
-						'<label for="signup-password">'+localized_string_signup_password+'</label>'+
+						'<label for="signup-password">'+localized_string_user_password+'</label>'+
 					'</div>'+
 					
 					'<div class="col s12 center" id="signup-failed"></div>'+
@@ -88,7 +88,7 @@ export default class UserSignupView extends UserView {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">Cancel</button>'+
+						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_da_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6 center">'+
 						'<button class="btn waves-effect waves-light" type="submit" id="signup-submit">'+localized_string_signup_button_text+'</button>'+

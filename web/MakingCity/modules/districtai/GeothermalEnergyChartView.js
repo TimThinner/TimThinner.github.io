@@ -137,7 +137,7 @@ export default class GeothermalEnergyChartView extends View {
 			//dateAxis.start = 0.5;
 			dateAxis.keepSelection = true;
 			//dateAxis.tooltipDateFormat = "HH:mm:ss";
-			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
+			dateAxis.tooltipDateFormat = "dd.MM.yyyy HH:mm";
 			
 			const valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
@@ -205,17 +205,14 @@ export default class GeothermalEnergyChartView extends View {
 			
 			
 			series1.adapter.add("tooltipText", function(tooltipText) {
-				if (series1.tooltipDataItem.dataContext.energy < 0) {
-					//series1.stroke = am4core.color("#f77");
-					//series1.fill = series1.stroke;
-					series1.tooltip.stroke = am4core.color("#f77");
-					series1.tooltip.label.fill = series1.tooltip.stroke;
-					//series1.tooltip.background.fill = "red";
-				} else {
-					//series1.stroke = am4core.color("#0f0");
-					//series1.fill = series1.stroke;
-					series1.tooltip.stroke = am4core.color("#0f0");
-					series1.tooltip.label.fill = series1.tooltip.stroke;
+				if (series1.tooltipDataItem.dataContext) {
+					if (series1.tooltipDataItem.dataContext.energy < 0) {
+						series1.tooltip.stroke = am4core.color("#f77");
+						series1.tooltip.label.fill = series1.tooltip.stroke;
+					} else {
+						series1.tooltip.stroke = am4core.color("#0f0");
+						series1.tooltip.label.fill = series1.tooltip.stroke;
+					}
 				}
 				return tooltipText;
 			});

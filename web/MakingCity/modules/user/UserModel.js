@@ -80,7 +80,7 @@ export default class UserModel extends Model {
 	}
 	
 	signup(data) {
-		setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:200,message:'Signup OK'}), 100);
+		setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:201,message:'Signup OK'}), 100);
 	}
 	
 	

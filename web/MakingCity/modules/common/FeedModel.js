@@ -46,12 +46,15 @@ export class CalculatedEnergy {
 		this.energy = {};
 	}
 	
-	resetEnergy() {
-		const now = moment();
+	resetEnergy(timerange) {
 		
-		//const nowDD = now.format('DD');
-		//console.log(['nowDD=',nowDD]); //now.format()]);
+		const now = moment();
 		let start = moment();
+		
+		if (timerange > 1) {
+			const diffe = timerange-1;
+			start = moment().subtract(diffe, 'days');//.format('YYYY-MM-DD');
+		}
 		start.hours(0);
 		start.minutes(0);
 		start.seconds(0);
@@ -64,27 +67,36 @@ export class CalculatedEnergy {
 		//let startDD = start.format('DD');
 		while(now.isAfter(start)) {
 			
-			const HH = start.format('HH');
+			//const HH = start.format('HH');
+			const YYYYMMDDHH = start.format('YYYYMMDDHH');
 			//console.log(['HH=',HH]);
+			//console.log(['YYYYMMDDHH=',YYYYMMDDHH]);
 			
 			const startTimeDate = start.format();//'YYYY-MM-DDTHH:mm:ss');
 			//console.log(['startTimeDate=',startTimeDate]); // "2020-02-11T08:00:00+02:00"
+			/*
 			this.energy[HH] = {};
 			this.energy[HH]['time'] = new Date(startTimeDate);
 			this.energy[HH]['sum'] = 0;
 			this.energy[HH]['count'] = 0;
 			this.energy[HH]['average'] = 0;
+			*/
+			this.energy[YYYYMMDDHH] = {};
+			this.energy[YYYYMMDDHH]['time'] = new Date(startTimeDate);
+			this.energy[YYYYMMDDHH]['sum'] = 0;
+			this.energy[YYYYMMDDHH]['count'] = 0;
+			this.energy[YYYYMMDDHH]['average'] = 0;
+			
 			start.add(1, 'hours');
 			//startDD = start.format('DD');
 		};
 	}
 	
 	addEnergy(e) {
-		const HH = moment(e.created_at).format('HH');
-		if (this.energy.hasOwnProperty(HH)) {
-			//console.log(['addEnergy HH=',HH]);
-			this.energy[HH]['count']++;
-			this.energy[HH]['sum'] += e.averagePower;
+		const YYYYMMDDHH = moment(e.created_at).format('YYYYMMDDHH');
+		if (this.energy.hasOwnProperty(YYYYMMDDHH)) {
+			this.energy[YYYYMMDDHH]['count']++;
+			this.energy[YYYYMMDDHH]['sum'] += e.averagePower;
 		}
 	}
 	
@@ -152,7 +164,7 @@ export default class FeedModel extends Model {
 		const self = this;
 		const newson = this.removeDuplicates(myJson);
 		let myce = new CalculatedEnergy();
-		myce.resetEnergy();
+		myce.resetEnergy(this.timerange);
 		//console.log(['myce.energy=',myce.energy]);
 		$.each(newson, function(i,v){
 			// set cumulative energy for each hour.

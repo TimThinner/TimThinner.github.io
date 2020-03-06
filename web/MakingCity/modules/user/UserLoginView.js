@@ -45,19 +45,13 @@ export default class UserLoginView extends UserView {
 		const sel = LM.selected;
 		const localized_string_da_cancel = LM['translation'][sel]['DA_CANCEL'];
 		
-		const localized_string_login_title = 'Login';
-		const localized_string_login_email = 'Email';
-		const localized_string_login_password = 'Password';
-		const localized_string_login_button_text =  'Login';
-		const localized_string_open_signup_form_link_text = 'Open signup form &raquo;';
+		const localized_string_login_title = LM['translation'][sel]['USER_LOGIN_TITLE'];
+		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_user_password = LM['translation'][sel]['USER_PASSWORD'];
+		const localized_string_login_button_text = LM['translation'][sel]['USER_LOGIN_BTN_TXT'];
+		const localized_string_open_signup_form_link_text = LM['translation'][sel]['USER_OPEN_SIGNUP_FORM'];
 		
 		const html = 
-			/*'<nav>'+
-				'<div class="nav-wrapper">'+
-					'<a href="javascript:void(0);" class="brand-logo"><img src="./img/logo2.png" height="64"/></a>'+
-				'</div>'+
-			'</nav>'+
-			*/
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12">'+
@@ -66,11 +60,11 @@ export default class UserLoginView extends UserView {
 					
 					'<div class="input-field col s12 m6">'+
 						'<input id="login-email" type="email" class="validate" required="" aria-required="true" />'+
-						'<label for="login-email">'+localized_string_login_email+'</label>'+
+						'<label for="login-email">'+localized_string_user_email+'</label>'+
 					'</div>'+
 					'<div class="input-field col s12 m6">'+
 						'<input id="login-password" type="password" class="validate" required="" aria-required="true" />'+
-						'<label for="login-password">'+localized_string_login_password+'</label>'+
+						'<label for="login-password">'+localized_string_user_password+'</label>'+
 					'</div>'+
 					
 					'<div class="col s12 center" id="login-failed"></div>'+
@@ -81,7 +75,7 @@ export default class UserLoginView extends UserView {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">Cancel</button>'+
+						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_da_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6 center">'+
 						'<button class="btn waves-effect waves-light" type="submit" id="login-submit">'+localized_string_login_button_text+'</button>'+

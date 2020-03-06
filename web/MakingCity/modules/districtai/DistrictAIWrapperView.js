@@ -32,6 +32,7 @@ export default class DistrictAIWrapperView extends WrapperView {
 		const sel = LM.selected;
 		const localized_string_dai_title = LM['translation'][sel]['DAI_TITLE'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+		const localized_string_daw_sel_timerange = LM['translation'][sel]['DAW_SEL_TIMERANGE']; // Select timerange for database query:
 		
 		let extra = '';
 		const um = this.controller.master.modelRepo.get('UserModel');
@@ -39,7 +40,7 @@ export default class DistrictAIWrapperView extends WrapperView {
 		if (typeof token !== 'undefined') {
 			extra = '<div class="row">'+
 				'<div class="col s12 center">'+
-					'<p style="color:#aaa;margin-top:-16px;padding:0;">Select timerange for database query:</p>'+
+					'<p style="color:#aaa;margin-top:-16px;padding:0;">'+localized_string_daw_sel_timerange+'</p>'+
 					'<a href="javascript:void(0);" id="b1d" class="my-range-button" style="float:right;">1d</a>'+
 					'<a href="javascript:void(0);" id="b2d" class="my-range-button" style="float:right;">2d</a>'+
 					'<a href="javascript:void(0);" id="b3d" class="my-range-button" style="float:right;">3d</a>'+
@@ -49,9 +50,10 @@ export default class DistrictAIWrapperView extends WrapperView {
 					'<a href="javascript:void(0);" id="b7d" class="my-range-button" style="float:right;">7d</a>'+
 				'</div>'+
 			'</div>';
+		} else {
+			// If we are not logged in make sure that model timerange is one day.
+			this.controller.models['GeothermalModel'].timerange = 1;
 		}
-		
-		
 		
 		const html = 
 			'<div class="row">'+
@@ -82,56 +84,49 @@ export default class DistrictAIWrapperView extends WrapperView {
 			self.selected = "b1d";
 			self.resetButtonClass();
 			self.controller.models['GeothermalModel'].timerange = 1;
-			//	dateAxis.zoom({start:0, end:1});
-			//	self.controller.changeFetchParams('AB', 'b1m');
+			self.controller.refreshTimerange();
 		});
 		
 		$('#b2d').on('click',function() {
 			self.selected = "b2d";
 			self.resetButtonClass();
 			self.controller.models['GeothermalModel'].timerange = 2;
-			//	dateAxis.zoom({start:0, end:1});
-			//	self.controller.changeFetchParams('AB', 'b1m');
+			self.controller.refreshTimerange();
 		});
 		
 		$('#b3d').on('click',function() {
 			self.selected = "b3d";
 			self.resetButtonClass();
 			self.controller.models['GeothermalModel'].timerange = 3;
-			//	dateAxis.zoom({start:0, end:1});
-			//	self.controller.changeFetchParams('AB', 'b1m');
+			self.controller.refreshTimerange();
 		});
 		
 		$('#b4d').on('click',function() {
 			self.selected = "b4d";
 			self.resetButtonClass();
 			self.controller.models['GeothermalModel'].timerange = 4;
-			//	dateAxis.zoom({start:0, end:1});
-			//	self.controller.changeFetchParams('AB', 'b1m');
+			self.controller.refreshTimerange();
 		});
 		
 		$('#b5d').on('click',function() {
 			self.selected = "b5d";
 			self.resetButtonClass();
 			self.controller.models['GeothermalModel'].timerange = 5;
-			//	dateAxis.zoom({start:0, end:1});
-			//	self.controller.changeFetchParams('AB', 'b1m');
+			self.controller.refreshTimerange();
 		});
 		
 		$('#b6d').on('click',function() {
 			self.selected = "b6d";
 			self.resetButtonClass();
 			self.controller.models['GeothermalModel'].timerange = 6;
-			//	dateAxis.zoom({start:0, end:1});
-			//	self.controller.changeFetchParams('AB', 'b1m');
+			self.controller.refreshTimerange();
 		});
 		
 		$('#b7d').on('click',function() {
 			self.selected = "b7d";
 			self.resetButtonClass();
 			self.controller.models['GeothermalModel'].timerange = 7;
-			//	dateAxis.zoom({start:0, end:1});
-			//	self.controller.changeFetchParams('AB', 'b1m');
+			self.controller.refreshTimerange();
 		});
 		
 		// Assign back-button handler.

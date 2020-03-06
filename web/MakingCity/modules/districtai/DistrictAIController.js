@@ -12,6 +12,11 @@ export default class DistrictAIController extends Controller {
 		super.remove();
 	}
 	
+	refreshTimerange() {
+		const timerName = 'GeothermalChartView';
+		super.doPollingInterval(timerName);
+	}
+	
 	init() {
 		const model = new GeothermalModel({name:'GeothermalModel',src:'data/arina/iss/feeds.json?calc=1&meterId=115'});
 		model.subscribe(this);

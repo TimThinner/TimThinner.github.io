@@ -4,6 +4,15 @@ export default class LanguageModel {
 		this.selected = 'en';
 		this.translation = {
 			'en':{
+				'USER_LOGIN_TITLE':'Login',
+				'USER_EMAIL':'Email',
+				'USER_PASSWORD':'Password',
+				'USER_LOGIN_BTN_TXT':'Login',
+				'USER_OPEN_SIGNUP_FORM':'Open signup form &raquo;',
+				'USER_SIGNUP_TITLE':'Signup',
+				'USER_SIGNUP_BTN_TXT':'Signup',
+				'USER_INFO':'User Info',
+				'USER_LOGOUT':'LOGOUT',
 				'MENU_D_A_LABEL':'District A',
 				'MENU_D_B_LABEL':'District B',
 				'MENU_D_C_LABEL':'District C',
@@ -28,6 +37,7 @@ export default class LanguageModel {
 				'DAI_TITLE':'Geothermal energy',
 				'DAA_POWER':'Power',
 				'DAA_ENERGY':'Energy',
+				'DAW_SEL_TIMERANGE':'Select timerange for database query:',
 				'AUTO_UPDATE_MSG_1':'Chart is automatically updated once every',
 				'AUTO_UPDATE_MSG_1_B':'Power consumption values are automatically updated once every',
 				'AUTO_UPDATE_MSG_2':'seconds',
@@ -35,6 +45,15 @@ export default class LanguageModel {
 				'ADJUST_UPDATE_INTERVAL':'Adjust the update interval (0-60s):'
 			},
 			'fi':{
+				'USER_LOGIN_TITLE':'Kirjautuminen',
+				'USER_EMAIL':'Sähköposti',
+				'USER_PASSWORD':'Salasana',
+				'USER_LOGIN_BTN_TXT':'KIRJAUDU SISÄÄN',
+				'USER_OPEN_SIGNUP_FORM':'Rekisteröityminen &raquo;',
+				'USER_SIGNUP_TITLE':'Rekisteröityminen',
+				'USER_SIGNUP_BTN_TXT':'Rekisteröidy',
+				'USER_INFO':'Käyttäjätiedot',
+				'USER_LOGOUT':'KIRJAUDU ULOS',
 				'MENU_D_A_LABEL':'Alue A',
 				'MENU_D_B_LABEL':'Alue B',
 				'MENU_D_C_LABEL':'Alue C',
@@ -59,6 +78,7 @@ export default class LanguageModel {
 				'DAI_TITLE':'Maalämpö',
 				'DAA_POWER':'Teho',
 				'DAA_ENERGY':'Energia',
+				'DAW_SEL_TIMERANGE':'Valitse kuvaajan aikaikkuna:',
 				'AUTO_UPDATE_MSG_1':'Kuvaaja päivittyy automaattisesti kerran',
 				'AUTO_UPDATE_MSG_1_B':'Teholukemat päivittyvät automaattisesti kerran',
 				'AUTO_UPDATE_MSG_2':'sekunnissa',

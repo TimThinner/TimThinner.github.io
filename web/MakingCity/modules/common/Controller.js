@@ -113,6 +113,9 @@ export default class Controller {
 		User can change the polling interval. It is initially 10 s.
 	*/
 	changePollingInterval(name, interval) {
+		
+		//console.log(['changePollingInterval name=',name]);
+		
 		if (this.timers.hasOwnProperty(name)) {
 			if (this.timers[name].timer) {
 				console.log('Clear old timer...');
@@ -123,6 +126,18 @@ export default class Controller {
 			this.poller(name);
 		}
 	}
+	
+	doPollingInterval(name) {
+		if (this.timers.hasOwnProperty(name)) {
+			if (this.timers[name].timer) {
+				console.log('Clear old timer...');
+				clearTimeout(this.timers[name].timer);
+				this.timers[name].timer = undefined;
+			}
+			this.poller(name);
+		}
+	}
+	
 	
 	restore() {
 		console.log('Controller restore');

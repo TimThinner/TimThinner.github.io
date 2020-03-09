@@ -89,7 +89,7 @@ meterId
 		let other_power = 0;
 		
 		const svgObject = document.getElementById('svg-object').contentDocument;
-		if (typeof svgObject !== 'undefined') {
+		if (svgObject) {
 			this.models['StatusModel'].values.forEach(item => {
 				if (item.avPower) {
 					if (item.meterId === 116) {

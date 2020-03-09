@@ -19,6 +19,11 @@ export default class DistrictAFController extends Controller {
 		super.remove();
 	}
 	
+	refreshTimerange() {
+		const timerName = 'OtherChartView';
+		super.doPollingInterval(timerName);
+	}
+	
 	init() {
 		const model_109 = new Other109Model({name:'Other109Model',src:'data/arina/iss/feeds.json?meterId=109'});
 		model_109.subscribe(this);

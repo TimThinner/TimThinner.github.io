@@ -12,10 +12,14 @@ export default class DistrictABController extends Controller {
 		super.remove();
 	}
 	
+	refreshTimerange() {
+		const timerName = 'SolarChartView';
+		super.doPollingInterval(timerName);
+	}
+	
 	init() {
 		const model = new SolarModel({name:'SolarModel',src:'data/arina/iss/feeds.json?meterId=116'});
 		model.subscribe(this);
-		
 		this.master.modelRepo.add('SolarModel',model);
 		this.models['SolarModel'] = model;
 		

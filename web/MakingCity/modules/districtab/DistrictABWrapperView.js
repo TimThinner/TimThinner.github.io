@@ -23,13 +23,34 @@ export default class DistrictABWrapperView extends WrapperView {
 		const sel = LM.selected;
 		const localized_string_dab_title = LM['translation'][sel]['DAB_TITLE'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+		const localized_string_daw_sel_timerange = LM['translation'][sel]['DAW_SEL_TIMERANGE']; // Select timerange for database query:
+		
+		let extra = '';
+		const um = this.controller.master.modelRepo.get('UserModel');
+		if (um.isLoggedIn()) {
+			extra = '<div class="row">'+
+				'<div class="col s12 center">'+
+					'<p style="color:#aaa;margin-top:-16px;padding:0;">'+localized_string_daw_sel_timerange+'</p>'+
+					'<a href="javascript:void(0);" id="b1d" class="my-range-button" style="float:right;">1d</a>'+
+					'<a href="javascript:void(0);" id="b2d" class="my-range-button" style="float:right;">2d</a>'+
+					'<a href="javascript:void(0);" id="b3d" class="my-range-button" style="float:right;">3d</a>'+
+					'<a href="javascript:void(0);" id="b4d" class="my-range-button" style="float:right;">4d</a>'+
+					'<a href="javascript:void(0);" id="b5d" class="my-range-button" style="float:right;">5d</a>'+
+					'<a href="javascript:void(0);" id="b6d" class="my-range-button" style="float:right;">6d</a>'+
+					'<a href="javascript:void(0);" id="b7d" class="my-range-button" style="float:right;">7d</a>'+
+				'</div>'+
+			'</div>';
+		} else {
+			// If we are not logged in make sure that model timerange is one day.
+			this.controller.models['SolarModel'].timerange = 1;
+		}
 		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12 center">'+
 					'<h3 class="da-wrapper-title">'+localized_string_dab_title+'</h3>'+
 				'</div>'+
-			'</div>'+
+			'</div>'+ extra +
 			'<div class="row">'+
 				'<div class="col s12 center" id="subview-1">'+
 				'</div>'+
@@ -46,6 +67,9 @@ export default class DistrictABWrapperView extends WrapperView {
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
+		
+		this.setTimerangeHandlers();
+		
 		// Assign back-button handler.
 		$('#back').on('click',function() {
 			self.controller.models['MenuModel'].setSelected('DA');

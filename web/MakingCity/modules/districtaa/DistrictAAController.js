@@ -12,6 +12,11 @@ export default class DistrictAAController extends Controller {
 		super.remove();
 	}
 	
+	refreshTimerange() {
+		const timerName = 'TotalChartView';
+		super.doPollingInterval(timerName);
+	}
+	
 	init() {
 		const model = new TotalModel({name:'TotalModel',src:'data/arina/iss/feeds.json?meterId=114'});
 		model.subscribe(this);

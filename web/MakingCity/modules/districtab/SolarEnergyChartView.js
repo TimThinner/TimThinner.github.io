@@ -136,7 +136,6 @@ export default class SolarEnergyChartView extends View {
 			// these two lines makes the axis to be initially zoomed-in
 			//dateAxis.start = 0.5;
 			dateAxis.keepSelection = true;
-			//dateAxis.tooltipDateFormat = "HH:mm:ss";
 			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
 			
 			const valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());

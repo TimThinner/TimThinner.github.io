@@ -146,7 +146,7 @@ export default class TotalPowerChartView extends View {
 			// these two lines makes the axis to be initially zoomed-in
 			//dateAxis.start = 0.5;
 			dateAxis.keepSelection = true;
-			dateAxis.tooltipDateFormat = "HH:mm:ss";
+			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
 			
 			// Axis for 
 			//			this.influxModel.dealsBidsAppKey.forEach(item => {

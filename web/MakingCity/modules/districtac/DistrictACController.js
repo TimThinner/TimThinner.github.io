@@ -21,12 +21,16 @@ export default class DistrictACController extends Controller {
 		super.remove();
 	}
 	
+	refreshTimerange() {
+		const timerName = 'LightChartView';
+		super.doPollingInterval(timerName);
+	}
+	
 	init() {
 		const model_102 = new Light102Model({name:'Light102Model',src:'data/arina/iss/feeds.json?meterId=102'});
 		model_102.subscribe(this);
 		this.master.modelRepo.add('Light102Model',model_102);
 		this.models['Light102Model'] = model_102;
-		
 		
 		const model_103 = new Light103Model({name:'Light103Model',src:'data/arina/iss/feeds.json?meterId=103'});
 		model_103.subscribe(this);

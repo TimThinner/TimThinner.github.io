@@ -19,6 +19,11 @@ export default class DistrictAGController extends Controller {
 		super.remove();
 	}
 	
+	refreshTimerange() {
+		const timerName = 'CoolerChartView';
+		super.doPollingInterval(timerName);
+	}
+	
 	init() {
 		const model_113 = new Cooler113Model({name:'Cooler113Model',src:'data/arina/iss/feeds.json?meterId=113'});
 		model_113.subscribe(this);

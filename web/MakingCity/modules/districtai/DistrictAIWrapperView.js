@@ -13,15 +13,6 @@ export default class DistrictAIWrapperView extends WrapperView {
 		//   - Chart which contains Geothermal ENERGY for current day
 		this.subviews.push(new GeothermalPowerChartView(this, '#subview-1'));
 		this.subviews.push(new GeothermalEnergyChartView(this, '#subview-2'));
-		this.selected = "b1d";
-	}
-	
-	resetButtonClass() {
-		const elems = document.getElementsByClassName("my-range-button");
-		for(let i = 0; i < elems.length; i++) {
-			$(elems[i]).removeClass("selected");
-		}
-		$('#'+this.selected).addClass("selected");
 	}
 	
 	render() {
@@ -36,8 +27,7 @@ export default class DistrictAIWrapperView extends WrapperView {
 		
 		let extra = '';
 		const um = this.controller.master.modelRepo.get('UserModel');
-		const token = um ? um.token : undefined;
-		if (typeof token !== 'undefined') {
+		if (um.isLoggedIn()) {
 			extra = '<div class="row">'+
 				'<div class="col s12 center">'+
 					'<p style="color:#aaa;margin-top:-16px;padding:0;">'+localized_string_daw_sel_timerange+'</p>'+
@@ -78,56 +68,7 @@ export default class DistrictAIWrapperView extends WrapperView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		$('#'+self.selected).addClass("selected");
-		
-		$('#b1d').on('click',function() {
-			self.selected = "b1d";
-			self.resetButtonClass();
-			self.controller.models['GeothermalModel'].timerange = 1;
-			self.controller.refreshTimerange();
-		});
-		
-		$('#b2d').on('click',function() {
-			self.selected = "b2d";
-			self.resetButtonClass();
-			self.controller.models['GeothermalModel'].timerange = 2;
-			self.controller.refreshTimerange();
-		});
-		
-		$('#b3d').on('click',function() {
-			self.selected = "b3d";
-			self.resetButtonClass();
-			self.controller.models['GeothermalModel'].timerange = 3;
-			self.controller.refreshTimerange();
-		});
-		
-		$('#b4d').on('click',function() {
-			self.selected = "b4d";
-			self.resetButtonClass();
-			self.controller.models['GeothermalModel'].timerange = 4;
-			self.controller.refreshTimerange();
-		});
-		
-		$('#b5d').on('click',function() {
-			self.selected = "b5d";
-			self.resetButtonClass();
-			self.controller.models['GeothermalModel'].timerange = 5;
-			self.controller.refreshTimerange();
-		});
-		
-		$('#b6d').on('click',function() {
-			self.selected = "b6d";
-			self.resetButtonClass();
-			self.controller.models['GeothermalModel'].timerange = 6;
-			self.controller.refreshTimerange();
-		});
-		
-		$('#b7d').on('click',function() {
-			self.selected = "b7d";
-			self.resetButtonClass();
-			self.controller.models['GeothermalModel'].timerange = 7;
-			self.controller.refreshTimerange();
-		});
+		this.setTimerangeHandlers();
 		
 		// Assign back-button handler.
 		$('#back').on('click',function() {

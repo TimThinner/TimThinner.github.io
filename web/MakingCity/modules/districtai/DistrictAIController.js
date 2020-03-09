@@ -20,7 +20,6 @@ export default class DistrictAIController extends Controller {
 	init() {
 		const model = new GeothermalModel({name:'GeothermalModel',src:'data/arina/iss/feeds.json?calc=1&meterId=115'});
 		model.subscribe(this);
-		
 		this.master.modelRepo.add('GeothermalModel',model);
 		this.models['GeothermalModel'] = model;
 		

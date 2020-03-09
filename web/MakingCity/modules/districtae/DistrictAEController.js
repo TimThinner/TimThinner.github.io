@@ -19,6 +19,11 @@ export default class DistrictAEController extends Controller {
 		super.remove();
 	}
 	
+	refreshTimerange() {
+		const timerName = 'HPACChartView';
+		super.doPollingInterval(timerName);
+	}
+	
 	init() {
 		const model_101 = new HPAC101Model({name:'HPAC101Model',src:'data/arina/iss/feeds.json?meterId=101'});
 		model_101.subscribe(this);

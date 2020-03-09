@@ -20,6 +20,11 @@ export default class DistrictADController extends Controller {
 		super.remove();
 	}
 	
+	refreshTimerange() {
+		const timerName = 'KitchenChartView';
+		super.doPollingInterval(timerName);
+	}
+	
 	init() {
 		const model_106 = new Kitchen106Model({name:'Kitchen106Model',src:'data/arina/iss/feeds.json?meterId=106'});
 		model_106.subscribe(this);

@@ -12,7 +12,7 @@ export default class MenuView extends View {
 		});
 		
 		this.controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
-		this.svgObject = undefined;
+		this.svgObject = null;
 		this.rendered = false;
 	}
 	
@@ -21,7 +21,7 @@ export default class MenuView extends View {
 	}
 	
 	hide() {
-		this.svgObject = undefined;
+		this.svgObject = null;
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -30,7 +30,7 @@ export default class MenuView extends View {
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
-		this.svgObject = undefined;
+		this.svgObject = null;
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -60,7 +60,7 @@ export default class MenuView extends View {
 	addSVGEventHandlers(mode) {
 		const self = this;
 		this.svgObject = document.getElementById('svg-object').contentDocument;
-		if (typeof this.svgObject !== 'undefined') {
+		if (this.svgObject) {
 			
 			//console.log("svgObject is now ready!");
 			
@@ -109,7 +109,7 @@ export default class MenuView extends View {
 	
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
-		if (typeof svgObject !== 'undefined') {
+		if (svgObject) {
 			
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;

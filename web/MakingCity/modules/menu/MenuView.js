@@ -12,7 +12,6 @@ export default class MenuView extends View {
 		});
 		
 		this.controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
-		this.svgObject = null;
 		this.rendered = false;
 	}
 	
@@ -21,7 +20,6 @@ export default class MenuView extends View {
 	}
 	
 	hide() {
-		this.svgObject = null;
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -30,7 +28,6 @@ export default class MenuView extends View {
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
-		this.svgObject = null;
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -59,12 +56,10 @@ export default class MenuView extends View {
 	
 	addSVGEventHandlers(mode) {
 		const self = this;
-		this.svgObject = document.getElementById('svg-object').contentDocument;
-		if (this.svgObject) {
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
 			
-			//console.log("svgObject is now ready!");
-			
-			const hexA = this.svgObject.getElementById('hex-a');
+			const hexA = svgObject.getElementById('hex-a');
 			hexA.addEventListener("click", function(){
 				console.log('HEXAGON A CLICKED!');
 				//self.model.setSelected('DA');
@@ -77,28 +72,28 @@ export default class MenuView extends View {
 			hexA.addEventListener("mouseover", function(event){ self.setHoverEffect(event, 'scale(1.1)'); }, false);
 			hexA.addEventListener("mouseout", function(event){ self.setHoverEffect(event, 'scale(1.0)'); }, false);
 			
-			const hexB = this.svgObject.getElementById('hex-b');
+			const hexB = svgObject.getElementById('hex-b');
 			hexB.addEventListener("click", function(){
 				console.log('HEXAGON B CLICKED!');
 			}, false);
 			hexB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			hexB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const hexC = this.svgObject.getElementById('hex-c');
+			const hexC = svgObject.getElementById('hex-c');
 			hexC.addEventListener("click", function(){
 				console.log('HEXAGON C CLICKED!');
 			}, false);
 			hexC.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			hexC.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const hexD = this.svgObject.getElementById('hex-d');
+			const hexD = svgObject.getElementById('hex-d');
 			hexD.addEventListener("click", function(){
 				console.log('HEXAGON D CLICKED!');
 			}, false);
 			hexD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			hexD.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const hexE = this.svgObject.getElementById('hex-e');
+			const hexE = svgObject.getElementById('hex-e');
 			hexE.addEventListener("click", function(){
 				console.log('HEXAGON E CLICKED!');
 			}, false);

@@ -175,9 +175,8 @@ meterId
 	addSVGEventHandlers() {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
-		if (typeof svgObject !== 'undefined') {
+		if (svgObject) {
 			
-			//console.log("svgObject is now ready!");
 			const targetAA = svgObject.getElementById('target-a-a');
 			targetAA.addEventListener("click", function(){
 				
@@ -280,7 +279,7 @@ meterId
 		/*
 		$("#toggle-direction").on('click',function(){
 			const svgObject = document.getElementById('svg-object').contentDocument;
-			if (typeof svgObject !== 'undefined') {
+			if (svgObject) {
 				const mode = self.controller.master.modelRepo.get('ResizeObserverModel').mode;
 				//console.log(['mode=',mode]);
 				
@@ -341,7 +340,7 @@ meterId
 	
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
-		if (typeof svgObject !== 'undefined') {
+		if (svgObject) {
 			
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;

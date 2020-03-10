@@ -181,7 +181,6 @@ export default class GeothermalEnergyChartView extends View {
 			series1.tooltip.background.strokeWidth = 1;
 			//series1.tooltip.label.fill = series1.stroke;
 			
-			// TODO
 			series1.data = self.models['GeothermalModel'].energyValues;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "energy";

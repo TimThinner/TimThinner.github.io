@@ -22,9 +22,9 @@ export default class DistrictAAController extends Controller {
 		model.subscribe(this);
 		this.master.modelRepo.add('TotalModel',model);
 		this.models['TotalModel'] = model;
-		
+		/*
 		setTimeout(() => { model.fetch(); }, 200);
-		
+		*/
 		this.timers['TotalChartView'] = {timer: undefined, interval: 30000, models:['TotalModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

@@ -34,10 +34,10 @@ export default class DistrictAEController extends Controller {
 		model_105.subscribe(this);
 		this.master.modelRepo.add('HPAC105Model',model_105);
 		this.models['HPAC105Model'] = model_105;
-		
+		/*
 		setTimeout(() => { model_101.fetch(); }, 1100);
 		setTimeout(() => { model_105.fetch(); }, 1200);
-		
+		*/
 		this.timers['HPACChartView'] = {timer: undefined, interval: 30000, models:['HPAC101Model','HPAC105Model']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

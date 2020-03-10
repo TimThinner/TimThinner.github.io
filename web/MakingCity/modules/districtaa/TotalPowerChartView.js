@@ -198,17 +198,12 @@ export default class TotalPowerChartView extends View {
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
 			
-			// TODO
+			
 			series1.data = self.models['TotalModel'].values;
-			
-			
-			
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "averagePower";
 			series1.name = "POWER";
 			series1.yAxis = valueAxis;
-			
-			
 			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();

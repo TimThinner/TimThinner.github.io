@@ -22,9 +22,9 @@ export default class DistrictAIController extends Controller {
 		model.subscribe(this);
 		this.master.modelRepo.add('GeothermalModel',model);
 		this.models['GeothermalModel'] = model;
-		
+		/*
 		setTimeout(() => { model.fetch(); }, 1700);
-		
+		*/
 		this.timers['GeothermalChartView'] = {timer: undefined, interval: 30000, models:['GeothermalModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

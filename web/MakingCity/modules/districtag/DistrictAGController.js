@@ -34,10 +34,10 @@ export default class DistrictAGController extends Controller {
 		model_112.subscribe(this);
 		this.master.modelRepo.add('Cooler112Model',model_112);
 		this.models['Cooler112Model'] = model_112;
-		
+		/*
 		setTimeout(() => { model_113.fetch(); }, 1500);
 		setTimeout(() => { model_112.fetch(); }, 1600);
-		
+		*/
 		this.timers['CoolerChartView'] = {timer: undefined, interval: 30000, models:['Cooler113Model','Cooler112Model']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

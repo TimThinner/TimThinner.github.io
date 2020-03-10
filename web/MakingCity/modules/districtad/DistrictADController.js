@@ -40,11 +40,11 @@ export default class DistrictADController extends Controller {
 		model_108.subscribe(this);
 		this.master.modelRepo.add('Kitchen108Model',model_108);
 		this.models['Kitchen108Model'] = model_108;
-		
+		/*
 		setTimeout(() => { model_106.fetch(); }, 800);
 		setTimeout(() => { model_107.fetch(); }, 900);
 		setTimeout(() => { model_108.fetch(); }, 1000);
-		
+		*/
 		this.timers['KitchenChartView'] = {timer: undefined, interval: 30000, models:['Kitchen106Model','Kitchen107Model','Kitchen108Model']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

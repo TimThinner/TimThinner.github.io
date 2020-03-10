@@ -26,21 +26,6 @@ export class Feed {
 	}
 }
 
-
-
-
-
-/*
-TODO!
-NOTE: This does NOT work when we fetch values for more than one day!
-We need to use YYYYMMDDHH instead of just HH as keys in energy object
-
-
-*/
-
-
-
-
 export class CalculatedEnergy {
 	constructor() {
 		this.energy = {};
@@ -191,11 +176,6 @@ export default class FeedModel extends Model {
 		//console.log([self.name+' fetch debug_time_elapse=',debug_time_elapse]);
 	}
 	
-	
-	
-	
-	
-	
 	/*
 	fetch(token) {
 		const self = this;
@@ -290,8 +270,6 @@ export default class FeedModel extends Model {
 		}
 	}
 	*/
-	
-	
 	fetch(token) {
 		const self = this;
 		if (this.fetching) {

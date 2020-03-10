@@ -34,10 +34,10 @@ export default class DistrictAFController extends Controller {
 		model_111.subscribe(this);
 		this.master.modelRepo.add('Other111Model',model_111);
 		this.models['Other111Model'] = model_111;
-		
+		/*
 		setTimeout(() => { model_109.fetch(); }, 1300);
 		setTimeout(() => { model_111.fetch(); }, 1400);
-		
+		*/
 		this.timers['OtherChartView'] = {timer: undefined, interval: 30000, models:['Other109Model','Other111Model']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

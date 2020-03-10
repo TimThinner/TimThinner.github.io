@@ -46,12 +46,12 @@ export default class DistrictACController extends Controller {
 		model_110.subscribe(this);
 		this.master.modelRepo.add('Light110Model',model_110);
 		this.models['Light110Model'] = model_110;
-		
+		/*
 		setTimeout(() => { model_102.fetch(); }, 400);
 		setTimeout(() => { model_103.fetch(); }, 500);
 		setTimeout(() => { model_104.fetch(); }, 600);
 		setTimeout(() => { model_110.fetch(); }, 700);
-		
+		*/
 		this.timers['LightChartView'] = {timer: undefined, interval: 30000, models:['Light102Model','Light103Model','Light104Model','Light110Model']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

@@ -17,9 +17,9 @@ export default class DistrictAController extends Controller {
 		model.subscribe(this);
 		this.master.modelRepo.add('StatusModel',model);
 		this.models['StatusModel'] = model;
-		
+		/*
 		setTimeout(() => { model.fetch(); }, 100);
-		
+		*/
 		this.timers['DistrictAView'] = {timer: undefined, interval: 30000, models:['StatusModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

@@ -83,7 +83,6 @@ export default class UserModel extends Model {
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:201,message:'Signup OK'}), 100);
 	}
 	
-	
 	login(data) {
 		this.id = 'nodatabaseid';
 		this.email = data.email;
@@ -106,7 +105,6 @@ export default class UserModel extends Model {
 		this.store();
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'logout',status:200,message:'Logout OK'}), 100);
 	}
-	
 	/*
 	login(data) {
 		var self = this;
@@ -148,8 +146,7 @@ export default class UserModel extends Model {
 			self.notifyAll({model:'UserModel',method:'login',status:status,message:error});
 		});
 	}
-	*/
-	/*
+	
 	signup(data) {
 		var self = this;
 		var status = 500; // RESPONSE (OK: 201, MAIL EXISTS: 409, error: 500)

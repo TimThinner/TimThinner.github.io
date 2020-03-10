@@ -181,17 +181,14 @@ export default class SolarEnergyChartView extends View {
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
 			
-			// TODO
 			series1.data = self.models['SolarModel'].energyValues;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "energy";
 			series1.name = "ENERGY";
 			series1.yAxis = valueAxis;
 			
-			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
-			
 			
 			console.log(['series1.data=',series1.data]);
 			
@@ -202,8 +199,6 @@ export default class SolarEnergyChartView extends View {
 			//self.chart.scrollbarX.series.push(series1);
 			//self.chart.scrollbarX.marginBottom = 20;
 			//self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-			
-			
 			
 			var scrollbarX = new am4charts.XYChartScrollbar();
 			scrollbarX.series.push(series1);

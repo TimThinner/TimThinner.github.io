@@ -22,9 +22,9 @@ export default class DistrictABController extends Controller {
 		model.subscribe(this);
 		this.master.modelRepo.add('SolarModel',model);
 		this.models['SolarModel'] = model;
-		
+		/*
 		setTimeout(() => { model.fetch(); }, 300);
-		
+		*/
 		this.timers['SolarChartView'] = {timer: undefined, interval: 30000, models:['SolarModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

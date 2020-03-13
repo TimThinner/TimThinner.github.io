@@ -31,6 +31,14 @@ export default class View {
 		return retval;
 	}
 	
+	forceLogout(vid) {
+		const html = '<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>';
+		$(html).appendTo('#'+vid);
+		setTimeout(() => {
+			this.controller.forceLogout();
+		}, 3000);
+	}
+	
 	fillSVGTextElement(svgObject, id, txt) {
 		const textElement = svgObject.getElementById(id);
 		if (textElement) {

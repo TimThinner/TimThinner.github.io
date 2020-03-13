@@ -31,6 +31,7 @@ export default class HPACPowerChartView extends View {
 		this.timerName = 'HPACChartView';
 		this.chart = undefined;
 		this.rendered = false;
+		this.FELID = 'hpac-power-chart-view-failure';
 	}
 	
 	show() {
@@ -67,7 +68,7 @@ export default class HPACPowerChartView extends View {
 				if (this.rendered) {
 					if (options.status === 200) {
 						
-						$('#hpac-power-chart-view-failure').empty();
+						$('#'+this.FELID).empty();
 						
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... HPACPowerChartView CHART UPDATED!');
@@ -86,9 +87,16 @@ export default class HPACPowerChartView extends View {
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#hpac-power-chart-view-failure').empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#hpac-power-chart-view-failure');
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to controller forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							// Call View-class method to handle error.
+							this.forceLogout(this.FELID);
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#'+this.FELID);
+						}
 					}
 				}
 			}
@@ -243,74 +251,6 @@ export default class HPACPowerChartView extends View {
 			
 			// Date format to be used in input fields
 			const inputFieldFormat = "yyyy-MM-dd HH:mm";
-			/*
-			document.getElementById("b1m").addEventListener("click", function() {
-				self.selected = "b1m";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b5m").addEventListener("click", function() {
-				self.selected = "b5m";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b15m").addEventListener("click", function() {
-				self.selected = "b15m";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b30m").addEventListener("click", function() {
-				self.selected = "b30m";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b1h").addEventListener("click", function() {
-				self.selected = "b1h";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b4h").addEventListener("click", function() {
-				self.selected = "b4h";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b8h").addEventListener("click", function() {
-				self.selected = "b8h";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b12h").addEventListener("click", function() {
-				self.selected = "b12h";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b24h").addEventListener("click", function() {
-				self.selected = "b24h";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			*/
-			
-			
-			function resetButtonClass() {
-				/*
-				const elems = document.getElementsByClassName("my-zoom-button");
-				for(let i = 0; i < elems.length; i++) {
-					$(elems[i]).removeClass("selected");
-				}
-				$('#'+self.selected).addClass("selected");
-				*/
-			}
-			
 			
 			dateAxis.events.on("selectionextremeschanged", function() {
 				updateFields();
@@ -319,16 +259,7 @@ export default class HPACPowerChartView extends View {
 			dateAxis.events.on("extremeschanged", updateFields);
 			
 			function updateFields() {
-				
-				resetButtonClass();
-				//console.log(['dateAxis.mainBaseInterval.timeUnit=', dateAxis.mainBaseInterval.timeUnit]);
-				//console.log(['dateAxis.mainBaseInterval.count=', dateAxis.mainBaseInterval.count]);
-				//console.log(['duration=',am4core.time.getDuration(dateAxis.mainBaseInterval.timeUnit, dateAxis.mainBaseInterval.count)]);
 				const minZoomed = dateAxis.minZoomed + am4core.time.getDuration(dateAxis.mainBaseInterval.timeUnit, dateAxis.mainBaseInterval.count) * 0.5;
-				
-				//console.log(['updateFields minZoomed=',minZoomed]);
-				//console.log(['updateFields maxZoomed=',dateAxis.maxZoomed]);
-				//console.log(['EROTUS=',dateAxis.maxZoomed-minZoomed]);
 				document.getElementById(refreshId+"-fromfield").value = self.chart.dateFormatter.format(minZoomed, inputFieldFormat);
 				document.getElementById(refreshId+"-tofield").value = self.chart.dateFormatter.format(new Date(dateAxis.maxZoomed), inputFieldFormat);
 			}
@@ -338,12 +269,11 @@ export default class HPACPowerChartView extends View {
 			
 			let zoomTimeout;
 			function updateZoom() {
-				//console.log('updateZoom()!!!!');
 				if (zoomTimeout) {
 					clearTimeout(zoomTimeout);
 				}
 				zoomTimeout = setTimeout(function() {
-					resetButtonClass();
+					
 					const start = document.getElementById(refreshId+"-fromfield").value;
 					const end = document.getElementById(refreshId+"-tofield").value;
 					if ((start.length < inputFieldFormat.length) || (end.length < inputFieldFormat.length)) {
@@ -395,7 +325,7 @@ export default class HPACPowerChartView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="hpac-power-chart-view-failure"></div>'+
+				'<div class="col s12" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
@@ -409,16 +339,14 @@ export default class HPACPowerChartView extends View {
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="hpac-power-chart-view-failure">'+
+						'<div class="col s12 center" id="'+this.FELID+'">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<p>UUPS! Something went wrong.</p>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
+				if (errorMessages.indexOf('Auth failed') >= 0) {
+					this.forceLogout(this.FELID);
+				}
 			} else {
 				this.renderChart();
 			}

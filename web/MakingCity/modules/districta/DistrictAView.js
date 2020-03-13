@@ -40,12 +40,58 @@ export default class DistrictAView extends View {
 		this.rendered = false;
 		$(this.el).empty();
 	}
+	
+	/*
+		Geothermal part of "flow" is:
+		
+		LANDSCAPE:
+		Giving: <path id="geothermal-pipe" d="M 1300,300 L 1300,350 A 50,50 0 0,1 1250,400 L 1000,400"
+		Taking: <path id="geothermal-pipe" d="M 1000,400 L 1250,400 A 50,50 0 0,0 1300,350 L 1300,300"
+		
+		SQUARE:
+		Giving: <path id="geothermal-pipe" d="M 720,260 L 720,300 A 50,50 0 0,1 670,350 L 500,350"
+		Taking: <path id="geothermal-pipe" d="M 500,350 L 670,350 A 50,50 0 0,0 720,300 L 720,260"
+		
+		PORTRAIT:
+		Giving: <path id="geothermal-pipe" d="M 480,260 L 480,350 A 50,50 0 0,1 430,400 L 300,400"
+		Taking: <path id="geothermal-pipe" d="M 300,400 L 430,400 A 50,50 0 0,1 480,350 L 480,260"
+	*/
 	updateOne(svgObject, svgId, val) {
 		const textElement = svgObject.getElementById(svgId);
 		while (textElement.firstChild) {
 			textElement.removeChild(textElement.firstChild);
 		}
-		textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+		// Check if 'geothermal-power' is giving or taking.
+		if (svgId === 'geothermal-power') {
+			const ps = {
+				'PORTRAIT':{
+					'give':'M 480,260 L 480,350 A 50,50 0 0,1 430,400 L 300,400',
+					'take':'M 300,400 L 430,400 A 50,50 0 0,0 480,350 L 480,260'
+				},
+				'SQUARE':{
+					'give':'M 720,260 L 720,300 A 50,50 0 0,1 670,350 L 500,350',
+					'take':'M 500,350 L 670,350 A 50,50 0 0,0 720,300 L 720,260'
+				},
+				'LANDSCAPE':{
+					'give':'M 1300,300 L 1300,350 A 50,50 0 0,1 1250,400 L 1000,400',
+					'take':'M 1000,400 L 1250,400 A 50,50 0 0,0 1300,350 L 1300,300'
+				}
+			};
+			const mode = this.controller.master.modelRepo.get('ResizeObserverModel').mode;
+			if (val < 0) {
+				textElement.appendChild(document.createTextNode(Math.abs(val).toFixed(1) + " kW"));
+				textElement.setAttributeNS(null, 'fill', '#f00');
+				const pathElement = svgObject.getElementById('geothermal-pipe');
+				pathElement.setAttributeNS(null, 'd', ps[mode]['take']);
+			} else {
+				textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+				textElement.setAttributeNS(null, 'fill', '#0a0');
+				const pathElement = svgObject.getElementById('geothermal-pipe');
+				pathElement.setAttributeNS(null, 'd', ps[mode]['give']);
+			}
+		} else {
+			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+		}
 	}
 /*
 meterId
@@ -141,8 +187,19 @@ meterId
 				} else { // Error in fetching.
 					if (this.rendered) {
 						$('#district-a-view-failure').empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#district-a-view-failure');
+						if (options.status === 401) {
+							// This status code must be caught and wired to forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							const html = '<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>';
+							$(html).appendTo('#district-a-view-failure');
+							setTimeout(() => {
+								this.controller.forceLogout();
+							}, 3000);
+							
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#district-a-view-failure');
+						}
 					} else {
 						this.render();
 					}
@@ -380,16 +437,20 @@ meterId
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<p>UUPS! Something went wrong.</p>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
 						'<div class="col s6 center">'+
 							'<a href="javascript:void(0);" id="back" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
+				
+				if (errorMessages.indexOf('Auth failed') >= 0) {
+					// Show message and then FORCE LOGOUT in 3 seconds.
+					$('<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>').appendTo('#district-a-view-failure');
+					setTimeout(() => {
+						this.controller.forceLogout();
+					}, 3000);
+				}
+				
 			} else {
 				const mode = this.controller.master.modelRepo.get('ResizeObserverModel').mode;
 				let svgFile, svgClass;

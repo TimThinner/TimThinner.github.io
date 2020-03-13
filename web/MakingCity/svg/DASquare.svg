@@ -48,8 +48,6 @@
 <g>
 	<path id="p1" d="M 260,350 L 500,350 
 	M 500,260 L 500,500 
-	M 720,260 L 720,300 
-	A 50,50 0 0,1 670,350 L500,350 
 	M 500,500 L 200,500 
 	A 50,50 0 0,0 150,550 L 150,550 
 	M 290,500 L 290,730 
@@ -58,6 +56,10 @@
 	M 710,500 L 710,550 
 	M 500,500 L 800,500 
 	A 50,50 0 0,1 850,550 L 850,730" 
+	style="opacity:0.5;stroke:#0a0;stroke-width:12px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="geothermal-pipe" d="M 720,260 L 720,300 A 50,50 0 0,1 670,350 L500,350"
 	style="opacity:0.5;stroke:#0a0;stroke-width:12px;stroke-dasharray:30px 10px;fill:none;">
 		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 	</path>

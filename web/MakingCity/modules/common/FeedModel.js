@@ -15,6 +15,22 @@ https://makingcity.vtt.fi/data/arina/iss/feeds.json?meterId=114&start=2020-02-12
 {"created_at":"2020-02-10T14:04:33","meterId":114,"averagePower":48.649,"totalEnergy":451892.2,"energyDiff":1},
 {"created_at":"2020-02-10T14:05:51","meterId":114,"averagePower":50.769,"totalEnergy":451893.3,"energyDiff":1.1}
 ]
+
+
+NOTE: When Authentcation is added to the system, the auth backend returns:
+		
+		return res.status(401).json({
+			message: 'Auth failed'
+		});
+		
+This status code and errorMessage must be caught and wired to forceLogout() action.
+		
+		// Force LOGOUT if Auth failed!
+		if (options.status === 401) {
+			setTimeout(() => {
+				this.controller.forceLogout();
+			}, 1000);
+		}
 */
 export class Feed {
 	constructor(obj) {
@@ -175,7 +191,6 @@ export default class FeedModel extends Model {
 		//const debug_time_elapse = moment().valueOf()-debug_time_start;
 		//console.log([self.name+' fetch debug_time_elapse=',debug_time_elapse]);
 	}
-	
 	/*
 	fetch(token) {
 		const self = this;
@@ -226,13 +241,17 @@ export default class FeedModel extends Model {
 					self.values = []; // Start with fresh empty data.
 					self.energyValues = [];
 					
-					self.process(myJson);
-					
+					if (Array.isArray(myJson)) {
+						console.log(['Before process() myJson=',myJson]);
+						self.process(myJson);
+					}
+					console.log(['FeedModel fetch status=',status]);
 					self.fetching = false;
 					self.ready = true;
 					self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
 				})
 				.catch(error => {
+					console.log(['FeedModel fetch error=',error]);
 					self.fetching = false;
 					self.ready = true;
 					self.errorMessage = error;
@@ -255,13 +274,17 @@ export default class FeedModel extends Model {
 					self.values = []; // Start with fresh empty data.
 					self.energyValues = [];
 					
-					self.process(myJson);
-					
+					if (Array.isArray(myJson)) {
+						console.log(['Before process() myJson=',myJson]);
+						self.process(myJson);
+					}
+					console.log(['FeedModel fetch status=',status]);
 					self.fetching = false;
 					self.ready = true;
 					self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
 				})
 				.catch(error => {
+					console.log(['FeedModel fetch error=',error]);
 					self.fetching = false;
 					self.ready = true;
 					self.errorMessage = error;
@@ -270,6 +293,7 @@ export default class FeedModel extends Model {
 		}
 	}
 	*/
+	
 	fetch(token) {
 		const self = this;
 		if (this.fetching) {
@@ -314,4 +338,5 @@ export default class FeedModel extends Model {
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
 			});
 	}
+	
 }

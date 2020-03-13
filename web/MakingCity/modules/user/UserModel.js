@@ -13,11 +13,11 @@ export default class UserModel extends Model {
 		this.id = undefined;
 		this.email = undefined;
 		this.token = undefined;
-		this.expires = undefined;
+		//this.expires = undefined;
 		this.is_superuser = false;
 		this.localStorageLabel = 'MakingCityUserModel';
 	}
-	
+	/*
 	isLoggedIn() {
 		let retval = false;
 		if (typeof this.expires !== 'undefined') {
@@ -26,20 +26,27 @@ export default class UserModel extends Model {
 			}
 		}
 		return retval;
+	}*/
+	isLoggedIn() {
+		let retval = false;
+		if (typeof this.token !== 'undefined') {
+			retval = true;
+		}
+		return retval;
 	}
 	
 	reset() {
 		this.id = undefined;
 		this.email = undefined;
 		this.token = undefined;
-		this.expires = undefined;
+		//this.expires = undefined;
 		this.is_superuser = false;
 	}
 	
 	/* For safety reasons the "is_superuser"-flag is never stored or restored automatically. */
 	store() {
 		var status = localStorage.getItem(this.localStorageLabel);
-		var new_status = {'id':this.id,'email':this.email,'token':this.token,'expires':this.expires};
+		var new_status = {'id':this.id,'email':this.email,'token':this.token}; //,'expires':this.expires};
 		// EXCEPT HERE FOR TEST PURPOSES:
 		//new_status.is_superuser = this.is_superuser;
 		if (status == null) {
@@ -66,7 +73,7 @@ export default class UserModel extends Model {
 			if (typeof stat.id !== 'undefined')    { this.id = stat.id; }
 			if (typeof stat.email !== 'undefined') { this.email = stat.email; }
 			if (typeof stat.token !== 'undefined') { this.token = stat.token; }
-			if (typeof stat.expires !== 'undefined') { this.expires = stat.expires; }
+			//if (typeof stat.expires !== 'undefined') { this.expires = stat.expires; }
 			// EXCEPT HERE FOR TEST PURPOSES:
 			//if (typeof stat.is_superuser !== 'undefined') { this.is_superuser = stat.is_superuser; }
 		}
@@ -90,10 +97,10 @@ export default class UserModel extends Model {
 		this.is_superuser = false;
 		
 		// logged in moment()
-		const exp = moment().add(24,'hours');
+		//const exp = moment().add(24,'hours');
 		//const exp = moment().add(2,'minutes');
 		// Formats a string to the ISO8601 standard.
-		this.expires = exp.toISOString(); // 2013-02-04T22:44:30.652Z
+		//this.expires = exp.toISOString(); // 2013-02-04T22:44:30.652Z
 		// Store token and email temporarily into localStorage.
 		// It will be removed when the user logs-out.
 		this.store();
@@ -131,10 +138,11 @@ export default class UserModel extends Model {
 				self.is_superuser = myJson.is_superuser;
 				
 				// logged in moment()
-				const exp = moment().add(24,'hours');
+				//const exp = moment().add(24,'hours');
+				//const exp = moment().add(60,'seconds');
 				//const exp = moment().add(2,'minutes');
 				// Formats a string to the ISO8601 standard.
-				self.expires = exp.toISOString(); // 2013-02-04T22:44:30.652Z
+				//self.expires = exp.toISOString(); // 2013-02-04T22:44:30.652Z
 				
 				// Store token and email temporarily into localStorage.
 				// It will be removed when the user logs-out.

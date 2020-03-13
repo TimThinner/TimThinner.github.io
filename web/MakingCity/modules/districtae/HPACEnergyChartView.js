@@ -21,7 +21,6 @@ export default class HPACEnergyChartView extends View {
 		this.el = el;
 		
 		// Which models I have to listen? Select which ones to use here:
-		
 		Object.keys(this.controller.models).forEach(key => {
 			if (key === 'HPAC101Model' || key === 'HPAC105Model') {
 				this.models[key] = this.controller.models[key];
@@ -246,72 +245,6 @@ export default class HPACEnergyChartView extends View {
 			
 			// Date format to be used in input fields
 			const inputFieldFormat = "yyyy-MM-dd HH:mm";
-			/*
-			document.getElementById("b1m").addEventListener("click", function() {
-				self.selected = "b1m";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b5m").addEventListener("click", function() {
-				self.selected = "b5m";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b15m").addEventListener("click", function() {
-				self.selected = "b15m";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b30m").addEventListener("click", function() {
-				self.selected = "b30m";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b1h").addEventListener("click", function() {
-				self.selected = "b1h";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b4h").addEventListener("click", function() {
-				self.selected = "b4h";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b8h").addEventListener("click", function() {
-				self.selected = "b8h";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b12h").addEventListener("click", function() {
-				self.selected = "b12h";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			document.getElementById("b24h").addEventListener("click", function() {
-				self.selected = "b24h";
-				resetButtonClass();
-				dateAxis.zoom({start:0, end:1});
-				self.controller.changeFetchParams('DEALS', self.selected);
-			});
-			*/
-			function resetButtonClass() {
-				/*
-				const elems = document.getElementsByClassName("my-zoom-button");
-				for(let i = 0; i < elems.length; i++) {
-					$(elems[i]).removeClass("selected");
-				}
-				$('#'+self.selected).addClass("selected");
-				*/
-			}
-			
 			
 			dateAxis.events.on("selectionextremeschanged", function() {
 				updateFields();
@@ -320,16 +253,7 @@ export default class HPACEnergyChartView extends View {
 			dateAxis.events.on("extremeschanged", updateFields);
 			
 			function updateFields() {
-				
-				resetButtonClass();
-				//console.log(['dateAxis.mainBaseInterval.timeUnit=', dateAxis.mainBaseInterval.timeUnit]);
-				//console.log(['dateAxis.mainBaseInterval.count=', dateAxis.mainBaseInterval.count]);
-				//console.log(['duration=',am4core.time.getDuration(dateAxis.mainBaseInterval.timeUnit, dateAxis.mainBaseInterval.count)]);
 				const minZoomed = dateAxis.minZoomed + am4core.time.getDuration(dateAxis.mainBaseInterval.timeUnit, dateAxis.mainBaseInterval.count) * 0.5;
-				
-				//console.log(['updateFields minZoomed=',minZoomed]);
-				//console.log(['updateFields maxZoomed=',dateAxis.maxZoomed]);
-				//console.log(['EROTUS=',dateAxis.maxZoomed-minZoomed]);
 				document.getElementById(refreshId+"-fromfield").value = self.chart.dateFormatter.format(minZoomed, inputFieldFormat);
 				document.getElementById(refreshId+"-tofield").value = self.chart.dateFormatter.format(new Date(dateAxis.maxZoomed), inputFieldFormat);
 			}
@@ -339,12 +263,10 @@ export default class HPACEnergyChartView extends View {
 			
 			let zoomTimeout;
 			function updateZoom() {
-				//console.log('updateZoom()!!!!');
 				if (zoomTimeout) {
 					clearTimeout(zoomTimeout);
 				}
 				zoomTimeout = setTimeout(function() {
-					resetButtonClass();
 					const start = document.getElementById(refreshId+"-fromfield").value;
 					const end = document.getElementById(refreshId+"-tofield").value;
 					if ((start.length < inputFieldFormat.length) || (end.length < inputFieldFormat.length)) {
@@ -358,11 +280,7 @@ export default class HPACEnergyChartView extends View {
 					}
 				}, 500);
 			}
-			
-			
 			console.log('HPAC Energy RENDER CHART END =====================');
-			
-			
 		}); // end am4core.ready()
 	}
 	
@@ -387,14 +305,7 @@ export default class HPACEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					
 					'<div id="hpac-energy-chart" class="energy-chart-tall"></div>'+
-					
-					//'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
-					//'<p style="font-size:14px;text-align:left;" class="range-field">Adjust the update interval:'+
-					//	'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
-					//'</p>'+
-					
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -404,8 +315,6 @@ export default class HPACEnergyChartView extends View {
 		
 		this.rendered = true;
 		
-		//this.wrapper.handlePollingInterval(refreshId, this.timerName);
-		
 		if (this.areModelsReady()) {
 			console.log('HPACEnergyChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
@@ -414,11 +323,6 @@ export default class HPACEnergyChartView extends View {
 					'<div class="row">'+
 						'<div class="col s12 center" id="hpac-energy-chart-view-failure">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<p>UUPS! Something went wrong.</p>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);

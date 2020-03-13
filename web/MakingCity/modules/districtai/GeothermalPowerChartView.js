@@ -21,19 +21,17 @@ export default class GeothermalPowerChartView extends View {
 		this.el = el;
 		
 		// Which models I have to listen? Select which ones to use here:
-		
 		Object.keys(this.controller.models).forEach(key => {
 			if (key === 'GeothermalModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
-		
 		// What is the timer name?
 		this.timerName = 'GeothermalChartView';
 		this.chart = undefined;
 		this.rendered = false;
-		
+		this.FELID = 'geothermal-power-chart-view-failure';
 	}
 	
 	show() {
@@ -70,7 +68,7 @@ export default class GeothermalPowerChartView extends View {
 				if (this.rendered) {
 					if (options.status === 200) {
 						
-						$('#geothermal-power-chart-view-failure').empty();
+						$('#'+this.FELID).empty();
 						
 						if (typeof this.chart !== 'undefined') {
 							//console.log('fetched ..... GeothermalPowerChartView CHART UPDATED!');
@@ -83,9 +81,16 @@ export default class GeothermalPowerChartView extends View {
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#geothermal-power-chart-view-failure').empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#geothermal-power-chart-view-failure');
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to controller forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							// Call View-class method to handle error.
+							this.forceLogout(this.FELID);
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#'+this.FELID);
+						}
 					}
 				}
 			}
@@ -277,7 +282,7 @@ export default class GeothermalPowerChartView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="geothermal-power-chart-view-failure"></div>'+
+				'<div class="col s12" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
@@ -291,16 +296,14 @@ export default class GeothermalPowerChartView extends View {
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="geothermal-power-chart-view-failure">'+
+						'<div class="col s12 center" id="'+this.FELID+'">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<p>UUPS! Something went wrong.</p>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
+				if (errorMessages.indexOf('Auth failed') >= 0) {
+					this.forceLogout(this.FELID);
+				}
 			} else {
 				this.renderChart();
 			}

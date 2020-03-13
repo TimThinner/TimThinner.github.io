@@ -27,7 +27,7 @@ export default class StatusModel extends Model {
 			return;
 		}
 		
-		const debug_time_start = moment().valueOf();
+		//const debug_time_start = moment().valueOf();
 		//console.log(['debug_time_start=',debug_time_start]);
 		
 		const today = moment().format('YYYY-MM-DD');
@@ -54,7 +54,7 @@ export default class StatusModel extends Model {
 				});
 				//console.log(['self.values=',self.values]);
 				
-				const debug_time_elapse = moment().valueOf()-debug_time_start;
+				//const debug_time_elapse = moment().valueOf()-debug_time_start;
 				//console.log([self.name,' fetch debug_time_elapse=',debug_time_elapse]);
 				
 				self.fetching = false;

@@ -138,6 +138,9 @@ export default class Controller {
 		}
 	}
 	
+	forceLogout() {
+		this.master.forceLogout();
+	}
 	
 	restore() {
 		console.log('Controller restore');

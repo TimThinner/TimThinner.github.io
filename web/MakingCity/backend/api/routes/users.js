@@ -90,7 +90,6 @@ router.post("/login", (req,res,next)=>{
 							// If you use a string be sure you provide the time units (days, hours, etc), 
 							// otherwise milliseconds unit is used by default ("120" is equal to "120ms").
 							expiresIn: "24h"
-							//expiresIn: 10 // 10 seconds (testing)
 						}
 					)
 					return res.status(200).json({

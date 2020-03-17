@@ -91,9 +91,9 @@ export default class Controller {
 				const token = um ? um.token : undefined;
 				
 				//console.log(['POLLER FETCH ',name]);
-				this.timers[name].models.forEach(name => {
-					console.log(['Poller fetch model name=',name,' token=',token]);
-					this.models[name].fetch(token);
+				this.timers[name].models.forEach(key => {
+					console.log(['Poller fetch model key=',key,' token=',token]);
+					this.models[key].fetch(token);
 				});
 				
 				this.timers[name].timer = setTimeout(()=>{

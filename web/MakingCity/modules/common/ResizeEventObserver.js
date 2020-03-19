@@ -1,6 +1,6 @@
 import EventObserver from './EventObserver.js';
 
-export default class ResizeObserverModel extends EventObserver {
+export default class ResizeEventObserver extends EventObserver {
 	
 	constructor() {
 		super();
@@ -32,16 +32,16 @@ export default class ResizeObserverModel extends EventObserver {
 			}
 		}
 		if (typeof this.mode === 'undefined') {
-			//console.log('ResizeObserverModel => FIRST TIME RENDER');
+			console.log('ResizeEventObserver => FIRST TIME RENDER');
 			this.mode = _mode;
-			setTimeout(() => this.notifyAll({model:'ResizeObserverModel',method:'resize',status:200,message:''}), 100);
+			setTimeout(() => this.notifyAll({model:'ResizeEventObserver',method:'resize',status:200,message:''}), 100);
 			
 			
 		} else {
 			if (this.mode !== _mode) {
-				//console.log('ResizeObserverModel => MODE CHANGE RENDER');
+				console.log('ResizeEventObserver => MODE CHANGE RENDER');
 				this.mode = _mode;
-				setTimeout(() => this.notifyAll({model:'ResizeObserverModel',method:'resize',status:200,message:''}), 100);
+				setTimeout(() => this.notifyAll({model:'ResizeEventObserver',method:'resize',status:200,message:''}), 100);
 			}
 		}
 	}

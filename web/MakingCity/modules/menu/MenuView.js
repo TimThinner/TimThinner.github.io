@@ -11,7 +11,7 @@ export default class MenuView extends View {
 			}
 		});
 		
-		this.controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
+		this.controller.master.modelRepo.get('ResizeEventObserver').subscribe(this);
 		this.rendered = false;
 	}
 	
@@ -34,7 +34,8 @@ export default class MenuView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='ResizeObserverModel' && options.method==='resize') {
+			if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				console.log("MenuView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
 			}
 		}
@@ -61,12 +62,9 @@ export default class MenuView extends View {
 			
 			const hexA = svgObject.getElementById('hex-a');
 			hexA.addEventListener("click", function(){
-				console.log('HEXAGON A CLICKED!');
-				//self.model.setSelected('DA');
+				//console.log('HEXAGON A CLICKED!');
 				
 				self.models['MenuModel'].setSelected('DA');
-				
-				
 				
 			}, false);
 			hexA.addEventListener("mouseover", function(event){ self.setHoverEffect(event, 'scale(1.1)'); }, false);
@@ -136,7 +134,7 @@ export default class MenuView extends View {
 		$(this.el).empty();
 		
 		const USER_MODEL = this.controller.master.modelRepo.get('UserModel');
-		const mode = this.controller.master.modelRepo.get('ResizeObserverModel').mode;
+		const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
 		
 		let svgFile, svgClass;
 		if (mode === 'LANDSCAPE') {

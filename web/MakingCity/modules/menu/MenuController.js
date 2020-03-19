@@ -19,7 +19,7 @@ export default class MenuController extends Controller {
 		this.view = new MenuView(this);
 		
 		// At init() there is ALWAYS only one controller with visible=true, this controller.
-		// and also the ResizeObserverModel is started at init() => this controller is shown 
+		// and also the ResizeEventObserver is started at init() => this controller is shown 
 		// TWICE in init() if this.show() is called here!!!
 		
 		

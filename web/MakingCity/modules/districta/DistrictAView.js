@@ -17,8 +17,8 @@ export default class DistrictAView extends View {
 				this.models[key].subscribe(this);
 			}
 		});
-		// Start listening notify -messages from ResizeObserverModel:
-		this.controller.master.modelRepo.get('ResizeObserverModel').subscribe(this);
+		// Start listening notify -messages from ResizeEventObserver:
+		this.controller.master.modelRepo.get('ResizeEventObserver').subscribe(this);
 		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
@@ -77,7 +77,7 @@ export default class DistrictAView extends View {
 					'take':'M 1000,400 L 1250,400 A 50,50 0 0,0 1300,350 L 1300,300'
 				}
 			};
-			const mode = this.controller.master.modelRepo.get('ResizeObserverModel').mode;
+			const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
 			if (val < 0) {
 				textElement.appendChild(document.createTextNode(Math.abs(val).toFixed(1) + " kW"));
 				textElement.setAttributeNS(null, 'fill', '#f00');
@@ -204,7 +204,8 @@ meterId
 						this.render();
 					}
 				}
-			} else if (options.model==='ResizeObserverModel' && options.method==='resize') {
+			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				console.log("MenuView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
 			}
 		}
@@ -337,7 +338,7 @@ meterId
 		$("#toggle-direction").on('click',function(){
 			const svgObject = document.getElementById('svg-object').contentDocument;
 			if (svgObject) {
-				const mode = self.controller.master.modelRepo.get('ResizeObserverModel').mode;
+				const mode = self.controller.master.modelRepo.get('ResizeEventObserver').mode;
 				//console.log(['mode=',mode]);
 				
 				IF NEEDED, New values are:
@@ -452,7 +453,7 @@ meterId
 				}
 				
 			} else {
-				const mode = this.controller.master.modelRepo.get('ResizeObserverModel').mode;
+				const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
 				let svgFile, svgClass;
 				if (mode === 'LANDSCAPE') {
 					//console.log('LANDSCAPE');

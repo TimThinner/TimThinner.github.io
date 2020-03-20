@@ -176,10 +176,10 @@ export default class MenuView extends View {
 			//	'<div class="col s12 center" id="menu-view-failure"></div>'+
 			//'</div>'+
 			'<div class="row mc-footer">'+
-				'<div class="col s12 m6 center">'+
+				'<div class="col s12 m8 center">'+
 					'<p id="menu-description" style="color:#777"></p>'+
 				'</div>'+
-				'<div class="col s12 m6">'+
+				'<div class="col s12 m4">'+
 					'<img src="./img/640px-Flag_of_Europe.svg.png" class="mc-logo" />'+
 					'<img src="./img/MC.png" class="mc-logo" />'+
 				'</div>'+

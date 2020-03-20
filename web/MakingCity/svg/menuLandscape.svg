@@ -50,9 +50,9 @@
 	<image x="1120" y="180" width="100" height="150" xlink:href="powerline.svg" />
 	<image x="1250" y="160" width="100" height="150" xlink:href="windturbine.svg" />
 	
-	<image x="1020" y="420" width="50" height="65" xlink:href="house.svg" />
-	<image x="1070" y="420" width="50" height="65" xlink:href="house.svg" />
-	<image x="1120" y="420" width="50" height="65" xlink:href="house.svg" />
+	<image x="1030" y="410" width="50" height="65" xlink:href="house.svg" />
+	<image x="1080" y="410" width="50" height="65" xlink:href="house.svg" />
+	<image x="1130" y="410" width="50" height="65" xlink:href="house.svg" />
 	
 	<!-- Houses in District C -->
 	<image x="980" y="690" width="50" height="65" xlink:href="house.svg" />
@@ -65,9 +65,9 @@
 	<image x="710" y="690" width="50" height="65" xlink:href="house.svg" />
 	
 	<!-- Houses in District E -->
-	<image x="550" y="420" width="50" height="65" xlink:href="house.svg" />
-	<image x="600" y="420" width="50" height="65" xlink:href="house.svg" />
-	<image x="650" y="420" width="50" height="65" xlink:href="house.svg" />
+	<image x="550" y="410" width="50" height="65" xlink:href="house.svg" />
+	<image x="600" y="410" width="50" height="65" xlink:href="house.svg" />
+	<image x="650" y="410" width="50" height="65" xlink:href="house.svg" />
 	
 	<g>
 		<path d="M 870,360 A 148,110 0 0,1 870,780 A 148,110 0 0,1 870,360" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />

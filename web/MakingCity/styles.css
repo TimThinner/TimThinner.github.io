@@ -2,7 +2,7 @@ html, body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
 	color: #333;
-	background-color: #ccc;
+	background-color: #fff;
 }
 @media screen and (min-width: 601px) {
 	html, body {
@@ -170,6 +170,8 @@ input[type="range"] {
 	background-color: #fff;
 }
 .mc-logo {
-	height: 100px;
-	margin-left: 10px;
+	margin-left: 0.5rem;
+	margin-top: 0.5rem;
+	float: right;
+	height: 60px;
 }

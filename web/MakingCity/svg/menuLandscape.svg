@@ -109,4 +109,8 @@
 	<polygon class="hex" id="hex-c" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(1050,745) scale(1.0)" />
 	<polygon class="hex" id="hex-d" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(690,745) scale(1.0)" />
 	<polygon class="hex" id="hex-e" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(630,460) scale(1.0)" />
+	<!--
+	<image x="1460" y="770" width="164.87" height="110" xlink:href="640px-Flag_of_Europe.svg.png" />
+	<image x="1650" y="770" width="110" height="110" xlink:href="MC.png" />
+	-->
 </svg>

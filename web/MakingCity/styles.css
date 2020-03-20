@@ -166,3 +166,10 @@ input[type="range"] {
 	border-left: 1px solid #888;
 	color: #fff;
 }
+.mc-footer {
+	background-color: #fff;
+}
+.mc-logo {
+	height: 100px;
+	margin-left: 10px;
+}

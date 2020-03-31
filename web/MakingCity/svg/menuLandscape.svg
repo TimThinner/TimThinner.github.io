@@ -86,7 +86,7 @@
 	
 	<!-- Hexagon Labels: District A - Distict E -->
 	<!-- Center TEXT within given sub-svg element -->
-	<svg x="670" y="300" width="400px" height="130px">
+	<svg x="670" y="280" width="400px" height="130px">
 		<text class="district-title" id="district-a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District A</text>
 	</svg>
 	<svg x="910" y="460" width="400px" height="130px">

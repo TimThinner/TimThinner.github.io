@@ -1,6 +1,6 @@
 import Controller from '../common/Controller.js';
 
-import { Cooler113Model, Cooler112Model } from  './CoolerModels.js';
+import { Cooler113Model, Cooler112Model, Cooler117Model } from  './CoolerModels.js';
 
 import DistrictAGWrapperView from './DistrictAGWrapperView.js';
 /*
@@ -23,7 +23,7 @@ export default class DistrictAGController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key === 'Cooler113Model' || key === 'Cooler112Model') {
+			if (key === 'Cooler113Model' || key === 'Cooler112Model' || key === 'Cooler117Model') {
 				this.master.modelRepo.remove(key);
 			}
 		});
@@ -44,11 +44,17 @@ export default class DistrictAGController extends Controller {
 		model_112.subscribe(this);
 		this.master.modelRepo.add('Cooler112Model',model_112);
 		this.models['Cooler112Model'] = model_112;
+		
+		const model_117 = new Cooler117Model({name:'Cooler117Model',src:'data/arina/iss/feeds.json?meterId=117'});
+		model_117.subscribe(this);
+		this.master.modelRepo.add('Cooler117Model',model_117);
+		this.models['Cooler117Model'] = model_117;
+		
 		/*
 		setTimeout(() => { model_113.fetch(); }, 1500);
 		setTimeout(() => { model_112.fetch(); }, 1600);
 		*/
-		this.timers['CoolerChartView'] = {timer: undefined, interval: 30000, models:['Cooler113Model','Cooler112Model']};
+		this.timers['CoolerChartView'] = {timer: undefined, interval: 30000, models:['Cooler113Model','Cooler112Model','Cooler117Model']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

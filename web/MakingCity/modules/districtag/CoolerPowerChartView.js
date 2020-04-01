@@ -222,7 +222,7 @@ export default class CoolerPowerChartView extends View {
 			series2.name = "Cooler equipments";
 			series2.yAxis = valueAxis;
 			
-			// 117		Heaters 
+			// 117		Heating 
 			const series3 = self.chart.series.push(new am4charts.StepLineSeries());
 			series3.defaultState.transitionDuration = 0;
 			series3.tooltipText = "{valueY.value} kW";
@@ -239,7 +239,7 @@ export default class CoolerPowerChartView extends View {
 			series3.data = self.models['Cooler117Model'].values;
 			series3.dataFields.dateX = "time";
 			series3.dataFields.valueY = "averagePower";
-			series3.name = "Heaters";
+			series3.name = "Heating";
 			series3.yAxis = valueAxis;
 			
 			

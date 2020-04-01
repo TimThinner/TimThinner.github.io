@@ -206,7 +206,7 @@ export default class CoolerEnergyChartView extends View {
 			series2.yAxis = valueAxis;
 			
 			
-			// 117								Heaters
+			// 117								Heating
 			
 			const series3 = self.chart.series.push(new am4charts.ColumnSeries());
 			series3.defaultState.transitionDuration = 0;
@@ -224,7 +224,7 @@ export default class CoolerEnergyChartView extends View {
 			series3.data = self.models['Cooler117Model'].energyValues;
 			series3.dataFields.dateX = "time";
 			series3.dataFields.valueY = "energy";
-			series3.name = "Heaters";
+			series3.name = "Heating";
 			series3.yAxis = valueAxis;
 			
 			self.chart.legend = new am4charts.Legend();

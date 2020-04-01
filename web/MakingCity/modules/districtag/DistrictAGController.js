@@ -45,7 +45,7 @@ export default class DistrictAGController extends Controller {
 		this.master.modelRepo.add('Cooler112Model',model_112);
 		this.models['Cooler112Model'] = model_112;
 		
-		const model_117 = new Cooler117Model({name:'Cooler117Model',src:'data/arina/iss/feeds.json?meterId=117'});
+		const model_117 = new Cooler117Model({name:'Cooler117Model',src:'data/arina/iss/feeds.json?calc=1&meterId=117'});
 		model_117.subscribe(this);
 		this.master.modelRepo.add('Cooler117Model',model_117);
 		this.models['Cooler117Model'] = model_117;

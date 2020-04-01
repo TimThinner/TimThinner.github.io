@@ -22,7 +22,7 @@ export default class CoolerEnergyChartView extends View {
 		
 		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'Cooler113Model' || key === 'Cooler112Model') {
+			if (key === 'Cooler113Model' || key === 'Cooler112Model' || key === 'Cooler117Model') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -60,7 +60,7 @@ export default class CoolerEnergyChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if ((options.model==='Cooler113Model'||options.model==='Cooler112Model') && options.method==='fetched') {
+			if ((options.model==='Cooler113Model'||options.model==='Cooler112Model'||options.model==='Cooler117Model') && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
 						$('#cooler-energy-chart-view-failure').empty();
@@ -70,10 +70,12 @@ export default class CoolerEnergyChartView extends View {
 							// 113								Refrigerating machines
 							// 112								Refrigerating equipments
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'Cooler machines') {
+								if (s.name === 'Compressors') {
 									s.data = self.models['Cooler113Model'].energyValues;
-								} else {
+								} else if (s.name === 'Cooler equipments') {
 									s.data = self.models['Cooler112Model'].energyValues;
+								} else {
+									s.data = self.models['Cooler117Model'].energyValues;
 								}
 							});
 							
@@ -179,7 +181,7 @@ export default class CoolerEnergyChartView extends View {
 			series1.data = self.models['Cooler113Model'].energyValues;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "energy";
-			series1.name = "Cooler machines";
+			series1.name = "Compressors";
 			series1.yAxis = valueAxis;
 			
 			// 112								Refrigerating equipments
@@ -203,6 +205,27 @@ export default class CoolerEnergyChartView extends View {
 			series2.name = "Cooler equipments";
 			series2.yAxis = valueAxis;
 			
+			
+			// 117								Heating
+			
+			const series3 = self.chart.series.push(new am4charts.ColumnSeries());
+			series3.defaultState.transitionDuration = 0;
+			//series3.tooltipText = "{name}: {valueY.value} kWh";
+			//series3.tooltipText = localized_string_energy + ": {valueY.value} kWh";
+			series3.tooltipText = "{valueY.value} kWh";
+			series3.tooltip.getFillFromObject = false;
+			series3.tooltip.getStrokeFromObject = true;
+			series3.stroke = am4core.color("#f00");
+			series3.fill = series3.stroke;
+			series3.fillOpacity = 0.5;
+			series3.tooltip.background.fill = am4core.color("#000");
+			series3.tooltip.background.strokeWidth = 1;
+			series3.tooltip.label.fill = series3.stroke;
+			series3.data = self.models['Cooler117Model'].energyValues;
+			series3.dataFields.dateX = "time";
+			series3.dataFields.valueY = "energy";
+			series3.name = "Heating";
+			series3.yAxis = valueAxis;
 			
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;

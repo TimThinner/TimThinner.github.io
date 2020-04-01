@@ -2,7 +2,7 @@ html, body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
 	color: #333;
-	background-color: #ccc;
+	background-color: #fff;
 }
 @media screen and (min-width: 601px) {
 	html, body {
@@ -11,7 +11,7 @@ html, body {
 }
 /* Materialize CSS */
 .container {
-	background-color: #eee;
+	background-color: #fff;
 	margin: 0 auto;
 	/*max-width: 1280px;*/
 	max-width: 1600px;
@@ -165,4 +165,14 @@ input[type="range"] {
 	border-bottom: 1px solid #fff;
 	border-left: 1px solid #888;
 	color: #fff;
+}
+.mc-footer {
+	margin-top: -18px;
+	background-color: #fff;
+}
+.mc-logo {
+	margin-left: 1rem;
+	margin-top: 1rem;
+	float: right;
+	height: 60px;
 }

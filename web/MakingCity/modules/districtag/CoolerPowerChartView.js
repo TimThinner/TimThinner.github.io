@@ -22,7 +22,7 @@ export default class CoolerPowerChartView extends View {
 		
 		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'Cooler113Model' || key === 'Cooler112Model') {
+			if (key === 'Cooler113Model' || key === 'Cooler112Model' || key === 'Cooler117Model') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -63,7 +63,7 @@ export default class CoolerPowerChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if ((options.model==='Cooler113Model'||options.model==='Cooler112Model') && options.method==='fetched') {
+			if ((options.model==='Cooler113Model'||options.model==='Cooler112Model'||options.model==='Cooler117Model') && options.method==='fetched') {
 				if (this.rendered) {
 					if (options.status === 200) {
 						
@@ -74,10 +74,12 @@ export default class CoolerPowerChartView extends View {
 							// 113								Refrigerating machines
 							// 112								Refrigerating equipments
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'Cooler machines') {
+								if (s.name === 'Compressors') {
 									s.data = self.models['Cooler113Model'].values;
-								} else {
+								} else if (s.name === 'Cooler equipments') {
 									s.data = self.models['Cooler112Model'].values;
+								} else {
+									s.data = self.models['Cooler117Model'].values;
 								}
 							});
 							
@@ -196,7 +198,7 @@ export default class CoolerPowerChartView extends View {
 			series1.data = self.models['Cooler113Model'].values;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "averagePower";
-			series1.name = "Cooler machines";
+			series1.name = "Compressors";
 			series1.yAxis = valueAxis;
 			
 			// 112		Refrigerating equipments
@@ -220,6 +222,27 @@ export default class CoolerPowerChartView extends View {
 			series2.name = "Cooler equipments";
 			series2.yAxis = valueAxis;
 			
+			// 117		Heating 
+			const series3 = self.chart.series.push(new am4charts.StepLineSeries());
+			series3.defaultState.transitionDuration = 0;
+			series3.tooltipText = "{valueY.value} kW";
+			//series3.tooltipText = "{name}: {valueY.value} kW";
+			//series3.tooltipText = localized_string_power + ": {valueY.value} kW";
+			series3.tooltip.getFillFromObject = false;
+			series3.tooltip.getStrokeFromObject = true;
+			series3.stroke = am4core.color("#f00");
+			series3.fill = series3.stroke;
+			//series3.fillOpacity = 0.4;
+			series3.tooltip.background.fill = am4core.color("#000");
+			series3.tooltip.background.strokeWidth = 1;
+			series3.tooltip.label.fill = series3.stroke;
+			series3.data = self.models['Cooler117Model'].values;
+			series3.dataFields.dateX = "time";
+			series3.dataFields.valueY = "averagePower";
+			series3.name = "Heating";
+			series3.yAxis = valueAxis;
+			
+			
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;
 			var marker = self.chart.legend.markers.template.children.getIndex(0);
@@ -234,8 +257,6 @@ export default class CoolerPowerChartView extends View {
 			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
-			
-			//console.log(['series1.data=',series1.data]);
 			
 			// Scrollbar
 			

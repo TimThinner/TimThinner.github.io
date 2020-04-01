@@ -102,17 +102,18 @@ export default class DistrictAView extends View {
 					'give':'M 1300,300 L 1300,350 A 50,50 0 0,1 1250,400 L 1000,400',
 					'take':'M 1000,400 L 1250,400 A 50,50 0 0,0 1300,350 L 1300,300'
 				}*/
+				
 				'PORTRAIT':{
-					'give':'M 380,260 L 380,350',
-					'take':'M 380,350 L 380,260'
+					'give':'M 480,260 L 480,350 A 50,50 0 0,1 430,400 L 300,400',
+					'take':'M 300,400 L 430,400 A 50,50 0 0,0 480,350 L 480,260'
 				},
 				'SQUARE':{
-					'give':'M 670,260 L 670,330',
-					'take':'M 670,330 L 670,260'
+					'give':'M 720,260 L 720,300 A 50,50 0 0,1 670,350 L 500,350',
+					'take':'M 500,350 L 670,350 A 50,50 0 0,0 720,300 L 720,260'
 				},
 				'LANDSCAPE':{
-					'give':'M 1400,300 L 1400,380',
-					'take':'M 1400,380 L 1400,300'
+					'give':'M 1500,300 L 1500,330',
+					'take':'M 1500,330 L 1500,300'
 				}
 			};
 			const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
@@ -171,7 +172,6 @@ meterId
 		let kitchen_power = 0;
 		let hpac_power = 0;
 		let other_power = 0;
-		let heating_devices_power = 0;
 		
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
@@ -195,8 +195,6 @@ meterId
 						hpac_power += item.avPower;
 					} else if (item.meterId === 109 || item.meterId === 111) {
 						other_power += item.avPower;
-					} else if (item.meterId === 117) {
-						heating_devices_power = item.avPower;
 					}
 				}
 			});
@@ -211,7 +209,6 @@ meterId
 			this.updateOne(svgObject, 'other-power', other_power);
 			this.updateOne(svgObject, 'cooler-machines-power', cooler_machines_power);
 			this.updateOne(svgObject, 'cooler-equipments-power', cooler_equipment_power);
-			this.updateOne(svgObject, 'heating-devices-power', heating_devices_power);
 		}
 	}
 	
@@ -336,6 +333,7 @@ meterId
 				
 				self.menuModel.setSelected('DAG');
 				
+				
 			}, false);
 			targetAG.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetAG.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
@@ -349,23 +347,6 @@ meterId
 			targetAH.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetAH.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetAM = svgObject.getElementById('target-a-m');
-			targetAM.addEventListener("click", function(){
-				
-				console.log('Cooling');
-				
-			}, false);
-			targetAM.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAM.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
-			
-			const targetAN = svgObject.getElementById('target-a-n');
-			targetAN.addEventListener("click", function(){
-				
-				self.menuModel.setSelected('DAG');
-				
-			}, false);
-			targetAN.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAN.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
 			const targetAI = svgObject.getElementById('target-a-i');
 			targetAI.addEventListener("click", function(){
@@ -375,18 +356,6 @@ meterId
 			}, false);
 			targetAI.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetAI.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
-			
-			const targetAP = svgObject.getElementById('target-a-p');
-			targetAP.addEventListener("click", function(){
-				
-				console.log('District Heating Network');
-				
-			}, false);
-			targetAP.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAP.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
-			
-			
-			
 			
 			
 		} else {
@@ -482,11 +451,6 @@ meterId
 			const localized_other_title = LM['translation'][sel]['DAF_TITLE'];
 			const localized_cooler_machines_title = LM['translation'][sel]['DAHA_TITLE'];
 			const localized_cooler_equipment_title = LM['translation'][sel]['DAHB_TITLE'];
-			const localized_cooling_title = LM['translation'][sel]['DAHC_TITLE'];
-			const localized_heating_title = LM['translation'][sel]['DAHD_TITLE'];
-			const localized_dhn_title_a = LM['translation'][sel]['DAP_TITLE_A'];
-			const localized_dhn_title_b = LM['translation'][sel]['DAP_TITLE_B'];
-			const localized_dhn_title_c = LM['translation'][sel]['DAP_TITLE_C'];
 			
 			this.fillSVGTextElement(svgObject, 'da-grid-title', localized_grid_title);
 			this.fillSVGTextElement(svgObject, 'da-solar-title', localized_solar_title);
@@ -497,11 +461,6 @@ meterId
 			this.fillSVGTextElement(svgObject, 'da-other-title', localized_other_title);
 			this.fillSVGTextElement(svgObject, 'da-cooler-machines-title', localized_cooler_machines_title);
 			this.fillSVGTextElement(svgObject, 'da-cooler-equipment-title', localized_cooler_equipment_title);
-			this.fillSVGTextElement(svgObject, 'da-cooling-title', localized_cooling_title);
-			this.fillSVGTextElement(svgObject, 'da-heating-title', localized_heating_title);
-			this.fillSVGTextElement(svgObject, 'da-dhn-district-title', localized_dhn_title_a);
-			this.fillSVGTextElement(svgObject, 'da-dhn-heating-title', localized_dhn_title_b);
-			this.fillSVGTextElement(svgObject, 'da-dhn-network-title', localized_dhn_title_c);
 		}
 	}
 	

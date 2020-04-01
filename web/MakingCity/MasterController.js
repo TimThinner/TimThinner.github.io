@@ -1,5 +1,5 @@
 import ModelRepo from './modules/common/ModelRepo.js';
-import ResizeObserverModel from './modules/common/ResizeObserverModel.js';
+import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import LanguageModel from './modules/common/LanguageModel.js';
 import UserModel from './modules/user/UserModel.js';
 
@@ -45,12 +45,12 @@ class MasterController {
 	init() {
 		console.log('MasterController init!');
 		
-		const ROM = new ResizeObserverModel();
-		this.modelRepo.add('ResizeObserverModel',ROM); //this.model);
-		ROM.start(); //this.model.start(); // Start tracking resize events
+		const REO = new ResizeEventObserver();
+		this.modelRepo.add('ResizeEventObserver',REO);
+		REO.start(); // Start tracking resize events
 		
-		const LM = new LanguageModel(); //this.languageModel = new LanguageModel();
-		this.modelRepo.add('LanguageModel',LM);//this.languageModel);
+		const LM = new LanguageModel();
+		this.modelRepo.add('LanguageModel',LM);
 		
 		const UM = new UserModel({name:'UserModel',src:'user'});
 		UM.subscribe(this); // Now we will receive notifications from the UserModel.

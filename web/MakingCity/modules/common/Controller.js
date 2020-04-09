@@ -59,6 +59,11 @@ export default class Controller {
 		}
 	}
 	
+	/*
+		Every Controller must subscribe for "MenuModel" notifications.
+		After that all view changes are driven by this code. Note that by using 
+		timeout we make all other "VIEWS" hidden before showing the selected one.
+	*/
 	notify(options) {
 		if (options.model==='MenuModel' && options.method==='selected') {
 			//console.log(['In ',this.name,' selected = ',options.selected]);

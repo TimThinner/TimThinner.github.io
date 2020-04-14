@@ -31,7 +31,7 @@ export default class DistrictAGController extends Controller {
 	
 	refreshTimerange() {
 		const timerName = 'CoolerChartView';
-		super.doPollingInterval(timerName);
+		this.restartPollingInterval(timerName);
 	}
 	
 	init() {

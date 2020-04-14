@@ -24,7 +24,7 @@ export default class DistrictAIController extends Controller {
 	
 	refreshTimerange() {
 		const timerName = 'GeothermalChartView';
-		super.doPollingInterval(timerName);
+		this.restartPollingInterval(timerName);
 	}
 	
 	init() {

@@ -33,7 +33,7 @@ export default class DistrictACController extends Controller {
 	
 	refreshTimerange() {
 		const timerName = 'LightChartView';
-		super.doPollingInterval(timerName);
+		this.restartPollingInterval(timerName);
 	}
 	
 	init() {

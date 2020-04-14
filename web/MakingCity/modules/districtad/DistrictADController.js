@@ -32,7 +32,7 @@ export default class DistrictADController extends Controller {
 	
 	refreshTimerange() {
 		const timerName = 'KitchenChartView';
-		super.doPollingInterval(timerName);
+		this.restartPollingInterval(timerName);
 	}
 	
 	init() {

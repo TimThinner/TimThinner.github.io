@@ -31,7 +31,7 @@ export default class DistrictAFController extends Controller {
 	
 	refreshTimerange() {
 		const timerName = 'OtherChartView';
-		super.doPollingInterval(timerName);
+		this.restartPollingInterval(timerName);
 	}
 	
 	init() {

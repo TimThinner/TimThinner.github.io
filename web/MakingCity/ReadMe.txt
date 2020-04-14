@@ -6,6 +6,7 @@ It has two instance properties to do that:
 	this.modelRepo = new ModelRepo();
 The ModelRepo is just a collection of (key, value) pairs, such that each possible key appears at most once in the collection.
 
+
 First the MasterController creates all controllers and adds them to its controllers hash, for example:
 	this.controllers['DAB'] = new DistrictABController({name:'DAB', master:this, el:'#content', visible:false});
 	this.controllers['DAB'].init();
@@ -37,11 +38,13 @@ Actually Controller's show() -method shows view and starts the poller:
 Which starts polling all timers for this controller. 
 This is important, because all views must always show "the latest" data fetched from the server.
 When a view is shown (=rendered), it first creates a skeleton of HTML markup, where empty data-placeholders are inserted into parent element. 
-If all models are ready (areModelsReady()) then also the data is available and it is appended into place-holders. 
+If all models are ready (areModelsReady()) then also the data is available and it is appended into placeholders. 
 But if all models are NOT ready we show a Wait-spinner and wait for Model to trigger "fetched" notification. The models (one or many) also notify View whenever new data is fetched. So the chart update can happen "out-of-sync", one model at a time. 
 
+
+
 Q: How does a view "know" when it has to refresh its display?
-A: When a view is created, it start to listen for its model(s), like this:
+A: When a view is created, it starts to listen for its model(s), like this:
 	// Which models I have to listen? Select which ones to use here:
 	Object.keys(this.controller.models).forEach(key => {
 		if (key === 'SolarModel') {
@@ -72,8 +75,8 @@ So it starts when MenuModel sends a "selected" -notification, see code below:
 			}
 		}
 	}
-Note that when we hide a controller (view), it is important to clear all timers, because we don't want to fetch data for models which are not shown right now.
-Hiding a controller:
+Note that when we hide a controller (view), it is important to clear all timers, because we don't want to fetch data for models which are not shown:
+
 	Object.keys(this.timers).forEach(key => {
 		if (this.timers[key].timer) {
 			clearTimeout(this.timers[key].timer);
@@ -86,5 +89,19 @@ Hiding a controller:
 
 The ES6 Classes and Object-Oriented Programming (OOP) is a great way to organize your projects. Introduced with ES6, the javascript class syntax makes OOP easier. Before the class syntax was available, if you wanted to do OOP you would need to use a constructor function.
 https://www.javascriptjanuary.com/blog/es6-classes
+
+
+EventObserver
+	ResizeEventObserver
+	AlertEventObserver
+
+View
+	SVGView
+
+TimerEventObserver
+	Controller
+
+
+
 
 

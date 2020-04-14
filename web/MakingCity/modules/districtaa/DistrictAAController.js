@@ -24,7 +24,7 @@ export default class DistrictAAController extends Controller {
 	
 	refreshTimerange() {
 		const timerName = 'TotalChartView';
-		super.doPollingInterval(timerName);
+		this.restartPollingInterval(timerName);
 	}
 	
 	init() {

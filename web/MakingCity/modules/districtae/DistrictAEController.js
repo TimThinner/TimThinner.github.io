@@ -31,7 +31,7 @@ export default class DistrictAEController extends Controller {
 	
 	refreshTimerange() {
 		const timerName = 'HPACChartView';
-		super.doPollingInterval(timerName);
+		this.restartPollingInterval(timerName);
 	}
 	
 	init() {

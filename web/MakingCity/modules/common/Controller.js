@@ -1,4 +1,6 @@
-export default class Controller {
+import PeriodicPoller from '../common/PeriodicPoller.js';
+
+export default class Controller extends PeriodicPoller {
 	
 	/*
 	Timers are used to fetch (update) data periodically.
@@ -13,23 +15,19 @@ export default class Controller {
 	*/
 	
 	constructor(options) {
+		super(options);
 		this.name    = options.name;
 		this.master  = options.master;
 		this.visible = options.visible;
 		this.el      = options.el;
 		
-		this.timers = {};
+		//this.timers = {};
 		this.models = {};
 		this.view   = undefined;
 	}
 	
 	remove() {
-		Object.keys(this.timers).forEach(key => {
-			if (this.timers[key].timer) {
-				clearTimeout(this.timers[key].timer);
-				this.timers[key].timer = undefined;
-			}
-		});
+		super.remove();
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -40,12 +38,7 @@ export default class Controller {
 	}
 	
 	hide() {
-		Object.keys(this.timers).forEach(key => {
-			if (this.timers[key].timer) {
-				clearTimeout(this.timers[key].timer);
-				this.timers[key].timer = undefined;
-			}
-		});
+		super.hide();
 		if (this.view) {
 			this.view.hide();
 		}
@@ -77,69 +70,6 @@ export default class Controller {
 				this.visible = false;
 				this.hide();
 			}
-		}
-	}
-	
-	getPollingInterval(name) {
-		if (this.timers.hasOwnProperty(name)) {
-			return this.timers[name].interval;
-		} 
-		return 0;
-	}
-	
-	poller(name) {
-		if (this.timers.hasOwnProperty(name)) {
-			if (this.timers[name].interval > 0) {
-				// Feed the UserModel auth-token into fetch call.
-				// We also need to know whether REST-API call will be using token or not?
-				const um = this.master.modelRepo.get('UserModel');
-				const token = um ? um.token : undefined;
-				
-				//console.log(['POLLER FETCH ',name]);
-				this.timers[name].models.forEach(key => {
-					console.log(['Poller fetch model key=',key,' token=',token]);
-					this.models[key].fetch(token);
-				});
-				
-				this.timers[name].timer = setTimeout(()=>{
-					this.poller(name);
-				}, this.timers[name].interval);
-			}
-		}
-	}
-	
-	startPollers() {
-		Object.keys(this.timers).forEach(key => {
-			this.poller(key);
-		});
-	}
-	
-	/* 
-		User can change the polling interval. It is initially 10 s.
-	*/
-	changePollingInterval(name, interval) {
-		
-		//console.log(['changePollingInterval name=',name]);
-		
-		if (this.timers.hasOwnProperty(name)) {
-			if (this.timers[name].timer) {
-				console.log('Clear old timer...');
-				clearTimeout(this.timers[name].timer);
-				this.timers[name].timer = undefined;
-			}
-			this.timers[name].interval = interval;
-			this.poller(name);
-		}
-	}
-	
-	doPollingInterval(name) {
-		if (this.timers.hasOwnProperty(name)) {
-			if (this.timers[name].timer) {
-				console.log('Clear old timer...');
-				clearTimeout(this.timers[name].timer);
-				this.timers[name].timer = undefined;
-			}
-			this.poller(name);
 		}
 	}
 	

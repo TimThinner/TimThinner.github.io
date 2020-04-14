@@ -24,7 +24,7 @@ export default class DistrictABController extends Controller {
 	
 	refreshTimerange() {
 		const timerName = 'SolarChartView';
-		super.doPollingInterval(timerName);
+		this.restartPollingInterval(timerName);
 	}
 	
 	init() {

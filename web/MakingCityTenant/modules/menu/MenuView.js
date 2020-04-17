@@ -55,6 +55,7 @@ export default class MenuView extends View {
 		event.target.setAttributeNS(null,'transform',newtra);
 	}
 	
+	/*
 	addSVGEventHandlers(mode) {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
@@ -99,7 +100,8 @@ export default class MenuView extends View {
 			hexE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 		}
 	}
-	
+	*/
+	/*
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
@@ -119,7 +121,7 @@ export default class MenuView extends View {
 			this.fillSVGTextElement(svgObject, 'district-e', localized_d_e);
 		}
 	}
-	
+	*/
 	fillLocalizedTexts() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
@@ -193,8 +195,11 @@ export default class MenuView extends View {
 		const svgObj = document.getElementById("svg-object");
 		svgObj.addEventListener('load', function(){
 			//console.log('ADD SVG EVENT HANDLERS!');
-			self.addSVGEventHandlers(mode);
-			self.localizeSVGTexts();
+			
+			
+			//self.addSVGEventHandlers(mode);
+			//self.localizeSVGTexts();
+			
 			
 			$("#language-fi").on('click',function(){
 				if ($(this).hasClass('selected')) {
@@ -205,7 +210,7 @@ export default class MenuView extends View {
 					$("#language-fi").addClass('selected');
 					LM.selected = 'fi';
 					self.fillLocalizedTexts();
-					self.localizeSVGTexts();
+					//self.localizeSVGTexts();
 				}
 			});
 			$('#language-en').on('click',function(){
@@ -217,7 +222,7 @@ export default class MenuView extends View {
 					$("#language-en").addClass('selected');
 					LM.selected = 'en';
 					self.fillLocalizedTexts();
-					self.localizeSVGTexts();
+					//self.localizeSVGTexts();
 				}
 			});
 			$('#user-auth').on('click',function(){

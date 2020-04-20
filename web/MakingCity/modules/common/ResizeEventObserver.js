@@ -16,18 +16,18 @@ export default class ResizeEventObserver extends EventObserver {
 		this.height = $(window).height();
 		
 		let _mode = 'SQUARE';
-		// Tolerance +-20% for square
+		// Tolerance +-25% for square
 		let diffe = 0;
 		if (this.width > this.height) {
 			// Maybe landscape?
 			diffe = this.width - this.height;
-			if (diffe > 0.2*this.width) {
+			if (diffe > 0.25*this.width) {
 				_mode = 'LANDSCAPE';
 			}
 		} else {
 			// Maybe portrait?
 			diffe = this.height - this.width;
-			if (diffe > 0.2*this.height) {
+			if (diffe > 0.25*this.height) {
 				_mode = 'PORTRAIT';
 			}
 		}

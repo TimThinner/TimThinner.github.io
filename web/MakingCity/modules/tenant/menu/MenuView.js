@@ -1,4 +1,7 @@
-import View from '../common/View.js';
+import View from '../../common/View.js';
+/*
+	Tenant UI: 
+*/
 export default class MenuView extends View {
 	
 	constructor(controller) {
@@ -141,15 +144,15 @@ export default class MenuView extends View {
 		let svgFile, svgClass;
 		if (mode === 'LANDSCAPE') {
 			//console.log('LANDSCAPE');
-			svgFile = './svg/menuLandscape.svg';
+			svgFile = './svg/tenant/menuLandscape.svg';
 			svgClass = 'svg-landscape-container';
 		} else if (mode === 'PORTRAIT') {
 			//console.log('PORTRAIT');
-			svgFile = './svg/menuPortrait.svg';
+			svgFile = './svg/tenant/menuPortrait.svg';
 			svgClass = 'svg-portrait-container';
 		} else {
 			//console.log('SQUARE');
-			svgFile = './svg/menuSquare.svg';
+			svgFile = './svg/tenant/menuSquare.svg';
 			svgClass = 'svg-square-container';
 		}
 		

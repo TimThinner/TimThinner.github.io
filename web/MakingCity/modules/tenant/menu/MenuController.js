@@ -1,4 +1,4 @@
-import Controller from '../common/Controller.js';
+import Controller from '../../common/Controller.js';
 import MenuModel from  './MenuModel.js';
 import MenuView from './MenuView.js';
 

@@ -3,7 +3,7 @@ import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import LanguageModel from './modules/common/LanguageModel.js';
 import UserModel from './modules/user/UserModel.js';
 
-import MenuController from './modules/menu/MenuController.js';
+import MenuController from './modules/tenant/menu/MenuController.js';
 import UserLoginController from './modules/user/UserLoginController.js';
 import UserSignupController from './modules/user/UserSignupController.js';
 import UserInfoController from './modules/user/UserInfoController.js';

@@ -29,23 +29,23 @@
 <path class="grid-head" d="M36 -368 H900" />
 <text x="65" y="-320" opacity="0.4" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#444">Positive Energy Districts</text>
 
-<path class="line" d="M0,0 L283,-283" />
-<path class="line" d="M0,0 L283,283" />
-<path class="line" d="M0,0 L-283,-283" />
-<path class="line" d="M0,0 L-283,283" />
+<path class="line" d="M0,0 L247,-247" />
+<path class="line" d="M0,0 L247,247" />
+<path class="line" d="M0,0 L-247,-247" />
+<path class="line" d="M0,0 L-247,247" />
 
-<circle cx="0" cy="0" r="400" stroke-width="1" stroke="#ccc" fill="none" />
+<circle cx="0" cy="0" r="350" stroke-width="1" stroke="#ccc" fill="none" />
 
-<circle cx="0" cy="0" r="220" stroke-width="10" stroke="#fff" fill="none" />
-<circle cx="0" cy="0" r="210" stroke-width="10" stroke="#eee" fill="none" />
-<circle cx="0" cy="0" r="200" stroke-width="10" stroke="#ddd" fill="none" />
+<circle cx="0" cy="0" r="190" stroke-width="10" stroke="#fff" fill="none" />
+<circle cx="0" cy="0" r="180" stroke-width="10" stroke="#eee" fill="none" />
+<circle cx="0" cy="0" r="170" stroke-width="10" stroke="#ddd" fill="none" />
 
-<circle class="circle-district" id="district" cx="0" cy="0" r="190" stroke-width="10" stroke="#ccc" fill="#fff" transform="scale(1.0)" />
+<circle class="circle-district" id="district" cx="0" cy="0" r="160" stroke-width="10" stroke="#ccc" fill="#fff" transform="scale(1.0)" />
 
-<circle cx="283" cy="-283" r="70" stroke-width="5" stroke="#ccc" fill="#fff" opacity="0.75" />
-<circle cx="283" cy="283" r="70" stroke-width="5" stroke="#ccc" fill="#fff" opacity="0.75" />
-<circle cx="-283" cy="-283" r="70" stroke-width="5" stroke="#ccc" fill="#fff" opacity="0.75" />
-<circle cx="-283" cy="283" r="70" stroke-width="5" stroke="#ccc" fill="#fff" opacity="0.75" />
+<circle cx="247" cy="-247" r="70" stroke-width="5" stroke="#ccc" fill="#fff" opacity="0.75" />
+<circle cx="247" cy="247" r="70" stroke-width="5" stroke="#ccc" fill="#fff" opacity="0.75" />
+<circle cx="-247" cy="-247" r="70" stroke-width="5" stroke="#ccc" fill="#fff" opacity="0.75" />
+<circle cx="-247" cy="247" r="70" stroke-width="5" stroke="#ccc" fill="#fff" opacity="0.75" />
 <!--
 <circle cx="0" cy="0" r="180" stroke-width="10" stroke="#888" fill="none">
 	<animateTransform attributeName="transform"

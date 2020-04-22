@@ -46,12 +46,12 @@ export default class MenuView extends View {
 	
 	setHoverEffect(event, scale){
 		if (scale === 'scale(1.0)') {
-			event.target.style.strokeWidth = 10;
+			event.target.style.strokeWidth = 5;
 			event.target.style.stroke = '#ccc';
 			//event.target.style.fillOpacity = 0.05;
 		} else {
-			event.target.style.strokeWidth = 10;
-			event.target.style.stroke = '#777';
+			event.target.style.strokeWidth = 5;
+			event.target.style.stroke = '#aaa';
 			//event.target.style.fillOpacity = 0.2;
 		}
 		event.target.setAttributeNS(null,'transform',scale);

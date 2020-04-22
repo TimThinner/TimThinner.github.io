@@ -1,4 +1,7 @@
 import View from '../common/View.js';
+/*
+	Tenant UI: 
+*/
 export default class MenuView extends View {
 	
 	constructor(controller) {
@@ -43,16 +46,15 @@ export default class MenuView extends View {
 	
 	setHoverEffect(event, scale){
 		if (scale === 'scale(1.0)') {
-			event.target.style.strokeWidth = 1;
-			event.target.style.fillOpacity = 0.05;
+			event.target.style.strokeWidth = 10;
+			event.target.style.stroke = '#ccc';
+			//event.target.style.fillOpacity = 0.05;
 		} else {
-			event.target.style.strokeWidth = 5;
-			event.target.style.fillOpacity = 0.2;
+			event.target.style.strokeWidth = 10;
+			event.target.style.stroke = '#777';
+			//event.target.style.fillOpacity = 0.2;
 		}
-		const oldtra = event.target.getAttributeNS(null,'transform');
-		const index = oldtra.indexOf("scale"); // transform="translate(500,670) scale(1.1)" />
-		const newtra = oldtra.slice(0, index) + scale;
-		event.target.setAttributeNS(null,'transform',newtra);
+		event.target.setAttributeNS(null,'transform',scale);
 	}
 	
 	addSVGEventHandlers(mode) {
@@ -60,46 +62,18 @@ export default class MenuView extends View {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
-			const hexA = svgObject.getElementById('hex-a');
+			const hexA = svgObject.getElementById('district');
 			hexA.addEventListener("click", function(){
-				//console.log('HEXAGON A CLICKED!');
 				
-				self.models['MenuModel'].setSelected('DA');
+				self.models['MenuModel'].setSelected('D');
 				
 			}, false);
 			hexA.addEventListener("mouseover", function(event){ self.setHoverEffect(event, 'scale(1.1)'); }, false);
 			hexA.addEventListener("mouseout", function(event){ self.setHoverEffect(event, 'scale(1.0)'); }, false);
-			
-			const hexB = svgObject.getElementById('hex-b');
-			hexB.addEventListener("click", function(){
-				console.log('HEXAGON B CLICKED!');
-			}, false);
-			hexB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			hexB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
-			
-			const hexC = svgObject.getElementById('hex-c');
-			hexC.addEventListener("click", function(){
-				console.log('HEXAGON C CLICKED!');
-			}, false);
-			hexC.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			hexC.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
-			
-			const hexD = svgObject.getElementById('hex-d');
-			hexD.addEventListener("click", function(){
-				console.log('HEXAGON D CLICKED!');
-			}, false);
-			hexD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			hexD.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
-			
-			const hexE = svgObject.getElementById('hex-e');
-			hexE.addEventListener("click", function(){
-				console.log('HEXAGON E CLICKED!');
-			}, false);
-			hexE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			hexE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 		}
 	}
 	
+	/*
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
@@ -119,7 +93,7 @@ export default class MenuView extends View {
 			this.fillSVGTextElement(svgObject, 'district-e', localized_d_e);
 		}
 	}
-	
+	*/
 	fillLocalizedTexts() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
@@ -193,8 +167,11 @@ export default class MenuView extends View {
 		const svgObj = document.getElementById("svg-object");
 		svgObj.addEventListener('load', function(){
 			//console.log('ADD SVG EVENT HANDLERS!');
+			
+			
 			self.addSVGEventHandlers(mode);
-			self.localizeSVGTexts();
+			//self.localizeSVGTexts();
+			
 			
 			$("#language-fi").on('click',function(){
 				if ($(this).hasClass('selected')) {
@@ -205,7 +182,7 @@ export default class MenuView extends View {
 					$("#language-fi").addClass('selected');
 					LM.selected = 'fi';
 					self.fillLocalizedTexts();
-					self.localizeSVGTexts();
+					//self.localizeSVGTexts();
 				}
 			});
 			$('#language-en').on('click',function(){
@@ -217,7 +194,7 @@ export default class MenuView extends View {
 					$("#language-en").addClass('selected');
 					LM.selected = 'en';
 					self.fillLocalizedTexts();
-					self.localizeSVGTexts();
+					//self.localizeSVGTexts();
 				}
 			});
 			$('#user-auth').on('click',function(){

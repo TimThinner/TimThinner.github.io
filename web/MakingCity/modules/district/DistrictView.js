@@ -1,14 +1,11 @@
-import View from '../../common/View.js';
-/*
-	Tenant UI: 
-*/
-export default class MenuView extends View {
+import View from '../common/View.js';
+export default class DistrictView extends View {
 	
 	constructor(controller) {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'MenuModel') {
+			if (key === 'DistrictModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -38,7 +35,7 @@ export default class MenuView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log("MenuView ResizeEventObserver resize!!!!!!!!!!!!!!");
+				console.log("DistrictView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
 			}
 		}
@@ -58,7 +55,6 @@ export default class MenuView extends View {
 		event.target.setAttributeNS(null,'transform',newtra);
 	}
 	
-	/*
 	addSVGEventHandlers(mode) {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
@@ -66,9 +62,8 @@ export default class MenuView extends View {
 			
 			const hexA = svgObject.getElementById('hex-a');
 			hexA.addEventListener("click", function(){
-				//console.log('HEXAGON A CLICKED!');
 				
-				self.models['MenuModel'].setSelected('DA');
+				self.controller.models['MenuModel'].setSelected('DA');
 				
 			}, false);
 			hexA.addEventListener("mouseover", function(event){ self.setHoverEffect(event, 'scale(1.1)'); }, false);
@@ -103,19 +98,18 @@ export default class MenuView extends View {
 			hexE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 		}
 	}
-	*/
-	/*
+	
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
-			const localized_d_a = LM['translation'][sel]['MENU_D_A_LABEL'];
-			const localized_d_b = LM['translation'][sel]['MENU_D_B_LABEL'];
-			const localized_d_c = LM['translation'][sel]['MENU_D_C_LABEL'];
-			const localized_d_d = LM['translation'][sel]['MENU_D_D_LABEL'];
-			const localized_d_e = LM['translation'][sel]['MENU_D_E_LABEL'];
+			const localized_d_a = LM['translation'][sel]['DISTRICT_A_LABEL'];
+			const localized_d_b = LM['translation'][sel]['DISTRICT_B_LABEL'];
+			const localized_d_c = LM['translation'][sel]['DISTRICT_C_LABEL'];
+			const localized_d_d = LM['translation'][sel]['DISTRICT_D_LABEL'];
+			const localized_d_e = LM['translation'][sel]['DISTRICT_E_LABEL'];
 			
 			this.fillSVGTextElement(svgObject, 'district-a', localized_d_a);
 			this.fillSVGTextElement(svgObject, 'district-b', localized_d_b);
@@ -123,15 +117,6 @@ export default class MenuView extends View {
 			this.fillSVGTextElement(svgObject, 'district-d', localized_d_d);
 			this.fillSVGTextElement(svgObject, 'district-e', localized_d_e);
 		}
-	}
-	*/
-	fillLocalizedTexts() {
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		const localized_title = LM['translation'][sel]['MENU_TITLE'];
-		const localized_descr = LM['translation'][sel]['MENU_DESCRIPTION'];
-		$('#menu-title').empty().append(localized_title);
-		$('#menu-description').empty().append(localized_descr);
 	}
 	
 	render() {
@@ -144,15 +129,15 @@ export default class MenuView extends View {
 		let svgFile, svgClass;
 		if (mode === 'LANDSCAPE') {
 			//console.log('LANDSCAPE');
-			svgFile = './svg/tenant/menuLandscape.svg';
+			svgFile = './svg/DLandscape.svg';
 			svgClass = 'svg-landscape-container';
 		} else if (mode === 'PORTRAIT') {
 			//console.log('PORTRAIT');
-			svgFile = './svg/tenant/menuPortrait.svg';
+			svgFile = './svg/DPortrait.svg';
 			svgClass = 'svg-portrait-container';
 		} else {
 			//console.log('SQUARE');
-			svgFile = './svg/tenant/menuSquare.svg';
+			svgFile = './svg/DSquare.svg';
 			svgClass = 'svg-square-container';
 		}
 		
@@ -162,80 +147,36 @@ export default class MenuView extends View {
 		}
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+		
 		const html =
+			//'<div class="row" style="margin-top:-20px">'+
 			'<div class="row">'+
-				'<div class="col s12 menu-view-top-bar">'+
-					'<img id="user-auth" class="user" src="./img/'+filename+'" />'+
-					'<img id="language-fi" class="flag" src="./img/flag_fi.png" />'+
-					'<img id="language-en" class="flag" src="./img/flag_en.png" />'+
-				'</div>'+
-			'</div>'+
-			'<div class="row" style="margin-top:-20px">'+
 				'<div class="col s12" style="padding-left:0;padding-right:0;">'+
 					'<div class="'+svgClass+'">'+
 						'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
 					'</div>'+
 				'</div>'+
-			'</div>'+
-			//'<div class="row">'+
-			//	'<div class="col s12 center" id="menu-view-failure"></div>'+
-			//'</div>'+
-			'<div class="row mc-footer">'+
-				'<div class="col s12 m7 center">'+
-					'<p id="menu-description" style="color:#777"></p>'+
+				'<div class="col s6 center" style="margin-top:14px;">'+
+					'<button class="btn waves-effect waves-light foobutton" id="back">'+localized_string_da_back+
+						'<i class="material-icons left">arrow_back</i>'+
+					'</button>'+
 				'</div>'+
-				'<div class="col s12 m5">'+
-					'<img src="./img/640px-Flag_of_Europe.svg.png" class="mc-logo" />'+
-					'<img src="./img/MC.png" class="mc-logo" />'+
+				'<div class="col s6">'+
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
-		
-		this.fillLocalizedTexts();
-		$('#language-'+LM.selected).addClass('selected');
 		
 		// AND WAIT for SVG object to fully load, before assigning event handlers!
 		const svgObj = document.getElementById("svg-object");
 		svgObj.addEventListener('load', function(){
 			//console.log('ADD SVG EVENT HANDLERS!');
-			
-			
-			//self.addSVGEventHandlers(mode);
-			//self.localizeSVGTexts();
-			
-			
-			$("#language-fi").on('click',function(){
-				if ($(this).hasClass('selected')) {
-					//console.log('This is selected!');
-				} else {
-					// Select 'fi'
-					$("#language-en").removeClass('selected');
-					$("#language-fi").addClass('selected');
-					LM.selected = 'fi';
-					self.fillLocalizedTexts();
-					//self.localizeSVGTexts();
-				}
-			});
-			$('#language-en').on('click',function(){
-				if ($(this).hasClass('selected')) {
-					//console.log('This is selected!');
-				} else {
-					// Select 'en'
-					$("#language-fi").removeClass('selected');
-					$("#language-en").addClass('selected');
-					LM.selected = 'en';
-					self.fillLocalizedTexts();
-					//self.localizeSVGTexts();
-				}
-			});
-			$('#user-auth').on('click',function(){
-				if (USER_MODEL.isLoggedIn()) {
-					// User is logged in already => Show user info!
-					self.models['MenuModel'].setSelected('userinfo');
-				} else {
-					self.models['MenuModel'].setSelected('userlogin');
-				}
-			});
+			self.addSVGEventHandlers(mode);
+			self.localizeSVGTexts();
+		});
+		$('#back').on('click',function() {
+			self.controller.models['MenuModel'].setSelected('menu');
 		});
 		this.rendered = true;
 	}

@@ -8,6 +8,7 @@ import UserLoginController from './modules/user/UserLoginController.js';
 import UserSignupController from './modules/user/UserSignupController.js';
 import UserInfoController from './modules/user/UserInfoController.js';
 
+import DistrictController from './modules/district/DistrictController.js';
 import DistrictAController from './modules/districta/DistrictAController.js';
 import DistrictAAController from './modules/districtaa/DistrictAAController.js';
 import DistrictABController from './modules/districtab/DistrictABController.js';
@@ -69,6 +70,10 @@ class MasterController {
 		this.controllers['userinfo'] = new UserInfoController({name:'userinfo', master:this, el:'#content', visible:false});
 		this.controllers['userinfo'].init();
 		
+		
+		this.controllers['D'] = new DistrictController({name:'D', master:this, el:'#content', visible:false});
+		this.controllers['D'].init();
+		
 		this.controllers['DA'] = new DistrictAController({name:'DA', master:this, el:'#content', visible:false});
 		this.controllers['DA'].init();
 		
@@ -95,6 +100,7 @@ class MasterController {
 		
 		this.controllers['DAI'] = new DistrictAIController({name:'DAI', master:this, el:'#content', visible:false});
 		this.controllers['DAI'].init();
+		
 	}
 	
 	forceLogout() {

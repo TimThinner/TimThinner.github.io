@@ -1,35 +1,21 @@
 /*
-
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
-
-
-
-
 TODO:
-
 Add
 target-a-m  Cooling devices
 target-a-n  Heating devices   meter_id = 117
-
-
-
-
 				'DAG_TITLE':'Kylmäkoneet ja kylmälaitteet',
 				'DAHA_TITLE':'Kompressorit',
 				'DAHB_TITLE':'Kylmälaitteet',
 				'DAHC_TITLE':'Kylmäkoneet',
 				'DAHD_TITLE':'Lämmitys',
-
-
 				'DAG_TITLE':'Cooling devices and equipment',
 				'DAHA_TITLE':'Compressors',
 				'DAHB_TITLE':'Cooler equipment',
 				'DAHC_TITLE':'Cooling devices',
 				'DAHD_TITLE':'Heating devices',
-
-
 */
 import View from '../common/View.js';
 export default class DistrictAView extends View {
@@ -603,7 +589,7 @@ meterId
 				});
 			}
 			$('#back').on('click',function() {
-				self.menuModel.setSelected('menu');
+				self.menuModel.setSelected('D');
 			});
 			this.rendered = true;
 		} else {

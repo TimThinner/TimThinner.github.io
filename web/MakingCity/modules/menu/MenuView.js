@@ -57,6 +57,20 @@ export default class MenuView extends View {
 		event.target.setAttributeNS(null,'transform',scale);
 	}
 	
+	setDashArrayLength(svgObject, path) {
+		const p = svgObject.getElementById(path);
+		if (p) {
+			const len = p.getTotalLength();
+			//console.log(['len=',len]);
+			//stroke-dasharray:700px 700px
+			p.style.strokeDasharray = len+'px '+len+'px';
+			const anim = svgObject.getElementById(path+'-animate');
+			anim.setAttributeNS(null, 'from', len);
+		} else {
+			console.log('p is null!!!!!');
+		}
+	}
+	
 	addSVGEventHandlers(mode) {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
@@ -78,17 +92,13 @@ http://bkaprt.com/psvg/07-18/
 NOTE: Values stroke-dasharray set to 0px 0px and animate from to 0 in SVG-file.
 These are filled with correct values in here:
 */
-			const path = svgObject.getElementById('first-building-path');
-			if (path) {
-				var len = path.getTotalLength();
-				console.log(['len=',len]);
-				//stroke-dasharray:700px 700px
-				path.style.strokeDasharray = len+'px '+len+'px';
-				const anim = svgObject.getElementById('first-building-path-animate');
-				anim.setAttributeNS(null, 'from', len);
-			} else {
-				console.log('path is null!!!!!');
-			}
+			this.setDashArrayLength(svgObject, 'first-building-path');
+			this.setDashArrayLength(svgObject, 'second-building-path');
+			this.setDashArrayLength(svgObject, 'third-building-path');
+			
+			this.setDashArrayLength(svgObject, 'first-painting-path');
+			this.setDashArrayLength(svgObject, 'second-painting-path');
+			this.setDashArrayLength(svgObject, 'third-painting-path');
 		}
 	}
 	

@@ -79,12 +79,14 @@ NOTE: Values stroke-dasharray set to 0px 0px and animate from to 0 in SVG-file.
 These are filled with correct values in here:
 */
 			const path = svgObject.getElementById('first-building-path');
-			var len = path.getTotalLength();
-			console.log(['len=',len]);
-			//stroke-dasharray:700px 700px
-			path.style.strokeDasharray = len+'px '+len+'px';
-			const anim = svgObject.getElementById('first-building-path-animate');
-			anim.setAttributeNS(null, 'from', len);
+			if (path) {
+				var len = path.getTotalLength();
+				console.log(['len=',len]);
+				//stroke-dasharray:700px 700px
+				path.style.strokeDasharray = len+'px '+len+'px';
+				const anim = svgObject.getElementById('first-building-path-animate');
+				anim.setAttributeNS(null, 'from', len);
+			}
 		}
 	}
 	

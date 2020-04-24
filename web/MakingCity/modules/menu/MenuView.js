@@ -86,6 +86,8 @@ These are filled with correct values in here:
 				path.style.strokeDasharray = len+'px '+len+'px';
 				const anim = svgObject.getElementById('first-building-path-animate');
 				anim.setAttributeNS(null, 'from', len);
+			} else {
+				console.log('path is null!!!!!');
 			}
 		}
 	}

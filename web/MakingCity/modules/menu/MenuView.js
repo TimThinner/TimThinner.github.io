@@ -57,6 +57,20 @@ export default class MenuView extends View {
 		event.target.setAttributeNS(null,'transform',scale);
 	}
 	
+	setDashArrayLength(svgObject, path) {
+		const p = svgObject.getElementById(path);
+		if (p) {
+			const len = p.getTotalLength();
+			//console.log(['len=',len]);
+			//stroke-dasharray:700px 700px
+			p.style.strokeDasharray = len+'px '+len+'px';
+			const anim = svgObject.getElementById(path+'-animate');
+			anim.setAttributeNS(null, 'from', len);
+		} else {
+			console.log('p is null!!!!!');
+		}
+	}
+	
 	addSVGEventHandlers(mode) {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
@@ -85,6 +99,14 @@ These are filled with correct values in here:
 			path.style.strokeDasharray = len+'px '+len+'px';
 			const anim = svgObject.getElementById('first-building-path-animate');
 			anim.setAttributeNS(null, 'from', len);
+			
+			this.setDashArrayLength(svgObject, 'first-building-path');
+			this.setDashArrayLength(svgObject, 'second-building-path');
+			this.setDashArrayLength(svgObject, 'third-building-path');
+			
+			this.setDashArrayLength(svgObject, 'first-painting-path');
+			this.setDashArrayLength(svgObject, 'second-painting-path');
+			this.setDashArrayLength(svgObject, 'third-painting-path');
 		}
 	}
 	

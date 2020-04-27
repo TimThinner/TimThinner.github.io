@@ -48,12 +48,12 @@ http://bkaprt.com/psvg/07-18/
 NOTE: Values stroke-dasharray set to 0px 0px and animate from to 0.
 These are filled with correct values in MenuView.js: addSVGEventHandlers -method.
 -->
+<!--
 <path id="first-building-path" d="M0,0 L0,43 L16.5,49 L33,43 L33,0 L0,0 
 		M39,0 L39,16 L52,16 L53,24 L39,24 L39,32 L55,32 L56,40 L39,40 L39,48 L58,48 L59,56 L39,56 L39,73 L80,95 L80,0 L39,0 Z"
 	style="stroke:#51b0ce;stroke-width:2px;stroke-dasharray:0px 0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-70px,-35px);">
 	<animate id="first-building-path-animate" attributeName="stroke-dashoffset" from="0" to="0" dur="2s" repeatCount="1" />
 </path>
-<!-- Windows -->
 <rect x="19" y="7" width="8" height="8" style="stroke:#51b0ce;stroke-width:2px;fill:#fff;transform: scaleY(-2) scaleX(2) translate(-70px,-35px);">
  	<animate attributeName="opacity" from="0" to="1" dur="2s" />
 </rect>
@@ -63,14 +63,67 @@ These are filled with correct values in MenuView.js: addSVGEventHandlers -method
 <rect x="19" y="31" width="8" height="8" style="stroke:#51b0ce;stroke-width:2px;fill:#fff;transform: scaleY(-2) scaleX(2) translate(-70px,-35px);">
  	<animate attributeName="opacity" from="0" to="1" dur="2s" />
 </rect>
+-->
 
+<path id="first-building-path" d="M0,0 L0,43 L16.5,49 L33,43 L33,0 L0,0 Z
+		M39,0 L39,16 L52,16 L53,24 L39,24 L39,32 L55,32 L56,40 L39,40 L39,48 L58,48 L59,56 L39,56 L39,73 L80,95 L80,0 L39,0 Z"
+	style="stroke:#51b0ce;stroke-width:2px;stroke-dasharray:0px 0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+	<animate id="first-building-path-animate" attributeName="stroke-dashoffset" from="0" to="0" dur="2s" repeatCount="1" />
+</path>
+
+<path id="first-painting-path" d="M5,0 L5,39 L16.5 44 L28,39 L28,5 L5,5 Z 
+		M15,10 L15,38 L20,38 L20,10 
+		M44,0 L44,11 L57,11 L65,60 L44,60 L44,71 L75,88 L75,5 L44,5 
+		M39,44 L80,44 
+		M39,28 L80,28 
+		M65,0 L65,73 L48,65"
+	style="stroke:#51b0ce;stroke-width:10px;stroke-dasharray:0px 0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+	<animate id="first-painting-path-animate" attributeName="stroke-dashoffset" from="0" to="0" dur="2s" repeatCount="1" />
+</path>
+<rect x="19" y="7" width="8" height="8" style="stroke:#51b0ce;stroke-width:2px;fill:#fff;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+ 	<animate attributeName="opacity" from="0" to="1" dur="2s" />
+</rect>
+<rect x="5" y="18" width="8" height="8" style="stroke:#51b0ce;stroke-width:2px;fill:#fff;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+ 	<animate attributeName="opacity" from="0" to="1" dur="2s" />
+</rect>
+<rect x="19" y="31" width="8" height="8" style="stroke:#51b0ce;stroke-width:2px;fill:#fff;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+ 	<animate attributeName="opacity" from="0" to="1" dur="2s" />
+</rect>
 <!--
 first  = #51b0ce
 second = #73d3ae
 third  = #1fac78
 -->
+<path id="second-building-path" d="M87,0 L87,95 L95,95 L95,0 L87,0 M101,0 L101,82 L109,82 L109,0 L101,0 Z"
+	style="stroke:#73d3ae;stroke-width:2px;stroke-dasharray:0px 0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+	<animate id="second-building-path-animate" attributeName="stroke-dashoffset" from="0" to="0" dur="2s" repeatCount="1" />
+</path>
+<path id="second-painting-path" d="M91,0 L91,95 M105,0 L105,82"
+	style="stroke:#73d3ae;stroke-width:8px;stroke-dasharray:0px 0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+	<animate id="second-painting-path-animate" attributeName="stroke-dashoffset" from="0" to="0" dur="2s" repeatCount="1" />
+</path>
 
+<path id="third-building-path" d="M115,0 L115,65 L123,65 L123,55 L148,44 L148,0 L115,0 Z"
+	style="stroke:#1fac78;stroke-width:2px;stroke-dasharray:0px 0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+	<animate id="third-building-path-animate" attributeName="stroke-dashoffset" from="0" to="0" dur="2s" repeatCount="1" />
+</path>
+<path id="third-painting-path" d="M120,0 L120,65 L120,51 L144,41 L144,5 L125,5 L125,45 L140,39 L140,5 L133,5 L133,39"
+	style="stroke:#1fac78;stroke-width:8px;stroke-dasharray:0px 0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+	<animate id="third-painting-path-animate" attributeName="stroke-dashoffset" from="0" to="0" dur="2s" repeatCount="1" />
+</path>
 
+<rect x="120" y="9" width="8" height="11" style="stroke:#1fac78;stroke-width:2px;fill:#fff;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+ 	<animate attributeName="opacity" from="0" to="1" dur="2s" />
+</rect>
+<rect x="120" y="26" width="8" height="11" style="stroke:#1fac78;stroke-width:2px;fill:#fff;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+ 	<animate attributeName="opacity" from="0" to="1" dur="2s" />
+</rect>
+<rect x="134" y="9" width="8" height="11" style="stroke:#1fac78;stroke-width:2px;fill:#fff;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+ 	<animate attributeName="opacity" from="0" to="1" dur="2s" />
+</rect>
+<rect x="134" y="26" width="8" height="11" style="stroke:#1fac78;stroke-width:2px;fill:#fff;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
+ 	<animate attributeName="opacity" from="0" to="1" dur="2s" />
+</rect>
 
 <circle class="circle-district" id="district" cx="0" cy="0" r="165" stroke-width="5" stroke="#ccc" fill="#fff" opacity="0.5" transform="scale(1.0)">
 <animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="165;175;165" />

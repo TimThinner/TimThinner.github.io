@@ -61,11 +61,21 @@ export default class MenuView extends View {
 		const p = svgObject.getElementById(path);
 		if (p) {
 			const len = p.getTotalLength();
-			//console.log(['len=',len]);
+			console.log(['len=',len]);
 			//stroke-dasharray:700px 700px
 			p.style.strokeDasharray = len+'px '+len+'px';
 			const anim = svgObject.getElementById(path+'-animate');
 			anim.setAttributeNS(null, 'from', len);
+		} else {
+			console.log('p is null!!!!!');
+		}
+	}
+	
+	setStroke(svgObject, path, strokeColor, strokeWidth) {
+		const p = svgObject.getElementById(path);
+		if (p) {
+			p.style.stroke = strokeColor;
+			p.style.strokeWidth = strokeWidth;
 		} else {
 			console.log('p is null!!!!!');
 		}
@@ -92,7 +102,7 @@ http://bkaprt.com/psvg/07-18/
 NOTE: Values stroke-dasharray set to 0px 0px and animate from to 0 in SVG-file.
 These are filled with correct values in here:
 */
-			const path = svgObject.getElementById('first-building-path');
+			/*const path = svgObject.getElementById('first-building-path');
 			var len = path.getTotalLength();
 			console.log(['len=',len]);
 			//stroke-dasharray:700px 700px
@@ -100,13 +110,28 @@ These are filled with correct values in here:
 			const anim = svgObject.getElementById('first-building-path-animate');
 			anim.setAttributeNS(null, 'from', len);
 			
+			first  = #51b0ce
+			second = #73d3ae
+			third  = #1fac78
+			*/
+			
 			this.setDashArrayLength(svgObject, 'first-building-path');
 			this.setDashArrayLength(svgObject, 'second-building-path');
 			this.setDashArrayLength(svgObject, 'third-building-path');
 			
-			this.setDashArrayLength(svgObject, 'first-painting-path');
-			this.setDashArrayLength(svgObject, 'second-painting-path');
-			this.setDashArrayLength(svgObject, 'third-painting-path');
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'first-painting-path', '#51b0ce', '10px');
+				this.setStroke(svgObject, 'second-painting-path', '#73d3ae', '10px');
+				this.setStroke(svgObject, 'third-painting-path', '#1fac78', '10px');
+			}, 2000);
+			
+			
+			//this.setDashArrayLength(svgObject, 'first-painting-path');
+			//this.setDashArrayLength(svgObject, 'second-painting-path');
+			//this.setDashArrayLength(svgObject, 'third-painting-path');
+			
+			
+			
 		}
 	}
 	

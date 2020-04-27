@@ -46,12 +46,12 @@ export default class MenuView extends View {
 	
 	setHoverEffect(event, scale){
 		if (scale === 'scale(1.0)') {
-			event.target.style.strokeWidth = 5;
-			event.target.style.stroke = '#ccc';
+			//event.target.style.strokeWidth = 10;
+			//event.target.style.stroke = '#777';
 			//event.target.style.fillOpacity = 0.05;
 		} else {
-			event.target.style.strokeWidth = 5;
-			event.target.style.stroke = '#aaa';
+			//event.target.style.strokeWidth = 10;
+			//event.target.style.stroke = '#000';
 			//event.target.style.fillOpacity = 0.2;
 		}
 		event.target.setAttributeNS(null,'transform',scale);
@@ -85,16 +85,28 @@ export default class MenuView extends View {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
-			
 			const hexA = svgObject.getElementById('district');
 			hexA.addEventListener("click", function(){
 				
 				self.models['MenuModel'].setSelected('D');
 				
 			}, false);
-			hexA.addEventListener("mouseover", function(event){ self.setHoverEffect(event, 'scale(1.1)'); }, false);
-			hexA.addEventListener("mouseout", function(event){ self.setHoverEffect(event, 'scale(1.0)'); }, false);
 			
+			const OD = svgObject.getElementById('outer-district');
+			hexA.addEventListener("mouseover", function(event){
+				const scale ='scale(1.1)';
+				event.target.setAttributeNS(null,'transform',scale);
+				if (OD) {
+					OD.setAttributeNS(null,'transform',scale);
+				}
+			}, false);
+			hexA.addEventListener("mouseout", function(event){ 
+				const scale ='scale(1.0)';
+				event.target.setAttributeNS(null,'transform',scale);
+				if (OD) {
+					OD.setAttributeNS(null,'transform',scale);
+				}
+			}, false);
 /*
 Animated line drawing in SVG:
 http://bkaprt.com/psvg/07-17/

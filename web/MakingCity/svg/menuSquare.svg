@@ -36,10 +36,11 @@
 
 <circle cx="0" cy="0" r="340" stroke-width="1" stroke="#ccc" fill="none" />
 
+<!--
 <circle cx="0" cy="0" r="190" stroke-width="10" stroke="#fff" fill="none" />
 <circle cx="0" cy="0" r="180" stroke-width="10" stroke="#eee" fill="none" />
 <circle cx="0" cy="0" r="170" stroke-width="10" stroke="#ddd" fill="none" />
-
+-->
 
 <!-- 
 Animated line drawing in SVG:
@@ -111,8 +112,11 @@ stroke-dasharray:0px 0px;
  	<animate attributeName="opacity" from="0" to="1" dur="2s" />
 </rect>
 
+<circle id="outer-district" cx="0" cy="0" r="170" stroke-width="10" stroke="#eee" fill="none" transform="scale(1.0)">
+	<animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="170;180;170" />
+</circle>
 <circle class="circle-district" id="district" cx="0" cy="0" r="165" stroke-width="5" stroke="#777" fill="#fff" opacity="0.25" transform="scale(1.0)">
-<animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="165;175;165" />
+	<animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="165;175;165" />
 </circle>
 
 <circle cx="240" cy="-240" r="70" stroke-width="5" stroke="#ccc" fill="#fff" opacity="0.75" />

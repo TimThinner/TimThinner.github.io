@@ -29,10 +29,10 @@
 <path class="grid-head" d="M36 -368 H900" />
 <text x="65" y="-320" opacity="0.4" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#444">Positive Energy Districts</text>
 
-<path class="line" d="M0,0 L247,-247" />
-<path class="line" d="M0,0 L247,247" />
-<path class="line" d="M0,0 L-247,-247" />
-<path class="line" d="M0,0 L-247,247" />
+<path class="line" d="M125,-125 L247,-247" />
+<path class="line" d="M125,125 L247,247" />
+<path class="line" d="M-125,-125 L-247,-247" />
+<path class="line" d="M-125,125 L-247,247" />
 
 <circle cx="0" cy="0" r="350" stroke-width="1" stroke="#ccc" fill="none" />
 <!--
@@ -86,22 +86,17 @@ third  = #1fac78
 	style="stroke:#73d3ae;stroke-width:2px;stroke-dasharray:0px 0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
 	<animate id="second-building-path-animate" attributeName="stroke-dashoffset" from="0" to="0" dur="2s" repeatCount="1" />
 </path>
-<path id="second-painting-path" d="M91,0 L91,95 M105,0 L105,82" 
+<path id="second-painting-path" d="M91,0 L91,95 M105,0 L105,82 Z" 
 	style="stroke:#fff;stroke-width:0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);" />
-<!-- 
-stroke-dasharray:0px 0px;
-<animate id="second-painting-path-animate" attributeName="stroke-dashoffset" from="0" to="0" dur="2s" repeatCount="1" />
--->
+
 <path id="third-building-path" d="M115,0 L115,65 L123,65 L123,55 L148,44 L148,0 L115,0 Z"
 	style="stroke:#1fac78;stroke-width:2px;stroke-dasharray:0px 0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
 	<animate id="third-building-path-animate" attributeName="stroke-dashoffset" from="0" to="0" dur="2s" repeatCount="1" />
 </path>
-<path id="third-painting-path" d="M119,0 L119,65 L119,52 L144,41 L144,5 L125,5 L125,45 L140,39 L140,5 L133,5 L133,39" 
+<path id="third-painting-path" d="M120,0 L120,65 L120,52 L144,41 L144,4 L125,4 L125,45 L140,39 L140,4 L133,4 L133,39" 
 	style="stroke:#fff;stroke-width:0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);" />
-<!--
-stroke-dasharray:0px 0px;
-<animate id="third-painting-path-animate" attributeName="stroke-dashoffset" from="0" to="0" dur="2s" repeatCount="1" />
--->
+
+
 <rect x="120" y="9" width="8" height="11" style="stroke:#1fac78;stroke-width:2px;fill:#fff;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);">
  	<animate attributeName="opacity" from="0" to="1" dur="2s" />
 </rect>

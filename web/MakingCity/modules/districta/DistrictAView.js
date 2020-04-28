@@ -233,7 +233,7 @@ meterId
 					}
 				}
 			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log("MenuView ResizeEventObserver resize!!!!!!!!!!!!!!");
+				console.log("DistrictAView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
 			}
 		}

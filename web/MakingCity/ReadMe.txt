@@ -102,6 +102,17 @@ TimerEventObserver
 	Controller
 
 
+Can we insert dynamically new SVG into existing UI?
+For example when user is logged in, we should be able to add functionality into menuXXX ...
+Make a test:
+
+
+
+
+
+
+
+
 
 
 

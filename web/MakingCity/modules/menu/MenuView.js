@@ -44,17 +44,29 @@ export default class MenuView extends View {
 		}
 	}
 	
-	setHoverEffect(event, scale){
-		if (scale === 'scale(1.0)') {
-			//event.target.style.strokeWidth = 10;
-			//event.target.style.stroke = '#777';
-			//event.target.style.fillOpacity = 0.05;
+	/*
+	NOTE: transform is defined within style-attribute, NOT as SVG property!
+	*/
+	setHoverEffect(event, scale) {
+		/*if (scale === 'scale(1.0)') {
+			
+			event.target.style.strokeWidth = 1;
+			event.target.style.fillOpacity = 0.05;
 		} else {
-			//event.target.style.strokeWidth = 10;
-			//event.target.style.stroke = '#000';
-			//event.target.style.fillOpacity = 0.2;
-		}
-		event.target.setAttributeNS(null,'transform',scale);
+			
+			event.target.style.strokeWidth = 3;
+			event.target.style.fillOpacity = 0.5;
+		}*/
+		const oldtra = event.target.style.transform;
+		//const oldtra = event.target.getAttributeNS(null,'transform');
+		//console.log(['oldtra=',oldtra]);
+		
+		
+		const index = oldtra.indexOf("scale"); // transform="translate(500,670) scale(1.1)" />
+		const newtra = oldtra.slice(0, index) + scale;
+		
+		event.target.style.transform = newtra;
+		//event.target.setAttributeNS(null,'transform',newtra);
 	}
 	
 	setDashArrayLength(svgObject, path) {
@@ -80,6 +92,64 @@ export default class MenuView extends View {
 			console.log('p is null!!!!!');
 		}
 	}
+	
+	
+	addSVGUser() {
+		const self = this;
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const UB = svgObject.getElementById('user-button');
+			//const cx = parseInt(UB.getAttributeNS(null,'cx'),10);
+			//const cy = parseInt(UB.getAttributeNS(null,'cy'),10);
+			const r = parseInt(UB.getAttributeNS(null,'r'),10);
+			//console.log(['cx=',cx,' cy=',cy,' r=',r]);
+			const r2 = r+10;
+			const values = r + ';' + r2 + ';' + r;
+			// <animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="70;75;70" />
+			const svgAnimateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+			svgAnimateElement.setAttributeNS(null,'attributeName','r');
+			svgAnimateElement.setAttributeNS(null,'begin','0s');
+			svgAnimateElement.setAttributeNS(null,'dur','3s');
+			svgAnimateElement.setAttributeNS(null,'repeatCount','indefinite');
+			svgAnimateElement.setAttributeNS(null,'values',values);
+			
+			UB.appendChild(svgAnimateElement);
+			
+			UB.setAttributeNS(null,'class','active-district');
+			UB.style.stroke = '#0a0';
+			var coords = "M-30,0 L30,0 M0,-30 L0,30";
+			
+			var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
+			path.setAttributeNS(null, 'd', coords);
+			path.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+			path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+			
+			var ph = svgObject.getElementById('before-buttons-placeholder');
+			ph.appendChild(path);
+			UB.addEventListener("click", function(){
+				
+				self.models['MenuModel'].setSelected('USERHOME');
+				//console.log('USERBUTTON CLICKED!!!');
+				
+			}, false);
+			UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			UB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+		}
+	}
+	
+	
+	/*
+var xmlns = "http://www.w3.org/2000/svg";
+    var boxWidth = 300;
+    var boxHeight = 300;
+
+    var svgElem = document.createElementNS(xmlns, "svg");
+    svgElem.setAttributeNS(null, "viewBox", "0 0 " + boxWidth + " " + boxHeight);
+    svgElem.setAttributeNS(null, "width", boxWidth);
+    svgElem.setAttributeNS(null, "height", boxHeight);
+    svgElem.style.display = "block";
+	*/
+	
 	
 	addSVGEventHandlers(mode) {
 		const self = this;
@@ -245,7 +315,9 @@ These are filled with correct values in here:
 			
 			self.addSVGEventHandlers(mode);
 			//self.localizeSVGTexts();
-			
+			if (USER_MODEL.isLoggedIn()) {
+				self.addSVGUser();
+			}
 			
 			$("#language-fi").on('click',function(){
 				if ($(this).hasClass('selected')) {

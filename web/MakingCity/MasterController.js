@@ -8,6 +8,8 @@ import UserLoginController from './modules/user/UserLoginController.js';
 import UserSignupController from './modules/user/UserSignupController.js';
 import UserInfoController from './modules/user/UserInfoController.js';
 
+import UserHomeController from './modules/user/UserHomeController.js';
+
 import DistrictController from './modules/district/DistrictController.js';
 import DistrictAController from './modules/districta/DistrictAController.js';
 import DistrictAAController from './modules/districtaa/DistrictAAController.js';
@@ -69,6 +71,10 @@ class MasterController {
 		this.controllers['usersignup'].init();
 		this.controllers['userinfo'] = new UserInfoController({name:'userinfo', master:this, el:'#content', visible:false});
 		this.controllers['userinfo'].init();
+		
+		
+		this.controllers['USERHOME'] = new UserHomeController({name:'USERHOME', master:this, el:'#content', visible:false});
+		this.controllers['USERHOME'].init();
 		
 		
 		this.controllers['D'] = new DistrictController({name:'D', master:this, el:'#content', visible:false});

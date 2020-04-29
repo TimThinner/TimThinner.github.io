@@ -183,7 +183,134 @@ export default class MenuView extends View {
 		}
 	}
 	
-	
+	addSVGSolarPanel() {
+		const self = this;
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const UB = svgObject.getElementById('solar-button');
+			if (UB) {
+				//const cx = parseInt(UB.getAttributeNS(null,'cx'),10);
+				//const cy = parseInt(UB.getAttributeNS(null,'cy'),10);
+				const r = parseInt(UB.getAttributeNS(null,'r'),10);
+				//console.log(['cx=',cx,' cy=',cy,' r=',r]);
+				const r2 = r+10;
+				const values = r + ';' + r2 + ';' + r;
+				// <animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="70;75;70" />
+				const svgAnimateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+				svgAnimateElement.setAttributeNS(null,'attributeName','r');
+				svgAnimateElement.setAttributeNS(null,'begin','0s');
+				svgAnimateElement.setAttributeNS(null,'dur','3s');
+				svgAnimateElement.setAttributeNS(null,'repeatCount','indefinite');
+				svgAnimateElement.setAttributeNS(null,'values',values);
+				UB.appendChild(svgAnimateElement);
+				
+				UB.setAttributeNS(null,'class','active-district');
+				UB.style.stroke = '#0a0';
+				
+				// Draw the sun and solarpanel:
+				/*var sun = document.createElementNS('http://www.w3.org/2000/svg', "circle");
+				sun.setAttributeNS(null, 'cx', -40);
+				sun.setAttributeNS(null, 'cy', -60);
+				sun.setAttributeNS(null, 'r', 20);
+				sun.setAttributeNS(null, 'stroke', '#f80');
+				sun.setAttributeNS(null, 'fill', '#ff0');
+				sun.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				
+				var ph = svgObject.getElementById('before-buttons-placeholder');
+				ph.appendChild(sun);
+				*/
+				
+				var ph = svgObject.getElementById('before-buttons-placeholder');
+				
+				// Draw the solar-panel:
+				let coords_1 = "M-50,20 L-20,-40 L50,-40 L20,20 L-50,20 Z";
+				var path_1 = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_1.setAttributeNS(null, 'd', coords_1);
+				path_1.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path_1.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_1);
+				
+				let coords_2 = "M-25,45 L-10,25 L5,45 L-25,45 Z";
+				var path_2 = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_2.setAttributeNS(null, 'd', coords_2);
+				path_2.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path_2.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_2);
+				
+				let coords_3 = "M-40,15 L-15,-35 L-5,-35 L-30,15 L-40,15 Z";
+				var path_3 = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_3.setAttributeNS(null, 'd', coords_3);
+				path_3.setAttributeNS(null, 'class', 'panel'); // NOTE: styles for this class are defined in SVG files!
+				path_3.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_3);
+				
+				let coords_4 = "M-25,15 L0,-35 L10,-35 L-15,15 L-25,15 Z";
+				var path_4 = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_4.setAttributeNS(null, 'd', coords_4);
+				path_4.setAttributeNS(null, 'class', 'panel'); // NOTE: styles for this class are defined in SVG files!
+				path_4.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_4);
+				
+				let coords_5 = "M-10,15 L15,-35 L25,-35 L0,15 L-10,15 Z";
+				var path_5 = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_5.setAttributeNS(null, 'd', coords_5);
+				path_5.setAttributeNS(null, 'class', 'panel'); // NOTE: styles for this class are defined in SVG files!
+				path_5.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_5);
+				
+				let coords_6 = "M5,15 L30,-35 L40,-35 L15,15 L5,15 Z";
+				var path_6 = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_6.setAttributeNS(null, 'd', coords_6);
+				path_6.setAttributeNS(null, 'class', 'panel'); // NOTE: styles for this class are defined in SVG files!
+				path_6.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_6);
+				
+				
+				
+				
+				
+				/*
+				var polyline_1 = document.createElementNS('http://www.w3.org/2000/svg', "polyline");
+				polyline_1.setAttributeNS(null, 'points', '-50,30 -20,-30 50,-30 20,30 -50,30');
+				polyline_1.setAttributeNS(null, 'stroke', '#1fac78');
+				polyline_1.setAttributeNS(null, 'stroke-width', '7');
+				polyline_1.setAttributeNS(null, 'fill', 'none');
+				polyline_1.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(polyline_1);
+				
+				var polyline_2 = document.createElementNS('http://www.w3.org/2000/svg', "polyline");
+				polyline_2.setAttributeNS(null, 'points', '-32,50 -10,32 10,50 -32,50');
+				polyline_2.setAttributeNS(null, 'stroke', '#1fac78');
+				polyline_2.setAttributeNS(null, 'stroke-width', '7');
+				polyline_2.setAttributeNS(null, 'fill', '#1fac78');
+				polyline_2.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(polyline_2);
+				*/
+				
+				
+	//<polyline points="70,10 210,10 140,130 0,130 70,10" stroke="#333" stroke-width="4" fill="none" />
+	//<polyline class="panel" points="80,20 100,20 40,120 20,120 80,20" />
+	//<polyline class="panel" points="110,20 130,20 70,120 50,120 110,20" />
+	//<polyline class="panel" points="140,20 160,20 100,120 80,120 140,20" />
+	//<polyline class="panel" points="170,20 190,20 130,120 110,120 170,20" />
+	//<polyline points="90,130 120,170 60,170" stroke="#333" stroke-width="4" fill="#333" />
+				
+				
+				
+				
+				
+				
+				UB.addEventListener("click", function(){
+					
+					//self.models['MenuModel'].setSelected('USERHOME');
+					console.log('SOLAR BUTTON CLICKED!!!');
+					
+				}, false);
+				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+				UB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			}
+		}
+	}
 	/*
 var xmlns = "http://www.w3.org/2000/svg";
     var boxWidth = 300;
@@ -366,6 +493,9 @@ These are filled with correct values in here:
 			} else {
 				self.addSVGInactiveUser();
 			}
+			
+			self.addSVGSolarPanel();
+			
 			
 			$("#language-fi").on('click',function(){
 				if ($(this).hasClass('selected')) {

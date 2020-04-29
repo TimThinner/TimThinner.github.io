@@ -24,13 +24,11 @@ export default class UserHomeController extends Controller {
 	}
 	
 	init() {
-		const model = new UserHomeModel({name:'UserHomeModel',src:'data/arina/iss/feeds.json?meterId=114'});
+		const model = new UserHomeModel({name:'UserHomeModel',src:'to-be-added-in-the-future'});
 		model.subscribe(this);
 		this.master.modelRepo.add('UserHomeModel',model);
 		this.models['UserHomeModel'] = model;
-		/*
-		setTimeout(() => { model.fetch(); }, 200);
-		*/
+		
 		this.timers['UserHomeChartView'] = {timer: undefined, interval: 30000, models:['UserHomeModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

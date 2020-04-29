@@ -28,7 +28,8 @@ html, body {
 		width: 100%;/*width: 90%;*/ /*70%;*/
 	}
 }
-/* svg width="1000" height="1000" viewBox="0 0 1000 1000" */
+/* svg width="1000" height="900" */
+/* 900 = x/100 * 1000 => x = 90000/1000 = 90 */
 .svg-square-container { 
 	display: inline-block;
 	position: relative;
@@ -37,7 +38,8 @@ html, body {
 	vertical-align: middle;
 	overflow: hidden;
 }
-/* svg width="1800" height="1000" viewBox="0 0 1800 1000" */
+/* svg width="1800" height="900" */
+/* 900 = x/100 * 1800 => x = 90000/1800 = 50 */
 .svg-landscape-container { 
 	display: inline-block;
 	position: relative;
@@ -46,7 +48,8 @@ html, body {
 	vertical-align: middle;
 	overflow: hidden;
 }
-/* svg width="600" height="1000" viewBox="0 0 600 1000" */
+/* svg width="600" height="900" */
+/* 900 = x/100 * 600 => x = 90000/600 = 150 */
 .svg-portrait-container { 
 	display: inline-block;
 	position: relative;

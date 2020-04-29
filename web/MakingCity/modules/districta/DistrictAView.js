@@ -2,20 +2,6 @@
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
-TODO:
-Add
-target-a-m  Cooling devices
-target-a-n  Heating devices   meter_id = 117
-				'DAG_TITLE':'Kylmäkoneet ja kylmälaitteet',
-				'DAHA_TITLE':'Kompressorit',
-				'DAHB_TITLE':'Kylmälaitteet',
-				'DAHC_TITLE':'Kylmäkoneet',
-				'DAHD_TITLE':'Lämmitys',
-				'DAG_TITLE':'Cooling devices and equipment',
-				'DAHA_TITLE':'Compressors',
-				'DAHB_TITLE':'Cooler equipment',
-				'DAHC_TITLE':'Cooling devices',
-				'DAHD_TITLE':'Heating devices',
 */
 import View from '../common/View.js';
 export default class DistrictAView extends View {
@@ -371,85 +357,9 @@ meterId
 			targetAP.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetAP.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			
-			
-			
-			
 		} else {
 			console.log("svgObject is NOT ready!");
 		}
-	}
-	
-	
-	/*
-	
-		When new set of measurements is fetched, update values in SVG.
-		
-		grid-power
-	*/
-	addEventHandlers() {
-		const self = this;
-		
-		/*
-		$("#toggle-direction").on('click',function(){
-			const svgObject = document.getElementById('svg-object').contentDocument;
-			if (svgObject) {
-				const mode = self.controller.master.modelRepo.get('ResizeEventObserver').mode;
-				//console.log(['mode=',mode]);
-				
-				IF NEEDED, New values are:
-				PORT: M 160,400 L 300,400
-				SQUA: M 260,400 L 500,400
-				LAND: M 300,400 L 1000,400
-				
-				const ps = {
-					'PORTRAIT' : {'forward':'M 140,400 L 300,400','reverse':'M 300,400 L 140,400' },
-					'SQUARE'   : {'forward':'M 300,400 L 500,400','reverse':'M 500,400 L 300,400' },
-					'LANDSCAPE': {'forward':'M 300,400 L 1000,400','reverse':'M 1000,400 L 300,400' }
-				}
-				const modef = ps[mode]['forward'];
-				
-				const len = modef.length;
-				//console.log(['modef=',modef,' len=',len]);
-				
-				let pathElement = svgObject.getElementById('p1');
-				//<text id="grid-power" x="400" y="380" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#f00">120.0 kW</text>
-				const textElement = svgObject.getElementById('grid-power');
-				
-				let d = pathElement.getAttributeNS(null, 'd');
-				//console.log(['d=',d]);
-				const head = d.slice(0,len);
-				const tail = d.slice(len);
-				
-				if (head === modef) {
-					// Change text GREEN and value 2.5 kW
-					while (textElement.firstChild) {
-						textElement.removeChild(textElement.firstChild);
-					}
-					var txt = document.createTextNode("2.5 kW");
-					textElement.appendChild(txt);
-					textElement.setAttributeNS(null, 'fill', '#0a0');
-					
-					const new_d = ps[mode]['reverse'] + tail;
-					pathElement.setAttributeNS(null, 'd', new_d);
-					
-				} else {
-					// Change text RED and value 120.0 kW
-					while (textElement.firstChild) {
-						textElement.removeChild(textElement.firstChild);
-					}
-					var txt = document.createTextNode("120.0 kW");
-					textElement.appendChild(txt);
-					textElement.setAttributeNS(null, 'fill', '#f00');
-					
-					const new_d = modef + tail;
-					pathElement.setAttributeNS(null, 'd', new_d);
-				}
-			}
-		});
-		
-		*/
-		
 	}
 	
 	localizeSVGTexts() {
@@ -574,18 +484,13 @@ meterId
 					'</div>';*/
 				$(html).appendTo(this.el);
 				
-				// This button will be available as soon as SVG is fully loaded.
-				//$("#toggle-direction").prop("disabled", true);
-				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!
 				const svgObj = document.getElementById("svg-object");
 				svgObj.addEventListener('load', function(){
 					
 					self.addSVGEventHandlers();
-					self.addEventHandlers();
 					self.localizeSVGTexts();
 					self.updateLatestValues();
-					//$("#toggle-direction").prop("disabled", false);
 				});
 			}
 			$('#back').on('click',function() {

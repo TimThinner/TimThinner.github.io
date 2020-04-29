@@ -41,6 +41,10 @@ export default class UserHomeView extends View {
 	}
 	
 	
+	updateLatestValues() {
+		
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='UserHomeModel' && options.method==='fetched') {
@@ -48,7 +52,7 @@ export default class UserHomeView extends View {
 					console.log('UserHomeView => UserHomeModel fetched!');
 					if (this.rendered) {
 						$('#user-home-view-failure').empty();
-						//this.updateLatestValues();
+						this.updateLatestValues();
 					} else {
 						this.render();
 					}
@@ -76,6 +80,30 @@ export default class UserHomeView extends View {
 				console.log("UserHomeView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
 			}
+		}
+	}
+	
+	addSVGEventHandlers() {
+		const self = this;
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			
+			
+		} else {
+			console.log("svgObject is NOT ready!");
+		}
+	}
+	
+	localizeSVGTexts() {
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			
+			const LM = this.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
+			
+			// Use like this:
+			//const localized_grid_title = LM['translation'][sel]['DAA_TITLE'];
+			//this.fillSVGTextElement(svgObject, 'da-grid-title', localized_grid_title);
 		}
 	}
 	
@@ -111,16 +139,16 @@ export default class UserHomeView extends View {
 				let svgFile, svgClass;
 				if (mode === 'LANDSCAPE') {
 					console.log('LANDSCAPE');
-					//svgFile = './svg/DALandscape.svg';
-					//svgClass = 'svg-landscape-container';
+					svgFile = './svg/UserHomeLandscape.svg';
+					svgClass = 'svg-landscape-container';
 				} else if (mode === 'PORTRAIT') {
 					console.log('PORTRAIT');
-					//svgFile = './svg/DAPortrait.svg';
-					//svgClass = 'svg-portrait-container';
+					svgFile = './svg/UserHomePortrait.svg';
+					svgClass = 'svg-portrait-container';
 				} else {
 					console.log('SQUARE');
-					//svgFile = './svg/DASquare.svg';
-					//svgClass = 'svg-square-container';
+					svgFile = './svg/UserHomeSquare.svg';
+					svgClass = 'svg-square-container';
 				}
 				const LM = this.controller.master.modelRepo.get('LanguageModel');
 				const sel = LM.selected;
@@ -128,6 +156,26 @@ export default class UserHomeView extends View {
 				//const localized_string_da_toggle = LM['translation'][sel]['DA_TOGGLE_DIRECTION'];
 				const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 				const html =
+				
+					'<div class="row">'+
+						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
+							'<div class="'+svgClass+'">'+
+								'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
+							'</div>'+
+						'</div>'+
+						'<div class="col s6 center" style="margin-top:14px;">'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+								'<i class="material-icons left">arrow_back</i>'+
+							'</button>'+
+						'</div>'+
+						//'<div class="col s6">'+
+						//	'<p style="font-size:14px;color:#888">'+localized_string_auto_update_msg_1+' 30 '+localized_string_auto_update_msg_2+'.</p>'+
+						//'</div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s12 center" id="user-home-view-failure"></div>'+
+					'</div>';
+					/*
 					'<div class="row">'+
 						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
 							'<h2 style="color:#aaa; text-align:center;">Welcome to Home!</h2>'+
@@ -142,20 +190,19 @@ export default class UserHomeView extends View {
 					'<div class="row">'+
 						'<div class="col s12 center" id="user-home-view-failure"></div>'+
 					'</div>';
+					*/
+					
 				$(html).appendTo(this.el);
 				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!
-				/*const svgObj = document.getElementById("svg-object");
+				const svgObj = document.getElementById("svg-object");
 				svgObj.addEventListener('load', function(){
 					
 					self.addSVGEventHandlers();
-					self.addEventHandlers();
 					self.localizeSVGTexts();
 					self.updateLatestValues();
 					
 				});
-				*/
-				
 			}
 			$('#back').on('click',function() {
 				self.menuModel.setSelected('menu');

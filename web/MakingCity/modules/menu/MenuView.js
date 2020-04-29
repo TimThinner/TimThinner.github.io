@@ -93,6 +93,31 @@ export default class MenuView extends View {
 		}
 	}
 	
+	addSVGInactiveUser() {
+		const self = this;
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const UB = svgObject.getElementById('user-button');
+			if (UB) {
+				// Draw the home:
+				let coords = "M-50,50 L50,50"; // bottom ground
+				coords += " M-40,50 L-40,-20 M40,-20 L40,50"; // house walls
+				coords += " M-50,-10 L0,-50 L50,-10"; // roof
+				coords += " M-40,-20 L-40,-50 L-20,-50 L-20,-35"; // chimney
+				coords += " M-30,20 L-30,0 L-10,0 L-10,20 L-30,20 Z"; // window
+				coords += " M0,50 L0,0 L30,0 L30,50 Z"; // door
+				
+				var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path.setAttributeNS(null, 'd', coords);
+				path.setAttributeNS(null, 'class', 'inactive-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				
+				var ph = svgObject.getElementById('before-buttons-placeholder');
+				ph.appendChild(path);
+			}
+		}
+	
+	}
 	
 	addSVGUser() {
 		const self = this;
@@ -118,7 +143,26 @@ export default class MenuView extends View {
 				
 				UB.setAttributeNS(null,'class','active-district');
 				UB.style.stroke = '#0a0';
-				var coords = "M-30,0 L30,0 M0,-30 L0,30";
+				
+				
+				// Draw the home:
+				
+				let coords = "M-50,50 L50,50"; // bottom ground
+				coords += " M-40,50 L-40,-20 M40,-20 L40,50"; // house walls
+				coords += " M-50,-10 L0,-50 L50,-10"; // roof
+				coords += " M-40,-20 L-40,-50 L-20,-50 L-20,-35"; // chimney
+				coords += " M-30,20 L-30,0 L-10,0 L-10,20 L-30,20 Z" // window
+				coords += " M0,50 L0,0 L30,0 L30,50 Z" // door
+/*
+.active-menu-button-path {
+	stroke: #1fac78;
+	stroke-width: 7;
+	fill: none;
+	opacity: 1.0;
+}*/
+				
+				
+				
 				
 				var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
 				path.setAttributeNS(null, 'd', coords);
@@ -207,7 +251,7 @@ These are filled with correct values in here:
 				this.setStroke(svgObject, 'first-painting-path', '#51b0ce', '10px');
 				this.setStroke(svgObject, 'second-painting-path', '#73d3ae', '10px');
 				this.setStroke(svgObject, 'third-painting-path', '#1fac78', '10px');
-			}, 2000);
+			}, 1000);
 			
 			
 			//this.setDashArrayLength(svgObject, 'first-painting-path');
@@ -319,6 +363,8 @@ These are filled with correct values in here:
 			//self.localizeSVGTexts();
 			if (USER_MODEL.isLoggedIn()) {
 				self.addSVGUser();
+			} else {
+				self.addSVGInactiveUser();
 			}
 			
 			$("#language-fi").on('click',function(){

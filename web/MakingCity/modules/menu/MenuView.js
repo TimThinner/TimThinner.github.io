@@ -144,25 +144,13 @@ export default class MenuView extends View {
 				UB.setAttributeNS(null,'class','active-district');
 				UB.style.stroke = '#0a0';
 				
-				
 				// Draw the home:
-				
 				let coords = "M-50,50 L50,50"; // bottom ground
 				coords += " M-40,50 L-40,-20 M40,-20 L40,50"; // house walls
 				coords += " M-50,-10 L0,-50 L50,-10"; // roof
 				coords += " M-40,-20 L-40,-50 L-20,-50 L-20,-35"; // chimney
 				coords += " M-30,20 L-30,0 L-10,0 L-10,20 L-30,20 Z" // window
 				coords += " M0,50 L0,0 L30,0 L30,50 Z" // door
-/*
-.active-menu-button-path {
-	stroke: #1fac78;
-	stroke-width: 7;
-	fill: none;
-	opacity: 1.0;
-}*/
-				
-				
-				
 				
 				var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
 				path.setAttributeNS(null, 'd', coords);
@@ -265,41 +253,6 @@ export default class MenuView extends View {
 				path_6.style.transform = UB.style.transform; // Use same transform as "parent" circle!
 				ph.appendChild(path_6);
 				
-				
-				
-				
-				
-				/*
-				var polyline_1 = document.createElementNS('http://www.w3.org/2000/svg', "polyline");
-				polyline_1.setAttributeNS(null, 'points', '-50,30 -20,-30 50,-30 20,30 -50,30');
-				polyline_1.setAttributeNS(null, 'stroke', '#1fac78');
-				polyline_1.setAttributeNS(null, 'stroke-width', '7');
-				polyline_1.setAttributeNS(null, 'fill', 'none');
-				polyline_1.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(polyline_1);
-				
-				var polyline_2 = document.createElementNS('http://www.w3.org/2000/svg', "polyline");
-				polyline_2.setAttributeNS(null, 'points', '-32,50 -10,32 10,50 -32,50');
-				polyline_2.setAttributeNS(null, 'stroke', '#1fac78');
-				polyline_2.setAttributeNS(null, 'stroke-width', '7');
-				polyline_2.setAttributeNS(null, 'fill', '#1fac78');
-				polyline_2.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(polyline_2);
-				*/
-				
-				
-	//<polyline points="70,10 210,10 140,130 0,130 70,10" stroke="#333" stroke-width="4" fill="none" />
-	//<polyline class="panel" points="80,20 100,20 40,120 20,120 80,20" />
-	//<polyline class="panel" points="110,20 130,20 70,120 50,120 110,20" />
-	//<polyline class="panel" points="140,20 160,20 100,120 80,120 140,20" />
-	//<polyline class="panel" points="170,20 190,20 130,120 110,120 170,20" />
-	//<polyline points="90,130 120,170 60,170" stroke="#333" stroke-width="4" fill="#333" />
-				
-				
-				
-				
-				
-				
 				UB.addEventListener("click", function(){
 					
 					//self.models['MenuModel'].setSelected('USERHOME');
@@ -311,18 +264,119 @@ export default class MenuView extends View {
 			}
 		}
 	}
-	/*
-var xmlns = "http://www.w3.org/2000/svg";
-    var boxWidth = 300;
-    var boxHeight = 300;
-
-    var svgElem = document.createElementNS(xmlns, "svg");
-    svgElem.setAttributeNS(null, "viewBox", "0 0 " + boxWidth + " " + boxHeight);
-    svgElem.setAttributeNS(null, "width", boxWidth);
-    svgElem.setAttributeNS(null, "height", boxHeight);
-    svgElem.style.display = "block";
-	*/
 	
+	addSVGGrid() {
+		const self = this;
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const UB = svgObject.getElementById('grid-button');
+			if (UB) {
+				
+				// Make the circle beat!
+				const r = parseInt(UB.getAttributeNS(null,'r'),10);
+				const r2 = r+10;
+				const values = r + ';' + r2 + ';' + r;
+				// <animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="70;75;70" />
+				const svgAnimateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+				svgAnimateElement.setAttributeNS(null,'attributeName','r');
+				svgAnimateElement.setAttributeNS(null,'begin','0s');
+				svgAnimateElement.setAttributeNS(null,'dur','3s');
+				svgAnimateElement.setAttributeNS(null,'repeatCount','indefinite');
+				svgAnimateElement.setAttributeNS(null,'values',values);
+				UB.appendChild(svgAnimateElement);
+				
+				UB.setAttributeNS(null,'class','active-district');
+				UB.style.stroke = '#0a0';
+				
+				var ph = svgObject.getElementById('before-buttons-placeholder');
+				
+				// Draw the grid:
+				let coords_1 = "M-40,50 L-20,20 L-20,-50 L20,-50 L20,20 L40,50 L-20,20 L20,20 L-40,50 Z";
+				var path_1 = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_1.setAttributeNS(null, 'd', coords_1);
+				path_1.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path_1.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_1);
+				
+				let coords_2 = "M-40,-40 L-20,-50 L20,-50 L40,-40 L-40,-40 L-40,-30 M40,-40 L40,-30";
+				var path_2 = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_2.setAttributeNS(null, 'd', coords_2);
+				path_2.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path_2.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_2);
+				
+				let coords_3 = "M-40,-10 L-20,-20 L20,-20 L40,-10 L-40,-10 L-40,0 M40,-10 L40,0";
+				var path_3 = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_3.setAttributeNS(null, 'd', coords_3);
+				path_3.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path_3.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_3);
+				
+				
+				UB.addEventListener("click", function(){
+					//self.models['MenuModel'].setSelected('GRID');
+					console.log('GRID BUTTON CLICKED!!!');
+				}, false);
+				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+				UB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			}
+		}
+	}
+	
+	addSVGLeaf() {
+		const self = this;
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const UB = svgObject.getElementById('comp-button');
+			if (UB) {
+				
+				// Make the circle beat!
+				const r = parseInt(UB.getAttributeNS(null,'r'),10);
+				const r2 = r+10;
+				const values = r + ';' + r2 + ';' + r;
+				// <animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="70;75;70" />
+				const svgAnimateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+				svgAnimateElement.setAttributeNS(null,'attributeName','r');
+				svgAnimateElement.setAttributeNS(null,'begin','0s');
+				svgAnimateElement.setAttributeNS(null,'dur','3s');
+				svgAnimateElement.setAttributeNS(null,'repeatCount','indefinite');
+				svgAnimateElement.setAttributeNS(null,'values',values);
+				UB.appendChild(svgAnimateElement);
+				
+				UB.setAttributeNS(null,'class','active-district');
+				UB.style.stroke = '#0a0';
+				
+				var ph = svgObject.getElementById('before-buttons-placeholder');
+				
+				// Draw the LEAF:
+				// C x1 y1, x2 y2, x y 
+				// The last set of coordinates here (x,y) specify where the line should end. 
+				// The other two are control points. (x1,y1) is the control point for the start of the curve, 
+				// and (x2,y2) is the control point for the end. 
+				
+				let coords_1 = "M-40,40 C0,30 30,0 30,-50 C20,-20 -10,-30 -30,-20 S-50,20 -25,25 M30,-50 C40,20 20,50 -5,35";
+				var path_1 = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_1.setAttributeNS(null, 'd', coords_1);
+				path_1.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path_1.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_1);
+				
+				let coords_2 = "M-37,43 C0,30 30,0 30,-50";
+				var path_2 = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_2.setAttributeNS(null, 'd', coords_2);
+				path_2.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path_2.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_2);
+				
+				UB.addEventListener("click", function(){
+					//self.models['MenuModel'].setSelected('GRID');
+					console.log('LEAF BUTTON CLICKED!!!');
+				}, false);
+				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+				UB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			}
+		}
+	}
 	
 	addSVGEventHandlers(mode) {
 		const self = this;
@@ -379,14 +433,9 @@ These are filled with correct values in here:
 				this.setStroke(svgObject, 'second-painting-path', '#73d3ae', '10px');
 				this.setStroke(svgObject, 'third-painting-path', '#1fac78', '10px');
 			}, 1000);
-			
-			
 			//this.setDashArrayLength(svgObject, 'first-painting-path');
 			//this.setDashArrayLength(svgObject, 'second-painting-path');
 			//this.setDashArrayLength(svgObject, 'third-painting-path');
-			
-			
-			
 		}
 	}
 	
@@ -495,7 +544,8 @@ These are filled with correct values in here:
 			}
 			
 			self.addSVGSolarPanel();
-			
+			self.addSVGGrid();
+			self.addSVGLeaf();
 			
 			$("#language-fi").on('click',function(){
 				if ($(this).hasClass('selected')) {

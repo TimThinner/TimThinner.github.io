@@ -102,8 +102,17 @@ export default class UserHomeView extends View {
 			const sel = LM.selected;
 			
 			// Use like this:
-			//const localized_grid_title = LM['translation'][sel]['DAA_TITLE'];
-			//this.fillSVGTextElement(svgObject, 'da-grid-title', localized_grid_title);
+			const localized_userhome_title = LM['translation'][sel]['USERHOME_TITLE'];
+			const localized_userhome_description = LM['translation'][sel]['USERHOME_DESCRIPTION'];
+			const localized_userhome_bullet_1 = LM['translation'][sel]['USERHOME_BULLET_1'];
+			const localized_userhome_bullet_2 = LM['translation'][sel]['USERHOME_BULLET_2'];
+			const localized_userhome_bullet_3 = LM['translation'][sel]['USERHOME_BULLET_3'];
+			
+			this.fillSVGTextElement(svgObject, 'user-home-title', localized_userhome_title);
+			this.fillSVGTextElement(svgObject, 'user-home-description', localized_userhome_description);
+			this.fillSVGTextElement(svgObject, 'user-home-bullet-1', localized_userhome_bullet_1);
+			this.fillSVGTextElement(svgObject, 'user-home-bullet-2', localized_userhome_bullet_2);
+			this.fillSVGTextElement(svgObject, 'user-home-bullet-3', localized_userhome_bullet_3);
 		}
 	}
 	

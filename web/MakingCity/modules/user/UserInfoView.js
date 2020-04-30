@@ -41,12 +41,14 @@ export default class UserInfoView extends UserView {
 		const localized_string_info_title = LM['translation'][sel]['USER_INFO'];//'User Info';
 		const localized_string_logout_button_text = LM['translation'][sel]['USER_LOGOUT']; //'LOGOUT';
 		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_description = LM['translation'][sel]['USER_DESCRIPTION'];
 		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<h4 style="text-align:center;">'+localized_string_info_title+'</h4>'+
 					'<p style="text-align:center;">'+localized_string_user_email+': '+this.controller.models['UserModel'].email+'</p>'+
+					'<p style="text-align:center;">'+localized_string_description+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

@@ -12,7 +12,7 @@ import Validator from '../common/Validator.js';
 		
 	If logged in => Account info + logout
 		Account INFO
-		CANCEL-button AND LOGOUT-button
+		BACK-button AND LOGOUT-button
 */
 export default class UserInfoView extends UserView {
 	
@@ -37,24 +37,32 @@ export default class UserInfoView extends UserView {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_da_cancel = LM['translation'][sel]['DA_CANCEL'];
+		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_info_title = LM['translation'][sel]['USER_INFO'];//'User Info';
 		const localized_string_logout_button_text = LM['translation'][sel]['USER_LOGOUT']; //'LOGOUT';
 		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
 		const localized_string_description = LM['translation'][sel]['USER_DESCRIPTION'];
+		const localized_string_bullet_1 = LM['translation'][sel]['USER_BULLET_1'];
+		const localized_string_bullet_2 = LM['translation'][sel]['USER_BULLET_2'];
+		const localized_string_bullet_3 = LM['translation'][sel]['USER_BULLET_3'];
+		const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<h4 style="text-align:center;">'+localized_string_info_title+'</h4>'+
 					'<p style="text-align:center;">'+localized_string_user_email+': '+this.controller.models['UserModel'].email+'</p>'+
+					'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'<p style="text-align:center;">'+localized_string_description+'</p>'+
+					'<p style="text-align:center;">'+localized_string_bullet_1+'</p>'+
+					'<p style="text-align:center;">'+localized_string_bullet_2+'</p>'+
+					'<p style="text-align:center;">'+localized_string_bullet_3+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_da_cancel+'</button>'+
+						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">'+localized_string_da_back+'</button>'+
 					'</div>'+
 					'<div class="col s6 center">'+
 						'<button class="btn waves-effect waves-light" type="submit" id="logout-submit">'+localized_string_logout_button_text+'</button>'+
@@ -65,7 +73,7 @@ export default class UserInfoView extends UserView {
 		
 		this.rendered = true;
 		
-		$("#cancel").on('click', function() {
+		$("#back").on('click', function() {
 			self.controller.models['MenuModel'].setSelected('menu');
 		});
 		

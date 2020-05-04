@@ -98,6 +98,13 @@ html, body {
 	margin-left: 12px;
 	cursor: pointer;
 }
+.coming-soon {
+	border: 1px solid #8f8;
+	background-color: #efe;
+	text-align:center;
+	font-size: 32px;
+	padding: 16px;
+}
 .power-chart {
 	width: 100%;
 	height: 300px;
@@ -174,9 +181,7 @@ input[type="range"] {
 	background-color: #fff;
 }
 .mc-logo {
-	margin-left: 1rem;
-	margin-top: 1rem;
-	float: right;
+	margin-right: 2rem;
 	height: 60px;
 }
 .menu-view-top-bar {

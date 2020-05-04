@@ -1,6 +1,12 @@
 import View from '../common/View.js';
 /*
-	Tenant UI: 
+	
+	
+	
+	
+	<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">THE MAKING-CITY PROJECT</a>
+	
+	
 */
 export default class MenuView extends View {
 	
@@ -162,7 +168,6 @@ export default class MenuView extends View {
 				UB.addEventListener("click", function(){
 					
 					self.models['MenuModel'].setSelected('USERHOME');
-					//console.log('USERBUTTON CLICKED!!!');
 					
 				}, false);
 				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -255,8 +260,7 @@ export default class MenuView extends View {
 				
 				UB.addEventListener("click", function(){
 					
-					//self.models['MenuModel'].setSelected('USERHOME');
-					console.log('SOLAR BUTTON CLICKED!!!');
+					self.models['MenuModel'].setSelected('SOLARPAGE');
 					
 				}, false);
 				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -314,8 +318,9 @@ export default class MenuView extends View {
 				
 				
 				UB.addEventListener("click", function(){
-					//self.models['MenuModel'].setSelected('GRID');
-					console.log('GRID BUTTON CLICKED!!!');
+					
+					self.models['MenuModel'].setSelected('GRID');
+					
 				}, false);
 				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 				UB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
@@ -369,8 +374,9 @@ export default class MenuView extends View {
 				ph.appendChild(path_2);
 				
 				UB.addEventListener("click", function(){
-					//self.models['MenuModel'].setSelected('GRID');
-					console.log('LEAF BUTTON CLICKED!!!');
+					
+					self.models['MenuModel'].setSelected('ENVIRONMENTPAGE');
+					
 				}, false);
 				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 				UB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
@@ -491,16 +497,16 @@ These are filled with correct values in here:
 			svgClass = 'svg-square-container';
 		}
 		
-		let filename = 'user_grey.png';
+		let filename = 'userInActive.svg';
 		if (USER_MODEL.isLoggedIn()) {
-			filename = 'user_color.png';
+			filename = 'userActive.svg';
 		}
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 menu-view-top-bar">'+
-					'<img id="user-auth" class="user" src="./img/'+filename+'" />'+
+					'<img id="user-auth" class="user" src="./svg/'+filename+'" />'+
 					'<img id="language-fi" class="flag" src="./img/flag_fi.png" />'+
 					'<img id="language-en" class="flag" src="./img/flag_en.png" />'+
 				'</div>'+
@@ -516,12 +522,14 @@ These are filled with correct values in here:
 			//	'<div class="col s12 center" id="menu-view-failure"></div>'+
 			//'</div>'+
 			'<div class="row mc-footer">'+
-				'<div class="col s12 m7 center">'+
+				'<div class="col s12 center">'+
 					'<p id="menu-description" style="color:#777"></p>'+
 				'</div>'+
-				'<div class="col s12 m5">'+
+				'<div class="col s12 center">'+
+					'<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">'+
+					'<img src="./img/MC_flag.png" class="mc-logo" />'+
+					'</a>'+
 					'<img src="./img/640px-Flag_of_Europe.svg.png" class="mc-logo" />'+
-					'<img src="./img/MC.png" class="mc-logo" />'+
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);

@@ -9,6 +9,9 @@ import UserSignupController from './modules/user/UserSignupController.js';
 import UserInfoController from './modules/user/UserInfoController.js';
 
 import UserHomeController from './modules/user/UserHomeController.js';
+import GridController from './modules/grid/GridController.js';
+import SolarPageController from './modules/solarpage/SolarPageController.js';
+import EnvironmentPageController from './modules/environmentpage/EnvironmentPageController.js';
 
 import DistrictController from './modules/district/DistrictController.js';
 import DistrictAController from './modules/districta/DistrictAController.js';
@@ -75,7 +78,12 @@ class MasterController {
 		
 		this.controllers['USERHOME'] = new UserHomeController({name:'USERHOME', master:this, el:'#content', visible:false});
 		this.controllers['USERHOME'].init();
-		
+		this.controllers['GRID'] = new GridController({name:'GRID', master:this, el:'#content', visible:false});
+		this.controllers['GRID'].init();
+		this.controllers['SOLARPAGE'] = new SolarPageController({name:'SOLARPAGE', master:this, el:'#content', visible:false});
+		this.controllers['SOLARPAGE'].init();
+		this.controllers['ENVIRONMENTPAGE'] = new EnvironmentPageController({name:'ENVIRONMENTPAGE', master:this, el:'#content', visible:false});
+		this.controllers['ENVIRONMENTPAGE'].init();
 		
 		this.controllers['D'] = new DistrictController({name:'D', master:this, el:'#content', visible:false});
 		this.controllers['D'].init();

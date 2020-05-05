@@ -475,6 +475,34 @@ These are filled with correct values in here:
 		$('#menu-description').empty().append(localized_descr);
 	}
 	
+	
+	/*
+		menuLandscape.svg		"1800"	"900"		"-900 -500 1800 900"
+		menuSquare.svg			"1000"	"900"		"-500 -500 1000 900"
+		menuPortrait.svg		"600"	"900"		"-300 -500 600 900"
+	*/
+	adjustViewBox() {
+		const width  = this.controller.master.modelRepo.get('ResizeEventObserver').width;
+		const height = this.controller.master.modelRepo.get('ResizeEventObserver').height;
+		console.log(['width=',width,' height=',height]);
+		
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		
+		
+		const svgWidth  = svgObject.activeElement.getAttribute('width');
+		const svgHeight = svgObject.activeElement.getAttribute('height');
+		const viewBox = svgObject.activeElement.getAttribute('viewBox');
+		console.log(['svgWidth=',svgWidth,' svgHeight=',svgHeight,' viewBox=',viewBox]);
+		let aa = viewBox.split(/\s+|,/);
+		console.log(['aa=',aa]);
+		const H = height+200;
+		aa[3] = H.toString();
+		console.log(['new H=',aa[3]]);
+		
+		//svgObject.activeElement.setAttribute('height',aa[3]);
+		//svgObject.activeElement.setAttribute('viewBox',aa.join(' '));
+	}
+	
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -554,6 +582,10 @@ These are filled with correct values in here:
 			self.addSVGSolarPanel();
 			self.addSVGGrid();
 			self.addSVGLeaf();
+			
+			
+			self.adjustViewBox();
+			
 			
 			$("#language-fi").on('click',function(){
 				if ($(this).hasClass('selected')) {

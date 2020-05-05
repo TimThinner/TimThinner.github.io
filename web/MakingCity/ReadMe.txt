@@ -123,6 +123,11 @@ svg width="1000" height="900" 900 = x/100 * 1000 => x = 90000/1000 = 90
 svg width="1800" height="900" 900 = x/100 * 1800 => x = 90000/1800 = 50
 svg width="600" height="900"  900 = x/100 * 600 => x = 90000/600 = 150
 
+Add Touch to Your Site
+https://developers.google.com/web/fundamentals/design-and-ux/input/touch
+
+How to Scale SVG 
+https://css-tricks.com/scale-svg/
 
 
 

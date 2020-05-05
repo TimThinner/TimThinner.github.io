@@ -482,7 +482,7 @@ These are filled with correct values in here:
 		menuPortrait.svg		"600"	"900"		"-300 -500 600 900"
 	*/
 	adjustViewBox() {
-		const width  = this.controller.master.modelRepo.get('ResizeEventObserver').width;
+		/*const width  = this.controller.master.modelRepo.get('ResizeEventObserver').width;
 		const height = this.controller.master.modelRepo.get('ResizeEventObserver').height;
 		console.log(['width=',width,' height=',height]);
 		
@@ -498,7 +498,7 @@ These are filled with correct values in here:
 		const H = height+200;
 		aa[3] = H.toString();
 		console.log(['new H=',aa[3]]);
-		
+		*/
 		//svgObject.activeElement.setAttribute('height',aa[3]);
 		//svgObject.activeElement.setAttribute('viewBox',aa.join(' '));
 	}
@@ -584,7 +584,7 @@ These are filled with correct values in here:
 			self.addSVGLeaf();
 			
 			
-			self.adjustViewBox();
+			//self.adjustViewBox();
 			
 			
 			$("#language-fi").on('click',function(){

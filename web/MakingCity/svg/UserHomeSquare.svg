@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="1000" height="900" viewBox="-500 -500 1000 900" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
+<style>
+.logout-bottom {
+	stroke-width: 2px;
+	stroke: #fff;
+	opacity: 0.5;
+	fill: #f00;
+	transform: scale(0.75,0.75) translate(300px,-220px);
+}
+.logout-shadow {
+	stroke-width: 8px;
+	stroke: #000;
+	opacity: 0.25;
+	fill: none;
+	transform: scale(0.75,0.75) translate(300px,-220px);
+}
+.logout-icon {
+	stroke-width: 8;
+	stroke-linecap: round;
+	stroke: #fff;
+	fill: none;
+	opacity:1;
+	transform: scale(0.75,0.75) translate(300px,-220px);
+}
+.logout-top {
+	cursor: pointer;
+	stroke-width: 1;
+	fill: #fff;
+	opacity:0;
+	transform: scale(0.75,0.75) translate(300px,-220px);
+}
+</style>
 <defs>
 	<radialGradient id="grad" cx="50%" cy="50%" r="100%">
 		<stop offset="10%" style="stop-color:#fff; stop-opacity:1" />
@@ -26,6 +57,12 @@
 		M-30,20 L-30,0 L-10,0 L-10,20 L-30,20 Z
 		M0,50 L0,0 L30,0 L30,50 Z"
 	style="stroke:#1fac78;stroke-width:5px;fill:none;transform: scale(2.0) translateY(-100px);" />
+
+<rect class="logout-bottom" x="-75" y="-50" width="150" height="100" />
+<path class="logout-shadow" d="M-75,50 L75,50 L75,-50" />
+<circle class="logout-icon" cx="0" cy="0" r="30" />
+<path class="logout-icon" d="M0,0 L0,-40" />
+<rect id="logout" class="logout-top" x="-75" y="-50" width="150" height="100" />
 
 <text id="user-home-description" x="-400" y="20" opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="52px" fill="#444">Here you will find values for your:</text>
 <text id="user-home-bullet-1" x="-350" y="120" opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="52px" fill="#444">- electricity consumption</text>

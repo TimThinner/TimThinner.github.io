@@ -88,6 +88,18 @@ export default class UserHomeView extends View {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
+			const logOut = svgObject.getElementById('logout');
+			logOut.addEventListener("click", function(){
+				
+				const UM = self.controller.master.modelRepo.get('UserModel')
+				if (UM) {
+					UM.logout();
+				}
+				//if (options.model === 'UserModel' && options.method === 'logout') {
+				// User is now logged out
+				// This notification is already handled in MasterController, 
+				// so there is really no need to do anything here!
+			}, false);
 			
 		} else {
 			console.log("svgObject is NOT ready!");

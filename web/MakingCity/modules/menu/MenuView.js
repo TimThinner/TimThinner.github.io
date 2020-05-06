@@ -105,7 +105,51 @@ export default class MenuView extends View {
 		if (svgObject) {
 			const UB = svgObject.getElementById('user-button');
 			if (UB) {
+				
+				const r = parseInt(UB.getAttributeNS(null,'r'),10);
+				const r2 = r+10;
+				const values = r + ';' + r2 + ';' + r;
+				UB.appendChild(this.createAnimateElement(values));
+				UB.setAttributeNS(null,'class','active-district');
+				
+				
+				/*
+				<circle cx="0" cy="0" r="23" stroke-width="3" stroke="#555" fill="#444" />
+				<path d="M-15,15 A15,15 0 0,1 15,15 A23,23 0 0,1 -15,15" fill="#ccc" stroke-width="3" stroke="#ccc" />
+				<circle cx="0" cy="-8" r="12" stroke-width="2" stroke="#444" fill="#ccc" />
+				*/
+				var ph = svgObject.getElementById('before-buttons-placeholder');
+				
+				const coords = "M-45,40 A45,45 0 0,1 45,40 A60,60 0 0,1 -45,40";
+				var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path.setAttributeNS(null, 'd', coords);
+				path.setAttributeNS(null, 'class', 'inactive-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				//path.style.strokeWidth = 5;
+				//path.style.stroke = '#aaa';
+				//path.style.fill = '#eee';
+				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path);
+				/*
+				inactive-menu-button-path:
+					stroke: #ccc;
+					stroke-width: 5;
+					fill: none;
+					opacity: 1.0;
+				*/
+				
+				var uc = document.createElementNS('http://www.w3.org/2000/svg', "circle");
+				uc.setAttributeNS(null, 'cx', 0);
+				uc.setAttributeNS(null, 'cy', -18);
+				uc.setAttributeNS(null, 'r', 25);
+				// UC2:  stroke-width="2" stroke="#444" fill="#ccc"
+				uc.style.strokeWidth = 5;
+				uc.style.stroke = '#ccc';
+				uc.style.fill = '#fff';
+				uc.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(uc);
+				
 				// Draw the home:
+				/*
 				let coords = "M-50,50 L50,50"; // bottom ground
 				coords += " M-40,50 L-40,-20 M40,-20 L40,50"; // house walls
 				coords += " M-50,-10 L0,-50 L50,-10"; // roof
@@ -119,10 +163,32 @@ export default class MenuView extends View {
 				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
 				
 				var ph = svgObject.getElementById('before-buttons-placeholder');
-				ph.appendChild(path);
+				ph.appendChild(path);*/
+				
+				UB.addEventListener("click", function(){
+					
+					//self.models['MenuModel'].setSelected('USERHOME');
+					self.models['MenuModel'].setSelected('userlogin');
+					
+				}, false);
+				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+				UB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+				
+				
 			}
 		}
 	
+	}
+	
+	createAnimateElement(values) {
+		// <animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="70;75;70" />
+		const svgAnimateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+		svgAnimateElement.setAttributeNS(null,'attributeName','r');
+		svgAnimateElement.setAttributeNS(null,'begin','0s');
+		svgAnimateElement.setAttributeNS(null,'dur','3s');
+		svgAnimateElement.setAttributeNS(null,'repeatCount','indefinite');
+		svgAnimateElement.setAttributeNS(null,'values',values);
+		return svgAnimateElement;
 	}
 	
 	addSVGUser() {
@@ -137,16 +203,7 @@ export default class MenuView extends View {
 				//console.log(['cx=',cx,' cy=',cy,' r=',r]);
 				const r2 = r+10;
 				const values = r + ';' + r2 + ';' + r;
-				// <animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="70;75;70" />
-				const svgAnimateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-				svgAnimateElement.setAttributeNS(null,'attributeName','r');
-				svgAnimateElement.setAttributeNS(null,'begin','0s');
-				svgAnimateElement.setAttributeNS(null,'dur','3s');
-				svgAnimateElement.setAttributeNS(null,'repeatCount','indefinite');
-				svgAnimateElement.setAttributeNS(null,'values',values);
-				
-				UB.appendChild(svgAnimateElement);
-				
+				UB.appendChild(this.createAnimateElement(values));
 				UB.setAttributeNS(null,'class','active-district');
 				UB.style.stroke = '#0a0';
 				
@@ -182,21 +239,10 @@ export default class MenuView extends View {
 		if (svgObject) {
 			const UB = svgObject.getElementById('solar-button');
 			if (UB) {
-				//const cx = parseInt(UB.getAttributeNS(null,'cx'),10);
-				//const cy = parseInt(UB.getAttributeNS(null,'cy'),10);
 				const r = parseInt(UB.getAttributeNS(null,'r'),10);
-				//console.log(['cx=',cx,' cy=',cy,' r=',r]);
 				const r2 = r+10;
 				const values = r + ';' + r2 + ';' + r;
-				// <animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="70;75;70" />
-				const svgAnimateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-				svgAnimateElement.setAttributeNS(null,'attributeName','r');
-				svgAnimateElement.setAttributeNS(null,'begin','0s');
-				svgAnimateElement.setAttributeNS(null,'dur','3s');
-				svgAnimateElement.setAttributeNS(null,'repeatCount','indefinite');
-				svgAnimateElement.setAttributeNS(null,'values',values);
-				UB.appendChild(svgAnimateElement);
-				
+				UB.appendChild(this.createAnimateElement(values));
 				UB.setAttributeNS(null,'class','active-district');
 				UB.style.stroke = '#0a0';
 				
@@ -208,7 +254,6 @@ export default class MenuView extends View {
 				sun.setAttributeNS(null, 'stroke', '#f80');
 				sun.setAttributeNS(null, 'fill', '#ff0');
 				sun.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				
 				var ph = svgObject.getElementById('before-buttons-placeholder');
 				ph.appendChild(sun);
 				*/
@@ -280,15 +325,7 @@ export default class MenuView extends View {
 				const r = parseInt(UB.getAttributeNS(null,'r'),10);
 				const r2 = r+10;
 				const values = r + ';' + r2 + ';' + r;
-				// <animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="70;75;70" />
-				const svgAnimateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-				svgAnimateElement.setAttributeNS(null,'attributeName','r');
-				svgAnimateElement.setAttributeNS(null,'begin','0s');
-				svgAnimateElement.setAttributeNS(null,'dur','3s');
-				svgAnimateElement.setAttributeNS(null,'repeatCount','indefinite');
-				svgAnimateElement.setAttributeNS(null,'values',values);
-				UB.appendChild(svgAnimateElement);
-				
+				UB.appendChild(this.createAnimateElement(values));
 				UB.setAttributeNS(null,'class','active-district');
 				UB.style.stroke = '#0a0';
 				
@@ -339,15 +376,7 @@ export default class MenuView extends View {
 				const r = parseInt(UB.getAttributeNS(null,'r'),10);
 				const r2 = r+10;
 				const values = r + ';' + r2 + ';' + r;
-				// <animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="70;75;70" />
-				const svgAnimateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-				svgAnimateElement.setAttributeNS(null,'attributeName','r');
-				svgAnimateElement.setAttributeNS(null,'begin','0s');
-				svgAnimateElement.setAttributeNS(null,'dur','3s');
-				svgAnimateElement.setAttributeNS(null,'repeatCount','indefinite');
-				svgAnimateElement.setAttributeNS(null,'values',values);
-				UB.appendChild(svgAnimateElement);
-				
+				UB.appendChild(this.createAnimateElement(values));
 				UB.setAttributeNS(null,'class','active-district');
 				UB.style.stroke = '#0a0';
 				
@@ -388,6 +417,7 @@ export default class MenuView extends View {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
+			
 			const hexA = svgObject.getElementById('district');
 			hexA.addEventListener("click", function(){
 				
@@ -475,19 +505,17 @@ These are filled with correct values in here:
 		$('#menu-description').empty().append(localized_descr);
 	}
 	
-	
 	/*
 		menuLandscape.svg		"1800"	"900"		"-900 -500 1800 900"
 		menuSquare.svg			"1000"	"900"		"-500 -500 1000 900"
 		menuPortrait.svg		"600"	"900"		"-300 -500 600 900"
 	*/
-	adjustViewBox() {
-		/*const width  = this.controller.master.modelRepo.get('ResizeEventObserver').width;
+	/*adjustViewBox() {
+		const width  = this.controller.master.modelRepo.get('ResizeEventObserver').width;
 		const height = this.controller.master.modelRepo.get('ResizeEventObserver').height;
 		console.log(['width=',width,' height=',height]);
 		
 		const svgObject = document.getElementById('svg-object').contentDocument;
-		
 		
 		const svgWidth  = svgObject.activeElement.getAttribute('width');
 		const svgHeight = svgObject.activeElement.getAttribute('height');
@@ -498,10 +526,10 @@ These are filled with correct values in here:
 		const H = height+200;
 		aa[3] = H.toString();
 		console.log(['new H=',aa[3]]);
-		*/
+		
 		//svgObject.activeElement.setAttribute('height',aa[3]);
 		//svgObject.activeElement.setAttribute('viewBox',aa.join(' '));
-	}
+	}*/
 	
 	render() {
 		const self = this;
@@ -532,23 +560,26 @@ These are filled with correct values in here:
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const html =
-			'<div class="row">'+
+			/*'<div class="row">'+
 				'<div class="col s12 menu-view-top-bar">'+
 					'<img id="user-auth" class="user" src="./svg/'+filename+'" />'+
 					'<img id="language-fi" class="flag" src="./img/flag_fi.png" />'+
 					'<img id="language-en" class="flag" src="./img/flag_en.png" />'+
 				'</div>'+
 			'</div>'+
-			'<div class="row" style="margin-top:-20px">'+
+			*/
+			'<div class="row">'+ // style="margin-top:-20px">'+
 				'<div class="col s12" style="padding-left:0;padding-right:0;">'+
 					'<div class="'+svgClass+'">'+
 						'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
 					'</div>'+
 				'</div>'+
-			'</div>'+
+			'</div>';
 			//'<div class="row">'+
 			//	'<div class="col s12 center" id="menu-view-failure"></div>'+
 			//'</div>'+
+			
+			/*
 			'<div class="row mc-footer">'+
 				'<div class="col s12 center">'+
 					'<p id="menu-description" style="color:#777"></p>'+
@@ -560,6 +591,7 @@ These are filled with correct values in here:
 					'<img src="./img/640px-Flag_of_Europe.svg.png" class="mc-logo" />'+
 				'</div>'+
 			'</div>';
+			*/
 		$(html).appendTo(this.el);
 		
 		this.fillLocalizedTexts();
@@ -582,11 +614,8 @@ These are filled with correct values in here:
 			self.addSVGSolarPanel();
 			self.addSVGGrid();
 			self.addSVGLeaf();
-			
-			
 			//self.adjustViewBox();
-			
-			
+			/*
 			$("#language-fi").on('click',function(){
 				if ($(this).hasClass('selected')) {
 					//console.log('This is selected!');
@@ -619,6 +648,8 @@ These are filled with correct values in here:
 					self.models['MenuModel'].setSelected('userlogin');
 				}
 			});
+			*/
+			
 		});
 		this.rendered = true;
 	}

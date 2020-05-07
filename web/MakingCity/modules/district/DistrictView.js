@@ -60,6 +60,13 @@ export default class DistrictView extends View {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
+			const back = svgObject.getElementById('back');
+			back.addEventListener("click", function(){
+				
+				self.controller.models['MenuModel'].setSelected('menu');
+				
+			}, false);
+			
 			const hexA = svgObject.getElementById('hex-a');
 			hexA.addEventListener("click", function(){
 				
@@ -146,9 +153,9 @@ export default class DistrictView extends View {
 			filename = 'user_color.png';
 		}
 		
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		//const sel = LM.selected;
+		//const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		
 		const html =
 			//'<div class="row" style="margin-top:-20px">'+
@@ -157,13 +164,6 @@ export default class DistrictView extends View {
 					'<div class="'+svgClass+'">'+
 						'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
 					'</div>'+
-				'</div>'+
-				'<div class="col s6 center" style="margin-top:14px;">'+
-					'<button class="btn waves-effect waves-light foobutton" id="back">'+localized_string_da_back+
-						'<i class="material-icons left">arrow_back</i>'+
-					'</button>'+
-				'</div>'+
-				'<div class="col s6">'+
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
@@ -174,9 +174,6 @@ export default class DistrictView extends View {
 			//console.log('ADD SVG EVENT HANDLERS!');
 			self.addSVGEventHandlers(mode);
 			self.localizeSVGTexts();
-		});
-		$('#back').on('click',function() {
-			self.controller.models['MenuModel'].setSelected('menu');
 		});
 		this.rendered = true;
 	}

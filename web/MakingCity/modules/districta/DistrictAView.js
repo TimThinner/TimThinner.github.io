@@ -249,6 +249,14 @@ meterId
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
+			
+			const back = svgObject.getElementById('back');
+			back.addEventListener("click", function(){
+				
+				self.menuModel.setSelected('D');
+				
+			}, false);
+			
 			const targetAA = svgObject.getElementById('target-a-a');
 			targetAA.addEventListener("click", function(){
 				
@@ -448,9 +456,9 @@ meterId
 				const sel = LM.selected;
 				//const localized_string_da_description = LM['translation'][sel]['DA_DESCRIPTION'];
 				//const localized_string_da_toggle = LM['translation'][sel]['DA_TOGGLE_DIRECTION'];
-				const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-				const localized_string_auto_update_msg_1 = LM['translation'][sel]['AUTO_UPDATE_MSG_1_B'];
-				const localized_string_auto_update_msg_2 = LM['translation'][sel]['AUTO_UPDATE_MSG_2'];
+				//const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+				//const localized_string_auto_update_msg_1 = LM['translation'][sel]['AUTO_UPDATE_MSG_1_B'];
+				//const localized_string_auto_update_msg_2 = LM['translation'][sel]['AUTO_UPDATE_MSG_2'];
 				const html =
 					'<div class="row">'+
 						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
@@ -458,14 +466,16 @@ meterId
 								'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
 							'</div>'+
 						'</div>'+
+						/*
 						'<div class="col s6 center" style="margin-top:14px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
+							'</butto	n>'+
 						'</div>'+
 						'<div class="col s6">'+
 							'<p style="font-size:14px;color:#888">'+localized_string_auto_update_msg_1+' 30 '+localized_string_auto_update_msg_2+'.</p>'+
 						'</div>'+
+						*/
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s12 center" id="district-a-view-failure"></div>'+
@@ -493,9 +503,6 @@ meterId
 					self.updateLatestValues();
 				});
 			}
-			$('#back').on('click',function() {
-				self.menuModel.setSelected('D');
-			});
 			this.rendered = true;
 		} else {
 			console.log('DistrictAView => render StatusModel IS NOT READY!!!!');

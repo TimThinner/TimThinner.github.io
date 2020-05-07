@@ -18,6 +18,10 @@
 	/*stroke: #555;*/
 	stroke-width: 1;
 }
+.back-button {
+	cursor: pointer;
+	opacity: 0.75;
+}
 </style>
 <!--
 <rect fill="#fff" stroke="#eee" stroke-width="10" x="5" y="5" width="1790" height="890"/>
@@ -227,4 +231,5 @@
 	<rect class="target" id="target-a-m" x="-60" y="-60" width="120" height="120" transform="translate(760,790) scale(1.0)" />
 	<rect class="target" id="target-a-n" x="-60" y="-60" width="120" height="120" transform="translate(900,790) scale(1.0)" />
 </g>
+<image id="back" class="back-button" x="50" y="150" width="120" height="80" xlink:href="backbutton.svg" />
 </svg>

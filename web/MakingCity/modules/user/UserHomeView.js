@@ -101,6 +101,13 @@ export default class UserHomeView extends View {
 				// so there is really no need to do anything here!
 			}, false);
 			
+			const back = svgObject.getElementById('back');
+			back.addEventListener("click", function(){
+				
+				self.menuModel.setSelected('menu');
+				
+			}, false);
+			
 		} else {
 			console.log("svgObject is NOT ready!");
 		}
@@ -184,35 +191,10 @@ export default class UserHomeView extends View {
 								'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
 							'</div>'+
 						'</div>'+
-						'<div class="col s6 center" style="margin-top:14px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-						//'<div class="col s6">'+
-						//	'<p style="font-size:14px;color:#888">'+localized_string_auto_update_msg_1+' 30 '+localized_string_auto_update_msg_2+'.</p>'+
-						//'</div>'+
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s12 center" id="user-home-view-failure"></div>'+
 					'</div>';
-					/*
-					'<div class="row">'+
-						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
-							'<h2 style="color:#aaa; text-align:center;">Welcome to Home!</h2>'+
-							"<p style='color:#aaa; text-align:center;'>This is the home view. User's personal information will be shown here.</p>"+
-						'</div>'+
-						'<div class="col s6 center" style="margin-top:14px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="user-home-view-failure"></div>'+
-					'</div>';
-					*/
-					
 				$(html).appendTo(this.el);
 				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!
@@ -225,9 +207,6 @@ export default class UserHomeView extends View {
 					
 				});
 			}
-			$('#back').on('click',function() {
-				self.menuModel.setSelected('menu');
-			});
 			this.rendered = true;
 		} else {
 			console.log('UserHomeView => render Model IS NOT READY!!!!');

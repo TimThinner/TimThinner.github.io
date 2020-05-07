@@ -120,15 +120,7 @@ export default class MenuView extends View {
 				*/
 				var ph = svgObject.getElementById('before-buttons-placeholder');
 				
-				const coords = "M-45,40 A45,45 0 0,1 45,40 A60,60 0 0,1 -45,40";
-				var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path.setAttributeNS(null, 'd', coords);
-				path.setAttributeNS(null, 'class', 'inactive-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				//path.style.strokeWidth = 5;
-				//path.style.stroke = '#aaa';
-				//path.style.fill = '#eee';
-				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path);
+				
 				/*
 				inactive-menu-button-path:
 					stroke: #ccc;
@@ -137,16 +129,30 @@ export default class MenuView extends View {
 					opacity: 1.0;
 				*/
 				
+				//const coords = "M-45,40 A45,45 0 0,1 45,40 A60,60 0 0,1 -45,40";
+				
+				let coords = "M-45,50 L-45,-20 M-55,-10 L0,-60 L55,-10 M45,-20 L45,50 L-45,50";
+				coords += " M-30,30 A30,30 0 0,1 30,30 L-30,30";
+				
+				var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path.setAttributeNS(null, 'd', coords);
+				path.setAttributeNS(null, 'class', 'inactive-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path);
+				
 				var uc = document.createElementNS('http://www.w3.org/2000/svg', "circle");
 				uc.setAttributeNS(null, 'cx', 0);
-				uc.setAttributeNS(null, 'cy', -18);
-				uc.setAttributeNS(null, 'r', 25);
-				// UC2:  stroke-width="2" stroke="#444" fill="#ccc"
-				uc.style.strokeWidth = 5;
-				uc.style.stroke = '#ccc';
-				uc.style.fill = '#fff';
+				uc.setAttributeNS(null, 'cy', -10);
+				uc.setAttributeNS(null, 'r', 20);
+				uc.setAttributeNS(null, 'class', 'inactive-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				uc.style.fill = '#fff'; // This will overwrite the fill: none; definition in CSS active-menu-button-path
 				uc.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				
+				
 				ph.appendChild(uc);
+				
+				
+				
 				
 				// Draw the home:
 				/*
@@ -190,7 +196,20 @@ export default class MenuView extends View {
 		svgAnimateElement.setAttributeNS(null,'values',values);
 		return svgAnimateElement;
 	}
-	
+/*
+.active-menu-button-path {
+	stroke: #1fac78;
+	stroke-width: 5;
+	fill: none;
+	opacity: 1.0;
+}
+.inactive-menu-button-path {
+	stroke: #ccc;
+	stroke-width: 5;
+	fill: none;
+	opacity: 1.0;
+}
+*/
 	addSVGUser() {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
@@ -207,6 +226,7 @@ export default class MenuView extends View {
 				UB.setAttributeNS(null,'class','active-district');
 				UB.style.stroke = '#0a0';
 				
+				/*
 				// Draw the home:
 				let coords = "M-50,50 L50,50"; // bottom ground
 				coords += " M-40,50 L-40,-20 M40,-20 L40,50"; // house walls
@@ -219,9 +239,31 @@ export default class MenuView extends View {
 				path.setAttributeNS(null, 'd', coords);
 				path.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
 				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				
+				*/
 				var ph = svgObject.getElementById('before-buttons-placeholder');
+				
+				
+				let coords = "M-45,50 L-45,-20 M-55,-10 L0,-60 L55,-10 M45,-20 L45,50 L-45,50";
+				coords += " M-30,30 A30,30 0 0,1 30,30 L-30,30";
+				
+				var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path.setAttributeNS(null, 'd', coords);
+				path.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				//path.style.strokeWidth = 5;
+				//path.style.stroke = '#aaa';
+				//path.style.fill = '#eee';
+				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
 				ph.appendChild(path);
+				
+				var uc = document.createElementNS('http://www.w3.org/2000/svg', "circle");
+				uc.setAttributeNS(null, 'cx', 0);
+				uc.setAttributeNS(null, 'cy', -10);
+				uc.setAttributeNS(null, 'r', 20);
+				uc.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				uc.style.fill = '#fff'; // This will overwrite the fill: none; definition in CSS active-menu-button-path
+				uc.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(uc);
+				
 				UB.addEventListener("click", function(){
 					
 					self.models['MenuModel'].setSelected('USERHOME');

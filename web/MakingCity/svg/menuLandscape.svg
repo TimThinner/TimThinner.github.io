@@ -10,7 +10,7 @@
 	cursor: pointer;
 }
 .grid-head {
-	opacity: 0.5;
+	opacity: 0.75;
 	stroke-width: 2.5;
 	stroke: #444;
 }
@@ -41,10 +41,10 @@
 </defs>
 <rect x="-900" y="-500" width="1800" height="900" fill="url(#grad)" stroke-width="0" stroke="#000" />
 
-<text x="-370" y="-390" opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="128px" fill="#444">Making City</text>
+<text x="-370" y="-390" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="128px" fill="#444">Making City</text>
 <path class="grid-head" d="M-900 -481 H-361" />
 <path class="grid-head" d="M36 -388 H900" />
-<text x="65" y="-340" opacity="0.4" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#444">Positive Energy Districts</text>
+<text x="65" y="-340" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#444">Positive Energy Districts</text>
 
 <path class="line" d="M130,-130 L247,-247" />
 <path class="line" d="M130,130 L247,247" />

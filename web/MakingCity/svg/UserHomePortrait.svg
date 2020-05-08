@@ -5,6 +5,11 @@
 	cursor: pointer;
 	opacity: 0.75;
 }
+.grid-head {
+	opacity: 0.75;
+	stroke-width: 2;
+	stroke: #444;
+}
 .back-button {
 	cursor: pointer;
 	opacity: 0.75;
@@ -21,11 +26,18 @@
 
 <!--<circle cx="0" cy="0" r="280" stroke-width="1" stroke="#ccc" fill="none" />-->
 
+<text x="-210" y="-380" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="82px" fill="#444">Making City</text>
+<path class="grid-head" d="M-300 -438 H-206" />
+<path class="grid-head" d="M50 -378 H300" />
+<text x="100" y="-345" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#444">Your Home Page</text>
+
 <!-- Center TEXT within given sub-svg element -->
+<!--
 <svg x="-300" y="-470" width="600px" height="64px">
-	<!--<rect x="1" y="1" width="398" height="82" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
+	<rect x="1" y="1" width="398" height="82" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />
 	<text id="user-home-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#444">Home</text>
 </svg>
+-->
 <!--
 <text id="user-home-title" x="-110" y="-380" opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="82px" fill="#444">Home</text>
 -->
@@ -42,12 +54,12 @@
 		M-55,-10 L0,-60 L55,-10 
 		M45,-20 L45,50 L-45,50 
 		M-30,30 A30,30 0 0,1 30,30 L-30,30"
-	style="stroke:#1fac78;stroke-width:5px;fill:none;transform: scale(1.5) translateY(-180px);" />
+	style="stroke:#1fac78;stroke-width:5px;fill:none;transform: scale(1.5) translateY(-160px);" />
 <circle class="" cx="0" cy="-10" r="20" 
-	style="stroke:#1fac78;stroke-width:5px;fill:#fff;transform: scale(1.5) translateY(-180px);" />
+	style="stroke:#1fac78;stroke-width:5px;fill:#fff;transform: scale(1.5) translateY(-160px);" />
 
-<image id="back" class="back-button" x="-240" y="-300" width="105" height="70" xlink:href="backbutton.svg" />
-<image id="logout" class="logout" x="135" y="-300" width="105" height="70" xlink:href="logout.svg" />
+<image id="back" class="back-button" x="-290" y="-430" width="75" height="50" xlink:href="backbutton.svg" />
+<image id="logout" class="logout" x="220" y="-430" width="75" height="50" xlink:href="logout.svg" />
 
 <text id="user-home-description" x="-240" y="-30" opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#444">Here you will find values for your:</text>
 <text id="user-home-bullet-1" x="-190" y="40" opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#444">- electricity consumption</text>

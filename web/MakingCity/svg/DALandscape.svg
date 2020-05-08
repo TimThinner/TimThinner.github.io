@@ -18,6 +18,11 @@
 	/*stroke: #555;*/
 	stroke-width: 1;
 }
+.grid-head {
+	opacity: 0.75;
+	stroke-width: 2.5;
+	stroke: #fff;
+}
 .back-button {
 	cursor: pointer;
 	opacity: 0.75;
@@ -44,10 +49,17 @@
 	</radialGradient>
 </defs>
 <rect x="0" y="0" width="1800" height="900" fill="url(#grad)" stroke-width="0" stroke="#000" />
-<svg x="100" y="20" width="1600px" height="120px">
+
+<text x="530" y="110" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="128px" fill="#fff">Making City</text>
+<path class="grid-head" d="M0 19 H538" />
+<path class="grid-head" d="M938 110 H1800" />
+<text x="950" y="160" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#fff">S-Market Kaukovainio</text>
+<!--
+<svg x="100" y="20" width="1600px" height="72px">
 	<rect x="1" y="1" width="1598" height="118" stroke="#fff" stroke-width="1" opacity="0.1" fill="#009688" />
-	<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="92px" fill="#fff">S-Market Kaukovainio</text>
+	<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="72px" fill="#fff">S-Market Kaukovainio</text>
 </svg>
+-->
 <!-- M 1300,500 L 1450,500 A 50,50 0 0,1 1500,550 L 1500,720" -->
 <g>
 	<path id="p1" d="M 220,450 L 1320,450 
@@ -210,6 +222,6 @@
 	<rect class="target" id="target-a-n" x="-80" y="-70" width="160" height="140" transform="translate(1500,790) scale(1.0)" />
 </g>
 
-<image id="back" class="back-button" x="200" y="150" width="120" height="80" xlink:href="backbutton.svg" />
+<image id="back" class="back-button" x="350" y="30" width="120" height="80" xlink:href="backbutton.svg" />
 
 </svg>

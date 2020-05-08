@@ -53,7 +53,7 @@
 <text x="90" y="100" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="82px" fill="#fff">Making City</text>
 <path class="grid-head" d="M0 43 H94" />
 <path class="grid-head" d="M350 100 H600" />
-<text x="350" y="134" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff">S-Market Kaukovainio</text>
+<text x="360" y="134" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff">S-Market Kaukovainio</text>
 <!--
 <svg x="10" y="30" width="580px" height="100px">
 	<rect x="1" y="1" width="598" height="98" stroke="#fff" stroke-width="1" opacity="0.1" fill="#009688" />

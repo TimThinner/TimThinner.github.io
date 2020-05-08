@@ -125,8 +125,4 @@ Changes to color:
 <polygon class="hex" id="hex-e" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(630,460) scale(1.0)" />
 
 <image id="back" class="back-button" x="350" y="30" width="120" height="80" xlink:href="backbutton.svg" />
-<!--
-<image x="1460" y="770" width="164.87" height="110" xlink:href="640px-Flag_of_Europe.svg.png" />
-<image x="1650" y="770" width="110" height="110" xlink:href="MC.png" />
--->
 </svg>

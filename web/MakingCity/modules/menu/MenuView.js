@@ -460,22 +460,33 @@ export default class MenuView extends View {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
-			const hexA = svgObject.getElementById('district');
-			hexA.addEventListener("click", function(){
+			const pLink = svgObject.getElementById('project');
+			pLink.addEventListener("click", function(){
+				// '<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">'+
+				//self.models['MenuModel'].setSelected('D');
+				//console.log('Open PROJECT page in new TAB!');
+				window.open('http://makingcity.eu/', '_blank');
+				//var win = window.open('http://makingcity.eu/', '_blank');
+				//win.focus();
+				
+			}, false);
+			
+			const mcd = svgObject.getElementById('district');
+			mcd.addEventListener("click", function(){
 				
 				self.models['MenuModel'].setSelected('D');
 				
 			}, false);
 			
 			const OD = svgObject.getElementById('outer-district');
-			hexA.addEventListener("mouseover", function(event){
+			mcd.addEventListener("mouseover", function(event){
 				const scale ='scale(1.1)';
 				event.target.setAttributeNS(null,'transform',scale);
 				if (OD) {
 					OD.setAttributeNS(null,'transform',scale);
 				}
 			}, false);
-			hexA.addEventListener("mouseout", function(event){ 
+			mcd.addEventListener("mouseout", function(event){ 
 				const scale ='scale(1.0)';
 				event.target.setAttributeNS(null,'transform',scale);
 				if (OD) {

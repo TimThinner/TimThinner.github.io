@@ -153,8 +153,4 @@
 	<polygon class="hex" id="hex-e" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(260,460) scale(1.0)" />
 	
 	<image id="back" class="back-button" x="30" y="40" width="105" height="70" xlink:href="backbutton.svg" />	
-	<!--
-	<image x="880" y="700" width="100" height="66.72" xlink:href="640px-Flag_of_Europe.svg.png" />
-	<image x="880" y="780" width="100" height="100" xlink:href="MC.png" />
-	-->
 </svg>

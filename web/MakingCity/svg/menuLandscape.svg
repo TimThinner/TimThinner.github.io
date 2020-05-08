@@ -147,4 +147,7 @@ third  = #1fac78
 <circle id="grid-button" cx="0" cy="0" r="70" style="stroke:#ccc;stroke-width:5px;fill:#fff;opacity:0.25;transform: translate(-247px,247px) scale(1.0);" />
 <circle id="comp-button" cx="0" cy="0" r="70" style="stroke:#ccc;stroke-width:5px;fill:#fff;opacity:0.25;transform: translate(247px,247px) scale(1.0);" />
 
+<rect x="538" y="278" width="114" height="114" style="stroke:#1fac78;stroke-width:2px;fill:none;" />
+<image id="project" class="active-district" x="540" y="280" width="110" height="110" xlink:href="MC.png" />
+<image x="680" y="280" width="164.87" height="110" xlink:href="640px-Flag_of_Europe.svg.png" />
 </svg>

@@ -20,7 +20,7 @@
 }
 .grid-head {
 	opacity: 0.75;
-	stroke-width: 2;
+	stroke-width: 1;
 	stroke: #fff;
 }
 .back-button {

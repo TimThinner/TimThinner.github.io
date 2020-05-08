@@ -34,7 +34,7 @@ Changes to color:
 }
 .grid-head {
 	opacity: 0.75;
-	stroke-width: 2.5;
+	stroke-width: 2;
 	stroke: #fff;
 }
 .back-button {

@@ -455,10 +455,71 @@ export default class MenuView extends View {
 		}
 	}
 	
-	addSVGEventHandlers(mode) {
-		const self = this;
+	setLanguageSelection(sel) {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
+			if (sel === 'fi') {
+				const lang_en_bg = svgObject.getElementById('language-en-background');
+				if (lang_en_bg) {
+					lang_en_bg.style.fill = 'none'; // Set fill to none
+				}
+				const lang_fi_bg = svgObject.getElementById('language-fi-background');
+				if (lang_fi_bg) {
+					lang_fi_bg.style.fill = '#fff'; // Set fill to #fff
+				}
+			} else {
+				const lang_fi_bg = svgObject.getElementById('language-fi-background');
+				if (lang_fi_bg) {
+					lang_fi_bg.style.fill = 'none'; // Set fill to none
+				}
+				const lang_en_bg = svgObject.getElementById('language-en-background');
+				if (lang_en_bg) {
+					lang_en_bg.style.fill = '#fff'; // Set fill to #fff
+				}
+			}
+		}
+	}
+	
+	addSVGEventHandlers() {
+		const self = this;
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const lang_fi = svgObject.getElementById('language-fi');
+			if(lang_fi) {
+				lang_fi.addEventListener("click", function(){
+					if (LM.selected !== 'fi') {
+						const lang_en_bg = svgObject.getElementById('language-en-background');
+						if (lang_en_bg) {
+							lang_en_bg.style.fill = 'none'; // Set fill to none
+						}
+						const lang_fi_bg = svgObject.getElementById('language-fi-background');
+						if (lang_fi_bg) {
+							lang_fi_bg.style.fill = '#fff'; // Set fill to #fff
+						}
+						LM.selected = 'fi';
+						//self.localizeSVGTexts();
+					}
+				}, false);
+			}
+			
+			const lang_en = svgObject.getElementById('language-en');
+			if(lang_en) {
+				lang_en.addEventListener("click", function(){
+					if (LM.selected !== 'en') {
+						const lang_fi_bg = svgObject.getElementById('language-fi-background');
+						if (lang_fi_bg) {
+							lang_fi_bg.style.fill = 'none'; // Set fill to none
+						}
+						const lang_en_bg = svgObject.getElementById('language-en-background');
+						if (lang_en_bg) {
+							lang_en_bg.style.fill = '#fff'; // Set fill to #fff
+						}
+						LM.selected = 'en';
+						//self.localizeSVGTexts();
+					}
+				}, false);
+			}
 			
 			const pLink = svgObject.getElementById('project');
 			pLink.addEventListener("click", function(){
@@ -528,13 +589,15 @@ These are filled with correct values in here:
 		}
 	}
 	
-	/*
+	
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
+			
+			/*
 			const localized_d_a = LM['translation'][sel]['MENU_D_A_LABEL'];
 			const localized_d_b = LM['translation'][sel]['MENU_D_B_LABEL'];
 			const localized_d_c = LM['translation'][sel]['MENU_D_C_LABEL'];
@@ -546,9 +609,11 @@ These are filled with correct values in here:
 			this.fillSVGTextElement(svgObject, 'district-c', localized_d_c);
 			this.fillSVGTextElement(svgObject, 'district-d', localized_d_d);
 			this.fillSVGTextElement(svgObject, 'district-e', localized_d_e);
+			
+			*/
 		}
 	}
-	*/
+	
 	fillLocalizedTexts() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
@@ -647,17 +712,19 @@ These are filled with correct values in here:
 			*/
 		$(html).appendTo(this.el);
 		
-		this.fillLocalizedTexts();
-		$('#language-'+LM.selected).addClass('selected');
+		
+		//this.fillLocalizedTexts();
+		//$('#language-'+LM.selected).addClass('selected');
 		
 		// AND WAIT for SVG object to fully load, before assigning event handlers!
 		const svgObj = document.getElementById("svg-object");
 		svgObj.addEventListener('load', function(){
 			//console.log('ADD SVG EVENT HANDLERS!');
 			
-			
-			self.addSVGEventHandlers(mode);
+			self.setLanguageSelection(LM.selected);
+			self.addSVGEventHandlers();
 			//self.localizeSVGTexts();
+			
 			if (USER_MODEL.isLoggedIn()) {
 				self.addSVGUser();
 			} else {

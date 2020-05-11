@@ -76,7 +76,7 @@ These are filled with correct values in MenuView.js: addSVGEventHandlers -method
 		M44,0 L44,11 L57,11 L65,60 L44,60 L44,71 L75,88 L75,5 L44,5 
 		M39,44 L80,44 
 		M39,28 L80,28 
-		M65,0 L65,73 L48,65"
+		M66,0 L66,73 L48,65"
 	style="stroke:#fff;stroke-width:0px;fill:none;transform: scaleY(-2) scaleX(2) translate(-74px,-35px);" />
 <!--
 stroke-dasharray:0px 0px;

@@ -122,6 +122,14 @@ export default class EnvironmentPageView extends View {
 		const self = this;
 		$(this.el).empty();
 		if (this.areModelsReady()) {
+			
+			const LM = this.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
+			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+			const localized_string_title = LM['translation'][sel]['ENVIRONMENT_PAGE_TITLE'];
+			const localized_string_description = LM['translation'][sel]['ENVIRONMENT_PAGE_DESCRIPTION'];
+			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
+			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
@@ -132,7 +140,9 @@ export default class EnvironmentPageView extends View {
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s6 center">'+
-							'<a href="javascript:void(0);" id="back" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+								'<i class="material-icons left">arrow_back</i>'+
+							'</button>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
@@ -161,12 +171,6 @@ export default class EnvironmentPageView extends View {
 					svgFile = './svg/UserHomeSquare.svg';
 					svgClass = 'svg-square-container';
 				}*/
-				const LM = this.controller.master.modelRepo.get('LanguageModel');
-				const sel = LM.selected;
-				const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-				const localized_string_title = LM['translation'][sel]['ENVIRONMENT_PAGE_TITLE'];
-				const localized_string_description = LM['translation'][sel]['ENVIRONMENT_PAGE_DESCRIPTION'];
-				const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 				const html =
 					/*
 					'<div class="row">'+

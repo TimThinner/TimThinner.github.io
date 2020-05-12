@@ -141,6 +141,21 @@ export default class UserPageView extends View {
 		const self = this;
 		$(this.el).empty();
 		if (this.areModelsReady()) {
+			
+			const LM = this.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
+			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+			const localized_string_title = LM['translation'][sel]['USER_PAGE_TITLE'];
+			const localized_string_description = LM['translation'][sel]['USER_PAGE_DESCRIPTION'];
+			const localized_string_bullet_1 = LM['translation'][sel]['USER_PAGE_BULLET_1'];
+			const localized_string_bullet_2 = LM['translation'][sel]['USER_PAGE_BULLET_2'];
+			const localized_string_bullet_3 = LM['translation'][sel]['USER_PAGE_BULLET_3'];
+			
+			const localized_string_electricity = LM['translation'][sel]['USER_PAGE_ELECTRICITY'];
+			const localized_string_heating = LM['translation'][sel]['USER_PAGE_HEATING'];
+			const localized_string_water = LM['translation'][sel]['USER_PAGE_WATER'];
+			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
+			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
@@ -151,7 +166,9 @@ export default class UserPageView extends View {
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s6 center">'+
-							'<a href="javascript:void(0);" id="back" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+								'<i class="material-icons left">arrow_back</i>'+
+							'</button>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
@@ -181,20 +198,6 @@ export default class UserPageView extends View {
 					svgFile = './svg/UserPageSquare.svg';
 					svgClass = 'svg-square-container';
 				}*/
-				const LM = this.controller.master.modelRepo.get('LanguageModel');
-				const sel = LM.selected;
-				const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-				const localized_string_title = LM['translation'][sel]['USER_PAGE_TITLE'];
-				const localized_string_description = LM['translation'][sel]['USER_PAGE_DESCRIPTION'];
-				const localized_string_bullet_1 = LM['translation'][sel]['USER_PAGE_BULLET_1'];
-				const localized_string_bullet_2 = LM['translation'][sel]['USER_PAGE_BULLET_2'];
-				const localized_string_bullet_3 = LM['translation'][sel]['USER_PAGE_BULLET_3'];
-				
-				const localized_string_electricity = LM['translation'][sel]['USER_PAGE_ELECTRICITY'];
-				const localized_string_heating = LM['translation'][sel]['USER_PAGE_HEATING'];
-				const localized_string_water = LM['translation'][sel]['USER_PAGE_WATER'];
-				
-				const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 				const html =
 				/*
 					'<div class="row">'+
@@ -211,16 +214,11 @@ export default class UserPageView extends View {
 					'<div class="row">'+
 						'<div class="col s12 center">'+
 							'<h4 style="text-align:center;">'+localized_string_title+
-							'<a href="javascript:void(0);" id="logout" class="logout">'+
-								'<img src="./svg/logout.svg" />'+
-							'</a></h4>'+
+								'<img id="logout" class="logout" src="./svg/logout.svg" />'+
+							'</h4>'+
 						'</div>'+
 						'<div class="col s12 center">'+
 							'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
-							//'<p style="text-align:center;">'+localized_string_description+'</p>'+
-							//'<ul style="text-align:center;"><li>'+localized_string_bullet_1+'</li>'+
-							//'<li>'+localized_string_bullet_2+'</li>'+
-							//'<li>'+localized_string_bullet_3+'</li></ul>'+
 						'</div>'+
 						'<div class="col s4 center">'+
 							'<h5>'+localized_string_electricity+'</h5>'+

@@ -413,6 +413,16 @@ meterId
 		const self = this;
 		$(this.el).empty();
 		if (this.areModelsReady()) {
+			
+			const LM = this.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
+			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+			
+			//const localized_string_da_description = LM['translation'][sel]['DA_DESCRIPTION'];
+			//const localized_string_da_toggle = LM['translation'][sel]['DA_TOGGLE_DIRECTION'];
+			//const localized_string_auto_update_msg_1 = LM['translation'][sel]['AUTO_UPDATE_MSG_1_B'];
+			//const localized_string_auto_update_msg_2 = LM['translation'][sel]['AUTO_UPDATE_MSG_2'];
+			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
@@ -423,10 +433,16 @@ meterId
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s6 center">'+
-							'<a href="javascript:void(0);" id="back" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+								'<i class="material-icons left">arrow_back</i>'+
+							'</button>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
+				
+				$('#back').on('click',function() {
+					self.menuModel.setSelected('D');
+				});
 				
 				if (errorMessages.indexOf('Auth failed') >= 0) {
 					// Show message and then FORCE LOGOUT in 3 seconds.
@@ -452,13 +468,6 @@ meterId
 					svgFile = './svg/DASquare.svg';
 					svgClass = 'svg-square-container';
 				}
-				const LM = this.controller.master.modelRepo.get('LanguageModel');
-				const sel = LM.selected;
-				//const localized_string_da_description = LM['translation'][sel]['DA_DESCRIPTION'];
-				//const localized_string_da_toggle = LM['translation'][sel]['DA_TOGGLE_DIRECTION'];
-				//const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-				//const localized_string_auto_update_msg_1 = LM['translation'][sel]['AUTO_UPDATE_MSG_1_B'];
-				//const localized_string_auto_update_msg_2 = LM['translation'][sel]['AUTO_UPDATE_MSG_2'];
 				const html =
 					'<div class="row">'+
 						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
@@ -470,7 +479,7 @@ meterId
 						'<div class="col s6 center" style="margin-top:14px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
-							'</butto	n>'+
+							'</button>'+
 						'</div>'+
 						'<div class="col s6">'+
 							'<p style="font-size:14px;color:#888">'+localized_string_auto_update_msg_1+' 30 '+localized_string_auto_update_msg_2+'.</p>'+
@@ -480,7 +489,6 @@ meterId
 					'<div class="row">'+
 						'<div class="col s12 center" id="district-a-view-failure"></div>'+
 					'</div>';
-					
 					/*
 					'<div class="row">'+
 						'<div class="col s6">'+
@@ -503,7 +511,9 @@ meterId
 					self.updateLatestValues();
 				});
 			}
+			
 			this.rendered = true;
+			
 		} else {
 			console.log('DistrictAView => render StatusModel IS NOT READY!!!!');
 			// this.el = '#content'

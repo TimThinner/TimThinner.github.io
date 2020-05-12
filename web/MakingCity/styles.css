@@ -196,7 +196,8 @@ input[type="range"] {
 .foobutton:hover {
 	background-color: #5699d4;
 }
-.logout img {
+img.logout {
 	height: 50px;
 	float: right;
+	cursor: pointer;
 }

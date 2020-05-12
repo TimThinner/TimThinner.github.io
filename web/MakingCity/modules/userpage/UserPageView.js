@@ -190,6 +190,10 @@ export default class UserPageView extends View {
 				const localized_string_bullet_2 = LM['translation'][sel]['USER_PAGE_BULLET_2'];
 				const localized_string_bullet_3 = LM['translation'][sel]['USER_PAGE_BULLET_3'];
 				
+				const localized_string_electricity = LM['translation'][sel]['USER_PAGE_ELECTRICITY'];
+				const localized_string_heating = LM['translation'][sel]['USER_PAGE_HEATING'];
+				const localized_string_water = LM['translation'][sel]['USER_PAGE_WATER'];
+				
 				const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 				const html =
 				/*
@@ -213,10 +217,22 @@ export default class UserPageView extends View {
 						'</div>'+
 						'<div class="col s12 center">'+
 							'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
-							'<p style="text-align:center;">'+localized_string_description+'</p>'+
-							'<ul style="text-align:center;"><li>'+localized_string_bullet_1+'</li>'+
-							'<li>'+localized_string_bullet_2+'</li>'+
-							'<li>'+localized_string_bullet_3+'</li></ul>'+
+							//'<p style="text-align:center;">'+localized_string_description+'</p>'+
+							//'<ul style="text-align:center;"><li>'+localized_string_bullet_1+'</li>'+
+							//'<li>'+localized_string_bullet_2+'</li>'+
+							//'<li>'+localized_string_bullet_3+'</li></ul>'+
+						'</div>'+
+						'<div class="col s4 center">'+
+							'<h5>'+localized_string_electricity+'</h5>'+
+							'<p style="text-align:center;"><img src="./svg/electricity.svg" height="50" /></p>'+
+						'</div>'+
+						'<div class="col s4 center">'+
+							'<h5>'+localized_string_heating+'</h5>'+
+							'<p style="text-align:center;"><img src="./svg/radiator.svg" height="50" /></p>'+
+						'</div>'+
+						'<div class="col s4 center">'+
+							'<h5>'+localized_string_water+'</h5>'+
+							'<p style="text-align:center;"><img src="./svg/water.svg" height="50" /></p>'+
 						'</div>'+
 						'<div class="col s6 center" style="margin-top:14px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+

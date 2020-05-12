@@ -1,8 +1,8 @@
 import Controller from '../common/Controller.js';
-import UserHomeModel from  './UserHomeModel.js';
-import UserHomeView from './UserHomeView.js';
+import UserPageModel from  './UserPageModel.js';
+import UserPageView from './UserPageView.js';
 
-export default class UserHomeController extends Controller {
+export default class UserPageController extends Controller {
 	
 	constructor(options) {
 		super(options);
@@ -16,7 +16,7 @@ export default class UserHomeController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key === 'UserHomeModel') {
+			if (key === 'UserPageModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
@@ -24,17 +24,17 @@ export default class UserHomeController extends Controller {
 	}
 	
 	init() {
-		const model = new UserHomeModel({name:'UserHomeModel',src:'to-be-added-in-the-future'});
+		const model = new UserPageModel({name:'UserPageModel',src:'to-be-added-in-the-future'});
 		model.subscribe(this);
-		this.master.modelRepo.add('UserHomeModel',model);
-		this.models['UserHomeModel'] = model;
+		this.master.modelRepo.add('UserPageModel',model);
+		this.models['UserPageModel'] = model;
 		
-		this.timers['UserHomeChartView'] = {timer: undefined, interval: 30000, models:['UserHomeModel']};
+		this.timers['UserPageChartView'] = {timer: undefined, interval: 30000, models:['UserPageModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.view = new UserHomeView(this);
+		this.view = new UserPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		this.show(); // Try if this view can be shown right now!

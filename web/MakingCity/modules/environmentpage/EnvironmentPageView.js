@@ -187,7 +187,7 @@ export default class EnvironmentPageView extends View {
 					*/
 					
 					'<div class="row">'+
-						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
+						'<div class="col s12">'+ // style="padding-left:0;padding-right:0;">'+
 							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
 							'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 							'<p style="text-align:center;">'+localized_string_description+'</p>'+

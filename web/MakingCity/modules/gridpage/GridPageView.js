@@ -5,19 +5,19 @@ super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
 
-export default class UserHomeView extends View {
+export default class GridPageView extends View {
 	
 	constructor(controller) {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserHomeModel') {
+			if (key === 'GridPageModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
 		// Start listening notify -messages from ResizeEventObserver:
-		this.controller.master.modelRepo.get('ResizeEventObserver').subscribe(this);
+		//this.controller.master.modelRepo.get('ResizeEventObserver').subscribe(this);
 		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
@@ -47,72 +47,54 @@ export default class UserHomeView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserHomeModel' && options.method==='fetched') {
+			if (options.model==='GridPageModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserHomeView => UserHomeModel fetched!');
+					console.log('GridPageView => GridPageModel fetched!');
 					if (this.rendered) {
-						$('#user-home-view-failure').empty();
+						$('#grid-page-view-failure').empty();
 						this.updateLatestValues();
 					} else {
 						this.render();
 					}
 				} else { // Error in fetching.
 					if (this.rendered) {
-						$('#user-home-view-failure').empty();
+						$('#grid-page-view-failure').empty();
 						if (options.status === 401) {
 							// This status code must be caught and wired to forceLogout() action.
 							// Force LOGOUT if Auth failed!
 							const html = '<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>';
-							$(html).appendTo('#user-home-view-failure');
+							$(html).appendTo('#grid-page-view-failure');
 							setTimeout(() => {
 								this.controller.forceLogout();
 							}, 3000);
 							
 						} else {
 							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#user-home-view-failure');
+							$(html).appendTo('#grid-page-view-failure');
 						}
 					} else {
 						this.render();
 					}
 				}
-			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log("UserHomeView ResizeEventObserver resize!!!!!!!!!!!!!!");
+			} /*else if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				console.log("GridPageView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
-			}
+			}*/
 		}
 	}
-	
+	/*
 	addSVGEventHandlers() {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
-			const logOut = svgObject.getElementById('logout');
-			logOut.addEventListener("click", function(){
-				
-				const UM = self.controller.master.modelRepo.get('UserModel')
-				if (UM) {
-					UM.logout();
-				}
-				//if (options.model === 'UserModel' && options.method === 'logout') {
-				// User is now logged out
-				// This notification is already handled in MasterController, 
-				// so there is really no need to do anything here!
-			}, false);
-			
-			const back = svgObject.getElementById('back');
-			back.addEventListener("click", function(){
-				
-				self.menuModel.setSelected('menu');
-				
-			}, false);
 			
 		} else {
 			console.log("svgObject is NOT ready!");
 		}
 	}
-	
+	*/
+	/*
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
@@ -132,9 +114,10 @@ export default class UserHomeView extends View {
 			this.fillSVGTextElement(svgObject, 'user-home-bullet-1', localized_userhome_bullet_1);
 			this.fillSVGTextElement(svgObject, 'user-home-bullet-2', localized_userhome_bullet_2);
 			this.fillSVGTextElement(svgObject, 'user-home-bullet-3', localized_userhome_bullet_3);
+			
 		}
 	}
-	
+	*/
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -143,7 +126,7 @@ export default class UserHomeView extends View {
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="user-home-view-failure">'+
+						'<div class="col s12 center" id="grid-page-view-failure">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
@@ -156,14 +139,14 @@ export default class UserHomeView extends View {
 				
 				if (errorMessages.indexOf('Auth failed') >= 0) {
 					// Show message and then FORCE LOGOUT in 3 seconds.
-					$('<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>').appendTo('#user-home-view-failure');
+					$('<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>').appendTo('#grid-page-view-failure');
 					setTimeout(() => {
 						this.controller.forceLogout();
 					}, 3000);
 				}
 				
 			} else {
-				const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
+				/*const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
 				let svgFile, svgClass;
 				if (mode === 'LANDSCAPE') {
 					console.log('LANDSCAPE');
@@ -177,39 +160,65 @@ export default class UserHomeView extends View {
 					console.log('SQUARE');
 					svgFile = './svg/UserHomeSquare.svg';
 					svgClass = 'svg-square-container';
-				}
+				}*/
 				const LM = this.controller.master.modelRepo.get('LanguageModel');
 				const sel = LM.selected;
-				//const localized_string_da_description = LM['translation'][sel]['DA_DESCRIPTION'];
-				//const localized_string_da_toggle = LM['translation'][sel]['DA_TOGGLE_DIRECTION'];
 				const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+				const localized_string_title = LM['translation'][sel]['GRID_PAGE_TITLE'];
+				const localized_string_description = LM['translation'][sel]['GRID_PAGE_DESCRIPTION'];
+				const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 				const html =
-				
+					/*
 					'<div class="row">'+
 						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
 							'<div class="'+svgClass+'">'+
 								'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
 							'</div>'+
 						'</div>'+
+						'<div class="col s6 center" style="margin-top:14px;">'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+								'<i class="material-icons left">arrow_back</i>'+
+							'</button>'+
+						'</div>'+
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s12 center" id="user-home-view-failure"></div>'+
+						'<div class="col s12 center" id="grid-page-view-failure"></div>'+
+					'</div>';
+					*/
+					
+					'<div class="row">'+
+						'<div class="col s12">'+// style="padding-left:0;padding-right:0;">'+
+							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
+							'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
+							'<p style="text-align:center;">'+localized_string_description+'</p>'+
+						'</div>'+
+						'<div class="col s6 center" style="margin-top:14px;">'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+								'<i class="material-icons left">arrow_back</i>'+
+							'</button>'+
+						'</div>'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s12 center" id="grid-page-view-failure"></div>'+
 					'</div>';
 				$(html).appendTo(this.el);
 				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!
-				const svgObj = document.getElementById("svg-object");
+				/*const svgObj = document.getElementById("svg-object");
 				svgObj.addEventListener('load', function(){
 					
-					self.addSVGEventHandlers();
-					self.localizeSVGTexts();
-					self.updateLatestValues();
+					//self.addSVGEventHandlers();
+					//self.localizeSVGTexts();
+					//self.updateLatestValues();
 					
-				});
+				});*/
 			}
+			$('#back').on('click',function() {
+				self.menuModel.setSelected('menu');
+			});
 			this.rendered = true;
 		} else {
-			console.log('UserHomeView => render Model IS NOT READY!!!!');
+			console.log('GridPageView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

@@ -148,32 +148,10 @@ export default class MenuView extends View {
 				uc.style.fill = '#fff'; // This will overwrite the fill: none; definition in CSS active-menu-button-path
 				uc.style.transform = UB.style.transform; // Use same transform as "parent" circle!
 				
-				
 				ph.appendChild(uc);
-				
-				
-				
-				
-				// Draw the home:
-				/*
-				let coords = "M-50,50 L50,50"; // bottom ground
-				coords += " M-40,50 L-40,-20 M40,-20 L40,50"; // house walls
-				coords += " M-50,-10 L0,-50 L50,-10"; // roof
-				coords += " M-40,-20 L-40,-50 L-20,-50 L-20,-35"; // chimney
-				coords += " M-30,20 L-30,0 L-10,0 L-10,20 L-30,20 Z"; // window
-				coords += " M0,50 L0,0 L30,0 L30,50 Z"; // door
-				
-				var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path.setAttributeNS(null, 'd', coords);
-				path.setAttributeNS(null, 'class', 'inactive-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				
-				var ph = svgObject.getElementById('before-buttons-placeholder');
-				ph.appendChild(path);*/
 				
 				UB.addEventListener("click", function(){
 					
-					//self.models['MenuModel'].setSelected('USERHOME');
 					self.models['MenuModel'].setSelected('userlogin');
 					
 				}, false);
@@ -226,22 +204,7 @@ export default class MenuView extends View {
 				UB.setAttributeNS(null,'class','active-district');
 				UB.style.stroke = '#0a0';
 				
-				/*
-				// Draw the home:
-				let coords = "M-50,50 L50,50"; // bottom ground
-				coords += " M-40,50 L-40,-20 M40,-20 L40,50"; // house walls
-				coords += " M-50,-10 L0,-50 L50,-10"; // roof
-				coords += " M-40,-20 L-40,-50 L-20,-50 L-20,-35"; // chimney
-				coords += " M-30,20 L-30,0 L-10,0 L-10,20 L-30,20 Z" // window
-				coords += " M0,50 L0,0 L30,0 L30,50 Z" // door
-				
-				var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path.setAttributeNS(null, 'd', coords);
-				path.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				*/
 				var ph = svgObject.getElementById('before-buttons-placeholder');
-				
 				
 				let coords = "M-45,50 L-45,-20 M-55,-10 L0,-60 L55,-10 M45,-20 L45,50 L-45,50";
 				coords += " M-30,30 A30,30 0 0,1 30,30 L-30,30";
@@ -266,7 +229,7 @@ export default class MenuView extends View {
 				
 				UB.addEventListener("click", function(){
 					
-					self.models['MenuModel'].setSelected('USERHOME');
+					self.models['MenuModel'].setSelected('USERPAGE');
 					
 				}, false);
 				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -398,7 +361,7 @@ export default class MenuView extends View {
 				
 				UB.addEventListener("click", function(){
 					
-					self.models['MenuModel'].setSelected('GRID');
+					self.models['MenuModel'].setSelected('GRIDPAGE');
 					
 				}, false);
 				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

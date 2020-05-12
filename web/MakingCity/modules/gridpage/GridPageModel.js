@@ -16,7 +16,7 @@ https://makingcity.vtt.fi/data/arina/iss/feeds.json?meterId=114&start=2020-02-12
 {"created_at":"2020-02-10T14:05:51","meterId":114,"averagePower":50.769,"totalEnergy":451893.3,"energyDiff":1.1}
 ]
 */
-export default class GridModel extends Model {
+export default class GridPageModel extends Model {
 	constructor(options) {
 		super(options);
 	}
@@ -50,7 +50,7 @@ export default class GridModel extends Model {
 		// append start and end date
 		const url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
 		
-		console.log (['GridModel fetch url=',url]);
+		console.log (['GridPageModel fetch url=',url]);
 		status = 200; // OK
 		setTimeout(() => {
 			

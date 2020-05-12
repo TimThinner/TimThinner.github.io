@@ -3,7 +3,7 @@
 <style>
 .outline {
 	opacity: 0.75;
-	stroke-width: 1;
+	stroke-width: 3;
 	stroke: #000;
 	fill: url(#grad);
 }

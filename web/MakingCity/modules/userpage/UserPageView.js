@@ -218,28 +218,21 @@ export default class UserPageView extends View {
 							'<h4 style="text-align:center;">'+localized_string_title+
 								'<img id="logout" class="logout" src="./svg/logout.svg" />'+
 							'</h4>'+
-						'</div>'+
-						'<div class="col s12 center">'+
 							'<p style="text-align:center;">'+localized_string_user_email+': '+UM.email+'</p>'+
 						'</div>'+
-						//'<div class="col s12 center">'+
-						//	'<p class="coming-soon">UNDER CONSTRUCTION</p>'+
-						//'</div>'+
-					'</div>'+
-					'<div class="row">'+
 						'<div class="col s4 center">'+
 							'<h5>'+localized_string_electricity+'</h5>'+
-							'<p style="text-align:center;"><img src="./svg/electricity.svg" height="60" /></p>'+
+							'<p style="text-align:center;"><img src="./svg/electricity.svg" height="50" /></p>'+
 							'<p class="user-page-main-figure">0.25 kWh</p>'+
 						'</div>'+
 						'<div class="col s4 center">'+
 							'<h5>'+localized_string_heating+'</h5>'+
-							'<p style="text-align:center;"><img src="./svg/radiator.svg" height="60" /></p>'+
+							'<p style="text-align:center;"><img src="./svg/radiator.svg" height="50" /></p>'+
 							'<p class="user-page-main-figure">22.4 &degC</p>'+
 						'</div>'+
 						'<div class="col s4 center">'+
 							'<h5>'+localized_string_water+'</h5>'+
-							'<p style="text-align:center;"><img src="./svg/water.svg" height="60" /></p>'+
+							'<p style="text-align:center;"><img src="./svg/water.svg" height="50" /></p>'+
 							'<p class="user-page-main-figure"><img src="./svg/watercold.svg" height="32" />20 L<br/>'+
 							'<img src="./svg/waterhot.svg" height="32" />40 L</p>'+
 						'</div>'+

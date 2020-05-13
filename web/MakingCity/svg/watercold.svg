@@ -5,7 +5,7 @@
 	opacity: 0.75;
 	stroke-width: 1;
 	stroke: #000;
-	fill: url(#grad);
+	fill: #00f;
 }
 .reflection {
 	opacity: 1;
@@ -14,17 +14,10 @@
 	fill: #fff;
 }
 </style>
-<defs>
-	<linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-		<stop offset="0%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
-		<stop offset="100%" style="stop-color:rgb(0,0,255);stop-opacity:1" />
-	</linearGradient>
-</defs>
 <path class="outline" d="M200 10 
 	C 220 100, 300 100, 300 190
 	A100 100 0 1 1 100 190 
-	C 100 100, 180 100, 200 10" 
-	/>
+	C 100 100, 180 100, 200 10" />
 <path class="reflection" d="M200 270 
 	A80 80 0 0 0 275 165
 	A120 120 0 0 1 200 270"

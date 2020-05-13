@@ -142,19 +142,21 @@ export default class UserPageView extends View {
 		$(this.el).empty();
 		if (this.areModelsReady()) {
 			
+			const UM = this.controller.master.modelRepo.get('UserModel')
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			const localized_string_title = LM['translation'][sel]['USER_PAGE_TITLE'];
-			const localized_string_description = LM['translation'][sel]['USER_PAGE_DESCRIPTION'];
-			const localized_string_bullet_1 = LM['translation'][sel]['USER_PAGE_BULLET_1'];
-			const localized_string_bullet_2 = LM['translation'][sel]['USER_PAGE_BULLET_2'];
-			const localized_string_bullet_3 = LM['translation'][sel]['USER_PAGE_BULLET_3'];
+			//const localized_string_description = LM['translation'][sel]['USER_PAGE_DESCRIPTION'];
+			//const localized_string_bullet_1 = LM['translation'][sel]['USER_PAGE_BULLET_1'];
+			//const localized_string_bullet_2 = LM['translation'][sel]['USER_PAGE_BULLET_2'];
+			//const localized_string_bullet_3 = LM['translation'][sel]['USER_PAGE_BULLET_3'];
 			
 			const localized_string_electricity = LM['translation'][sel]['USER_PAGE_ELECTRICITY'];
 			const localized_string_heating = LM['translation'][sel]['USER_PAGE_HEATING'];
 			const localized_string_water = LM['translation'][sel]['USER_PAGE_WATER'];
 			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
+			const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
 			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
@@ -165,7 +167,7 @@ export default class UserPageView extends View {
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s6 center">'+
+						'<div class="col s12 center">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
@@ -218,37 +220,44 @@ export default class UserPageView extends View {
 							'</h4>'+
 						'</div>'+
 						'<div class="col s12 center">'+
-							'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
+							'<p style="text-align:center;">'+localized_string_user_email+': '+UM.email+'</p>'+
 						'</div>'+
+						//'<div class="col s12 center">'+
+						//	'<p class="coming-soon">UNDER CONSTRUCTION</p>'+
+						//'</div>'+
+					'</div>'+
+					'<div class="row">'+
 						'<div class="col s4 center">'+
 							'<h5>'+localized_string_electricity+'</h5>'+
-							'<p style="text-align:center;"><img src="./svg/electricity.svg" height="50" /></p>'+
+							'<p style="text-align:center;"><img src="./svg/electricity.svg" height="60" /></p>'+
+							'<p class="user-page-main-figure">0.25 kWh</p>'+
 						'</div>'+
 						'<div class="col s4 center">'+
 							'<h5>'+localized_string_heating+'</h5>'+
-							'<p style="text-align:center;"><img src="./svg/radiator.svg" height="50" /></p>'+
+							'<p style="text-align:center;"><img src="./svg/radiator.svg" height="60" /></p>'+
+							'<p class="user-page-main-figure">22.4 &degC</p>'+
 						'</div>'+
 						'<div class="col s4 center">'+
 							'<h5>'+localized_string_water+'</h5>'+
-							'<p style="text-align:center;"><img src="./svg/water.svg" height="50" /></p>'+
+							'<p style="text-align:center;"><img src="./svg/water.svg" height="60" /></p>'+
+							'<p class="user-page-main-figure"><img src="./svg/watercold.svg" height="32" />20 L<br/>'+
+							'<img src="./svg/waterhot.svg" height="32" />40 L</p>'+
 						'</div>'+
-						'<div class="col s6 center" style="margin-top:14px;">'+
+					'</div>'+
+					'<div class="row">'+
+						'<div class="col s12 center">'+ // style="margin-top:14px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s12 center" id="grid-page-view-failure"></div>'+
+						'<div class="col s12 center" id="user-page-view-failure"></div>'+
 					'</div>';
-					
 				$(html).appendTo(this.el);
 				
 				$('#logout').on('click',function() {
-					const UM = self.controller.master.modelRepo.get('UserModel')
-					if (UM) {
-						UM.logout();
-					}
+					UM.logout();
 				});
 			}
 			$('#back').on('click',function() {
@@ -262,3 +271,38 @@ export default class UserPageView extends View {
 		}
 	}
 }
+
+/*
+						'<div class="col s12">'+
+							'<table class="centered">'+
+								'<thead>'+
+									'<tr>'+
+										'<th>Period</th>'+
+										'<th>kWh</th>'+
+										'<th>€</th>'+
+										'<th>kgCO2</th>'+
+									'</tr>'+
+								'</thead>'+
+								'<tbody>'+
+									'<tr>'+
+										'<td>Today</td>'+
+										'<td>6.56</td>'+
+										'<td>0.70</td>'+
+										'<td>0.87</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>This week</td>'+
+										'<td>55.87</td>'+
+										'<td>3.56</td>'+
+										'<td>5.70</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>This month</td>'+
+										'<td>64.78</td>'+
+										'<td>37.78</td>'+
+										'<td>212.80</td>'+
+									'</tr>'+
+								'</tbody>'+
+							'</table>'+
+						'</div>'+
+*/

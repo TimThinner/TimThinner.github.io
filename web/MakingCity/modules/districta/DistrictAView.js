@@ -432,7 +432,7 @@ meterId
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s6 center">'+
+						'<div class="col s12 center">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+

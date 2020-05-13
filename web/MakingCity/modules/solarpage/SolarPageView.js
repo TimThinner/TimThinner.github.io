@@ -139,7 +139,7 @@ export default class SolarPageView extends View {
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s6 center">'+
+						'<div class="col s12 center">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
@@ -189,14 +189,13 @@ export default class SolarPageView extends View {
 						'<div class="col s12 center" id="solar-page-view-failure"></div>'+
 					'</div>';
 					*/
-					
 					'<div class="row">'+
 						'<div class="col s12">'+// style="padding-left:0;padding-right:0;">'+
 							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
 							'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 							'<p style="text-align:center;">'+localized_string_description+'</p>'+
 						'</div>'+
-						'<div class="col s6 center" style="margin-top:14px;">'+
+						'<div class="col s12 center">'+ // style="margin-top:14px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+

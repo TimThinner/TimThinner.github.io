@@ -1,8 +1,8 @@
 html, body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
-	color: #333;
-	background-color: #fff;
+	color: #777;
+	background-color: #eee;
 }
 @media screen and (min-width: 601px) {
 	html, body {
@@ -11,7 +11,8 @@ html, body {
 }
 /* Materialize CSS */
 .container {
-	background-color: #fff;
+	background-color: #eee;
+	color: #777;
 	margin: 0 auto;
 	/*max-width: 1280px;*/
 	max-width: 1600px;
@@ -200,4 +201,9 @@ img.logout {
 	height: 50px;
 	float: right;
 	cursor: pointer;
+}
+.user-page-main-figure {
+	font-size: 24px;
+	font-weight: bold;
+	text-align:center;
 }

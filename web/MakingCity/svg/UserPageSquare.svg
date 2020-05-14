@@ -23,18 +23,36 @@
 	fill: none;
 	opacity: 1.0;
 }
-.house-path {
+.house-outline {
 	stroke: #1fac78;
 	stroke-width: 8;
 	fill: none;
 	opacity: 1.0;
 	stroke-linecap: round;
 }
+.house-chimney {
+	stroke: #1fac78;
+	stroke-width: 6;
+	fill: #73d3ae;
+	opacity: 0.95;
+}
 .house-window {
 	stroke: #1fac78;
 	stroke-width: 4;
-	fill: none;
-	opacity: 1.0;
+	fill: #fff;
+	opacity: 0.75;
+}
+.house-door {
+	stroke: #1fac78;
+	stroke-width: 4;
+	fill: #fff;
+	opacity: 0.75;
+}
+.house-paint {
+	stroke: #73d3ae;
+	stroke-width: 1;
+	fill: #73d3ae;
+	opacity: 0.25;
 }
 </style>
 <defs>
@@ -55,19 +73,27 @@
 <image id="back" class="back-button" x="-460" y="-465" width="105" height="70" xlink:href="backbutton.svg" />
 <image id="logout" class="logout" x="360" y="-465" width="105" height="70" xlink:href="logout.svg" />
 
+<!--
+first  = #51b0ce
+second = #73d3ae
+third  = #1fac78
+-->
 <!-- The House, walls: -->
-<path class="house-path" d="M-75,-50 L-75,100 L75,100 L75,-50" />
+<path class="house-outline" d="M-75,-50 L-75,100 L75,100 L75,-50" />
 <!-- The House, roof: -->
-<path class="house-path" d="M-100,-35 L0,-100 L100,-35" />
-<!-- The House, window and door: -->
-<path class="house-window" d="M-60,10 L-15,10 L-15,60 L-60,60 L-60,10 Z" />
-<path class="house-window" d="M-60,35 L-15,35 M-37.5,10 L-37.5,60" />
-<path class="house-window" d="M0,100 L0,0 L50,0 L50,100" />
+<path class="house-outline" d="M-100,-35 L0,-100 L100,-35" />
 <!-- The house, Chimney: -->
-<path class="house-path" d="M-75,-50 L-75,-100 L-40,-100 L-40,-75" />
+<path class="house-chimney" d="M-75,-50 L-75,-100 L-40,-100 L-40,-75 L-75,-50" />
+<path class="house-paint" d="M-75,100 L-75,-50 L0,-100 L75,-50 L75,100 L-75,100 Z" />
+<!-- The House, window and door: -->
+<path class="house-window" d="M-60,0 L-35,0 L-35,25 L-60,25 L-60,0 Z" />
+<path class="house-window" d="M-35,0 L-10,0 L-10,25 L-35,25 L-35,0 Z" />
+<path class="house-window" d="M-60,25 L-35,25 L-35,50 L-60,50 L-60,25 Z" />
+<path class="house-window" d="M-35,25 L-10,25 L-10,50 L-35,50 L-35,25 Z" />
+<path class="house-door" d="M10,96 L10,0 L60,0 L60,96 L10,96 Z" />
 
 <!-- The User -->
-<path class="active-menu-button-path" d="M-30,30 A30,30 0 0,1 30,30 L-30,30" style="transform: translateY(-240px) scale(1.0);" />
+<path class="active-menu-button-path" d="M-30,30 A30,30 0 0,1 30,30 L-30,30" style="fill:#73d3ae;transform: translateY(-240px) scale(1.0);" />
 <circle class="active-menu-button-path" cx="0" cy="-10" r="20" style="fill:#fff;transform:translateY(-240px) scale(1.0);" />
 <circle class="active-button" id="user-button" cx="0" cy="0" r="100" style="stroke:#0a0;stroke-width:5px;fill:#fff;opacity:0.25;transform: translateY(-240px) scale(1.0);">
 	<animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="100;110;100" />

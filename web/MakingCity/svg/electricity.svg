@@ -3,8 +3,8 @@
 <style>
 .outline {
 	opacity: 0.75;
-	stroke-width: 3;
-	stroke: #000;
+	stroke-width: 10;
+	stroke: #c50;
 	fill: #ff0;
 }
 </style>

@@ -17,11 +17,17 @@
 .active-button {
 	cursor: pointer;
 }
-.active-menu-button-path {
-	stroke: #1fac78;
-	stroke-width: 5;
-	fill: none;
-	opacity: 1.0;
+.small-text {
+	opacity: 1;
+	font-family: "Arial, Helvetica, sans-serif";
+	font-size: 20px;
+	fill: #1fac78;
+}
+.medium-text {
+	opacity: 1;
+	font-family: "Arial, Helvetica, sans-serif";
+	font-size: 28px;
+	fill: #000;
 }
 .house-outline {
 	stroke: #1fac78;
@@ -93,27 +99,53 @@ third  = #1fac78
 <path class="house-window" d="M-35,25 L-10,25 L-10,50 L-35,50 L-35,25 Z" />
 <path class="house-door" d="M10,96 L10,0 L60,0 L60,96 L10,96 Z" />
 
+<svg x="-160" y="-185" width="320px" height="30px">
+	<!--<rect x="1" y="1" width="318" height="28" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<text class="small-text" id="user-email" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+<svg x="-300" y="20" width="200px" height="30px">
+	<!--<rect x="1" y="1" width="198" height="28" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<text class="medium-text" id="user-electricity" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Electricity</text>
+</svg>
+<svg x="-160" y="220" width="320px" height="30px">
+	<!--<rect x="1" y="1" width="318" height="28" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<text class="medium-text" id="user-heating" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Heating</text>
+</svg>
+
+<image x="140" y="17" width="40" height="30" xlink:href="watercold.svg" />
+<image x="140" y="47" width="40" height="30" xlink:href="waterhot.svg" />
+<svg x="170" y="20" width="120px" height="30px">
+	<!--<rect x="1" y="1" width="118" height="28" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<text class="medium-text" id="user-water-cold" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">180 L</text>
+</svg>
+<svg x="170" y="50" width="120px" height="30px">
+	<!--<rect x="1" y="1" width="118" height="28" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<text class="medium-text" id="user-water-hot" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">120 L</text>
+</svg>
+
 <!-- The User -->
-<path class="active-menu-button-path" d="M-30,30 A30,30 0 0,1 30,30 L-30,30" style="fill:#73d3ae;transform: translateY(-200px) scale(1.0);" />
-<circle class="active-menu-button-path" cx="0" cy="-10" r="20" style="fill:#fff;transform:translateY(-200px) scale(1.0);" />
-<circle class="active-button" id="user-button" cx="0" cy="0" r="100" style="stroke:#0a0;stroke-width:5px;fill:#fff;opacity:0.25;transform: translateY(-200px) scale(1.0);">
+<image x="-50" y="-260" width="100" height="75" xlink:href="user.svg" />
+<circle class="active-button" id="user-button" cx="0" cy="0" r="80" style="stroke:#0a0;stroke-width:5px;fill:#fff;opacity:0.25;transform: translateY(-200px) scale(1.0);">
 	<animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="80;90;80" />
 </circle>
 
-<!-- The Electricity X: -(200+50) = -290 -->
-<image x="-250" y="-37.5" width="100" height="75" xlink:href="electricity.svg" />
+<!-- The Electricity 
+	X: -(200+50) = -290 
+	Y: 37.5 + 40 = 77.5
+-->
+<image x="-250" y="-60" width="100" height="75" xlink:href="electricity.svg" />
 <circle class="active-button" id="electricity-button" cx="0" cy="0" r="80" style="stroke:#0a0;stroke-width:5px;fill:#fff;opacity:0.25;transform: translateX(-200px) scale(1.0);">
 	<animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="80;90;80" />
 </circle>
 
-<!-- The Heating X:-50; Y:200-37.5 = 162.5 -->
-<image x="-50" y="162.5" width="100" height="75" xlink:href="radiator.svg" />
+<!-- The Heating X:-50; Y:200-70 = 162.5 -->
+<image x="-50" y="140" width="100" height="75" xlink:href="radiator.svg" />
 <circle class="active-button" id="heating-button" cx="0" cy="0" r="80" style="stroke:#0a0;stroke-width:5px;fill:#fff;opacity:0.25;transform: translateY(200px) scale(1.0);">
 	<animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="80;90;80" />
 </circle>
 
 <!-- The Water X: 200 - 50 = 150 -->
-<image x="150" y="-37.5" width="100" height="75" xlink:href="water.svg" />
+<image x="150" y="-60" width="100" height="75" xlink:href="water.svg" />
 <circle class="active-button" id="water-button" cx="0" cy="0" r="80" style="stroke:#0a0;stroke-width:5px;fill:#fff;opacity:0.25;transform: translateX(200px) scale(1.0);">
 	<animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="80;90;80" />
 </circle>

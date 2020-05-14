@@ -3,13 +3,13 @@
 <style>
 .outline {
 	opacity: 0.75;
-	stroke-width: 1;
+	stroke-width: 10;
 	stroke: #000;
 	fill: url(#grad);
 }
 .reflection {
 	opacity: 1;
-	stroke-width: 1;
+	stroke-width: 10;
 	stroke: #fff;
 	fill: #fff;
 }

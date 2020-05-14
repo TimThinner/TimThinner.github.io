@@ -91,7 +91,7 @@ export default class UserPageView extends View {
 			const logOut = svgObject.getElementById('logout');
 			logOut.addEventListener("click", function(){
 				
-				const UM = self.controller.master.modelRepo.get('UserModel')
+				const UM = self.controller.master.modelRepo.get('UserModel');
 				if (UM) {
 					UM.logout();
 				}
@@ -113,7 +113,7 @@ export default class UserPageView extends View {
 		}
 	}
 	
-	/*
+	
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
@@ -122,6 +122,7 @@ export default class UserPageView extends View {
 			const sel = LM.selected;
 			
 			// Use like this:
+			/*
 			const localized_userpage_title = LM['translation'][sel]['USER_PAGE_TITLE'];
 			const localized_userpage_description = LM['translation'][sel]['USER_PAGE_DESCRIPTION'];
 			const localized_userpage_bullet_1 = LM['translation'][sel]['USER_PAGE_BULLET_1'];
@@ -133,9 +134,16 @@ export default class UserPageView extends View {
 			this.fillSVGTextElement(svgObject, 'user-page-bullet-1', localized_userpage_bullet_1);
 			this.fillSVGTextElement(svgObject, 'user-page-bullet-2', localized_userpage_bullet_2);
 			this.fillSVGTextElement(svgObject, 'user-page-bullet-3', localized_userpage_bullet_3);
+			*/
+			
+			
+			const UM = this.controller.master.modelRepo.get('UserModel');
+			if (UM) {
+				this.fillSVGTextElement(svgObject, 'user-email', UM.email);
+			}
 		}
 	}
-	*/
+	
 	
 	render() {
 		const self = this;
@@ -264,7 +272,7 @@ export default class UserPageView extends View {
 				svgObj.addEventListener('load', function(){
 					
 					self.addSVGEventHandlers();
-					//self.localizeSVGTexts();
+					self.localizeSVGTexts();
 					self.updateLatestValues();
 				});
 			}

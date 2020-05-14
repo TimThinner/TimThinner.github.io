@@ -17,7 +17,7 @@ export default class UserPageView extends View {
 			}
 		});
 		// Start listening notify -messages from ResizeEventObserver:
-		//this.controller.master.modelRepo.get('ResizeEventObserver').subscribe(this);
+		this.controller.master.modelRepo.get('ResizeEventObserver').subscribe(this);
 		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
@@ -76,13 +76,13 @@ export default class UserPageView extends View {
 						this.render();
 					}
 				}
-			} /*else if (options.model==='ResizeEventObserver' && options.method==='resize') {
+			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				console.log("UserPageView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
-			}*/
+			}
 		}
 	}
-	/*
+	
 	addSVGEventHandlers() {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
@@ -112,7 +112,7 @@ export default class UserPageView extends View {
 			console.log("svgObject is NOT ready!");
 		}
 	}
-	*/
+	
 	/*
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
@@ -175,6 +175,10 @@ export default class UserPageView extends View {
 					'</div>';
 				$(html).appendTo(this.el);
 				
+				$('#back').on('click',function() {
+					self.menuModel.setSelected('menu');
+				});
+				
 				if (errorMessages.indexOf('Auth failed') >= 0) {
 					// Show message and then FORCE LOGOUT in 3 seconds.
 					$('<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>').appendTo('#user-page-view-failure');
@@ -184,7 +188,6 @@ export default class UserPageView extends View {
 				}
 				
 			} else {
-				/*
 				const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
 				let svgFile, svgClass;
 				if (mode === 'LANDSCAPE') {
@@ -199,9 +202,8 @@ export default class UserPageView extends View {
 					console.log('SQUARE');
 					svgFile = './svg/UserPageSquare.svg';
 					svgClass = 'svg-square-container';
-				}*/
+				}
 				const html =
-				/*
 					'<div class="row">'+
 						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
 							'<div class="'+svgClass+'">'+
@@ -212,7 +214,8 @@ export default class UserPageView extends View {
 					'<div class="row">'+
 						'<div class="col s12 center" id="user-page-view-failure"></div>'+
 					'</div>';
-					*/
+					
+					/*
 					'<div class="row">'+
 						'<div class="col s12 center">'+
 							'<h4 style="text-align:center;">'+localized_string_title+
@@ -221,20 +224,26 @@ export default class UserPageView extends View {
 							'<p style="text-align:center;">'+localized_string_user_email+': '+UM.email+'</p>'+
 						'</div>'+
 						'<div class="col s4 center">'+
-							'<h5>'+localized_string_electricity+'</h5>'+
-							'<p style="text-align:center;"><img src="./svg/electricity.svg" height="50" /></p>'+
-							'<p class="user-page-main-figure">0.25 kWh</p>'+
+							'<div class="mc-more-button">'+
+								'<h5>'+localized_string_electricity+'</h5>'+
+								'<p style="text-align:center;"><img src="./svg/electricity.svg" height="50" /></p>'+
+								//'<p class="user-page-main-figure">0.25 kWh</p>'+
+							'</div>'+
 						'</div>'+
 						'<div class="col s4 center">'+
-							'<h5>'+localized_string_heating+'</h5>'+
-							'<p style="text-align:center;"><img src="./svg/radiator.svg" height="50" /></p>'+
-							'<p class="user-page-main-figure">22.4 &degC</p>'+
+							'<div class="mc-more-button">'+
+								'<h5>'+localized_string_heating+'</h5>'+
+								'<p style="text-align:center;"><img src="./svg/radiator.svg" height="50" /></p>'+
+								//'<p class="user-page-main-figure">22.4 &degC</p>'+
+							'</div>'+
 						'</div>'+
 						'<div class="col s4 center">'+
-							'<h5>'+localized_string_water+'</h5>'+
-							'<p style="text-align:center;"><img src="./svg/water.svg" height="50" /></p>'+
-							'<p class="user-page-main-figure"><img src="./svg/watercold.svg" height="32" />20 L<br/>'+
-							'<img src="./svg/waterhot.svg" height="32" />40 L</p>'+
+							'<div class="mc-more-button">'+
+								'<h5>'+localized_string_water+'</h5>'+
+								'<p style="text-align:center;"><img src="./svg/water.svg" height="50" /></p>'+
+								//'<p class="user-page-main-figure"><img src="./svg/watercold.svg" height="32" />20 L<br/>'+
+								//'<img src="./svg/waterhot.svg" height="32" />40 L</p>'+
+							'</div>'+
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
@@ -247,15 +256,18 @@ export default class UserPageView extends View {
 					'<div class="row">'+
 						'<div class="col s12 center" id="user-page-view-failure"></div>'+
 					'</div>';
+					*/
 				$(html).appendTo(this.el);
 				
-				$('#logout').on('click',function() {
-					UM.logout();
+				// AND WAIT for SVG object to fully load, before assigning event handlers!
+				const svgObj = document.getElementById("svg-object");
+				svgObj.addEventListener('load', function(){
+					
+					self.addSVGEventHandlers();
+					//self.localizeSVGTexts();
+					self.updateLatestValues();
 				});
 			}
-			$('#back').on('click',function() {
-				self.menuModel.setSelected('menu');
-			});
 			this.rendered = true;
 		} else {
 			console.log('UserPageView => render Model IS NOT READY!!!!');

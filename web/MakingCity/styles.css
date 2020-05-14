@@ -207,3 +207,13 @@ img.logout {
 	font-weight: bold;
 	text-align: center;
 }
+.mc-more-button {
+	border-top: 2px solid #fff;
+	border-right: 2px solid #ccc;
+	border-bottom: 2px solid #ccc;
+	border-left: 2px solid #fff;
+	cursor: pointer;
+}
+.mc-more-button:hover {
+	background-color: #fff;
+}

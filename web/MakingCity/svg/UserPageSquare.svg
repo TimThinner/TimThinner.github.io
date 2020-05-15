@@ -48,7 +48,7 @@
 <image id="back" class="back-button" x="-460" y="-465" width="105" height="70" xlink:href="backbutton.svg" />
 <image id="logout" class="logout" x="360" y="-465" width="105" height="70" xlink:href="logout.svg" />
 
-<image x="-100" y="-100" width="200" height="200" xlink:href="Home.svg" />
+<image x="-120" y="-120" width="240" height="240" xlink:href="Home.svg" />
 
 <svg x="-160" y="-230" width="320px" height="32px">
 	<!--<rect x="1" y="1" width="318" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->

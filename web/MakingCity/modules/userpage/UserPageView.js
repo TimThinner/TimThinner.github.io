@@ -139,7 +139,9 @@ export default class UserPageView extends View {
 			
 			const UM = this.controller.master.modelRepo.get('UserModel');
 			if (UM) {
-				this.fillSVGTextElement(svgObject, 'user-email', UM.email);
+				const index = UM.email.indexOf('@');
+				const email = UM.email.slice(0,index);
+				this.fillSVGTextElement(svgObject, 'user-email', email);
 			}
 		}
 	}

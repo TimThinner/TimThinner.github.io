@@ -50,7 +50,6 @@ export default class PeriodicPoller {
 				const um = this.master.modelRepo.get('UserModel');
 				const token = um ? um.token : undefined;
 				
-				//console.log(['POLLER FETCH ',name]);
 				this.timers[name].models.forEach(key => {
 					console.log(['Poller fetch model key=',key,' token=',token]);
 					this.models[key].fetch(token);
@@ -59,6 +58,18 @@ export default class PeriodicPoller {
 				this.timers[name].timer = setTimeout(()=>{
 					this.poller(name);
 				}, this.timers[name].interval);
+				
+			} else if (this.timers[name].interval == -1) {
+				// Fetch only ONCE!
+				
+				const um = this.master.modelRepo.get('UserModel');
+				const token = um ? um.token : undefined;
+				
+				this.timers[name].models.forEach(key => {
+					console.log(['Poller fetch model key=',key,' token=',token]);
+					this.models[key].fetch(token);
+				});
+				
 			}
 		}
 	}

@@ -130,35 +130,24 @@ export default class DistrictView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		const USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
 		
 		let svgFile, svgClass;
 		if (mode === 'LANDSCAPE') {
 			//console.log('LANDSCAPE');
-			svgFile = './svg/DLandscape.svg';
+			svgFile = './svg/D/DLandscape.svg';
 			svgClass = 'svg-landscape-container';
 		} else if (mode === 'PORTRAIT') {
 			//console.log('PORTRAIT');
-			svgFile = './svg/DPortrait.svg';
+			svgFile = './svg/D/DPortrait.svg';
 			svgClass = 'svg-portrait-container';
 		} else {
 			//console.log('SQUARE');
-			svgFile = './svg/DSquare.svg';
+			svgFile = './svg/D/DSquare.svg';
 			svgClass = 'svg-square-container';
 		}
 		
-		let filename = 'user_grey.png';
-		if (USER_MODEL.isLoggedIn()) {
-			filename = 'user_color.png';
-		}
-		
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		//const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-		
 		const html =
-			//'<div class="row" style="margin-top:-20px">'+
 			'<div class="row">'+
 				'<div class="col s12" style="padding-left:0;padding-right:0;">'+
 					'<div class="'+svgClass+'">'+

@@ -83,6 +83,32 @@ export default class UserPageView extends View {
 		}
 	}
 	
+	
+	/*
+	NOTE: transform is defined within style-attribute, NOT as SVG property!
+	*/
+	setHoverEffect(event, scale) {
+		/*if (scale === 'scale(1.0)') {
+			
+			event.target.style.strokeWidth = 1;
+			event.target.style.fillOpacity = 0.05;
+		} else {
+			
+			event.target.style.strokeWidth = 3;
+			event.target.style.fillOpacity = 0.5;
+		}*/
+		const oldtra = event.target.style.transform;
+		//const oldtra = event.target.getAttributeNS(null,'transform');
+		//console.log(['oldtra=',oldtra]);
+		
+		
+		const index = oldtra.indexOf("scale"); // transform="translate(500,670) scale(1.1)" />
+		const newtra = oldtra.slice(0, index) + scale;
+		
+		event.target.style.transform = newtra;
+		//event.target.setAttributeNS(null,'transform',newtra);
+	}
+	
 	addSVGEventHandlers() {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
@@ -108,35 +134,40 @@ export default class UserPageView extends View {
 				
 			}, false);
 			
+			const UB = svgObject.getElementById('user-button');
+			if (UB) {
+				UB.addEventListener("click", function(){
+					
+					self.menuModel.setSelected('USERPROPS');
+					
+				}, false);
+				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+				UB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			}
+			
+			const EB = svgObject.getElementById('electricity-button');
+			if (EB) {
+				EB.addEventListener("click", function(){
+					
+					self.menuModel.setSelected('USERELECTRICITY');
+					
+				}, false);
+				EB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+				EB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			}
+			
+			
 		} else {
 			console.log("svgObject is NOT ready!");
 		}
 	}
 	
-	
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
-			const LM = this.controller.master.modelRepo.get('LanguageModel');
-			const sel = LM.selected;
-			
-			// Use like this:
-			/*
-			const localized_userpage_title = LM['translation'][sel]['USER_PAGE_TITLE'];
-			const localized_userpage_description = LM['translation'][sel]['USER_PAGE_DESCRIPTION'];
-			const localized_userpage_bullet_1 = LM['translation'][sel]['USER_PAGE_BULLET_1'];
-			const localized_userpage_bullet_2 = LM['translation'][sel]['USER_PAGE_BULLET_2'];
-			const localized_userpage_bullet_3 = LM['translation'][sel]['USER_PAGE_BULLET_3'];
-			
-			this.fillSVGTextElement(svgObject, 'user-page-title', localized_userpage_title);
-			this.fillSVGTextElement(svgObject, 'user-page-description', localized_userpage_description);
-			this.fillSVGTextElement(svgObject, 'user-page-bullet-1', localized_userpage_bullet_1);
-			this.fillSVGTextElement(svgObject, 'user-page-bullet-2', localized_userpage_bullet_2);
-			this.fillSVGTextElement(svgObject, 'user-page-bullet-3', localized_userpage_bullet_3);
-			*/
-			
-			
+			//const LM = this.controller.master.modelRepo.get('LanguageModel');
+			//const sel = LM.selected;
 			const UM = this.controller.master.modelRepo.get('UserModel');
 			if (UM) {
 				const index = UM.email.indexOf('@');
@@ -145,7 +176,6 @@ export default class UserPageView extends View {
 			}
 		}
 	}
-	
 	
 	render() {
 		const self = this;
@@ -156,18 +186,14 @@ export default class UserPageView extends View {
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+			/*
 			const localized_string_title = LM['translation'][sel]['USER_PAGE_TITLE'];
-			//const localized_string_description = LM['translation'][sel]['USER_PAGE_DESCRIPTION'];
-			//const localized_string_bullet_1 = LM['translation'][sel]['USER_PAGE_BULLET_1'];
-			//const localized_string_bullet_2 = LM['translation'][sel]['USER_PAGE_BULLET_2'];
-			//const localized_string_bullet_3 = LM['translation'][sel]['USER_PAGE_BULLET_3'];
-			
 			const localized_string_electricity = LM['translation'][sel]['USER_PAGE_ELECTRICITY'];
 			const localized_string_heating = LM['translation'][sel]['USER_PAGE_HEATING'];
 			const localized_string_water = LM['translation'][sel]['USER_PAGE_WATER'];
 			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 			const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
-			
+			*/
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
@@ -202,15 +228,15 @@ export default class UserPageView extends View {
 				let svgFile, svgClass;
 				if (mode === 'LANDSCAPE') {
 					console.log('LANDSCAPE');
-					svgFile = './svg/UserPageLandscape.svg';
+					svgFile = './svg/userpage/UserPageLandscape.svg';
 					svgClass = 'svg-landscape-container';
 				} else if (mode === 'PORTRAIT') {
 					console.log('PORTRAIT');
-					svgFile = './svg/UserPagePortrait.svg';
+					svgFile = './svg/userpage/UserPagePortrait.svg';
 					svgClass = 'svg-portrait-container';
 				} else {
 					console.log('SQUARE');
-					svgFile = './svg/UserPageSquare.svg';
+					svgFile = './svg/userpage/UserPageSquare.svg';
 					svgClass = 'svg-square-container';
 				}
 				const html =
@@ -224,49 +250,6 @@ export default class UserPageView extends View {
 					'<div class="row">'+
 						'<div class="col s12 center" id="user-page-view-failure"></div>'+
 					'</div>';
-					
-					/*
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<h4 style="text-align:center;">'+localized_string_title+
-								'<img id="logout" class="logout" src="./svg/logout.svg" />'+
-							'</h4>'+
-							'<p style="text-align:center;">'+localized_string_user_email+': '+UM.email+'</p>'+
-						'</div>'+
-						'<div class="col s4 center">'+
-							'<div class="mc-more-button">'+
-								'<h5>'+localized_string_electricity+'</h5>'+
-								'<p style="text-align:center;"><img src="./svg/electricity.svg" height="50" /></p>'+
-								//'<p class="user-page-main-figure">0.25 kWh</p>'+
-							'</div>'+
-						'</div>'+
-						'<div class="col s4 center">'+
-							'<div class="mc-more-button">'+
-								'<h5>'+localized_string_heating+'</h5>'+
-								'<p style="text-align:center;"><img src="./svg/radiator.svg" height="50" /></p>'+
-								//'<p class="user-page-main-figure">22.4 &degC</p>'+
-							'</div>'+
-						'</div>'+
-						'<div class="col s4 center">'+
-							'<div class="mc-more-button">'+
-								'<h5>'+localized_string_water+'</h5>'+
-								'<p style="text-align:center;"><img src="./svg/water.svg" height="50" /></p>'+
-								//'<p class="user-page-main-figure"><img src="./svg/watercold.svg" height="32" />20 L<br/>'+
-								//'<img src="./svg/waterhot.svg" height="32" />40 L</p>'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+ // style="margin-top:14px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="user-page-view-failure"></div>'+
-					'</div>';
-					*/
 				$(html).appendTo(this.el);
 				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!

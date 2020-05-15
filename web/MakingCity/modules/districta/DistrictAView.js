@@ -457,15 +457,15 @@ meterId
 				let svgFile, svgClass;
 				if (mode === 'LANDSCAPE') {
 					//console.log('LANDSCAPE');
-					svgFile = './svg/DALandscape.svg';
+					svgFile = './svg/DA/DALandscape.svg';
 					svgClass = 'svg-landscape-container';
 				} else if (mode === 'PORTRAIT') {
 					//console.log('PORTRAIT');
-					svgFile = './svg/DAPortrait.svg';
+					svgFile = './svg/DA/DAPortrait.svg';
 					svgClass = 'svg-portrait-container';
 				} else {
 					//console.log('SQUARE');
-					svgFile = './svg/DASquare.svg';
+					svgFile = './svg/DA/DASquare.svg';
 					svgClass = 'svg-square-container';
 				}
 				const html =

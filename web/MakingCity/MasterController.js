@@ -9,6 +9,9 @@ import UserSignupController from './modules/user/UserSignupController.js';
 import UserInfoController from './modules/user/UserInfoController.js';
 
 import UserPageController from './modules/userpage/UserPageController.js';
+import UserPropsController from './modules/userprops/UserPropsController.js';
+import UserElectricityController from './modules/userelectricity/UserElectricityController.js';
+
 import GridPageController from './modules/gridpage/GridPageController.js';
 import SolarPageController from './modules/solarpage/SolarPageController.js';
 import EnvironmentPageController from './modules/environmentpage/EnvironmentPageController.js';
@@ -77,6 +80,11 @@ class MasterController {
 		
 		this.controllers['USERPAGE'] = new UserPageController({name:'USERPAGE', master:this, el:'#content', visible:false});
 		this.controllers['USERPAGE'].init();
+		this.controllers['USERPROPS'] = new UserPropsController({name:'USERPROPS', master:this, el:'#content', visible:false});
+		this.controllers['USERPROPS'].init();
+		this.controllers['USERELECTRICITY'] = new UserElectricityController({name:'USERELECTRICITY', master:this, el:'#content', visible:false});
+		this.controllers['USERELECTRICITY'].init();
+		
 		this.controllers['GRIDPAGE'] = new GridPageController({name:'GRIDPAGE', master:this, el:'#content', visible:false});
 		this.controllers['GRIDPAGE'].init();
 		this.controllers['SOLARPAGE'] = new SolarPageController({name:'SOLARPAGE', master:this, el:'#content', visible:false});

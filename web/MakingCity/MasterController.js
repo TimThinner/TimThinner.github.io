@@ -48,6 +48,14 @@ class MasterController {
 			if (mm) {
 				mm.setSelected('menu');
 			}
+			
+			Object.keys(this.controllers).forEach(key => {
+				if (key === 'menu') {
+					
+				} else {
+					this.controllers[key].clean();
+				}
+			});
 		}
 	}
 	

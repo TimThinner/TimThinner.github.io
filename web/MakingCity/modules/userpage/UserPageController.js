@@ -23,6 +23,40 @@ export default class UserPageController extends Controller {
 		
 	}
 	
+	clean() {
+		console.log('UserPageController is now REALLY cleaned!');
+		this.remove();
+		/* IN PeriodicPoller:
+		Object.keys(this.timers).forEach(key => {
+			if (this.timers[key].timer) {
+				clearTimeout(this.timers[key].timer);
+				this.timers[key].timer = undefined;
+			}
+		});
+		*/
+		/* IN Controller:
+		Object.keys(this.models).forEach(key => {
+			this.models[key].unsubscribe(this);
+		});
+		if (this.view) {
+			this.view.remove();
+			this.view = undefined;
+		}
+		*/
+		// AND in this remove finally this.master.modelRepo.remove('UserPageModel');
+		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
+		// so there is no need to redefine them.
+		const model = new UserPageModel({name:'UserPageModel',src:'to-be-added-in-the-future'});
+		model.subscribe(this);
+		this.master.modelRepo.add('UserPageModel',model);
+		this.models['UserPageModel'] = model;
+		
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
+		this.view = new UserPageView(this);
+	}
+	
 	init() {
 		const model = new UserPageModel({name:'UserPageModel',src:'to-be-added-in-the-future'});
 		model.subscribe(this);

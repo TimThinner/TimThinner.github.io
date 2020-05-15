@@ -53,6 +53,17 @@ export default class Controller extends PeriodicPoller {
 	}
 	
 	/*
+	To do:
+	
+	Only some controllers really need to be wiped clean!
+	They have they own clean() -method. See: UserPageController.
+	*/
+	
+	clean() {
+		//console.log(this.name + ' is now cleaned!');
+	}
+	
+	/*
 		Every Controller must subscribe for "MenuModel" notifications.
 		After that all view changes are driven by this code. Note that by using 
 		timeout we make all other "VIEWS" hidden before showing the selected one.

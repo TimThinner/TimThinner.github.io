@@ -99,71 +99,6 @@ export default class MenuView extends View {
 		}
 	}
 	
-	addSVGInactiveUser() {
-		const self = this;
-		const svgObject = document.getElementById('svg-object').contentDocument;
-		if (svgObject) {
-			const UB = svgObject.getElementById('user-button');
-			if (UB) {
-				
-				const r = parseInt(UB.getAttributeNS(null,'r'),10);
-				const r2 = r+10;
-				const values = r + ';' + r2 + ';' + r;
-				UB.appendChild(this.createAnimateElement(values));
-				UB.setAttributeNS(null,'class','active-district');
-				
-				
-				/*
-				<circle cx="0" cy="0" r="23" stroke-width="3" stroke="#555" fill="#444" />
-				<path d="M-15,15 A15,15 0 0,1 15,15 A23,23 0 0,1 -15,15" fill="#ccc" stroke-width="3" stroke="#ccc" />
-				<circle cx="0" cy="-8" r="12" stroke-width="2" stroke="#444" fill="#ccc" />
-				*/
-				var ph = svgObject.getElementById('before-buttons-placeholder');
-				
-				
-				/*
-				inactive-menu-button-path:
-					stroke: #ccc;
-					stroke-width: 5;
-					fill: none;
-					opacity: 1.0;
-				*/
-				
-				//const coords = "M-45,40 A45,45 0 0,1 45,40 A60,60 0 0,1 -45,40";
-				
-				let coords = "M-45,50 L-45,-20 M-55,-10 L0,-60 L55,-10 M45,-20 L45,50 L-45,50";
-				coords += " M-30,30 A30,30 0 0,1 30,30 L-30,30";
-				
-				var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path.setAttributeNS(null, 'd', coords);
-				path.setAttributeNS(null, 'class', 'inactive-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path);
-				
-				var uc = document.createElementNS('http://www.w3.org/2000/svg', "circle");
-				uc.setAttributeNS(null, 'cx', 0);
-				uc.setAttributeNS(null, 'cy', -10);
-				uc.setAttributeNS(null, 'r', 20);
-				uc.setAttributeNS(null, 'class', 'inactive-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				uc.style.fill = '#fff'; // This will overwrite the fill: none; definition in CSS active-menu-button-path
-				uc.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				
-				ph.appendChild(uc);
-				
-				UB.addEventListener("click", function(){
-					
-					self.models['MenuModel'].setSelected('userlogin');
-					
-				}, false);
-				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-				UB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
-				
-				
-			}
-		}
-	
-	}
-	
 	createAnimateElement(values) {
 		// <animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="70;75;70" />
 		const svgAnimateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
@@ -174,59 +109,64 @@ export default class MenuView extends View {
 		svgAnimateElement.setAttributeNS(null,'values',values);
 		return svgAnimateElement;
 	}
-/*
-.active-menu-button-path {
-	stroke: #1fac78;
-	stroke-width: 5;
-	fill: none;
-	opacity: 1.0;
-}
-.inactive-menu-button-path {
-	stroke: #ccc;
-	stroke-width: 5;
-	fill: none;
-	opacity: 1.0;
-}
-*/
+	
+	generateUserSVG(svgObject, UB, klass) {
+		const r = parseInt(UB.getAttributeNS(null,'r'),10);
+		const r2 = r+10;
+		const values = r + ';' + r2 + ';' + r;
+		UB.appendChild(this.createAnimateElement(values));
+		UB.setAttributeNS(null,'class','active-district');
+		if (klass === 'active-menu-button-path') {
+			UB.style.stroke = '#0a0';
+		}
+		
+		const ph = svgObject.getElementById('before-buttons-placeholder');
+		
+		let coords = "M-45,-20 L-45,50 L45,50 L45,-20 M-55,-10 L0,-60 L55,-10";
+		coords += " M-30,30 A30,30 0 0,1 30,30 L-30,30";
+		
+		const path = document.createElementNS('http://www.w3.org/2000/svg', "path");
+		path.setAttributeNS(null, 'd', coords);
+		path.setAttributeNS(null, 'class', klass); // NOTE: styles for this class are defined in SVG files!
+		path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+		ph.appendChild(path);
+		
+		const uc = document.createElementNS('http://www.w3.org/2000/svg', "circle");
+		uc.setAttributeNS(null, 'cx', 0);
+		uc.setAttributeNS(null, 'cy', -10);
+		uc.setAttributeNS(null, 'r', 20);
+		uc.setAttributeNS(null, 'class', klass); // NOTE: styles for this class are defined in SVG files!
+		uc.style.fill = '#fff'; // This will overwrite the fill: none; definition in CSS active-menu-button-path
+		uc.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+		ph.appendChild(uc);
+	}
+	
+	addSVGUserInactive() {
+		const self = this;
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const UB = svgObject.getElementById('user-button');
+			if (UB) {
+				this.generateUserSVG(svgObject, UB, 'inactive-menu-button-path');
+				UB.addEventListener("click", function(){
+					
+					self.models['MenuModel'].setSelected('userlogin');
+					
+				}, false);
+				UB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+				UB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			}
+		}
+	
+	}
+	
 	addSVGUser() {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			const UB = svgObject.getElementById('user-button');
 			if (UB) {
-				//const cx = parseInt(UB.getAttributeNS(null,'cx'),10);
-				//const cy = parseInt(UB.getAttributeNS(null,'cy'),10);
-				const r = parseInt(UB.getAttributeNS(null,'r'),10);
-				//console.log(['cx=',cx,' cy=',cy,' r=',r]);
-				const r2 = r+10;
-				const values = r + ';' + r2 + ';' + r;
-				UB.appendChild(this.createAnimateElement(values));
-				UB.setAttributeNS(null,'class','active-district');
-				UB.style.stroke = '#0a0';
-				
-				var ph = svgObject.getElementById('before-buttons-placeholder');
-				
-				let coords = "M-45,50 L-45,-20 M-55,-10 L0,-60 L55,-10 M45,-20 L45,50 L-45,50";
-				coords += " M-30,30 A30,30 0 0,1 30,30 L-30,30";
-				
-				var path = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path.setAttributeNS(null, 'd', coords);
-				path.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				//path.style.strokeWidth = 5;
-				//path.style.stroke = '#aaa';
-				//path.style.fill = '#eee';
-				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path);
-				
-				var uc = document.createElementNS('http://www.w3.org/2000/svg', "circle");
-				uc.setAttributeNS(null, 'cx', 0);
-				uc.setAttributeNS(null, 'cy', -10);
-				uc.setAttributeNS(null, 'r', 20);
-				uc.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				uc.style.fill = '#fff'; // This will overwrite the fill: none; definition in CSS active-menu-button-path
-				uc.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(uc);
-				
+				this.generateUserSVG(svgObject, UB, 'active-menu-button-path');
 				UB.addEventListener("click", function(){
 					
 					self.models['MenuModel'].setSelected('USERPAGE');
@@ -251,62 +191,28 @@ export default class MenuView extends View {
 				UB.setAttributeNS(null,'class','active-district');
 				UB.style.stroke = '#0a0';
 				
-				// Draw the sun and solarpanel:
-				/*var sun = document.createElementNS('http://www.w3.org/2000/svg', "circle");
-				sun.setAttributeNS(null, 'cx', -40);
-				sun.setAttributeNS(null, 'cy', -60);
-				sun.setAttributeNS(null, 'r', 20);
-				sun.setAttributeNS(null, 'stroke', '#f80');
-				sun.setAttributeNS(null, 'fill', '#ff0');
-				sun.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				var ph = svgObject.getElementById('before-buttons-placeholder');
-				ph.appendChild(sun);
-				*/
-				
-				var ph = svgObject.getElementById('before-buttons-placeholder');
 				
 				// Draw the solar-panel:
-				let coords_1 = "M-50,20 L-20,-40 L50,-40 L20,20 L-50,20 Z";
-				var path_1 = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path_1.setAttributeNS(null, 'd', coords_1);
-				path_1.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				path_1.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path_1);
+				let coords = "M-50,20 L-20,-40 L50,-40 L20,20 L-50,20 Z";
+				coords += "M-25,45 L-10,25 L5,45 L-25,45 Z";
+				const path = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path.setAttributeNS(null, 'd', coords);
+				path.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
 				
-				let coords_2 = "M-25,45 L-10,25 L5,45 L-25,45 Z";
-				var path_2 = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path_2.setAttributeNS(null, 'd', coords_2);
-				path_2.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				path_2.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path_2);
+				const ph = svgObject.getElementById('before-buttons-placeholder');
+				ph.appendChild(path);
 				
-				let coords_3 = "M-40,15 L-15,-35 L-5,-35 L-30,15 L-40,15 Z";
-				var path_3 = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path_3.setAttributeNS(null, 'd', coords_3);
-				path_3.setAttributeNS(null, 'class', 'panel'); // NOTE: styles for this class are defined in SVG files!
-				path_3.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path_3);
+				let coords_p = "M-40,15 L-15,-35 L-5,-35 L-30,15 L-40,15 Z";
+				coords_p += " M-25,15 L0,-35 L10,-35 L-15,15 L-25,15 Z";
+				coords_p += " M-10,15 L15,-35 L25,-35 L0,15 L-10,15 Z";
+				coords_p += " M5,15 L30,-35 L40,-35 L15,15 L5,15 Z";
 				
-				let coords_4 = "M-25,15 L0,-35 L10,-35 L-15,15 L-25,15 Z";
-				var path_4 = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path_4.setAttributeNS(null, 'd', coords_4);
-				path_4.setAttributeNS(null, 'class', 'panel'); // NOTE: styles for this class are defined in SVG files!
-				path_4.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path_4);
-				
-				let coords_5 = "M-10,15 L15,-35 L25,-35 L0,15 L-10,15 Z";
-				var path_5 = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path_5.setAttributeNS(null, 'd', coords_5);
-				path_5.setAttributeNS(null, 'class', 'panel'); // NOTE: styles for this class are defined in SVG files!
-				path_5.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path_5);
-				
-				let coords_6 = "M5,15 L30,-35 L40,-35 L15,15 L5,15 Z";
-				var path_6 = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path_6.setAttributeNS(null, 'd', coords_6);
-				path_6.setAttributeNS(null, 'class', 'panel'); // NOTE: styles for this class are defined in SVG files!
-				path_6.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path_6);
+				const path_p = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path_p.setAttributeNS(null, 'd', coords_p);
+				path_p.setAttributeNS(null, 'class', 'panel'); // NOTE: styles for this class are defined in SVG files!
+				path_p.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(path_p);
 				
 				UB.addEventListener("click", function(){
 					
@@ -334,30 +240,17 @@ export default class MenuView extends View {
 				UB.setAttributeNS(null,'class','active-district');
 				UB.style.stroke = '#0a0';
 				
-				var ph = svgObject.getElementById('before-buttons-placeholder');
-				
 				// Draw the grid:
-				let coords_1 = "M-40,50 L-20,20 L-20,-50 L20,-50 L20,20 L40,50 L-20,20 L20,20 L-40,50 Z";
-				var path_1 = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path_1.setAttributeNS(null, 'd', coords_1);
-				path_1.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				path_1.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path_1);
+				let coords = "M-20,20 L-20,-50 L20,-50 L20,20 L40,50 L-20,20 L20,20 L-40,50 L-20,20";
+				coords += " M-40,-40 L-20,-50 L20,-50 L40,-40 L-40,-40 L-40,-30 M40,-40 L40,-30";
+				coords += " M-40,-10 L-20,-20 L20,-20 L40,-10 L-40,-10 L-40,0 M40,-10 L40,0";
+				const path = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path.setAttributeNS(null, 'd', coords);
+				path.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
 				
-				let coords_2 = "M-40,-40 L-20,-50 L20,-50 L40,-40 L-40,-40 L-40,-30 M40,-40 L40,-30";
-				var path_2 = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path_2.setAttributeNS(null, 'd', coords_2);
-				path_2.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				path_2.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path_2);
-				
-				let coords_3 = "M-40,-10 L-20,-20 L20,-20 L40,-10 L-40,-10 L-40,0 M40,-10 L40,0";
-				var path_3 = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path_3.setAttributeNS(null, 'd', coords_3);
-				path_3.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				path_3.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path_3);
-				
+				const ph = svgObject.getElementById('before-buttons-placeholder');
+				ph.appendChild(path);
 				
 				UB.addEventListener("click", function(){
 					
@@ -385,27 +278,22 @@ export default class MenuView extends View {
 				UB.setAttributeNS(null,'class','active-district');
 				UB.style.stroke = '#0a0';
 				
-				var ph = svgObject.getElementById('before-buttons-placeholder');
-				
 				// Draw the LEAF:
 				// C x1 y1, x2 y2, x y 
 				// The last set of coordinates here (x,y) specify where the line should end. 
 				// The other two are control points. (x1,y1) is the control point for the start of the curve, 
 				// and (x2,y2) is the control point for the end. 
 				
-				let coords_1 = "M-40,40 C0,30 30,0 30,-50 C20,-20 -10,-30 -30,-20 S-50,20 -25,25 M30,-50 C40,20 20,50 -5,35";
-				var path_1 = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path_1.setAttributeNS(null, 'd', coords_1);
-				path_1.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				path_1.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path_1);
+				let coords = "M-40,40 C0,30 30,0 30,-50 C20,-20 -10,-30 -30,-20 S-50,20 -25,25 M30,-50 C40,20 20,50 -5,35";
+				coords += " M-37,43 C0,30 30,0 30,-50";
 				
-				let coords_2 = "M-37,43 C0,30 30,0 30,-50";
-				var path_2 = document.createElementNS('http://www.w3.org/2000/svg', "path");
-				path_2.setAttributeNS(null, 'd', coords_2);
-				path_2.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
-				path_2.style.transform = UB.style.transform; // Use same transform as "parent" circle!
-				ph.appendChild(path_2);
+				const path = document.createElementNS('http://www.w3.org/2000/svg', "path");
+				path.setAttributeNS(null, 'd', coords);
+				path.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
+				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				
+				const ph = svgObject.getElementById('before-buttons-placeholder');
+				ph.appendChild(path);
 				
 				UB.addEventListener("click", function(){
 					
@@ -631,7 +519,7 @@ These are filled with correct values in here:
 			if (USER_MODEL.isLoggedIn()) {
 				self.addSVGUser();
 			} else {
-				self.addSVGInactiveUser();
+				self.addSVGUserInactive();
 			}
 			
 			self.addSVGSolarPanel();

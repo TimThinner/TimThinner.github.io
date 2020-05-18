@@ -6,7 +6,7 @@ import UserModel from './modules/user/UserModel.js';
 import MenuController from './modules/menu/MenuController.js';
 import UserLoginController from './modules/user/UserLoginController.js';
 import UserSignupController from './modules/user/UserSignupController.js';
-import UserInfoController from './modules/user/UserInfoController.js';
+//import UserInfoController from './modules/user/UserInfoController.js';
 
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';
@@ -81,8 +81,8 @@ class MasterController {
 		this.controllers['userlogin'].init();
 		this.controllers['usersignup'] = new UserSignupController({name:'usersignup', master:this, el:'#content', visible:false});
 		this.controllers['usersignup'].init();
-		this.controllers['userinfo'] = new UserInfoController({name:'userinfo', master:this, el:'#content', visible:false});
-		this.controllers['userinfo'].init();
+		//this.controllers['userinfo'] = new UserInfoController({name:'userinfo', master:this, el:'#content', visible:false});
+		//this.controllers['userinfo'].init();
 		
 		this.controllers['USERPAGE'] = new UserPageController({name:'USERPAGE', master:this, el:'#content', visible:false});
 		this.controllers['USERPAGE'].init();

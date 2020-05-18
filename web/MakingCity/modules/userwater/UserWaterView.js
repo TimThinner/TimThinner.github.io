@@ -128,7 +128,7 @@ export default class UserWaterView extends View {
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			const localized_string_title = LM['translation'][sel]['USER_WATER_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_WATER_DESCRIPTION'];
-			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
+			//const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
@@ -193,10 +193,46 @@ export default class UserWaterView extends View {
 						'<div class="col s12">'+// style="padding-left:0;padding-right:0;">'+
 							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
 							'<p style="text-align:center;"><img src="./svg/userpage/water.svg" height="80"/></p>'+
-							'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
+							//'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 							'<p style="text-align:center;">'+localized_string_description+'</p>'+
 						'</div>'+
-						'<div class="col s12 center">'+ // style="margin-top:14px;">'+
+						'<div class="col s12" style="background-color:#fff">'+
+							'<table class="centered striped">'+
+								'<thead>'+
+									'<tr>'+
+										'<th>Period</th>'+
+										'<th><img src="./svg/userpage/waterhot.svg" height="30"/> L</th>'+
+										'<th><img src="./svg/userpage/watercold.svg" height="30"/> L</th>'+
+										'<th>€</th>'+
+										'<th>kgCO2</th>'+
+									'</tr>'+
+								'</thead>'+
+								'<tbody>'+
+									'<tr>'+
+										'<td>Today</td>'+
+										'<td>10.5</td>'+
+										'<td>22</td>'+
+										'<td>2.3</td>'+
+										'<td>3.4</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>This week</td>'+
+										'<td>123</td>'+
+										'<td>400</td>'+
+										'<td>19.4</td>'+
+										'<td>26.1</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>This month</td>'+
+										'<td>523</td>'+
+										'<td>1621</td>'+
+										'<td>51.1</td>'+
+										'<td>95.3</td>'+
+									'</tr>'+
+								'</tbody>'+
+							'</table>'+
+						'</div>'+
+						'<div class="col s12 center" style="margin-top:16px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+

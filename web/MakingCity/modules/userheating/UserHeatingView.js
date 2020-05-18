@@ -128,7 +128,7 @@ export default class UserHeatingView extends View {
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			const localized_string_title = LM['translation'][sel]['USER_HEATING_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_HEATING_DESCRIPTION'];
-			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
+			//const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
@@ -193,10 +193,45 @@ export default class UserHeatingView extends View {
 						'<div class="col s12">'+// style="padding-left:0;padding-right:0;">'+
 							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
 							'<p style="text-align:center;"><img src="./svg/userpage/radiator.svg" height="80"/></p>'+
-							'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
+							//'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 							'<p style="text-align:center;">'+localized_string_description+'</p>'+
 						'</div>'+
-						'<div class="col s12 center">'+ // style="margin-top:14px;">'+
+						'<div class="col s12" style="background-color:#fff">'+
+							'<table class="centered striped">'+
+								'<thead>'+
+									'<tr>'+
+										'<th>Period</th>'+
+										'<th>kWh</th>'+
+										'<th>€</th>'+
+										'<th>kgCO2</th>'+
+									'</tr>'+
+								'</thead>'+
+								'<tbody>'+
+									'<tr>'+
+										'<td>Today</td>'+
+										'<td>3.65</td>'+
+										'<td>0.41</td>'+
+										'<td>1</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>This week</td>'+
+										'<td>20.56</td>'+
+										'<td>2.36</td>'+
+										'<td>5.65</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>This month</td>'+
+										'<td>295</td>'+
+										'<td>33.9</td>'+
+										'<td>81.1</td>'+
+									'</tr>'+
+								'</tbody>'+
+							'</table>'+
+						'</div>'+
+						'<div class="col s12 center" style="margin-top:16px;">'+
+							'<p style="text-align:center;"><img src="./svg/userpage/SmileyHappy.svg" height="80"/></p>'+
+						'</div>'+
+						'<div class="col s12 center" style="margin-top:16px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+

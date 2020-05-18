@@ -290,38 +290,3 @@ export default class UserPageView extends View {
 		}
 	}
 }
-
-/*
-						'<div class="col s12">'+
-							'<table class="centered">'+
-								'<thead>'+
-									'<tr>'+
-										'<th>Period</th>'+
-										'<th>kWh</th>'+
-										'<th>€</th>'+
-										'<th>kgCO2</th>'+
-									'</tr>'+
-								'</thead>'+
-								'<tbody>'+
-									'<tr>'+
-										'<td>Today</td>'+
-										'<td>6.56</td>'+
-										'<td>0.70</td>'+
-										'<td>0.87</td>'+
-									'</tr>'+
-									'<tr>'+
-										'<td>This week</td>'+
-										'<td>55.87</td>'+
-										'<td>3.56</td>'+
-										'<td>5.70</td>'+
-									'</tr>'+
-									'<tr>'+
-										'<td>This month</td>'+
-										'<td>64.78</td>'+
-										'<td>37.78</td>'+
-										'<td>212.80</td>'+
-									'</tr>'+
-								'</tbody>'+
-							'</table>'+
-						'</div>'+
-*/

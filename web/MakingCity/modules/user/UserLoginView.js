@@ -26,7 +26,7 @@ export default class UserLoginView extends UserView {
 				// RESPONSE (OK: 200, error: 500)
 				if (options.status === 200) {
 					// User is now logged in
-					this.controller.models['MenuModel'].setSelected('menu');
+					this.controller.models['MenuModel'].setSelected('USERPAGE');
 				} else {
 					// Show the reason for failure (message).
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';

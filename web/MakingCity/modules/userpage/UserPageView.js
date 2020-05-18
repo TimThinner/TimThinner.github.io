@@ -156,6 +156,27 @@ export default class UserPageView extends View {
 				EB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			}
 			
+			const HB = svgObject.getElementById('heating-button');
+			if (HB) {
+				HB.addEventListener("click", function(){
+					
+					self.menuModel.setSelected('USERHEATING');
+					
+				}, false);
+				HB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+				HB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			}
+			
+			const WB = svgObject.getElementById('water-button');
+			if (WB) {
+				WB.addEventListener("click", function(){
+					
+					self.menuModel.setSelected('USERWATER');
+					
+				}, false);
+				WB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+				WB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			}
 			
 		} else {
 			console.log("svgObject is NOT ready!");

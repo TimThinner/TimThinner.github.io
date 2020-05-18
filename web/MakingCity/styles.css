@@ -202,3 +202,14 @@ img.logout {
 	float: right;
 	cursor: pointer;
 }
+.view-charts-button {
+	height: 60px;
+	background-color: #eee;
+	border: 1px solid #ccc;
+	cursor: pointer;
+	border-radius: 20px;
+	box-shadow: 4px 4px 6px #aaa;
+}
+.view-charts-button:hover {
+	background-color: #fff;
+}

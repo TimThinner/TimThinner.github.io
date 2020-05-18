@@ -89,6 +89,7 @@ export default class UserWaterView extends View {
 		if (svgObject) {
 			
 			
+			
 		} else {
 			console.log("svgObject is NOT ready!");
 		}
@@ -118,6 +119,7 @@ export default class UserWaterView extends View {
 		}
 	}
 	*/
+	
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -201,8 +203,10 @@ export default class UserWaterView extends View {
 								'<thead>'+
 									'<tr>'+
 										'<th>Period</th>'+
-										'<th><img src="./svg/userpage/waterhot.svg" height="30"/> L</th>'+
-										'<th><img src="./svg/userpage/watercold.svg" height="30"/> L</th>'+
+										//'<th><img src="./svg/userpage/waterhot.svg" height="30"/> L</th>'+
+										//'<th><img src="./svg/userpage/watercold.svg" height="30"/> L</th>'+
+										'<th>HOT (L)</th>'+
+										'<th>COLD (L)</th>'+
 										'<th>€</th>'+
 										'<th>kgCO2</th>'+
 									'</tr>'+
@@ -232,7 +236,18 @@ export default class UserWaterView extends View {
 								'</tbody>'+
 							'</table>'+
 						'</div>'+
-						'<div class="col s12 center" style="margin-top:16px;">'+
+						
+						'<div class="col s6 center" style="margin-top:16px;">'+
+							'<a id="view-charts" >'+
+								'<img src="./svg/userpage/viewcharts.svg" class="view-charts-button" />'+
+							'</a>'+
+						'</div>'+
+						'<div class="col s6 center" style="margin-top:16px;">'+
+							'<button class="btn waves-effect waves-light" id="compensate">Compensate'+
+							'</button>'+
+						'</div>'+
+						
+						'<div class="col s12 center" style="margin-top:32px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
@@ -244,14 +259,23 @@ export default class UserWaterView extends View {
 				$(html).appendTo(this.el);
 				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!
-				/*const svgObj = document.getElementById("svg-object");
+				/*
+				const svgObj = document.getElementById("svg-object");
 				svgObj.addEventListener('load', function(){
-					
 					//self.addSVGEventHandlers();
 					//self.localizeSVGTexts();
 					//self.updateLatestValues();
 					
-				});*/
+				});
+				*/
+				
+				$('#view-charts').on('click',function() {
+					console.log('VIEW CHARTS!');
+					//self.menuModel.setSelected('USERPAGE');
+				});
+				
+				
+				
 			}
 			$('#back').on('click',function() {
 				

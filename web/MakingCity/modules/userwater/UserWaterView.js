@@ -239,12 +239,13 @@ export default class UserWaterView extends View {
 						
 						'<div class="col s6 center" style="margin-top:16px;">'+
 							'<a id="view-charts" >'+
-								'<img src="./svg/userpage/viewcharts.svg" class="view-charts-button" />'+
+								'<img src="./svg/userpage/viewcharts.svg" class="view-button" />'+
 							'</a>'+
 						'</div>'+
 						'<div class="col s6 center" style="margin-top:16px;">'+
-							'<button class="btn waves-effect waves-light" id="compensate">Compensate'+
-							'</button>'+
+							'<a id="compensate" >'+
+								'<img src="./svg/userpage/compensate.svg" class="view-button" />'+
+							'</a>'+
 						'</div>'+
 						
 						'<div class="col s12 center" style="margin-top:32px;">'+
@@ -268,14 +269,14 @@ export default class UserWaterView extends View {
 					
 				});
 				*/
-				
 				$('#view-charts').on('click',function() {
 					console.log('VIEW CHARTS!');
 					//self.menuModel.setSelected('USERPAGE');
 				});
-				
-				
-				
+				$('#compensate').on('click',function() {
+					console.log('COMPENSATE!');
+					//self.menuModel.setSelected('USERPAGE');
+				});
 			}
 			$('#back').on('click',function() {
 				

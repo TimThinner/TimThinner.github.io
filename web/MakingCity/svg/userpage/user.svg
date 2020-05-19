@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="400" height="300" viewBox="-200 -150 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">
-<style>
-.shoulders {
-	stroke: #1fac78;
-	stroke-width: 10;
-	fill:#73d3ae;
-	opacity: 1.0;
-}
-.head {
-	stroke: #1fac78;
-	stroke-width: 10;
-	fill:#fff;
-	opacity: 1.0;
-}
-</style>
-<path class="shoulders" d="M-150,150 A150,150 0 0,1 150,150 L-150,150 Z" />
-<circle class="head" cx="0" cy="-50" r="80" />
+<path class="shoulders" d="M-150,150 A150,150 0 0,1 150,150 L-150,150 Z" style="stroke:#1fac78;stroke-width:10;fill:#73d3ae;opacity:1.0;" />
+<circle cx="0" cy="-50" r="80" style="stroke:#1fac78;stroke-width:10;fill:#fff;opacity:1.0;"/>
 </svg>

@@ -1,54 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="220" height="220" viewBox="-110 -110 220 220" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
-<style>
-.home-outline {
-	stroke: #1fac78;
-	stroke-width: 8;
-	fill: none;
-	opacity: 1.0;
-	stroke-linecap: round;
-}
-.home-chimney {
-	stroke: #1fac78;
-	stroke-width: 6;
-	fill: #73d3ae;
-	opacity: 0.95;
-}
-.home-window {
-	stroke: #1fac78;
-	stroke-width: 4;
-	fill: #fff;
-	opacity: 0.75;
-}
-.home-door {
-	stroke: #1fac78;
-	stroke-width: 4;
-	fill: #fff;
-	opacity: 0.75;
-}
-.home-paint {
-	stroke: #73d3ae;
-	stroke-width: 1;
-	fill: #73d3ae;
-	opacity: 0.25;
-}
-</style>
 <!--
 first  = #51b0ce
 second = #73d3ae
 third  = #1fac78
 -->
 <!-- The House, walls: -->
-<path class="home-outline" d="M-75,-50 L-75,100 L75,100 L75,-50" />
+<path d="M-75,-50 L-75,100 L75,100 L75,-50" style="stroke:#1fac78;stroke-width:8;fill:none;opacity:1.0;stroke-linecap:round;" />
 <!-- The House, roof: -->
-<path class="home-outline" d="M-100,-35 L0,-100 L100,-35" />
+<path d="M-100,-35 L0,-100 L100,-35" style="stroke:#1fac78;stroke-width:8;fill:none;opacity:1.0;stroke-linecap:round;" />
 <!-- The house, Chimney: -->
-<path class="home-chimney" d="M-75,-50 L-75,-100 L-40,-100 L-40,-75 L-75,-50" />
-<path class="home-paint" d="M-75,100 L-75,-50 L0,-100 L75,-50 L75,100 L-75,100 Z" />
+<path d="M-75,-50 L-75,-100 L-40,-100 L-40,-75 L-75,-50" style="stroke:#1fac78;stroke-width:6;fill:#73d3ae;opacity:0.95;" />
+<!-- The house, wall paint: -->
+<path d="M-75,100 L-75,-50 L0,-100 L75,-50 L75,100 L-75,100 Z" style="stroke:#73d3ae;stroke-width:1;fill:#73d3ae;opacity:0.25;" />
+
 <!-- The House, window and door: -->
-<path class="home-window" d="M-60,0 L-35,0 L-35,25 L-60,25 L-60,0 Z" />
-<path class="home-window" d="M-35,0 L-10,0 L-10,25 L-35,25 L-35,0 Z" />
-<path class="home-window" d="M-60,25 L-35,25 L-35,50 L-60,50 L-60,25 Z" />
-<path class="home-window" d="M-35,25 L-10,25 L-10,50 L-35,50 L-35,25 Z" />
-<path class="home-door" d="M10,96 L10,0 L60,0 L60,96 L10,96 Z" />
+<path d="M-60,0 L-35,0 L-35,25 L-60,25 L-60,0 Z" style="stroke:#1fac78;stroke-width:4;fill:#fff;opacity:0.75;" />
+<path d="M-35,0 L-10,0 L-10,25 L-35,25 L-35,0 Z" style="stroke:#1fac78;stroke-width:4;fill:#fff;opacity:0.75;" />
+<path d="M-60,25 L-35,25 L-35,50 L-60,50 L-60,25 Z" style="stroke:#1fac78;stroke-width:4;fill:#fff;opacity:0.75;" />
+<path d="M-35,25 L-10,25 L-10,50 L-35,50 L-35,25 Z" style="stroke:#1fac78;stroke-width:4;fill:#fff;opacity:0.75;" />
+<path d="M10,96 L10,0 L60,0 L60,96 L10,96 Z" style="stroke:#1fac78;stroke-width:4;fill:#fff;opacity:0.75;" />
 </svg>

@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">
-<style>
-.outline {
-	opacity: 0.75;
-	stroke-width: 10;
-	stroke: #c50;
-	fill: #ff0;
-}
-</style>
-<path class="outline" d="M40,140 L340,0 L220,120 L360,160 L60,300 L180,180 L40,140 Z" />
+<path class="outline" d="M40,140 L340,0 L220,120 L360,160 L60,300 L180,180 L40,140 Z" style="opacity:0.75;stroke-width:10;stroke:#c50;fill:#ff0;" />
 </svg>

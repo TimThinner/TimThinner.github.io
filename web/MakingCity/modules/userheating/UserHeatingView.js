@@ -196,6 +196,11 @@ export default class UserHeatingView extends View {
 							//'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 							'<p style="text-align:center;">'+localized_string_description+'</p>'+
 						'</div>'+
+						
+						'<div class="col s12 center">'+
+							'<p style="text-align:center;"><img src="./svg/userpage/SmileyHappy.svg" height="60"/></p>'+
+						'</div>'+
+						
 						'<div class="col s12" style="background-color:#fff">'+
 							'<table class="centered striped">'+
 								'<thead>'+
@@ -228,9 +233,18 @@ export default class UserHeatingView extends View {
 								'</tbody>'+
 							'</table>'+
 						'</div>'+
-						'<div class="col s12 center" style="margin-top:16px;">'+
-							'<p style="text-align:center;"><img src="./svg/userpage/SmileyHappy.svg" height="80"/></p>'+
+						
+						'<div class="col s6 center" style="margin-top:16px;">'+
+							'<a id="view-charts" >'+
+								'<img src="./svg/userpage/viewcharts.svg" class="view-button" />'+
+							'</a>'+
 						'</div>'+
+						'<div class="col s6 center" style="margin-top:16px;">'+
+							'<a id="compensate" >'+
+								'<img src="./svg/userpage/compensate.svg" class="view-button" />'+
+							'</a>'+
+						'</div>'+
+						
 						'<div class="col s12 center" style="margin-top:16px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
@@ -251,6 +265,15 @@ export default class UserHeatingView extends View {
 					//self.updateLatestValues();
 					
 				});*/
+				$('#view-charts').on('click',function() {
+					console.log('VIEW CHARTS!');
+					//self.menuModel.setSelected('USERPAGE');
+				});
+				$('#compensate').on('click',function() {
+					console.log('COMPENSATE!');
+					//self.menuModel.setSelected('USERPAGE');
+				});
+				
 			}
 			$('#back').on('click',function() {
 				

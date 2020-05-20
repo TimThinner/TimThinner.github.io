@@ -181,6 +181,8 @@ export default class UserPageView extends View {
 			const HCT = svgObject.getElementById('TheHomeColorTest');
 			if (HCT) {
 				HCT.addEventListener("click", function(){
+					
+					
 					// Original circle is green (#0a0) and stroke-width 5px => 
 					if (UB && EB && HB && WB) {
 						//console.log(['HB.style.stroke=',HB.style.stroke]);
@@ -193,6 +195,7 @@ export default class UserPageView extends View {
 							HB.style.strokeWidth = '10';
 							WB.style.stroke = '#f00';
 							WB.style.strokeWidth = '10';
+							self.fillSVGTextElement(svgObject, 'color-test-text', 'Thank you!');
 						} else {
 							UB.style.stroke = '#0a0';
 							UB.style.strokeWidth = '5';
@@ -202,6 +205,7 @@ export default class UserPageView extends View {
 							HB.style.strokeWidth = '5';
 							WB.style.stroke = '#0a0';
 							WB.style.strokeWidth = '5';
+							self.fillSVGTextElement(svgObject, 'color-test-text', 'Click the house!');
 						}
 					}
 				}, false);

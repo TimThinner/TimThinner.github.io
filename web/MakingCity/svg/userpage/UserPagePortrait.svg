@@ -17,6 +17,12 @@
 .active-button {
 	cursor: pointer;
 }
+.tiny-text {
+	opacity: 1;
+	font-family: "Arial, Helvetica, sans-serif";
+	font-size: 18px;
+	fill: #000;
+}
 .small-text {
 	opacity: 1;
 	font-family: "Arial, Helvetica, sans-serif";
@@ -50,7 +56,14 @@
 <image id="logout" class="logout" x="220" y="-432" width="75" height="50" xlink:href="logout.svg" />
 
 <!-- Test changing circle colors -->
+<svg x="-70" y="-30" width="140px" height="30px">
+	<!--<rect x="1" y="1" width="138" height="28" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<text class="tiny-text" id="color-test-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Click the house!</text>
+</svg>
 <image id="TheHomeColorTest" x="-100" y="-100" width="200" height="200" xlink:href="Home.svg" />
+
+
+
 
 <svg x="-160" y="-190" width="320px" height="30px">
 	<!--<rect x="1" y="1" width="318" height="28" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->

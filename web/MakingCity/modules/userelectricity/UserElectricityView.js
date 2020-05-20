@@ -21,14 +21,51 @@ export default class UserElectricityView extends View {
 		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
+		
+		this.initialTouchPos = null;
+		//this.rafPending = false;
+		this.lastTouchPos = null;
+		
+		this.swipeHandlers = false;
+		
+		this.boundHandleGestureStart = evt => this.handleGestureStart(evt);
+		this.boundHandleGestureMove = evt => this.handleGestureMove(evt);
+		this.boundHandleGestureEnd = evt => this.handleGestureEnd(evt);
+		
 	}
 	
 	show() {
 		this.render();
 	}
 	
+	
+	stopSwipeEventListeners() {
+		
+		console.log('STOP SWIPE EVENT LISTENERS!!!!');
+		
+		const ele = this.el.slice(1);
+		const swipeFrontElement = document.getElementById(ele);
+		if (window.PointerEvent) {
+			swipeFrontElement.removeEventListener('pointerdown', this.boundHandleGestureStart, true);
+			swipeFrontElement.removeEventListener('pointermove', this.boundHandleGestureMove, true);
+			swipeFrontElement.removeEventListener('pointerup', this.boundHandleGestureEnd, true);
+			swipeFrontElement.removeEventListener('pointercancel', this.boundHandleGestureEnd, true);
+		} else {
+			swipeFrontElement.removeventListener('touchstart', this.boundHandleGestureStart, true);
+			swipeFrontElement.removeEventListener('touchmove', this.boundHandleGestureMove, true);
+			swipeFrontElement.removeEventListener('touchend', this.boundHandleGestureEnd, true);
+			swipeFrontElement.removeEventListener('touchcancel', this.boundHandleGestureEnd, true);
+			// And finally the mousedown event listener.
+			swipeFrontElement.removeEventListener('mousedown', this.boundHandleGestureStart, true);
+		}
+		this.swipeHandlers = false;
+	}
+	
 	hide() {
 		this.rendered = false;
+		if (this.swipeHandlers) {
+			this.stopSwipeEventListeners();
+		}
 		$(this.el).empty();
 	}
 	
@@ -37,9 +74,11 @@ export default class UserElectricityView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.rendered = false;
+		if (this.swipeHandlers) {
+			this.stopSwipeEventListeners();
+		}
 		$(this.el).empty();
 	}
-	
 	
 	updateLatestValues() {
 		console.log('UPDATE UserElectricity !!!!!!!');
@@ -82,6 +121,150 @@ export default class UserElectricityView extends View {
 			}*/
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	// Handle the start of gestures
+	handleGestureStart(evt) {
+		
+		function getGesturePointFromEvent(evt) {
+			var point = {};
+			if(evt.targetTouches) {
+				// Prefer Touch Events
+				point.x = evt.targetTouches[0].clientX;
+				point.y = evt.targetTouches[0].clientY;
+			} else {
+				// Either Mouse event or Pointer Event
+				point.x = evt.clientX;
+				point.y = evt.clientY;
+			}
+			return point;
+		}
+		
+		evt.preventDefault();
+		if(evt.touches && evt.touches.length > 1) {
+			return;
+		}
+		// Add the move and end listeners
+		if (window.PointerEvent) {
+			evt.target.setPointerCapture(evt.pointerId);
+		} else {
+			// Add Mouse Listeners
+			document.addEventListener('mousemove', this.boundHandleGestureMove, true);
+			document.addEventListener('mouseup', this.boundHandleGestureEnd, true);
+		}
+		this.initialTouchPos = getGesturePointFromEvent(evt);
+		console.log(['START pos=',this.initialTouchPos]);
+		//swipeFrontElement.style.transition = 'initial';
+	}
+	
+	handleGestureMove(evt) {
+		
+		function getGesturePointFromEvent(evt) {
+			var point = {};
+			if(evt.targetTouches) {
+				// Prefer Touch Events
+				point.x = evt.targetTouches[0].clientX;
+				point.y = evt.targetTouches[0].clientY;
+			} else {
+				// Either Mouse event or Pointer Event
+				point.x = evt.clientX;
+				point.y = evt.clientY;
+			}
+			return point;
+		}
+		
+		
+		evt.preventDefault();
+		if(!this.initialTouchPos) {
+			return;
+		}
+		this.lastTouchPos = getGesturePointFromEvent(evt);
+		
+		//console.log(['MOVE pos=',this.lastTouchPos]);
+		//if(this.rafPending) {
+		//	return;
+		//}
+		//this.rafPending = true;
+		//window.requestAnimFrame(onAnimFrame);
+	}
+	
+	handleGestureEnd(evt) {
+		evt.preventDefault();
+		if(evt.touches && evt.touches.length > 0) {
+			return;
+		}
+		//this.rafPending = false;
+		// Remove Event Listeners
+		
+		if (window.PointerEvent) {
+			evt.target.releasePointerCapture(evt.pointerId);
+		} else {
+			// Remove Mouse Listeners
+			document.removeEventListener('mousemove', this.boundHandleGestureMove, true);
+			document.removeEventListener('mouseup', this.boundHandleGestureEnd, true);
+		}
+		//updateSwipeRestPosition();
+		
+		console.log(['initial=',this.initialTouchPos]);
+		console.log(['END pos=',this.lastTouchPos]);
+		
+		if (this.initialTouchPos && this.lastTouchPos) {
+			if (Math.abs(this.initialTouchPos.x - this.lastTouchPos.x) > 50) {
+				console.log('BACK!!!!!');
+				this.menuModel.setSelected('USERPAGE');
+			}
+		}
+		this.initialTouchPos = null;
+		this.lastTouchPos = null;
+	}
+	
+	// Create a new function that is bound, and give it a new name
+	// so that the 'this.sayHello()' call still works.
+	/*
+	this.boundSayHello = evt => this.sayHello(evt);
+	this.elm.addEventListener('click', this.boundSayHello);
+	this.elm.removeEventListener('click', this.boundSayHello);
+	*/
+	
+	startSwipeEventListeners() {
+		
+		console.log('START SWIPE EVENT LISTENERS!!!!');
+		
+		
+		// To do:
+		// Think what element to use here??!!
+		//
+		const ele = this.el.slice(1);
+		const swipeFrontElement = document.getElementById(ele);
+		
+		// Check if pointer events are supported.
+		if (window.PointerEvent) {
+			// Add Pointer Event Listener
+			swipeFrontElement.addEventListener('pointerdown', this.boundHandleGestureStart, true);
+			swipeFrontElement.addEventListener('pointermove', this.boundHandleGestureMove, true);
+			swipeFrontElement.addEventListener('pointerup', this.boundHandleGestureEnd, true);
+			swipeFrontElement.addEventListener('pointercancel', this.boundHandleGestureEnd, true);
+		} else {
+			// Add Touch Listener
+			swipeFrontElement.addEventListener('touchstart', this.boundHandleGestureStart, true);
+			swipeFrontElement.addEventListener('touchmove', this.boundHandleGestureMove, true);
+			swipeFrontElement.addEventListener('touchend', this.boundHandleGestureEnd, true);
+			swipeFrontElement.addEventListener('touchcancel', this.boundHandleGestureEnd, true);
+			
+			// Add Mouse Listener
+			swipeFrontElement.addEventListener('mousedown', this.boundHandleGestureStart, true);
+		}
+		
+		this.swipeHandlers = true;
+	}
+	
+	
 	/*
 	addSVGEventHandlers() {
 		const self = this;
@@ -256,6 +439,11 @@ export default class UserElectricityView extends View {
 					'</div>';
 				$(html).appendTo(this.el);
 				
+				
+				
+				
+				
+				this.startSwipeEventListeners();
 				// AND WAIT for SVG object to fully load, before assigning event handlers!
 				/*const svgObj = document.getElementById("svg-object");
 				svgObj.addEventListener('load', function(){
@@ -265,6 +453,18 @@ export default class UserElectricityView extends View {
 					//self.updateLatestValues();
 					
 				});*/
+				
+				
+				/*
+				if (window.PointerEvent) {
+					console.log('PointerEvent is SUPPORTED!');
+				} else {
+					console.log('using Touch listeners!');
+				}
+				*/
+				
+				
+				
 				
 				$('#view-charts').on('click',function() {
 					console.log('VIEW CHARTS!');

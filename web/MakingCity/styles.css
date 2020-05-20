@@ -164,7 +164,7 @@ input[type="range"] {
 	border-right: 1px solid #888;
 	border-bottom: 1px solid #888;
 	border-left: 1px solid #fff;
-	text-align:center;
+	text-align: center;
 }
 .my-range-button:hover {
 	background-color: #fff;
@@ -212,4 +212,8 @@ img.logout {
 }
 .view-button:hover {
 	background-color: #fff;
+}
+.important-note {
+	text-align: center;
+	background-color: #ff0;
 }

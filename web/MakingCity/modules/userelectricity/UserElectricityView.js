@@ -215,7 +215,7 @@ export default class UserElectricityView extends View {
 		console.log(['END pos=',this.lastTouchPos]);
 		
 		if (this.initialTouchPos && this.lastTouchPos) {
-			if (Math.abs(this.initialTouchPos.x - this.lastTouchPos.x) > 50) {
+			if (Math.abs(this.initialTouchPos.x - this.lastTouchPos.x) > 60) {
 				console.log('BACK!!!!!');
 				this.menuModel.setSelected('USERPAGE');
 			}
@@ -378,6 +378,7 @@ export default class UserElectricityView extends View {
 							'<p style="text-align:center;"><img src="./svg/userpage/electricity.svg" height="80"/></p>'+
 							//'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 							'<p style="text-align:center;">'+localized_string_description+'</p>'+
+							'<p class="important-note">NEW: Swipe left or right takes you BACK to previous view! TESTING now only in this view!</p>'+
 						'</div>'+
 						'<div class="col s12" style="background-color:#fff">'+
 							'<table class="centered striped">'+

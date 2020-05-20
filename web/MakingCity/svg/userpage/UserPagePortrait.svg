@@ -49,7 +49,8 @@
 <image id="back" class="back-button" x="-290" y="-432" width="75" height="50" xlink:href="backbutton.svg" />
 <image id="logout" class="logout" x="220" y="-432" width="75" height="50" xlink:href="logout.svg" />
 
-<image x="-100" y="-100" width="200" height="200" xlink:href="Home.svg" />
+<!-- Test changing circle colors -->
+<image id="TheHomeColorTest" x="-100" y="-100" width="200" height="200" xlink:href="Home.svg" />
 
 <svg x="-160" y="-190" width="320px" height="30px">
 	<!--<rect x="1" y="1" width="318" height="28" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->

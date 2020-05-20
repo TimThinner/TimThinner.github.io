@@ -178,6 +178,35 @@ export default class UserPageView extends View {
 				WB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			}
 			
+			const HCT = svgObject.getElementById('TheHomeColorTest');
+			if (HCT) {
+				HCT.addEventListener("click", function(){
+					// Original circle is green (#0a0) and stroke-width 5px => 
+					if (UB && EB && HB && WB) {
+						//console.log(['HB.style.stroke=',HB.style.stroke]);
+						if (UB.style.stroke === 'rgb(0, 170, 0)') {
+							UB.style.stroke = '#f00';
+							UB.style.strokeWidth = '10';
+							EB.style.stroke = '#f00';
+							EB.style.strokeWidth = '10';
+							HB.style.stroke = '#f00';
+							HB.style.strokeWidth = '10';
+							WB.style.stroke = '#f00';
+							WB.style.strokeWidth = '10';
+						} else {
+							UB.style.stroke = '#0a0';
+							UB.style.strokeWidth = '5';
+							EB.style.stroke = '#0a0';
+							EB.style.strokeWidth = '5';
+							HB.style.stroke = '#0a0';
+							HB.style.strokeWidth = '5';
+							WB.style.stroke = '#0a0';
+							WB.style.strokeWidth = '5';
+						}
+					}
+				}, false);
+			}
+			
 		} else {
 			console.log("svgObject is NOT ready!");
 		}

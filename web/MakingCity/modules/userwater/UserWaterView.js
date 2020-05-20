@@ -237,12 +237,17 @@ export default class UserWaterView extends View {
 							'</table>'+
 						'</div>'+
 						
-						'<div class="col s6 center" style="margin-top:16px;">'+
+						'<div class="col s4 center" style="margin-top:16px;">'+
 							'<a id="view-charts" >'+
 								'<img src="./svg/userpage/viewcharts.svg" class="view-button" />'+
 							'</a>'+
 						'</div>'+
-						'<div class="col s6 center" style="margin-top:16px;">'+
+						'<div class="col s4 center" style="margin-top:16px;">'+
+							'<a id="targets" >'+
+								'<img src="./svg/userpage/targets.svg" class="view-button" />'+
+							'</a>'+
+						'</div>'+
+						'<div class="col s4 center" style="margin-top:16px;">'+
 							'<a id="compensate" >'+
 								'<img src="./svg/userpage/compensate.svg" class="view-button" />'+
 							'</a>'+
@@ -271,6 +276,10 @@ export default class UserWaterView extends View {
 				*/
 				$('#view-charts').on('click',function() {
 					console.log('VIEW CHARTS!');
+					//self.menuModel.setSelected('USERPAGE');
+				});
+				$('#targets').on('click',function() {
+					console.log('TARGETS!');
 					//self.menuModel.setSelected('USERPAGE');
 				});
 				$('#compensate').on('click',function() {

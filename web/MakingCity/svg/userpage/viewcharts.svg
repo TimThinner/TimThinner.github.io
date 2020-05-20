@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="200" height="100" viewBox="-100 -50 200 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
-<rect id="button-frame" x="-100" y="-50" width="200" height="100" style="stroke:#000;stroke-width:0;fill:none;" />
 <!-- Charts -->
 <line x1="-80" y1="-25" x2="80" y2="-25" style="fill:none;stroke-width:2px;stroke:#ccc;" />
 <line x1="-80" y1="0" x2="80" y2="0" style="fill:none;stroke-width:2px;stroke:#ccc;" />
 <line x1="-80" y1="25" x2="80" y2="25" style="fill:none;stroke-width:2px;stroke:#ccc;" />
 <line x1="-80" y1="25" x2="-80" y2="-40" style="fill:none;stroke-width:2px;stroke:#ccc;" />
-
 <path d="M-50,25 L-50,-30 L-25,-30 L-25,25 L-50,25" style="fill:#f00;stroke-width:1px;stroke:#000;" />
 <path d="M-25,25 L-25,-25 L0,-25   L0,25   L-25,25" style="fill:#ff0;stroke-width:1px;stroke:#000;" />
 <path d="M0,25   L0,-20   L25,-20  L25,25  L0,25" style="fill:#0ff;stroke-width:1px;stroke:#000;" />

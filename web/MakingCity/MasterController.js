@@ -14,6 +14,19 @@ import UserElectricityController from './modules/userelectricity/UserElectricity
 import UserHeatingController from './modules/userheating/UserHeatingController.js';
 import UserWaterController from './modules/userwater/UserWaterController.js';
 
+import UserWaterChartsController from './modules/userwatercharts/UserWaterChartsController.js';
+import UserWaterTargetsController from './modules/userwatertargets/UserWaterTargetsController.js';
+import UserWaterCompensateController from './modules/userwatercompensate/UserWaterCompensateController.js';
+
+import UserHeatingChartsController from './modules/userheatingcharts/UserHeatingChartsController.js';
+import UserHeatingTargetsController from './modules/userheatingtargets/UserHeatingTargetsController.js';
+import UserHeatingCompensateController from './modules/userheatingcompensate/UserHeatingCompensateController.js';
+
+import UserElectricityChartsController from './modules/userelectricitycharts/UserElectricityChartsController.js';
+import UserElectricityTargetsController from './modules/userelectricitytargets/UserElectricityTargetsController.js';
+import UserElectricityCompensateController from './modules/userelectricitycompensate/UserElectricityCompensateController.js';
+
+
 import GridPageController from './modules/gridpage/GridPageController.js';
 import SolarPageController from './modules/solarpage/SolarPageController.js';
 import EnvironmentPageController from './modules/environmentpage/EnvironmentPageController.js';
@@ -94,6 +107,29 @@ class MasterController {
 		this.controllers['USERHEATING'].init();
 		this.controllers['USERWATER'] = new UserWaterController({name:'USERWATER', master:this, el:'#content', visible:false});
 		this.controllers['USERWATER'].init();
+		
+		
+		
+		this.controllers['USERWATERCHARTS'] = new UserWaterChartsController({name:'USERWATERCHARTS', master:this, el:'#content', visible:false});
+		this.controllers['USERWATERCHARTS'].init();
+		this.controllers['USERWATERTARGETS'] = new UserWaterTargetsController({name:'USERWATERTARGETS', master:this, el:'#content', visible:false});
+		this.controllers['USERWATERTARGETS'].init();
+		this.controllers['USERWATERCOMPENSATE'] = new UserWaterCompensateController({name:'USERWATERCOMPENSATE', master:this, el:'#content', visible:false});
+		this.controllers['USERWATERCOMPENSATE'].init();
+		
+		this.controllers['USERHEATINGCHARTS'] = new UserHeatingChartsController({name:'USERHEATINGCHARTS', master:this, el:'#content', visible:false});
+		this.controllers['USERHEATINGCHARTS'].init();
+		this.controllers['USERHEATINGTARGETS'] = new UserHeatingTargetsController({name:'USERHEATINGTARGETS', master:this, el:'#content', visible:false});
+		this.controllers['USERHEATINGTARGETS'].init();
+		this.controllers['USERHEATINGCOMPENSATE'] = new UserHeatingCompensateController({name:'USERHEATINGCOMPENSATE', master:this, el:'#content', visible:false});
+		this.controllers['USERHEATINGCOMPENSATE'].init();
+		
+		this.controllers['USERELECTRICITYCHARTS'] = new UserElectricityChartsController({name:'USERELECTRICITYCHARTS', master:this, el:'#content', visible:false});
+		this.controllers['USERELECTRICITYCHARTS'].init();
+		this.controllers['USERELECTRICITYTARGETS'] = new UserElectricityTargetsController({name:'USERELECTRICITYTARGETS', master:this, el:'#content', visible:false});
+		this.controllers['USERELECTRICITYTARGETS'].init();
+		this.controllers['USERELECTRICITYCOMPENSATE'] = new UserElectricityCompensateController({name:'USERELECTRICITYCOMPENSATE', master:this, el:'#content', visible:false});
+		this.controllers['USERELECTRICITYCOMPENSATE'].init();
 		
 		this.controllers['GRIDPAGE'] = new GridPageController({name:'GRIDPAGE', master:this, el:'#content', visible:false});
 		this.controllers['GRIDPAGE'].init();

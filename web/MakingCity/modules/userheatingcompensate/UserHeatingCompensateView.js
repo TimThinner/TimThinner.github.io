@@ -5,7 +5,7 @@ super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
 
-export default class UserHeatingView extends View {
+export default class UserHeatingCompensateView extends View {
 	
 	constructor(controller) {
 		super(controller);
@@ -42,16 +42,15 @@ export default class UserHeatingView extends View {
 		$(this.el).empty();
 	}
 	
-	
 	updateLatestValues() {
-		console.log('UPDATE UserHeating !!!!!!!');
+		console.log('UPDATE UserHeatingCompensate !!!!!!!');
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='UserHeatingModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserHeatingView => UserHeatingModel fetched!');
+					console.log('UserHeatingCompensateView => UserHeatingModel fetched!');
 					if (this.rendered) {
 						$('#user-heating-view-failure').empty();
 						this.updateLatestValues();
@@ -90,9 +89,7 @@ export default class UserHeatingView extends View {
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-			const localized_string_title = LM['translation'][sel]['USER_HEATING_TITLE'];
-			const localized_string_description = LM['translation'][sel]['USER_HEATING_DESCRIPTION'];
-			//const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
+			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
@@ -122,67 +119,16 @@ export default class UserHeatingView extends View {
 			} else {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12">'+// style="padding-left:0;padding-right:0;">'+
-							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-							'<p style="text-align:center;"><img src="./svg/userpage/radiator.svg" height="80"/></p>'+
-							//'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
-							'<p style="text-align:center;">'+localized_string_description+'</p>'+
+						'<div class="col s12">'+
+							'<h4 style="text-align:center;">Heating Compensate</h4>'+
+							'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 						'</div>'+
-						
-						'<div class="col s12 center">'+
-							'<p style="text-align:center;"><img src="./svg/userpage/SmileyHappy.svg" height="60"/></p>'+
+						'<div class="col s12 center" style="margin-top:32px;">'+
+							'<p>&nbsp;</p>'+
+							'<p>&nbsp;</p>'+
+							'<p>&nbsp;</p>'+
 						'</div>'+
-						
-						'<div class="col s12" style="background-color:#fff">'+
-							'<table class="centered striped">'+
-								'<thead>'+
-									'<tr>'+
-										'<th>Period</th>'+
-										'<th>kWh</th>'+
-										'<th>€</th>'+
-										'<th>kgCO2</th>'+
-									'</tr>'+
-								'</thead>'+
-								'<tbody>'+
-									'<tr>'+
-										'<td>Today</td>'+
-										'<td>3.65</td>'+
-										'<td>0.41</td>'+
-										'<td>1</td>'+
-									'</tr>'+
-									'<tr>'+
-										'<td>This week</td>'+
-										'<td>20.56</td>'+
-										'<td>2.36</td>'+
-										'<td>5.65</td>'+
-									'</tr>'+
-									'<tr>'+
-										'<td>This month</td>'+
-										'<td>295</td>'+
-										'<td>33.9</td>'+
-										'<td>81.1</td>'+
-									'</tr>'+
-								'</tbody>'+
-							'</table>'+
-						'</div>'+
-						
-						'<div class="col s4 center" style="margin-top:16px;">'+
-							'<a id="view-charts" >'+
-								'<img src="./svg/userpage/viewcharts.svg" class="view-button" />'+
-							'</a>'+
-						'</div>'+
-						'<div class="col s4 center" style="margin-top:16px;">'+
-							'<a id="targets" >'+
-								'<img src="./svg/userpage/targets.svg" class="view-button" />'+
-							'</a>'+
-						'</div>'+
-						'<div class="col s4 center" style="margin-top:16px;">'+
-							'<a id="compensate" >'+
-								'<img src="./svg/userpage/compensate.svg" class="view-button" />'+
-							'</a>'+
-						'</div>'+
-						
-						'<div class="col s12 center" style="margin-top:16px;">'+
+						'<div class="col s12 center" style="margin-top:32px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
@@ -194,32 +140,18 @@ export default class UserHeatingView extends View {
 				$(html).appendTo(this.el);
 				
 				this.startSwipeEventListeners(
-					()=>{this.menuModel.setSelected('USERPAGE');},
-					()=>{this.menuModel.setSelected('USERELECTRICITY');}
+					()=>{this.menuModel.setSelected('USERHEATING');},
+					()=>{this.menuModel.setSelected('USERHEATINGCHARTS');}
 				);
-				
-				$('#view-charts').on('click',function() {
-					//console.log('VIEW CHARTS!');
-					self.menuModel.setSelected('USERHEATINGCHARTS');
-				});
-				$('#targets').on('click',function() {
-					//console.log('TARGETS!');
-					self.menuModel.setSelected('USERHEATINGTARGETS');
-				});
-				$('#compensate').on('click',function() {
-					//console.log('COMPENSATE!');
-					self.menuModel.setSelected('USERHEATINGCOMPENSATE');
-				});
-				
 			}
 			$('#back').on('click',function() {
 				
-				self.menuModel.setSelected('USERPAGE');
+				self.menuModel.setSelected('USERHEATING');
 				
 			});
 			this.rendered = true;
 		} else {
-			console.log('UserHeatingView => render Model IS NOT READY!!!!');
+			console.log('UserHeatingCompensateView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

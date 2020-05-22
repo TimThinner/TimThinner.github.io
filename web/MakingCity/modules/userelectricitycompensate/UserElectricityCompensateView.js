@@ -5,7 +5,7 @@ super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
 
-export default class UserElectricityView extends View {
+export default class UserElectricityCompensateView extends View {
 	
 	constructor(controller) {
 		super(controller);
@@ -43,14 +43,14 @@ export default class UserElectricityView extends View {
 	}
 	
 	updateLatestValues() {
-		console.log('UPDATE UserElectricity !!!!!!!');
+		console.log('UPDATE UserElectricityCompensate !!!!!!!');
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='UserElectricityModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserElectricityView => UserElectricityModel fetched!');
+					console.log('UserElectricityCompensateView => UserElectricityModel fetched!');
 					if (this.rendered) {
 						$('#user-electricity-view-failure').empty();
 						this.updateLatestValues();
@@ -89,9 +89,7 @@ export default class UserElectricityView extends View {
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-			const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
-			const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
-			//const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
+			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
@@ -121,63 +119,16 @@ export default class UserElectricityView extends View {
 			} else {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12">'+// style="padding-left:0;padding-right:0;">'+
-							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-							'<p style="text-align:center;"><img src="./svg/userpage/electricity.svg" height="80"/></p>'+
-							//'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
-							'<p style="text-align:center;">'+localized_string_description+'</p>'+
-							//'<p class="important-note">NEW: Swipe left or right takes you BACK to previous view! TESTING now only in this view!</p>'+
+						'<div class="col s12">'+
+							'<h4 style="text-align:center;">Electricity Compensate</h4>'+
+							'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 						'</div>'+
-						'<div class="col s12" style="background-color:#fff">'+
-							'<table class="centered striped">'+
-								'<thead>'+
-									'<tr>'+
-										'<th>Period</th>'+
-										'<th>kWh</th>'+
-										'<th>€</th>'+
-										'<th>kgCO2</th>'+
-									'</tr>'+
-								'</thead>'+
-								'<tbody>'+
-									'<tr>'+
-										'<td>Today</td>'+
-										'<td>3.65</td>'+
-										'<td>0.41</td>'+
-										'<td>1</td>'+
-									'</tr>'+
-									'<tr>'+
-										'<td>This week</td>'+
-										'<td>20.56</td>'+
-										'<td>2.36</td>'+
-										'<td>5.65</td>'+
-									'</tr>'+
-									'<tr>'+
-										'<td>This month</td>'+
-										'<td>295</td>'+
-										'<td>33.9</td>'+
-										'<td>81.1</td>'+
-									'</tr>'+
-								'</tbody>'+
-							'</table>'+
+						'<div class="col s12 center" style="margin-top:32px;">'+
+							'<p>&nbsp;</p>'+
+							'<p>&nbsp;</p>'+
+							'<p>&nbsp;</p>'+
 						'</div>'+
-						
-						'<div class="col s4 center" style="margin-top:16px;">'+
-							'<a id="view-charts" >'+
-								'<img src="./svg/userpage/viewcharts.svg" class="view-button" />'+
-							'</a>'+
-						'</div>'+
-						'<div class="col s4 center" style="margin-top:16px;">'+
-							'<a id="targets" >'+
-								'<img src="./svg/userpage/targets.svg" class="view-button" />'+
-							'</a>'+
-						'</div>'+
-						'<div class="col s4 center" style="margin-top:16px;">'+
-							'<a id="compensate" >'+
-								'<img src="./svg/userpage/compensate.svg" class="view-button" />'+
-							'</a>'+
-						'</div>'+
-						
-						'<div class="col s12 center" style="margin-top:16px;">'+
+						'<div class="col s12 center" style="margin-top:32px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
@@ -189,32 +140,18 @@ export default class UserElectricityView extends View {
 				$(html).appendTo(this.el);
 				
 				this.startSwipeEventListeners(
-					()=>{this.menuModel.setSelected('USERPAGE');},
-					()=>{this.menuModel.setSelected('USERPROPS');}
+					()=>{this.menuModel.setSelected('USERELECTRICITY');},
+					()=>{this.menuModel.setSelected('USERELECTRICITYCHARTS');}
 				);
-				
-				$('#view-charts').on('click',function() {
-					//console.log('VIEW CHARTS!');
-					self.menuModel.setSelected('USERELECTRICITYCHARTS');
-				});
-				$('#targets').on('click',function() {
-					//console.log('TARGETS!');
-					self.menuModel.setSelected('USERELECTRICITYTARGETS');
-				});
-				$('#compensate').on('click',function() {
-					//console.log('COMPENSATE!');
-					self.menuModel.setSelected('USERELECTRICITYCOMPENSATE');
-				});
-				
 			}
 			$('#back').on('click',function() {
 				
-				self.menuModel.setSelected('USERPAGE');
+				self.menuModel.setSelected('USERELECTRICITY');
 				
 			});
 			this.rendered = true;
 		} else {
-			console.log('UserElectricityView => render Model IS NOT READY!!!!');
+			console.log('UserElectricityCompensateView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

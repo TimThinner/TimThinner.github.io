@@ -139,8 +139,11 @@ export default class UserPropsView extends View {
 						'<div class="col s12 center" id="user-props-view-failure">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
-					'</div>'+
-					'<div class="row">'+
+						'<div class="col s12 center" style="margin-top:32px;">'+
+							'<p>&nbsp;</p>'+
+							'<p>&nbsp;</p>'+
+							'<p>&nbsp;</p>'+
+						'</div>'+
 						'<div class="col s12 center">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
@@ -197,6 +200,11 @@ export default class UserPropsView extends View {
 							'<p style="text-align:center;"><img src="./svg/userpage/user.svg" height="80"/></p>'+
 							//'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 							'<p style="text-align:center;">'+localized_string_description+'</p>'+
+						'</div>'+
+						'<div class="col s12 center" style="margin-top:32px;">'+
+							'<p>&nbsp;</p>'+
+							'<p>&nbsp;</p>'+
+							'<p>&nbsp;</p>'+
 						'</div>'+
 						'<div class="col s12 center" style="margin-top:32px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+

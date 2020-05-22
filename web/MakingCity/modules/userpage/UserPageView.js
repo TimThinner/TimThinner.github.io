@@ -178,6 +178,8 @@ export default class UserPageView extends View {
 				WB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			}
 			
+			
+			/*
 			const HCT = svgObject.getElementById('TheHomeColorTest');
 			if (HCT) {
 				HCT.addEventListener("click", function(){
@@ -209,7 +211,7 @@ export default class UserPageView extends View {
 						}
 					}
 				}, false);
-			}
+			}*/
 			
 		} else {
 			console.log("svgObject is NOT ready!");

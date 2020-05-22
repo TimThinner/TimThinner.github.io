@@ -28,11 +28,13 @@ export default class UserHeatingView extends View {
 	}
 	
 	hide() {
+		super.hide();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		super.remove();
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -260,6 +262,11 @@ export default class UserHeatingView extends View {
 						'<div class="col s12 center" id="user-heating-view-failure"></div>'+
 					'</div>';
 				$(html).appendTo(this.el);
+				
+				this.startSwipeEventListeners(
+					()=>{this.menuModel.setSelected('USERPAGE');},
+					()=>{this.menuModel.setSelected('USERELECTRICITY');}
+				);
 				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!
 				/*const svgObj = document.getElementById("svg-object");

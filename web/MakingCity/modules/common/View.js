@@ -4,6 +4,39 @@ export default class View {
 		this.controller = controller;
 		this.el = controller.el;
 		this.models = {};
+		
+		// Swipe feature:
+		this.initialTouchPos = null;
+		this.lastTouchPos = null;
+		this.swipeFF = undefined;
+		this.swipeRW = undefined;
+		// Create a new function that is bound, and give it a new name
+		// so that the 'this.handleGestureStart(evt)' call still works.
+		/*
+		this.boundSayHello = evt => this.sayHello(evt);
+		this.elm.addEventListener('click', this.boundSayHello);
+		this.elm.removeEventListener('click', this.boundSayHello);
+		*/
+		this.boundHandleGestureStart = evt => this.handleGestureStart(evt);
+		this.boundHandleGestureMove = evt => this.handleGestureMove(evt);
+		this.boundHandleGestureEnd = evt => this.handleGestureEnd(evt);
+	}
+	
+	hide() {
+		if (typeof this.swipeFF !== 'undefined' || typeof this.swipeRW !== 'undefined') {
+			this.stopSwipeEventListeners();
+			this.swipeFF = undefined;
+			this.swipeRW = undefined;
+		}
+	}
+	
+	remove() {
+		if (typeof this.swipeFF !== 'undefined' || typeof this.swipeRW !== 'undefined') {
+			this.stopSwipeEventListeners();
+			this.swipeFF = undefined;
+			this.swipeRW = undefined;
+			
+		}
 	}
 	
 	areModelsReady() {
@@ -100,5 +133,140 @@ export default class View {
 				'<p>&nbsp;</p>'+
 			'</div>';
 		$(html).appendTo(el);
+	}
+	
+	
+	stopSwipeEventListeners() {
+		console.log('STOP SWIPE EVENT LISTENERS!!!!');
+		const ele = this.el.slice(1);
+		const swipeFrontElement = document.getElementById(ele);
+		if (window.PointerEvent) {
+			swipeFrontElement.removeEventListener('pointerdown', this.boundHandleGestureStart, true);
+			swipeFrontElement.removeEventListener('pointermove', this.boundHandleGestureMove, true);
+			swipeFrontElement.removeEventListener('pointerup', this.boundHandleGestureEnd, true);
+			swipeFrontElement.removeEventListener('pointercancel', this.boundHandleGestureEnd, true);
+		} else {
+			swipeFrontElement.removeventListener('touchstart', this.boundHandleGestureStart, true);
+			swipeFrontElement.removeEventListener('touchmove', this.boundHandleGestureMove, true);
+			swipeFrontElement.removeEventListener('touchend', this.boundHandleGestureEnd, true);
+			swipeFrontElement.removeEventListener('touchcancel', this.boundHandleGestureEnd, true);
+			// And finally the mousedown event listener.
+			swipeFrontElement.removeEventListener('mousedown', this.boundHandleGestureStart, true);
+		}
+	}
+	
+	getGesturePointFromEvent(evt) {
+		var point = {};
+		if(evt.targetTouches) {
+			// Prefer Touch Events
+			point.x = evt.targetTouches[0].clientX;
+			point.y = evt.targetTouches[0].clientY;
+		} else {
+			// Either Mouse event or Pointer Event
+			point.x = evt.clientX;
+			point.y = evt.clientY;
+		}
+		return point;
+	}
+	
+	// Handle the start of gestures
+	handleGestureStart(evt) {
+		evt.preventDefault();
+		if(evt.touches && evt.touches.length > 1) {
+			return;
+		}
+		// Add the move and end listeners
+		if (window.PointerEvent) {
+			evt.target.setPointerCapture(evt.pointerId);
+		} else {
+			// Add Mouse Listeners
+			document.addEventListener('mousemove', this.boundHandleGestureMove, true);
+			document.addEventListener('mouseup', this.boundHandleGestureEnd, true);
+		}
+		this.initialTouchPos = this.getGesturePointFromEvent(evt);
+		console.log(['START pos=',this.initialTouchPos]);
+		//swipeFrontElement.style.transition = 'initial';
+	}
+	
+	handleGestureMove(evt) {
+		evt.preventDefault();
+		if(!this.initialTouchPos) {
+			return;
+		}
+		this.lastTouchPos = this.getGesturePointFromEvent(evt);
+		//console.log(['MOVE pos=',this.lastTouchPos]);
+		//if(this.rafPending) {
+		//	return;
+		//}
+		//this.rafPending = true;
+		//window.requestAnimFrame(onAnimFrame);
+	}
+	
+	handleGestureEnd(evt) {
+		evt.preventDefault();
+		if(evt.touches && evt.touches.length > 0) {
+			return;
+		}
+		//this.rafPending = false;
+		// Remove Event Listeners
+		
+		if (window.PointerEvent) {
+			evt.target.releasePointerCapture(evt.pointerId);
+		} else {
+			// Remove Mouse Listeners
+			document.removeEventListener('mousemove', this.boundHandleGestureMove, true);
+			document.removeEventListener('mouseup', this.boundHandleGestureEnd, true);
+		}
+		//updateSwipeRestPosition();
+		
+		console.log(['initial=',this.initialTouchPos]);
+		console.log(['END pos=',this.lastTouchPos]);
+		
+		if (this.initialTouchPos && this.lastTouchPos) {
+			
+			if (this.initialTouchPos.x > this.lastTouchPos.x) {
+				if (this.initialTouchPos.x - this.lastTouchPos.x > 50) {
+					console.log('GO FORWARD!');
+					if (typeof this.swipeFF !== 'undefined') {
+						this.swipeFF();
+					}
+				}
+			} else {
+				if (this.lastTouchPos.x - this.initialTouchPos.x > 50) {
+					console.log('GO BACK!');
+					if (typeof this.swipeRW !== 'undefined') {
+						this.swipeRW();
+					}
+				}
+			}
+		}
+		this.initialTouchPos = null;
+		this.lastTouchPos = null;
+	}
+	
+	startSwipeEventListeners(swipeRW, swipeFF) {
+		
+		this.swipeRW = swipeRW; // A Callback function
+		this.swipeFF = swipeFF; // A Callback function
+		
+		console.log('START SWIPE EVENT LISTENERS!!!!');
+		const ele = this.el.slice(1);
+		const swipeFrontElement = document.getElementById(ele);
+		// Check if pointer events are supported.
+		if (window.PointerEvent) {
+			// Add Pointer Event Listener
+			swipeFrontElement.addEventListener('pointerdown', this.boundHandleGestureStart, true);
+			swipeFrontElement.addEventListener('pointermove', this.boundHandleGestureMove, true);
+			swipeFrontElement.addEventListener('pointerup', this.boundHandleGestureEnd, true);
+			swipeFrontElement.addEventListener('pointercancel', this.boundHandleGestureEnd, true);
+		} else {
+			// Add Touch Listener
+			swipeFrontElement.addEventListener('touchstart', this.boundHandleGestureStart, true);
+			swipeFrontElement.addEventListener('touchmove', this.boundHandleGestureMove, true);
+			swipeFrontElement.addEventListener('touchend', this.boundHandleGestureEnd, true);
+			swipeFrontElement.addEventListener('touchcancel', this.boundHandleGestureEnd, true);
+			// Add Mouse Listener
+			swipeFrontElement.addEventListener('mousedown', this.boundHandleGestureStart, true);
+		}
 	}
 }

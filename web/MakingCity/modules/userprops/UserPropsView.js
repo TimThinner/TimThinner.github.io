@@ -211,7 +211,7 @@ export default class UserPropsView extends View {
 				
 				this.startSwipeEventListeners(
 					()=>{this.menuModel.setSelected('USERPAGE');},
-					()=>{this.menuModel.setSelected('USERPAGE');}
+					()=>{this.menuModel.setSelected('USERWATER');}
 				);
 				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!

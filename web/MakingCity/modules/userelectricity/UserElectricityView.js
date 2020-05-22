@@ -261,7 +261,7 @@ export default class UserElectricityView extends View {
 				
 				this.startSwipeEventListeners(
 					()=>{this.menuModel.setSelected('USERPAGE');},
-					()=>{this.menuModel.setSelected('USERWATER');}
+					()=>{this.menuModel.setSelected('USERPROPS');}
 				);
 				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!

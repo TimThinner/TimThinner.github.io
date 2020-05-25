@@ -7,15 +7,12 @@
 	stroke-width: 1;
 	stroke: #fff;
 	fill-opacity: 0.05;
-	transition: transform, fill-opacity, stroke-width;
-	transition-duration: 0.5s;
 }
 .section-title {
 	opacity: 0.75;
 	font-family: "Arial, Helvetica, sans-serif";
 	font-size: 28px;
 	fill: #000;
-	/*stroke: #555;*/
 	stroke-width: 1;
 }
 .grid-head {

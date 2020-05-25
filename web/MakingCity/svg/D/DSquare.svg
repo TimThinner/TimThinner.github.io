@@ -7,15 +7,12 @@
 	stroke: #fff;
 	stroke-width: 1;
 	fill: #012265;
-	transition: transform, fill-opacity, stroke-width;
-	transition-duration: 0.5s;
 }
 .district-title {
 	opacity: 0.75;
 	font-family: "Arial, Helvetica, sans-serif";
 	font-size: 52px;
 	fill: #fff;
-	/*stroke: #555;*/
 	stroke-width: 1;
 }
 .grid {

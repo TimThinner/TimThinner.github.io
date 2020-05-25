@@ -86,27 +86,44 @@ export default class UserPageView extends View {
 	
 	/*
 	NOTE: transform is defined within style-attribute, NOT as SVG property!
+	
+	Here the event.target.style.transform is something like:
+	"translateX(240px) scale(1.1)" or
+	"translateY(240px) scale(1)"
+	BUT to make method more general lets not assume that scale will be always the last transform function.
 	*/
 	setHoverEffect(event, scale) {
-		/*if (scale === 'scale(1.0)') {
-			
-			event.target.style.strokeWidth = 1;
-			event.target.style.fillOpacity = 0.05;
+		/*
+		// style="stroke:#0a0;stroke-width:5px;fill:#fff;opacity:0.25;
+		// Originally strokeWidth=5 and opacity=0.25
+		if (scale === 'scale(1.0)') {
+			//event.target.style.stroke = '#0a0';
+			event.target.style.strokeWidth = 5;
+			//event.target.style.opacity = 0.25;
 		} else {
-			
-			event.target.style.strokeWidth = 3;
-			event.target.style.fillOpacity = 0.5;
-		}*/
-		const oldtra = event.target.style.transform;
-		//const oldtra = event.target.getAttributeNS(null,'transform');
-		//console.log(['oldtra=',oldtra]);
-		
-		
-		const index = oldtra.indexOf("scale"); // transform="translate(500,670) scale(1.1)" />
-		const newtra = oldtra.slice(0, index) + scale;
-		
-		event.target.style.transform = newtra;
-		//event.target.setAttributeNS(null,'transform',newtra);
+			//event.target.style.stroke = '#1fac78';
+			event.target.style.strokeWidth = 7;
+			//event.target.style.opacity = 0.5;
+		}
+		*/
+		const oldT = event.target.style.transform;
+		//console.log(['oldT=',oldT]);
+		// Tokenize it:
+		const fs = oldT.split(' ');
+		//console.log(['fs=',fs]);
+		const newA = [];
+		// Just replace the "scale()" function with scale and leave other untouched.
+		fs.forEach(f => {
+			//console.log(['f=',f]);
+			if (f.indexOf("scale")===0) {
+				newA.push(scale);
+			} else {
+				newA.push(f);
+			}
+		});
+		const newT = newA.join(' ');
+		//console.log(['newT=',newT]);
+		event.target.style.transform = newT;
 	}
 	
 	addSVGEventHandlers() {

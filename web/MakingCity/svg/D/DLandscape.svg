@@ -18,8 +18,6 @@ Changes to color:
 	stroke: #fff;
 	stroke-width: 1;
 	fill: #012265;
-	transition: transform, fill-opacity, stroke-width;
-	transition-duration: 0.5s;
 }
 .district-title {
 	opacity: 0.75;

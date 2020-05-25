@@ -226,22 +226,32 @@ meterId
 	}
 	
 	/*
-	<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="64px" fill="#00897b">click me</text>
+	NOTE: transform is defined as SVG property!
 	*/
 	setHoverEffect(event, scale){
 		if (scale === 'scale(1.0)') {
-			
 			event.target.style.strokeWidth = 1;
 			event.target.style.fillOpacity = 0.05;
 		} else {
-			
 			event.target.style.strokeWidth = 3;
 			event.target.style.fillOpacity = 0.5;
 		}
-		const oldtra = event.target.getAttributeNS(null,'transform');
-		const index = oldtra.indexOf("scale"); // transform="translate(500,670) scale(1.1)" />
-		const newtra = oldtra.slice(0, index) + scale;
-		event.target.setAttributeNS(null,'transform',newtra);
+		const oldT = event.target.getAttributeNS(null,'transform');
+		// Tokenize it:
+		const fs = oldT.split(' ');
+		//console.log(['fs=',fs]);
+		const newA = [];
+		// Just replace the "scale()" function with scale and leave other untouched.
+		fs.forEach(f => {
+			//console.log(['f=',f]);
+			if (f.indexOf("scale")===0) {
+				newA.push(scale);
+			} else {
+				newA.push(f);
+			}
+		});
+		const newT = newA.join(' ');
+		event.target.setAttributeNS(null,'transform',newT);
 	}
 	
 	addSVGEventHandlers() {

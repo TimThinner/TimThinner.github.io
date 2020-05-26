@@ -15,23 +15,28 @@ export default class UserElectricityController extends Controller {
 		// They are all created at the load and stay that way, so init() is called ONLY once.
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
+		/*
 		Object.keys(this.models).forEach(key => {
 			if (key === 'UserElectricityModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
-		
+		*/
 	}
 	
 	
 	
 	init() {
+		/*
 		const model = new UserElectricityModel({name:'UserElectricityModel',src:'to-be-added-in-the-future'});
 		model.subscribe(this);
 		this.master.modelRepo.add('UserElectricityModel',model);
 		this.models['UserElectricityModel'] = model;
+		*/
+		this.models['UserElectricityModel'] = this.master.modelRepo.get('UserElectricityModel');
+		this.models['UserElectricityModel'].subscribe(this);
 		
-		this.timers['UserElectricityView'] = {timer: undefined, interval: -1, models:['UserElectricityModel']};
+		this.timers['UserElectricityView'] = {timer: undefined, interval: 30000, models:['UserElectricityModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

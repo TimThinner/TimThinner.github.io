@@ -21,6 +21,7 @@ export default class UserWaterCompensateView extends View {
 		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
+		this.FELID = 'user-water-view-failure';
 	}
 	
 	show() {
@@ -52,26 +53,22 @@ export default class UserWaterCompensateView extends View {
 				if (options.status === 200) {
 					console.log('UserWaterCompensateView => UserWaterModel fetched!');
 					if (this.rendered) {
-						$('#user-water-view-failure').empty();
+						$('#'+this.FELID).empty();
 						this.updateLatestValues();
 					} else {
 						this.render();
 					}
 				} else { // Error in fetching.
 					if (this.rendered) {
-						$('#user-water-view-failure').empty();
+						$('#'+this.FELID).empty();
 						if (options.status === 401) {
 							// This status code must be caught and wired to forceLogout() action.
 							// Force LOGOUT if Auth failed!
-							const html = '<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>';
-							$(html).appendTo('#user-water-view-failure');
-							setTimeout(() => {
-								this.controller.forceLogout();
-							}, 3000);
+							this.forceLogout(this.FELID);
 							
 						} else {
 							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#user-water-view-failure');
+							$(html).appendTo('#'+this.FELID);
 						}
 					} else {
 						this.render();
@@ -95,7 +92,7 @@ export default class UserWaterCompensateView extends View {
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="user-water-view-failure">'+
+						'<div class="col s12 center" id="'+this.FELID+'">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
@@ -110,10 +107,7 @@ export default class UserWaterCompensateView extends View {
 				
 				if (errorMessages.indexOf('Auth failed') >= 0) {
 					// Show message and then FORCE LOGOUT in 3 seconds.
-					$('<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>').appendTo('#user-water-view-failure');
-					setTimeout(() => {
-						this.controller.forceLogout();
-					}, 3000);
+					this.forceLogout(this.FELID);
 				}
 				
 			} else {
@@ -135,7 +129,7 @@ export default class UserWaterCompensateView extends View {
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s12 center" id="user-water-view-failure"></div>'+
+						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 					'</div>';
 				$(html).appendTo(this.el);
 				

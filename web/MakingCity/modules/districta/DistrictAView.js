@@ -20,6 +20,7 @@ export default class DistrictAView extends View {
 		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
+		this.FELID = 'district-a-view-failure';
 	}
 	
 	show() {
@@ -62,18 +63,6 @@ export default class DistrictAView extends View {
 		// Check if 'geothermal-power' is giving or taking.
 		if (svgId === 'geothermal-power') {
 			const ps = {
-				/*'PORTRAIT':{
-					'give':'M 480,260 L 480,350 A 50,50 0 0,1 430,400 L 300,400',
-					'take':'M 300,400 L 430,400 A 50,50 0 0,0 480,350 L 480,260'
-				},
-				'SQUARE':{
-					'give':'M 720,260 L 720,300 A 50,50 0 0,1 670,350 L 500,350',
-					'take':'M 500,350 L 670,350 A 50,50 0 0,0 720,300 L 720,260'
-				},
-				'LANDSCAPE':{
-					'give':'M 1300,300 L 1300,350 A 50,50 0 0,1 1250,400 L 1000,400',
-					'take':'M 1000,400 L 1250,400 A 50,50 0 0,0 1300,350 L 1300,300'
-				}*/
 				'PORTRAIT':{
 					'give':'M 380,260 L 380,350',
 					'take':'M 380,350 L 380,260'
@@ -193,26 +182,22 @@ meterId
 				if (options.status === 200) {
 					//console.log('DistrictAView => StatusModel fetched!');
 					if (this.rendered) {
-						$('#district-a-view-failure').empty();
+						$('#'+this.FELID).empty();
 						this.updateLatestValues();
 					} else {
 						this.render();
 					}
 				} else { // Error in fetching.
 					if (this.rendered) {
-						$('#district-a-view-failure').empty();
+						$('#'+this.FELID).empty();
 						if (options.status === 401) {
 							// This status code must be caught and wired to forceLogout() action.
 							// Force LOGOUT if Auth failed!
-							const html = '<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>';
-							$(html).appendTo('#district-a-view-failure');
-							setTimeout(() => {
-								this.controller.forceLogout();
-							}, 3000);
+							this.forceLogout(this.FELID);
 							
 						} else {
 							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#district-a-view-failure');
+							$(html).appendTo('#'+this.FELID);
 						}
 					} else {
 						this.render();
@@ -437,7 +422,7 @@ meterId
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="district-a-view-failure">'+
+						'<div class="col s12 center" id="'+this.FELID+'">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
@@ -456,10 +441,7 @@ meterId
 				
 				if (errorMessages.indexOf('Auth failed') >= 0) {
 					// Show message and then FORCE LOGOUT in 3 seconds.
-					$('<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>').appendTo('#district-a-view-failure');
-					setTimeout(() => {
-						this.controller.forceLogout();
-					}, 3000);
+					this.forceLogout(this.FELID);
 				}
 				
 			} else {
@@ -497,7 +479,7 @@ meterId
 						*/
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s12 center" id="district-a-view-failure"></div>'+
+						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 					'</div>';
 					/*
 					'<div class="row">'+

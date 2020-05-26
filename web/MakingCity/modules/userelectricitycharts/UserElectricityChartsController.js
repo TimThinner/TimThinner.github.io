@@ -28,7 +28,7 @@ export default class UserElectricityChartsController extends Controller {
 		this.models['UserElectricityModel'] = this.master.modelRepo.get('UserElectricityModel');
 		this.models['UserElectricityModel'].subscribe(this);
 		
-		//this.timers['UserElectricityView'] = {timer: undefined, interval: -1, models:['UserElectricityModel']};
+		this.timers['UserElectricityView'] = {timer: undefined, interval: 30000, models:['UserElectricityModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

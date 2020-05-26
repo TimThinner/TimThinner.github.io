@@ -11,7 +11,7 @@ export default class UserPageView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserPageModel') {
+			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -21,6 +21,7 @@ export default class UserPageView extends View {
 		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
+		this.FELID = 'user-page-view-failure';
 	}
 	
 	show() {
@@ -47,33 +48,31 @@ export default class UserPageView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserPageModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					console.log('UserPageView => UserPageModel fetched!');
-					if (this.rendered) {
-						$('#user-page-view-failure').empty();
-						this.updateLatestValues();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#user-page-view-failure').empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							const html = '<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>';
-							$(html).appendTo('#user-page-view-failure');
-							setTimeout(() => {
-								this.controller.forceLogout();
-							}, 3000);
-							
+			if (options.model==='UserWaterModel'||options.model==='UserHeatingModel'||options.model==='UserElectricityModel') {
+				if (options.method==='fetched') {
+					if (options.status === 200) {
+						console.log(['UserPageView: ',options.model,' fetched!']);
+						if (this.rendered) {
+							$('#'+this.FELID).empty();
+							this.updateLatestValues();
 						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#user-page-view-failure');
+							this.render();
 						}
-					} else {
-						this.render();
+					} else { // Error in fetching.
+						if (this.rendered) {
+							$('#'+this.FELID).empty();
+							if (options.status === 401) {
+								// This status code must be caught and wired to forceLogout() action.
+								// Force LOGOUT if Auth failed!
+								this.forceLogout(this.FELID);
+								
+							} else {
+								const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+								$(html).appendTo('#'+this.FELID);
+							}
+						} else {
+							this.render();
+						}
 					}
 				}
 			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -194,8 +193,6 @@ export default class UserPageView extends View {
 				WB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 				WB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			}
-			
-			
 			/*
 			const HCT = svgObject.getElementById('TheHomeColorTest');
 			if (HCT) {
@@ -238,9 +235,6 @@ export default class UserPageView extends View {
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
-			
-			//const LM = this.controller.master.modelRepo.get('LanguageModel');
-			//const sel = LM.selected;
 			const UM = this.controller.master.modelRepo.get('UserModel');
 			if (UM) {
 				const index = UM.email.indexOf('@');
@@ -255,23 +249,18 @@ export default class UserPageView extends View {
 		$(this.el).empty();
 		if (this.areModelsReady()) {
 			
+			console.log('UserPageView => render Models ARE READY!');
+			
 			const UM = this.controller.master.modelRepo.get('UserModel')
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-			/*
-			const localized_string_title = LM['translation'][sel]['USER_PAGE_TITLE'];
-			const localized_string_electricity = LM['translation'][sel]['USER_PAGE_ELECTRICITY'];
-			const localized_string_heating = LM['translation'][sel]['USER_PAGE_HEATING'];
-			const localized_string_water = LM['translation'][sel]['USER_PAGE_WATER'];
-			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
-			const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
-			*/
+			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="user-page-view-failure">'+
+						'<div class="col s12 center" id="'+this.FELID+'">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
@@ -290,10 +279,7 @@ export default class UserPageView extends View {
 				
 				if (errorMessages.indexOf('Auth failed') >= 0) {
 					// Show message and then FORCE LOGOUT in 3 seconds.
-					$('<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>').appendTo('#user-page-view-failure');
-					setTimeout(() => {
-						this.controller.forceLogout();
-					}, 3000);
+					this.forceLogout(this.FELID);
 				}
 				
 			} else {
@@ -321,7 +307,7 @@ export default class UserPageView extends View {
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s12 center" id="user-page-view-failure"></div>'+
+						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 					'</div>';
 				$(html).appendTo(this.el);
 				
@@ -336,7 +322,7 @@ export default class UserPageView extends View {
 			}
 			this.rendered = true;
 		} else {
-			console.log('UserPageView => render Model IS NOT READY!!!!');
+			console.log('UserPageView => render Models ARE NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

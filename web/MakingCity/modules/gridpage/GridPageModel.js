@@ -52,6 +52,9 @@ export default class GridPageModel extends Model {
 		
 		console.log (['GridPageModel fetch url=',url]);
 		status = 200; // OK
+		
+		//status = 401; // Auth failed
+		//this.errorMessage = 'Auth failed';
 		setTimeout(() => {
 			
 			this.fetching = false;

@@ -28,7 +28,7 @@ export default class UserWaterChartsController extends Controller {
 		this.models['UserWaterModel'] = this.master.modelRepo.get('UserWaterModel');
 		this.models['UserWaterModel'].subscribe(this);
 		
-		//this.timers['UserWaterView'] = {timer: undefined, interval: -1, models:['UserWaterModel']};
+		this.timers['UserWaterView'] = {timer: undefined, interval: 30000, models:['UserWaterModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

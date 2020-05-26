@@ -15,23 +15,35 @@ export default class UserWaterController extends Controller {
 		// They are all created at the load and stay that way, so init() is called ONLY once.
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
+		/*
 		Object.keys(this.models).forEach(key => {
 			if (key === 'UserWaterModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
-		
+		*/
 	}
 	
 	
+	/*
+		NOTE:
+		- UserWaterModel
+		- UserHeatingModel
+		- UserElectricityModel
+		are created at UserPageController
+		
+	*/
 	
 	init() {
-		const model = new UserWaterModel({name:'UserWaterModel',src:'to-be-added-in-the-future'});
+		/*const model = new UserWaterModel({name:'UserWaterModel',src:'to-be-added-in-the-future'});
 		model.subscribe(this);
 		this.master.modelRepo.add('UserWaterModel',model);
 		this.models['UserWaterModel'] = model;
+		*/
+		this.models['UserWaterModel'] = this.master.modelRepo.get('UserWaterModel');
+		this.models['UserWaterModel'].subscribe(this);
 		
-		this.timers['UserWaterView'] = {timer: undefined, interval: -1, models:['UserWaterModel']};
+		this.timers['UserWaterView'] = {timer: undefined, interval: 30000, models:['UserWaterModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

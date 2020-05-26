@@ -110,6 +110,7 @@ export default class UserModel extends Model {
 	logout() {
 		this.reset();
 		this.store();
+		console.log('USER LOGOUT! Localstorage cleaned!');
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'logout',status:200,message:'Logout OK'}), 100);
 	}
 	/*

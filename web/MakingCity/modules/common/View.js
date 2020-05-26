@@ -65,7 +65,10 @@ export default class View {
 	}
 	
 	forceLogout(vid) {
-		const html = '<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>';
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_session_expired = LM['translation'][sel]['SESSION_EXPIRED']; // Session has expired... logging out in 3 seconds!
+		const html = '<div class="error-message"><p>'+localized_string_session_expired+'</p></div>';
 		$(html).appendTo('#'+vid);
 		setTimeout(() => {
 			this.controller.forceLogout();

@@ -16,11 +16,9 @@ export default class UserHeatingChartsView extends View {
 				this.models[key].subscribe(this);
 			}
 		});
-		// Start listening notify -messages from ResizeEventObserver:
-		//this.controller.master.modelRepo.get('ResizeEventObserver').subscribe(this);
-		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
+		this.FELID = 'user-heating-view-failure';
 	}
 	
 	show() {
@@ -52,26 +50,22 @@ export default class UserHeatingChartsView extends View {
 				if (options.status === 200) {
 					console.log('UserHeatingChartsView => UserHeatingModel fetched!');
 					if (this.rendered) {
-						$('#user-heating-view-failure').empty();
+						$('#'+this.FELID).empty();
 						this.updateLatestValues();
 					} else {
 						this.render();
 					}
 				} else { // Error in fetching.
 					if (this.rendered) {
-						$('#user-heating-view-failure').empty();
+						$('#'+this.FELID).empty();
 						if (options.status === 401) {
 							// This status code must be caught and wired to forceLogout() action.
 							// Force LOGOUT if Auth failed!
-							const html = '<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>';
-							$(html).appendTo('#user-heating-view-failure');
-							setTimeout(() => {
-								this.controller.forceLogout();
-							}, 3000);
+							this.forceLogout(this.FELID);
 							
 						} else {
 							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#user-heating-view-failure');
+							$(html).appendTo('#'+this.FELID);
 						}
 					} else {
 						this.render();
@@ -95,7 +89,7 @@ export default class UserHeatingChartsView extends View {
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="user-heating-view-failure">'+
+						'<div class="col s12 center" id="'+this.FELID+'">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>'+
@@ -110,10 +104,7 @@ export default class UserHeatingChartsView extends View {
 				
 				if (errorMessages.indexOf('Auth failed') >= 0) {
 					// Show message and then FORCE LOGOUT in 3 seconds.
-					$('<div class="error-message"><p>Session has expired... logging out in 3 seconds!</p></div>').appendTo('#user-heating-view-failure');
-					setTimeout(() => {
-						this.controller.forceLogout();
-					}, 3000);
+					this.forceLogout(this.FELID);
 				}
 				
 			} else {
@@ -135,7 +126,7 @@ export default class UserHeatingChartsView extends View {
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
-						'<div class="col s12 center" id="user-heating-view-failure"></div>'+
+						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 					'</div>';
 				$(html).appendTo(this.el);
 				

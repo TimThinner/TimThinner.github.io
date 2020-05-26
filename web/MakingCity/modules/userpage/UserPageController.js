@@ -1,5 +1,9 @@
 import Controller from '../common/Controller.js';
-import UserPageModel from  './UserPageModel.js';
+
+import UserWaterModel from  '../userwater/UserWaterModel.js';
+import UserHeatingModel from  '../userheating/UserHeatingModel.js';
+import UserElectricityModel from  '../userelectricity/UserElectricityModel.js';
+
 import UserPageView from './UserPageView.js';
 
 export default class UserPageController extends Controller {
@@ -16,7 +20,8 @@ export default class UserPageController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key === 'UserPageModel') {
+			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel') {
+				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
 		});
@@ -43,13 +48,24 @@ export default class UserPageController extends Controller {
 			this.view = undefined;
 		}
 		*/
-		// AND in this remove finally this.master.modelRepo.remove('UserPageModel');
+		// AND in this.remove finally all models created here is removed.
 		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
 		// so there is no need to redefine them.
-		const model = new UserPageModel({name:'UserPageModel',src:'to-be-added-in-the-future'});
-		model.subscribe(this);
-		this.master.modelRepo.add('UserPageModel',model);
-		this.models['UserPageModel'] = model;
+		
+		const model_1 = new UserWaterModel({name:'UserWaterModel',src:'to-be-added-in-the-future'});
+		model_1.subscribe(this);
+		this.master.modelRepo.add('UserWaterModel',model_1);
+		this.models['UserWaterModel'] = model_1;
+		
+		const model_2 = new UserHeatingModel({name:'UserHeatingModel',src:'to-be-added-in-the-future'});
+		model_2.subscribe(this);
+		this.master.modelRepo.add('UserHeatingModel',model_2);
+		this.models['UserHeatingModel'] = model_2;
+		
+		const model_3 = new UserElectricityModel({name:'UserElectricityModel',src:'to-be-added-in-the-future'});
+		model_3.subscribe(this);
+		this.master.modelRepo.add('UserElectricityModel',model_3);
+		this.models['UserElectricityModel'] = model_3;
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
@@ -58,12 +74,27 @@ export default class UserPageController extends Controller {
 	}
 	
 	init() {
-		const model = new UserPageModel({name:'UserPageModel',src:'to-be-added-in-the-future'});
+		/*const model = new UserPageModel({name:'UserPageModel',src:'to-be-added-in-the-future'});
 		model.subscribe(this);
 		this.master.modelRepo.add('UserPageModel',model);
 		this.models['UserPageModel'] = model;
+		*/
+		const model_1 = new UserWaterModel({name:'UserWaterModel',src:'to-be-added-in-the-future'});
+		model_1.subscribe(this);
+		this.master.modelRepo.add('UserWaterModel',model_1);
+		this.models['UserWaterModel'] = model_1;
 		
-		this.timers['UserPageChartView'] = {timer: undefined, interval: 30000, models:['UserPageModel']};
+		const model_2 = new UserHeatingModel({name:'UserHeatingModel',src:'to-be-added-in-the-future'});
+		model_2.subscribe(this);
+		this.master.modelRepo.add('UserHeatingModel',model_2);
+		this.models['UserHeatingModel'] = model_2;
+		
+		const model_3 = new UserElectricityModel({name:'UserElectricityModel',src:'to-be-added-in-the-future'});
+		model_3.subscribe(this);
+		this.master.modelRepo.add('UserElectricityModel',model_3);
+		this.models['UserElectricityModel'] = model_3;
+		
+		this.timers['UserPageView'] = {timer: undefined, interval: 30000, models:['UserWaterModel','UserHeatingModel','UserElectricityModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

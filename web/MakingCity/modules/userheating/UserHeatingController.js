@@ -15,23 +15,29 @@ export default class UserHeatingController extends Controller {
 		// They are all created at the load and stay that way, so init() is called ONLY once.
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
+		/*
 		Object.keys(this.models).forEach(key => {
 			if (key === 'UserHeatingModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
-		
+		*/
 	}
 	
 	
 	
 	init() {
+		/*
 		const model = new UserHeatingModel({name:'UserHeatingModel',src:'to-be-added-in-the-future'});
 		model.subscribe(this);
 		this.master.modelRepo.add('UserHeatingModel',model);
 		this.models['UserHeatingModel'] = model;
+		*/
 		
-		this.timers['UserHeatingView'] = {timer: undefined, interval: -1, models:['UserHeatingModel']};
+		this.models['UserHeatingModel'] = this.master.modelRepo.get('UserHeatingModel');
+		this.models['UserHeatingModel'].subscribe(this);
+		
+		this.timers['UserHeatingView'] = {timer: undefined, interval: 30000, models:['UserHeatingModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

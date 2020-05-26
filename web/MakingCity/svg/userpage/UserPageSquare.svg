@@ -58,6 +58,8 @@
 </svg>
 <image id="TheHomeColorTest" x="-120" y="-120" width="240" height="240" xlink:href="Home.svg" />
 -->
+<circle cx="0" cy="0" r="350" stroke-width="1" stroke="#ccc" fill="none" />
+
 <image x="-120" y="-120" width="240" height="240" xlink:href="Home.svg" />
 
 <svg x="-160" y="-230" width="320px" height="32px">

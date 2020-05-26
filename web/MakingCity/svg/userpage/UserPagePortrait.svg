@@ -41,8 +41,6 @@
 </defs>
 <rect x="-300" y="-500" width="600" height="900" fill="url(#grad)" stroke-width="0" stroke="#000" />
 
-<!--<circle cx="0" cy="0" r="280" stroke-width="1" stroke="#ccc" fill="none" />-->
-
 <text x="-200" y="-382" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="78px" fill="#444">Making City</text>
 <path class="grid-head" d="M-300 -438 H-194" />
 <path class="grid-head" d="M48 -380 H300" />
@@ -59,6 +57,8 @@
 </svg>
 <image id="TheHomeColorTest" x="-100" y="-100" width="200" height="200" xlink:href="Home.svg" />
 -->
+<circle cx="0" cy="0" r="300" stroke-width="1" stroke="#ccc" fill="none" />
+
 <image x="-100" y="-100" width="200" height="200" xlink:href="Home.svg" />
 
 <svg x="-160" y="-190" width="320px" height="30px">

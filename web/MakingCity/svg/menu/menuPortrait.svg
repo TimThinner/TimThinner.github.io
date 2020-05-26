@@ -31,6 +31,12 @@
 	stroke: #1fac78;
 	fill: #fff;
 }
+.version-info {
+	opacity: 0.75;
+	font-family: "Arial, Helvetica, sans-serif";
+	font-size: 22px;
+	fill: #aaa;
+}
 </style>
 <defs>
 	<radialGradient id="grad" cx="50%" cy="50%" r="100%">
@@ -45,6 +51,11 @@
 <path class="grid-head" d="M-300 -438 H-206" />
 <path class="grid-head" d="M50 -378 H300" />
 <text x="50" y="-345" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#444">Positive Energy Districts</text>
+
+<svg x="204" y="-400" width="100px" height="22px">
+	<!--<rect x="1" y="1" width="98" height="24" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="version-info">v 20.5.26</text>
+</svg>
 
 <path class="line" d="M110,-110 L200,-200" />
 <path class="line" d="M110,110 L200,200" />

@@ -1,0 +1,202 @@
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	background-color: #f0f0ff; /*#227;*/
+	color: #55a;
+}
+@media screen and (min-width: 601px) {
+	html, body {
+		font-size: 18px;
+	}
+}
+h3.section-title {
+	font-family: 'Fredericka the Great', cursive;
+	font-size: 30px;
+	border-top: 1px solid #aaa;
+	border-bottom: 1px solid #aaa;
+	padding: 8px 0 8px 0;
+	text-align:center;
+}
+/*
+Screen Sizes
+	Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+	<= 600px 				> 600px				> 992px				> 1200px
+*/
+
+/* Materialize CSS sets margins, we must reset them */
+figure.picture-item {
+	/*margin: 1em 40px;*/
+	margin: 0 0 16px 0;
+}
+figure.picture-item-round {
+	margin: 16px 0 0 0;
+}
+figure.picture-item img {
+	max-width: 100%;
+	height: auto;
+	border-top: 8px solid white;
+	border-right: 8px solid white;
+	border-left: 8px solid white;
+	border-bottom: 32px solid white;
+	box-shadow: 0 0 8px #707070;
+}
+.my-circle {
+	border-radius: 50%;
+	box-shadow: 0 0 8px #707070;
+}
+figcaption {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	color: #888;
+	text-align:center;
+	margin-top: -28px;
+}
+.back-button {
+	float: left;
+	padding: 0.3em 0.6em;
+	margin-top: -5px;
+	background-color: #f0f0ff;
+	color: #88c;
+	/*box-shadow: 2px 2px 4px #808080;*/
+	border: 1px solid #aaa;
+	border-radius: 1em;
+}
+/*
+#e3f2fd blue lighten-5
+#bbdefb blue lighten-4
+#90caf9 blue lighten-3
+#64b5f6 blue lighten-2
+#42a5f5 blue lighten-1
+#2196f3 blue
+*/
+.back-button:hover { 
+	background-color: #e0e0ff;
+	color: #29b6f6;
+	border: 1px solid #aaa;
+}
+.footer {
+	padding: 2em;
+	margin-top: 2em;
+	text-align: center;
+	border-top: 1px solid #aaa;
+}
+/* h1 font-size: 4.2rem; h3 font-size: 2.92rem; */
+.life-subtitle {
+	color:#77c;
+	font-family: 'Tangerine', serif;
+	line-height: 0.9;
+	font-weight:normal;
+	font-style:normal;
+}
+/* p */
+.life-description {
+	color:#88c;
+	font-family: 'Tangerine', serif;
+	line-height: 0.9;
+	font-weight:normal;
+	font-style:normal;
+	font-size: 200%;
+}
+/*
+@media screen and (min-width: 601px) and (max-width: 992px) {
+	.life-description {
+		text-align: left;
+	}
+}
+*/
+@media screen and (min-width: 601px) and (max-width: 992px) {
+	figure.picture-item img {
+		border-top: 10px solid white;
+		border-right: 10px solid white;
+		border-left: 10px solid white;
+		border-bottom: 32px solid white;
+	}
+	figcaption {
+		margin-top: -28px;
+	}
+	h1.life-subtitle {
+		font-size: 4.2rem;
+	}
+	h3.life-subtitle {
+		font-size: 3.0rem;
+	}
+	.life-description {
+		font-size: 2.0rem;
+	}
+}
+@media screen and (min-width: 993px) and (max-width: 1200px) {
+	figure.picture-item img {
+		border-top: 12px solid white;
+		border-right: 12px solid white;
+		border-left: 12px solid white;
+		border-bottom: 34px solid white;
+	}
+	figcaption {
+		margin-top: -30px;
+	}
+	h1.life-subtitle {
+		font-size: 4.8rem;
+	}
+	h3.life-subtitle {
+		font-size: 3.4rem;
+	}
+	.life-description {
+		font-size: 2.4rem;
+	}
+}
+@media screen and (min-width: 1201px) {
+	figure.picture-item img {
+		border-top: 14px solid white;
+		border-right: 14px solid white;
+		border-left: 14px solid white;
+		border-bottom: 36px solid white;
+	}
+	figcaption {
+		margin-top: -30px;
+	}
+	h1.life-subtitle {
+		font-size: 6.0rem;
+	}
+	h3.life-subtitle {
+		font-size: 4.0rem;
+	}
+	.life-description {
+		font-size: 3.0rem;
+	}
+}
+
+.life-align-right {
+	text-align: left;
+}
+@media screen and (min-width: 601px) {
+	.life-align-right {
+		text-align: right;
+	}
+}
+.material-icons {
+	vertical-align: middle;
+}
+
+/*table {
+	border: 1px solid #aaa;
+}*/
+table tr td, table tr th {
+	padding-left: 12px;
+}
+
+/* Overwrite MaterializeCSS Table striped color: */
+table.striped > tbody > tr:nth-child(odd) {
+	/*background-color: rgba(242, 242, 242, 0.5);*/
+	/*background-color: rgba(200, 200, 200, 0.5);*/
+	background-color: #e4e4ff;
+}
+/* Overwrite MaterializeCSS Table padding: */
+td, th {
+	padding: 5px 2px;
+}
+td:nth-child( 2n ) {
+	width: 75%;
+} 
+td:nth-child( 2n+1 ) {
+	width: 25%;
+}

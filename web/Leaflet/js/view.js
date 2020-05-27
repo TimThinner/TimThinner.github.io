@@ -119,23 +119,44 @@ class MapView {
 		// 27.7646, 28.2107
 		
 		// create an orange rectangle
-		L.rectangle(bounds, {color: "#ff7800", weight: 1, fillOpacity: 0.05}).addTo(self.mymap);
-		
-		
+		//L.rectangle(bounds, {color: "#ff7800", weight: 1, fillOpacity: 0.05}).addTo(self.mymap);
 		// zoom the map to the rectangle bounds
-		this.mymap.fitBounds(bounds);
-		
-		
-		/*
+		//this.mymap.fitBounds(bounds);
 		const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 		svgElement.setAttribute('xmlns', "http://www.w3.org/2000/svg");
-		svgElement.setAttribute('viewBox', "0 0 200 200");
-		svgElement.innerHTML = '<rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/>';
-		*/
-		var svgElementBounds = [ [ 42, 30 ], [ 28, 38 ] ];
+		svgElement.setAttribute('viewBox', "0 0 400 300");
+		//svgElement.innerHTML = '<rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/>';
 		
+		//'<rect x="2" y="2" width="396" height="296" style="stroke-width:2;stroke:#f00;fill:none;" />'+
+		svgElement.innerHTML = 
+'<defs>'+
+	'<linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">'+
+		'<stop offset="0%" style="stop-color:rgb(255,0,0);stop-opacity:1" />'+
+		'<stop offset="100%" style="stop-color:rgb(0,0,255);stop-opacity:1" />'+
+	'</linearGradient>'+
+'</defs>'+
+'<path d="M200 10 '+
+'	C 220 100, 300 100, 300 190 '+
+'	A100 100 0 1 1 100 190 '+
+'	C 100 100, 180 100, 200 10" '+
+'	style="opacity: 0.5;stroke-width: 10;stroke: #000;fill: url(#grad);"/>'+
+'<path d="M200 270 '+
+'	A80 80 0 0 0 275 165'+
+'	A120 120 0 0 1 200 270" style="opacity: 1;stroke-width: 10;stroke: #fff;fill: #fff;"/>';
+		// Upper left corner:
+		// w=400 h=300 aspect ratio:
+		// 50,0   54,8
 		
-		L.svgOverlay('https://timthinner.github.io/web/Leaflet/svg/water.svg', svgElementBounds).addTo(self.mymap);
+		// Porto:
+		//	latitude:  41.1428,
+		//	longitude: -8.6155,
+		
+		var svgElementBounds = [ [ 41.14, -8.6 ], [ 35.14, 0.6 ] ];
+		var svgOL = L.svgOverlay(svgElement, svgElementBounds, {bubblingMouseEvents:false,interactive:true}).addTo(self.mymap);
+		
+		const myRect = L.rectangle(svgElementBounds, {color: "#ff7800", weight: 1, fillOpacity: 0.05}).addTo(self.mymap);
+		
+		myRect.on('click', function(d) {console.log('I have been clicked');});
 	}
 	
 	notify(options) {

@@ -135,7 +135,7 @@ class MapView {
 		var svgElementBounds = [ [ 42, 30 ], [ 28, 38 ] ];
 		
 		
-		L.svgOverlay('https://timthinner.github.io/web/Leaflet/svg/water.svg', svgElementBounds).addTo(this.mymap);
+		L.svgOverlay('https://timthinner.github.io/web/Leaflet/svg/water.svg', svgElementBounds).addTo(self.mymap);
 	}
 	
 	notify(options) {

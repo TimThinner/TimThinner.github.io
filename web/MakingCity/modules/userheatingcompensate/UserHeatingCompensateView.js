@@ -16,9 +16,6 @@ export default class UserHeatingCompensateView extends View {
 				this.models[key].subscribe(this);
 			}
 		});
-		// Start listening notify -messages from ResizeEventObserver:
-		//this.controller.master.modelRepo.get('ResizeEventObserver').subscribe(this);
-		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
 		this.FELID = 'user-heating-view-failure';

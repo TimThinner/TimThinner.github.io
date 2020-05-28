@@ -19,8 +19,8 @@ export default class MenuView extends View {
 				this.models[key].subscribe(this);
 			}
 		});
-		
-		this.controller.master.modelRepo.get('ResizeEventObserver').subscribe(this);
+		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
+		this.REO.subscribe(this);
 		this.rendered = false;
 	}
 	
@@ -37,6 +37,7 @@ export default class MenuView extends View {
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
+		this.REO.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}

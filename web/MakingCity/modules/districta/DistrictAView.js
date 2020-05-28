@@ -16,7 +16,8 @@ export default class DistrictAView extends View {
 			}
 		});
 		// Start listening notify -messages from ResizeEventObserver:
-		this.controller.master.modelRepo.get('ResizeEventObserver').subscribe(this);
+		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
+		this.REO.subscribe(this);
 		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
@@ -36,6 +37,7 @@ export default class DistrictAView extends View {
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
+		this.REO.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}

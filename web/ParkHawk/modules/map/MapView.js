@@ -164,7 +164,12 @@ export default class MapView {
 		//$('#mapid').css({height:"85vh",width:"100%"}); 
 		
 		// See: https://github.com/elmarquis/Leaflet.GestureHandling
-		this.mymap = L.map('mapid',{gestureHandling: true});//.setView([60.26, 24.6], 12);
+		
+		
+		//this.mymap = L.map('mapid',{gestureHandling: true});//.setView([60.26, 24.6], 12);
+		this.mymap = L.map('mapid');//.setView([60.26, 24.6], 12);
+		
+		
 		// NOTE: To use this.mymap.on('load', ... we MUST call this.mymap.setView(...) AFTER defining the 'load'-callback!
 		
 		// create the tile layer with correct attribution

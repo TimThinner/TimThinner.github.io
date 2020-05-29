@@ -3,21 +3,21 @@ import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import MenuController from './modules/menu/MenuController.js';
 import HomeController from './modules/home/HomeController.js';
 import MapController from './modules/map/MapController.js';
-//import CameraController from './modules/camera/CameraController.js';
-//import InfoController from './modules/info/InfoController.js';
+import CameraController from './modules/camera/CameraController.js';
+import InfoController from './modules/info/InfoController.js';
 
 class MasterController {
 	
 	constructor() {
 		this.controllers = {};
 		this.modelRepo = new ModelRepo();
-		this.menuitems = ['home','map','camera','info']; // names are actually Materialize icon names.
+		this.menuitems = ['home','map','camera','info'];
 	}
-	/*
+	
 	restore() {
 		console.log('MasterController restore!');
 	}
-	*/
+	
 	notify(options) {
 		console.log(['MasterController NOTIFY: model=',options.model,' method=',options.method]);
 	}
@@ -34,17 +34,17 @@ class MasterController {
 		this.controllers['menu'].init();
 		this.controllers['menu'].restore();
 		
-		this.controllers['home'] = new HomeController({name:'home', master:this, el:'#content', visible:true});
+		this.controllers['home'] = new HomeController({name:'home', master:this, el:'#content', visible:false});
 		this.controllers['home'].init();
 		
 		this.controllers['map'] = new MapController({name:'map', master:this, el:'#content', visible:false});
 		this.controllers['map'].init();
 		
-		//this.controllers['camera'] = new CameraController({name:'camera', master:this, el:'#content', visible:false});
-		//this.controllers['camera'].init();
+		this.controllers['camera'] = new CameraController({name:'camera', master:this, el:'#content', visible:false});
+		this.controllers['camera'].init();
 		
-		//this.controllers['info'] = new InfoController({name:'info', master:this, el:'#content', visible:false});
-		//this.controllers['info'].init();
+		this.controllers['info'] = new InfoController({name:'info', master:this, el:'#content', visible:false});
+		this.controllers['info'].init();
 	}
 }
 new MasterController().init();

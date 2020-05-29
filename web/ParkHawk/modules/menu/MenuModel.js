@@ -43,11 +43,14 @@ export default class MenuModel extends EventObserver {
 				}
 			}
 		}
-		setTimeout(() => this.notifyAll({model:'MenuModel',method:'restore',status:200,message:'Menu restored.',tab:this.activeTab}), 100);
+		setTimeout(() => {
+			this.notifyAll({model:'MenuModel',method:'restored',tab:this.activeTab});
+			this.notifyAll({model:'MenuModel',method:'selected',tab:this.activeTab});
+		}, 100);
 	}
 	
 	selected(tab) {
 		this.activeTab = tab;
-		setTimeout(() => this.notifyAll({model:'MenuModel',method:'selected',status:200,message:'',tab:tab}), 100);
+		setTimeout(() => this.notifyAll({model:'MenuModel',method:'selected',tab:tab}), 100);
 	}
 }

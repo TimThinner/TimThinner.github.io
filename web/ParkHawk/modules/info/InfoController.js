@@ -1,7 +1,5 @@
-import HomeModel from './HomeModel.js';
-import HomeView from './HomeView.js';
-
-export default class HomeController {
+import InfoView from './InfoView.js';
+export default class InfoController {
 	
 	constructor(options) {
 		this.name    = options.name;
@@ -9,15 +7,15 @@ export default class HomeController {
 		this.visible = options.visible;
 		this.el      = options.el;
 		
-		this.models = {};
+		//this.models = {};
 		this.view      = undefined;
 		this.menuModel = undefined;
 	}
 	
 	remove() {
-		Object.keys(this.models).forEach(key => {
+		/*Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
-		});
+		});*/
 		if (this.menuModel) {
 			this.menuModel.unsubscribe(this);
 		}
@@ -34,14 +32,14 @@ export default class HomeController {
 	}
 	
 	show() {
-		console.log('HomeView Show!!');
+		console.log('InfoView Show!!');
 		if (this.visible && this.view) {
 			this.view.show();
 		}
 	}
 	
 	restore() {
-		console.log('HomeController restore');
+		console.log('InfoController restore');
 	}
 	
 	notify(options) {
@@ -62,19 +60,18 @@ export default class HomeController {
 	
 	init() {
 		// Create the Home Model
-		const model = new HomeModel({name:'HomeModel',src:'placeholder'});
+		/*const model = new HomeModel({name:'HomeModel',src:'placeholder'});
 		model.subscribe(this);
 		this.master.modelRepo.add('HomeModel',model);
 		this.models['HomeModel'] = model;
-		
-		
+		*/
+		/*
 		setTimeout(() => model.fetch(), 200);
-		
-		
+		*/
 		this.menuModel = this.master.modelRepo.get('MenuModel');
 		if (this.menuModel) {
 			this.menuModel.subscribe(this);
 		}
-		this.view = new HomeView(this);
+		this.view = new InfoView(this);
 	}
 }

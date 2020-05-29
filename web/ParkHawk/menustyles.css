@@ -1,24 +1,17 @@
-/*THE BASELINE */
 .tab-grid {
-	/*border-right: 1px solid #fcc;*/
 	text-align: center;
-	/*margin-top: -16px;*/
 }
 .tab-cell {
 	padding: 2px 4px;
-	background-color: #4db6ac; /* #ddd */
-	/*border-top: 1px solid #ccc;*/
-	/*border-left: 1px solid #ccc;*/
+	background-color: #4db6ac;
 	margin-right: 0;
 	float: left;
-	color: #fff; /*#888;*/
-	/*width: 33.3333%;*/ /* Always three items in one row */
-	width: 25%;
+	color: #fff;
+	width: 25%; /* Always 4 items in one row */
 	cursor: pointer;
-	/* We are using also "btn-flat" in TAB class to incorporate Materialize CSS 
-	   capability to handle also Mobile clicks correctly. */
-	/* Therefore we must overwrite "btn-flat" height and font-size properties 
-	with a more suitable values. */
+	/* We are using also "btn-flat" in TAB class to incorporate Materialize CSS capability 
+	to handle also Mobile clicks correctly. Therefore we must overwrite "btn-flat" height 
+	and font-size properties with a more suitable values. */
 	font-size: 14px;
 	height: 50px;
 }
@@ -28,7 +21,6 @@
 .tab-grid a i.small {
 	font-size: 2rem;
 }
-
 .tab-cell:nth-child(1) { 
 	border-right: 1px solid #000;
 }
@@ -38,13 +30,11 @@
 .tab-cell:nth-child(3) { 
 	border-right: 1px solid #000;
 }
-
- /* Always four items in one row */
+/* Always 4 items in one row */
 .tab-cell:nth-child( 4n ) { 
 	margin-right: 0;
-	/*border-right: 1px solid #ccc;*/
 }
- /* Always four items in one row */
+/* Always 4 items in one row */
 .tab-cell:nth-child( 4n+1 ) { 
 	clear:left;
 }
@@ -58,21 +48,13 @@
 #00796b teal darken-2
 #00695c teal darken-3
 #004d40 teal darken-4
-
-450 x 321
-BACKGROUND GREEN #00897b
-BACKGROUND LIGHT GREEN #26a69a
 */
 .tab-cell.active {
-	/*
-	background-color: #fff;
-	color: #00897b;
-	*/
 	background-color: #00897b;
 	color: #fff;
 }
 .tab-cell:hover {
-	background-color: #00897b;
+	background-color: #009688;
 	color: #fff;
 }
 /* TWO COLUMNS / NTH-CHILD(2N) AND NTH-CHILD(2N+1) */

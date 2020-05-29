@@ -19,14 +19,11 @@ export default class MenuController {
 			this.view = undefined;
 		}
 		this.menuModel.unsubscribe(this);
-		//this.menuModel.unsubscribe(this.master);
 	}
 	
 	show() {
-		if (this.visible) {
-			if (this.view) {
-				this.view.render();
-			}
+		if (this.visible && this.view) {
+			this.view.render();
 		}
 	}
 	
@@ -37,21 +34,14 @@ export default class MenuController {
 	}
 	
 	notify(options){
-		
-		if (options.model==='MenuModel' && options.method==='restore') {
-			
+		if (options.model==='MenuModel' && options.method==='restored') {
 			this.show();
-			
-		} else if (options.model==='MenuModel' && options.method==='selected') {
-			
-			
-			
 		}
 	}
-	
+	/*
 	getActiveTab() {
 		return this.menuModel.activeTab;
-	}
+	}*/
 	
 	restore() {
 		this.menuModel.restore();
@@ -60,8 +50,6 @@ export default class MenuController {
 	init() {
 		this.menuModel = new MenuModel(this.menuitems);
 		this.menuModel.subscribe(this);
-		//this.menuModel.subscribe(this.master);
-		
 		this.master.modelRepo.add('MenuModel',this.menuModel);
 		this.view = new MenuView(this);
 	}

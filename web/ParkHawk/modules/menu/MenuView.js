@@ -1,6 +1,4 @@
-
 import MenuModel from './MenuModel.js';
-
 export default class MenuView {
 	constructor(controller) {
 		this.controller = controller;
@@ -35,10 +33,8 @@ export default class MenuView {
 	
 	render() {
 		$(this.el).empty();
-		
 		let html = '<div class="tab-grid">';
 		this.menuModel.menuitems.forEach((key)=>{
-			
 			// NEW: 'home', 'map', 'camera', 'info'
 			if (key === 'home') {
 				html += '<a href="javascript:void(0);" class="btn-flat tab-cell" id="'+key+'"><img src="./img/ParkHawkLogo.png" height="38" /></a>';
@@ -50,7 +46,6 @@ export default class MenuView {
 		});
 		html += '</div>';
 		$(html).appendTo(this.el);
-		
 		// Initialize TAB state and click handlers.
 		this.menuModel.menuitems.forEach((key)=>{
 			if (key === this.menuModel.activeTab) {

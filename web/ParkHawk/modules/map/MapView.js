@@ -1,18 +1,21 @@
+import View from '../common/View.js';
 
-
-export default class MapView {
+export default class MapView extends View {
 	
 	constructor(controller) {
-		this.controller = controller;
-		this.mapListModel = controller.master.modelRepo.get('MapListModel');
-		this.mapListModel.subscribe(this);
-		this.el = controller.el;
+		super(controller);
+		Object.keys(this.controller.models).forEach(key => {
+			if (key === 'MapListModel') {
+				this.models[key] = this.controller.models[key];
+				this.models[key].subscribe(this);
+			}
+		});
+		this.REO = controller.master.modelRepo.get('ResizeEventObserver');
+		this.REO.subscribe(this);
+		
 		this.mymap = undefined;
 		this.markerGroup = L.layerGroup();
 		this.labelGroup = L.layerGroup();
-		
-		this.REO = controller.master.modelRepo.get('ResizeEventObserver');
-		this.REO.subscribe(this);
 		
 		this.mapzoom = 3; //12;
 		this.mapcenter = [45, 10]; //[60.32, 24.54];
@@ -29,12 +32,14 @@ export default class MapView {
 	}
 	
 	remove() {
+		Object.keys(this.models).forEach(key => {
+			this.models[key].unsubscribe(this);
+		});
+		this.REO.unsubscribe(this);
 		if (this.mymap) {
 			this.mymap.remove();
 			this.mymap = undefined;
 		}
-		this.mapListModel.unsubscribe(this);
-		this.REO.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -86,68 +91,61 @@ export default class MapView {
 			tooltipAnchor: [16, -28]
 		});
 		
-		var maplist = this.mapListModel.getMapData();
-		Object.keys(maplist).map(key => {
-			
-			var lat = maplist[key].latitude;
-			var lon = maplist[key].longitude;
-			var pic =  maplist[key].picture;
-			var title =  maplist[key].title;
-			
-			var labelMarker = L.marker(new L.LatLng(lat, lon), {icon:self.createLabelIcon("yellowLabel", key)});//.addTo(self.mymap);
-			this.labelGroup.addLayer(labelMarker);
-			
-			
-			var sd = maplist[key].startDate; // sd = "25.05.2019"
-			
-			var start_timestamp = moment();
-			start_timestamp
-				.year(parseInt(sd.slice(6),10))
-				.month(parseInt(sd.slice(3,5),10)-1)
-				.date(parseInt(sd.slice(0,2),10))
-				.hour(0)
-				.minute(0)
-				.second(0);
-			
-			var now_ts = moment();
-			var trip_ts = moment(start_timestamp);
-			if (trip_ts.isBefore(now_ts)) {
-				var marker = L.marker([lat,lon]).bindPopup('<h6 style="text-align:center;">'+title+'</h6><img src="'+pic+'" width="300"/>');//.addTo(self.mymap);
-				
-				// Add each marker to the group
-				this.markerGroup.addLayer( marker );
-				
-			} else {
-				var marker = L.marker([lat,lon],{icon: orangeIcon}).bindPopup('<h6 style="text-align:center;">'+title+'</h6><img src="'+pic+'" width="300"/>');//.addTo(self.mymap);
-				
-				// Add each marker to the group
-				this.markerGroup.addLayer( marker );
-				
+		let maplist = undefined;
+		Object.keys(this.models).forEach(key => {
+			if (key==='MapListModel') {
+				maplist = this.models[key].getMapData();
 			}
 		});
-		
-		// Add the group to the map
-		this.markerGroup.addTo(this.mymap);
-		
+		if (typeof maplist !== 'undefined') {
+			Object.keys(maplist).map(key => {
+				var lat = maplist[key].latitude;
+				var lon = maplist[key].longitude;
+				var pic =  maplist[key].picture;
+				var title =  maplist[key].title;
+				
+				var labelMarker = L.marker(new L.LatLng(lat, lon), {icon:self.createLabelIcon("yellowLabel", key)});//.addTo(self.mymap);
+				this.labelGroup.addLayer(labelMarker);
+				
+				var sd = maplist[key].startDate; // sd = "25.05.2019"
+				
+				var start_timestamp = moment();
+				start_timestamp
+					.year(parseInt(sd.slice(6),10))
+					.month(parseInt(sd.slice(3,5),10)-1)
+					.date(parseInt(sd.slice(0,2),10))
+					.hour(0)
+					.minute(0)
+					.second(0);
+				
+				var now_ts = moment();
+				var trip_ts = moment(start_timestamp);
+				if (trip_ts.isBefore(now_ts)) {
+					var marker = L.marker([lat,lon]).bindPopup('<h6 style="text-align:center;">'+title+'</h6><img src="'+pic+'" width="300"/>');
+					// Add each marker to the group
+					this.markerGroup.addLayer(marker);
+				} else {
+					var marker = L.marker([lat,lon],{icon: orangeIcon}).bindPopup('<h6 style="text-align:center;">'+title+'</h6><img src="'+pic+'" width="300"/>');
+					// Add each marker to the group
+					this.markerGroup.addLayer(marker);
+				}
+			});
+			// Add the group to the map
+			this.markerGroup.addTo(this.mymap);
+		}
 	}
 	
 	notify(options) {
-		if (options.model === 'MapListModel' && options.method === 'fetch') {
+		if (options.model === 'MapListModel' && options.method === 'fetched') {
 			if (options.status === 200) {
 				if (this.mymap) {
 					this.renderMarkers();
-					
-					
 				}
 			}
 		} else if (options.model === 'ResizeEventObserver' && options.method === 'resize') {
 			if (this.rendered) {
-				
 				this.setMapHeight();
-				
-			} /*else {
-				console.log('Map NOT rendered yet!');
-			}*/
+			}
 		}
 	}
 	
@@ -184,9 +182,13 @@ export default class MapView {
 		});
 		
 		this.mymap.setView(this.mapcenter, this.mapzoom);
-		
-		setTimeout(() => this.mapListModel.fetch(), 100);
-		
+		/*
+		Object.keys(this.models).forEach(key => {
+			if (key==='MapListModel') {
+				setTimeout(() => this.models[key].fetch(), 100);
+			}
+		});
+		*/
 		this.mymap.on("zoomend", function(e) { 
 			self.mapzoom = self.mymap.getZoom();
 			if (self.mapzoom > 4) {

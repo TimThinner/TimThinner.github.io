@@ -1,17 +1,22 @@
 import View from '../common/View.js';
 
-export default class HomeView extends View {
+export default class CameraView extends View {
 	
 	constructor(controller) {
 		super(controller);
+		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'HomeModel') {
+			if (key === 'CameraModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
+		
+		//this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
+		//this.REO.subscribe(this);
+		
 		this.rendered = false;
-		this.FELID = 'home-view-failure';
+		this.FELID = 'camera-view-failure';
 	}
 	
 	show() {
@@ -27,19 +32,26 @@ export default class HomeView extends View {
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
+		//this.REO.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	updateLatestValues() {
-		console.log('HomeView updateLatestValues');
+		let count = 0;
+		Object.keys(this.models).forEach(key => {
+			if (key === 'CameraModel') {
+				count = this.models[key].picCount;
+			}
+		});
+		$('#count').empty().text('Counter value is '+count);
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='HomeModel' && options.method==='fetched') {
+			if (options.model==='CameraModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('HomeView => HomeModel fetched!');
+					console.log('CameraView => CameraModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();
@@ -55,15 +67,20 @@ export default class HomeView extends View {
 						this.render();
 					}
 				}
+			} else if (options.model === 'ResizeEventObserver' && options.method === 'resize') {
+				if (this.rendered) {
+					console.log('resize!');
+				} else {
+					console.log('resize: Camera NOT rendered yet!');
+				}
 			}
-		} 
+		}
 	}
 	
 	render() {
 		const self = this;
 		$(this.el).empty();
 		if (this.areModelsReady()) {
-			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
@@ -74,14 +91,18 @@ export default class HomeView extends View {
 					'</div>';
 				$(html).appendTo(this.el);
 			} else {
+				let count = 0;
+				Object.keys(this.models).forEach(key => {
+					if (key === 'CameraModel') {
+						count = this.models[key].picCount;
+					}
+				});
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<h4>Home</h4>'+
-							'<p>This is where the user selects TARGET AREA for the map and cameras.</p>'+
+						'<div class="col s12">'+
+							'<h4 style="text-align:center;">Camera View</h4>'+
+							'<p id="count" style="text-align:center;">Counter value is '+count+'</p>'+
 							'<p>&nbsp;</p>'+
-							'<p>&nbsp;</p>'+
-							'<p>UNDER CONSTRUCTION...</p>'+
 							'<p>&nbsp;</p>'+
 							'<p>&nbsp;</p>'+
 							'<p>&nbsp;</p>'+
@@ -94,7 +115,7 @@ export default class HomeView extends View {
 			}
 			this.rendered = true;
 		} else {
-			console.log('HomeView => render Model IS NOT READY!!!!');
+			console.log('CameraView => render Model IS NOT READY!!!!');
 			this.showSpinner(this.el);
 		}
 	}

@@ -27,17 +27,14 @@ Desktop   4 (4 x 300)
 #0277bd light-blue darken-3
 #01579b light-blue darken-4
 */
-
 html, body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
 	background-color: #eee;
 	color: #333;
 }
-
 .container {
 	margin: 0 auto;
-	/*max-width: 1280px;*/
 	max-width: 1500px;
 	width: 100%;
 	background-color: #fff;
@@ -52,16 +49,18 @@ html, body {
 		width: 100%;
 	}
 }
-
 @media screen and (min-width: 601px) {
 	html, body {
 		font-size: 18px;
 	}
 }
-/*.container {
-	margin: 0 auto;
-	max-width: 1280px;
-	width: 100%;
-	background-color: #fff;
-}*/
-
+.error-message {
+	border: 1px solid #f88;
+	background-color: #fee;
+	padding-left: 1rem;
+}
+.success-message {
+	border: 1px solid #8f8;
+	background-color: #efe;
+	padding-left: 1rem;
+}

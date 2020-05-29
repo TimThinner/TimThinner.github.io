@@ -19,16 +19,13 @@ export default class View {
 	}
 	
 	modelsErrorMessages() {
-		let retval = '';
+		const errA = [];
 		Object.keys(this.models).forEach(key => {
 			if (this.models[key].errorMessage.length > 0) {
-				retval += this.models[key].errorMessage + ' ';
+				errA.push(this.models[key].errorMessage);
 			}
 		});
-		if (retval.length > 0) {
-			return retval.slice(0, -1);
-		}
-		return retval;
+		return errA.join(' ');
 	}
 	
 	showSpinner(el) {

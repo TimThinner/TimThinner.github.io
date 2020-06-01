@@ -9,6 +9,7 @@ export default class MenuController {
 		this.el        = options.el;
 		this.visible   = options.visible;
 		this.menuitems = options.menuitems;
+		
 		this.view      = undefined;
 		this.menuModel = undefined;
 	}
@@ -23,7 +24,7 @@ export default class MenuController {
 	
 	show() {
 		if (this.visible && this.view) {
-			this.view.render();
+			this.view.show();
 		}
 	}
 	
@@ -33,18 +34,14 @@ export default class MenuController {
 		}
 	}
 	
+	restore() {
+		this.menuModel.restore();
+	}
+	
 	notify(options){
 		if (options.model==='MenuModel' && options.method==='restored') {
 			this.show();
 		}
-	}
-	/*
-	getActiveTab() {
-		return this.menuModel.activeTab;
-	}*/
-	
-	restore() {
-		this.menuModel.restore();
 	}
 	
 	init() {

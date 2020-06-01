@@ -3,32 +3,56 @@ import EventObserver from '../common/EventObserver.js';
 
 export default class HomeModel extends EventObserver {
 	
-	constructor(options) {
+	constructor(targets) {
 		super();
-		this.name = options.name;
-		this.src = options.src;
-		this.ready = false;
-		this.errorMessage = '';
-		this.fetching = false;
+		this.targets = targets;
+		this.activeTarget = 'Nuuksio';
 	}
 	
-	fetch() {
-		const self = this;
-		if (this.fetching) {
-			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
-			return;
+	store() {
+		const itemID = 'ParkhawkTarget';
+		const new_status = {'activeTarget':this.activeTarget};
+		const status = localStorage.getItem(itemID);
+		if (status == null) {
+			// no previous status.
+			const encoded = JSON.stringify(new_status);
+			localStorage.setItem(itemID, encoded);
+		} else {
+			// previous status exist.
+			localStorage.removeItem(itemID);
+			const encoded = JSON.stringify(new_status);
+			localStorage.setItem(itemID, encoded);
 		}
-		
-		let status = 500; // error: 500
-		this.errorMessage = '';
-		this.fetching = true;
-		
-		console.log ('HomeModel => fetch()...');
-		status = 200; // OK
-		setTimeout(() => {
-			this.fetching = false;
-			this.ready = true;
-			this.notifyAll({model:this.name, method:'fetched', status:status, message:'OK'});
-		}, 200);
 	}
+	
+	restore() {
+		const itemID = 'ParkhawkTarget';
+		
+		// By default Nuuksio is selected!
+		this.activeTarget = 'Nuuksio';
+		
+		const status = localStorage.getItem(itemID);
+		if (status == null) {
+			console.log('No status stored in localStorage.');
+		} else {
+			// Status exist: Restore current situation from localStorage.
+			const stat = JSON.parse(status);
+			if (typeof stat.activeTarget !== 'undefined') {
+				// Make sure localStorage has valid target!
+				if (Object.keys(this.targets).includes(stat.activeTarget)) {
+					this.activeTarget = stat.activeTarget;
+				}
+			}
+		}
+		setTimeout(() => {
+			this.notifyAll({model:'HomeModel',method:'restored',target:this.activeTarget});
+			//this.notifyAll({model:'HomeModel',method:'selected',target:this.activeTarget});
+		}, 100);
+	}
+	/*
+	selected(target) {
+		this.activeTarget = target;
+		setTimeout(() => this.notifyAll({model:'HomeModel',method:'selected',target:target}), 100);
+		//setTimeout(() => this.notifyAll({model:'MenuModel',method:'selected',tab:'map'}), 100);
+	}*/
 }

@@ -17,13 +17,15 @@ export default class MapView extends View {
 		this.markerGroup = L.layerGroup();
 		this.labelGroup = L.layerGroup();
 		
-		this.mapzoom = 3; //12;
-		this.mapcenter = [45, 10]; //[60.32, 24.54];
+		//this.mapzoom = 3; //12;
+		//this.mapcenter = [45, 10]; //[60.32, 24.54];
+		this.mapzoom = 12;
+		this.mapcenter = [60.32, 24.54];
 		this.rendered = false;
 	}
 	
 	hide() {
-		if (this.mymap) {
+		if (typeof this.mymap !== 'undefined') {
 			this.mymap.remove();
 			this.mymap = undefined;
 		}
@@ -36,7 +38,7 @@ export default class MapView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
-		if (this.mymap) {
+		if (typeof this.mymap !== 'undefined') {
 			this.mymap.remove();
 			this.mymap = undefined;
 		}
@@ -45,10 +47,11 @@ export default class MapView extends View {
 	}
 	
 	setMapHeight() {
-		if (typeof this.REO.height !== 'undefined') {
+		if (typeof this.REO.height !== 'undefined' && typeof this.mymap !== 'undefined') {
 			const H = (this.REO.height-70) + 'px'; // menu Height maximum is 60px.
-			//console.log(['H=',H]);
 			$('#mapid').css({height:H,width:"100%"});
+			this.mymap.invalidateSize();
+			console.log(['invalidateSize() H=',H]);
 		}
 	}
 	
@@ -67,12 +70,12 @@ export default class MapView extends View {
 	}
 	
 	removeLabels() {
-		console.log('Remove Labels');
+		//console.log('Remove Labels');
 		this.labelGroup.remove();
 	}
 	
 	renderLabels() {
-		console.log('Add Labels');
+		//console.log('Add Labels');
 		this.labelGroup.addTo(this.mymap);
 	}
 	
@@ -138,11 +141,14 @@ export default class MapView extends View {
 	notify(options) {
 		if (options.model === 'MapListModel' && options.method === 'fetched') {
 			if (options.status === 200) {
-				if (this.mymap) {
+				if (typeof this.mymap !== 'undefined') {
+					//console.log('MapView Model fetched');
 					this.renderMarkers();
+					
 				}
 			}
 		} else if (options.model === 'ResizeEventObserver' && options.method === 'resize') {
+			//console.log('MapView resize!!!!');
 			if (this.rendered) {
 				this.setMapHeight();
 			}
@@ -152,7 +158,7 @@ export default class MapView extends View {
 	render() {
 		var self = this;
 		
-		if (this.mymap) {
+		if (typeof this.mymap !== 'undefined') {
 			this.mymap.remove();
 		}
 		$(this.el).empty().append('<div id="mapid"></div>');
@@ -163,10 +169,8 @@ export default class MapView extends View {
 		
 		// See: https://github.com/elmarquis/Leaflet.GestureHandling
 		
-		
 		//this.mymap = L.map('mapid',{gestureHandling: true});//.setView([60.26, 24.6], 12);
 		this.mymap = L.map('mapid');//.setView([60.26, 24.6], 12);
-		
 		
 		// NOTE: To use this.mymap.on('load', ... we MUST call this.mymap.setView(...) AFTER defining the 'load'-callback!
 		
@@ -176,19 +180,27 @@ export default class MapView extends View {
 		L.tileLayer(osmUrl, {minZoom: 1, maxZoom: 18, attribution: osmAttrib}).addTo(this.mymap);
 		
 		this.mymap.on('load', function(e) { 
-			console.log('MAP LOADED!!!!!');
-			self.setMapHeight();
+			//console.log('MapView MAP LOADED!!!!!');
 			self.rendered = true;
+			self.setMapHeight();
 		});
 		
-		this.mymap.setView(this.mapcenter, this.mapzoom);
-		/*
+		
+		
+		const homeActiveTarget = this.controller.master.modelRepo.get('HomeModel').activeTarget;
+		const homeZoom = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].zoom;
+		const homeCenter = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].center;
+		
+		//this.mymap.setView(this.mapcenter, this.mapzoom);
+		this.mymap.setView(homeCenter, homeZoom);
+		
+		
 		Object.keys(this.models).forEach(key => {
 			if (key==='MapListModel') {
 				setTimeout(() => this.models[key].fetch(), 100);
 			}
 		});
-		*/
+		
 		this.mymap.on("zoomend", function(e) { 
 			self.mapzoom = self.mymap.getZoom();
 			if (self.mapzoom > 4) {

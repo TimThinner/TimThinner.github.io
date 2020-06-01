@@ -97,10 +97,14 @@ export default class CameraView extends View {
 						count = this.models[key].picCount;
 					}
 				});
+				
+				
+				const homeActiveTarget = this.controller.master.modelRepo.get('HomeModel').activeTarget;
+				
 				const html =
 					'<div class="row">'+
 						'<div class="col s12">'+
-							'<h4 style="text-align:center;">Camera View</h4>'+
+							'<h4 style="text-align:center;">'+homeActiveTarget+' kamerat</h4>'+
 							'<p id="count" style="text-align:center;">Counter value is '+count+'</p>'+
 							'<p>&nbsp;</p>'+
 							'<p>&nbsp;</p>'+

@@ -49,8 +49,9 @@ export default class MenuModel extends EventObserver {
 		}, 100);
 	}
 	
-	selected(tab) {
+	setSelected(tab) {
 		this.activeTab = tab;
+		this.store(); // Store activeTab to local storage.
 		setTimeout(() => this.notifyAll({model:'MenuModel',method:'selected',tab:tab}), 100);
 	}
 }

@@ -1,9 +1,14 @@
-import MenuModel from './MenuModel.js';
+//import MenuModel from './MenuModel.js';
 export default class MenuView {
 	constructor(controller) {
 		this.controller = controller;
 		this.menuModel = controller.master.modelRepo.get('MenuModel');
+		this.menuModel.subscribe(this);
 		this.el = controller.el;
+	}
+	
+	show() {
+		this.render();
 	}
 	
 	hide() {
@@ -11,18 +16,15 @@ export default class MenuView {
 	}
 	
 	remove() {
+		this.menuModel.unsubscribe(this);
 		$(this.el).empty();
 	}
 	
-	activate(tab) {
-		if (this.menuModel.activeTab === tab) {
-			//console.log('TAB is already active!');
-		} else {
-			this.menuModel.activeTab = tab;
-			this.menuModel.store(); // Store activeTab to local storage.
-			this.menuModel.selected(tab);
+	notify(options) {
+		if (options.model==='MenuModel' && options.method==='selected') {
+			console.log('MenuView MenuModel selected => set active class');
 			this.menuModel.menuitems.forEach((key)=>{
-				if (key === tab) {
+				if (key === options.tab) {
 					$('#'+key).addClass('active');
 				} else {
 					$('#'+key).removeClass('active');
@@ -58,7 +60,11 @@ export default class MenuView {
 			// capture same effect as with mouse events on laptop and desktop. But fortunately 
 			// it also seems that adding 'touchstart' is sufficient to capture tap on mobile browsers.
 			$("#"+key).on('click touchstart',()=>{  // 'click touchstart'
-				this.activate(key);
+				if (this.menuModel.activeTab === key) {
+					console.log('TAB is already active!');
+				} else {
+					this.menuModel.setSelected(key);
+				}
 			});
 		});
 	}

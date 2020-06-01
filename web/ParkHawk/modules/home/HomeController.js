@@ -6,8 +6,9 @@ export default class HomeController {
 	constructor(options) {
 		this.name    = options.name;
 		this.master  = options.master;
-		this.visible = options.visible;
 		this.el      = options.el;
+		this.visible = options.visible;
+		this.targets = options.targets;
 		
 		this.models = {};
 		this.view      = undefined;
@@ -27,21 +28,24 @@ export default class HomeController {
 		}
 	}
 	
+	show() {
+		if (this.visible && this.view) {
+			this.view.show();
+		}
+	}
+	
 	hide() {
 		if (this.view) {
 			this.view.hide();
 		}
 	}
 	
-	show() {
-		console.log('HomeView Show!!');
-		if (this.visible && this.view) {
-			this.view.show();
-		}
-	}
-	
 	restore() {
-		console.log('HomeController restore');
+		Object.keys(this.models).forEach(key => {
+			if (key === 'HomeModel') {
+				this.models[key].restore();
+			}
+		});
 	}
 	
 	notify(options) {
@@ -57,19 +61,20 @@ export default class HomeController {
 				this.visible = false;
 				this.hide();
 			}
+		} else if (options.model==='HomeModel' && options.method==='selected') {
+			//console.log('HomeModel selected .. no action!');
+			// Switch to Map...
+			
+			
+			
 		}
 	}
 	
 	init() {
-		// Create the Home Model
-		const model = new HomeModel({name:'HomeModel',src:'placeholder'});
+		const model = new HomeModel(this.targets);
 		model.subscribe(this);
 		this.master.modelRepo.add('HomeModel',model);
 		this.models['HomeModel'] = model;
-		
-		
-		setTimeout(() => model.fetch(), 200);
-		
 		
 		this.menuModel = this.master.modelRepo.get('MenuModel');
 		if (this.menuModel) {

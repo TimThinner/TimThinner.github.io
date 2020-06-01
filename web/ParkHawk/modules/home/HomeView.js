@@ -1,17 +1,10 @@
-import View from '../common/View.js';
 
-export default class HomeView extends View {
-	
+export default class HomeView {
 	constructor(controller) {
-		super(controller);
-		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'HomeModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
-		});
-		this.rendered = false;
-		this.FELID = 'home-view-failure';
+		this.controller = controller;
+		this.el = controller.el;
+		this.homeModel = controller.master.modelRepo.get('HomeModel');
+		this.menuModel = controller.master.modelRepo.get('MenuModel');
 	}
 	
 	show() {
@@ -19,83 +12,58 @@ export default class HomeView extends View {
 	}
 	
 	hide() {
-		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		Object.keys(this.models).forEach(key => {
-			this.models[key].unsubscribe(this);
-		});
-		this.rendered = false;
 		$(this.el).empty();
 	}
 	
-	updateLatestValues() {
-		console.log('HomeView updateLatestValues');
-	}
-	
-	notify(options) {
-		if (this.controller.visible) {
-			if (options.model==='HomeModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					console.log('HomeView => HomeModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateLatestValues();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#'+this.FELID);
-					} else {
-						this.render();
-					}
-				}
-			}
-		} 
+	activate(target) {
+		console.log(['activate target=',target]);
+		/*
+		if (this.homeModel.activeTarget === target) {
+			console.log('TARGET is already active!');
+			
+			
+		} else {
+			
+		*/
+		this.homeModel.activeTarget = target;
+		this.homeModel.store(); // Store activeTarget to local storage.
+		this.menuModel.setSelected('map');
 	}
 	
 	render() {
-		const self = this;
 		$(this.el).empty();
-		if (this.areModelsReady()) {
+		let count = 1;
+		let html = '<div class="row"><div class="col s12 center"><h4>Parkkihaukka</h4>';
+		html += '<p>Valitse kansallispuisto klikkaamalla puiston tunnusta.</p>';
+		Object.keys(this.homeModel.targets).forEach(key => {
+			html += '<p><a href="javascript:void(0);" id="'+key+'"><img src="'+this.homeModel.targets[key].logo+'" height="300" /></a></p>';
+			count++;
+		});
+		html += '</div></div>';
+		$(html).appendTo(this.el);
+		
+		// Initialize state and click handlers.
+		Object.keys(this.homeModel.targets).forEach(key => {
 			
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
+			//console.log(['key=',key]);
+			/*
+			if (key === this.homeModel.activeTarget) {
+				$('#'+key).addClass('active');
 			} else {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<h4>Home</h4>'+
-							'<p>This is where the user selects TARGET AREA for the map and cameras.</p>'+
-							'<p>&nbsp;</p>'+
-							'<p>&nbsp;</p>'+
-							'<p>UNDER CONSTRUCTION...</p>'+
-							'<p>&nbsp;</p>'+
-							'<p>&nbsp;</p>'+
-							'<p>&nbsp;</p>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-			}
-			this.rendered = true;
-		} else {
-			console.log('HomeView => render Model IS NOT READY!!!!');
-			this.showSpinner(this.el);
-		}
+				$('#'+key).removeClass('active');
+			}*/
+			// Set up the click handler.
+			// It seems that for some mobile devices, the 'click'-handling is not enough to 
+			// capture same effect as with mouse events on laptop and desktop. But fortunately 
+			// it also seems that adding 'touchstart' is sufficient to capture tap on mobile browsers.
+			$("#"+key).on('click touchstart',()=>{  // 'click touchstart'
+				this.activate(key);
+			});
+		});
+		
 	}
 }

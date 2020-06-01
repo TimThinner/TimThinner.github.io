@@ -12,6 +12,15 @@ class MasterController {
 		this.controllers = {};
 		this.modelRepo = new ModelRepo();
 		this.menuitems = ['home','map','camera','info'];
+		this.targets = {'Nuuksio':{
+			logo: './img/401px-Nuuksion_kp.png',
+			zoom: 12,
+			center: [60.32, 24.54]
+		},'Sipoonkorpi':{
+			logo: './img/377px-Sipoonkorven_kp.png',
+			zoom: 12,
+			center: [60.35, 25.20]
+		}};
 	}
 	
 	restore() {
@@ -34,8 +43,9 @@ class MasterController {
 		this.controllers['menu'].init();
 		this.controllers['menu'].restore();
 		
-		this.controllers['home'] = new HomeController({name:'home', master:this, el:'#content', visible:false});
+		this.controllers['home'] = new HomeController({name:'home', master:this, el:'#content', visible:false, targets:this.targets});
 		this.controllers['home'].init();
+		this.controllers['home'].restore();
 		
 		this.controllers['map'] = new MapController({name:'map', master:this, el:'#content', visible:false});
 		this.controllers['map'].init();

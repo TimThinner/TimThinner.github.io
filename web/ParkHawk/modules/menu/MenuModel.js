@@ -5,7 +5,7 @@ export default class MenuModel extends EventObserver {
 	constructor(menuitems) {
 		super();
 		this.menuitems = menuitems;
-		this.activeTab = menuitems['home'];
+		this.activeTab = 'home'; // 'map', 'camera', 'info'
 	}
 	
 	store() {
@@ -28,7 +28,7 @@ export default class MenuModel extends EventObserver {
 		const itemID = 'ParkhawkTabState';
 		
 		// By default FIRST item is selected!
-		this.activeTab = this.menuitems['home'];
+		this.activeTab = 'home';
 		
 		const status = localStorage.getItem(itemID);
 		if (status == null) {

@@ -46,13 +46,12 @@ export default class HomeModel extends EventObserver {
 		}
 		setTimeout(() => {
 			this.notifyAll({model:'HomeModel',method:'restored',target:this.activeTarget});
-			//this.notifyAll({model:'HomeModel',method:'selected',target:this.activeTarget});
 		}, 100);
 	}
-	/*
-	selected(target) {
+	
+	setSelected(target) {
 		this.activeTarget = target;
+		this.store(); // Store activeTarget to local storage.
 		setTimeout(() => this.notifyAll({model:'HomeModel',method:'selected',target:target}), 100);
-		//setTimeout(() => this.notifyAll({model:'MenuModel',method:'selected',tab:'map'}), 100);
-	}*/
+	}
 }

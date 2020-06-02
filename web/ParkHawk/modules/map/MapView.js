@@ -143,7 +143,7 @@ export default class MapView extends View {
 			if (options.status === 200) {
 				if (typeof this.mymap !== 'undefined') {
 					//console.log('MapView Model fetched');
-					this.renderMarkers();
+					//this.renderMarkers();
 					
 				}
 			}
@@ -167,6 +167,17 @@ export default class MapView extends View {
 		// since we are handling CSS height for the map dynamically in map 'load' callback and in resize callback.
 		//$('#mapid').css({height:"85vh",width:"100%"}); 
 		
+		
+		const homeActiveTarget = this.controller.master.modelRepo.get('HomeModel').activeTarget;
+		const homeZoom = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].zoom;
+		const homeCenter = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].center;
+		
+		const position = homeCenter; //[this.lat, this.lng]
+		const lat = position[0];
+		const lng = position[1];
+		const maxBounds = L.latLngBounds(L.latLng(lat+0.2, lng-0.5),L.latLng(lat-0.2, lng+0.5));
+		
+		
 		// See: https://github.com/elmarquis/Leaflet.GestureHandling
 		
 		//this.mymap = L.map('mapid',{gestureHandling: true});//.setView([60.26, 24.6], 12);
@@ -174,22 +185,30 @@ export default class MapView extends View {
 		
 		// NOTE: To use this.mymap.on('load', ... we MUST call this.mymap.setView(...) AFTER defining the 'load'-callback!
 		
+		/* Example of bounds:
+		var southWest = L.latLng(40.712, -74.227),
+            northEast = L.latLng(40.774, -74.125),
+            mybounds = L.latLngBounds(southWest, northEast);
+
+        var map = L.map('map').setView([40.743, -74.176], 17);
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png' , {
+                bounds: mybounds,
+                maxZoom: 18,
+                minZoom: 16,
+                attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+        }) .addTo(map);
+        L.marker([40.743, -74.176]) .addTo(map);		*/
+		
 		// create the tile layer with correct attribution
 		var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 		var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-		L.tileLayer(osmUrl, {minZoom: 1, maxZoom: 18, attribution: osmAttrib}).addTo(this.mymap);
+		L.tileLayer(osmUrl, {minZoom: 11, maxZoom: 18, bounds: maxBounds, attribution: osmAttrib}).addTo(this.mymap);
 		
 		this.mymap.on('load', function(e) { 
 			//console.log('MapView MAP LOADED!!!!!');
 			self.rendered = true;
 			self.setMapHeight();
 		});
-		
-		
-		
-		const homeActiveTarget = this.controller.master.modelRepo.get('HomeModel').activeTarget;
-		const homeZoom = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].zoom;
-		const homeCenter = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].center;
 		
 		//this.mymap.setView(this.mapcenter, this.mapzoom);
 		this.mymap.setView(homeCenter, homeZoom);
@@ -203,11 +222,11 @@ export default class MapView extends View {
 		
 		this.mymap.on("zoomend", function(e) { 
 			self.mapzoom = self.mymap.getZoom();
-			if (self.mapzoom > 4) {
+			/*if (self.mapzoom > 4) {
 				self.renderLabels();
 			} else {
 				self.removeLabels();
-			}
+			}*/
 		});
 		
 		this.mymap.on("moveend", function(e) {

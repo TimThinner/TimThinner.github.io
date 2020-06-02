@@ -5,7 +5,7 @@ export default class MenuModel extends EventObserver {
 	constructor(menuitems) {
 		super();
 		this.menuitems = menuitems;
-		this.activeTab = menuitems[0];
+		this.activeTab = menuitems['home'];
 	}
 	
 	store() {
@@ -28,7 +28,7 @@ export default class MenuModel extends EventObserver {
 		const itemID = 'ParkhawkTabState';
 		
 		// By default FIRST item is selected!
-		this.activeTab = this.menuitems[0];
+		this.activeTab = this.menuitems['home'];
 		
 		const status = localStorage.getItem(itemID);
 		if (status == null) {
@@ -38,15 +38,19 @@ export default class MenuModel extends EventObserver {
 			const stat = JSON.parse(status);
 			if (typeof stat.activeTab !== 'undefined') {
 				// Make sure localStorage has valid tab!
-				if (this.menuitems.includes(stat.activeTab)) {
+				if (Object.keys(this.menuitems).includes(stat.activeTab)) {
 					this.activeTab = stat.activeTab;
 				}
 			}
 		}
 		setTimeout(() => {
 			this.notifyAll({model:'MenuModel',method:'restored',tab:this.activeTab});
-			this.notifyAll({model:'MenuModel',method:'selected',tab:this.activeTab});
 		}, 100);
+	}
+	
+	setHomeLogo(logo) {
+		this.menuitems['home'].logo = logo;
+		setTimeout(() => this.notifyAll({model:'MenuModel',method:'logochanged'}), 100);
 	}
 	
 	setSelected(tab) {

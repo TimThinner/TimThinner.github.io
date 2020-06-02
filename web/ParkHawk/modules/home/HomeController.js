@@ -16,15 +16,15 @@ export default class HomeController {
 	}
 	
 	remove() {
+		if (this.view) {
+			this.view.remove();
+			this.view = undefined;
+		}
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
 		if (this.menuModel) {
 			this.menuModel.unsubscribe(this);
-		}
-		if (this.view) {
-			this.view.remove();
-			this.view = undefined;
 		}
 	}
 	
@@ -49,7 +49,7 @@ export default class HomeController {
 	}
 	
 	notify(options) {
-		if (options.model==='MenuModel' && options.method==='selected') {
+		if (options.model==='MenuModel' && (options.method==='selected' || options.method==='restored')) {
 			console.log(['Open tab ',options.tab]);
 			if (this.name === options.tab) {
 				setTimeout(() => {

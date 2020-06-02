@@ -11,7 +11,8 @@ class MasterController {
 	constructor() {
 		this.controllers = {};
 		this.modelRepo = new ModelRepo();
-		this.menuitems = ['home','map','camera','info'];
+		//const icon_map = {'map':'home','camera':'camera_alt','info':'info'};
+		this.menuitems = {'home':{logo:'./img/401px-Nuuksion_kp.png'},'map':{logo:'home'},'camera':{logo:'camera_alt'},'info':{logo:'info'}};
 		this.targets = {'Nuuksio':{
 			logo: './img/401px-Nuuksion_kp.png',
 			zoom: 12,

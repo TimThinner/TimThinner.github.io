@@ -23,33 +23,34 @@ export default class MenuView {
 	notify(options) {
 		if (options.model==='MenuModel' && options.method==='selected') {
 			console.log('MenuView MenuModel selected => set active class');
-			this.menuModel.menuitems.forEach((key)=>{
+			Object.keys(this.menuModel.menuitems).forEach((key)=>{
 				if (key === options.tab) {
 					$('#'+key).addClass('active');
 				} else {
 					$('#'+key).removeClass('active');
 				}
 			});
+		} else if (options.model==='MenuModel' && options.method==='logochanged') {
+			const logo = this.menuModel.menuitems['home'].logo;
+			$('#home').empty().append('<img src="'+logo+'" height="40" />');
 		}
 	}
 	
 	render() {
 		$(this.el).empty();
 		let html = '<div class="tab-grid">';
-		this.menuModel.menuitems.forEach((key)=>{
-			// NEW: 'home', 'map', 'camera', 'info'
+		Object.keys(this.menuModel.menuitems).forEach((key)=>{
+			const logo = this.menuModel.menuitems[key].logo;
 			if (key === 'home') {
-				html += '<a href="javascript:void(0);" class="btn-flat tab-cell" id="'+key+'"><img src="./img/ParkHawkLogo.png" height="38" /></a>';
+				html += '<a href="javascript:void(0);" class="btn-flat tab-cell" id="'+key+'"><img src="'+logo+'" height="40" /></a>';
 			} else {
-				const icon_map = {'map':'home','camera':'camera_alt','info':'info'};
-				const micon = icon_map[key];
-				html += '<a href="javascript:void(0);" class="btn-flat tab-cell" id="'+key+'"><i class="small material-icons">'+micon+'</i></a>';
+				html += '<a href="javascript:void(0);" class="btn-flat tab-cell" id="'+key+'"><i class="small material-icons">'+logo+'</i></a>';
 			}
 		});
 		html += '</div>';
 		$(html).appendTo(this.el);
 		// Initialize TAB state and click handlers.
-		this.menuModel.menuitems.forEach((key)=>{
+		Object.keys(this.menuModel.menuitems).forEach((key)=>{
 			if (key === this.menuModel.activeTab) {
 				$('#'+key).addClass('active');
 			} else {

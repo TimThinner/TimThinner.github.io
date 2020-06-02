@@ -50,7 +50,7 @@ export default class CameraController extends PeriodicPoller {
 	}
 	
 	notify(options) {
-		if (options.model==='MenuModel' && options.method==='selected') {
+		if (options.model==='MenuModel' && (options.method==='selected' || options.method==='restored')) {
 			console.log(['Open tab ',options.tab]);
 			if (this.name === options.tab) {
 				setTimeout(() => {

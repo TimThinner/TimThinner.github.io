@@ -97,10 +97,7 @@ export default class CameraView extends View {
 						count = this.models[key].picCount;
 					}
 				});
-				
-				
 				const homeActiveTarget = this.controller.master.modelRepo.get('HomeModel').activeTarget;
-				
 				const html =
 					'<div class="row">'+
 						'<div class="col s12">'+

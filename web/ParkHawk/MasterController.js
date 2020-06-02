@@ -39,7 +39,7 @@ class MasterController {
 		this.modelRepo.add('ResizeEventObserver',REO);
 		REO.start(); // Start tracking resize events
 		
-		// Menu controller MUST be first!
+		// Order is important here (1. Menu  2. Home  3. Map)
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#menu', visible:true, menuitems:this.menuitems});
 		this.controllers['menu'].init();
 		this.controllers['menu'].restore();

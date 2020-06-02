@@ -244,7 +244,7 @@ export default class MapView extends View {
 			case 'Kota':                                iconurl = this.buildingBaseUrl+'kota.png'; break;
 			case 'Luonto- tai näkötorni':               iconurl = this.buildingBaseUrl+'luontotorni.png'; break;
 			case 'Kävely- tai kevyen liikenteen silta': iconurl = this.buildingBaseUrl+'silta.png'; break;
-			case 'Vuokrakämppä tai -tupa':              iconurl = this.buildingBaseUrl+'vuokratupacircle'; break;
+			case 'Vuokrakämppä tai -tupa':              iconurl = this.buildingBaseUrl+'vuokratupacircle.png'; break;
 			case 'Muu majoitus- tai liikerakennus':     iconurl = this.buildingBaseUrl+'majoitus.png'; break;
 			case 'Sauna':                               iconurl = this.buildingBaseUrl+'sauna.png'; break;
 			case 'Luontokeskus':                        iconurl = this.buildingBaseUrl+'luontokeskus.png'; break;

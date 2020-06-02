@@ -297,6 +297,22 @@ export default class MapView extends View {
 	*/
 	}
 	
+	handleZoom(z) {
+		if (z < 14) { // 11,12,13 
+			// Remove layer if it is there.
+			if (this.mymap.hasLayer(this.buildingMarkers)) {
+				this.mymap.removeLayer(this.buildingMarkers);
+			}
+		} else { // 14,15,16,17,18
+			// if requested zoom level is between 14 - 18: add the layer if it is not already there.
+			if (this.mymap.hasLayer(this.buildingMarkers)) {
+				// Do nothing
+			} else {
+				this.mymap.addLayer(this.buildingMarkers);
+			}
+		}
+	}
+	
 	render() {
 		var self = this;
 		
@@ -315,6 +331,8 @@ export default class MapView extends View {
 		const homeCenter = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].center;
 		
 		console.log(['homeActiveTarget=',homeActiveTarget]);
+		console.log(['homeCenter=',homeCenter]);
+		console.log(['homeZoom=',homeZoom]);
 		
 		const position = homeCenter; //[this.lat, this.lng]
 		const lat = position[0];
@@ -384,35 +402,31 @@ export default class MapView extends View {
 			}
 		});
 		
+		this.handleZoom(homeZoom);
+		
+		
 		this.mymap.on("zoomend", function(e) { 
 			self.mapzoom = self.mymap.getZoom();
+			
+			console.log(['self.mapzoom=',self.mapzoom]);
+			
+			const homeActiveTarget = self.controller.master.modelRepo.get('HomeModel').activeTarget;
+			self.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].zoom = self.mapzoom;
+			
 			/*if (self.mapzoom > 4) {
 				self.renderLabels();
 			} else {
 				self.removeLabels();
 			}*/
-			
-			
-			if (self.mapzoom < 14) { // 11,12,13 
-				// Remove layer if it is there.
-				if (self.mymap.hasLayer(self.buildingMarkers)) {
-					self.mymap.removeLayer(self.buildingMarkers);
-				}
-			} else { // 14,15,16,17,18
-				// if requested zoom level is between 14 - 18: add the layer if it is not already there.
-				if (self.mymap.hasLayer(self.buildingMarkers)) {
-					// Do nothing
-				} else {
-					self.mymap.addLayer(self.buildingMarkers);
-				}
-			}
-		
-		
-		
+			self.handleZoom(self.mapzoom);
 		});
 		
 		this.mymap.on("moveend", function(e) {
 			self.mapcenter = self.mymap.getCenter();
+			console.log(['self.mapcenter=',self.mapcenter]);
+			
+			const homeActiveTarget = self.controller.master.modelRepo.get('HomeModel').activeTarget;
+			self.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].center = [self.mapcenter.lat, self.mapcenter.lng];
 		});
 	}
 }

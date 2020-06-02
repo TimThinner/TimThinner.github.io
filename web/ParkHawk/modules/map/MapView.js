@@ -1,5 +1,9 @@
 import View from '../common/View.js';
 
+/* These routes and buildings are for Nuuksio: */
+import routedata from '../../assets/geojson/routedata.js';
+import buildingdata from '../../assets/geojson/buildingdata.js';
+
 export default class MapView extends View {
 	
 	constructor(controller) {
@@ -17,8 +21,11 @@ export default class MapView extends View {
 		this.markerGroup = L.layerGroup();
 		this.labelGroup = L.layerGroup();
 		
-		//this.mapzoom = 3; //12;
-		//this.mapcenter = [45, 10]; //[60.32, 24.54];
+		this.buildingMarkers = L.layerGroup();
+		this.boundOnPointToLayer = (feature,latlng) => this.onPointToLayer(feature, latlng);
+		this.buildingBaseUrl = 'https://timthinner.github.io/web/ParkHawk/assets/markers/';
+		
+		
 		this.mapzoom = 11;
 		this.mapcenter = [60.32, 24.54];
 		this.rendered = false;
@@ -155,6 +162,141 @@ export default class MapView extends View {
 		}
 	}
 	
+	
+	
+	getRouteStyle(feature, layer) {
+		let c = '#000000';
+		let w = 6;
+		if (feature.properties.priority > 0) {
+			w += 2;
+		}
+		if (feature.properties.color) {
+			c = feature.properties.color;
+		}
+		return {
+			color: c,
+			weight: w,
+			opacity: 0.8
+		}
+	}
+	
+	getEachRouteFeature(feature, layer) {
+		//console.log(feature, layer);
+		//Nimi: "Päivättärenpolku"
+		//​​color: "#3d9b48"
+		//id: 1000109095
+		//length: 1.4
+		//tyyppi: "Luontopolku"
+		//url: ""
+		if (feature.properties && feature.properties.Nimi) {
+			if (feature.properties.url.length > 0) {
+				let s = `<div class="map-route-info-popup-wrapper">
+						<p class="map-feature-title">
+						<a href="${feature.properties.url}" target="_blank">${feature.properties.Nimi}</a>
+						</p>Tyyppi: ${feature.properties.tyyppi}<br/>Pituus: ${feature.properties.length}km
+					</div>`
+				layer.bindPopup(s);
+			} else {
+				let s = `<div class="map-route-info-popup-wrapper">
+					<p class="map-feature-title">${feature.properties.Nimi}</p>
+					Tyyppi: ${feature.properties.tyyppi}<br/>Pituus: ${feature.properties.length}km
+				</div>`
+				layer.bindPopup(s);
+			}
+		}
+	}
+	
+	
+	getBuildingStyle(feature) {
+		
+		
+	}
+	
+	onPointToLayer(feature, latlng) {
+	
+		//console.log('getPointToLayer feature: ',feature);
+		//console.log('getPointToLayer: ',latlng);
+		//let fcolor = '#ffff00';
+		//let fcolor = '#222222';
+		
+		//console.log('Tyyppi=',feature.properties.tyyppi)
+		
+		//	switch (feature.properties.tyyppi) {
+		//		case 'Opastus (Info)':  fcolor = '#0000ff'; break;
+		//		case 'Tulentekopaikka': fcolor = '#ff0000'; break;
+		//		case 'Keittokatos':     fcolor = '#ff7800'; break;
+		//		default: break;
+		//	}
+		
+		
+		// Map icons for buildings etc.
+		let iconurl = this.buildingBaseUrl+'opastusbluecircle.png';
+		switch (feature.properties.tyyppi) {
+			case 'Opastus (Info)':                      iconurl = this.buildingBaseUrl+'opastusbluecircle.png'; break;
+			case 'Tulentekopaikka':                     iconurl = this.buildingBaseUrl+'tulentekopaikkaredcircle.png'; break;
+			case 'Keittokatos':                         iconurl = this.buildingBaseUrl+'keittokatosred.png'; break;
+			case 'Laavu':                               iconurl = this.buildingBaseUrl+'laavu.png'; break;
+			case 'Varattava telttailualue':             iconurl = this.buildingBaseUrl+'varattavatelttailualue.png'; break;
+			case 'Telttailualue':                       iconurl = this.buildingBaseUrl+'telttailualue.png'; break;
+			case 'Telttailupaikka':                     iconurl = this.buildingBaseUrl+'telttailualue.png'; break;
+			case 'Kuivakäymälä':                        iconurl = this.buildingBaseUrl+'kuivakaymala.png'; break;
+			case 'Jätteiden keräys- ja lajittelupiste': iconurl = this.buildingBaseUrl+'jatteidenlajittelu.png'; break;
+			case 'Kota':                                iconurl = this.buildingBaseUrl+'kota.png'; break;
+			case 'Luonto- tai näkötorni':               iconurl = this.buildingBaseUrl+'luontotorni.png'; break;
+			case 'Kävely- tai kevyen liikenteen silta': iconurl = this.buildingBaseUrl+'silta.png'; break;
+			case 'Vuokrakämppä tai -tupa':              iconurl = this.buildingBaseUrl+'vuokratupacircle'; break;
+			case 'Muu majoitus- tai liikerakennus':     iconurl = this.buildingBaseUrl+'majoitus.png'; break;
+			case 'Sauna':                               iconurl = this.buildingBaseUrl+'sauna.png'; break;
+			case 'Luontokeskus':                        iconurl = this.buildingBaseUrl+'luontokeskus.png'; break;
+			case 'Luontotupa':                          iconurl = this.buildingBaseUrl+'luontotupa.png'; break;
+			default: break;
+		}
+		
+		//	const m = L.circleMarker(latlng, {
+		//	radius: 10,
+		//	fillColor: fcolor,
+		//	color: "#000",
+		//	weight: 1,
+		//	opacity: 1,
+		//	fillOpacity: 0.5
+		//});
+		var BuildingIcon = L.Icon.extend({
+			options: {
+				shadowUrl: this.buildingBaseUrl+'varjo.png',
+				iconSize:     [30, 30],
+				shadowSize:   [30, 30],
+				iconAnchor:   [2, 28],
+				shadowAnchor: [2, 28],
+				popupAnchor:  [15, -30]
+			}
+		});
+		var bIcon = new BuildingIcon({iconUrl: iconurl});
+		const m = L.marker([latlng.lat, latlng.lng], {icon: bIcon});
+		if (feature.properties && feature.properties.Nimi) {
+			let s = `<div class="map-route-info-popup-wrapper">
+				<p class="map-feature-title">${feature.properties.Nimi}</p>
+				Tyyppi: ${feature.properties.tyyppi}
+			</div>`
+			m.bindPopup(s);
+		}
+		
+		
+		
+		this.buildingMarkers.addLayer(m);
+		// NOTE: We do NOT return marker (m) here, so that this new Marker is NOT added to default Layer.
+		// It is therefore not shown in opening view (default zoom is 12).
+		return null;
+		
+		
+		
+	}
+	
+	
+	getEachBuildingFeature(feature, layer) {
+	/*
+	*/
+	}
+	
 	render() {
 		var self = this;
 		
@@ -171,6 +313,8 @@ export default class MapView extends View {
 		const homeActiveTarget = this.controller.master.modelRepo.get('HomeModel').activeTarget;
 		const homeZoom = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].zoom;
 		const homeCenter = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].center;
+		
+		console.log(['homeActiveTarget=',homeActiveTarget]);
 		
 		const position = homeCenter; //[this.lat, this.lng]
 		const lat = position[0];
@@ -197,12 +341,33 @@ export default class MapView extends View {
                 minZoom: 16,
                 attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         }) .addTo(map);
-        L.marker([40.743, -74.176]) .addTo(map);		*/
+        L.marker([40.743, -74.176]) .addTo(map); */
 		
 		// create the tile layer with correct attribution
 		var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 		var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
 		L.tileLayer(osmUrl, {minZoom: 11, maxZoom: 18, bounds: maxBounds, attribution: osmAttrib}).addTo(this.mymap);
+		
+		
+		
+		if (homeActiveTarget === 'Nuuksio') {
+			// Show routes and buildings for Nuuksio.
+			
+			//<GeoJSON data={routedata} style={this.getRouteStyle} onEachFeature={this.getEachRouteFeature} />
+			L.geoJSON(routedata, {
+				style: this.getRouteStyle,
+				onEachFeature: this.getEachRouteFeature
+			}).addTo(this.mymap);
+			
+			//<GeoJSON data={buildingdata} style={this.getBuildingStyle} pointToLayer={this.onPointToLayer} onEachFeature={this.getEachBuildingFeature} />
+			
+			L.geoJSON(buildingdata, {
+				style: this.getBuildingStyle,
+				pointToLayer: this.boundOnPointToLayer, // this.onPointToLayer,
+				onEachFeature: this.getEachBuildingFeature
+			}).addTo(this.mymap);
+			
+		}
 		
 		this.mymap.on('load', function(e) { 
 			//console.log('MapView MAP LOADED!!!!!');
@@ -212,7 +377,6 @@ export default class MapView extends View {
 		
 		//this.mymap.setView(this.mapcenter, this.mapzoom);
 		this.mymap.setView(homeCenter, homeZoom);
-		
 		
 		Object.keys(this.models).forEach(key => {
 			if (key==='MapListModel') {
@@ -227,6 +391,24 @@ export default class MapView extends View {
 			} else {
 				self.removeLabels();
 			}*/
+			
+			
+			if (self.mapzoom < 14) { // 11,12,13 
+				// Remove layer if it is there.
+				if (self.mymap.hasLayer(self.buildingMarkers)) {
+					self.mymap.removeLayer(self.buildingMarkers);
+				}
+			} else { // 14,15,16,17,18
+				// if requested zoom level is between 14 - 18: add the layer if it is not already there.
+				if (self.mymap.hasLayer(self.buildingMarkers)) {
+					// Do nothing
+				} else {
+					self.mymap.addLayer(self.buildingMarkers);
+				}
+			}
+		
+		
+		
 		});
 		
 		this.mymap.on("moveend", function(e) {

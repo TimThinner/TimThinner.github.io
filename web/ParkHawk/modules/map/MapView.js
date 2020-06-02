@@ -19,7 +19,7 @@ export default class MapView extends View {
 		
 		//this.mapzoom = 3; //12;
 		//this.mapcenter = [45, 10]; //[60.32, 24.54];
-		this.mapzoom = 12;
+		this.mapzoom = 11;
 		this.mapcenter = [60.32, 24.54];
 		this.rendered = false;
 	}

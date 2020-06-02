@@ -15,11 +15,11 @@ class MasterController {
 		this.menuitems = {'home':{logo:'./img/401px-Nuuksion_kp.png'},'map':{logo:'home'},'camera':{logo:'camera_alt'},'info':{logo:'info'}};
 		this.targets = {'Nuuksio':{
 			logo: './img/401px-Nuuksion_kp.png',
-			zoom: 12,
+			zoom: 11,
 			center: [60.32, 24.54]
 		},'Sipoonkorpi':{
 			logo: './img/377px-Sipoonkorven_kp.png',
-			zoom: 12,
+			zoom: 11,
 			center: [60.35, 25.20]
 		}};
 	}

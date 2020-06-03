@@ -1,17 +1,18 @@
-import MenuModel from './MenuModel.js';
+//import MenuModel from './MenuModel.js';
 import MenuView from './MenuView.js';
 
 export default class MenuController {
 	
 	constructor(options) {
-		this.name      = options.name;
-		this.master    = options.master;
-		this.el        = options.el;
-		this.visible   = options.visible;
-		this.menuitems = options.menuitems;
+		this.name    = options.name;
+		this.master  = options.master;
+		this.el      = options.el;
+		this.visible = options.visible;
 		
-		this.view      = undefined;
-		this.menuModel = undefined;
+		this.appDataModel = this.master.modelRepo.get('AppDataModel');
+		this.appDataModel.subscribe(this);
+		
+		this.view = undefined;
 	}
 	
 	remove() {
@@ -19,7 +20,7 @@ export default class MenuController {
 			this.view.remove();
 			this.view = undefined;
 		}
-		this.menuModel.unsubscribe(this);
+		this.appDataModel.unsubscribe(this);
 	}
 	
 	show() {
@@ -35,19 +36,17 @@ export default class MenuController {
 	}
 	
 	restore() {
-		this.menuModel.restore();
+		this.appDataModel.restore();
 	}
 	
 	notify(options){
-		if (options.model==='MenuModel' && options.method==='restored') {
+		if (options.model==='AppDataModel' && options.method==='restored') {
 			this.show();
 		}
 	}
 	
 	init() {
-		this.menuModel = new MenuModel(this.menuitems);
-		this.menuModel.subscribe(this);
-		this.master.modelRepo.add('MenuModel',this.menuModel);
+		console.log('MenuController Init');
 		this.view = new MenuView(this);
 	}
 }

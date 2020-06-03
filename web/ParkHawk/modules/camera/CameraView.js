@@ -4,19 +4,22 @@ export default class CameraView extends View {
 	
 	constructor(controller) {
 		super(controller);
-		
+		/*
 		Object.keys(this.controller.models).forEach(key => {
 			if (key === 'CameraModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
-		
+		*/
 		//this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		//this.REO.subscribe(this);
 		
+		this.appDataModel = this.controller.master.modelRepo.get('AppDataModel');
+		this.appDataModel.subscribe(this);
+		
 		this.rendered = false;
-		this.FELID = 'camera-view-failure';
+		this.imageLoadCount = 0;
 	}
 	
 	show() {
@@ -29,49 +32,63 @@ export default class CameraView extends View {
 	}
 	
 	remove() {
+		/*
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
-		});
-		//this.REO.unsubscribe(this);
+		});*/
+		this.appDataModel.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	updateLatestValues() {
-		let count = 0;
-		Object.keys(this.models).forEach(key => {
-			if (key === 'CameraModel') {
-				count = this.models[key].picCount;
-			}
+		
+		this.imageLoadCount = 0;
+		const self = this;
+		const yPos = window.scrollY;
+		//console.log(['yPos=',yPos]);
+		
+		const ts = new Date().getTime();
+		let urls = [];
+		let i = 0;
+		this.appDataModel.targets[this.appDataModel.activeTarget].cameras.forEach(cam => {
+			urls[i] = cam.url + '?time=' + ts;
+			i++;
 		});
-		$('#count').empty().text('Counter value is '+count);
+		i = 0;
+		urls.forEach(url => {
+			$('#camera-'+i).empty().append('<img class="responsive-img" id="camera-'+i+'-image" src="'+url+'" alt="" />');
+			$('#camera-'+i+'-image').on('load',function() {
+				self.imageLoadCount++;
+				console.log(['self.imageLoadCount=',self.imageLoadCount]);
+				if (self.imageLoadCount===4) {
+					console.log('Scroll!');
+					
+					window.scroll(0, yPos);
+				}
+				//if ($(this).height() > 10) {
+					//
+				//}
+				
+			});
+			i++;
+		});
+		/*
+		setTimeout(() => {
+			window.scroll(0, yPos);
+		}, 1000);*/
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='CameraModel' && options.method==='fetched') {
+			if (options.model==='AppDataModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('CameraView => CameraModel fetched!');
+					console.log('CameraView => AppDataModel fetched!');
 					if (this.rendered) {
-						$('#'+this.FELID).empty();
 						this.updateLatestValues();
 					} else {
 						this.render();
 					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#'+this.FELID);
-					} else {
-						this.render();
-					}
-				}
-			} else if (options.model === 'ResizeEventObserver' && options.method === 'resize') {
-				if (this.rendered) {
-					console.log('resize!');
-				} else {
-					console.log('resize: Camera NOT rendered yet!');
 				}
 			}
 		}
@@ -80,44 +97,33 @@ export default class CameraView extends View {
 	render() {
 		const self = this;
 		$(this.el).empty();
-		if (this.areModelsReady()) {
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-			} else {
-				let count = 0;
-				Object.keys(this.models).forEach(key => {
-					if (key === 'CameraModel') {
-						count = this.models[key].picCount;
-					}
-				});
-				const homeActiveTarget = this.controller.master.modelRepo.get('HomeModel').activeTarget;
-				const html =
-					'<div class="row">'+
-						'<div class="col s12">'+
-							'<h4 style="text-align:center;">'+homeActiveTarget+' kamerat</h4>'+
-							'<p id="count" style="text-align:center;">Counter value is '+count+'</p>'+
-							'<p>&nbsp;</p>'+
-							'<p>&nbsp;</p>'+
-							'<p>&nbsp;</p>'+
-							'<p>&nbsp;</p>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-			}
-			this.rendered = true;
-		} else {
-			console.log('CameraView => render Model IS NOT READY!!!!');
-			this.showSpinner(this.el);
-		}
+		
+		const ts = new Date().getTime();
+		let urls = [];
+		let i = 0;
+		const atarget = this.appDataModel.activeTarget;
+		this.appDataModel.targets[atarget].cameras.forEach(cam => {
+			urls[i] = cam.url + '?time=' + ts;
+			i++;
+		});
+		
+		const html =
+			/*'<div class="row">'+
+				'<div class="col s12 center">'+
+					'<h4>'+atarget+' parkkipaikat</h4>'+
+				'</div>'+
+			'</div>'+*/
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					'<div id="pics" style="margin-top:6px;"></div>'+
+				'</div>'+
+			'</div>';
+		$(html).appendTo(this.el);
+		i = 0;
+		urls.forEach(url => {
+			$('#pics').append('<div id="camera-'+i+'" style="margin:6px 0;"><img class="responsive-img" src="'+url+'" alt="" /></div>');
+			i++;
+		});
+		this.rendered = true;
 	}
 }

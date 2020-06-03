@@ -7,22 +7,18 @@ export default class InfoController {
 		this.visible = options.visible;
 		this.el      = options.el;
 		
-		//this.models = {};
-		this.view      = undefined;
-		this.menuModel = undefined;
+		this.appDataModel = this.master.modelRepo.get('AppDataModel');
+		this.appDataModel.subscribe(this);
+		
+		this.view = undefined;
 	}
 	
 	remove() {
-		/*Object.keys(this.models).forEach(key => {
-			this.models[key].unsubscribe(this);
-		});*/
-		if (this.menuModel) {
-			this.menuModel.unsubscribe(this);
-		}
 		if (this.view) {
 			this.view.remove();
 			this.view = undefined;
 		}
+		this.appDataModel.unsubscribe(this);
 	}
 	
 	hide() {
@@ -43,7 +39,7 @@ export default class InfoController {
 	}
 	
 	notify(options) {
-		if (options.model==='MenuModel' && (options.method==='selected' || options.method==='restored')) {
+		if (options.model==='AppDataModel' && (options.method==='tabselected' || options.method==='restored')) {
 			console.log(['Open tab ',options.tab]);
 			if (this.name === options.tab) {
 				setTimeout(() => {
@@ -59,19 +55,7 @@ export default class InfoController {
 	}
 	
 	init() {
-		// Create the Home Model
-		/*const model = new HomeModel({name:'HomeModel',src:'placeholder'});
-		model.subscribe(this);
-		this.master.modelRepo.add('HomeModel',model);
-		this.models['HomeModel'] = model;
-		*/
-		/*
-		setTimeout(() => model.fetch(), 200);
-		*/
-		this.menuModel = this.master.modelRepo.get('MenuModel');
-		if (this.menuModel) {
-			this.menuModel.subscribe(this);
-		}
+		console.log('InfoController Init');
 		this.view = new InfoView(this);
 	}
 }

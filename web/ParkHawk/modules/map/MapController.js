@@ -1,8 +1,8 @@
-//import PeriodicPoller from '../common/PeriodicPoller.js';
-import {MapListModel} from  './MapModel.js';
+
+//import {MapListModel} from  './MapModel.js';
 import MapView from './MapView.js';
 
-export default class MapController /*extends PeriodicPoller*/ {
+export default class MapController {
 	
 	constructor(options) {
 		//super();
@@ -11,30 +11,23 @@ export default class MapController /*extends PeriodicPoller*/ {
 		this.visible = options.visible;
 		this.el      = options.el;
 		
-		this.models    = {};
-		this.menuModel = undefined;
-		this.view      = undefined;
+		this.appDataModel = this.master.modelRepo.get('AppDataModel');
+		this.appDataModel.subscribe(this);
+		
+		this.view = undefined;
 	}
 	
 	remove() {
-		//super.remove(); // See the PeriodicPoller.
-		Object.keys(this.models).forEach(key => {
-			this.models[key].unsubscribe(this);
-		});
-		if (this.menuModel) {
-			this.menuModel.unsubscribe(this);
-		}
 		if (this.view) {
 			this.view.remove();
 			this.view = undefined;
 		}
+		this.appDataModel.unsubscribe(this);
 	}
 	
 	hide() {
-		//super.hide(); // See the PeriodicPoller.
 		if (this.view) {
 			this.view.hide();
-			
 		}
 	}
 	
@@ -42,12 +35,11 @@ export default class MapController /*extends PeriodicPoller*/ {
 		console.log('MapView Show!!');
 		if (this.visible && this.view) {
 			this.view.render();
-			//this.startPollers(); // See the PeriodicPoller.
 		}
 	}
 	
 	notify(options) {
-		if (options.model==='MenuModel' && (options.method==='selected' || options.method==='restored')) {
+		if (options.model==='AppDataModel' && (options.method==='tabselected' || options.method==='restored')) {
 			console.log(['Open tab ',options.tab]);
 			if (this.name === options.tab) {
 				setTimeout(() => {
@@ -63,24 +55,11 @@ export default class MapController /*extends PeriodicPoller*/ {
 	}
 	
 	restore() {
-		console.log('MapController restore');
+		//console.log('MapController restore');
 	}
 	
 	init() {
-		const model = new MapListModel({name:'MapListModel',src:'placeholder'});
-		model.subscribe(this);
-		this.master.modelRepo.add('MapListModel',model);
-		this.models['MapListModel'] = model;
-		
-		
-		
-		// This defines the periodic polling interval (-1 => only once). See the PeriodicPoller.
-		//this.timers['MapList'] = {timer: undefined, interval: -1, models:['MapListModel']};
-		
-		this.menuModel = this.master.modelRepo.get('MenuModel');
-		if (this.menuModel) {
-			this.menuModel.subscribe(this);
-		}
+		console.log('MapController init');
 		this.view = new MapView(this);
 	}
 }

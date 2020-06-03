@@ -8,23 +8,26 @@ export default class MapView extends View {
 	
 	constructor(controller) {
 		super(controller);
-		Object.keys(this.controller.models).forEach(key => {
+		/*Object.keys(this.controller.models).forEach(key => {
 			if (key === 'MapListModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
-		});
+		});*/
+		
+		this.appDataModel = controller.master.modelRepo.get('AppDataModel');
+		this.appDataModel.subscribe(this);
+		
 		this.REO = controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
 		this.mymap = undefined;
-		this.markerGroup = L.layerGroup();
-		this.labelGroup = L.layerGroup();
+		//this.markerGroup = L.layerGroup();
+		//this.labelGroup = L.layerGroup();
 		
 		this.buildingMarkers = L.layerGroup();
 		this.boundOnPointToLayer = (feature,latlng) => this.onPointToLayer(feature, latlng);
 		this.buildingBaseUrl = 'https://timthinner.github.io/web/ParkHawk/assets/markers/';
-		
 		
 		this.mapzoom = 11;
 		this.mapcenter = [60.32, 24.54];
@@ -41,10 +44,12 @@ export default class MapView extends View {
 	}
 	
 	remove() {
-		Object.keys(this.models).forEach(key => {
+		/*Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
-		});
+		});*/
+		this.appDataModel.unsubscribe(this);
 		this.REO.unsubscribe(this);
+		
 		if (typeof this.mymap !== 'undefined') {
 			this.mymap.remove();
 			this.mymap = undefined;
@@ -75,7 +80,7 @@ export default class MapView extends View {
 			html: labelText
 		});
 	}
-	
+	/*
 	removeLabels() {
 		//console.log('Remove Labels');
 		this.labelGroup.remove();
@@ -144,8 +149,10 @@ export default class MapView extends View {
 			this.markerGroup.addTo(this.mymap);
 		}
 	}
+	*/
 	
 	notify(options) {
+		/*
 		if (options.model === 'MapListModel' && options.method === 'fetched') {
 			if (options.status === 200) {
 				if (typeof this.mymap !== 'undefined') {
@@ -154,7 +161,8 @@ export default class MapView extends View {
 					
 				}
 			}
-		} else if (options.model === 'ResizeEventObserver' && options.method === 'resize') {
+			*/
+		if (options.model === 'ResizeEventObserver' && options.method === 'resize') {
 			//console.log('MapView resize!!!!');
 			if (this.rendered) {
 				this.setMapHeight();
@@ -326,9 +334,14 @@ export default class MapView extends View {
 		//$('#mapid').css({height:"85vh",width:"100%"}); 
 		
 		
-		const homeActiveTarget = this.controller.master.modelRepo.get('HomeModel').activeTarget;
-		const homeZoom = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].zoom;
-		const homeCenter = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].center;
+		//const homeActiveTarget = this.controller.master.modelRepo.get('HomeModel').activeTarget;
+		//const homeZoom = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].zoom;
+		//const homeCenter = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].center;
+		
+		
+		const homeActiveTarget = this.appDataModel.activeTarget;
+		const homeZoom = this.appDataModel.targets[homeActiveTarget].zoom;
+		const homeCenter = this.appDataModel.targets[homeActiveTarget].center;
 		
 		console.log(['homeActiveTarget=',homeActiveTarget]);
 		console.log(['homeCenter=',homeCenter]);
@@ -409,9 +422,9 @@ export default class MapView extends View {
 			self.mapzoom = self.mymap.getZoom();
 			
 			console.log(['self.mapzoom=',self.mapzoom]);
+			const homeActiveTarget = self.appDataModel.activeTarget;
+			self.appDataModel.targets[homeActiveTarget].zoom = self.mapzoom;
 			
-			const homeActiveTarget = self.controller.master.modelRepo.get('HomeModel').activeTarget;
-			self.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].zoom = self.mapzoom;
 			
 			/*if (self.mapzoom > 4) {
 				self.renderLabels();
@@ -425,8 +438,8 @@ export default class MapView extends View {
 			self.mapcenter = self.mymap.getCenter();
 			console.log(['self.mapcenter=',self.mapcenter]);
 			
-			const homeActiveTarget = self.controller.master.modelRepo.get('HomeModel').activeTarget;
-			self.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].center = [self.mapcenter.lat, self.mapcenter.lng];
+			const homeActiveTarget = self.appDataModel.activeTarget;
+			self.appDataModel.targets[homeActiveTarget].center =  [self.mapcenter.lat, self.mapcenter.lng];
 		});
 	}
 }

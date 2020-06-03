@@ -1,9 +1,9 @@
-//import MenuModel from './MenuModel.js';
+
 export default class MenuView {
 	constructor(controller) {
 		this.controller = controller;
-		this.menuModel = controller.master.modelRepo.get('MenuModel');
-		this.menuModel.subscribe(this);
+		this.appDataModel = controller.master.modelRepo.get('AppDataModel');
+		this.appDataModel.subscribe(this);
 		this.el = controller.el;
 	}
 	
@@ -16,31 +16,30 @@ export default class MenuView {
 	}
 	
 	remove() {
-		this.menuModel.unsubscribe(this);
+		this.appDataModel.unsubscribe(this);
 		$(this.el).empty();
 	}
 	
 	notify(options) {
-		if (options.model==='MenuModel' && options.method==='selected') {
-			console.log('MenuView MenuModel selected => set active class');
-			Object.keys(this.menuModel.menuitems).forEach((key)=>{
+		if (options.model==='AppDataModel' && options.method==='tabselected') {
+			//console.log('MenuView Model TAB selected => set active class');
+			Object.keys(this.appDataModel.menuitems).forEach((key)=>{
 				if (key === options.tab) {
 					$('#'+key).addClass('active');
 				} else {
 					$('#'+key).removeClass('active');
 				}
 			});
-		} else if (options.model==='MenuModel' && options.method==='logochanged') {
-			const logo = this.menuModel.menuitems['home'].logo;
-			$('#home').empty().append('<img src="'+logo+'" height="40" />');
+		} else if (options.model==='AppDataModel' && options.method==='logochanged') {
+			$('#home').empty().append('<img src="'+options.logo+'" height="40" />');
 		}
 	}
 	
 	render() {
 		$(this.el).empty();
 		let html = '<div class="tab-grid">';
-		Object.keys(this.menuModel.menuitems).forEach((key)=>{
-			const logo = this.menuModel.menuitems[key].logo;
+		Object.keys(this.appDataModel.menuitems).forEach((key)=>{
+			const logo = this.appDataModel.menuitems[key].logo;
 			if (key === 'home') {
 				html += '<a href="javascript:void(0);" class="btn-flat tab-cell" id="'+key+'"><img src="'+logo+'" height="40" /></a>';
 			} else {
@@ -50,8 +49,8 @@ export default class MenuView {
 		html += '</div>';
 		$(html).appendTo(this.el);
 		// Initialize TAB state and click handlers.
-		Object.keys(this.menuModel.menuitems).forEach((key)=>{
-			if (key === this.menuModel.activeTab) {
+		Object.keys(this.appDataModel.menuitems).forEach((key)=>{
+			if (key === this.appDataModel.activeTab) {
 				$('#'+key).addClass('active');
 			} else {
 				$('#'+key).removeClass('active');
@@ -61,10 +60,10 @@ export default class MenuView {
 			// capture same effect as with mouse events on laptop and desktop. But fortunately 
 			// it also seems that adding 'touchstart' is sufficient to capture tap on mobile browsers.
 			$("#"+key).on('click touchstart',()=>{  // 'click touchstart'
-				if (this.menuModel.activeTab === key) {
+				if (this.appDataModel.activeTab === key) {
 					console.log('TAB is already active!');
 				} else {
-					this.menuModel.setSelected(key);
+					this.appDataModel.setSelectedTab(key);
 				}
 			});
 		});

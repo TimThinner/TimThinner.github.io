@@ -1,5 +1,5 @@
 import PeriodicPoller from '../common/PeriodicPoller.js';
-import CameraModel from './CameraModel.js';
+//import CameraModel from './CameraModel.js';
 import CameraView from './CameraView.js';
 
 export default class CameraController extends PeriodicPoller {
@@ -11,23 +11,22 @@ export default class CameraController extends PeriodicPoller {
 		this.visible = options.visible;
 		this.el      = options.el;
 		
+		this.appDataModel = this.master.modelRepo.get('AppDataModel');
+		this.appDataModel.subscribe(this);
+		
 		this.models = {};
-		this.view      = undefined;
-		this.menuModel = undefined;
+		this.models['AppDataModel'] = this.appDataModel;
+		
+		this.view = undefined;
 	}
 	
 	remove() {
 		super.remove(); // See the PeriodicPoller.
-		Object.keys(this.models).forEach(key => {
-			this.models[key].unsubscribe(this);
-		});
-		if (this.menuModel) {
-			this.menuModel.unsubscribe(this);
-		}
 		if (this.view) {
 			this.view.remove();
 			this.view = undefined;
 		}
+		this.appDataModel.unsubscribe(this);
 	}
 	
 	hide() {
@@ -50,7 +49,7 @@ export default class CameraController extends PeriodicPoller {
 	}
 	
 	notify(options) {
-		if (options.model==='MenuModel' && (options.method==='selected' || options.method==='restored')) {
+		if (options.model==='AppDataModel' && (options.method==='tabselected' || options.method==='restored')) {
 			console.log(['Open tab ',options.tab]);
 			if (this.name === options.tab) {
 				setTimeout(() => {
@@ -66,18 +65,9 @@ export default class CameraController extends PeriodicPoller {
 	}
 	
 	init() {
-		const model = new CameraModel({name:'CameraModel',src:'placeholder'});
-		model.subscribe(this);
-		this.master.modelRepo.add('CameraModel',model);
-		this.models['CameraModel'] = model;
-		
+		console.log('CameraController Init');
 		// This defines the periodic polling interval.
-		this.timers['Cameras'] = {timer: undefined, interval: 1000, models:['CameraModel']};
-		
-		this.menuModel = this.master.modelRepo.get('MenuModel');
-		if (this.menuModel) {
-			this.menuModel.subscribe(this);
-		}
+		this.timers['Cameras'] = {timer: undefined, interval:300000, models:['AppDataModel']};
 		this.view = new CameraView(this);
 	}
 }

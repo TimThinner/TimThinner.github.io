@@ -5,9 +5,9 @@ export default class AppDataModel extends EventObserver {
 	constructor() {
 		super();
 		this.name = 'AppDataModel';
-		this.errorMessage = '';
-		this.fetching = false;
-		this.ready = false;
+		//this.errorMessage = '';
+		//this.fetching = false;
+		//this.ready = false;
 		
 		this.menuitems = {'home':{logo:'./img/401px-Nuuksion_kp.png'},'map':{logo:'home'},'camera':{logo:'camera_alt'},'info':{logo:'info'}};
 		this.activeTab = 'home'; // 'map', 'camera', 'info'
@@ -15,6 +15,16 @@ export default class AppDataModel extends EventObserver {
 			logo: './img/401px-Nuuksion_kp.png',
 			zoom: 11,
 			center: [60.32, 24.54],
+			busStops: {
+				routingUrl: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+				routingAreas: [
+					{ lat: 60.270, lng: 24.594, radius: 3200 },
+					{ lat: 60.2695, lng: 24.4440, radius: 300 },
+					{ lat: 60.283, lng: 24.511, radius: 1600 },
+					{ lat: 60.310, lng: 24.546, radius: 3000 },
+					{ lat: 60.324, lng: 24.5, radius: 1300 }
+				]
+			},
 			cameras: [
 				/*{
 					name: 'Haukkalampi 1',
@@ -56,6 +66,11 @@ export default class AppDataModel extends EventObserver {
 			logo: './img/377px-Sipoonkorven_kp.png',
 			zoom: 11,
 			center: [60.35, 25.20],
+			busStops: {
+				routingUrl: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+				routingAreas: [
+				]
+			},
 			cameras: [
 				
 			]
@@ -130,20 +145,19 @@ export default class AppDataModel extends EventObserver {
 		this.targets[target][property] = value;
 		setTimeout(() => this.notifyAll({model:'AppDataModel',method:'propertychanged'}), 100);
 	}
-	
+	/*
 	fetch() {
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
 		}
-		let status = 500; // error: 500
+		const status = 200; // OK.
 		this.errorMessage = '';
 		this.fetching = true;
-		status = 200; // OK
 		setTimeout(() => {
 			this.fetching = false;
 			this.ready = true;
 			this.notifyAll({model:this.name, method:'fetched', status:status, message:'OK'});
 		}, 100);
-	}
+	}*/
 }

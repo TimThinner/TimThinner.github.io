@@ -6,6 +6,16 @@ export default class View {
 		this.models = {};
 	}
 	
+	getModel(name) {
+		let model = undefined;
+		Object.keys(this.models).forEach(key => {
+			if (key === name) {
+				model = this.models[key];
+			}
+		});
+		return model;
+	}
+	
 	areModelsReady() {
 		let retval = true;
 		Object.keys(this.models).forEach(key => {

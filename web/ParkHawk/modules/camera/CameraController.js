@@ -1,5 +1,5 @@
 import PeriodicPoller from '../common/PeriodicPoller.js';
-//import CameraModel from './CameraModel.js';
+import CameraModel from './CameraModel.js';
 import CameraView from './CameraView.js';
 
 export default class CameraController extends PeriodicPoller {
@@ -11,22 +11,23 @@ export default class CameraController extends PeriodicPoller {
 		this.visible = options.visible;
 		this.el      = options.el;
 		
-		this.appDataModel = this.master.modelRepo.get('AppDataModel');
-		this.appDataModel.subscribe(this);
-		
 		this.models = {};
-		this.models['AppDataModel'] = this.appDataModel;
-		
 		this.view = undefined;
 	}
 	
 	remove() {
 		super.remove(); // See the PeriodicPoller.
+		
+		Object.keys(this.models).forEach(key => {
+			this.models[key].unsubscribe(this);
+			if (key === 'CameraModel') {
+				this.master.modelRepo.remove(key);
+			}
+		});
 		if (this.view) {
 			this.view.remove();
 			this.view = undefined;
 		}
-		this.appDataModel.unsubscribe(this);
 	}
 	
 	hide() {
@@ -66,8 +67,19 @@ export default class CameraController extends PeriodicPoller {
 	
 	init() {
 		console.log('CameraController Init');
-		// This defines the periodic polling interval.
-		this.timers['Cameras'] = {timer: undefined, interval:300000, models:['AppDataModel']};
+		
+		const ADM = this.master.modelRepo.get('AppDataModel');
+		ADM.subscribe(this);
+		this.models['AppDataModel'] = ADM;
+		
+		const CM = new CameraModel({name:'CameraModel',src:'placeholder'});
+		CM.subscribe(this);
+		this.master.modelRepo.add('CameraModel',CM);
+		this.models['CameraModel'] = CM;
+		
+		// This defines the periodic polling interval (See the PeriodicPoller).
+		this.timers['Cameras'] = {timer: undefined, interval: 5000, models:['CameraModel']};
+		
 		this.view = new CameraView(this);
 	}
 }

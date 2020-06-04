@@ -13,19 +13,6 @@ class MasterController {
 	constructor() {
 		this.controllers = {};
 		this.modelRepo = new ModelRepo();
-		
-		
-		//const icon_map = {'map':'home','camera':'camera_alt','info':'info'};
-		/*this.menuitems = {'home':{logo:'./img/401px-Nuuksion_kp.png'},'map':{logo:'home'},'camera':{logo:'camera_alt'},'info':{logo:'info'}};
-		this.targets = {'Nuuksio':{
-			logo: './img/401px-Nuuksion_kp.png',
-			zoom: 11,
-			center: [60.32, 24.54]
-		},'Sipoonkorpi':{
-			logo: './img/377px-Sipoonkorven_kp.png',
-			zoom: 11,
-			center: [60.35, 25.20]
-		}};*/
 	}
 	
 	restore() {
@@ -47,11 +34,10 @@ class MasterController {
 		
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#menu', visible:true});
 		this.controllers['menu'].init();
-		this.controllers['menu'].restore();
+		this.controllers['menu'].restore(); // Restore 
 		
 		this.controllers['home'] = new HomeController({name:'home', master:this, el:'#content', visible:false});
 		this.controllers['home'].init();
-		
 		
 		this.controllers['map'] = new MapController({name:'map', master:this, el:'#content', visible:false});
 		this.controllers['map'].init();

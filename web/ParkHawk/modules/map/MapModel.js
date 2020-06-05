@@ -12,7 +12,7 @@ export default class MapModel extends EventObserver {
 		this.errorMessage = '';
 		this.fetching = false;
 	}
-	
+	/*
 	flattenStopData = (allstops) => {
 		console.log(['flattenStopData allstops=',allstops]);
 		let newDepartureInformation = [];
@@ -54,7 +54,7 @@ export default class MapModel extends EventObserver {
 		newDepartureInformation.sort(depSort);
 		return { allStops: newAllStops, allDepInfo: newDepartureInformation }
 	}
-	
+	*/
 	fetch() {
 		const self = this;
 		if (this.fetching) {

@@ -66,6 +66,17 @@ export default class MapModel extends EventObserver {
 		this.fetching = true;
 		console.log ('MapModel => fetch()...');
 		const message = 'OK';
+		
+		
+		setTimeout(() => {
+			
+			status = 200; // OK
+			this.fetching = false;
+			this.ready = true;
+			this.notifyAll({model:this.name, method:'fetched', status:status, message:'OK'});
+		}, 200);
+		
+		
 		/*
 		this.targets = {'Nuuksio':{
 			logo: './img/401px-Nuuksion_kp.png',
@@ -81,6 +92,8 @@ export default class MapModel extends EventObserver {
 					{ lat: 60.324, lng: 24.5, radius: 1300 }
 				]
 			},*/
+		
+		/*
 		const routingUrl = this.src.targets[this.src.activeTarget].busStops.routingUrl;
 		let busStops = [];
 		let i=1;
@@ -135,6 +148,8 @@ export default class MapModel extends EventObserver {
 			return response.json();
 		}).then(function(myJson) {
 			//console.log(['GraphQL JSON RESPONSE IS: ',myJson]);
+			self.fetching = false;
+			self.ready = true;
 			
 			function compareDepTime(a, b) {
 				if (a.stoptimesForPatterns[0] && a.stoptimesForPatterns[0].stoptimes[0] && b.stoptimesForPatterns[0] && b.stoptimesForPatterns[0].stoptimes[0]) {
@@ -149,7 +164,9 @@ export default class MapModel extends EventObserver {
 			if (myJson.data) {
 				Object.keys(myJson.data).forEach(key => {
 					for (let edge of myJson.data[key].edges) {
-						busStops.push(edge.node.stop);
+						if (edge && edge.node) {
+							busStops.push(edge.node.stop);
+						}
 					}
 				});
 			}
@@ -186,7 +203,12 @@ export default class MapModel extends EventObserver {
 			self.notifyAll({model:'MapModel',method:'fetched',status:status,message:message});
 		})
 		.catch(function(error) {
+			self.fetching = false;
+			self.ready = true;
+			self.errorMessage = error;
 			self.notifyAll({model:'MapModel',method:'fetched',status:status,message:error});
 		});
+		
+		*/
 	}
 }

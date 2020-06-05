@@ -334,11 +334,6 @@ export default class MapView extends View {
 		//$('#mapid').css({height:"85vh",width:"100%"}); 
 		
 		
-		//const homeActiveTarget = this.controller.master.modelRepo.get('HomeModel').activeTarget;
-		//const homeZoom = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].zoom;
-		//const homeCenter = this.controller.master.modelRepo.get('HomeModel').targets[homeActiveTarget].center;
-		
-		
 		const homeActiveTarget = this.appDataModel.activeTarget;
 		const homeZoom = this.appDataModel.targets[homeActiveTarget].zoom;
 		const homeCenter = this.appDataModel.targets[homeActiveTarget].center;
@@ -380,7 +375,7 @@ export default class MapView extends View {
 		L.tileLayer(osmUrl, {minZoom: 11, maxZoom: 18, bounds: maxBounds, attribution: osmAttrib}).addTo(this.mymap);
 		
 		
-		/*
+		
 		if (homeActiveTarget === 'Nuuksio') {
 			// Show routes and buildings for Nuuksio.
 			
@@ -401,7 +396,7 @@ export default class MapView extends View {
 			}).addTo(this.mymap);
 			
 		}
-		*/
+		
 		
 		this.mymap.on('load', function(e) { 
 			//console.log('MapView MAP LOADED!!!!!');

@@ -12,8 +12,8 @@ export default class MapModel extends EventObserver {
 		this.errorMessage = '';
 		this.fetching = false;
 	}
-	/*
-	flattenStopData = (allstops) => {
+	
+	flattenStopData(allstops) {
 		console.log(['flattenStopData allstops=',allstops]);
 		let newDepartureInformation = [];
 		let newAllStops = [];
@@ -54,7 +54,7 @@ export default class MapModel extends EventObserver {
 		newDepartureInformation.sort(depSort);
 		return { allStops: newAllStops, allDepInfo: newDepartureInformation }
 	}
-	*/
+	
 	fetch() {
 		const self = this;
 		if (this.fetching) {
@@ -67,15 +67,14 @@ export default class MapModel extends EventObserver {
 		console.log ('MapModel => fetch()...');
 		const message = 'OK';
 		
-		
+		/*
 		setTimeout(() => {
-			
 			status = 200; // OK
 			this.fetching = false;
 			this.ready = true;
 			this.notifyAll({model:this.name, method:'fetched', status:status, message:'OK'});
 		}, 200);
-		
+		*/
 		
 		/*
 		this.targets = {'Nuuksio':{
@@ -93,7 +92,7 @@ export default class MapModel extends EventObserver {
 				]
 			},*/
 		
-		/*
+		
 		const routingUrl = this.src.targets[this.src.activeTarget].busStops.routingUrl;
 		let busStops = [];
 		let i=1;
@@ -208,7 +207,5 @@ export default class MapModel extends EventObserver {
 			self.errorMessage = error;
 			self.notifyAll({model:'MapModel',method:'fetched',status:status,message:error});
 		});
-		
-		*/
 	}
 }

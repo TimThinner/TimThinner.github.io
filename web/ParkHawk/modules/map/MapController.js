@@ -67,9 +67,6 @@ export default class MapController extends PeriodicPoller {
 	
 	init() {
 		console.log('MapController init');
-		
-		
-		
 		const ADM = this.master.modelRepo.get('AppDataModel');
 		ADM.subscribe(this);
 		this.models['AppDataModel'] = ADM;

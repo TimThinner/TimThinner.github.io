@@ -144,9 +144,9 @@ export default class MapView extends View {
 				if (AStops.length > 0) {
 					this.addMarkers(AStops, this.busStopMarkersA);
 					// Add the group to the map if zoom is 11 or 12.
-					if (this.mapzoom < 13) {
-						this.busStopMarkersA.addTo(this.mymap);
-					}
+					//if (this.mapzoom < 13) {
+					this.busStopMarkersA.addTo(this.mymap);
+					//}
 				}
 			}
 		}
@@ -445,7 +445,7 @@ export default class MapView extends View {
 			}
 		}
 		
-		
+		/*
 		
 		if (z < 13) { // 11,12
 			if (this.mymap.hasLayer(this.busStopMarkersA)) {
@@ -459,6 +459,7 @@ export default class MapView extends View {
 				this.mymap.removeLayer(this.busStopMarkersA);
 			}
 		}
+		*/
 	}
 	
 	render() {

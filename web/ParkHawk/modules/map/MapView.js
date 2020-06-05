@@ -380,7 +380,7 @@ export default class MapView extends View {
 		L.tileLayer(osmUrl, {minZoom: 11, maxZoom: 18, bounds: maxBounds, attribution: osmAttrib}).addTo(this.mymap);
 		
 		
-		
+		/*
 		if (homeActiveTarget === 'Nuuksio') {
 			// Show routes and buildings for Nuuksio.
 			
@@ -392,6 +392,8 @@ export default class MapView extends View {
 			
 			//<GeoJSON data={buildingdata} style={this.getBuildingStyle} pointToLayer={this.onPointToLayer} onEachFeature={this.getEachBuildingFeature} />
 			
+			
+			
 			L.geoJSON(buildingdata, {
 				style: this.getBuildingStyle,
 				pointToLayer: this.boundOnPointToLayer, // this.onPointToLayer,
@@ -399,6 +401,7 @@ export default class MapView extends View {
 			}).addTo(this.mymap);
 			
 		}
+		*/
 		
 		this.mymap.on('load', function(e) { 
 			//console.log('MapView MAP LOADED!!!!!');

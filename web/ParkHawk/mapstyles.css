@@ -16,3 +16,24 @@ html, body, #mapid {
 	text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
 	color: yellow;
 }
+
+/* materialize.css:
+td, th {
+  padding: 15px 5px;
+  display: table-cell;
+  text-align: left;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+*/
+td, th {
+	padding: 5px 5px;
+}
+/* materialize.css:
+table.striped > tbody > tr:nth-child(odd) {
+  background-color: rgba(242, 242, 242, 0.5);
+}
+*/
+table.striped > tbody > tr:nth-child(odd) {
+	background-color: rgba(204, 204, 204, 0.5);
+}

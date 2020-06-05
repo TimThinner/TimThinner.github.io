@@ -78,7 +78,8 @@ export default class CameraController extends PeriodicPoller {
 		this.models['CameraModel'] = CM;
 		
 		// This defines the periodic polling interval (See the PeriodicPoller).
-		this.timers['Cameras'] = {timer: undefined, interval: 5000, models:['CameraModel']};
+		// 5mins = 5 x 60s = 300s = 300 000 ms
+		this.timers['Cameras'] = {timer: undefined, interval: 300000, models:['CameraModel']};
 		
 		this.view = new CameraView(this);
 	}

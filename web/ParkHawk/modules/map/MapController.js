@@ -1,11 +1,11 @@
-import PeriodicPoller from '../common/PeriodicPoller.js';
+//import PeriodicPoller from '../common/PeriodicPoller.js';
 import MapModel from './MapModel.js';
 import MapView from './MapView.js';
 
-export default class MapController extends PeriodicPoller {
+export default class MapController /*extends PeriodicPoller*/ {
 	
 	constructor(options) {
-		super();
+		//super();
 		this.name    = options.name;
 		this.master  = options.master;
 		this.visible = options.visible;
@@ -16,7 +16,7 @@ export default class MapController extends PeriodicPoller {
 	}
 	
 	remove() {
-		super.remove(); // See the PeriodicPoller.
+		//super.remove(); // See the PeriodicPoller.
 		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
@@ -31,7 +31,7 @@ export default class MapController extends PeriodicPoller {
 	}
 	
 	hide() {
-		super.hide(); // See the PeriodicPoller.
+		//super.hide(); // See the PeriodicPoller.
 		if (this.view) {
 			this.view.hide();
 		}
@@ -41,7 +41,7 @@ export default class MapController extends PeriodicPoller {
 		console.log('MapView Show!!');
 		if (this.visible && this.view) {
 			this.view.render();
-			this.startPollers(); // See the PeriodicPoller.
+			//this.startPollers(); // See the PeriodicPoller.
 		}
 	}
 	
@@ -77,7 +77,7 @@ export default class MapController extends PeriodicPoller {
 		this.models['MapModel'] = MM;
 		
 		// This defines the periodic polling interval (See the PeriodicPoller).
-		this.timers['BusStops'] = {timer: undefined, interval: -1, models:['MapModel']};
+		//this.timers['BusStops'] = {timer: undefined, interval: -1, models:['MapModel']};
 		
 		this.view = new MapView(this);
 	}

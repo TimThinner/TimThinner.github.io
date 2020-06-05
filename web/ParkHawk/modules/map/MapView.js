@@ -8,26 +8,50 @@ export default class MapView extends View {
 	
 	constructor(controller) {
 		super(controller);
-		/*Object.keys(this.controller.models).forEach(key => {
-			if (key === 'MapListModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
-		});*/
 		
-		this.appDataModel = controller.master.modelRepo.get('AppDataModel');
-		this.appDataModel.subscribe(this);
+		Object.keys(this.controller.models).forEach(key => {
+			
+			console.log(['key=',key]);
+			
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
+		});
 		
 		this.REO = controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
 		this.mymap = undefined;
-		//this.markerGroup = L.layerGroup();
+		this.markerGroup = L.layerGroup();
 		//this.labelGroup = L.layerGroup();
 		
+		
+		
+		// Just to make explicit what the issue is - Leaflet uses classes, and also has factory methods for creating new objects. 
+		// The classes are captialized and need to be called with new, while the factory methods are lowercase and should not. 
+		// The documentation uses factory methods, so I cannot say whether directly instantiating class instance is supported, 
+		// although the factories simply call new anyway. The following are therefore equivalent, though only the first is documented.
+
+		// Small t, calling factory method 
+		//const positron = L.tileLayer(...); 
+		// Capital T, instantiating a new instance directly 
+		//const positron = new L.TileLayer(...);
+		
+		// Zoom levels 10, 11, 12, 13: "buildings" are NOT VISIBLE
+		// Zoom levels 14, 15, 16, 17, 18: "buildings" are VISIBLE
 		this.buildingMarkers = L.layerGroup();
 		this.boundOnPointToLayer = (feature,latlng) => this.onPointToLayer(feature, latlng);
 		this.buildingBaseUrl = 'https://timthinner.github.io/web/ParkHawk/assets/markers/';
+		
+		
+		// Different view depending on Zoom level:
+		// Zoom levels 11, 12: busStopMarkersA
+		this.busStopMarkersA = L.layerGroup();
+		// Zoom levels 13, 14: busStopMarkersB
+		//this.busStopMarkersB = L.layerGroup();
+		// Zoom levels 15, 16, 17, 18: busStopMarkersC
+		//this.busStopMarkersC = L.layerGroup();
+		
+		
 		
 		this.mapzoom = 11;
 		this.mapcenter = [60.32, 24.54];
@@ -44,12 +68,10 @@ export default class MapView extends View {
 	}
 	
 	remove() {
-		/*Object.keys(this.models).forEach(key => {
+		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
-		});*/
-		this.appDataModel.unsubscribe(this);
+		});
 		this.REO.unsubscribe(this);
-		
 		if (typeof this.mymap !== 'undefined') {
 			this.mymap.remove();
 			this.mymap = undefined;
@@ -67,6 +89,106 @@ export default class MapView extends View {
 		}
 	}
 	
+	addMarkers(stops, layer) {
+		const myIcon = L.icon({
+			iconUrl:      'assets/bus-stop-yellow.png',
+			shadowUrl:    'assets/bus-stop-shadow.png',
+			iconSize:     [50, 80],
+			shadowSize:   [70, 50],
+			iconAnchor:   [2, 63],
+			shadowAnchor: [2, 34],
+			popupAnchor:  [25, -55]
+		});
+		for (let stop of stops) {
+			let s = '<h6 style="text-align:center;">'+stop.name+'</h6>';
+			s += '<table class="striped bus-stop-times">';
+			s += '<thead><tr><th>Määränpää</th><th>Linja</th><th>Lähtöaika</th></tr></thead><tbody>';
+			
+			let firstsix = stop.departures.slice(0,6);
+			for (let depa of firstsix) {
+				s += '<tr><td>'+depa.headsign+'</td><td>'+depa.shortName+'</td><td>'+depa.departureString+'</td></tr>';
+			}
+			s += '</tbody></table>';
+			
+			const marker = L.marker([stop.latlng.lat, stop.latlng.lng],{icon: myIcon}).bindPopup(s);
+			layer.addLayer(marker);
+		}
+	}
+	
+	
+	createBusStopMarkersA() {
+		const MM = this.getModel('MapModel');
+		if (typeof MM !== 'undefined') {
+			if (MM.BusStopData.alldepartures && MM.BusStopData.stops) {
+				let AStops = [];
+				const allDepInfo = MM.BusStopData.alldepartures;
+				const stops      = MM.BusStopData.stops;
+				//const stopnames      = MM.BusStopData.stopnames;
+				let stopNames = [];
+				for (let stop of stops) {
+					if (stop.priority === 1) {
+						if (!stopNames.includes(stop.name)) {
+							stopNames.push(stop.name);
+							let genStop = { name: stop.name, latlng: stop.latlng, priority: stop.priority };
+							genStop.departures = [];
+							for (let departure of allDepInfo) {
+								if (departure.stopName === genStop.name) {
+									genStop.departures.push(departure);
+								}
+							}
+							AStops.push(genStop);
+						}
+					}
+				}
+				console.log('AStops=',AStops);
+				if (AStops.length > 0) {
+					this.addMarkers(AStops, this.busStopMarkersA);
+					// Add the group to the map if zoom is 11 or 12.
+					if (this.mapzoom < 13) {
+						this.busStopMarkersA.addTo(this.mymap);
+					}
+				}
+			}
+		}
+	}
+	
+	/*
+	renderMarkers() {
+		const MM = this.getModel('MapModel');
+		if (typeof MM !== 'undefined') {
+			if (MM.BusStopData.alldepartures && MM.BusStopData.stops) {
+				let AStops = [];
+				const allDepInfo = MM.BusStopData.alldepartures;
+				const stops      = MM.BusStopData.stops;
+				//const stopnames      = MM.BusStopData.stopnames;
+				let stopNames = [];
+				for (let stop of stops) {
+					if (stop.priority === 1) {
+						if (!stopNames.includes(stop.name)) {
+							stopNames.push(stop.name);
+							let genStop = { name: stop.name, latlng: stop.latlng, priority: stop.priority };
+							genStop.departures = [];
+							for (let departure of allDepInfo) {
+								if (departure.stopName === genStop.name) {
+									genStop.departures.push(departure);
+								}
+							}
+							AStops.push(genStop);
+						}
+					}
+				}
+				console.log('AStops=',AStops);
+				if (AStops.length > 0) {
+					this.addMarkers(AStops, this.busStopMarkersA);
+					// Add the group to the map
+					this.busStopMarkersA.addTo(this.mymap);
+				}
+			}
+		}
+	}*/
+	
+	
+	
 	/*
 	Text labels in leaflet
 	
@@ -74,12 +196,13 @@ export default class MapView extends View {
 	
 	See: http://www.coffeegnome.net/labels-in-leaflet/
 	*/
+	/*
 	createLabelIcon(labelClass,labelText){
 		return L.divIcon({ 
 			className: labelClass,
 			html: labelText
 		});
-	}
+	}*/
 	/*
 	removeLabels() {
 		//console.log('Remove Labels');
@@ -152,18 +275,20 @@ export default class MapView extends View {
 	*/
 	
 	notify(options) {
-		/*
-		if (options.model === 'MapListModel' && options.method === 'fetched') {
+		
+		if (options.model === 'MapModel' && options.method === 'fetched') {
 			if (options.status === 200) {
 				if (typeof this.mymap !== 'undefined') {
-					//console.log('MapView Model fetched');
+					console.log('MapView Model fetched');
+					
 					//this.renderMarkers();
+					this.createBusStopMarkersA();
+					//this.mymap.addLayer(this.busStopMarkersA);
 					
 				}
 			}
-			*/
-		if (options.model === 'ResizeEventObserver' && options.method === 'resize') {
-			//console.log('MapView resize!!!!');
+		} else if (options.model === 'ResizeEventObserver' && options.method === 'resize') {
+			console.log('MapView resize!!!!');
 			if (this.rendered) {
 				this.setMapHeight();
 			}
@@ -319,6 +444,21 @@ export default class MapView extends View {
 				this.mymap.addLayer(this.buildingMarkers);
 			}
 		}
+		
+		
+		
+		if (z < 13) { // 11,12
+			if (this.mymap.hasLayer(this.busStopMarkersA)) {
+				// Do nothing
+			} else {
+				this.mymap.addLayer(this.busStopMarkersA);
+			}
+		} else { // 13,14,15,16,17,18
+			// Remove layer if it is there.
+			if (this.mymap.hasLayer(this.busStopMarkersA)) {
+				this.mymap.removeLayer(this.busStopMarkersA);
+			}
+		}
 	}
 	
 	render() {
@@ -333,111 +473,98 @@ export default class MapView extends View {
 		// since we are handling CSS height for the map dynamically in map 'load' callback and in resize callback.
 		//$('#mapid').css({height:"85vh",width:"100%"}); 
 		
-		
-		const homeActiveTarget = this.appDataModel.activeTarget;
-		const homeZoom = this.appDataModel.targets[homeActiveTarget].zoom;
-		const homeCenter = this.appDataModel.targets[homeActiveTarget].center;
-		
-		console.log(['homeActiveTarget=',homeActiveTarget]);
-		console.log(['homeCenter=',homeCenter]);
-		console.log(['homeZoom=',homeZoom]);
-		
-		const position = homeCenter; //[this.lat, this.lng]
-		const lat = position[0];
-		const lng = position[1];
-		const maxBounds = L.latLngBounds(L.latLng(lat+0.2, lng-0.5),L.latLng(lat-0.2, lng+0.5));
-		
-		
-		// See: https://github.com/elmarquis/Leaflet.GestureHandling
-		
-		//this.mymap = L.map('mapid',{gestureHandling: true});//.setView([60.26, 24.6], 12);
-		this.mymap = L.map('mapid');//.setView([60.26, 24.6], 12);
-		
-		// NOTE: To use this.mymap.on('load', ... we MUST call this.mymap.setView(...) AFTER defining the 'load'-callback!
-		
-		/* Example of bounds:
-		var southWest = L.latLng(40.712, -74.227),
-            northEast = L.latLng(40.774, -74.125),
-            mybounds = L.latLngBounds(southWest, northEast);
-
-        var map = L.map('map').setView([40.743, -74.176], 17);
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png' , {
-                bounds: mybounds,
-                maxZoom: 18,
-                minZoom: 16,
-                attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-        }) .addTo(map);
-        L.marker([40.743, -74.176]) .addTo(map); */
-		
-		// create the tile layer with correct attribution
-		var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-		var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-		L.tileLayer(osmUrl, {minZoom: 11, maxZoom: 18, bounds: maxBounds, attribution: osmAttrib}).addTo(this.mymap);
-		
-		
-		
-		if (homeActiveTarget === 'Nuuksio') {
-			// Show routes and buildings for Nuuksio.
+		const ADM = this.getModel('AppDataModel');
+		if (typeof ADM !== 'undefined') {
+			const homeActiveTarget = ADM.activeTarget;
+			const homeZoom = ADM.targets[ADM.activeTarget].zoom;
+			const homeCenter = ADM.targets[ADM.activeTarget].center;
 			
-			//<GeoJSON data={routedata} style={this.getRouteStyle} onEachFeature={this.getEachRouteFeature} />
-			L.geoJSON(routedata, {
-				style: this.getRouteStyle,
-				onEachFeature: this.getEachRouteFeature
-			}).addTo(this.mymap);
+			console.log(['homeActiveTarget=',homeActiveTarget]);
+			console.log(['homeCenter=',homeCenter]);
+			console.log(['homeZoom=',homeZoom]);
 			
-			//<GeoJSON data={buildingdata} style={this.getBuildingStyle} pointToLayer={this.onPointToLayer} onEachFeature={this.getEachBuildingFeature} />
+			const position = homeCenter; //[this.lat, this.lng]
+			const lat = position[0];
+			const lng = position[1];
+			const maxBounds = L.latLngBounds(L.latLng(lat+0.2, lng-0.5),L.latLng(lat-0.2, lng+0.5));
 			
+			// See: https://github.com/elmarquis/Leaflet.GestureHandling
 			
+			//this.mymap = L.map('mapid',{gestureHandling: true});//.setView([60.26, 24.6], 12);
+			this.mymap = L.map('mapid');//.setView([60.26, 24.6], 12);
 			
-			L.geoJSON(buildingdata, {
-				style: this.getBuildingStyle,
-				pointToLayer: this.boundOnPointToLayer, // this.onPointToLayer,
-				onEachFeature: this.getEachBuildingFeature
-			}).addTo(this.mymap);
+			// NOTE: To use this.mymap.on('load', ... we MUST call this.mymap.setView(...) AFTER defining the 'load'-callback!
 			
-		}
-		
-		
-		this.mymap.on('load', function(e) { 
-			//console.log('MapView MAP LOADED!!!!!');
-			self.rendered = true;
-			self.setMapHeight();
-		});
-		
-		//this.mymap.setView(this.mapcenter, this.mapzoom);
-		this.mymap.setView(homeCenter, homeZoom);
-		
-		Object.keys(this.models).forEach(key => {
-			if (key==='MapListModel') {
-				setTimeout(() => this.models[key].fetch(), 100);
+			/* Example of bounds:
+			var southWest = L.latLng(40.712, -74.227),
+				northEast = L.latLng(40.774, -74.125),
+				mybounds = L.latLngBounds(southWest, northEast);
+				
+			var map = L.map('map').setView([40.743, -74.176], 17);
+			L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png' , {
+				bounds: mybounds,
+				maxZoom: 18,
+				minZoom: 16,
+				attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+			}) .addTo(map);
+			L.marker([40.743, -74.176]) .addTo(map); */
+			
+			// create the tile layer with correct attribution
+			var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+			var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+			L.tileLayer(osmUrl, {minZoom: 11, maxZoom: 18, bounds: maxBounds, attribution: osmAttrib}).addTo(this.mymap);
+			
+			if (homeActiveTarget === 'Nuuksio') {
+				// Show routes and buildings for Nuuksio.
+				//<GeoJSON data={routedata} style={this.getRouteStyle} onEachFeature={this.getEachRouteFeature} />
+				L.geoJSON(routedata, {
+					style: this.getRouteStyle,
+					onEachFeature: this.getEachRouteFeature
+				}).addTo(this.mymap);
+				//<GeoJSON data={buildingdata} style={this.getBuildingStyle} pointToLayer={this.onPointToLayer} onEachFeature={this.getEachBuildingFeature} />
+				L.geoJSON(buildingdata, {
+					style: this.getBuildingStyle,
+					pointToLayer: this.boundOnPointToLayer, // this.onPointToLayer,
+					onEachFeature: this.getEachBuildingFeature
+				}).addTo(this.mymap);
 			}
-		});
-		
-		this.handleZoom(homeZoom);
-		
-		
-		this.mymap.on("zoomend", function(e) { 
-			self.mapzoom = self.mymap.getZoom();
 			
-			console.log(['self.mapzoom=',self.mapzoom]);
-			const homeActiveTarget = self.appDataModel.activeTarget;
-			self.appDataModel.targets[homeActiveTarget].zoom = self.mapzoom;
+			this.mymap.on('load', function(e) { 
+				//console.log('MapView MAP LOADED!!!!!');
+				self.rendered = true;
+				self.setMapHeight();
+			});
+			
+			//this.mymap.setView(this.mapcenter, this.mapzoom);
+			this.mymap.setView(homeCenter, homeZoom);
 			
 			
-			/*if (self.mapzoom > 4) {
-				self.renderLabels();
-			} else {
-				self.removeLabels();
-			}*/
-			self.handleZoom(self.mapzoom);
-		});
-		
-		this.mymap.on("moveend", function(e) {
-			self.mapcenter = self.mymap.getCenter();
-			console.log(['self.mapcenter=',self.mapcenter]);
+			Object.keys(this.models).forEach(key => {
+				if (key==='MapModel') {
+					setTimeout(() => this.models[key].fetch(), 100);
+				}
+			});
 			
-			const homeActiveTarget = self.appDataModel.activeTarget;
-			self.appDataModel.targets[homeActiveTarget].center =  [self.mapcenter.lat, self.mapcenter.lng];
-		});
+			
+			this.handleZoom(homeZoom);
+			
+			this.mymap.on("zoomend", function(e) { 
+				self.mapzoom = self.mymap.getZoom();
+				console.log(['self.mapzoom=',self.mapzoom]);
+				ADM.targets[ADM.activeTarget].zoom = self.mapzoom;
+				/*if (self.mapzoom > 4) {
+					self.renderLabels();
+				} else {
+					self.removeLabels();
+				}*/
+				self.handleZoom(self.mapzoom);
+			});
+			
+			this.mymap.on("moveend", function(e) {
+				self.mapcenter = self.mymap.getCenter();
+				console.log(['self.mapcenter=',self.mapcenter]);
+				ADM.targets[ADM.activeTarget].center = [self.mapcenter.lat, self.mapcenter.lng];
+			});
+		}
 	}
 }

@@ -11,6 +11,8 @@ export default class MapModel extends EventObserver {
 		this.ready = false;
 		this.errorMessage = '';
 		this.fetching = false;
+		
+		this.BusStopData = {};
 	}
 	
 	flattenStopData(allstops) {
@@ -66,7 +68,6 @@ export default class MapModel extends EventObserver {
 		this.fetching = true;
 		console.log ('MapModel => fetch()...');
 		const message = 'OK';
-		
 		/*
 		setTimeout(() => {
 			status = 200; // OK
@@ -91,8 +92,6 @@ export default class MapModel extends EventObserver {
 					{ lat: 60.324, lng: 24.5, radius: 1300 }
 				]
 			},*/
-		
-		
 		const routingUrl = this.src.targets[this.src.activeTarget].busStops.routingUrl;
 		let busStops = [];
 		let i=1;
@@ -130,8 +129,7 @@ export default class MapModel extends EventObserver {
 			i++;
 		});
 		queryString += '}';
-		//console.log(['queryString=',queryString]);
-		
+		console.log(['queryString=',queryString]);
 		let req = {
 			query: queryString
 		};
@@ -147,9 +145,6 @@ export default class MapModel extends EventObserver {
 			return response.json();
 		}).then(function(myJson) {
 			//console.log(['GraphQL JSON RESPONSE IS: ',myJson]);
-			self.fetching = false;
-			self.ready = true;
-			
 			function compareDepTime(a, b) {
 				if (a.stoptimesForPatterns[0] && a.stoptimesForPatterns[0].stoptimes[0] && b.stoptimesForPatterns[0] && b.stoptimesForPatterns[0].stoptimes[0]) {
 					let aa = a.stoptimesForPatterns[0].stoptimes[0].scheduledDeparture + a.stoptimesForPatterns[0].stoptimes[0].serviceDay;
@@ -159,9 +154,34 @@ export default class MapModel extends EventObserver {
 				}
 				return 0;
 			}
-			
 			if (myJson.data) {
+				console.log(['GraphQL JSON RESPONSE: ',myJson.data]);
 				Object.keys(myJson.data).forEach(key => {
+					// stopsByRadius1 {
+					//   edges[
+					//     node {
+					//       stop {
+					//         gtfsId                       "HSL:2644247"
+					//         name                         "Punjo"
+					//         lat                          60.26876
+					//         lon                          24.59526
+					//         stoptimesForPatterns [
+					//           pattern {
+					//             headsign                 "Espoon keskus"
+					//             name                     "245A to Espoon asema (HSL:2611219)"
+					//             route {
+					//               longName               "Espoon keskus-Nuuksionpää-Kattila"
+					//               shortName              "245A"
+					//           stoptimes [
+					//             scheduledDeparture       54960 
+					//             headsign                 "Espoon keskus"
+					//             serviceDay               1591304400    Unix timestamp (local timezone) of the departure date
+					//                                                    seconds since Jan 01 1970. (UTC)
+					//                                                    1.1.1970 - 5.6.2020 => 1,591,315,200 seconds 
+					//                                                    1591315200 - 1591304400 = 10 800 (= 3 hours!)
+					// stopsByRadius2
+					// ...
+					// stopsByRadius5
 					for (let edge of myJson.data[key].edges) {
 						if (edge && edge.node) {
 							busStops.push(edge.node.stop);
@@ -170,10 +190,8 @@ export default class MapModel extends EventObserver {
 				});
 			}
 			console.log(['busStops=',busStops]);
-			
 			// Sort stops
 			busStops.sort(compareDepTime);
-			
 			let stopNames = [];
 			// Set priority for rendering
 			// and collect all unique bus stop names into array
@@ -189,19 +207,17 @@ export default class MapModel extends EventObserver {
 			}
 			stopNames.sort();
 			console.log(['stopNames=',stopNames]);
-			
 			const newStopObject = self.flattenStopData(busStops);
-			const BSD = {
+			self.BusStopData = {
 				stopnames: stopNames,
 				stops: newStopObject.allStops,
 				alldepartures: newStopObject.allDepInfo
 			};
-			console.log(['BSD=',BSD]);
-			//this.props.storeBusStops(BSD);
-			
+			self.fetching = false;
+			self.ready = true;
 			self.notifyAll({model:'MapModel',method:'fetched',status:status,message:message});
-		})
-		.catch(function(error) {
+			
+		}).catch(function(error) {
 			self.fetching = false;
 			self.ready = true;
 			self.errorMessage = error;

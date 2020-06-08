@@ -23,7 +23,8 @@ export default class AppDataModel extends EventObserver {
 					{ lat: 60.283, lng: 24.511, radius: 2000 }, // Siikajärvi radius ws 1600
 					{ lat: 60.310, lng: 24.546, radius: 3000 }, // Nuuksionpää
 					{ lat: 60.324, lng: 24.5, radius: 1300 } // Kattila
-				]
+				],
+				priorityStops: ['Hakjärventie','Haltia','Haukkalammentie','Kattila','Siikaniemi','Veikkola']
 			},
 			cameras: [
 				/*{
@@ -69,7 +70,14 @@ export default class AppDataModel extends EventObserver {
 			busStops: {
 				routingUrl: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
 				routingAreas: [
-				]
+					{ lat: 60.31, lng: 25.11, radius: 1200 },
+					{ lat: 60.283, lng: 25.14, radius: 1200 },
+					{ lat: 60.360, lng: 25.165, radius: 2000 }
+				],
+				priorityStops: ['Kuusijärvi','Länsitie','Kalkkiuunintie']
+				// Kuusijärvelle: bussi 739 Rautatientorilta 
+				// Sipoonkorven eteläosiin ja Sotunkiin: bussi 717 Rautatientorilta 
+				// Sipoonkorven pohjoisosiin: bussit 785, 787 ja 788 Rautatientorilta 
 			},
 			cameras: [
 				

@@ -36,7 +36,6 @@ export default class MapView extends View {
 		// Zoom levels 14, 15, 16, 17, 18: "buildings" are VISIBLE
 		this.buildingMarkers = L.layerGroup();
 		this.boundOnPointToLayer = (feature,latlng) => this.onPointToLayer(feature, latlng);
-		this.buildingBaseUrl = 'https://timthinner.github.io/web/ParkHawk/assets/markers/';
 		
 		// Different view depending on Zoom level:
 		// Zoom levels 11, 12: busStopMarkersA
@@ -45,6 +44,15 @@ export default class MapView extends View {
 		this.busStopMarkersB = L.layerGroup();
 		// Zoom levels 15, 16, 17, 18: busStopMarkersC
 		this.busStopMarkersC = L.layerGroup();
+		
+		// Different view depending on Zoom level:
+		// Show only 2 P-ICONS when zoom-level is between 10-14, hide: 15-18
+		this.parkCameraMarkersA = L.layerGroup(); // Only two icons (groups: 2 for Haukkalampi and 2 for Kattila)
+		this.parkCameraMarkersB = L.layerGroup(); // All 4 cameras as separate icons
+		
+		this.boundOnMarkerHaukkalampiClick = (e) => this.onMarkerHaukkalampiClick(e);
+		this.boundOnMarkerKattilaClick = (e) => this.onMarkerKattilaClick(e);
+		this.boundOnMarkerClick = (e) => this.onMarkerClick(e);
 		
 		this.mapzoom = 11;
 		this.mapcenter = [60.32, 24.54];
@@ -161,6 +169,151 @@ export default class MapView extends View {
 		}
 	}
 	
+	onMarkerHaukkalampiClick(e) {
+		//console.log('onMarkerHaukkalampiClick');
+		const marker = e.target;
+		//console.log(['e.target=',e.target]);
+		marker.unbindPopup();
+		/* 
+		Do not always use 50% of window.innerWidth. Create a more adaptive solution 
+		where narrow viewport popup will have 90% and wide viewport 50%.
+		When width = 0 => percentage = 90
+		When width = 2000 => percentage = 50
+		*/
+		const percentage = 90 - window.innerWidth*4/200;
+		const d = new Date();
+		const popupWidth = Math.round(percentage*window.innerWidth/100);
+		const imageWidth = popupWidth-20;
+		const imageHeight = 720*imageWidth/1280;
+		const popupMaxWidth = imageWidth+30;
+		const popupMaxHeight = imageHeight+200;
+		// Group of vertically stacked images is displayed:
+		let s = '';
+		const ADM = this.getModel('AppDataModel');
+		if (typeof ADM !== 'undefined') {
+			ADM.targets[ADM.activeTarget].cameras.forEach(cam=>{
+				if (cam.loc === 'Haukkalampi') {
+					s += '<div class="map-marker-popup-content">';
+					//s += '<h5 class="cameras-image-title">'+cam.name+'</h5>';
+					s += '<img src="'+cam.url+'?time='+d.getTime()+'" width='+imageWidth+' height='+imageHeight+' alt="" />';
+					s += '</div>';
+				}
+			});
+		}
+		marker.bindPopup(s,{minWidth: popupWidth, maxWidth: popupMaxWidth, maxHeight:popupMaxHeight}).openPopup();
+	}
+	
+	onMarkerKattilaClick(e) {
+		//console.log('onMarkerKattilaClick');
+		const marker = e.target;
+		//console.log(['e.target=',e.target]);
+		marker.unbindPopup();
+		/* 
+		Do not always use 50% of window.innerWidth. Create a more adaptive solution 
+		where narrow viewport popup will have 90% and wide viewport 50%.
+		When width = 0 => percentage = 90
+		When width = 2000 => percentage = 50
+		*/
+		const percentage = 90 - window.innerWidth*4/200;
+		const d = new Date();
+		const popupWidth = Math.round(percentage*window.innerWidth/100);
+		const imageWidth = popupWidth-20;
+		const imageHeight = 720*imageWidth/1280;
+		const popupMaxWidth = imageWidth+30;
+		const popupMaxHeight = imageHeight+200;
+		// Group of vertically stacked images is displayed:
+		let s = '';
+		const ADM = this.getModel('AppDataModel');
+		if (typeof ADM !== 'undefined') {
+			ADM.targets[ADM.activeTarget].cameras.forEach(cam=>{
+				if (cam.loc === 'Kattila') {
+					s += '<div class="map-marker-popup-content">';
+					//s += '<h5 class="cameras-image-title">'+cam.name+'</h5>';
+					s += '<img src="'+cam.url+'?time='+d.getTime()+'" width='+imageWidth+' height='+imageHeight+' alt="" />';
+					s += '</div>';
+				}
+			});
+		}
+		marker.bindPopup(s,{minWidth: popupWidth, maxWidth: popupMaxWidth, maxHeight:popupMaxHeight}).openPopup();
+	}
+	
+	
+	onMarkerClick(e) {
+		//console.log('onMarkerKattilaClick');
+		const marker = e.target;
+		//console.log(['e.target=',e.target]);
+		const elem = marker.getElement();
+		if (elem.alt) {
+			marker.unbindPopup();
+			/* 
+			Do not always use 50% of window.innerWidth. Create a more adaptive solution 
+			where narrow viewport popup will have 90% and wide viewport 50%.
+			When width = 0 => percentage = 90
+			When width = 2000 => percentage = 50
+			*/
+			const percentage = 90 - window.innerWidth*4/200;
+			const d = new Date();
+			const popupWidth = Math.round(percentage*window.innerWidth/100);
+			const imageWidth = popupWidth-20;
+			const imageHeight = 720*imageWidth/1280;
+			const popupMaxWidth = imageWidth+30;
+			const popupMaxHeight = imageHeight+200;
+			let s = '';
+			const ADM = this.getModel('AppDataModel');
+			if (typeof ADM !== 'undefined') {
+				ADM.targets[ADM.activeTarget].cameras.forEach(cam=>{
+					if (cam.name === elem.alt) {
+						s += '<div class="map-marker-popup-content">';
+						//s += '<h5 class="cameras-image-title">'+cam.name+'</h5>';
+						s += '<img src="'+cam.url+'?time='+d.getTime()+'" width='+imageWidth+' height='+imageHeight+' alt="" />';
+						s += '</div>';
+					}
+				});
+			}
+			marker.bindPopup(s,{minWidth: popupWidth, maxWidth: popupMaxWidth, maxHeight:popupMaxHeight}).openPopup();
+		}
+	}
+	
+	createParkCameraMarkers() {
+		this.mymap.removeLayer(this.parkCameraMarkersA);
+		this.parkCameraMarkersA = new L.LayerGroup();
+		
+		this.mymap.removeLayer(this.parkCameraMarkersB);
+		this.parkCameraMarkersB = new L.LayerGroup();
+		
+		var ParkCameraIcon = L.Icon.extend({
+			options: {
+				shadowUrl: 'assets/ParkCameraIconShadow.png',
+				iconSize:     [50, 40],
+				shadowSize:   [60, 30],
+				iconAnchor:   [2, 38],
+				shadowAnchor: [2, 34],
+				popupAnchor:  [25, -35]
+			}
+		});
+		var pcIcon = new ParkCameraIcon({iconUrl: 'assets/ParkCameraIcon.png'});
+		
+		const ADM = this.getModel('AppDataModel');
+		if (typeof ADM !== 'undefined') {
+			// Create merged P-icon for two Parking areas.
+			ADM.targets[ADM.activeTarget].cameras.forEach(cam=>{
+				if (cam.name === 'Haukkalampi 2') {
+					const m = L.marker([cam.lat, cam.lon], {icon: pcIcon}).on('click', this.boundOnMarkerHaukkalampiClick);
+					this.parkCameraMarkersA.addLayer(m);
+				}
+				if (cam.name === 'Kattila 1') {
+					const m = L.marker([cam.lat, cam.lon], {icon: pcIcon}).on('click', this.boundOnMarkerKattilaClick);
+					this.parkCameraMarkersA.addLayer(m);
+				}
+			});
+			// Create separate P-icon for each camera.
+			ADM.targets[ADM.activeTarget].cameras.forEach(cam=>{
+				const m = L.marker([cam.lat, cam.lon], {icon: pcIcon, 'alt':cam.name}).on('click', this.boundOnMarkerClick);
+				this.parkCameraMarkersB.addLayer(m);
+			});
+		}
+	}
+	
 	showRoutingAreas() {
 		/*
 				routingAreas: [
@@ -186,8 +339,9 @@ export default class MapView extends View {
 				if (typeof this.mymap !== 'undefined') {
 					console.log('MapView Model fetched');
 					this.createBusStopMarkers();
+					this.createParkCameraMarkers();
 					this.handleZoom();
-					this.showRoutingAreas();
+					//this.showRoutingAreas();
 				}
 			}
 		} else if (options.model === 'ResizeEventObserver' && options.method === 'resize') {
@@ -244,30 +398,30 @@ export default class MapView extends View {
 	*/
 	onPointToLayer(feature, latlng) {
 		// Map icons for buildings etc.
-		let iconurl = this.buildingBaseUrl+'opastusbluecircle.png';
+		let iconurl = 'assets/markers/opastusbluecircle.png';
 		switch (feature.properties.tyyppi) {
-			case 'Opastus (Info)':                      iconurl = this.buildingBaseUrl+'opastusbluecircle.png'; break;
-			case 'Tulentekopaikka':                     iconurl = this.buildingBaseUrl+'tulentekopaikkaredcircle.png'; break;
-			case 'Keittokatos':                         iconurl = this.buildingBaseUrl+'keittokatosred.png'; break;
-			case 'Laavu':                               iconurl = this.buildingBaseUrl+'laavu.png'; break;
-			case 'Varattava telttailualue':             iconurl = this.buildingBaseUrl+'varattavatelttailualue.png'; break;
-			case 'Telttailualue':                       iconurl = this.buildingBaseUrl+'telttailualue.png'; break;
-			case 'Telttailupaikka':                     iconurl = this.buildingBaseUrl+'telttailualue.png'; break;
-			case 'Kuivakäymälä':                        iconurl = this.buildingBaseUrl+'kuivakaymala.png'; break;
-			case 'Jätteiden keräys- ja lajittelupiste': iconurl = this.buildingBaseUrl+'jatteidenlajittelu.png'; break;
-			case 'Kota':                                iconurl = this.buildingBaseUrl+'kota.png'; break;
-			case 'Luonto- tai näkötorni':               iconurl = this.buildingBaseUrl+'luontotorni.png'; break;
-			case 'Kävely- tai kevyen liikenteen silta': iconurl = this.buildingBaseUrl+'silta.png'; break;
-			case 'Vuokrakämppä tai -tupa':              iconurl = this.buildingBaseUrl+'vuokratupacircle.png'; break;
-			case 'Muu majoitus- tai liikerakennus':     iconurl = this.buildingBaseUrl+'majoitus.png'; break;
-			case 'Sauna':                               iconurl = this.buildingBaseUrl+'sauna.png'; break;
-			case 'Luontokeskus':                        iconurl = this.buildingBaseUrl+'luontokeskus.png'; break;
-			case 'Luontotupa':                          iconurl = this.buildingBaseUrl+'luontotupa.png'; break;
+			case 'Opastus (Info)':                      iconurl = 'assets/markers/opastusbluecircle.png'; break;
+			case 'Tulentekopaikka':                     iconurl = 'assets/markers/tulentekopaikkaredcircle.png'; break;
+			case 'Keittokatos':                         iconurl = 'assets/markers/keittokatosred.png'; break;
+			case 'Laavu':                               iconurl = 'assets/markers/laavu.png'; break;
+			case 'Varattava telttailualue':             iconurl = 'assets/markers/varattavatelttailualue.png'; break;
+			case 'Telttailualue':                       iconurl = 'assets/markers/telttailualue.png'; break;
+			case 'Telttailupaikka':                     iconurl = 'assets/markers/telttailualue.png'; break;
+			case 'Kuivakäymälä':                        iconurl = 'assets/markers/kuivakaymala.png'; break;
+			case 'Jätteiden keräys- ja lajittelupiste': iconurl = 'assets/markers/jatteidenlajittelu.png'; break;
+			case 'Kota':                                iconurl = 'assets/markers/kota.png'; break;
+			case 'Luonto- tai näkötorni':               iconurl = 'assets/markers/luontotorni.png'; break;
+			case 'Kävely- tai kevyen liikenteen silta': iconurl = 'assets/markers/silta.png'; break;
+			case 'Vuokrakämppä tai -tupa':              iconurl = 'assets/markers/vuokratupacircle.png'; break;
+			case 'Muu majoitus- tai liikerakennus':     iconurl = 'assets/markers/majoitus.png'; break;
+			case 'Sauna':                               iconurl = 'assets/markers/sauna.png'; break;
+			case 'Luontokeskus':                        iconurl = 'assets/markers/luontokeskus.png'; break;
+			case 'Luontotupa':                          iconurl = 'assets/markers/luontotupa.png'; break;
 			default: break;
 		}
 		var BuildingIcon = L.Icon.extend({
 			options: {
-				shadowUrl: this.buildingBaseUrl+'varjo.png',
+				shadowUrl: 'assets/markers/varjo.png',
 				iconSize:     [30, 30],
 				shadowSize:   [30, 30],
 				iconAnchor:   [2, 28],
@@ -301,12 +455,17 @@ export default class MapView extends View {
 		Zoom levels 11, 12: busStopMarkersA VISIBLE
 		Zoom levels 13, 14: busStopMarkersB VISIBLE
 		Zoom levels 15, 16, 17, 18: busStopMarkersC VISIBLE
+		
+		
+		// Show only 2 P-ICONS when zoom-level is between 11-14, hide: 15-18
+		this.parkCameraMarkersA = L.layerGroup(); // Only two icons (groups: 2 for Haukkalampi and 2 for Kattila)
+		
 	*/
 	handleZoom() {
 		switch(this.mapzoom) {
 			case 11:
 			case 12:
-				// NOT VISIBLE: buildingMarkers, busStopMarkersB, busStopMarkersC
+				// NOT VISIBLE: buildingMarkers, busStopMarkersB, busStopMarkersC, parkCameraMarkersB
 				if (this.mymap.hasLayer(this.buildingMarkers)) {
 					this.mymap.removeLayer(this.buildingMarkers);
 				}
@@ -316,16 +475,24 @@ export default class MapView extends View {
 				if (this.mymap.hasLayer(this.busStopMarkersC)) {
 					this.mymap.removeLayer(this.busStopMarkersC);
 				}
-				// VISIBLE: busStopMarkersA
+				if (this.mymap.hasLayer(this.parkCameraMarkersB)) {
+					this.mymap.removeLayer(this.parkCameraMarkersB);
+				}
+				// VISIBLE: busStopMarkersA, parkCameraMarkersA
 				if (this.mymap.hasLayer(this.busStopMarkersA)) {
 					// Do nothing
 				} else {
 					this.mymap.addLayer(this.busStopMarkersA);
 				}
+				if (this.mymap.hasLayer(this.parkCameraMarkersA)) {
+					// Do nothing
+				} else {
+					this.mymap.addLayer(this.parkCameraMarkersA);
+				}
 				break;
 			
 			case 13:
-				// NOT VISIBLE: buildingMarkers, busStopMarkersA, busStopMarkersC
+				// NOT VISIBLE: buildingMarkers, busStopMarkersA, busStopMarkersC, parkCameraMarkersB
 				if (this.mymap.hasLayer(this.buildingMarkers)) {
 					this.mymap.removeLayer(this.buildingMarkers);
 				}
@@ -335,23 +502,35 @@ export default class MapView extends View {
 				if (this.mymap.hasLayer(this.busStopMarkersC)) {
 					this.mymap.removeLayer(this.busStopMarkersC);
 				}
-				// VISIBLE: busStopMarkersB
+				if (this.mymap.hasLayer(this.parkCameraMarkersB)) {
+					this.mymap.removeLayer(this.parkCameraMarkersB);
+				}
+				// VISIBLE: busStopMarkersB, parkCameraMarkersA
 				if (this.mymap.hasLayer(this.busStopMarkersB)) {
 					// Do nothing
 				} else {
 					this.mymap.addLayer(this.busStopMarkersB);
 				}
+				if (this.mymap.hasLayer(this.parkCameraMarkersA)) {
+					// Do nothing
+				} else {
+					this.mymap.addLayer(this.parkCameraMarkersA);
+				}
 				break;
 				
 			case 14:
-				// NOT VISIBLE: busStopMarkersA, busStopMarkersC
+				// NOT VISIBLE: busStopMarkersA, busStopMarkersC, parkCameraMarkersB
 				if (this.mymap.hasLayer(this.busStopMarkersA)) {
 					this.mymap.removeLayer(this.busStopMarkersA);
 				}
 				if (this.mymap.hasLayer(this.busStopMarkersC)) {
 					this.mymap.removeLayer(this.busStopMarkersC);
 				}
-				// VISIBLE: buildingMarkers, busStopMarkersB
+				if (this.mymap.hasLayer(this.parkCameraMarkersB)) {
+					this.mymap.removeLayer(this.parkCameraMarkersB);
+				}
+				
+				// VISIBLE: buildingMarkers, busStopMarkersB, parkCameraMarkersA
 				if (this.mymap.hasLayer(this.buildingMarkers)) {
 					// Do nothing
 				} else {
@@ -362,20 +541,29 @@ export default class MapView extends View {
 				} else {
 					this.mymap.addLayer(this.busStopMarkersB);
 				}
+				if (this.mymap.hasLayer(this.parkCameraMarkersA)) {
+					// Do nothing
+				} else {
+					this.mymap.addLayer(this.parkCameraMarkersA);
+				}
 				break;
 			
 			case 15:
 			case 16:
 			case 17:
 			case 18:
-				// NOT VISIBLE: busStopMarkersA, busStopMarkersB
+				// NOT VISIBLE: busStopMarkersA, busStopMarkersB, parkCameraMarkersA
 				if (this.mymap.hasLayer(this.busStopMarkersA)) {
 					this.mymap.removeLayer(this.busStopMarkersA);
 				}
 				if (this.mymap.hasLayer(this.busStopMarkersB)) {
 					this.mymap.removeLayer(this.busStopMarkersB);
 				}
-				// VISIBLE: buildingMarkers, busStopMarkersC
+				if (this.mymap.hasLayer(this.parkCameraMarkersA)) {
+					this.mymap.removeLayer(this.parkCameraMarkersA);
+				}
+				
+				// VISIBLE: buildingMarkers, busStopMarkersC, parkCameraMarkersB
 				if (this.mymap.hasLayer(this.buildingMarkers)) {
 					// Do nothing
 				} else {
@@ -385,6 +573,11 @@ export default class MapView extends View {
 					// Do nothing
 				} else {
 					this.mymap.addLayer(this.busStopMarkersC);
+				}
+				if (this.mymap.hasLayer(this.parkCameraMarkersB)) {
+					// Do nothing
+				} else {
+					this.mymap.addLayer(this.parkCameraMarkersB);
 				}
 				break;
 		}

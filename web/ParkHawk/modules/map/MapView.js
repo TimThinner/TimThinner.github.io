@@ -21,16 +21,12 @@ export default class MapView extends View {
 		this.REO.subscribe(this);
 		
 		this.mymap = undefined;
-		this.markerGroup = L.layerGroup();
-		//this.labelGroup = L.layerGroup();
-		
-		
 		
 		// Just to make explicit what the issue is - Leaflet uses classes, and also has factory methods for creating new objects. 
 		// The classes are captialized and need to be called with new, while the factory methods are lowercase and should not. 
 		// The documentation uses factory methods, so I cannot say whether directly instantiating class instance is supported, 
 		// although the factories simply call new anyway. The following are therefore equivalent, though only the first is documented.
-
+		
 		// Small t, calling factory method 
 		//const positron = L.tileLayer(...); 
 		// Capital T, instantiating a new instance directly 
@@ -42,16 +38,13 @@ export default class MapView extends View {
 		this.boundOnPointToLayer = (feature,latlng) => this.onPointToLayer(feature, latlng);
 		this.buildingBaseUrl = 'https://timthinner.github.io/web/ParkHawk/assets/markers/';
 		
-		
 		// Different view depending on Zoom level:
 		// Zoom levels 11, 12: busStopMarkersA
 		this.busStopMarkersA = L.layerGroup();
 		// Zoom levels 13, 14: busStopMarkersB
-		//this.busStopMarkersB = L.layerGroup();
+		this.busStopMarkersB = L.layerGroup();
 		// Zoom levels 15, 16, 17, 18: busStopMarkersC
-		//this.busStopMarkersC = L.layerGroup();
-		
-		
+		this.busStopMarkersC = L.layerGroup();
 		
 		this.mapzoom = 11;
 		this.mapcenter = [60.32, 24.54];
@@ -115,176 +108,86 @@ export default class MapView extends View {
 		}
 	}
 	
-	
-	createBusStopMarkersA() {
+	createBusStopMarkers() {
+		
+		this.mymap.removeLayer(this.busStopMarkersA);
+		this.busStopMarkersA = new L.LayerGroup();
+		
+		this.mymap.removeLayer(this.busStopMarkersB);
+		this.busStopMarkersB = new L.LayerGroup();
+		
+		this.mymap.removeLayer(this.busStopMarkersC);
+		this.busStopMarkersC = new L.LayerGroup();
+		
 		const MM = this.getModel('MapModel');
 		if (typeof MM !== 'undefined') {
 			if (MM.BusStopData.alldepartures && MM.BusStopData.stops) {
 				let AStops = [];
+				let BStops = [];
+				let CStops = [];
+				
 				const allDepInfo = MM.BusStopData.alldepartures;
 				const stops      = MM.BusStopData.stops;
 				//const stopnames      = MM.BusStopData.stopnames;
 				let stopNames = [];
+				
 				for (let stop of stops) {
-					if (stop.priority === 1) {
-						if (!stopNames.includes(stop.name)) {
-							stopNames.push(stop.name);
-							let genStop = { name: stop.name, latlng: stop.latlng, priority: stop.priority };
-							genStop.departures = [];
-							for (let departure of allDepInfo) {
-								if (departure.stopName === genStop.name) {
-									genStop.departures.push(departure);
-								}
-							}
-							AStops.push(genStop);
+					// Only few selected bus stops (stop.priority=1) are added to Layer A (zoom levels 11 and 12).
+					// Stops with priority 1 are defined in MapModel:
+					// ['Kattila','Haukkalammentie','Haltia','Siikaniemi','Siikaranta','Veikkola','Gumbölenristi']
+					let genStop = { name: stop.name, latlng: stop.latlng, priority: stop.priority };
+					genStop.departures = [];
+					for (let departure of allDepInfo) {
+						if (departure.stopName === genStop.name) {
+							genStop.departures.push(departure);
 						}
 					}
+					if (!stopNames.includes(stop.name)) {
+						stopNames.push(stop.name);
+						if (stop.priority === 1) {
+							AStops.push(genStop);
+						}
+						BStops.push(genStop);
+					}
+					CStops.push(genStop);
 				}
 				console.log('AStops=',AStops);
-				if (AStops.length > 0) {
-					this.addMarkers(AStops, this.busStopMarkersA);
-					// Add the group to the map if zoom is 11 or 12.
-					//if (this.mapzoom < 13) {
-					this.busStopMarkersA.addTo(this.mymap);
-					//}
-				}
+				console.log('BStops=',BStops);
+				console.log('CStops=',CStops);
+				if (AStops.length > 0) { this.addMarkers(AStops, this.busStopMarkersA); }
+				if (BStops.length > 0) { this.addMarkers(BStops, this.busStopMarkersB); }
+				if (CStops.length > 0) { this.addMarkers(CStops, this.busStopMarkersC); }
 			}
 		}
 	}
 	
-	/*
-	renderMarkers() {
-		const MM = this.getModel('MapModel');
-		if (typeof MM !== 'undefined') {
-			if (MM.BusStopData.alldepartures && MM.BusStopData.stops) {
-				let AStops = [];
-				const allDepInfo = MM.BusStopData.alldepartures;
-				const stops      = MM.BusStopData.stops;
-				//const stopnames      = MM.BusStopData.stopnames;
-				let stopNames = [];
-				for (let stop of stops) {
-					if (stop.priority === 1) {
-						if (!stopNames.includes(stop.name)) {
-							stopNames.push(stop.name);
-							let genStop = { name: stop.name, latlng: stop.latlng, priority: stop.priority };
-							genStop.departures = [];
-							for (let departure of allDepInfo) {
-								if (departure.stopName === genStop.name) {
-									genStop.departures.push(departure);
-								}
-							}
-							AStops.push(genStop);
-						}
-					}
-				}
-				console.log('AStops=',AStops);
-				if (AStops.length > 0) {
-					this.addMarkers(AStops, this.busStopMarkersA);
-					// Add the group to the map
-					this.busStopMarkersA.addTo(this.mymap);
-				}
-			}
-		}
-	}*/
-	
-	
-	
-	/*
-	Text labels in leaflet
-	
-	var label = L.marker(new L.LatLng(lat, lon), {icon:self.createLabelIcon("yellowLabel", key)}).addTo(self.mymap);
-	
-	See: http://www.coffeegnome.net/labels-in-leaflet/
-	*/
-	/*
-	createLabelIcon(labelClass,labelText){
-		return L.divIcon({ 
-			className: labelClass,
-			html: labelText
-		});
-	}*/
-	/*
-	removeLabels() {
-		//console.log('Remove Labels');
-		this.labelGroup.remove();
-	}
-	
-	renderLabels() {
-		//console.log('Add Labels');
-		this.labelGroup.addTo(this.mymap);
-	}
-	
-	renderMarkers() {
-		var self = this;
-		
-		var orangeIcon = L.icon({
-			iconUrl:       'img/marker-icon-orange.png',
-			iconRetinaUrl: 'img/marker-icon-orange-2x.png',
-			shadowUrl:     'img/marker-shadow.png',
-			iconSize:    [25, 41], // size of the icon
-			shadowSize:  [41, 41], // size of the shadow
-			iconAnchor:  [12, 41], // point of the icon which will correspond to marker's location
-			//shadowAnchor: [12, 41],  // the same for the shadow
-			popupAnchor: [1, -34], // point from which the popup should open relative to the iconAnchor
-			tooltipAnchor: [16, -28]
-		});
-		
-		let maplist = undefined;
-		Object.keys(this.models).forEach(key => {
-			if (key==='MapListModel') {
-				maplist = this.models[key].getMapData();
-			}
-		});
-		if (typeof maplist !== 'undefined') {
-			Object.keys(maplist).map(key => {
-				var lat = maplist[key].latitude;
-				var lon = maplist[key].longitude;
-				var pic =  maplist[key].picture;
-				var title =  maplist[key].title;
-				
-				var labelMarker = L.marker(new L.LatLng(lat, lon), {icon:self.createLabelIcon("yellowLabel", key)});//.addTo(self.mymap);
-				this.labelGroup.addLayer(labelMarker);
-				
-				var sd = maplist[key].startDate; // sd = "25.05.2019"
-				
-				var start_timestamp = moment();
-				start_timestamp
-					.year(parseInt(sd.slice(6),10))
-					.month(parseInt(sd.slice(3,5),10)-1)
-					.date(parseInt(sd.slice(0,2),10))
-					.hour(0)
-					.minute(0)
-					.second(0);
-				
-				var now_ts = moment();
-				var trip_ts = moment(start_timestamp);
-				if (trip_ts.isBefore(now_ts)) {
-					var marker = L.marker([lat,lon]).bindPopup('<h6 style="text-align:center;">'+title+'</h6><img src="'+pic+'" width="300"/>');
-					// Add each marker to the group
-					this.markerGroup.addLayer(marker);
-				} else {
-					var marker = L.marker([lat,lon],{icon: orangeIcon}).bindPopup('<h6 style="text-align:center;">'+title+'</h6><img src="'+pic+'" width="300"/>');
-					// Add each marker to the group
-					this.markerGroup.addLayer(marker);
-				}
+	showRoutingAreas() {
+		/*
+				routingAreas: [
+					{ lat: 60.270, lng: 24.594, radius: 3200 },
+					{ lat: 60.2695, lng: 24.4440, radius: 300 },
+					{ lat: 60.283, lng: 24.511, radius: 1600 },
+					{ lat: 60.310, lng: 24.546, radius: 3000 },
+					{ lat: 60.324, lng: 24.5, radius: 1300 }
+				]
+		*/
+		const ADM = this.getModel('AppDataModel');
+		if (typeof ADM !== 'undefined') {
+			ADM.targets[ADM.activeTarget].busStops.routingAreas.forEach(a=>{
+				L.circle([a.lat, a.lng], {radius: a.radius}).addTo(this.mymap);
 			});
-			// Add the group to the map
-			this.markerGroup.addTo(this.mymap);
 		}
 	}
-	*/
 	
 	notify(options) {
-		
+		// When map is rendered MapModel is fetched => Bus Stop Markers are created again.
 		if (options.model === 'MapModel' && options.method === 'fetched') {
 			if (options.status === 200) {
 				if (typeof this.mymap !== 'undefined') {
 					console.log('MapView Model fetched');
-					
-					//this.renderMarkers();
-					this.createBusStopMarkersA();
-					//this.mymap.addLayer(this.busStopMarkersA);
-					
+					this.createBusStopMarkers();
+					this.handleZoom();
+					this.showRoutingAreas();
 				}
 			}
 		} else if (options.model === 'ResizeEventObserver' && options.method === 'resize') {
@@ -294,10 +197,10 @@ export default class MapView extends View {
 			}
 		}
 	}
-	
-	
-	
-	getRouteStyle(feature, layer) {
+	/*
+		L.geoJSON routedata style CALLBACK
+	*/
+	getRouteStyle(feature) {
 		let c = '#000000';
 		let w = 6;
 		if (feature.properties.priority > 0) {
@@ -312,56 +215,34 @@ export default class MapView extends View {
 			opacity: 0.8
 		}
 	}
-	
+	/*
+		L.geoJSON routedata onEachFeature CALLBACK
+	*/
 	getEachRouteFeature(feature, layer) {
-		//console.log(feature, layer);
-		//Nimi: "Päivättärenpolku"
-		//​​color: "#3d9b48"
-		//id: 1000109095
-		//length: 1.4
-		//tyyppi: "Luontopolku"
-		//url: ""
 		if (feature.properties && feature.properties.Nimi) {
 			if (feature.properties.url.length > 0) {
-				let s = `<div class="map-route-info-popup-wrapper">
-						<p class="map-feature-title">
-						<a href="${feature.properties.url}" target="_blank">${feature.properties.Nimi}</a>
-						</p>Tyyppi: ${feature.properties.tyyppi}<br/>Pituus: ${feature.properties.length}km
-					</div>`
+				let s = '<div class="map-route-info-popup-wrapper">';
+				s += '<p class="map-feature-title"><a href="'+feature.properties.url+'" target="_blank">'+feature.properties.Nimi+'</a></p>';
+				s += 'Tyyppi: '+feature.properties.tyyppi+'<br/>Pituus: '+feature.properties.length+'km</div>';
 				layer.bindPopup(s);
 			} else {
-				let s = `<div class="map-route-info-popup-wrapper">
-					<p class="map-feature-title">${feature.properties.Nimi}</p>
-					Tyyppi: ${feature.properties.tyyppi}<br/>Pituus: ${feature.properties.length}km
-				</div>`
+				let s = '<div class="map-route-info-popup-wrapper">';
+				s += '<p class="map-feature-title">'+feature.properties.Nimi+'</p>';
+				s += 'Tyyppi: '+feature.properties.tyyppi+'<br/>Pituus: '+feature.properties.length+'km</div>';
 				layer.bindPopup(s);
 			}
 		}
 	}
-	
-	
+	/*
+		L.geoJSON buildingdata style CALLBACK
+	*/
 	getBuildingStyle(feature) {
 		
-		
 	}
-	
+	/*
+		L.geoJSON buildingdata pointToLayer CALLBACK
+	*/
 	onPointToLayer(feature, latlng) {
-	
-		//console.log('getPointToLayer feature: ',feature);
-		//console.log('getPointToLayer: ',latlng);
-		//let fcolor = '#ffff00';
-		//let fcolor = '#222222';
-		
-		//console.log('Tyyppi=',feature.properties.tyyppi)
-		
-		//	switch (feature.properties.tyyppi) {
-		//		case 'Opastus (Info)':  fcolor = '#0000ff'; break;
-		//		case 'Tulentekopaikka': fcolor = '#ff0000'; break;
-		//		case 'Keittokatos':     fcolor = '#ff7800'; break;
-		//		default: break;
-		//	}
-		
-		
 		// Map icons for buildings etc.
 		let iconurl = this.buildingBaseUrl+'opastusbluecircle.png';
 		switch (feature.properties.tyyppi) {
@@ -384,15 +265,6 @@ export default class MapView extends View {
 			case 'Luontotupa':                          iconurl = this.buildingBaseUrl+'luontotupa.png'; break;
 			default: break;
 		}
-		
-		//	const m = L.circleMarker(latlng, {
-		//	radius: 10,
-		//	fillColor: fcolor,
-		//	color: "#000",
-		//	weight: 1,
-		//	opacity: 1,
-		//	fillOpacity: 0.5
-		//});
 		var BuildingIcon = L.Icon.extend({
 			options: {
 				shadowUrl: this.buildingBaseUrl+'varjo.png',
@@ -406,60 +278,116 @@ export default class MapView extends View {
 		var bIcon = new BuildingIcon({iconUrl: iconurl});
 		const m = L.marker([latlng.lat, latlng.lng], {icon: bIcon});
 		if (feature.properties && feature.properties.Nimi) {
-			let s = `<div class="map-route-info-popup-wrapper">
-				<p class="map-feature-title">${feature.properties.Nimi}</p>
-				Tyyppi: ${feature.properties.tyyppi}
-			</div>`
+			let s = '<div class="map-route-info-popup-wrapper">';
+			s += '<p class="map-feature-title">'+feature.properties.Nimi+'</p>';
+			s += 'Tyyppi: '+feature.properties.tyyppi+'</div>';
 			m.bindPopup(s);
 		}
-		
-		
-		
 		this.buildingMarkers.addLayer(m);
 		// NOTE: We do NOT return marker (m) here, so that this new Marker is NOT added to default Layer.
-		// It is therefore not shown in opening view (default zoom is 12).
+		// It is therefore not shown in opening view (default zoom is 11).
 		return null;
-		
-		
-		
 	}
-	
-	
-	getEachBuildingFeature(feature, layer) {
 	/*
+		L.geoJSON buildingdata onEachFeature CALLBACK
 	*/
+	getEachBuildingFeature(feature) {
+		
 	}
-	
-	handleZoom(z) {
-		if (z < 14) { // 11,12,13 
-			// Remove layer if it is there.
-			if (this.mymap.hasLayer(this.buildingMarkers)) {
-				this.mymap.removeLayer(this.buildingMarkers);
-			}
-		} else { // 14,15,16,17,18
-			// if requested zoom level is between 14 - 18: add the layer if it is not already there.
-			if (this.mymap.hasLayer(this.buildingMarkers)) {
-				// Do nothing
-			} else {
-				this.mymap.addLayer(this.buildingMarkers);
-			}
-		}
+	/*
+		Zoom levels 11, 12, 13: "buildings" are NOT VISIBLE
+		Zoom levels 14, 15, 16, 17, 18: "buildings" are VISIBLE
 		
-		/*
-		
-		if (z < 13) { // 11,12
-			if (this.mymap.hasLayer(this.busStopMarkersA)) {
-				// Do nothing
-			} else {
-				this.mymap.addLayer(this.busStopMarkersA);
-			}
-		} else { // 13,14,15,16,17,18
-			// Remove layer if it is there.
-			if (this.mymap.hasLayer(this.busStopMarkersA)) {
-				this.mymap.removeLayer(this.busStopMarkersA);
-			}
+		Zoom levels 11, 12: busStopMarkersA VISIBLE
+		Zoom levels 13, 14: busStopMarkersB VISIBLE
+		Zoom levels 15, 16, 17, 18: busStopMarkersC VISIBLE
+	*/
+	handleZoom() {
+		switch(this.mapzoom) {
+			case 11:
+			case 12:
+				// NOT VISIBLE: buildingMarkers, busStopMarkersB, busStopMarkersC
+				if (this.mymap.hasLayer(this.buildingMarkers)) {
+					this.mymap.removeLayer(this.buildingMarkers);
+				}
+				if (this.mymap.hasLayer(this.busStopMarkersB)) {
+					this.mymap.removeLayer(this.busStopMarkersB);
+				}
+				if (this.mymap.hasLayer(this.busStopMarkersC)) {
+					this.mymap.removeLayer(this.busStopMarkersC);
+				}
+				// VISIBLE: busStopMarkersA
+				if (this.mymap.hasLayer(this.busStopMarkersA)) {
+					// Do nothing
+				} else {
+					this.mymap.addLayer(this.busStopMarkersA);
+				}
+				break;
+			
+			case 13:
+				// NOT VISIBLE: buildingMarkers, busStopMarkersA, busStopMarkersC
+				if (this.mymap.hasLayer(this.buildingMarkers)) {
+					this.mymap.removeLayer(this.buildingMarkers);
+				}
+				if (this.mymap.hasLayer(this.busStopMarkersA)) {
+					this.mymap.removeLayer(this.busStopMarkersA);
+				}
+				if (this.mymap.hasLayer(this.busStopMarkersC)) {
+					this.mymap.removeLayer(this.busStopMarkersC);
+				}
+				// VISIBLE: busStopMarkersB
+				if (this.mymap.hasLayer(this.busStopMarkersB)) {
+					// Do nothing
+				} else {
+					this.mymap.addLayer(this.busStopMarkersB);
+				}
+				break;
+				
+			case 14:
+				// NOT VISIBLE: busStopMarkersA, busStopMarkersC
+				if (this.mymap.hasLayer(this.busStopMarkersA)) {
+					this.mymap.removeLayer(this.busStopMarkersA);
+				}
+				if (this.mymap.hasLayer(this.busStopMarkersC)) {
+					this.mymap.removeLayer(this.busStopMarkersC);
+				}
+				// VISIBLE: buildingMarkers, busStopMarkersB
+				if (this.mymap.hasLayer(this.buildingMarkers)) {
+					// Do nothing
+				} else {
+					this.mymap.addLayer(this.buildingMarkers);
+				}
+				if (this.mymap.hasLayer(this.busStopMarkersB)) {
+					// Do nothing
+				} else {
+					this.mymap.addLayer(this.busStopMarkersB);
+				}
+				break;
+			
+			case 15:
+			case 16:
+			case 17:
+			case 18:
+				// NOT VISIBLE: busStopMarkersA, busStopMarkersB
+				if (this.mymap.hasLayer(this.busStopMarkersA)) {
+					this.mymap.removeLayer(this.busStopMarkersA);
+				}
+				if (this.mymap.hasLayer(this.busStopMarkersB)) {
+					this.mymap.removeLayer(this.busStopMarkersB);
+				}
+				// VISIBLE: buildingMarkers, busStopMarkersC
+				if (this.mymap.hasLayer(this.buildingMarkers)) {
+					// Do nothing
+				} else {
+					this.mymap.addLayer(this.buildingMarkers);
+				}
+				if (this.mymap.hasLayer(this.busStopMarkersC)) {
+					// Do nothing
+				} else {
+					this.mymap.addLayer(this.busStopMarkersC);
+				}
+				break;
 		}
-		*/
 	}
 	
 	render() {
@@ -479,6 +407,8 @@ export default class MapView extends View {
 			const homeActiveTarget = ADM.activeTarget;
 			const homeZoom = ADM.targets[ADM.activeTarget].zoom;
 			const homeCenter = ADM.targets[ADM.activeTarget].center;
+			
+			this.mapzoom = homeZoom;
 			
 			console.log(['homeActiveTarget=',homeActiveTarget]);
 			console.log(['homeCenter=',homeCenter]);
@@ -539,26 +469,17 @@ export default class MapView extends View {
 			//this.mymap.setView(this.mapcenter, this.mapzoom);
 			this.mymap.setView(homeCenter, homeZoom);
 			
-			
 			Object.keys(this.models).forEach(key => {
 				if (key==='MapModel') {
 					setTimeout(() => this.models[key].fetch(), 100);
 				}
 			});
-			
-			
-			this.handleZoom(homeZoom);
-			
+			//this.handleZoom(homeZoom);
 			this.mymap.on("zoomend", function(e) { 
 				self.mapzoom = self.mymap.getZoom();
 				console.log(['self.mapzoom=',self.mapzoom]);
 				ADM.targets[ADM.activeTarget].zoom = self.mapzoom;
-				/*if (self.mapzoom > 4) {
-					self.renderLabels();
-				} else {
-					self.removeLabels();
-				}*/
-				self.handleZoom(self.mapzoom);
+				self.handleZoom();
 			});
 			
 			this.mymap.on("moveend", function(e) {

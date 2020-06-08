@@ -195,8 +195,31 @@ export default class MapModel extends EventObserver {
 			let stopNames = [];
 			// Set priority for rendering
 			// and collect all unique bus stop names into array
+/* Bus Stops in June 8th 2020:
+			0: "Brobackanpiha"
+			1: "Hakjärventie"
+			2: "Haltia"
+			​​3: "Haukkalammentie"
+​​			4: "Högbacka"
+			5: "Kaitakorpi"
+​​			6: "Kattila"
+​​			7: "Kattilantie 39"
+​​			8: "Koivuranta"
+​​			9: "Kolmoislammentie"
+​​			10: "Linnunkivi"
+​​			11: "Meerlammentie"
+​​			12: "Meerlampi"
+​​			13: "Nuuksionpää"
+​​			14: "Punjo"
+​​			15: "Punjonsuo"
+​​			16: "Siikaniemi"
+​​			17: "Siltaniitynlaita"
+​​			18: "Solvik"
+​​			19: "Takala"
+​​			20: "Veikkola"
+*/
 			for (let stop of busStops) {
-				if (['Kattila','Haukkalammentie','Haltia','Siikaniemi','Siikaranta','Veikkola','Gumbölenristi'].includes(stop.name)) {
+				if (['Hakjärventie','Haltia','Haukkalammentie','Kattila','Siikaniemi','Veikkola'].includes(stop.name)) {
 					stop.priority = 1;
 				} else {
 					stop.priority = 0;

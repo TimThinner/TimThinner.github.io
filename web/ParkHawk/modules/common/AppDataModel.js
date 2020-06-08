@@ -18,11 +18,11 @@ export default class AppDataModel extends EventObserver {
 			busStops: {
 				routingUrl: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
 				routingAreas: [
-					{ lat: 60.270, lng: 24.594, radius: 3200 },
-					{ lat: 60.2695, lng: 24.4440, radius: 300 },
-					{ lat: 60.283, lng: 24.511, radius: 1600 },
-					{ lat: 60.310, lng: 24.546, radius: 3000 },
-					{ lat: 60.324, lng: 24.5, radius: 1300 }
+					{ lat: 60.270, lng: 24.594, radius: 3200 }, // Solvik
+					{ lat: 60.2695, lng: 24.4440, radius: 300 }, // Veikkola
+					{ lat: 60.283, lng: 24.511, radius: 2000 }, // Siikajärvi radius ws 1600
+					{ lat: 60.310, lng: 24.546, radius: 3000 }, // Nuuksionpää
+					{ lat: 60.324, lng: 24.5, radius: 1300 } // Kattila
 				]
 			},
 			cameras: [
@@ -140,11 +140,12 @@ export default class AppDataModel extends EventObserver {
 		this.menuitems['home'].logo = logo;
 		setTimeout(() => this.notifyAll({model:'AppDataModel',method:'logochanged',logo:logo}), 100);
 	}
-	
+	/*
 	setTargetProperty(target, property, value) {
 		this.targets[target][property] = value;
 		setTimeout(() => this.notifyAll({model:'AppDataModel',method:'propertychanged'}), 100);
 	}
+	*/
 	/*
 	fetch() {
 		if (this.fetching) {

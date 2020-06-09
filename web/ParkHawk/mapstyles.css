@@ -37,3 +37,7 @@ table.striped > tbody > tr:nth-child(odd) {
 table.striped > tbody > tr:nth-child(odd) {
 	background-color: rgba(204, 204, 204, 0.5);
 }
+.cameras-image-title {
+	text-align: center;
+	color: #484;
+}

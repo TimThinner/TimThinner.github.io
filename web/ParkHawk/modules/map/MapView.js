@@ -50,8 +50,8 @@ export default class MapView extends View {
 		this.parkCameraMarkersA = L.layerGroup(); // Only two icons (groups: 2 for Haukkalampi and 2 for Kattila)
 		this.parkCameraMarkersB = L.layerGroup(); // All 4 cameras as separate icons
 		
-		this.boundOnMarkerHaukkalampiClick = (e) => this.onMarkerHaukkalampiClick(e);
-		this.boundOnMarkerKattilaClick = (e) => this.onMarkerKattilaClick(e);
+		//this.boundOnMarkerHaukkalampiClick = (e) => this.onMarkerHaukkalampiClick(e);
+		//this.boundOnMarkerKattilaClick = (e) => this.onMarkerKattilaClick(e);
 		this.boundOnMarkerClick = (e) => this.onMarkerClick(e);
 		
 		this.mapzoom = 11;
@@ -169,75 +169,6 @@ export default class MapView extends View {
 		}
 	}
 	
-	onMarkerHaukkalampiClick(e) {
-		//console.log('onMarkerHaukkalampiClick');
-		const marker = e.target;
-		//console.log(['e.target=',e.target]);
-		marker.unbindPopup();
-		/* 
-		Do not always use 50% of window.innerWidth. Create a more adaptive solution 
-		where narrow viewport popup will have 90% and wide viewport 50%.
-		When width = 0 => percentage = 90
-		When width = 2000 => percentage = 50
-		*/
-		const percentage = 90 - window.innerWidth*4/200;
-		const d = new Date();
-		const popupWidth = Math.round(percentage*window.innerWidth/100);
-		const imageWidth = popupWidth-20;
-		const imageHeight = 720*imageWidth/1280;
-		const popupMaxWidth = imageWidth+30;
-		const popupMaxHeight = imageHeight+200;
-		// Group of vertically stacked images is displayed:
-		let s = '';
-		const ADM = this.getModel('AppDataModel');
-		if (typeof ADM !== 'undefined') {
-			ADM.targets[ADM.activeTarget].cameras.forEach(cam=>{
-				if (cam.loc === 'Haukkalampi') {
-					s += '<div class="map-marker-popup-content">';
-					//s += '<h5 class="cameras-image-title">'+cam.name+'</h5>';
-					s += '<img src="'+cam.url+'?time='+d.getTime()+'" width='+imageWidth+' height='+imageHeight+' alt="" />';
-					s += '</div>';
-				}
-			});
-		}
-		marker.bindPopup(s,{minWidth: popupWidth, maxWidth: popupMaxWidth, maxHeight:popupMaxHeight}).openPopup();
-	}
-	
-	onMarkerKattilaClick(e) {
-		//console.log('onMarkerKattilaClick');
-		const marker = e.target;
-		//console.log(['e.target=',e.target]);
-		marker.unbindPopup();
-		/* 
-		Do not always use 50% of window.innerWidth. Create a more adaptive solution 
-		where narrow viewport popup will have 90% and wide viewport 50%.
-		When width = 0 => percentage = 90
-		When width = 2000 => percentage = 50
-		*/
-		const percentage = 90 - window.innerWidth*4/200;
-		const d = new Date();
-		const popupWidth = Math.round(percentage*window.innerWidth/100);
-		const imageWidth = popupWidth-20;
-		const imageHeight = 720*imageWidth/1280;
-		const popupMaxWidth = imageWidth+30;
-		const popupMaxHeight = imageHeight+200;
-		// Group of vertically stacked images is displayed:
-		let s = '';
-		const ADM = this.getModel('AppDataModel');
-		if (typeof ADM !== 'undefined') {
-			ADM.targets[ADM.activeTarget].cameras.forEach(cam=>{
-				if (cam.loc === 'Kattila') {
-					s += '<div class="map-marker-popup-content">';
-					//s += '<h5 class="cameras-image-title">'+cam.name+'</h5>';
-					s += '<img src="'+cam.url+'?time='+d.getTime()+'" width='+imageWidth+' height='+imageHeight+' alt="" />';
-					s += '</div>';
-				}
-			});
-		}
-		marker.bindPopup(s,{minWidth: popupWidth, maxWidth: popupMaxWidth, maxHeight:popupMaxHeight}).openPopup();
-	}
-	
-	
 	onMarkerClick(e) {
 		//console.log('onMarkerKattilaClick');
 		const marker = e.target;
@@ -262,7 +193,12 @@ export default class MapView extends View {
 			const ADM = this.getModel('AppDataModel');
 			if (typeof ADM !== 'undefined') {
 				ADM.targets[ADM.activeTarget].cameras.forEach(cam=>{
-					if (cam.name === elem.alt) {
+					if (cam.loc === elem.alt) {
+						s += '<div class="map-marker-popup-content">';
+						//s += '<h5 class="cameras-image-title">'+cam.name+'</h5>';
+						s += '<img src="'+cam.url+'?time='+d.getTime()+'" width='+imageWidth+' height='+imageHeight+' alt="" />';
+						s += '</div>';
+					} else if (cam.name === elem.alt) {
 						s += '<div class="map-marker-popup-content">';
 						//s += '<h5 class="cameras-image-title">'+cam.name+'</h5>';
 						s += '<img src="'+cam.url+'?time='+d.getTime()+'" width='+imageWidth+' height='+imageHeight+' alt="" />';
@@ -295,20 +231,21 @@ export default class MapView extends View {
 		
 		const ADM = this.getModel('AppDataModel');
 		if (typeof ADM !== 'undefined') {
-			// Create merged P-icon for two Parking areas.
 			ADM.targets[ADM.activeTarget].cameras.forEach(cam=>{
 				if (cam.name === 'Haukkalampi 2') {
-					const m = L.marker([cam.lat, cam.lon], {icon: pcIcon}).on('click', this.boundOnMarkerHaukkalampiClick);
+					// Create merged P-icon for two Parking areas at Haukkalampi.
+					const m = L.marker([cam.lat, cam.lon], {icon: pcIcon,'alt':cam.loc}).on('click', this.boundOnMarkerClick);
 					this.parkCameraMarkersA.addLayer(m);
 				}
 				if (cam.name === 'Kattila 1') {
-					const m = L.marker([cam.lat, cam.lon], {icon: pcIcon}).on('click', this.boundOnMarkerKattilaClick);
+					// Create merged P-icon for two Parking areas at Kattila.
+					const m = L.marker([cam.lat, cam.lon], {icon: pcIcon,'alt':cam.loc}).on('click', this.boundOnMarkerClick);
 					this.parkCameraMarkersA.addLayer(m);
 				}
 			});
-			// Create separate P-icon for each camera.
 			ADM.targets[ADM.activeTarget].cameras.forEach(cam=>{
-				const m = L.marker([cam.lat, cam.lon], {icon: pcIcon, 'alt':cam.name}).on('click', this.boundOnMarkerClick);
+				// Create separate P-icon for each camera.
+				const m = L.marker([cam.lat, cam.lon], {icon: pcIcon,'alt':cam.name}).on('click', this.boundOnMarkerClick);
 				this.parkCameraMarkersB.addLayer(m);
 			});
 		}
@@ -479,14 +416,10 @@ export default class MapView extends View {
 					this.mymap.removeLayer(this.parkCameraMarkersB);
 				}
 				// VISIBLE: busStopMarkersA, parkCameraMarkersA
-				if (this.mymap.hasLayer(this.busStopMarkersA)) {
-					// Do nothing
-				} else {
+				if (!this.mymap.hasLayer(this.busStopMarkersA)) {
 					this.mymap.addLayer(this.busStopMarkersA);
 				}
-				if (this.mymap.hasLayer(this.parkCameraMarkersA)) {
-					// Do nothing
-				} else {
+				if (!this.mymap.hasLayer(this.parkCameraMarkersA)) {
 					this.mymap.addLayer(this.parkCameraMarkersA);
 				}
 				break;
@@ -506,14 +439,10 @@ export default class MapView extends View {
 					this.mymap.removeLayer(this.parkCameraMarkersB);
 				}
 				// VISIBLE: busStopMarkersB, parkCameraMarkersA
-				if (this.mymap.hasLayer(this.busStopMarkersB)) {
-					// Do nothing
-				} else {
+				if (!this.mymap.hasLayer(this.busStopMarkersB)) {
 					this.mymap.addLayer(this.busStopMarkersB);
 				}
-				if (this.mymap.hasLayer(this.parkCameraMarkersA)) {
-					// Do nothing
-				} else {
+				if (!this.mymap.hasLayer(this.parkCameraMarkersA)) {
 					this.mymap.addLayer(this.parkCameraMarkersA);
 				}
 				break;
@@ -531,19 +460,13 @@ export default class MapView extends View {
 				}
 				
 				// VISIBLE: buildingMarkers, busStopMarkersB, parkCameraMarkersA
-				if (this.mymap.hasLayer(this.buildingMarkers)) {
-					// Do nothing
-				} else {
+				if (!this.mymap.hasLayer(this.buildingMarkers)) {
 					this.mymap.addLayer(this.buildingMarkers);
 				}
-				if (this.mymap.hasLayer(this.busStopMarkersB)) {
-					// Do nothing
-				} else {
+				if (!this.mymap.hasLayer(this.busStopMarkersB)) {
 					this.mymap.addLayer(this.busStopMarkersB);
 				}
-				if (this.mymap.hasLayer(this.parkCameraMarkersA)) {
-					// Do nothing
-				} else {
+				if (!this.mymap.hasLayer(this.parkCameraMarkersA)) {
 					this.mymap.addLayer(this.parkCameraMarkersA);
 				}
 				break;
@@ -564,19 +487,13 @@ export default class MapView extends View {
 				}
 				
 				// VISIBLE: buildingMarkers, busStopMarkersC, parkCameraMarkersB
-				if (this.mymap.hasLayer(this.buildingMarkers)) {
-					// Do nothing
-				} else {
+				if (!this.mymap.hasLayer(this.buildingMarkers)) {
 					this.mymap.addLayer(this.buildingMarkers);
 				}
-				if (this.mymap.hasLayer(this.busStopMarkersC)) {
-					// Do nothing
-				} else {
+				if (!this.mymap.hasLayer(this.busStopMarkersC)) {
 					this.mymap.addLayer(this.busStopMarkersC);
 				}
-				if (this.mymap.hasLayer(this.parkCameraMarkersB)) {
-					// Do nothing
-				} else {
+				if (!this.mymap.hasLayer(this.parkCameraMarkersB)) {
 					this.mymap.addLayer(this.parkCameraMarkersB);
 				}
 				break;
@@ -610,7 +527,8 @@ export default class MapView extends View {
 			const position = homeCenter; //[this.lat, this.lng]
 			const lat = position[0];
 			const lng = position[1];
-			const maxBounds = L.latLngBounds(L.latLng(lat+0.2, lng-0.5),L.latLng(lat-0.2, lng+0.5));
+			//const maxBounds = L.latLngBounds(L.latLng(lat+0.2, lng-0.5),L.latLng(lat-0.2, lng+0.5));
+			const maxBounds = L.latLngBounds(L.latLng(lat-0.2, lng-0.5),L.latLng(lat+0.2, lng+0.5));
 			
 			// See: https://github.com/elmarquis/Leaflet.GestureHandling
 			
@@ -667,7 +585,7 @@ export default class MapView extends View {
 					setTimeout(() => this.models[key].fetch(), 100);
 				}
 			});
-			//this.handleZoom(homeZoom);
+			
 			this.mymap.on("zoomend", function(e) { 
 				self.mapzoom = self.mymap.getZoom();
 				console.log(['self.mapzoom=',self.mapzoom]);

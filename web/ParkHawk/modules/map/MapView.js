@@ -50,8 +50,6 @@ export default class MapView extends View {
 		this.parkCameraMarkersA = L.layerGroup(); // Only two icons (groups: 2 for Haukkalampi and 2 for Kattila)
 		this.parkCameraMarkersB = L.layerGroup(); // All 4 cameras as separate icons
 		
-		//this.boundOnMarkerHaukkalampiClick = (e) => this.onMarkerHaukkalampiClick(e);
-		//this.boundOnMarkerKattilaClick = (e) => this.onMarkerKattilaClick(e);
 		this.boundOnMarkerClick = (e) => this.onMarkerClick(e);
 		
 		this.mapzoom = 11;

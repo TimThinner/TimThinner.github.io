@@ -498,6 +498,39 @@ export default class MapView extends View {
 		}
 	}
 	
+	
+	
+	imageClickHandler(ev) {
+		L.DomEvent.stopPropagation(ev);
+		console.log('image clicked!');
+	}
+	
+	addCustomControl() {
+		const self = this;
+		const img = L.DomUtil.create('img');
+		L.Control.BusTimetables = L.Control.extend({
+			onAdd: function(map) {
+				//var img = L.DomUtil.create('img');
+				img.src = 'assets/bustimetables.svg';
+				img.style.width = '100px';
+				img.style.cursor = 'pointer';
+				L.DomEvent.on(img, 'click dblclick', self.imageClickHandler);
+				return img;
+			},
+			onRemove: function(map) {
+				L.DomEvent.off(img, 'click dblclick', self.imageClickHandler);
+			}
+		});
+		
+		// If your custom control has interactive elements such as clickable buttons, 
+		// remember to use L.DomEvent.on() inside onAdd() and L.DomEvent.off() inside onRemove().
+		L.control.bustimetables = function(opts) {
+			return new L.Control.BusTimetables(opts);
+		}
+		L.control.bustimetables({ position: 'topright' }).addTo(this.mymap);
+	}
+	
+	
 	render() {
 		var self = this;
 		
@@ -568,6 +601,21 @@ export default class MapView extends View {
 					onEachFeature: this.getEachBuildingFeature
 				}).addTo(this.mymap);
 			}
+			// Adds a scale to bottom-left corner of map.
+			L.control.scale().addTo(this.mymap);
+			this.addCustomControl();
+			
+			
+			
+			
+			this.mymap.on('popupopen', function(e) {
+				$('.leaflet-control').hide();
+			});
+			this.mymap.on('popupclose', function(e) {
+				$('.leaflet-control').show();
+			});
+			
+			
 			
 			this.mymap.on('load', function(e) { 
 				//console.log('MapView MAP LOADED!!!!!');

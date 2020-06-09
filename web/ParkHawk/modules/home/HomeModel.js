@@ -2,18 +2,6 @@
 import EventObserver from '../common/EventObserver.js';
 
 export default class HomeModel extends EventObserver {
-	/*
-	Defined in MasterController:
-		this.targets = {'Nuuksio':{
-			logo: './img/401px-Nuuksion_kp.png',
-			zoom: 11,
-			center: [60.32, 24.54]
-		},'Sipoonkorpi':{
-			logo: './img/377px-Sipoonkorven_kp.png',
-			zoom: 11,
-			center: [60.35, 25.20]
-		}};
-	*/
 	
 	constructor(targets) {
 		super();

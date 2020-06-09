@@ -215,3 +215,60 @@ table.striped > tbody > tr:nth-child(odd) {
 		height: 64px;
 	}
 }*/
+
+
+
+
+
+
+
+/* Nuuksio Routes Legend Map Control: */
+.leaflet-control button.map-legend-button {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  cursor: pointer;
+}
+.leaflet-control button.map-legend-button:hover {
+  background-color: #eee;
+}
+.leaflet-control button.map-legend-button i.material-icons {
+  color: #484;
+  font-size: 36px;
+}
+@media screen and (max-width: 601px) {
+  .leaflet-control button.map-legend-button {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+  }
+  .leaflet-control button.map-legend-button i.material-icons {
+    font-size: 30px;
+  }
+}
+/* Busstops Map Control: */
+.leaflet-control button.map-busstops-button {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  cursor: pointer;
+}
+.leaflet-control button.map-busstops-button:hover {
+  background-color: #eee;
+}
+.leaflet-control button.map-busstops-button i.material-icons {
+  color: #484;
+  font-size: 36px;
+}
+@media screen and (max-width: 601px) {
+  .leaflet-control button.map-busstops-button {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+  }
+  .leaflet-control button.map-busstops-button i.material-icons {
+    font-size: 30px;
+  }
+}

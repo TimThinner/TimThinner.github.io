@@ -52,6 +52,14 @@ export default class MapView extends View {
 		
 		this.boundOnMarkerClick = (e) => this.onMarkerClick(e);
 		
+		
+		this.bustimetables = undefined;
+		this.scheduleinfo = undefined;
+		this.boundBusScheduleClickHandler = (ev) => this.busScheduleClickHandler(ev);
+		this.boundDivClickHandler = (ev) => this.divClickHandler(ev);
+		
+		this.busstopsVisible = false;
+		
 		this.mapzoom = 11;
 		this.mapcenter = [60.32, 24.54];
 		this.rendered = false;
@@ -63,6 +71,7 @@ export default class MapView extends View {
 			this.mymap = undefined;
 		}
 		this.rendered = false;
+		this.busstopsVisible = false;
 		$(this.el).empty();
 	}
 	
@@ -498,36 +507,100 @@ export default class MapView extends View {
 		}
 	}
 	
-	
-	
-	imageClickHandler(ev) {
+	divClickHandler(ev) {
 		L.DomEvent.stopPropagation(ev);
-		console.log('image clicked!');
+		console.log('div clicked!');
 	}
 	
-	addCustomControl() {
+	busScheduleClickHandler(ev) {
+		L.DomEvent.stopPropagation(ev);
+		const self = this;
+		
+		
+		//console.log('image clicked!');
+		if (typeof this.scheduleinfo === 'undefined') {
+			
+			
+			let stopnames = [];
+			const MM = this.getModel('MapModel');
+			if (typeof MM !== 'undefined') {
+				if (MM.BusStopData && MM.BusStopData.stopnames) {
+					stopnames = MM.BusStopData.stopnames;
+				}
+			}
+			const stopcount = stopnames.length;
+			const maxrows = 8;
+			let rowoffset = 0;
+			if (stopcount > maxrows) {
+				
+			}
+			
+			this.scheduleinfo = L.control({position: 'topright'});
+			this.scheduleinfo.onAdd = function (map) {
+				console.log('scheduleinfo now Added!');
+				this._div = L.DomUtil.create('div', 'scheduleinfo'); // create a div with a class "scheduleinfo"
+				//this.update();
+				//this._div.innerHTML = '<h5>Bussipysäkit:</h5>';
+				this._div.innerHTML = '';
+				for (var i = rowoffset; i < maxrows; i++) {
+					this._div.innerHTML += '<div class="scheduleinfo-div"><a id="stopname-'+i+'">'+stopnames[i]+'</a></div>';
+				}
+				L.DomEvent.on(this._div, 'click dblclick', self.boundDivClickHandler);
+				return this._div;
+			};
+			this.scheduleinfo.onRemove = function (map) {
+				console.log('scheduleinfo now Removed!');
+				L.DomEvent.off(this._div, 'click dblclick', self.boundDivClickHandler);
+			};
+			// method that we will use to update the control based on feature properties passed
+			/*scheduleinfo.update = function (props) {
+				this._div.innerHTML = '<h5>Bussipysäkit:</h5>';// +  
+					//(props ? '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>' : 'Hover over a state');
+			};*/
+			this.scheduleinfo.addTo(this.mymap);
+			
+			this.bustimetables.update('assets/bustimetablesx.svg');
+			
+			
+			
+		} else {
+			this.bustimetables.update('assets/bustimetables.svg');
+			this.scheduleinfo.remove();
+			this.scheduleinfo = undefined;
+		}
+	}
+	
+	addBusSchedulesCustomControl() {
 		const self = this;
 		const img = L.DomUtil.create('img');
 		L.Control.BusTimetables = L.Control.extend({
 			onAdd: function(map) {
 				//var img = L.DomUtil.create('img');
 				img.src = 'assets/bustimetables.svg';
-				img.style.width = '100px';
+				img.style.width = '60px';
 				img.style.cursor = 'pointer';
-				L.DomEvent.on(img, 'click dblclick', self.imageClickHandler);
+				L.DomEvent.on(img, 'click dblclick', self.boundBusScheduleClickHandler);
 				return img;
 			},
 			onRemove: function(map) {
-				L.DomEvent.off(img, 'click dblclick', self.imageClickHandler);
+				L.DomEvent.off(img, 'click dblclick', self.boundBusScheduleClickHandler);
 			}
 		});
-		
 		// If your custom control has interactive elements such as clickable buttons, 
 		// remember to use L.DomEvent.on() inside onAdd() and L.DomEvent.off() inside onRemove().
+		/*
 		L.control.bustimetables = function(opts) {
 			return new L.Control.BusTimetables(opts);
 		}
 		L.control.bustimetables({ position: 'topright' }).addTo(this.mymap);
+		*/
+		this.bustimetables = function(opts) {
+			return new L.Control.BusTimetables(opts);
+		}
+		this.bustimetables.update = function(src) {
+			img.src = src; //'assets/bustimetablesx.svg';
+		};
+		this.bustimetables({ position: 'topright' }).addTo(this.mymap);
 	}
 	
 	
@@ -603,7 +676,7 @@ export default class MapView extends View {
 			}
 			// Adds a scale to bottom-left corner of map.
 			L.control.scale().addTo(this.mymap);
-			this.addCustomControl();
+			this.addBusSchedulesCustomControl();
 			
 			
 			

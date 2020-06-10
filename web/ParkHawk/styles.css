@@ -220,10 +220,26 @@ table.striped > tbody > tr:nth-child(odd) {
 
 
 
-
-
+.scheduleinfo {
+	padding: 16px 72px 16px 16px;
+	font: 14px/16px Arial, Helvetica, sans-serif;
+	background: white;
+	background: rgba(255,255,255,0.75);
+	box-shadow: 0 0 15px rgba(0,0,0,0.5);
+	border-radius: 5px;
+}
+.scheduleinfo h5 {
+	margin: 0 0 5px;
+	color: #777;
+}
+.scheduleinfo-div  {
+	width: 100%;
+	border: 1px solid #ccc;
+	cursor: pointer;
+	padding: 4px 16px;
+}
 /* Nuuksio Routes Legend Map Control: */
-.leaflet-control button.map-legend-button {
+/*.leaflet-control button.map-legend-button {
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -246,9 +262,9 @@ table.striped > tbody > tr:nth-child(odd) {
   .leaflet-control button.map-legend-button i.material-icons {
     font-size: 30px;
   }
-}
+}*/
 /* Busstops Map Control: */
-.leaflet-control button.map-busstops-button {
+/*.leaflet-control button.map-busstops-button {
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -272,3 +288,4 @@ table.striped > tbody > tr:nth-child(odd) {
     font-size: 30px;
   }
 }
+*/

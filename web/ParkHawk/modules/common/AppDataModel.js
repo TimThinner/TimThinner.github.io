@@ -14,7 +14,8 @@ export default class AppDataModel extends EventObserver {
 		this.targets = {'Nuuksio':{
 			logo: './img/401px-Nuuksion_kp.png',
 			zoom: 11,
-			center: [60.32, 24.54],
+			//center: [60.32, 24.54],
+			center: { lat: 60.32, lng: 24.54 },
 			busStops: {
 				routingUrl: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
 				routingAreas: [
@@ -66,7 +67,8 @@ export default class AppDataModel extends EventObserver {
 		},'Sipoonkorpi':{
 			logo: './img/377px-Sipoonkorven_kp.png',
 			zoom: 11,
-			center: [60.35, 25.20],
+			center: { lat: 60.35, lng: 25.20 },
+			//center: [60.35, 25.20],
 			busStops: {
 				routingUrl: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
 				routingAreas: [

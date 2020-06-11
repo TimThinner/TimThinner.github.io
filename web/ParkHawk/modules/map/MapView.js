@@ -1,5 +1,5 @@
 import View from '../common/View.js';
-
+import TimetableControl from './TimetableControl.js';
 /* These routes and buildings are for Nuuksio: */
 import routedata from '../../assets/geojson/routedata.js';
 import buildingdata from '../../assets/geojson/buildingdata.js';
@@ -52,16 +52,15 @@ export default class MapView extends View {
 		
 		this.boundOnMarkerClick = (e) => this.onMarkerClick(e);
 		
+		/*
+		Place Timetable handling to separate Control: TimetableControl
+		Create TimetableControl when MapView is ready.
 		
-		this.bustimetables = undefined;
-		this.scheduleinfo = undefined;
-		this.boundBusScheduleClickHandler = (ev) => this.busScheduleClickHandler(ev);
-		this.boundDivClickHandler = (ev) => this.divClickHandler(ev);
-		
-		this.busstopsVisible = false;
+		*/
+		this.timetableControl = undefined;
 		
 		this.mapzoom = 11;
-		this.mapcenter = [60.32, 24.54];
+		this.mapcenter = { lat: 60.32, lng: 24.54 }; //[60.32, 24.54];
 		this.rendered = false;
 	}
 	
@@ -71,7 +70,6 @@ export default class MapView extends View {
 			this.mymap = undefined;
 		}
 		this.rendered = false;
-		this.busstopsVisible = false;
 		$(this.el).empty();
 	}
 	
@@ -400,10 +398,8 @@ export default class MapView extends View {
 		Zoom levels 13, 14: busStopMarkersB VISIBLE
 		Zoom levels 15, 16, 17, 18: busStopMarkersC VISIBLE
 		
-		
 		// Show only 2 P-ICONS when zoom-level is between 11-14, hide: 15-18
 		this.parkCameraMarkersA = L.layerGroup(); // Only two icons (groups: 2 for Haukkalampi and 2 for Kattila)
-		
 	*/
 	handleZoom() {
 		switch(this.mapzoom) {
@@ -507,103 +503,6 @@ export default class MapView extends View {
 		}
 	}
 	
-	divClickHandler(ev) {
-		L.DomEvent.stopPropagation(ev);
-		console.log('div clicked!');
-	}
-	
-	busScheduleClickHandler(ev) {
-		L.DomEvent.stopPropagation(ev);
-		const self = this;
-		
-		
-		//console.log('image clicked!');
-		if (typeof this.scheduleinfo === 'undefined') {
-			
-			
-			let stopnames = [];
-			const MM = this.getModel('MapModel');
-			if (typeof MM !== 'undefined') {
-				if (MM.BusStopData && MM.BusStopData.stopnames) {
-					stopnames = MM.BusStopData.stopnames;
-				}
-			}
-			const stopcount = stopnames.length;
-			const maxrows = 8;
-			let rowoffset = 0;
-			if (stopcount > maxrows) {
-				
-			}
-			
-			this.scheduleinfo = L.control({position: 'topright'});
-			this.scheduleinfo.onAdd = function (map) {
-				console.log('scheduleinfo now Added!');
-				this._div = L.DomUtil.create('div', 'scheduleinfo'); // create a div with a class "scheduleinfo"
-				//this.update();
-				//this._div.innerHTML = '<h5>Bussipysäkit:</h5>';
-				this._div.innerHTML = '';
-				for (var i = rowoffset; i < maxrows; i++) {
-					this._div.innerHTML += '<div class="scheduleinfo-div"><a id="stopname-'+i+'">'+stopnames[i]+'</a></div>';
-				}
-				L.DomEvent.on(this._div, 'click dblclick', self.boundDivClickHandler);
-				return this._div;
-			};
-			this.scheduleinfo.onRemove = function (map) {
-				console.log('scheduleinfo now Removed!');
-				L.DomEvent.off(this._div, 'click dblclick', self.boundDivClickHandler);
-			};
-			// method that we will use to update the control based on feature properties passed
-			/*scheduleinfo.update = function (props) {
-				this._div.innerHTML = '<h5>Bussipysäkit:</h5>';// +  
-					//(props ? '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>' : 'Hover over a state');
-			};*/
-			this.scheduleinfo.addTo(this.mymap);
-			
-			this.bustimetables.update('assets/bustimetablesx.svg');
-			
-			
-			
-		} else {
-			this.bustimetables.update('assets/bustimetables.svg');
-			this.scheduleinfo.remove();
-			this.scheduleinfo = undefined;
-		}
-	}
-	
-	addBusSchedulesCustomControl() {
-		const self = this;
-		const img = L.DomUtil.create('img');
-		L.Control.BusTimetables = L.Control.extend({
-			onAdd: function(map) {
-				//var img = L.DomUtil.create('img');
-				img.src = 'assets/bustimetables.svg';
-				img.style.width = '60px';
-				img.style.cursor = 'pointer';
-				L.DomEvent.on(img, 'click dblclick', self.boundBusScheduleClickHandler);
-				return img;
-			},
-			onRemove: function(map) {
-				L.DomEvent.off(img, 'click dblclick', self.boundBusScheduleClickHandler);
-			}
-		});
-		// If your custom control has interactive elements such as clickable buttons, 
-		// remember to use L.DomEvent.on() inside onAdd() and L.DomEvent.off() inside onRemove().
-		/*
-		L.control.bustimetables = function(opts) {
-			return new L.Control.BusTimetables(opts);
-		}
-		L.control.bustimetables({ position: 'topright' }).addTo(this.mymap);
-		*/
-		this.bustimetables = function(opts) {
-			return new L.Control.BusTimetables(opts);
-		}
-		this.bustimetables.update = function(src) {
-			img.src = src; //'assets/bustimetablesx.svg';
-		};
-		this.bustimetables({ position: 'topright' }).addTo(this.mymap);
-	}
-	
-	
 	render() {
 		var self = this;
 		
@@ -623,14 +522,14 @@ export default class MapView extends View {
 			const homeCenter = ADM.targets[ADM.activeTarget].center;
 			
 			this.mapzoom = homeZoom;
+			this.mapcenter = homeCenter;
 			
 			console.log(['homeActiveTarget=',homeActiveTarget]);
 			console.log(['homeCenter=',homeCenter]);
 			console.log(['homeZoom=',homeZoom]);
 			
-			const position = homeCenter; //[this.lat, this.lng]
-			const lat = position[0];
-			const lng = position[1];
+			const lat = homeCenter.lat;
+			const lng = homeCenter.lng;
 			//const maxBounds = L.latLngBounds(L.latLng(lat+0.2, lng-0.5),L.latLng(lat-0.2, lng+0.5));
 			const maxBounds = L.latLngBounds(L.latLng(lat-0.2, lng-0.5),L.latLng(lat+0.2, lng+0.5));
 			
@@ -676,10 +575,6 @@ export default class MapView extends View {
 			}
 			// Adds a scale to bottom-left corner of map.
 			L.control.scale().addTo(this.mymap);
-			this.addBusSchedulesCustomControl();
-			
-			
-			
 			
 			this.mymap.on('popupopen', function(e) {
 				$('.leaflet-control').hide();
@@ -688,16 +583,21 @@ export default class MapView extends View {
 				$('.leaflet-control').show();
 			});
 			
-			
-			
 			this.mymap.on('load', function(e) { 
 				//console.log('MapView MAP LOADED!!!!!');
 				self.rendered = true;
 				self.setMapHeight();
+				
+				/* __TIMETABLES */
+				self.timetableControl = new TimetableControl(self);
+				self.timetableControl.addBusTimetablesCustomControl();
+				// When map area (outside timetable) is clicked, we should close the Timetable.
+				self.mymap.on('click', function(e) {
+					self.timetableControl.hideBusTimetables();
+				});
 			});
 			
-			//this.mymap.setView(this.mapcenter, this.mapzoom);
-			this.mymap.setView(homeCenter, homeZoom);
+			this.mymap.setView(this.mapcenter, this.mapzoom);
 			
 			Object.keys(this.models).forEach(key => {
 				if (key==='MapModel') {
@@ -715,7 +615,7 @@ export default class MapView extends View {
 			this.mymap.on("moveend", function(e) {
 				self.mapcenter = self.mymap.getCenter();
 				console.log(['self.mapcenter=',self.mapcenter]);
-				ADM.targets[ADM.activeTarget].center = [self.mapcenter.lat, self.mapcenter.lng];
+				ADM.targets[ADM.activeTarget].center = self.mapcenter; //[self.mapcenter.lat, self.mapcenter.lng];
 			});
 		}
 	}

@@ -39,6 +39,7 @@ html, body {
 	width: 100%;
 	background-color: #fff;
 }
+/*
 @media only screen and (min-width: 601px) {
 	.container {
 		width: 100%;
@@ -49,6 +50,7 @@ html, body {
 		width: 100%;
 	}
 }
+*/
 @media screen and (min-width: 601px) {
 	html, body {
 		font-size: 18px;
@@ -113,7 +115,7 @@ table.striped > tbody > tr:nth-child(odd) {
 	margin-right: 0;
 	float: left;
 	color: #fff;
-	width: 25%; /* Always 4 items in one row */
+	width: 20%; /* Always 5 items in one row */
 	cursor: pointer;
 	/* We are using also "btn-flat" in TAB class to incorporate Materialize CSS capability 
 	to handle also Mobile clicks correctly. Therefore we must overwrite "btn-flat" height 
@@ -136,12 +138,15 @@ table.striped > tbody > tr:nth-child(odd) {
 .tab-cell:nth-child(3) { 
 	border-right: 1px solid #000;
 }
-/* Always 4 items in one row */
-.tab-cell:nth-child( 4n ) { 
+.tab-cell:nth-child(4) { 
+	border-right: 1px solid #000;
+}
+/* Always 5 items in one row */
+.tab-cell:nth-child( 5n ) { 
 	margin-right: 0;
 }
 /* Always 4 items in one row */
-.tab-cell:nth-child( 4n+1 ) { 
+.tab-cell:nth-child( 5n+1 ) { 
 	clear:left;
 }
 /*
@@ -163,7 +168,6 @@ table.striped > tbody > tr:nth-child(odd) {
 	background-color: #009688;
 	color: #fff;
 }
-/* TWO COLUMNS / NTH-CHILD(2N) AND NTH-CHILD(2N+1) */
 @media screen and (min-width: 401px) and (max-width: 600px) {
 	.tab-cell {
 		padding: 6px 8px;
@@ -171,7 +175,6 @@ table.striped > tbody > tr:nth-child(odd) {
 		height: 50px;
 	}
 }
-/* THREE COLUMNS / NTH-CHILD(3N) AND NTH-CHILD(3N+1) */
 @media screen and (min-width: 601px) and (max-width: 800px) {
 	.tab-cell {
 		padding: 12px 12px;
@@ -179,7 +182,6 @@ table.striped > tbody > tr:nth-child(odd) {
 		height: 60px;
 	}
 }
-/* FOUR COLUMNS / NTH-CHILD(4N) AND NTH-CHILD(4N+1) */
 @media screen and (min-width: 801px) /*and (max-width: 1000px)*/ {
 	.tab-cell {
 		padding: 12px 16px;
@@ -187,34 +189,9 @@ table.striped > tbody > tr:nth-child(odd) {
 		height: 60px;
 	}
 }
-/* FIVE COLUMNS / NTH-CHILD(5N) AND NTH-CHILD(5N+1) */
-/*@media screen and (min-width: 1001px) and (max-width: 1200px) {
-	.tab-cell {
-		font-size: 20px;
-		height: 64px;
-	}
-}*/
-/* SIX COLUMNS / NTH-CHILD(6N) AND NTH-CHILD(6N+1) */
-/*@media screen and (min-width: 1201px) and (max-width: 1400px) {
-	.tab-cell {
-		font-size: 20px;
-		height: 64px;
-	}
-}*/
-/* SEVEN COLUMNS / NTH-CHILD(7N) AND NTH-CHILD(7N+1) */
-/*@media screen and (min-width: 1401px) and (max-width: 1600px) {
-	.tab-cell {
-		font-size: 20px;
-		height: 64px;
-	}
-}*/
-/* EIGHT COLUMNS / NTH-CHILD(8N) AND NTH-CHILD(8N+1) */
-/*@media screen and (min-width: 1601px) {
-	.tab-cell {
-		font-size: 20px;
-		height: 64px;
-	}
-}*/
+/* --------------------------------------------------------------- */
+/*                    TIMETABLE STYLES:                            */
+/* --------------------------------------------------------------- */
 .timetable-button {
 	cursor:pointer;
 	width:40px;
@@ -244,9 +221,9 @@ table.striped > tbody > tr:nth-child(odd) {
 .timetable-index-page-div a {
 	display: block;
 	width: 100%;
-	padding: 8px;
-	border: 1px solid #888;
+	padding: 4px;
+	border: 1px solid #eee;
 }
 .timetable-index-page-div:hover {
-	background: #fff;
+	background: #eee;
 }

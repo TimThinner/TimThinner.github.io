@@ -5,12 +5,14 @@ export default class AppDataModel extends EventObserver {
 	constructor() {
 		super();
 		this.name = 'AppDataModel';
-		//this.errorMessage = '';
-		//this.fetching = false;
-		//this.ready = false;
-		
-		this.menuitems = {'home':{logo:'./img/401px-Nuuksion_kp.png'},'map':{logo:'home'},'camera':{logo:'camera_alt'},'info':{logo:'info'}};
-		this.activeTab = 'home'; // 'map', 'camera', 'info'
+		this.menuitems = {
+			'home':{logo:'./img/401px-Nuuksion_kp.png'},
+			'map':{logo:'map'},
+			'camera':{logo:'camera_alt'},
+			'timetables':{logo:'access_time'},
+			'info':{logo:'info'}
+		};
+		this.activeTab = 'home'; // 'map', 'camera', 'timetables', 'info'
 		this.targets = {'Nuuksio':{
 			logo: './img/401px-Nuuksion_kp.png',
 			zoom: 11,
@@ -21,7 +23,7 @@ export default class AppDataModel extends EventObserver {
 				routingAreas: [
 					{ lat: 60.270, lng: 24.594, radius: 3200 }, // Solvik
 					{ lat: 60.2695, lng: 24.4440, radius: 300 }, // Veikkola
-					{ lat: 60.283, lng: 24.511, radius: 2000 }, // Siikajärvi radius ws 1600
+					{ lat: 60.283, lng: 24.511, radius: 2000 }, // Siikajärvi radius was 1600
 					{ lat: 60.310, lng: 24.546, radius: 3000 }, // Nuuksionpää
 					{ lat: 60.324, lng: 24.5, radius: 1300 } // Kattila
 				],
@@ -156,19 +158,4 @@ export default class AppDataModel extends EventObserver {
 		setTimeout(() => this.notifyAll({model:'AppDataModel',method:'propertychanged'}), 100);
 	}
 	*/
-	/*
-	fetch() {
-		if (this.fetching) {
-			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
-			return;
-		}
-		const status = 200; // OK.
-		this.errorMessage = '';
-		this.fetching = true;
-		setTimeout(() => {
-			this.fetching = false;
-			this.ready = true;
-			this.notifyAll({model:this.name, method:'fetched', status:status, message:'OK'});
-		}, 100);
-	}*/
 }

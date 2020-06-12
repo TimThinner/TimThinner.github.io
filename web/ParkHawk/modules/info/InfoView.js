@@ -1,6 +1,6 @@
 import View from '../common/View.js';
 
-export default class HomeView extends View {
+export default class InfoView extends View {
 	
 	constructor(controller) {
 		super(controller);

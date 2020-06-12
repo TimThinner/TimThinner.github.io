@@ -6,6 +6,7 @@ import MenuController from './modules/menu/MenuController.js';
 import HomeController from './modules/home/HomeController.js';
 import MapController from './modules/map/MapController.js';
 import CameraController from './modules/camera/CameraController.js';
+import TimetablesController from './modules/timetables/TimetablesController.js';
 import InfoController from './modules/info/InfoController.js';
 
 class MasterController {
@@ -44,6 +45,9 @@ class MasterController {
 		
 		this.controllers['camera'] = new CameraController({name:'camera', master:this, el:'#content', visible:false});
 		this.controllers['camera'].init();
+		
+		this.controllers['timetables'] = new TimetablesController({name:'timetables', master:this, el:'#content', visible:false});
+		this.controllers['timetables'].init();
 		
 		this.controllers['info'] = new InfoController({name:'info', master:this, el:'#content', visible:false});
 		this.controllers['info'].init();

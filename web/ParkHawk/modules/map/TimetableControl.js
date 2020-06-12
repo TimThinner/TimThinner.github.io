@@ -7,7 +7,7 @@ export default class TimetableControl {
 		this.mymap = mapview.mymap;
 		
 		this.offset = 0;
-		this.MAXLINES = 8;
+		this.MAXLINES = 6;
 		this.bustimetables = undefined;
 		this.timetableIndexPage = undefined;
 		this.boundBusScheduleHandler = (ev) => this.busScheduleHandler(ev);
@@ -31,21 +31,53 @@ export default class TimetableControl {
 		console.log('div clicked!');
 	}
 	
+	
+	createTimetable(stop) {
+		let s = '<h6 style="text-align:center;">'+stop.name+'</h6>';
+		s += '<table class="striped bus-stop-times">';
+		s += '<thead><tr><th>Määränpää</th><th>Linja</th><th>Lähtöaika</th></tr></thead><tbody>';
+		let firstsix = stop.departures.slice(0,6);
+		for (let depa of firstsix) {
+			s += '<tr><td>'+depa.headsign+'</td><td>'+depa.shortName+'</td><td>'+depa.departureString+'</td></tr>';
+		}
+		s += '</tbody></table>';
+		console.log(['s=',s]);
+		$('#timetable-placeholder').empty().append(s);
+	}
+	
+	
 	linkHandler(ev) {
 		L.DomEvent.stopPropagation(ev);
 		console.log(['link clicked ev.target.id=',ev.target.id]);
 		//console.log(['link clicked target=',target]);
 		// stopname-0 ....  stopname-7
-		
 		const ind = parseInt(ev.target.id.slice(9), 10);
-		let stopnames = [];
+		let _stopnames = [];
+		let found = false;
 		const MM = this.mapview.getModel('MapModel');
 		if (typeof MM !== 'undefined') {
-			if (MM.BusStopData && MM.BusStopData.stopnames) {
-				stopnames = MM.BusStopData.stopnames;
+			if (MM.BusStopData && MM.BusStopData.stopnames && MM.BusStopData.alldepartures && MM.BusStopData.stops) {
+				
+				_stopnames = MM.BusStopData.stopnames;
+				const sname = _stopnames[this.offset+ind];
+				const allDepInfo = MM.BusStopData.alldepartures;
+				const stops      = MM.BusStopData.stops;
+				for (let stop of stops) {
+					if (stop.name === sname && found===false) {
+						// Take only the first one.
+						let genStop = { name: stop.name, latlng: stop.latlng, priority: stop.priority };
+						genStop.departures = [];
+						for (let departure of allDepInfo) {
+							if (departure.stopName === genStop.name) {
+								genStop.departures.push(departure);
+							}
+						}
+						this.createTimetable(genStop);
+						found = true;
+					}
+				}
 			}
 		}
-		console.log(['Selected Stop = ',stopnames[this.offset+ind]]);
 	}
 	
 	closeHandler(ev) {
@@ -143,7 +175,7 @@ export default class TimetableControl {
 				this._img_close.src = 'assets/x.svg';
 				L.DomEvent.on(this._img_close, 'click dblclick', self.boundCloseHandler);
 				
-				if (stopcount > 8) {
+				if (stopcount > self.MAXLINES) {
 					this._img_up = L.DomUtil.create('img', 'timetable-button', this._div_RCol);
 					this._img_up.src = 'assets/arrowup.svg';
 					this._img_down = L.DomUtil.create('img', 'timetable-button', this._div_RCol);
@@ -152,6 +184,14 @@ export default class TimetableControl {
 					L.DomEvent.on(this._img_down, 'click dblclick', self.boundDownHandler);
 				}
 				L.DomEvent.on(this._div, 'click dblclick', self.boundDivHandler);
+				
+				
+				this._div_TTRow = L.DomUtil.create('div', 'row', this._div); // create a div with a class "row"
+				this._div_TTCol = L.DomUtil.create('div', 'col s12', this._div_TTRow);
+				this._div_TTCol.innerHTML = '<div id="timetable-placeholder"></div>';
+				
+				
+				
 				return this._div;
 			};
 			this.timetableIndexPage.onRemove = function (map) {
@@ -160,7 +200,7 @@ export default class TimetableControl {
 					L.DomEvent.off(this._div_Stops[i], 'click dblclick', self.boundLinkHandler);
 				}
 				L.DomEvent.off(this._img_close, 'click dblclick', self.boundCloseHandler);
-				if (stopcount > 8) {
+				if (stopcount > self.MAXLINES) {
 					L.DomEvent.off(this._img_up, 'click dblclick', self.boundUpHandler);
 					L.DomEvent.off(this._img_down, 'click dblclick', self.boundDownHandler);
 				}

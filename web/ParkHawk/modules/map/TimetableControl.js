@@ -185,13 +185,10 @@ export default class TimetableControl {
 				}
 				L.DomEvent.on(this._div, 'click dblclick', self.boundDivHandler);
 				
-				
-				this._div_TTRow = L.DomUtil.create('div', 'row', this._div); // create a div with a class "row"
-				this._div_TTCol = L.DomUtil.create('div', 'col s12', this._div_TTRow);
-				this._div_TTCol.innerHTML = '<div id="timetable-placeholder"></div>';
-				
-				
-				
+				//this._div_TTRow = L.DomUtil.create('div', 'row', this._div); // create a div with a class "row"
+				this._div_TTCol = L.DomUtil.create('div', 'col s12', this._div_Row);
+				this._div_TTCol.id = 'timetable-placeholder';
+				//this._div_TTCol.innerHTML = '<div id="timetable-placeholder"></div>';
 				return this._div;
 			};
 			this.timetableIndexPage.onRemove = function (map) {

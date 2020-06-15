@@ -29,7 +29,47 @@ export default class TimetablesView extends View {
 		$(this.el).empty();
 	}
 	
+	createTimetable(stop) {
+		let s = '<h6 style="text-align:center;">'+stop.name+'</h6>';
+		s += '<table class="striped bus-stop-times">';
+		s += '<thead><tr><th>Määränpää</th><th>Linja</th><th>Lähtöaika</th></tr></thead><tbody>';
+		//let firstsix = stop.departures.slice(0,6);
+		for (let depa of stop.departures) { //firstsix) {
+			s += '<tr><td>'+depa.headsign+'</td><td>'+depa.shortName+'</td><td>'+depa.departureString+'</td></tr>';
+		}
+		s += '</tbody></table>';
+		console.log(['s=',s]);
+		$('#timetables-content-placeholder').empty().append(s);
+	}
+	
+	linkHandler(name) {
+		console.log(['name=',name]);
+		let found = false;
+		const MM = this.getModel('MapModel');
+		if (typeof MM !== 'undefined') {
+			if (MM.BusStopData && MM.BusStopData.stopnames && MM.BusStopData.alldepartures && MM.BusStopData.stops) {
+				const allDepInfo = MM.BusStopData.alldepartures;
+				const stops      = MM.BusStopData.stops;
+				for (let stop of stops) {
+					if (stop.name === name && found===false) {
+						// Take only the first one.
+						let genStop = { name: stop.name, latlng: stop.latlng, priority: stop.priority };
+						genStop.departures = [];
+						for (let departure of allDepInfo) {
+							if (departure.stopName === genStop.name) {
+								genStop.departures.push(departure);
+							}
+						}
+						this.createTimetable(genStop);
+						found = true;
+					}
+				}
+			}
+		}
+	}
+	
 	showTimetables() {
+		const self = this;
 		let stopnames = [];
 		const MM = this.getModel('MapModel');
 		if (typeof MM !== 'undefined') {
@@ -37,8 +77,7 @@ export default class TimetablesView extends View {
 				stopnames = MM.BusStopData.stopnames;
 			}
 		}
-		console.log(['TimetablesView stopnames=',stopnames]);
-		
+		//console.log(['TimetablesView stopnames=',stopnames]);
 		let i=0;
 		let html = '<ul>';
 		stopnames.forEach(stopname => {
@@ -46,14 +85,16 @@ export default class TimetablesView extends View {
 			i++;
 		});
 		html += '</ul>';
-		$('#tt-index-placeholder').empty().append(html);
+		$('#timetables-index-placeholder').empty().append(html);
 		
-		
-		// TODO: 
 		// Add Event Handlers for Each STOP => Show Timetable in right side of screen?
-		// ETC.
-		
-		
+		i=0;
+		stopnames.forEach(stopname => {
+			$('#stopname-'+i).on('click',function(e) {
+				self.linkHandler(stopname);
+			});
+			i++;
+		});
 	}
 	
 	notify(options) {
@@ -78,9 +119,9 @@ export default class TimetablesView extends View {
 				'<div class="col s12">'+
 					'<h4 style="text-align:center;">Timetables</h4>'+
 				'</div>'+
-				'<div class="col s6" id="tt-index-placeholder">'+
+				'<div class="col s6" id="timetables-index-placeholder">'+
 				'</div>'+
-				'<div class="col s6" id="tt-content-placeholder">'+
+				'<div class="col s6" id="timetables-content-placeholder">'+
 					'<p>UNDER CONSTRUCTION</p>'+
 				'</div>'+
 			'</div>';

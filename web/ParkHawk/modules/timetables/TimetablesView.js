@@ -119,9 +119,9 @@ export default class TimetablesView extends View {
 				'<div class="col s12">'+
 					'<h4 style="text-align:center;">Timetables</h4>'+
 				'</div>'+
-				'<div class="col s6" id="timetables-index-placeholder">'+
+				'<div class="col s5" id="timetables-index-placeholder">'+
 				'</div>'+
-				'<div class="col s6" id="timetables-content-placeholder">'+
+				'<div class="col s7" id="timetables-content-placeholder">'+
 					'<p>UNDER CONSTRUCTION</p>'+
 				'</div>'+
 			'</div>';

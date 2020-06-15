@@ -1,5 +1,6 @@
 import View from '../common/View.js';
 //import TimetableControl from './TimetableControl.js';
+import HikingRoutesControl from './HikingRoutesControl.js';
 /* These routes and buildings are for Nuuksio: */
 import routedata from '../../assets/geojson/routedata.js';
 import buildingdata from '../../assets/geojson/buildingdata.js';
@@ -58,6 +59,7 @@ export default class MapView extends View {
 		
 		*/
 		//this.timetableControl = undefined;
+		this.hikingRoutesControl = undefined;
 		
 		this.mapzoom = 11;
 		this.mapcenter = { lat: 60.32, lng: 24.54 }; //[60.32, 24.54];
@@ -589,7 +591,8 @@ export default class MapView extends View {
 				self.setMapHeight();
 				
 				// __TIMETABLES
-				//self.timetableControl = new TimetableControl(self);
+				self.hikingRoutesControl = new HikingRoutesControl(self);
+				self.hikingRoutesControl.addHikingRoutesCustomControl();
 				//self.timetableControl.addBusTimetablesCustomControl();
 				// When map area (outside timetable) is clicked, we should close the Timetable.
 				//self.mymap.on('click', function(e) {

@@ -30,16 +30,25 @@ export default class TimetablesView extends View {
 	}
 	
 	createTimetable(stop) {
-		let s = '<h6 style="text-align:center;">'+stop.name+'</h6>';
-		s += '<table class="striped bus-stop-times">';
+		const self = this;
+		
+		let s = '<h5 style="text-align:center;">'+stop.name+'<a style="float:left;" href="javascript:void(0)" id="back1"><img class="timetables-back-button" src="assets/arrowleft.svg" width="40"/></a></h5><hr />';
+		s += '<table class="striped bus-stop-times" style="margin-bottom:8px;">';
 		s += '<thead><tr><th>Määränpää</th><th>Linja</th><th>Lähtöaika</th></tr></thead><tbody>';
 		//let firstsix = stop.departures.slice(0,6);
 		for (let depa of stop.departures) { //firstsix) {
 			s += '<tr><td>'+depa.headsign+'</td><td>'+depa.shortName+'</td><td>'+depa.departureString+'</td></tr>';
 		}
 		s += '</tbody></table>';
-		console.log(['s=',s]);
-		$('#timetables-content-placeholder').empty().append(s);
+		s += '<a href="javascript:void(0)" id="back2"><img class="timetables-back-button" src="assets/arrowleft.svg" width="40"/></a>';
+		//console.log(['s=',s]);
+		$('#timetables-placeholder').empty().append(s);
+		$('#back1').on('click',function(e) {
+			self.showTimetables();
+		});
+		$('#back2').on('click',function(e) {
+			self.showTimetables();
+		});
 	}
 	
 	linkHandler(name) {
@@ -85,7 +94,7 @@ export default class TimetablesView extends View {
 			i++;
 		});
 		html += '</ul>';
-		$('#timetables-index-placeholder').empty().append(html);
+		$('#timetables-placeholder').empty().append(html);
 		
 		// Add Event Handlers for Each STOP => Show Timetable in right side of screen?
 		i=0;
@@ -119,11 +128,11 @@ export default class TimetablesView extends View {
 				'<div class="col s12">'+
 					'<h4 style="text-align:center;">Timetables</h4>'+
 				'</div>'+
-				'<div class="col s5" id="timetables-index-placeholder">'+
+				'<div class="col s12" id="timetables-placeholder">'+
 				'</div>'+
-				'<div class="col s7" id="timetables-content-placeholder">'+
-					'<p>UNDER CONSTRUCTION</p>'+
-				'</div>'+
+				//'<div class="col s7" id="timetables-content-placeholder">'+
+				//	'<p>UNDER CONSTRUCTION</p>'+
+				//'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		this.rendered = true;

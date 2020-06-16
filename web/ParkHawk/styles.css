@@ -222,7 +222,7 @@ table.striped > tbody > tr:nth-child(odd) {
 	background: #eee;
 	float: right;
 	margin-right: 0;
-	margin-top: 16px;
+	margin-top: 8px;
 }
 .hiking-close-button:hover {
 	background: #fff;
@@ -237,14 +237,14 @@ table.striped > tbody > tr:nth-child(odd) {
     padding: 0;
 }
 .legend-container {
-	height: 720px;
+	height: 300px;
 	width: 320px;
     font-size: 1.25em;
-    position: fixed;
+    /*position: fixed;
     right: 10px;
     top: unset;
-    bottom: 20px;
-    border: 1px solid #aa8;
+    bottom: 20px;*/
+    border: 1px solid #00897b;
     border-radius: 10px;
     z-index: 2000;
     background-color: #fff;
@@ -272,23 +272,28 @@ table.striped > tbody > tr:nth-child(odd) {
     line-height: 18px;
     color: #889700;
     text-align: left;
-    border-left: 5px solid;
+    /*border-left: 5px solid;*/
     padding: 0;
     margin: 7px 0;
     padding-left: 8px;
 }
+.legendtitle {
+	color: #00897b;
+	font-size: 20px;
+	border-bottom: 2px solid #00897b;
+}
 @media only screen and (max-width: 840px) {
     .legend-container {
         width: calc(100% - 20px);
-        height: 460px;
-        left: 10px;
-    }
+        height: 200px;
+       /* left: 10px;*/
+    }/*
     #legendtitlebar {
       border-bottom: none;
     }
     #legendtitle {
       display: none;
-    }
+    }*/
     .routelist {
       margin: 5px 2px 10px 8px;
       columns: 2;
@@ -302,7 +307,7 @@ table.striped > tbody > tr:nth-child(odd) {
 }
 @media only screen and (max-width: 540px) {
     .legend-container {
-        height: 480px;
+        height: 200px;
     }
     .legend-title {
         font-size: 16px;
@@ -327,7 +332,7 @@ table.striped > tbody > tr:nth-child(odd) {
 }
 @media only screen and (max-width: 340px) {
     .legend-container {
-        height: 500px;
+        height: 200px;
     }
     .legend-title {
         font-size: 14px;

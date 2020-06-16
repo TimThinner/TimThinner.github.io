@@ -25,13 +25,33 @@ export default class HikingRoutesControl {
 	hikingHandler(ev) {
 		const self = this;
 		L.DomEvent.stopPropagation(ev);
-		console.log('Hiking Handler INVOKED!');
+		
+		let homeActiveTarget = 'Nuuksio';
+		
+		const ADM = this.mapview.getModel('AppDataModel');
+		if (typeof ADM !== 'undefined') {
+			homeActiveTarget = ADM.activeTarget;
+		}
+		
+		console.log('Hiking Handler for '+homeActiveTarget);
+		
 		if (typeof this.hikingRoutesPage === 'undefined') {
 			
-			const routes = [];
+			let routes = [];
 			
-			for (let feature of routedata.features) {
+			if (homeActiveTarget === 'Nuuksio') {
+				for (let feature of routedata.features) {
+					if (feature.properties.url && feature.properties.url.length > 0) {
+						let route = {};
+						route.name = feature.properties.Nimi;
+						route.url = feature.properties.url;
+						route.color = feature.properties.color ? feature.properties.color : '#f00';
+						routes.push(route);
+					}
+				}
+			}
 				
+				/*
 				if (feature.properties.color) {
 					let route = {};
 					route.name = feature.properties.Nimi;
@@ -45,14 +65,10 @@ export default class HikingRoutesControl {
 					route.color = "#000000";
 					routes.push(route);
 				}
-				
-			}
+				*/
+			
 			routes.sort(function (a, b) { return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0); });
 			console.log('routes=',routes);
-			
-			
-			
-			
 			
 			this.hikingRoutesPage = L.control({position: 'bottomright'});
 			this.hikingRoutesPage.onAdd = function (map) {
@@ -73,20 +89,18 @@ export default class HikingRoutesControl {
 				routes.forEach(route => {
 					//const stylecolor = { color: route.color };
 					//const stylecolorURL = { color: route.color, fontWeight:'bold' };
-					if (route.url.length > 0) {
-						const _li = L.DomUtil.create('li', 'legenditem', this._ul);
-						_li.style.color = route.color;
-						_li.style.fontWeight = 'bold';
-						_li.innerHTML = '<a href="'+route.url+'" target="_blank" rel="noopener noreferrer">'+route.name+'</a>';
-					} else {
-						const _li = L.DomUtil.create('li', 'legenditem', this._ul);
-						_li.style.color = route.color;
-						_li.innerHTML = route.name;
-					}
+					//if (route.url.length > 0) {
+					const _li = L.DomUtil.create('li', 'legenditem', this._ul);
+					_li.style.color = route.color;
+					_li.style.borderLeft = 'solid 7px '+route.color;
+					_li.style.fontWeight = 'bold';
+					_li.innerHTML = '<a href="'+route.url+'" target="_blank" rel="noopener noreferrer">'+route.name+'</a>';
+					//} else {
+					//	const _li = L.DomUtil.create('li', 'legenditem', this._ul);
+					//	_li.style.color = route.color;
+					//	_li.innerHTML = route.name;
+					//}
 				});
-				
-				
-				
 				return this._div;
 			};
 			this.hikingRoutesPage.onRemove = function (map) {
@@ -95,10 +109,7 @@ export default class HikingRoutesControl {
 			this.hikingRoutesPage.addTo(this.mymap);
 			// When Hiking Routes page is displayed, hide the button.
 			$('.hiking-button').hide();
-			
 		}
-		
-		
 	}
 	
 	/*
@@ -111,7 +122,7 @@ export default class HikingRoutesControl {
 		// to use L.DomEvent.on() inside onAdd() and L.DomEvent.off() inside onRemove().
 		L.Control.HikingRoutes = L.Control.extend({
 			onAdd: function(map) {
-				img.src = 'assets/hiking2.png';
+				img.src = 'assets/Hiking2.png';
 				img.style.width = '50px';
 				img.style.cursor = 'pointer';
 				L.DomEvent.on(img, 'click dblclick', self.boundHikingHandler);

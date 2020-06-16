@@ -198,6 +198,8 @@ table.striped > tbody > tr:nth-child(odd) {
 	/*border-radius: 50%;*/
 	background: #4db6ac; /* teal lighten-2 */
 	margin-bottom: 16px;
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	/*box-shadow: 0 0 5px rgba(0,0,0,0.5);*/
 }
 .hiking-button:hover {
 	background: #00897b; /* teal darken-1 */

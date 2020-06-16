@@ -93,7 +93,7 @@ export default class MapView extends View {
 			const H = (this.REO.height-70) + 'px'; // menu Height maximum is 60px.
 			$('#mapid').css({height:H,width:"100%"});
 			this.mymap.invalidateSize();
-			console.log(['invalidateSize() H=',H]);
+			console.log(['invalidateSize() H=',H,' W=',this.REO.width]);
 		}
 	}
 	

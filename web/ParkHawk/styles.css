@@ -219,14 +219,16 @@ table.striped > tbody > tr:nth-child(odd) {
 	cursor:pointer;
 	width:40px;
 	border-radius: 50%;
-	background: #eee;
+	background: #fff;
 	float: right;
 	margin-right: 0;
 	margin-top: 8px;
 }
+/*
 .hiking-close-button:hover {
 	background: #fff;
 }
+*/
 /* --------------------------------------------------------------- */
 /*                    FROM OLD VERSION:                            */
 /* --------------------------------------------------------------- */
@@ -236,106 +238,63 @@ table.striped > tbody > tr:nth-child(odd) {
     margin: 0;
     padding: 0;
 }
+/*
+	Note: height and width values depend on how many items there are on the list.
+	These values here are based on situation when only 8 routes are displayed.
+*/
 .legend-container {
-	height: 320px;
+	height: 360px;
 	width: 320px;
-    font-size: 1.25em;
-    /*position: fixed;
-    right: 10px;
-    top: unset;
-    bottom: 20px;*/
-    border: 1px solid #00897b;
-    border-radius: 10px;
-    z-index: 2000;
-    background-color: #fff;
-    cursor: auto;
-    padding: 0 12px 12px 12px;
+	font-size: 1.25em;
+	border: 1px solid #00897b;
+	border-radius: 10px;
+	z-index: 2000;
+	background-color: #fff;
+	cursor: auto;
+	padding: 0 8px 8px 8px;
 }
-.legend-container a {
-    cursor: pointer;
-}
-.legend-hide {
-    float: right;
-    background-color: #fff;
-}
-.legend-hide i.material-icons {
-    color: #FF8000;
-    font-size: 32px;
-    font-weight: bold;
-}
+/*.legend-container a {
+	cursor: pointer;
+}*/
 .routelist {
-    margin: 0 0 0 8px;
-    padding: 0;
-    background-color: #fff;
+	/*margin: 0 0 0 8px;*/
+	padding: 0;
+	background-color: #fff;
 }
 .legenditem {
 	line-height: 22px;
-	color: #889700;
+	color: #889700; /* When legenditem is a link this color is not used! */
 	text-align: left;
+	/* The borderLeft is filled dynamically with route color! */
 	/*border-left: 5px solid;*/
-	padding: 0 0 0 8px;
-	margin: 7px 0;
+	
+	/*padding: 8px;*/
+	/*margin: 8px 0;*/
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	border-right: 1px solid #eee;
+}
+.legenditem a {
+	display: block;
+	padding: 4px 0 4px 8px;
+	/*border: 1px solid #f00;*/
 }
 .legendtitle {
 	color: #00897b;
 	font-size: 20px;
 	border-bottom: 2px solid #00897b;
+	padding: 0;
 }
 @media only screen and (max-width: 840px) {
 	.legend-container {
-		width: calc(100% - 40px);
+		width: 380px; /*calc(100%-40px);*/
 		height: 240px;
 	}
 	.routelist {
-		margin: 5px 2px 10px 8px;
+		/*margin: 5px 2px 10px 8px;*/
 		columns: 2;
 	}
-	.routelist:first-child {
-		margin-top: 0;
-	}
-	.legenditem {
-		margin: 8px 0;
-	}
 }
-/*
-@media only screen and (max-width: 540px) {
-    .legend-container {
-        height: 240px;
-    }
-    .legend-title {
-        font-size: 16px;
-    }
-    .legenditem {
-      margin: 4px 0;
-      font-size: 1em;
-    }
-}
-@media only screen and (max-width: 420px) {
-    .routelist {
-      margin: 5px 1px;
-    }
-    .legend-title {
-        font-size: 14px;
-    }
-    .legenditem {
-      margin: 0;
-      border: none;
-      font-size: 0.9em;
-    }
-}
-@media only screen and (max-width: 340px) {
-    .legend-container {
-        height: 240px;
-    }
-    .legend-title {
-        font-size: 14px;
-    }
-    .legenditem {
-        margin: 0;
-        border: none;
-        font-size: 0.8em;
-    }
-}*/
 /* --------------------------------------------------------------- */
 /*                    TIMETABLE STYLES:                            */
 /* --------------------------------------------------------------- */

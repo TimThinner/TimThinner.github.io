@@ -92,7 +92,7 @@ export default class HikingRoutesControl {
 					//if (route.url.length > 0) {
 					const _li = L.DomUtil.create('li', 'legenditem', this._ul);
 					_li.style.color = route.color;
-					_li.style.borderLeft = 'solid 7px '+route.color;
+					_li.style.borderLeft = 'solid 10px '+route.color;
 					_li.style.fontWeight = 'bold';
 					_li.innerHTML = '<a href="'+route.url+'" target="_blank" rel="noopener noreferrer">'+route.name+'</a>';
 					//} else {
@@ -123,7 +123,7 @@ export default class HikingRoutesControl {
 		L.Control.HikingRoutes = L.Control.extend({
 			onAdd: function(map) {
 				img.src = 'assets/Hiking2.png';
-				img.style.width = '50px';
+				img.style.width = '60px';
 				img.style.cursor = 'pointer';
 				L.DomEvent.on(img, 'click dblclick', self.boundHikingHandler);
 				return img;

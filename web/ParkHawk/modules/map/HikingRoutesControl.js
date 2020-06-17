@@ -45,7 +45,7 @@ export default class HikingRoutesControl {
 						let route = {};
 						route.name = feature.properties.Nimi;
 						route.url = feature.properties.url;
-						route.color = feature.properties.color ? feature.properties.color : '#f00';
+						route.color = feature.properties.color ? feature.properties.color : '#cc6600';
 						routes.push(route);
 					}
 				}

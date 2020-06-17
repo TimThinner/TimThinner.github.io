@@ -30,7 +30,7 @@ Desktop   4 (4 x 300)
 html, body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
-	background-color: #eee;
+	background-color: #fff;
 	color: #333;
 }
 .container {
@@ -234,11 +234,18 @@ table.striped > tbody > tr:nth-child(odd) {
 /* --------------------------------------------------------------- */
 /*                    FROM OLD VERSION:                            */
 /* --------------------------------------------------------------- */
+.map-route-info-popup-wrapper {
+	text-align: center;
+}
+.map-feature-title {
+	font-weight: bold;
+	line-height: 1.0; 
+}
 .legend-title {
-    font-size: 18px;
-    border-bottom: 2px solid #484;
-    margin: 0;
-    padding: 0;
+	font-size: 18px;
+	border-bottom: 2px solid #484;
+	margin: 0;
+	padding: 0;
 }
 /*
 	Note: height and width values depend on how many items there are on the list.
@@ -301,7 +308,7 @@ table.striped > tbody > tr:nth-child(odd) {
 /*                    TIMETABLE STYLES:                            */
 /* --------------------------------------------------------------- */
 .timetables-back-button {
-	width: 40px;
+	width: 60px;
 	border-radius: 50%;
 	background: #eee;
 	/*margin-bottom: 16px;*/
@@ -333,4 +340,120 @@ table.striped > tbody > tr:nth-child(odd) {
 }
 .timetable-index-page-div:hover {
 	background: #eee;
+}
+
+/* --------------------------------------------------------------- */
+/*                    INFO STYLES:                                 */
+/* --------------------------------------------------------------- */
+
+ 
+
+CSS rules to specify families
+
+
+.info-container {
+	line-height: 1.2;
+}
+.info-header {
+	margin-bottom: 24px;
+	text-align: center;
+}
+.info-header-framed {
+	margin-bottom: 24px;
+	padding: 16px 8px 16px 8px;
+	/* Must have <link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet"> in HTML page */
+	font-family: 'Sriracha', cursive;
+	/*background-color: #efe;
+	border: 1px solid #8a8;*/
+	color: #00897b; /*#4db6ac; #00897b */
+	border-radius: 10px;
+	text-align: center;
+}
+.info-header-top {
+	margin-bottom: 20px;
+	padding-top: 16px;
+	background-color: #fff;
+}
+.info-text-ingress {
+	font-size: 18px;
+	color: #444;
+	margin-bottom: 0;
+}
+.info-text {
+	font-size: 16px;
+	color: #444;
+	margin-bottom: 24px;
+}
+.info-text-bold {
+	font-weight: bold;
+	font-size: 20px;
+	margin-bottom: 14px;
+	text-align: center;
+}
+.co-op-icon-wrapper {
+	margin-bottom: 32px;
+	text-align: center;
+}
+.co-op-icon {
+	height: 100px;
+	padding:10px;
+	vertical-align: middle;
+}
+.co-op-icon-2 {
+	height: 60px;
+	padding:10px;
+	vertical-align: middle;
+}
+.info-pic {
+	height: auto;
+	width: 100%;
+	border: 1px solid #444;
+	margin-bottom: 20px;
+}
+/*
+.info-section-developers {
+	background-color: #efe;
+	border: solid 1px #8a8;
+	border-radius: 10px;
+	margin-bottom: 24px;
+	padding: 0 12px 12px 12px;
+	text-align: center;
+}
+.info-section-feedback {
+	background-color: #efe;
+	border: solid 1px #8a8;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	padding: 0 12px 12px 12px;
+	text-align: center;
+}
+*/
+@media only screen and (max-width: 850px) {
+	.co-op-icon {
+		height: 70px;
+		padding: 5px;
+	}
+	.co-op-icon-2 {
+		height: 40px;
+		padding: 5px;
+	}
+}
+.embedded-image {
+	width: 25px;
+	height: 20px;
+	vertical-align: middle;
+}
+.embedded-image-busstop {
+	width: 36px;
+	height: 20px;
+	vertical-align: middle;
+}
+.embedded-image-square {
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
+}
+.info-version {
+	color: #aaa;
+	text-align: center;
 }

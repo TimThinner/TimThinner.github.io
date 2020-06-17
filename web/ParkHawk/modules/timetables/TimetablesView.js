@@ -31,7 +31,7 @@ export default class TimetablesView extends View {
 	
 	createTimetable(stop) {
 		const self = this;
-		const imgString = '<img class="timetables-back-button" src="assets/arrowleft.svg" width="40"/>';
+		const imgString = '<img class="timetables-back-button" src="assets/arrowleft.svg" />';
 		
 		let s = '<h5 style="text-align:center;">'+stop.name+'<a style="float:left;" href="javascript:void(0)" id="back1">'+imgString+'</a></h5><hr />';
 		s += '<table class="striped bus-stop-times" style="margin-bottom:8px;">';
@@ -124,10 +124,12 @@ export default class TimetablesView extends View {
 		});
 		const html =
 			'<div class="row">'+
-				'<div class="col s12">'+
+				'<div class="col s12 m10 l8 offset-m1 offset-l2">'+
+				//'<div class="col s12">'+
 					'<h4 style="text-align:center;">Aikataulut</h4>'+
 				'</div>'+
-				'<div class="col s12" id="timetables-placeholder">'+
+				'<div class="col s12 m10 l8 offset-m1 offset-l2" id="timetables-placeholder">'+
+				//'<div class="col s12" id="timetables-placeholder">'+
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);

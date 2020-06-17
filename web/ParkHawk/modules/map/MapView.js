@@ -299,7 +299,7 @@ export default class MapView extends View {
 		L.geoJSON routedata style CALLBACK
 	*/
 	getRouteStyle(feature) {
-		let c = '#000000';
+		let c = '#cc6600';
 		let w = 6;
 		if (feature.properties.priority > 0) {
 			w += 2;

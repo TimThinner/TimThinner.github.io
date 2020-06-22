@@ -85,22 +85,19 @@ export default class HikingRoutesControl {
 				this._Heading = L.DomUtil.create('p', 'legendtitle', this._div_Col);
 				this._Heading.innerHTML = 'Ulkoilureitit';
 				
-				this._ul = L.DomUtil.create('ul', 'routelist', this._div_Col);
-				routes.forEach(route => {
-					//const stylecolor = { color: route.color };
-					//const stylecolorURL = { color: route.color, fontWeight:'bold' };
-					//if (route.url.length > 0) {
-					const _li = L.DomUtil.create('li', 'legenditem', this._ul);
-					_li.style.color = route.color;
-					_li.style.borderLeft = 'solid 7px '+route.color;
-					_li.style.fontWeight = 'bold';
-					_li.innerHTML = '<a href="'+route.url+'" target="_blank" rel="noopener noreferrer">'+route.name+'</a>';
-					//} else {
-					//	const _li = L.DomUtil.create('li', 'legenditem', this._ul);
-					//	_li.style.color = route.color;
-					//	_li.innerHTML = route.name;
-					//}
-				});
+				if (routes.length > 0) {
+					this._ul = L.DomUtil.create('ul', 'routelist', this._div_Col);
+					routes.forEach(route => {
+						const _li = L.DomUtil.create('li', 'legenditem', this._ul);
+						_li.style.color = route.color;
+						_li.style.borderLeft = 'solid 7px '+route.color;
+						_li.style.fontWeight = 'bold';
+						_li.innerHTML = '<a href="'+route.url+'" target="_blank" rel="noopener noreferrer">'+route.name+'</a>';
+					});
+				} else {
+					const _p = L.DomUtil.create('p', 'no-items-message', this._div_Col);
+					_p.innerHTML = 'Ulkoilureittejä ei ole vielä määritelty.';
+				}
 				return this._div;
 			};
 			this.hikingRoutesPage.onRemove = function (map) {

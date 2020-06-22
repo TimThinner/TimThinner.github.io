@@ -97,11 +97,15 @@ export default class CameraView extends View {
 					'</div>'+
 				'</div>';
 			$(html).appendTo(this.el);
-			i = 0;
-			urls.forEach(url => {
-				$('#pics').append('<div id="camera-'+i+'" style="margin:6px 0;"><img class="responsive-img" src="'+url+'" alt="" /></div>');
-				i++;
-			});
+			if (urls.length > 0) {
+				i = 0;
+				urls.forEach(url => {
+					$('#pics').append('<div id="camera-'+i+'" style="margin:6px 0;"><img class="responsive-img" src="'+url+'" alt="" /></div>');
+					i++;
+				});
+			} else {
+				$('#pics').append('<p class="no-items-message">Kameroita ei ole vielä asennettu.</p>');
+			}
 			this.rendered = true;
 		}
 	}

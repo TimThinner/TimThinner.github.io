@@ -85,7 +85,7 @@ export default class InfoView extends View {
 						'<img src="assets/Metsahallitus_logo_varillinen_vaaka.png" class="co-op-icon-2" alt="" />'+
 						'<img src="assets/VTTLogo.png" class="co-op-icon" alt="" />'+
 					'</div>'+
-					'<p class="info-version">Parkkihaukka v.20.06.17</p>'+
+					'<p class="info-version">Parkkihaukka v.20.06.22</p>'+
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);

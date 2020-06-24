@@ -1,0 +1,224 @@
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	color: #777;
+	background-color: #eee;
+}
+@media screen and (min-width: 601px) {
+	html, body {
+		font-size: 18px;
+	}
+}
+/* Materialize CSS */
+.container {
+	background-color: #eee;
+	color: #777;
+	margin: 0 auto;
+	/*max-width: 1280px;*/
+	max-width: 1920px;
+	width: 100%; /* 90%; */
+	/*padding: 0 1rem 1rem 1rem;*/
+	padding: 0;
+}
+/*
+@media only screen and (min-width: 601px) {
+	.container {
+		width: 100%;
+	}
+}
+@media only screen and (min-width: 993px) {
+	.container {
+		width: 100%;
+	}
+}
+*/
+/* svg width="1000" height="900" */
+/* 900 = x/100 * 1000 => x = 90000/1000 = 90 */
+.svg-square-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 90%;
+	vertical-align: middle;
+	overflow: hidden;
+}
+/* svg width="1800" height="900" */
+/* 900 = x/100 * 1800 => x = 90000/1800 = 50 */
+
+
+/* svg width="2200" height="400" */
+/* 400 = x/100 * 2200 => x = 40000/2200 = 18,18 */
+
+.svg-landscape-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 18.18%;
+	vertical-align: middle;
+	overflow: hidden;
+}
+/* svg width="600" height="900" */
+/* 900 = x/100 * 600 => x = 90000/600 = 150 */
+.svg-portrait-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 150%;
+	vertical-align: middle;
+	overflow: hidden;
+}
+
+.svg-content { 
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.error-message {
+	border: 1px solid #f88;
+	background-color: #fee;
+	padding-left: 1rem;
+}
+.success-message {
+	border: 1px solid #8f8;
+	background-color: #efe;
+	padding-left: 1rem;
+}
+/*.flag-wrapper {
+	background-color: #000;
+}*/
+.flag {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	float: right;
+	height: 2rem;
+	margin-left: 12px;
+	cursor: pointer;
+	border: 2px solid #404040;
+}
+.flag.selected {
+	border: 2px solid #80f080;
+}
+.user {
+	margin-top: 6px;
+	margin-bottom: 6px;
+	float: left;
+	height: 48px;
+	margin-left: 12px;
+	cursor: pointer;
+}
+.coming-soon {
+	border: 1px solid #8f8;
+	background-color: #efe;
+	text-align:center;
+	font-size: 32px;
+	padding: 16px;
+}
+.power-chart {
+	width: 100%;
+	height: 300px;
+	max-width: 100%;
+}
+.power-chart-tall {
+	width: 100%;
+	height: 400px;
+	max-width: 100%;
+}
+.energy-chart {
+	width: 100%;
+	height: 300px;
+	max-width: 100%;
+}
+.energy-chart-tall {
+	width: 100%;
+	height: 400px;
+	max-width: 100%;
+}
+.chart-wrapper {
+	padding: 16px 8px;
+	/*border: 1px solid #ccc;*/
+}
+.dark-theme {
+	background-color: #30303d;
+	color: #fff;
+}
+#subview-1-fromfield, #subview-1-tofield, 
+#subview-2-fromfield, #subview-2-tofield {
+	color: #fff;
+	/*box-sizing: border-box;*/
+}
+input[type="range"] {
+	border: none;
+}
+/*
+#009688 teal
+#00897b teal darken-1
+#00796b teal darken-2
+#00695c teal darken-3
+#004d40 teal darken-4
+*/
+.da-wrapper-title {
+	color: #00796b;
+}
+.my-range-button {
+	width: 14%;/* 7 x 14 = 98*/ /*50px;*/
+	padding: 6px 0 6px 0;
+	background-color: #eee;
+	color: #888;
+	border-top: 1px solid #fff;
+	border-right: 1px solid #888;
+	border-bottom: 1px solid #888;
+	border-left: 1px solid #fff;
+	text-align: center;
+}
+.my-range-button:hover {
+	background-color: #fff;
+}
+.my-range-button:focus {
+	background-color: #eee;
+}
+.my-range-button.selected {
+	background-color: #555;
+	border-top: 1px solid #888;
+	border-right: 1px solid #fff;
+	border-bottom: 1px solid #fff;
+	border-left: 1px solid #888;
+	color: #fff;
+}
+.mc-footer {
+	margin-top: -18px;
+	background-color: #fff;
+}
+.mc-logo {
+	margin-right: 2rem;
+	height: 60px;
+}
+.menu-view-top-bar {
+	background-color: #333;
+}
+.foobutton{
+	background-color: #3079b7;
+}
+.foobutton:hover {
+	background-color: #5699d4;
+}
+img.logout {
+	height: 50px;
+	float: right;
+	cursor: pointer;
+}
+.view-button {
+	height: 52px;
+	background-color: #eee;
+	border: 1px solid #ccc;
+	cursor: pointer;
+	border-radius: 20px;
+	box-shadow: 4px 4px 6px #aaa;
+}
+.view-button:hover {
+	background-color: #fff;
+}
+.important-note {
+	text-align: center;
+	background-color: #ff0;
+}

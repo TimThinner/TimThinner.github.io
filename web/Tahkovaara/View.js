@@ -15,13 +15,14 @@ export default class View {
 	}
 	
 	
-	setDashArrayLength(svgObject, path) {
+	setDashArrayLength(svgObject, path, strokeColor, strokeWidth) {
 		const p = svgObject.getElementById(path);
 		if (p) {
 			const len = p.getTotalLength();
 			console.log(['len=',len]);
 			p.style.strokeDasharray = len+'px '+len+'px';
-			p.style.strokeWidth = 10;
+			p.style.stroke = strokeColor;
+			p.style.strokeWidth = strokeWidth;
 			const anim = svgObject.getElementById(path+'-animate');
 			anim.setAttributeNS(null, 'from', len);
 		} else {
@@ -29,11 +30,12 @@ export default class View {
 		}
 	}
 	
-	setStroke(svgObject, path, strokeColor, strokeWidth) {
+	setStroke(svgObject, path, strokeColor, strokeWidth, fill) {
 		const p = svgObject.getElementById(path);
 		if (p) {
 			p.style.stroke = strokeColor;
 			p.style.strokeWidth = strokeWidth;
+			p.style.fill = fill;
 		} else {
 			console.log('p is null!!!!!');
 		}
@@ -68,38 +70,78 @@ These are filled with correct values in here:
 			*/
 			
 			setTimeout(() => { 
-				this.setDashArrayLength(svgObject, 'first-letter-path');
+				this.setDashArrayLength(svgObject, 'first-letter-path', '#000', 10);
 			}, 1000);
 			setTimeout(() => { 
-				this.setDashArrayLength(svgObject, 'second-letter-path');
+				this.setDashArrayLength(svgObject, 'first-letter-addpath', '#000', 5);
 			}, 1000);
-			setTimeout(() => { 
-				this.setDashArrayLength(svgObject, 'sixth-letter-path');
-			}, 2000);
-			setTimeout(() => { 
-				this.setDashArrayLength(svgObject, 'seventh-letter-path');
-			}, 2000);
-			setTimeout(() => { 
-				this.setDashArrayLength(svgObject, 'eight-letter-path');
-			}, 3000);
-			setTimeout(() => { 
-				this.setDashArrayLength(svgObject, 'tenth-letter-path');
-			}, 4000);
+			
 			
 			setTimeout(() => { 
-				this.setStroke(svgObject, 'c5', '#888', '5px');
-			}, 1250);
+				this.setDashArrayLength(svgObject, 'second-letter-path', '#000', 10);
+			}, 1000);
+			
+			
 			setTimeout(() => { 
-				this.setStroke(svgObject, 'c4', '#888', '5px');
+				this.setDashArrayLength(svgObject, 'third-letter-path', '#000', 10);
+			}, 1000);
+			
+			setTimeout(() => { 
+				this.setDashArrayLength(svgObject, 'fourth-letter-path', '#000', 10);
+			}, 1000);
+			
+			
+			setTimeout(() => { 
+				this.setDashArrayLength(svgObject, 'fifth-letter-outerpath', '#000', 10);
+			}, 1000);
+			setTimeout(() => { 
+				this.setDashArrayLength(svgObject, 'fifth-letter-innerpath', '#000', 7);
+			}, 1500);
+			
+			setTimeout(() => { 
+				this.setDashArrayLength(svgObject, 'sixth-letter-path', '#000', 10);
 			}, 2000);
 			setTimeout(() => { 
-				this.setStroke(svgObject, 'c3', '#888', '5px');
-			}, 2500);
+				this.setDashArrayLength(svgObject, 'seventh-letter-path', '#000', 10);
+			}, 2000);
 			setTimeout(() => { 
-				this.setStroke(svgObject, 'c2', '#888', '5px');
+				this.setDashArrayLength(svgObject, 'eight-letter-path', '#000', 10);
 			}, 3000);
 			setTimeout(() => { 
-				this.setStroke(svgObject, 'c1', '#888', '5px');
+				this.setDashArrayLength(svgObject, 'ninth-letter-outerpath', '#000', 10);
+			}, 3000);
+			setTimeout(() => { 
+				this.setDashArrayLength(svgObject, 'ninth-letter-innerpath', '#000', 7);
+			}, 3000);
+			
+			
+			setTimeout(() => { 
+				this.setDashArrayLength(svgObject, 'tenth-letter-path', '#000', 10);
+			}, 4000);
+			
+			
+			/*
+			setTimeout(() => { 
+				this.setDashArrayLength(svgObject, 'underline-path', 20);
+			}, 8000);
+			*/
+			
+			
+			
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'c5', '#000', 5, '#eee');
+			}, 1250);
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'c4', '#000', 5, '#eee');
+			}, 2000);
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'c3', '#000', 5, '#eee');
+			}, 2500);
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'c2', '#000', 5, '#eee');
+			}, 3000);
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'c1', '#000', 5, '#eee');
 			}, 3500);
 			
 			//this.setDashArrayLength(svgObject, 'third-building-path');

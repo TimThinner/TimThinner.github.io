@@ -26,9 +26,9 @@ export default class View {
 			anim.setAttributeNS(null, 'from', len);
 			
 			// Set stroke-width LAST!
-			setTimeout(() => { 
-				p.style.strokeWidth = strokeWidth;
-			}, 100);
+			
+			p.style.strokeWidth = strokeWidth;
+			
 			
 		} else {
 			console.log('p is null!!!!!');

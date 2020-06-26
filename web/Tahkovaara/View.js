@@ -101,6 +101,12 @@ export default class View {
 			}, 7000);
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'fifth-letter-fill', '#f80', 7);
+				
+				// Add the "BACK"-button after 1 second, then the animation is ready!
+				setTimeout(() => { 
+					$('#back-button-placeholder').empty().append('<a href="../index.html#SVGAnimation" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>');
+				}, 1000);
+				
 			}, 14000);
 			
 			setTimeout(() => { 

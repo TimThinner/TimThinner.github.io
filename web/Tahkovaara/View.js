@@ -34,126 +34,112 @@ export default class View {
 		const p = svgObject.getElementById(path);
 		if (p) {
 			p.style.stroke = strokeColor;
-			p.style.strokeWidth = strokeWidth;
-			p.style.fill = fill;
+			// Optional params:
+			if (typeof strokeWidth !== 'undefined') {
+				p.style.strokeWidth = strokeWidth;
+			}
+			if (typeof fill !== 'undefined') {
+				p.style.fill = fill;
+			}
 		} else {
 			console.log('p is null!!!!!');
 		}
 	}
-	
-	
-	
 	
 	addSVGEventHandlers() {
 		const self = this;
 		
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
-/*
-Animated line drawing in SVG:
-http://bkaprt.com/psvg/07-17/
-http://bkaprt.com/psvg/07-18/
-NOTE: Values stroke-dasharray set to 0px 0px and animate from to 0 in SVG-file.
-These are filled with correct values in here:
-*/
-			/*const path = svgObject.getElementById('first-building-path');
-			var len = path.getTotalLength();
-			console.log(['len=',len]);
-			//stroke-dasharray:700px 700px
-			path.style.strokeDasharray = len+'px '+len+'px';
-			const anim = svgObject.getElementById('first-building-path-animate');
-			anim.setAttributeNS(null, 'from', len);
-			
-			first  = #51b0ce
-			second = #73d3ae
-			third  = #1fac78
-			*/
 			
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'first-letter-path', '#000', 10);
 			}, 1000);
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'first-letter-addpath', '#000', 5);
-			}, 1000);
+			}, 2000);
+			
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'c5', '#000', 5, '#eee');
+			}, 2000);
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'c4', '#000', 5, '#eee');
+			}, 3000);
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'c3', '#000', 5, '#eee');
+			}, 4000);
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'c2', '#000', 5, '#eee');
+			}, 5000);
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'c1', '#000', 5, '#eee');
+			}, 6000);
 			
 			
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'second-letter-path', '#000', 10);
-			}, 1000);
-			
+			}, 3000);
 			
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'third-letter-path', '#000', 10);
-			}, 1000);
+			}, 4000);
 			
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'fourth-letter-path', '#000', 10);
-			}, 1000);
-			
+			}, 5000);
 			
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'fifth-letter-outerpath', '#000', 10);
-			}, 1000);
+			}, 6000);
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'fifth-letter-innerpath', '#000', 7);
-			}, 1500);
+			}, 7000);
+			setTimeout(() => { 
+				this.setDashArrayLength(svgObject, 'fifth-letter-fill', '#f80', 7);
+			}, 14000);
 			
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'sixth-letter-path', '#000', 10);
-			}, 2000);
+			}, 9000);
+			
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'seventh-letter-path', '#000', 10);
-			}, 2000);
+			}, 9000);
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'eight-letter-path', '#000', 10);
-			}, 3000);
+			}, 9000);
+			
+			
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'ninth-letter-outerpath', '#000', 10);
-			}, 3000);
+			}, 9000);
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'ninth-letter-innerpath', '#000', 7);
-			}, 3000);
-			
+			}, 9000);
 			
 			setTimeout(() => { 
 				this.setDashArrayLength(svgObject, 'tenth-letter-path', '#000', 10);
-			}, 4000);
-			
-			
+			}, 9000);
 			/*
 			setTimeout(() => { 
-				this.setDashArrayLength(svgObject, 'underline-path', 20);
-			}, 8000);
+				this.setDashArrayLength(svgObject, 'overline-path', '#484', 400);
+			}, 15000);
+			setTimeout(() => { 
+				this.setStroke(svgObject, 'first-letter-path', '#fff');
+				this.setStroke(svgObject, 'first-letter-addpath', '#fff');
+				this.setStroke(svgObject, 'second-letter-path', '#fff');
+				this.setStroke(svgObject, 'third-letter-path', '#fff');
+				this.setStroke(svgObject, 'fourth-letter-path', '#fff');
+				//this.setStroke(svgObject, 'fifth-letter-outerpath', '#fff');
+				//this.setStroke(svgObject, 'fifth-letter-innerpath', '#fff');
+				this.setStroke(svgObject, 'sixth-letter-path', '#fff');
+				this.setStroke(svgObject, 'seventh-letter-path', '#fff');
+				this.setStroke(svgObject, 'eight-letter-path', '#fff');
+				this.setStroke(svgObject, 'ninth-letter-outerpath', '#fff');
+				this.setStroke(svgObject, 'ninth-letter-innerpath', '#fff');
+				this.setStroke(svgObject, 'tenth-letter-path', '#fff');
+			}, 19000);
 			*/
-			
-			
-			
-			setTimeout(() => { 
-				this.setStroke(svgObject, 'c5', '#000', 5, '#eee');
-			}, 1250);
-			setTimeout(() => { 
-				this.setStroke(svgObject, 'c4', '#000', 5, '#eee');
-			}, 2000);
-			setTimeout(() => { 
-				this.setStroke(svgObject, 'c3', '#000', 5, '#eee');
-			}, 2500);
-			setTimeout(() => { 
-				this.setStroke(svgObject, 'c2', '#000', 5, '#eee');
-			}, 3000);
-			setTimeout(() => { 
-				this.setStroke(svgObject, 'c1', '#000', 5, '#eee');
-			}, 3500);
-			
-			//this.setDashArrayLength(svgObject, 'third-building-path');
-			
-			//setTimeout(() => { 
-				//this.setStroke(svgObject, 'first-painting-path', '#51b0ce', '50px');
-				//this.setStroke(svgObject, 'second-painting-path', '#73d3ae', '10px');
-				//this.setStroke(svgObject, 'third-painting-path', '#1fac78', '10px');
-			//}, 4000);
-			//this.setDashArrayLength(svgObject, 'first-painting-path');
-			//this.setDashArrayLength(svgObject, 'second-painting-path');
-			//this.setDashArrayLength(svgObject, 'third-painting-path');
 		}
 	}
 	

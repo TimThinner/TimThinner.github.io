@@ -22,9 +22,14 @@ export default class View {
 			console.log(['len=',len]);
 			p.style.strokeDasharray = len+'px '+len+'px';
 			p.style.stroke = strokeColor;
-			p.style.strokeWidth = strokeWidth;
 			const anim = svgObject.getElementById(path+'-animate');
 			anim.setAttributeNS(null, 'from', len);
+			
+			// Set stroke-width LAST!
+			setTimeout(() => { 
+				p.style.strokeWidth = strokeWidth;
+			}, 100);
+			
 		} else {
 			console.log('p is null!!!!!');
 		}

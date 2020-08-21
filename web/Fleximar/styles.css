@@ -1,0 +1,178 @@
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	color: #eee;
+	background-color: #555;
+}
+/*
+@media screen and (min-width: 601px) {
+	html, body {
+		font-size: 16px;
+	}
+}*/
+/* Materialize CSS */
+.container {
+	background-color: #555;
+	margin: 0 auto;
+	/*max-width: 1280px;*/
+	max-width: 1600px;
+	width: 98%; /* 90%; */
+	/*padding: 0 1rem 1rem 1rem;*/
+}
+@media only screen and (min-width: 993px) {
+	.container {
+		width: 96%;/*width: 90%;*/ /*70%;*/
+	}
+}
+
+/* Menu styles: */
+
+.nav h1 {
+	margin: 0 0 0 64px;
+	padding: 0;
+	color: #000;
+	/* ...materialize.css: */
+	/*font-size: 4.2rem;*/
+	/*line-height: 110%;*/
+	/*margin: 2.8rem 0 1.68rem 0; */
+}
+.nav .hamburger {
+	position: absolute;
+	left: 16px;
+	top: 16px;
+	background: #222;
+	border-radius: 50%;
+	width: 48px;
+	height: 48px; /*3em;*/
+	text-decoration: none;
+	text-align: center;
+	color: #fff;
+}
+.nav .hamburger:hover {
+	background: #000;
+}
+.nav .hamburger:focus { 
+	outline: none; 
+}
+
+.nav .auth-button {
+	position: absolute;
+	right: 16px;
+	top: 16px;
+	background: #222;
+	border-radius: 50%;
+	width: 48px;
+	height: 48px; /*3em;*/
+	text-decoration: none;
+	text-align: center;
+	color: #fff;
+}
+.nav .auth-button:hover {
+	background: #000;
+}
+.nav .auth-button:focus { 
+	outline: none; 
+}
+
+/* Hamburger Icon (or close icon 'X') */
+.nav a.hamburger i {
+	/*font-size: 24px;*/
+	margin-top: 7px;
+	/*line-height: 1.4;*/
+}
+.nav a.auth-button i {
+	margin-top: 7px;
+}
+
+
+/* We don't want to use UL LI default styles: */
+.nav ul, .nav li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.nav li a {
+	text-decoration: none;
+}
+/* Prevent H1 problems when JS is disabled */
+.nav ul {
+	overflow: hidden;
+}
+.nav ul {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.5s ease-out;
+}
+.nav ul.open {
+	max-height: 20em;
+}
+@media screen and (min-width: 500px) {
+	.nav ul {
+		overflow: auto;
+		max-height: inherit;
+	}
+	.nav .hamburger {
+		max-height: 0;
+		overflow: hidden;
+	}
+}
+.menu-navigation .menu-wrapper {
+	margin-right: 1%; /*2%;*/ /* or maybe use 1.6 % ? */
+	float: left;
+	width: 100%;
+}
+.menu-item {
+	background-color: #888;
+	border: 1px solid #000;
+	padding: 0.75em 0 0.75em 0;
+	cursor: pointer;
+	color: #fff;
+	text-align: center;
+	width: 100%;
+	display: block;
+	white-space: nowrap;
+}
+.menu-item.active {
+	background-color: #fff;
+	color: #000;
+}
+.menu-item:hover {
+	background-color: #ddd;
+	color: #00f;
+	font-weight: bold;
+}
+/* Six columns: (100 - 5)/6 = 15.833 */
+@media screen and (min-width: 500px) {
+	.menu-navigation .menu-wrapper {
+		width: 15.833%;
+	}
+	.menu-navigation .menu-wrapper:nth-child( 6n ) { 
+		margin-right: 0;
+	}
+	.menu-navigation .menu-wrapper:nth-child( 6n+1 ) { 
+		clear: left;
+	}
+}
+.material-icons {
+	vertical-align: bottom;
+}
+
+.profile-content {
+	padding: 0 16px 16px 16px;
+	margin: 0;
+	color: #ff0;
+	background-color: #000;
+}
+.profile-content h2 {
+	margin: 10px 16px 16px 16px;
+}
+
+.influx-content {
+	padding: 0 16px 16px 16px;
+	margin: 0;
+	color: #0ff;
+	background-color: #000;
+}
+.influx-content h2 {
+	margin: 10px 16px 16px 16px;
+}

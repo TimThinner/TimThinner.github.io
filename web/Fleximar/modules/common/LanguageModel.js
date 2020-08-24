@@ -5,11 +5,13 @@ export default class LanguageModel {
 		this.translation = {
 			'en':{
 				'EXAMPLE_1':'Example 1',
-				'EXAMPLE_2':'Example 2'
+				'EXAMPLE_2':'Example 2',
+				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!'
 			},
 			'fi':{
 				'EXAMPLE_1':'Esimerkki 1',
-				'EXAMPLE_2':'Esimerkki 2'
+				'EXAMPLE_2':'Esimerkki 2',
+				'SESSION_EXPIRED':'Sessio on vanhentunut... automaattinen logout 3:n sekunnin kuluttua!'
 			}
 		}
 	}

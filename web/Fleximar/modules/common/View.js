@@ -41,7 +41,7 @@ export default class View {
 		$(html).appendTo('#'+vid);
 		setTimeout(() => {
 			this.controller.forceLogout();
-		}, 3000);
+		}, 750);
 	}
 	
 	showSpinner(el) {

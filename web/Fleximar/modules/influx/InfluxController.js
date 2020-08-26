@@ -6,7 +6,7 @@ import InfluxView from './InfluxView.js';
 export default class InfluxController extends PeriodicPoller {
 	
 	constructor(options) {
-		super(options);
+		super(options); // Call PeriodicPoller constructor
 		this.name    = options.name;
 		this.master  = options.master;
 		this.el      = options.el;
@@ -91,7 +91,7 @@ export default class InfluxController extends PeriodicPoller {
 			this.models['MenuModel'] = menuModel;
 		}
 		// See: PeriodicPoller.js
-		this.timers['InfluxView'] = {timer: undefined, interval: 5000, models:['InfluxModel']};
+		this.timers['InfluxView'] = {timer: undefined, interval: 1000, models:['InfluxModel']};
 		
 		this.view = new InfluxView(this);
 	}

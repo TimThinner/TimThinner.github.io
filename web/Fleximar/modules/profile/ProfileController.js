@@ -9,11 +9,11 @@ export default class ProfileController {
 		this.master    = options.master;
 		this.el        = options.el;
 		this.visible   = options.visible;
-		this.view      = undefined;
 		
 		// No ProfileModel, View uses UserModel, which is created in MasterController.
 		// MenuModel is created in MenuController. 
-		this.menuModel = undefined;
+		this.models = {};
+		this.view   = undefined;
 	}
 	
 	remove() {
@@ -21,9 +21,12 @@ export default class ProfileController {
 			this.view.remove();
 			this.view = undefined;
 		}
-		if (this.menuModel) {
-			this.menuModel.unsubscribe(this);
-		}
+		Object.keys(this.models).forEach(key => {
+			//if (key === 'OwnCreatedHereModel') {
+			//	this.master.modelRepo.remove(key);
+			//}
+			this.models[key].unsubscribe(this);
+		});
 	}
 	
 	hide() {
@@ -64,9 +67,10 @@ export default class ProfileController {
 	}
 	
 	init() {
-		this.menuModel = this.master.modelRepo.get('MenuModel');
-		if (this.menuModel) {
-			this.menuModel.subscribe(this);
+		const menuModel = this.master.modelRepo.get('MenuModel');
+		if (menuModel) {
+			menuModel.subscribe(this);
+			this.models['MenuModel'] = menuModel;
 		}
 		
 		this.view = new ProfileView(this);

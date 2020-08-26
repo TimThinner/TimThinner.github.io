@@ -1,11 +1,37 @@
 import View from '../common/View.js';
+
+/*
+	VIEW:
+	=============
+	constructor(controller) {
+		this.controller = controller;
+		this.el = controller.el;
+		this.models = {};
+		
+	}
+	areModelsReady()
+	modelsErrorMessages()
+	forceLogout(vid)
+	showSpinner(el)
+	
+	INFLUXVIEW:
+	=============
+		this.rendered = false;
+		this.counter = 0;
+		this.FELID = 'influx-view-failure';
+	hide()
+	remove()
+	updateLatestValues()
+	notify(options)  FROM MODELS: InfluxModel
+	render()
+	
+*/
 export default class InfluxView extends View {
 	
 	constructor(controller) {
+		
 		super(controller); 
-		//this.controller = controller;
-		//this.el = controller.el;
-		//this.models = {};
+		
 		Object.keys(this.controller.models).forEach(key => {
 			if (key === 'InfluxModel') {
 				this.models[key] = this.controller.models[key];
@@ -35,7 +61,6 @@ export default class InfluxView extends View {
 	
 	updateLatestValues() {
 		$('#fetch-counter-value').empty().append(this.counter);
-		
 	}
 	
 	notify(options) {
@@ -102,7 +127,7 @@ export default class InfluxView extends View {
 					'<div class="row">'+
 						'<div class="col s12 influx-content">'+
 							'<h2 style="text-align:center">MARKET INFO</h2>'+
-							'<p id="fetch-counter-value" style="margin-top:8px;margin-bottom:8px;color:#000;text-align:center;font-size:32px;background-color:#ccc;">'+this.counter+'</p>'+
+							'<p id="fetch-counter-value" style="margin-top:8px;margin-bottom:8px;color:#000;text-align:center;font-size:32px;background-color:#cff;">'+this.counter+'</p>'+
 							"<p>Cheese and biscuits cauliflower cheese cheesy feet. Halloumi taleggio gouda when the cheese comes out everybody's happy fromage smelly cheese fondue jarlsberg. Caerphilly macaroni cheese cheesy grin lancashire pecorino parmesan cheese triangles pecorino. Caerphilly edam taleggio jarlsberg cauliflower cheese blue castello camembert de normandie manchego. Emmental cheeseburger.</p>"+
 							"<p>Boursin dolcelatte fromage. Port-salut mozzarella monterey jack melted cheese boursin bavarian bergkase port-salut camembert de normandie. Babybel port-salut mascarpone fromage blue castello pecorino cream cheese cheddar. Cheddar fromage cheesy feet.</p>"+
 							"<p>Squirty cheese swiss cheeseburger. Emmental taleggio cheese on toast jarlsberg camembert de normandie fromage frais the big cheese squirty cheese. Chalk and cheese cheesecake cheddar fondue roquefort when the cheese comes out everybody's happy cheese slices cut the cheese. Cheese slices feta croque monsieur.</p>"+

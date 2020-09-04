@@ -1,9 +1,8 @@
 import PeriodicPoller from '../common/PeriodicPoller.js';
-import UserModel from '../user/UserModel.js';
-import InfluxModel from './InfluxModel.js';
-import InfluxView from './InfluxView.js';
+import CModel from './CModel.js';
+import CView from './CView.js';
 
-export default class InfluxController extends PeriodicPoller {
+export default class CController extends PeriodicPoller {
 	
 	constructor(options) {
 		super(options); // Call PeriodicPoller constructor
@@ -18,7 +17,7 @@ export default class InfluxController extends PeriodicPoller {
 	}
 	
 	remove() {
-		console.log('remove InfluxController!');
+		console.log('remove CController!');
 		
 		super.remove();
 		
@@ -27,7 +26,7 @@ export default class InfluxController extends PeriodicPoller {
 			this.view = undefined;
 		}
 		Object.keys(this.models).forEach(key => {
-			if (key === 'InfluxModel') {
+			if (key === 'CModel') {
 				this.master.modelRepo.remove(key);
 			}
 			this.models[key].unsubscribe(this);
@@ -78,21 +77,21 @@ export default class InfluxController extends PeriodicPoller {
 	}
 	
 	init() {
-		const influxModel = new InfluxModel({name:'InfluxModel',src:'TBD'});
-		if (influxModel) {
-			this.master.modelRepo.add('InfluxModel',influxModel);
-			influxModel.subscribe(this);
-			this.models['InfluxModel'] = influxModel;
+		const cm = new CModel({name:'CModel',src:'TBD'});
+		if (cm) {
+			this.master.modelRepo.add('CModel',cm);
+			cm.subscribe(this);
+			this.models['CModel'] = cm;
 		}
 		
-		const menuModel = this.master.modelRepo.get('MenuModel');
-		if (menuModel) {
-			menuModel.subscribe(this);
-			this.models['MenuModel'] = menuModel;
+		const mm = this.master.modelRepo.get('MenuModel');
+		if (mm) {
+			mm.subscribe(this);
+			this.models['MenuModel'] = mm;
 		}
 		// See: PeriodicPoller.js
-		this.timers['InfluxView'] = {timer: undefined, interval: 1000, models:['InfluxModel']};
+		this.timers['CView'] = {timer: undefined, interval: 10000, models:['CModel']};
 		
-		this.view = new InfluxView(this);
+		this.view = new CView(this);
 	}
 }

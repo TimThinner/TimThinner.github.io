@@ -1,8 +1,7 @@
 import UserModel from '../user/UserModel.js';
-//import ProfileModel from './ProfileModel.js';
-import ProfileView from './ProfileView.js';
+import AView from './AView.js';
 
-export default class ProfileController {
+export default class AController {
 	
 	constructor(options) {
 		this.name      = options.name;
@@ -10,7 +9,7 @@ export default class ProfileController {
 		this.el        = options.el;
 		this.visible   = options.visible;
 		
-		// No ProfileModel, View uses UserModel, which is created in MasterController.
+		// No AModel, View uses UserModel, which is created in MasterController.
 		// MenuModel is created in MenuController. 
 		this.models = {};
 		this.view   = undefined;
@@ -73,6 +72,6 @@ export default class ProfileController {
 			this.models['MenuModel'] = menuModel;
 		}
 		
-		this.view = new ProfileView(this);
+		this.view = new AView(this);
 	}
 }

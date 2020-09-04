@@ -1,6 +1,6 @@
 import EventObserver from '../common/EventObserver.js';
 
-export default class InfluxModel extends EventObserver {
+export default class BModel extends EventObserver {
 	
 	constructor(options) {
 		super();
@@ -44,7 +44,7 @@ export default class InfluxModel extends EventObserver {
 		// append start and end date
 		const url = /*this.backend + '/' + */ this.src + '&start='+start_date+'&end='+end_date;
 		
-		console.log (['InfluxModel fetch url=',url]);
+		console.log (['BModel fetch url=',url]);
 		status = 200; // OK
 		//status = 401;
 		//this.errorMessage = 'Auth failed';

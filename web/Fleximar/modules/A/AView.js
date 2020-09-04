@@ -1,6 +1,6 @@
 import View from '../common/View.js';
 
-export default class ProfileView extends View {
+export default class AView extends View {
 	
 	constructor(controller) {
 		
@@ -14,7 +14,7 @@ export default class ProfileView extends View {
 			}
 		});*/
 		this.rendered = false;
-		this.FELID = 'profile-view-failure';
+		this.FELID = 'a-view-failure';
 	}
 	
 	hide() {
@@ -41,8 +41,8 @@ export default class ProfileView extends View {
 		
 		const html =
 			'<div class="row">'+
-				'<div class="col s12 profile-content">'+
-					'<h2 style="text-align:center">PROFILE</h2>'+
+				'<div class="col s12 content">'+
+					'<h2 style="text-align:center">VIEW A</h2>'+
 					"<p>Cheese and biscuits cauliflower cheese cheesy feet. Halloumi taleggio gouda when the cheese comes out everybody's happy fromage smelly cheese fondue jarlsberg. Caerphilly macaroni cheese cheesy grin lancashire pecorino parmesan cheese triangles pecorino. Caerphilly edam taleggio jarlsberg cauliflower cheese blue castello camembert de normandie manchego. Emmental cheeseburger.</p>"+
 					"<p>Boursin dolcelatte fromage. Port-salut mozzarella monterey jack melted cheese boursin bavarian bergkase port-salut camembert de normandie. Babybel port-salut mascarpone fromage blue castello pecorino cream cheese cheddar. Cheddar fromage cheesy feet.</p>"+
 					"<p>Squirty cheese swiss cheeseburger. Emmental taleggio cheese on toast jarlsberg camembert de normandie fromage frais the big cheese squirty cheese. Chalk and cheese cheesecake cheddar fondue roquefort when the cheese comes out everybody's happy cheese slices cut the cheese. Cheese slices feta croque monsieur.</p>"+
@@ -50,7 +50,7 @@ export default class ProfileView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12 profile-content" id="'+this.FELID+'"></div>'+
+				'<div class="col s12 content" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		this.rendered = true;

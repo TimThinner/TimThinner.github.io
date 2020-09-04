@@ -1,11 +1,13 @@
 import ModelRepo from './modules/common/ModelRepo.js';
-//import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
+import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import LanguageModel from './modules/common/LanguageModel.js';
 import UserModel from './modules/user/UserModel.js';
 
 import MenuController from './modules/menu/MenuController.js';
-import ProfileController from './modules/profile/ProfileController.js';
-import InfluxController from './modules/influx/InfluxController.js';
+import AController from './modules/A/AController.js';
+import BController from './modules/B/BController.js';
+import CController from './modules/C/CController.js';
+import DController from './modules/D/DController.js';
 
 
 class MasterController {
@@ -17,12 +19,12 @@ class MasterController {
 		// Note: property 'key' must equal to key in controllers hash and also 
 		// the name of the associated Controller.
 		this.menuitems = [
-			{key:'Profile',value:'Profile'},
-			{key:'Influx',value:'Market Info'},
-			{key:'Messages',value:'Trading'},
-			{key:'Rules',value:'Rules & Conditions'},
-			{key:'Guide',value:'Technical Docs'},
-			{key:'About', value:'About'}
+			{key:'A',value:'Profile'},
+			{key:'B',value:'World population'},
+			{key:'C',value:'Temperatures'},
+			{key:'D',value:'Apples & Lemons'},
+			{key:'E',value:'Technical Docs'},
+			{key:'F', value:'About'}
 		];
 		// Note:
 		// modelRepo.remove(key) will delete the property from hash:
@@ -34,11 +36,18 @@ class MasterController {
 	
 	createSessionControllers() {
 		console.log('CREATE Profile and initialize it.');
-		this.controllers['Profile'] = new ProfileController({name:'Profile', master:this, el:'#content', visible:false});
-		this.controllers['Profile'].init();
+		this.controllers['A'] = new AController({name:'A', master:this, el:'#content', visible:false});
+		this.controllers['A'].init();
 		
-		this.controllers['Influx'] = new InfluxController({name:'Influx', master:this, el:'#content', visible:false});
-		this.controllers['Influx'].init();
+		this.controllers['B'] = new BController({name:'B', master:this, el:'#content', visible:false});
+		this.controllers['B'].init();
+		
+		this.controllers['C'] = new CController({name:'C', master:this, el:'#content', visible:false});
+		this.controllers['C'].init();
+		
+		this.controllers['D'] = new DController({name:'D', master:this, el:'#content', visible:false});
+		this.controllers['D'].init();
+
 	}
 	
 	notify(options) {
@@ -121,9 +130,9 @@ class MasterController {
 	init() {
 		console.log('MasterController init!');
 		
-		//const REO = new ResizeEventObserver();
-		//this.modelRepo.add('ResizeEventObserver',REO);
-		//REO.start(); // Start tracking resize events
+		const REO = new ResizeEventObserver();
+		this.modelRepo.add('ResizeEventObserver',REO);
+		REO.start(); // Start tracking resize events
 		
 		const LM = new LanguageModel();
 		this.modelRepo.add('LanguageModel',LM);

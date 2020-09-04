@@ -157,23 +157,16 @@ html, body {
 	vertical-align: bottom;
 }
 
-.profile-content {
+.content {
 	padding: 16px;
 	margin: 0;
-	color: #ff0;
-	background-color: #000;
+	color: #ccc;
+	background-color: #555;
 }
-.profile-content h2 {
+.content h2 {
 	margin: 16px 16px 16px 16px;
 }
-
-.influx-content {
-	padding: 16px;
-	margin: 0;
-	color: #0ff;
-	background-color: #000;
-}
-.influx-content h2 {
+.content h3 {
 	margin: 16px 16px 16px 16px;
 }
 
@@ -190,4 +183,52 @@ html, body {
 	color: #0a0;
 	padding: 16px;
 	text-align: center;
+}
+
+
+/* D3 elements in InfluxView */
+rect {
+	fill: steelblue;
+}
+/*circle {
+	fill: steelblue;
+	opacity: 0.5;
+	stroke: #fff;
+}*/
+text {
+	font-size: 1.5em;
+	font-family: sans-serif;
+	fill: #eee;
+}
+
+.tick text {
+	font-size: 1.2em;
+	fill: #fff; /*#8e8883;*/
+}
+.tick line {
+	stroke: #8e8883; /*#c0c0bb;*/
+}
+.axis-label {
+	font-size: 2em;
+	fill: #8e8883;
+}
+.title {
+	font-size: 2.4em;
+	fill: #8e8883;
+	text-anchor: middle;
+}
+.line-path {
+	stroke: #f00; /* in area case not needed */
+	fill: none; /* in area case fill is not none */
+	stroke-width: 3;
+	stroke-linejoin: round;
+}
+.area-line-path {
+	fill: #ff0;
+	opacity: 0.5;
+}
+.fruit-label {
+	fill: #fff;
+	font-family: sans-serif;
+	text-anchor: middle;
 }

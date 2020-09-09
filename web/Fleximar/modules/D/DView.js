@@ -46,19 +46,29 @@ export default class DView extends View {
 		
 		this.rendered = false;
 		this.counter = 0;
-		this.data = undefined;
+		//this.data = undefined;
 		this.FELID = 'd-view-failure';
-		
-		this.numberOfApples = 7;
-		this.timeoutIDs = [];
+		//this.timeoutIDs = [];
 	}
 	
 	hide() {
+		
+		// MUST CLEAR ALL TIMERS!!!
+		/*this.timeoutIDs.forEach(timeout => {
+			clearTimeout(timeout);
+		});
+		this.timeoutIDs = [];*/
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		
+		// MUST CLEAR ALL TIMERS!!!
+		/*this.timeoutIDs.forEach(timeout => {
+			clearTimeout(timeout);
+		});
+		this.timeoutIDs = [];*/
 		Object.keys(this.models).forEach(key => {
 			console.log(['UNsubscribe ',key,' with DView!']);
 			this.models[key].unsubscribe(this);
@@ -74,6 +84,7 @@ export default class DView extends View {
 		//$('#fetch-counter-value').empty().append(this.counter);
 	}
 	
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='DModel' && options.method==='fetched') {
@@ -84,6 +95,8 @@ export default class DView extends View {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();
+						this.chart();
+						
 					} else {
 						this.render();
 					}
@@ -108,20 +121,33 @@ export default class DView extends View {
 				console.log("DView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				// Set SVG width and height according to new window dimensions:
 				// options.width options.height
-				const new_width = options.width-60;
+				const new_width = options.width-80;
 				const new_height = options.height/4;
 				
 				document.getElementById('chart-1').setAttribute("width",new_width);
 				document.getElementById('chart-1').setAttribute("height",new_height);
-				
+				/*
 				document.getElementById('chart-2').setAttribute("width",new_width);
 				document.getElementById('chart-2').setAttribute("height",new_height);
 				
 				document.getElementById('chart-3').setAttribute("width",new_width);
 				document.getElementById('chart-3').setAttribute("height",new_height);
+				*/
 				
+				this.chart();
 				
-				this.chart(new_width, new_height);
+			} else if (options.model==='DModel' && options.method==='fruit-selected') {
+				
+				this.chart();
+				
+			} else if (options.model==='DModel' && options.method==='fruit-added') {
+				
+				this.chart();
+				
+			} else if (options.model==='DModel' && options.method==='fruit-reset') {
+				
+				this.chart();
+				
 			}
 		}
 	}
@@ -141,13 +167,17 @@ export default class DView extends View {
 	
 	
 	// Complete General Update Pattern
-	fruitBowl(selection, props) {
-		const {fruits, width, height} = props;
+	fruitBowl(selection) { //, props) {
+		//const {width, height} = props;
 		
-		const onew = width/(this.numberOfApples+2);
-		const apple_r = 0.75*onew/2;
-		const lemon_r = 0.75*apple_r;
-		const padding = 0.5*apple_r;
+		const width = this.REO.width-80;
+		const height = this.REO.height/4;
+		
+		const numberOfFruits = this.controller.models['DModel'].fruits.length;
+		const onew = width/(numberOfFruits+2);
+		const apple_r = 0.8*onew/2;
+		const lemon_r = 0.7*apple_r;
+		const padding = apple_r;
 		
 		const colorScale = d3.scaleOrdinal()
 			.domain(['apple','lemon'])
@@ -160,27 +190,54 @@ export default class DView extends View {
 		const xPosition = (d,i) => i*onew + onew + padding;
 		
 		// Singular element:
-		const bowl = selection.selectAll('rect')
-			.data([null])
+		const rect = selection.selectAll('rect').data([null]);
+		rect
 			.enter().append('rect')
 				.attr('y',10)
 				.attr('x',10)
-				.attr('width',width-20)
-				.attr('height',0.8*height)
 				.attr('rx',50)
+			.merge(rect)
+				.attr('width',width-20)
+				.attr('height',0.8*height);
+		
 		
 		const circles = selection.selectAll('circle')
-			.data(fruits, d => d.id); // d3 data join
+			.data(this.controller.models['DModel'].fruits, d => d.id); // d3 data join
 			
 		circles // Enter
 			.enter().append('circle')
 				.attr('cx', xPosition)
 				.attr('cy', height/2)
 				.attr('r',0)
-				.attr('stroke','#000')
-				.attr('stroke-width',2)
+				.style('cursor', 'pointer')
 			.merge(circles) // Merge (Enter & Update)
 				.attr('fill',d => colorScale(d.type))
+				.attr('stroke-width',3)
+				.attr('stroke', d => d.id === this.controller.models['DModel'].selectedFruit ? 'black' : 'none')
+				
+				.on('click', d => {
+					const iid = d.id;
+					const id = d.originalTarget.__data__.id;
+					
+					console.log(['iid=',iid,'id=',id]);
+					
+					this.controller.models['DModel'].selectFruit(id);
+					
+					// How to update ONLY fruitlist?
+					//this.chart(width, height);
+					//originalTarget
+					//__data__: Object { type: "apple", id: 0.8184561889269303 }
+					//console.log(id);
+				})
+				/*
+				.on('mouseover', d => {
+					const id = d.originalTarget.__data__.id;
+					this.selectFruit(id);
+				})
+				.on('mouseout', () => {
+					this.selectFruit(undefined);
+				})
+				*/
 				.transition()
 					.duration(1000)
 					.attr('cx', xPosition)
@@ -193,15 +250,16 @@ export default class DView extends View {
 				.remove();
 	}
 	
-	
+	/*
 	// Nested elements version fruitBowl!
 	fruitBowlNested(selection, props) {
 		// Note: if calling props has more than one property, use
 		// something like this:
 		//fruitBowl(selection, props) {
-		const {fruits, width, height} = props;
+		const {width, height} = props;
 		
-		const onew = width/(this.numberOfApples+2);
+		const numberOfFruits = this.controller.models['DModel'].fruits.length;
+		const onew = width/(numberOfFruits+2);
 		const apple_r = 0.75*onew/2;
 		const lemon_r = 0.75*apple_r;
 		const padding = 0.5*apple_r;
@@ -231,7 +289,7 @@ export default class DView extends View {
 				.attr('rx',50)
 		
 		const groups = selection.selectAll('g')
-			.data(fruits); // d3 data join
+			.data(this.controller.models['DModel'].fruits); // d3 data join
 		const groupsEnter = groups.enter().append('g');
 		//`translate(${i*100+50},60)`
 		groupsEnter
@@ -257,7 +315,7 @@ export default class DView extends View {
 					
 					.attr('class','fruit-label')
 					.attr('y', 50);
-	}
+	}*/
 	/*
 	
 	TODO: Read this:
@@ -265,15 +323,15 @@ export default class DView extends View {
 	https://observablehq.com/@d3/selection-join
 	
 	*/
-	fruitBowlNestedTransitions(selection, props) {
+	/*fruitBowlNestedTransitions(selection, props) {
 		// Nested elements version fruitBowl!
 		// Note: if calling props has more than one property, use
 		// something like this:
 		//fruitBowl(selection, props) {
-		const {fruits, width, height} = props;
+		const {width, height} = props;
 		
-		
-		const onew = width/(this.numberOfApples+2);
+		const numberOfFruits = this.controller.models['DModel'].fruits.length;
+		const onew = width/(numberOfFruits+2);
 		const apple_r = 0.75*onew/2;
 		const lemon_r = 0.75*apple_r;
 		const padding = 0.5*apple_r;
@@ -282,8 +340,6 @@ export default class DView extends View {
 		if (width < 600) {
 			fontSize = '0.75em';
 		}
-		
-		
 		
 		const colorScale = d3.scaleOrdinal()
 			.domain(['apple','lemon'])
@@ -303,7 +359,7 @@ export default class DView extends View {
 				.attr('height',0.8*height)
 				.attr('rx',50)
 		
-		const groups = selection.selectAll('g').data(fruits, d => d.id); // d3 data join
+		const groups = selection.selectAll('g').data(this.controller.models['DModel'].fruits, d => d.id); // d3 data join
 		const groupsEnter = groups.enter().append('g');
 		groupsEnter
 			.attr('transform', (d,i) => `translate(${i*onew + onew + padding},${height/2})`)
@@ -345,48 +401,41 @@ export default class DView extends View {
 					.attr('class','fruit-label')
 					.attr('y', 50);
 	}
+	*/
 	
-	
-	chart(width, height) {
+	chart() {
 		
 		// MUST CLEAR ALL TIMERS BEFORE SETTING THEM!!!
-		this.timeoutIDs.forEach(timeout => {
+		/*this.timeoutIDs.forEach(timeout => {
 			clearTimeout(timeout);
-		});
+		});*/
 		
 		const svg1 = d3.select('svg#chart-1');
-		const svg2 = d3.select('svg#chart-2');
-		const svg3 = d3.select('svg#chart-3');
+		//const svg2 = d3.select('svg#chart-2');
+		//const svg3 = d3.select('svg#chart-3');
 		//const data = this.data;
 		//console.log(data);
-		$('#chart-1').empty();
-		$('#chart-2').empty();
-		$('#chart-3').empty();
+		//$('#chart-1').empty();
+		//$('#chart-2').empty();
+		//$('#chart-3').empty();
 		
-		const makeFruit = type => ({
-			type,
-			id: Math.random() // random numer between zero and 1
-		});
-		let fruits = d3.range(this.numberOfApples)
-			.map(() => makeFruit('apple'));
-		console.log(fruits);
-		
-		this.fruitBowl(svg1, {fruits, width, height});
-		this.fruitBowlNested(svg2, {fruits, width, height});
-		this.fruitBowlNestedTransitions(svg3, {fruits, width, height});
+		this.fruitBowl(svg1); //, {width, height});
+		//this.fruitBowlNested(svg2, {width, height});
+		//this.fruitBowlNestedTransitions(svg3, {width, height});
+		/*
 		// eat an apple
 		this.timeoutIDs[0] = setTimeout(() => {
-			fruits.pop();
-			this.fruitBowl(svg1, {fruits, width, height});
-			this.fruitBowlNested(svg2, {fruits, width, height});
-			this.fruitBowlNestedTransitions(svg3, {fruits, width, height});
+			this.fruits.pop();
+			this.fruitBowl(svg1, {width, height});
+			this.fruitBowlNested(svg2, {width, height});
+			this.fruitBowlNestedTransitions(svg3, {width, height});
 		}, 1000);
 		// replace an apple with a lemon
 		this.timeoutIDs[1] = setTimeout(() => {
-			fruits[2].type = 'lemon';
-			this.fruitBowl(svg1, {fruits, width, height});
-			this.fruitBowlNested(svg2, {fruits, width, height});
-			this.fruitBowlNestedTransitions(svg3, {fruits, width, height});
+			this.fruits[2].type = 'lemon';
+			this.fruitBowl(svg1, {width, height});
+			this.fruitBowlNested(svg2, {width, height});
+			this.fruitBowlNestedTransitions(svg3, {width, height});
 		}, 2000);
 		
 		// eat an apple
@@ -419,7 +468,7 @@ export default class DView extends View {
 			this.fruitBowl(svg1, {fruits, width, height});
 			this.fruitBowlNested(svg2, {fruits, width, height});
 			this.fruitBowlNestedTransitions(svg3, {fruits, width, height});
-		}, 6000);
+		}, 6000);*/
 	}
 	
 	render() {
@@ -448,7 +497,7 @@ export default class DView extends View {
 				}
 				
 			} else {
-				const initial_width = this.REO.width-60;
+				const initial_width = this.REO.width-80;
 				const initial_height = this.REO.height/4;
 				
 				const html =
@@ -467,14 +516,33 @@ export default class DView extends View {
 					'</div>'+
 					
 					'<svg id="chart-1" width="'+initial_width+'" height="'+initial_height+'"></svg>'+
-					'<svg id="chart-2" width="'+initial_width+'" height="'+initial_height+'"></svg>'+
-					'<svg id="chart-3" width="'+initial_width+'" height="'+initial_height+'"></svg>'+
+					//'<svg id="chart-2" width="'+initial_width+'" height="'+initial_height+'"></svg>'+
+					//'<svg id="chart-3" width="'+initial_width+'" height="'+initial_height+'"></svg>'+
 					
 					'<div class="row">'+
 						'<div class="col s12 content" id="'+this.FELID+'"></div>'+
+					'</div>'+
+					
+					'<div class="row">'+
+						'<div class="col s6 content center">'+
+							'<a href="javascript:void(0);" id="add-fruit" class="waves-effect waves-light btn-large"><i class="material-icons">plus_one</i>ADD FRUIT</a>'+
+						'</div>'+
+						'<div class="col s6 content center">'+
+							'<a href="javascript:void(0);" id="reset-fruits" class="waves-effect waves-light btn-large">RESET</a>'+
+						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
-				this.chart(initial_width, initial_height); // Render the complete General Update Pattern with Apples and a Lemon.
+				
+				
+				$('#add-fruit').on('click',()=> {
+					this.controller.models['DModel'].addFruit('apple');
+				});
+				$('#reset-fruits').on('click',()=> {
+					this.controller.models['DModel'].reset();
+				});
+				
+				
+				this.chart(); // Render the complete General Update Pattern with Apples and a Lemon.
 			}
 			this.rendered = true;
 		} else {

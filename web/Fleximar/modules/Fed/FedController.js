@@ -1,8 +1,8 @@
 //import PeriodicPoller from '../common/PeriodicPoller.js';
-import DModel from './DModel.js';
-import DView from './DView.js';
+import FedModel from './FedModel.js';
+import FedView from './FedView.js';
 
-export default class DController { //extends PeriodicPoller {
+export default class FedController { //extends PeriodicPoller {
 	
 	constructor(options) {
 		//super(options); // Call PeriodicPoller constructor
@@ -17,7 +17,7 @@ export default class DController { //extends PeriodicPoller {
 	}
 	
 	remove() {
-		console.log('remove DController!');
+		console.log('remove FedController!');
 		
 		//super.remove();
 		
@@ -26,7 +26,7 @@ export default class DController { //extends PeriodicPoller {
 			this.view = undefined;
 		}
 		Object.keys(this.models).forEach(key => {
-			if (key === 'DModel') {
+			if (key === 'FedModel') {
 				this.master.modelRepo.remove(key);
 				this.models[key].unsubscribe(this);
 			}
@@ -78,13 +78,13 @@ export default class DController { //extends PeriodicPoller {
 	}
 	
 	init() {
-		const dm = new DModel({name:'DModel',src:'TBD'});
-		if (dm) {
-			this.master.modelRepo.add('DModel',dm);
-			//dm.subscribe(this);
-			this.models['DModel'] = dm;
+		const em = new FedModel({name:'FedModel',src:'TBD'});
+		if (em) {
+			this.master.modelRepo.add('FedModel',em);
+			//em.subscribe(this);
+			this.models['FedModel'] = em;
 		}
-		dm.fetch();
+		em.fetch();
 		
 		const mm = this.master.modelRepo.get('MenuModel');
 		if (mm) {
@@ -92,9 +92,9 @@ export default class DController { //extends PeriodicPoller {
 			this.models['MenuModel'] = mm;
 		}
 		// See: PeriodicPoller.js
-		//this.timers['DView'] = {timer: undefined, interval: -1, models:['DModel']};
+		//this.timers['FedView'] = {timer: undefined, interval: -1, models:['FedModel']};
 		
 		
-		this.view = new DView(this);
+		this.view = new FedView(this);
 	}
 }

@@ -43,7 +43,7 @@ export default class ResizeEventObserver extends EventObserver {
 			}
 		}*/
 		
-		console.log('ResizeEventObserver => AFTER TIMEOUT (100ms) RENDER!');
+		//console.log('ResizeEventObserver => AFTER TIMEOUT (100ms) RESIZE!');
 		setTimeout(() => this.notifyAll({
 			model:'ResizeEventObserver',
 			method:'resize',

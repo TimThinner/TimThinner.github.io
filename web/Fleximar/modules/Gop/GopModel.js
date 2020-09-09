@@ -1,14 +1,8 @@
 import EventObserver from '../common/EventObserver.js';
 
 
-class Fruit {
-	constructor(type) {
-		this.type = type;
-		this.id = Math.random(); // random numer between zero and 1
-	}
-}
 
-export default class DModel extends EventObserver {
+export default class GopModel extends EventObserver {
 	
 	constructor(options) {
 		super();
@@ -17,53 +11,18 @@ export default class DModel extends EventObserver {
 		this.ready = false;
 		this.errorMessage = '';
 		this.fetching = false;
-		this.fruits = [];
-		this.selectedFruit = undefined;
-		this.numberOfApples = 3;
+		
+		
+		
+		this.colorScale = d3.scaleOrdinal()
+			.domain(['apple','lemon','banana'])
+			.range(['red','yellow','#f80']);
+			
+		
 	}
 	
 	reset() {
-		this.fruits = [];
-		for (let i=0; i<this.numberOfApples; i++) {
-			const fruit = new Fruit('apple');
-			this.fruits.push(fruit);
-		}
-		console.log(['fruits=',this.fruits]);
-		this.notifyAll({model:this.name, method:'fruit-reset'});
-	}
-	
-	selectFruit(id) {
-		this.selectedFruit = id;
 		
-		let index = undefined;
-		this.fruits.forEach((fruit,i) => {
-			if (fruit.id === id) {
-				index = i;
-			}
-		});
-		console.log(['index=',index]);
-		if (typeof index !== 'undefined') {
-			if (this.fruits[index].type === 'lemon') {
-				// remove this from the BOWL!
-				console.log('REMOVE FRUIT!');
-				this.fruits = this.fruits.filter((d,i)=> i !== index);
-			} else {
-				// Change apple to lemon!
-				console.log('CHANGE APPLE TO LEMON!');
-				this.fruits[index].type = 'lemon';
-			}
-			setTimeout(() => {
-				this.notifyAll({model:this.name, method:'fruit-selected'});
-			},200);
-		}
-	}
-	
-	addFruit(type) {
-		const fruit = new Fruit(type);
-		this.fruits.push(fruit);
-		setTimeout(() => {
-			this.notifyAll({model:this.name, method:'fruit-added'});
-		},200);
 	}
 	
 	/* Model:
@@ -95,9 +54,9 @@ export default class DModel extends EventObserver {
 		// append start and end date
 		const url = /*this.backend + '/' + */ this.src + '&start='+start_date+'&end='+end_date;
 		
-		console.log (['DModel fetch url=',url]);
+		console.log (['GopModel fetch url=',url]);
 		status = 200; // OK
-		this.fruits = [];
+		
 		//status = 401;
 		//this.errorMessage = 'Auth failed';
 		setTimeout(() => {
@@ -105,11 +64,6 @@ export default class DModel extends EventObserver {
 			this.fetching = false;
 			this.ready = true;
 			
-			for (let i=0; i<this.numberOfApples; i++) {
-				const fruit = new Fruit('apple');
-				this.fruits.push(fruit);
-			}
-			console.log(['fruits=',this.fruits]);
 			this.notifyAll({model:this.name, method:'fetched', status:status, message:this.errorMessage});
 			
 		}, 200);

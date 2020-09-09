@@ -142,14 +142,17 @@ html, body {
 	font-weight: bold;
 }
 /* Six columns: (100 - 5)/6 = 15.833 */
+/* Seven columns: (100 - 6)/7 = 13.42857 */
+
+
 @media screen and (min-width: 500px) {
 	.menu-navigation .menu-wrapper {
-		width: 15.833%;
+		width: 13.42857%;
 	}
-	.menu-navigation .menu-wrapper:nth-child( 6n ) { 
+	.menu-navigation .menu-wrapper:nth-child( 7n ) { 
 		margin-right: 0;
 	}
-	.menu-navigation .menu-wrapper:nth-child( 6n+1 ) { 
+	.menu-navigation .menu-wrapper:nth-child( 7n+1 ) { 
 		clear: left;
 	}
 }
@@ -164,10 +167,10 @@ html, body {
 	background-color: #555;
 }
 .content h2 {
-	margin: 16px 16px 16px 16px;
+	margin: 16px 16px 0 16px;
 }
 .content h3 {
-	margin: 16px 16px 16px 16px;
+	margin: 16px 16px 0 16px;
 }
 
 .error-message {
@@ -196,7 +199,7 @@ rect {
 	stroke: #fff;
 }*/
 text {
-	font-size: 1.5em;
+	/*font-size: 1.5em;*/
 	font-family: sans-serif;
 	fill: #eee;
 }
@@ -228,6 +231,45 @@ text {
 	opacity: 0.5;
 }
 .fruit-label {
+	fill: #fff;
+	font-family: sans-serif;
+	text-anchor: middle;
+}
+/*
+.world-path {
+	fill: #ff0;
+	stroke: #000;
+	stroke-opacity: 0.25;
+}*/
+.country {
+	fill: #ff0;
+	stroke: #000;
+	stroke-width: 0.1px;
+}
+.country:hover {
+	fill: #f00;
+}
+.sphere {
+	fill: #55c;
+}
+
+
+.fed-path {
+	fill: none;
+	stroke: #57bdc3;
+}
+.fed-labels {
+	/*font-size: 12px;*/
+	text-shadow:
+	-1px -1px 3px black,
+	-1px  1px 3px black,
+	 1px -1px 3px black,
+	 1px  1px 3px black;
+	 pointer-events: none; /* When you hover over text cursor does not change */
+}
+
+
+.legend-label {
 	fill: #fff;
 	font-family: sans-serif;
 	text-anchor: middle;

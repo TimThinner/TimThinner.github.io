@@ -1,14 +1,14 @@
 import EventObserver from '../common/EventObserver.js';
 
-
+/*
 class Fruit {
 	constructor(type) {
 		this.type = type;
 		this.id = Math.random(); // random numer between zero and 1
 	}
 }
-
-export default class DModel extends EventObserver {
+*/
+export default class EModel extends EventObserver {
 	
 	constructor(options) {
 		super();
@@ -17,12 +17,13 @@ export default class DModel extends EventObserver {
 		this.ready = false;
 		this.errorMessage = '';
 		this.fetching = false;
-		this.fruits = [];
-		this.selectedFruit = undefined;
-		this.numberOfApples = 3;
+		//this.fruits = [];
+		//this.selectedFruit = undefined;
+		//this.numberOfApples = 3;
 	}
 	
 	reset() {
+		/*
 		this.fruits = [];
 		for (let i=0; i<this.numberOfApples; i++) {
 			const fruit = new Fruit('apple');
@@ -30,8 +31,9 @@ export default class DModel extends EventObserver {
 		}
 		console.log(['fruits=',this.fruits]);
 		this.notifyAll({model:this.name, method:'fruit-reset'});
+		*/
 	}
-	
+	/*
 	selectFruit(id) {
 		this.selectedFruit = id;
 		
@@ -56,15 +58,15 @@ export default class DModel extends EventObserver {
 				this.notifyAll({model:this.name, method:'fruit-selected'});
 			},200);
 		}
-	}
-	
+	}*/
+	/*
 	addFruit(type) {
 		const fruit = new Fruit(type);
 		this.fruits.push(fruit);
 		setTimeout(() => {
 			this.notifyAll({model:this.name, method:'fruit-added'});
 		},200);
-	}
+	}*/
 	
 	/* Model:
 		this.name = options.name;
@@ -95,21 +97,21 @@ export default class DModel extends EventObserver {
 		// append start and end date
 		const url = /*this.backend + '/' + */ this.src + '&start='+start_date+'&end='+end_date;
 		
-		console.log (['DModel fetch url=',url]);
+		console.log (['EModel fetch url=',url]);
 		status = 200; // OK
-		this.fruits = [];
+		//this.fruits = [];
 		//status = 401;
 		//this.errorMessage = 'Auth failed';
 		setTimeout(() => {
 			
 			this.fetching = false;
 			this.ready = true;
-			
+			/*
 			for (let i=0; i<this.numberOfApples; i++) {
 				const fruit = new Fruit('apple');
 				this.fruits.push(fruit);
 			}
-			console.log(['fruits=',this.fruits]);
+			console.log(['fruits=',this.fruits]);*/
 			this.notifyAll({model:this.name, method:'fetched', status:status, message:this.errorMessage});
 			
 		}, 200);

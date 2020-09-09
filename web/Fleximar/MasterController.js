@@ -8,6 +8,9 @@ import AController from './modules/A/AController.js';
 import BController from './modules/B/BController.js';
 import CController from './modules/C/CController.js';
 import DController from './modules/D/DController.js';
+import EController from './modules/E/EController.js';
+import FedController from './modules/Fed/FedController.js';
+import GopController from './modules/Gop/GopController.js';
 
 
 class MasterController {
@@ -20,11 +23,12 @@ class MasterController {
 		// the name of the associated Controller.
 		this.menuitems = [
 			{key:'A',value:'Profile'},
-			{key:'B',value:'World population'},
+			{key:'B',value:'Population'},
 			{key:'C',value:'Temperatures'},
-			{key:'D',value:'Apples & Lemons'},
-			{key:'E',value:'Technical Docs'},
-			{key:'F', value:'About'}
+			{key:'D',value:'Fruits'},
+			{key:'E',value:'Map'},
+			{key:'Fed', value:'Tree'},
+			{key:'Gop', value:'Legends'}
 		];
 		// Note:
 		// modelRepo.remove(key) will delete the property from hash:
@@ -47,7 +51,15 @@ class MasterController {
 		
 		this.controllers['D'] = new DController({name:'D', master:this, el:'#content', visible:false});
 		this.controllers['D'].init();
-
+		
+		this.controllers['E'] = new EController({name:'E', master:this, el:'#content', visible:false});
+		this.controllers['E'].init();
+		
+		this.controllers['Fed'] = new FedController({name:'Fed', master:this, el:'#content', visible:false});
+		this.controllers['Fed'].init();
+		
+		this.controllers['Gop'] = new GopController({name:'Gop', master:this, el:'#content', visible:false});
+		this.controllers['Gop'].init();
 	}
 	
 	notify(options) {

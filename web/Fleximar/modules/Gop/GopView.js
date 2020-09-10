@@ -122,7 +122,7 @@ export default class GopView extends View {
 				// Set SVG width and height according to new window dimensions:
 				// options.width options.height
 				const new_width = options.width-80;
-				const new_height = options.height/4;
+				const new_height = options.height;
 				
 				document.getElementById('chart-1').setAttribute("width",new_width);
 				document.getElementById('chart-1').setAttribute("height",new_height);
@@ -140,94 +140,108 @@ export default class GopView extends View {
 		}
 	}
 	
-	
 	// Nested elements version.
 	colorLegend(selection, props) {
-		// Note: if calling props has more than one property, use
-		// something like this:
 		const {
 			circleRadius,
 			spacing,
 			textOffset
 		} = props;
 		
-		console.log('HUU HAA!');
-		
-		const width = this.REO.width-80;
-		const height = this.REO.height/4;
-		
-		const numberOfItems = 3; //this.controller.models['GopModel'].fruits.length;
-		const onew = width/(numberOfItems+2);
-		const apple_r = 0.75*onew/2;
-		const lemon_r = 0.75*apple_r;
-		const padding = 0.5*apple_r;
-		
-		let fontSize = '1.2em';
-		if (width < 600) {
-			fontSize = '0.75em';
-		}
-		/*
-		const colorScale = d3.scaleOrdinal()
-			.domain(['apple','lemon'])
-			.range(['red','yellow']);
-		
-		const radiusScale = d3.scaleOrdinal()
-			.domain(['apple','lemon'])
-			.range([apple_r,lemon_r]);
-		*/
-		
-		
 		const groups = selection.selectAll('g')
 			.data(this.controller.models['GopModel'].colorScale.domain()); // d3 data join
 		
-		const groupsEnter = groups.enter().append('g');
+		const groupsEnter = groups
+			.enter()
+				.append('g')
+					.attr('class','tick');
 		groupsEnter
 			.merge(groups) // Merge (Enter & Update)
 				.attr('transform', (d,i) =>
-				`translate(${i*onew + onew + padding},${height/2})`
+				`translate(0,${i*spacing})`
 				);
 		groups.exit().remove();
 		
 		groupsEnter.append('circle')
-			//.attr('stroke','#000')
-			//.attr('stroke-width',2)
 			.merge(groups.select('circle'))
 			// Merge (Enter & Update)
-				//.attr('fill',d => this.controller.models['GopModel'].colorScale(d))
 				.attr('fill',this.controller.models['GopModel'].colorScale)
 				.attr('r',circleRadius);
 		
 		groupsEnter.append('text')
-		.attr('style','font-size:'+fontSize)
 			.merge(groups.select('text'))
 			// Merge (Enter & Update)
 				.text(d => d)
-					.attr('class','legend-label')
-					.attr('y', circleRadius+20);
+					.attr('x', textOffset)
+					.attr('dy','0.32em'); // Center vertically
 	}
 	
+	sizeLegend(selection, props) {
+		const {
+			spacing,
+			textOffset,
+			numTicks,
+			circleFill
+		} = props;
+		
+		const ticks = this.controller.models['GopModel'].sizeScale.ticks(numTicks)
+			.filter(d => d !== 0) // Filter zero out!
+			.reverse(); // Big circles to top.
+		
+		const groups = selection.selectAll('g').data(ticks); // d3 data join
+		
+		const groupsEnter = groups
+			.enter()
+				.append('g')
+					.attr('class','tick');
+		groupsEnter
+			.merge(groups) // Merge (Enter & Update)
+				.attr('transform', (d,i) =>
+				`translate(0,${i*spacing})`
+				);
+		groups.exit().remove();
+		
+		groupsEnter.append('circle')
+			.merge(groups.select('circle'))
+			// Merge (Enter & Update)
+				.attr('fill',circleFill)
+				.attr('r',this.controller.models['GopModel'].sizeScale);
+		
+		groupsEnter.append('text')
+			.merge(groups.select('text'))
+			// Merge (Enter & Update)
+				.text(d => d)
+					.attr('x', d => this.controller.models['GopModel'].sizeScale(d) + textOffset)
+					.attr('dy','0.32em'); // Center vertically
+	}
+	
+
 	chart() {
 		
 		// MUST CLEAR ALL TIMERS BEFORE SETTING THEM!!!
 		/*this.timeoutIDs.forEach(timeout => {
 			clearTimeout(timeout);
 		});*/
-		
+		$('#chart-1').empty();
 		const svg1 = d3.select('svg#chart-1');
-		//const svg2 = d3.select('svg#chart-2');
-		//const svg3 = d3.select('svg#chart-3');
-		//const data = this.data;
-		//console.log(data);
-		//$('#chart-1').empty();
-		//$('#chart-2').empty();
-		//$('#chart-3').empty();
 		
+		const g = svg1.append('g')
+			.attr('transform',`translate(100,60)`);
+			
+		this.colorLegend(g, {
+			circleRadius: 30,
+			spacing: 70,
+			textOffset: 50
+		});
 		
-		
-		this.colorLegend(svg1, {
-			circleRadius: 34,
-			spacing: 80,
-			textOffset: 40
+		const gs = svg1.append('g')
+			.attr('transform',`translate(300,60)`);
+			
+		this.sizeLegend(gs, {
+			spacing: 60,
+			textOffset: 10,
+			numTicks: 5,
+			circleFill: 'rgba(0,0,0,0.25)'
 		});
 	}
 	
@@ -258,7 +272,7 @@ export default class GopView extends View {
 				
 			} else {
 				const width = this.REO.width-80;
-				const height = this.REO.height/4;
+				const height = this.REO.height;
 				
 				const html =
 					'<div class="row">'+
@@ -266,7 +280,7 @@ export default class GopView extends View {
 							'<h3 style="text-align:center">Legends</h3>'+
 						'</div>'+
 					'</div>'+
-					'<svg id="chart-1" width="'+width+'" height="'+height+'"></svg>';
+					'<svg id="chart-1" style="border: 1px solid #000" width="'+width+'" height="'+height+'"></svg>';
 				$(html).appendTo(this.el);
 				
 				this.chart(); // Render the complete General Update Pattern with Apples and a Lemon.

@@ -15,10 +15,12 @@ export default class GopModel extends EventObserver {
 		
 		
 		this.colorScale = d3.scaleOrdinal()
-			.domain(['apple','lemon','banana'])
-			.range(['red','yellow','#f80']);
+			.domain(['apple','lemon','lime','orange'])
+			.range(['red','yellow','green','orange']);
 			
-		
+		this.sizeScale = d3.scaleSqrt()
+			.domain([0,10])
+			.range([0,50]);
 	}
 	
 	reset() {

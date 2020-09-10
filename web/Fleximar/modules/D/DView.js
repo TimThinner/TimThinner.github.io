@@ -409,7 +409,7 @@ export default class DView extends View {
 		/*this.timeoutIDs.forEach(timeout => {
 			clearTimeout(timeout);
 		});*/
-		
+		$('#chart-1').empty();
 		const svg1 = d3.select('svg#chart-1');
 		//const svg2 = d3.select('svg#chart-2');
 		//const svg3 = d3.select('svg#chart-3');

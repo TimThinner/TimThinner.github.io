@@ -107,13 +107,10 @@ export default class FedView extends View {
 				}
 			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				
-				console.log('RESIZZEEEE!');
 				const new_width = options.width-80;
 				const new_height = options.height;
 				document.getElementById('chart-1').setAttribute("width",new_width);
 				document.getElementById('chart-1').setAttribute("height",new_height);
-				
-				$('#chart-1').empty();
 				
 				this.chart();
 			}
@@ -141,6 +138,7 @@ export default class FedView extends View {
 		const width = this.REO.width-80;
 		const height = this.REO.height*1.5;
 		
+		$('#chart-1').empty();
 		const svg = d3.select('svg#chart-1');
 		
 		// The Margin Convention: These 3 lines and ...
@@ -163,13 +161,10 @@ export default class FedView extends View {
 			.append('g')
 				.attr('transform', `translate(${margin.left},${margin.top})`);
 		
-		
-		
 		svg.call(d3.zoom().on('zoom',event=>{
 			//console.log('Zoom!');
 			zoomG.attr('transform',event.transform);
 		}));
-		
 		
 		d3.json('./data/worldcountries.json')
 		.then(data=>{
@@ -198,8 +193,6 @@ export default class FedView extends View {
 					
 			
 		});
-		
-		
 	}
 	
 	render() {

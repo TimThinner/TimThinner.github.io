@@ -124,8 +124,6 @@ export default class EView extends View {
 				document.getElementById('chart-1').setAttribute("width",new_width);
 				document.getElementById('chart-1').setAttribute("height",new_height);
 				
-				$('#chart-1').empty();
-				
 				this.chart();
 			}
 		}
@@ -152,7 +150,7 @@ export default class EView extends View {
 		const width = this.REO.width-80;
 		const height = this.REO.height;
 		
-		
+		$('#chart-1').empty();
 		const svg = d3.select('svg#chart-1');
 		//const projection = d3.geoMercator();
 		//const projection = d3.geoOrthographic();

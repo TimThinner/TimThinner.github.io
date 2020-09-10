@@ -115,10 +115,11 @@ export default class CView extends View {
 	
 	chart() {
 		
+		$('#chart').empty();
+		
 		const svg = d3.select('svg');
 		const data = this.data;
 		console.log(data);
-		$('#chart').empty();
 		
 		const title = 'Temperature in Espoo';
 		const W = +svg.attr('width');

@@ -25,12 +25,15 @@ export default class EController { //extends PeriodicPoller {
 			this.view.remove();
 			this.view = undefined;
 		}
+		// Note: it is easier for View to always have subscription to ALL models 
+		// used (not just those we actually handle notifications), then we can 
+		// simply unsubscribe all Views models.
+		//
 		Object.keys(this.models).forEach(key => {
 			if (key === 'EModel') {
 				this.master.modelRepo.remove(key);
-				this.models[key].unsubscribe(this);
 			}
-			//this.models[key].unsubscribe(this);
+			this.models[key].unsubscribe(this);
 		});
 	}
 	
@@ -78,13 +81,13 @@ export default class EController { //extends PeriodicPoller {
 	}
 	
 	init() {
-		const em = new EModel({name:'EModel',src:'TBD'});
-		if (em) {
-			this.master.modelRepo.add('EModel',em);
-			//em.subscribe(this);
-			this.models['EModel'] = em;
+		const m = new EModel({name:'EModel',src:'TBD'});
+		if (m) {
+			this.master.modelRepo.add('EModel',m);
+			m.subscribe(this);
+			this.models['EModel'] = m;
 		}
-		em.fetch();
+		m.fetch();
 		
 		const mm = this.master.modelRepo.get('MenuModel');
 		if (mm) {

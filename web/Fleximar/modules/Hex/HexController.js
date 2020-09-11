@@ -1,8 +1,8 @@
 //import PeriodicPoller from '../common/PeriodicPoller.js';
-import DModel from './DModel.js';
-import DView from './DView.js';
+import HexModel from './HexModel.js';
+import HexView from './HexView.js';
 
-export default class DController { //extends PeriodicPoller {
+export default class HexController { //extends PeriodicPoller {
 	
 	constructor(options) {
 		//super(options); // Call PeriodicPoller constructor
@@ -17,7 +17,7 @@ export default class DController { //extends PeriodicPoller {
 	}
 	
 	remove() {
-		console.log('remove DController!');
+		console.log('remove HexController!');
 		
 		//super.remove();
 		
@@ -26,7 +26,7 @@ export default class DController { //extends PeriodicPoller {
 			this.view = undefined;
 		}
 		Object.keys(this.models).forEach(key => {
-			if (key === 'DModel') {
+			if (key === 'HexModel') {
 				this.master.modelRepo.remove(key);
 			}
 			this.models[key].unsubscribe(this);
@@ -77,13 +77,13 @@ export default class DController { //extends PeriodicPoller {
 	}
 	
 	init() {
-		const dm = new DModel({name:'DModel',src:'TBD'});
-		if (dm) {
-			this.master.modelRepo.add('DModel',dm);
-			dm.subscribe(this);
-			this.models['DModel'] = dm;
+		const m = new HexModel({name:'HexModel',src:'TBD'});
+		if (m) {
+			this.master.modelRepo.add('HexModel',m);
+			m.subscribe(this);
+			this.models['HexModel'] = m;
 		}
-		dm.fetch();
+		m.fetch();
 		
 		const mm = this.master.modelRepo.get('MenuModel');
 		if (mm) {
@@ -91,9 +91,7 @@ export default class DController { //extends PeriodicPoller {
 			this.models['MenuModel'] = mm;
 		}
 		// See: PeriodicPoller.js
-		//this.timers['DView'] = {timer: undefined, interval: -1, models:['DModel']};
-		
-		
-		this.view = new DView(this);
+		//this.timers['EView'] = {timer: undefined, interval: -1, models:['EModel']};
+		this.view = new HexView(this);
 	}
 }

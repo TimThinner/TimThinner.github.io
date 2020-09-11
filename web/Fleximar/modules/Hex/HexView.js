@@ -14,11 +14,11 @@ import View from '../common/View.js';
 	forceLogout(vid)
 	showSpinner(el)
 	
-	EVIEW:
+	HEXVIEW:
 	=============
 		this.rendered = false;
 		this.counter = 0;
-		this.FELID = 'e-view-failure';
+		this.FELID = 'view-failure';
 	hide()
 	remove()
 	updateLatestValues()
@@ -26,16 +26,16 @@ import View from '../common/View.js';
 	render()
 	
 */
-export default class EView extends View {
+export default class HexView extends View {
 	
 	constructor(controller) {
 		
 		super(controller); 
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'EModel') {
+			if (key === 'HexModel') {
 				this.models[key] = this.controller.models[key];
-				console.log(['subscribe ',key,' with EView']);
+				console.log(['subscribe ',key,' with HexView']);
 				this.models[key].subscribe(this);
 			}
 		});
@@ -46,31 +46,19 @@ export default class EView extends View {
 		
 		this.rendered = false;
 		
-		//this.data = undefined;
-		this.FELID = 'e-view-failure';
-		
+		this.FELID = 'view-failure';
 	}
 	
 	hide() {
 		
-		// MUST CLEAR ALL TIMERS!!!
-		/*this.timeoutIDs.forEach(timeout => {
-			clearTimeout(timeout);
-		});
-		this.timeoutIDs = [];*/
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
 		
-		// MUST CLEAR ALL TIMERS!!!
-		/*this.timeoutIDs.forEach(timeout => {
-			clearTimeout(timeout);
-		});
-		this.timeoutIDs = [];*/
 		Object.keys(this.models).forEach(key => {
-			console.log(['UNsubscribe ',key,' with EView!']);
+			console.log(['UNsubscribe ',key,' with HexView!']);
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
@@ -87,9 +75,9 @@ export default class EView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='EModel' && options.method==='fetched') {
+			if (options.model==='HexModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('EView => EModel fetched!');
+					console.log('HexView => HexModel fetched!');
 					this.counter++;
 					
 					if (this.rendered) {
@@ -145,6 +133,62 @@ export default class EView extends View {
 	
 	*/
 	
+	
+	// Nested elements version.
+	colorLegend(selection, props) {
+		const {
+			colorScale,
+			circleRadius,
+			spacing,
+			textOffset,
+			backgroundRectWidth
+		} = props;
+		/*
+		const colorScale = d3.scaleOrdinal()
+			.domain(['apple','lemon','lime','orange'])
+			.range(['red','yellow','green','orange']);
+		*/
+		
+		const backgroundRect = selection.selectAll('rect')
+			.data([null]);
+		backgroundRect.enter().append('rect')
+			.merge(backgroundRect)
+				.attr('x',-circleRadius*2)
+				.attr('y',-circleRadius*2)
+				.attr('rx',circleRadius*2)
+				.attr('width',backgroundRectWidth)
+				.attr('height',spacing*colorScale.domain().length+circleRadius*2)
+				.attr('fill','#fff')
+				.attr('opacity',0.5);
+				
+		const groups = selection.selectAll('g')
+			.data(colorScale.domain()); // d3 data join
+		
+		const groupsEnter = groups
+			.enter()
+				.append('g')
+					.attr('class','tick');
+		groupsEnter
+			.merge(groups) // Merge (Enter & Update)
+				.attr('transform', (d,i) =>
+				`translate(0,${i*spacing})`
+				);
+		groups.exit().remove();
+		
+		groupsEnter.append('circle')
+			.merge(groups.select('circle'))
+			// Merge (Enter & Update)
+				.attr('fill',colorScale)
+				.attr('r',circleRadius);
+		
+		groupsEnter.append('text')
+			.merge(groups.select('text'))
+			// Merge (Enter & Update)
+				.text(d => d)
+					.attr('x', textOffset)
+					.attr('dy','0.32em'); // Center vertically
+	}
+	
 	chart() {
 		
 		const width = this.REO.width-80;
@@ -159,13 +203,12 @@ export default class EView extends View {
 		
 		const pathGenerator = d3.geoPath().projection(projection);
 		
+		
 		const g = svg.append('g');
 		
 		g.append('path')
 			.attr('class','sphere')
 			.attr('d', pathGenerator({type: 'Sphere'}));
-		
-		// d3.event.transform NOT WORKING!!!
 		
 		svg.call(d3.zoom().on('zoom',event=>{
 			//console.log('Zoom!');
@@ -174,28 +217,55 @@ export default class EView extends View {
 		// 110m => 50m
 		//
 		
+		
+		
 		Promise.all([
 			d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
 			d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json')
 		]).then(([tsvData, topoJSONData])=>{
 			//console.log(tsvData);
 			//console.log(topoJSONData);
-			const countryName = {};
+			const rowById = {};
 			tsvData.forEach(d=> {
 				// Use d.name for the title
 				// Use d.iso_n3 for id
-				countryName[d.iso_n3]=d.name;
+				rowById[d.iso_n3] = d;
 			});
-			
 			const countries = topojson.feature(topoJSONData, topoJSONData.objects.countries);
-				//console.log(countries);
-				g.selectAll('path').data(countries.features)
-					.enter().append('path')
-						.attr('class','country')
-						.attr('d', pathGenerator)
-					.append('title')
-						.text(d=>countryName[d.id]);
+			countries.features.forEach(d => {
+				Object.assign(d.properties, rowById[d.id]);
+			});
+			//console.log(countries);
 			
+			
+			//const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+			// See the colors from: d3-scale-chromatic
+			const colorScale = d3.scaleOrdinal();
+			//const colorValue = d => d.properties.economy;
+			// TRY ANOTHER PARAM:
+			const colorValue = d => d.properties.income_grp;
+			
+			colorScale
+				.domain(countries.features.map(colorValue))
+				.domain(colorScale.domain().sort().reverse())
+				.range(d3.schemeSpectral[colorScale.domain().length]);
+			
+			g.selectAll('path').data(countries.features)
+				.enter().append('path')
+					.attr('class','choropleth-country')
+					.attr('d', pathGenerator)
+					.attr('fill',d=>colorScale(colorValue(d)))
+				.append('title')
+					.text(d=>d.properties.name+': '+colorValue(d));
+			
+			const colorLegendG = g.append('g').attr('transform',`translate(20,280)`);
+			this.colorLegend(colorLegendG, {
+				colorScale,
+				circleRadius: 10,
+				spacing: 24,
+				textOffset: 20,
+				backgroundRectWidth: 250
+			});
 		});
 		
 		/*
@@ -250,10 +320,9 @@ export default class EView extends View {
 				const width = this.REO.width-80;
 				const height = this.REO.height;
 				const html =
-					
 					'<div class="row">'+
 						'<div class="col s12 content">'+
-							'<h3 style="text-align:center">A World Map</h3>'+
+							'<h3 style="text-align:center">A Choropleth Map</h3>'+
 						'</div>'+
 					'</div>'+
 					'<div class="row">'+
@@ -270,7 +339,7 @@ export default class EView extends View {
 			}
 			this.rendered = true;
 		} else {
-			console.log('EView => render Model IS NOT READY!!!!');
+			console.log('HexView => render Model IS NOT READY!!!!');
 			this.showSpinner(this.el);
 		}
 	}

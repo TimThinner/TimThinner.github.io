@@ -28,9 +28,8 @@ export default class FedController { //extends PeriodicPoller {
 		Object.keys(this.models).forEach(key => {
 			if (key === 'FedModel') {
 				this.master.modelRepo.remove(key);
-				this.models[key].unsubscribe(this);
 			}
-			//this.models[key].unsubscribe(this);
+			this.models[key].unsubscribe(this);
 		});
 	}
 	
@@ -78,13 +77,13 @@ export default class FedController { //extends PeriodicPoller {
 	}
 	
 	init() {
-		const em = new FedModel({name:'FedModel',src:'TBD'});
-		if (em) {
-			this.master.modelRepo.add('FedModel',em);
-			//em.subscribe(this);
-			this.models['FedModel'] = em;
+		const m = new FedModel({name:'FedModel',src:'TBD'});
+		if (m) {
+			this.master.modelRepo.add('FedModel',m);
+			m.subscribe(this);
+			this.models['FedModel'] = m;
 		}
-		em.fetch();
+		m.fetch();
 		
 		const mm = this.master.modelRepo.get('MenuModel');
 		if (mm) {
@@ -93,8 +92,6 @@ export default class FedController { //extends PeriodicPoller {
 		}
 		// See: PeriodicPoller.js
 		//this.timers['FedView'] = {timer: undefined, interval: -1, models:['FedModel']};
-		
-		
 		this.view = new FedView(this);
 	}
 }

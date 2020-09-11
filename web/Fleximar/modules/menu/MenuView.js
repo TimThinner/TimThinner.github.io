@@ -143,7 +143,7 @@ export default class MenuView {
 		let html = '<div class="nav">';
 		
 		//html += '<h1 class="logo"><img src="logo-rwd.svg"  alt="Fleximarex" /></h1>';
-		html += '<h1 class="logo">Flexi</h1>';
+		html += '<h1 class="logo">D3.js</h1>';
 		if (user_is_defined) {
 			if (user_is_logged_in) {
 				// Add the Logout-button.

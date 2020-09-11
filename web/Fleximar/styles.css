@@ -147,12 +147,12 @@ html, body {
 
 @media screen and (min-width: 500px) {
 	.menu-navigation .menu-wrapper {
-		width: 13.42857%;
+		width: 15.8333%;
 	}
-	.menu-navigation .menu-wrapper:nth-child( 7n ) { 
+	.menu-navigation .menu-wrapper:nth-child( 6n ) { 
 		margin-right: 0;
 	}
-	.menu-navigation .menu-wrapper:nth-child( 7n+1 ) { 
+	.menu-navigation .menu-wrapper:nth-child( 6n+1 ) { 
 		clear: left;
 	}
 }
@@ -205,7 +205,7 @@ text {
 }
 
 .tick text {
-	font-size: 1.2em;
+	font-size: 1em;
 	fill: #fff; /*#8e8883;*/
 }
 .tick line {
@@ -253,6 +253,14 @@ text {
 	fill: #55c;
 }
 
+.choropleth-country {
+	stroke: #000;
+	stroke-width: 0.1px;
+}
+/*.choropleth-country:hover {
+	fill: #f00;
+	opacity: 0.5;
+}*/
 
 .fed-path {
 	fill: none;

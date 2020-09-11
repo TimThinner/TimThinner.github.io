@@ -409,7 +409,14 @@ export default class DView extends View {
 		/*this.timeoutIDs.forEach(timeout => {
 			clearTimeout(timeout);
 		});*/
-		$('#chart-1').empty();
+		
+		// NOTE: If SVG content is emptied here, 
+		// ALL TRANSITIONS ARE NOT VISIBLE! WE LOOSE THEM!
+		// But be careful when "empty" is needed and when not!!!
+		//$('#chart-1').empty();
+		
+		
+		
 		const svg1 = d3.select('svg#chart-1');
 		//const svg2 = d3.select('svg#chart-2');
 		//const svg3 = d3.select('svg#chart-3');

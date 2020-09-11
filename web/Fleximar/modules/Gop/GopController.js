@@ -28,9 +28,8 @@ export default class GopController { //extends PeriodicPoller {
 		Object.keys(this.models).forEach(key => {
 			if (key === 'GopModel') {
 				this.master.modelRepo.remove(key);
-				this.models[key].unsubscribe(this);
 			}
-			//this.models[key].unsubscribe(this);
+			this.models[key].unsubscribe(this);
 		});
 	}
 	
@@ -81,7 +80,7 @@ export default class GopController { //extends PeriodicPoller {
 		const m = new GopModel({name:'GopModel',src:'TBD'});
 		if (m) {
 			this.master.modelRepo.add('GopModel',m);
-			//m.subscribe(this);
+			m.subscribe(this);
 			this.models['GopModel'] = m;
 		}
 		m.fetch();

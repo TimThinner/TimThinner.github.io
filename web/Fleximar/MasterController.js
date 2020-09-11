@@ -10,7 +10,8 @@ import CController from './modules/C/CController.js';
 import DController from './modules/D/DController.js';
 import EController from './modules/E/EController.js';
 import FedController from './modules/Fed/FedController.js';
-import GopController from './modules/Gop/GopController.js';
+//import GopController from './modules/Gop/GopController.js';
+import HexController from './modules/Hex/HexController.js';
 
 
 class MasterController {
@@ -22,13 +23,13 @@ class MasterController {
 		// Note: property 'key' must equal to key in controllers hash and also 
 		// the name of the associated Controller.
 		this.menuitems = [
-			{key:'A',value:'Profile'},
+			//{key:'A',value:'Profile'},
 			{key:'B',value:'Population'},
 			{key:'C',value:'Temperatures'},
 			{key:'D',value:'Fruits'},
 			{key:'E',value:'Map'},
 			{key:'Fed', value:'Tree'},
-			{key:'Gop', value:'Legends'}
+			{key:'Hex', value:'Choropleth'}
 		];
 		// Note:
 		// modelRepo.remove(key) will delete the property from hash:
@@ -40,8 +41,8 @@ class MasterController {
 	
 	createSessionControllers() {
 		console.log('CREATE Profile and initialize it.');
-		this.controllers['A'] = new AController({name:'A', master:this, el:'#content', visible:false});
-		this.controllers['A'].init();
+		/*this.controllers['A'] = new AController({name:'A', master:this, el:'#content', visible:false});
+		this.controllers['A'].init();*/
 		
 		this.controllers['B'] = new BController({name:'B', master:this, el:'#content', visible:false});
 		this.controllers['B'].init();
@@ -58,8 +59,11 @@ class MasterController {
 		this.controllers['Fed'] = new FedController({name:'Fed', master:this, el:'#content', visible:false});
 		this.controllers['Fed'].init();
 		
-		this.controllers['Gop'] = new GopController({name:'Gop', master:this, el:'#content', visible:false});
-		this.controllers['Gop'].init();
+		//this.controllers['Gop'] = new GopController({name:'Gop', master:this, el:'#content', visible:false});
+		//this.controllers['Gop'].init();
+		
+		this.controllers['Hex'] = new HexController({name:'Hex', master:this, el:'#content', visible:false});
+		this.controllers['Hex'].init();
 	}
 	
 	notify(options) {

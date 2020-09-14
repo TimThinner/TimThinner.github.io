@@ -104,7 +104,7 @@ export default class CView extends View {
 				console.log("CView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				// Set SVG width and height according to new window dimensions:
 				// options.width options.height
-				const new_width = options.width-60;// + 'px'
+				const new_width = options.width-40;// + 'px'
 				const new_height = options.height-40;// + 'px'
 				document.getElementById('chart').setAttribute("width",new_width);
 				document.getElementById('chart').setAttribute("height",new_height);
@@ -121,15 +121,16 @@ export default class CView extends View {
 		const data = this.data;
 		console.log(data);
 		
-		const title = 'Temperature in Espoo';
+		let title = 'Temperature in Espoo';
 		const W = +svg.attr('width');
 		const H = +svg.attr('height');
 		let tickCount = 10;
 		let leftMargin = 80;
 		let rightMargin = 20;
 		if (W < 600) {
+			title = 'Temperature';
 			tickCount = 5;
-			leftMargin = 10;
+			leftMargin = 40;
 			rightMargin = 0;
 		}
 		
@@ -167,7 +168,7 @@ export default class CView extends View {
 		
 		const xAxisG = g.append('g').call(xAxis)
 			.attr('transform',`translate(0,${innerHeight})`);
-		xAxisG.select('.domain').remove();
+		xAxisG.select('.domain').remove(); // Remove unnecessary lines.
 		
 		xAxisG.append('text')
 			.attr('class','axis-label')
@@ -181,7 +182,7 @@ export default class CView extends View {
 			.tickPadding(10);
 		
 		const yAxisG = g.append('g').call(yAxis);
-		yAxisG.select('.domain').remove();
+		yAxisG.select('.domain').remove(); // Remove unnecessary lines.
 		
 		yAxisG.append('text')
 			.attr('class','axis-label')
@@ -256,7 +257,7 @@ export default class CView extends View {
 				}
 				
 			} else {
-				const initial_width = this.REO.width-60;
+				const initial_width = this.REO.width-40;
 				const initial_height = this.REO.height-40;
 				const html =
 					'<svg id="chart" width="'+initial_width+'" height="'+initial_height+'"></svg>'+

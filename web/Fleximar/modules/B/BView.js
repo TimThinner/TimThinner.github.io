@@ -119,16 +119,23 @@ export default class BView extends View {
 		const svg = d3.select('svg');
 		const data = this.data;
 		
-		const title = 'World population';
+		let title = 'World population';
 		const W = +svg.attr('width');
 		const H = +svg.attr('height');
 		
+		let leftMargin = 80;
+		let rightMargin = 20;
+		if (W < 600) {
+			title = 'Population';
+			leftMargin = 40;
+			rightMargin = 0;
+		}
 		
 		const xValue = d=>d.year;
 		const xAxisLabel = 'Time';
 		const yValue = d=>d.population;
 		const yAxisLabel = 'Population';
-		const margin = {top:50, right:20, bottom:50, left:100};
+		const margin = {top:50, right:rightMargin, bottom:50, left:leftMargin};
 		const innerWidth = W - margin.left - margin.right;
 		const innerHeight = H - margin.top - margin.bottom;
 		const circleRadius = 5;

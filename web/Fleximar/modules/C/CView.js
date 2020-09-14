@@ -130,7 +130,7 @@ export default class CView extends View {
 		if (W < 600) {
 			tickCount = 5;
 			leftMargin = 10;
-			rightMargin = 10;
+			rightMargin = 0;
 		}
 		
 		const xValue = d=>d.timestamp;

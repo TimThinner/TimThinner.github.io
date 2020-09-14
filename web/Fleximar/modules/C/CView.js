@@ -125,8 +125,12 @@ export default class CView extends View {
 		const W = +svg.attr('width');
 		const H = +svg.attr('height');
 		let tickCount = 10;
+		let leftMargin = 80;
+		let rightMargin = 20;
 		if (W < 600) {
 			tickCount = 5;
+			leftMargin = 10;
+			rightMargin = 10;
 		}
 		
 		const xValue = d=>d.timestamp;
@@ -134,7 +138,7 @@ export default class CView extends View {
 		const yValue = d=>d.temperature;
 		const circleRadius = 8;
 		const yAxisLabel = 'Temperature';
-		const margin = {top:50, right:20, bottom:50, left:80};
+		const margin = {top:50, right:rightMargin, bottom:50, left:leftMargin};
 		const innerWidth = W - margin.left - margin.right;
 		const innerHeight = H - margin.top - margin.bottom;
 		
@@ -156,7 +160,6 @@ export default class CView extends View {
 		const g = svg.append('g')
 			.attr('transform',`translate(${margin.left},${margin.top})`);
 		
-		
 		const xAxis = d3.axisBottom(xScale)
 			.ticks(tickCount)
 			.tickSize(-innerHeight)
@@ -172,8 +175,6 @@ export default class CView extends View {
 			.attr('y',40)
 			.attr('x',innerWidth/2)
 			.text(xAxisLabel);
-		
-		
 		
 		const yAxis = d3.axisLeft(yScale)
 			.tickSize(-innerWidth)

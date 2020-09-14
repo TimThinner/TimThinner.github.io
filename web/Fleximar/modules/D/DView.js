@@ -216,11 +216,7 @@ export default class DView extends View {
 				.attr('stroke', d => d.id === this.controller.models['DModel'].selectedFruit ? 'black' : 'none')
 				
 				.on('click', d => {
-					const iid = d.id;
-					const id = d.originalTarget.__data__.id;
-					
-					console.log(['iid=',iid,'id=',id]);
-					
+					const id = d.target.__data__.id;
 					this.controller.models['DModel'].selectFruit(id);
 					
 					// How to update ONLY fruitlist?
@@ -231,7 +227,7 @@ export default class DView extends View {
 				})
 				/*
 				.on('mouseover', d => {
-					const id = d.originalTarget.__data__.id;
+					const id = d.target.__data__.id;
 					this.selectFruit(id);
 				})
 				.on('mouseout', () => {

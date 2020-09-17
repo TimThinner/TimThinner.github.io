@@ -20,6 +20,13 @@ export default class UserSignupView extends UserView {
 		super(controller);
 	}
 	
+	// TESTING!
+	randomString(length, chars) {
+		let result = '';
+		for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+		return result;
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model === 'UserModel' && options.method === 'signup') {
@@ -154,5 +161,8 @@ export default class UserSignupView extends UserView {
 				self.models['UserModel'].signup(data);
 			}
 		});
+		// TESTING:
+		//const rString = this.randomString(6, '23456789abcdefghijkmnpqrstuvwxyz');
+		//console.log(rString);
 	}
 }

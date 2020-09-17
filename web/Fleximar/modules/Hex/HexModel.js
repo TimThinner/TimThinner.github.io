@@ -11,12 +11,21 @@ export default class HexModel extends EventObserver {
 		this.errorMessage = '';
 		this.fetching = false;
 		
+		this.selectedLegend = undefined;
+		this.features = undefined;
+		
 	}
 	
 	reset() {
 		
 	}
 	
+	selectLegend(d) {
+		this.selectedLegend = d;
+		setTimeout(() => {
+			this.notifyAll({model:this.name, method:'legend-selected'});
+		},200);
+	}
 	
 	/* Model:
 		this.name = options.name;
@@ -25,7 +34,6 @@ export default class HexModel extends EventObserver {
 		this.errorMessage = '';
 		this.fetching = false;
 	*/
-	
 	fetch(token) {
 		const self = this;
 		if (this.fetching) {
@@ -51,15 +59,37 @@ export default class HexModel extends EventObserver {
 		status = 200; // OK
 		//status = 401;
 		//this.errorMessage = 'Auth failed';
-		setTimeout(() => {
+		/*setTimeout(() => {
 			
 			this.fetching = false;
 			this.ready = true;
 			
 			this.notifyAll({model:this.name, method:'fetched', status:status, message:this.errorMessage});
 			
-		}, 200);
-		
+		}, 200);*/
+		Promise.all([
+			d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
+			d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json')
+		]).then(([tsvData, topoJSONData])=>{
+			//console.log(tsvData);
+			//console.log(topoJSONData);
+			const rowById = {};
+			tsvData.forEach(d=> {
+				// Use d.name for the title
+				// Use d.iso_n3 for id
+				rowById[d.iso_n3] = d;
+			});
+			const countries = topojson.feature(topoJSONData, topoJSONData.objects.countries);
+			countries.features.forEach(d => {
+				Object.assign(d.properties, rowById[d.id]);
+			});
+			this.features = countries.features;
+			
+			this.fetching = false;
+			this.ready = true;
+			
+			this.notifyAll({model:this.name, method:'fetched', status:status, message:this.errorMessage});
+		});
 		/*
 		fetch(url)
 			.then(function(response) {

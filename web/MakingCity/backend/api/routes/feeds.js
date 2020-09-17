@@ -25,9 +25,13 @@ router.get('/',(req,res,next)=>{
 		});
 });
 */
-
-// https://makingcity.vtt.fi/data/arina/iss/feeds.json?calc=1&meterId=115&start=2020-02-28&end=2020-02-28
-
+/*
+	Note:
+	
+	We are just passing the request URL adding Authorization into call.
+	
+	https://makingcity.vtt.fi/data/arina/iss/feeds.json?calc=1&meterId=115&start=2020-02-28&end=2020-02-28
+*/
 router.post('/', checkAuth, (req,res,next)=>{
 	
 	// process.env.HOST = "https://makingcity.vtt.fi"

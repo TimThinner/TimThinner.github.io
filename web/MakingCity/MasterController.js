@@ -66,6 +66,12 @@ class MasterController {
 			Object.keys(this.controllers).forEach(key => {
 				this.controllers[key].clean();
 			});
+		} else if (options.model==='UserModel' && options.method==='login') {
+			
+			
+			
+			console.log('MasterController LOGIN !!!!');
+			
 		}
 	}
 	

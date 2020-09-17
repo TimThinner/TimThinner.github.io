@@ -112,6 +112,15 @@ export default class HexView extends View {
 				document.getElementById('chart-1').setAttribute("width",new_width);
 				document.getElementById('chart-1').setAttribute("height",new_height);
 				
+				if (typeof this.models['HexModel'].features !== 'undefined') {
+					console.log('Features EXIST => CHART!');
+					this.chart();
+				} else {
+					console.log('Features NOT EXIST!');
+				}
+				
+			} else if (options.model==='HexModel' && options.method==='legend-selected') {
+				console.log('WUHUU! Legend selected!');
 				this.chart();
 			}
 		}
@@ -133,7 +142,6 @@ export default class HexView extends View {
 	
 	*/
 	
-	
 	// Nested elements version.
 	colorLegend(selection, props) {
 		const {
@@ -149,6 +157,7 @@ export default class HexView extends View {
 			.range(['red','yellow','green','orange']);
 		*/
 		
+		const selectedLegend = this.models['HexModel'].selectedLegend;
 		const backgroundRect = selection.selectAll('rect')
 			.data([null]);
 		backgroundRect.enter().append('rect')
@@ -170,9 +179,18 @@ export default class HexView extends View {
 					.attr('class','tick');
 		groupsEnter
 			.merge(groups) // Merge (Enter & Update)
-				.attr('transform', (d,i) =>
-				`translate(0,${i*spacing})`
-				);
+				.attr('class','choro-legend-tick')
+				.attr('transform', (d,i) => `translate(0,${i*spacing})`)
+				.attr('opacity', d => (typeof selectedLegend === 'undefined' || d === selectedLegend) ? 1 : 0.2)
+				.on('click', d => {
+					const legend = d.target.__data__;
+					if (legend === selectedLegend) {
+						// selected legend is set to undefined!
+						this.models['HexModel'].selectLegend();
+					} else {
+						this.models['HexModel'].selectLegend(legend);
+					}
+				});
 		groups.exit().remove();
 		
 		groupsEnter.append('circle')
@@ -189,6 +207,53 @@ export default class HexView extends View {
 					.attr('dy','0.32em'); // Center vertically
 	}
 	
+	choroplethMap(selection, props) {
+		const {
+			features,
+			colorScale,
+			colorValue
+		} = props;
+		
+		const projection = d3.geoNaturalEarth1();
+		const pathGenerator = d3.geoPath().projection(projection);
+		
+		const gUpdate = selection.selectAll('g').data([null]);
+		const gEnter = gUpdate.enter().append('g');
+		const g = gUpdate.merge(gEnter);
+		
+		gEnter.append('path')
+			.attr('class','sphere')
+			.attr('d', pathGenerator({type: 'Sphere'}));
+		
+		selection.call(d3.zoom().on('zoom',event=>{
+			//console.log('Zoom!');
+			gEnter.attr('transform',event.transform);
+		}));
+		
+		// Video 
+		// https://www.youtube.com/watch?v=_8V5o2UHG0E
+		// At 09:35:05
+		const countryPaths = g.selectAll('.choropleth-country').data(features);
+		countryPaths.enter().append('path')
+				.attr('class','choropleth-country')
+			.merge(countryPaths)
+				.attr('d', pathGenerator)
+				.attr('fill',d=>colorScale(colorValue(d)));
+			
+		
+		/*
+		gEnter.selectAll('path').data(features)
+			.enter().append('path')
+				.attr('class','choropleth-country')
+				.attr('d', pathGenerator)
+				.attr('fill',d=>colorScale(colorValue(d)))
+			.append('title')
+				.text(d=>d.properties.name+': '+colorValue(d));
+				
+				
+		*/
+	}
+	
 	chart() {
 		
 		const width = this.REO.width-80;
@@ -203,9 +268,9 @@ export default class HexView extends View {
 		
 		const pathGenerator = d3.geoPath().projection(projection);
 		
-		
-		const g = svg.append('g');
-		
+		const choroplethMapG = svg.append('g');
+		const colorLegendG = svg.append('g').attr('transform',`translate(20,280)`);
+		/* These moved up to choroplethMap!
 		g.append('path')
 			.attr('class','sphere')
 			.attr('d', pathGenerator({type: 'Sphere'}));
@@ -213,12 +278,12 @@ export default class HexView extends View {
 		svg.call(d3.zoom().on('zoom',event=>{
 			//console.log('Zoom!');
 			g.attr('transform',event.transform);
-		}));
+		}));*/
 		// 110m => 50m
 		//
 		
 		
-		
+		/*
 		Promise.all([
 			d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
 			d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json')
@@ -236,37 +301,48 @@ export default class HexView extends View {
 				Object.assign(d.properties, rowById[d.id]);
 			});
 			//console.log(countries);
-			
-			
-			//const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-			// See the colors from: d3-scale-chromatic
-			const colorScale = d3.scaleOrdinal();
-			//const colorValue = d => d.properties.economy;
-			// TRY ANOTHER PARAM:
-			const colorValue = d => d.properties.income_grp;
-			
-			colorScale
-				.domain(countries.features.map(colorValue))
-				.domain(colorScale.domain().sort().reverse())
-				.range(d3.schemeSpectral[colorScale.domain().length]);
-			
-			g.selectAll('path').data(countries.features)
-				.enter().append('path')
-					.attr('class','choropleth-country')
-					.attr('d', pathGenerator)
-					.attr('fill',d=>colorScale(colorValue(d)))
-				.append('title')
-					.text(d=>d.properties.name+': '+colorValue(d));
-			
-			const colorLegendG = g.append('g').attr('transform',`translate(20,280)`);
-			this.colorLegend(colorLegendG, {
-				colorScale,
-				circleRadius: 10,
-				spacing: 24,
-				textOffset: 20,
-				backgroundRectWidth: 250
-			});
+		*/
+		const features = this.models['HexModel'].features;
+		
+		//const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+		// See the colors from: d3-scale-chromatic
+		const colorScale = d3.scaleOrdinal();
+		const colorValue = d => d.properties.economy;
+		// TRY ANOTHER PARAM:
+		//const colorValue = d => d.properties.income_grp;
+		
+		colorScale
+			//.domain(countries.features.map(colorValue))
+			.domain(features.map(colorValue))
+			.domain(colorScale.domain().sort().reverse())
+			.range(d3.schemeSpectral[colorScale.domain().length]);
+		/*
+		These moved up to choroplethMap
+		
+		//g.selectAll('path').data(countries.features)
+		g.selectAll('path').data(features)
+			.enter().append('path')
+				.attr('class','choropleth-country')
+				.attr('d', pathGenerator)
+				.attr('fill',d=>colorScale(colorValue(d)))
+			.append('title')
+				.text(d=>d.properties.name+': '+colorValue(d));
+		*/
+		this.choroplethMap(choroplethMapG, {
+			features,
+			colorScale,
+			colorValue
 		});
+		
+		//const colorLegendG = g.append('g').attr('transform',`translate(20,280)`);
+		this.colorLegend(colorLegendG, {
+			colorScale,
+			circleRadius: 10,
+			spacing: 24,
+			textOffset: 20,
+			backgroundRectWidth: 250
+		});
+		
 		
 		/*
 		d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/110m.tsv')
@@ -330,7 +406,7 @@ export default class HexView extends View {
 					'</div>'+
 					'<div class="row">'+
 					'<div class="col s12 center">'+
-						'<svg id="chart-1" width="'+width+'" height="'+height+'"></svg>'+
+						'<svg style="border: 1px solid #f00" id="chart-1" width="'+width+'" height="'+height+'"></svg>'+
 					'</div>';
 				$(html).appendTo(this.el);
 				

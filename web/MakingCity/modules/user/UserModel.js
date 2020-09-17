@@ -47,8 +47,10 @@ export default class UserModel extends Model {
 	store() {
 		var status = localStorage.getItem(this.localStorageLabel);
 		var new_status = {'id':this.id,'email':this.email,'token':this.token}; //,'expires':this.expires};
+		
 		// EXCEPT HERE FOR TEST PURPOSES:
-		//new_status.is_superuser = this.is_superuser;
+		new_status.is_superuser = this.is_superuser;
+		
 		if (status == null) {
 			// no previous status.
 			var encoded = JSON.stringify(new_status);
@@ -75,7 +77,7 @@ export default class UserModel extends Model {
 			if (typeof stat.token !== 'undefined') { this.token = stat.token; }
 			//if (typeof stat.expires !== 'undefined') { this.expires = stat.expires; }
 			// EXCEPT HERE FOR TEST PURPOSES:
-			//if (typeof stat.is_superuser !== 'undefined') { this.is_superuser = stat.is_superuser; }
+			if (typeof stat.is_superuser !== 'undefined') { this.is_superuser = stat.is_superuser; }
 		}
 		
 		if (this.isLoggedIn()) {
@@ -85,7 +87,7 @@ export default class UserModel extends Model {
 			this.store();
 		}
 	}
-	
+	/*
 	signup(data) {
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:201,message:'Signup OK'}), 100);
 	}
@@ -106,14 +108,18 @@ export default class UserModel extends Model {
 		this.store();
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'login',status:200,message:'Login OK'}), 100);
 	}
-	
+	*/
 	logout() {
 		this.reset();
 		this.store();
 		console.log('USER LOGOUT! Localstorage cleaned!');
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'logout',status:200,message:'Logout OK'}), 100);
 	}
+	
 	/*
+	this.mongoBackend = 'http://localhost:3000';
+	*/
+	
 	login(data) {
 		var self = this;
 		var status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
@@ -179,7 +185,7 @@ export default class UserModel extends Model {
 			self.notifyAll({model:'UserModel',method:'signup',status:status,message:error});
 		});
 	}
-	*/
+	
 	/*
 	changePassword(data) {
 		const self = this;

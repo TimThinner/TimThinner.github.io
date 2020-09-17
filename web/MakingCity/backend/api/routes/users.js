@@ -63,7 +63,7 @@ router.post("/login", (req,res,next)=>{
 	const email_lc = req.body.email.toLowerCase();
 	
 	User.find({email:email_lc})
-		.select('_id email password')
+		.select('_id email password created is_superuser')
 		.exec()
 		.then(user=>{
 			if (user.length < 1) {

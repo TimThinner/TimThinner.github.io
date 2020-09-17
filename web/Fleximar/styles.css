@@ -262,6 +262,10 @@ text {
 	opacity: 0.5;
 }*/
 
+.choro-legend-tick {
+	cursor: pointer;
+}
+
 .fed-path {
 	fill: none;
 	stroke: #57bdc3;

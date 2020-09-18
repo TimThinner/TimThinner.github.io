@@ -26,6 +26,9 @@ import UserElectricityTargetsController from './modules/userelectricitytargets/U
 import UserElectricityCompensateController from './modules/userelectricitycompensate/UserElectricityCompensateController.js';
 
 
+import RegCodeController from './modules/admin/regcodes/RegCodeController.js';
+import UsersController from './modules/admin/users/UsersController.js';
+
 import GridPageController from './modules/gridpage/GridPageController.js';
 import SolarPageController from './modules/solarpage/SolarPageController.js';
 import EnvironmentPageController from './modules/environmentpage/EnvironmentPageController.js';
@@ -131,6 +134,14 @@ class MasterController {
 		this.controllers['USERELECTRICITYTARGETS'].init();
 		this.controllers['USERELECTRICITYCOMPENSATE'] = new UserElectricityCompensateController({name:'USERELECTRICITYCOMPENSATE', master:this, el:'#content', visible:false});
 		this.controllers['USERELECTRICITYCOMPENSATE'].init();
+		
+		
+		// Admin stuff:
+		this.controllers['REGCODES'] = new RegCodeController({name:'REGCODES', master:this, el:'#content', visible:false});
+		this.controllers['REGCODES'].init();
+		this.controllers['USERS'] = new UsersController({name:'USERS', master:this, el:'#content', visible:false});
+		this.controllers['USERS'].init();
+		
 		
 		
 		this.controllers['GRIDPAGE'] = new GridPageController({name:'GRIDPAGE', master:this, el:'#content', visible:false});

@@ -6,10 +6,6 @@ import UserElectricityModel from  '../userelectricity/UserElectricityModel.js';
 
 import UserPageView from './UserPageView.js';
 
-// Testing Superuser functionality:
-import RegCodeModel from './RegCodeModel.js';
-
-
 export default class UserPageController extends Controller {
 	
 	constructor(options) {
@@ -24,7 +20,7 @@ export default class UserPageController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel'||key==='RegCodeModel') {
+			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -71,14 +67,6 @@ export default class UserPageController extends Controller {
 		this.master.modelRepo.add('UserElectricityModel',model_3);
 		this.models['UserElectricityModel'] = model_3;
 		
-		
-		// Testing Superuser functionality:
-		const model_x = new RegCodeModel({name:'RegCodeModel',src:'to-be-added-in-the-future'});
-		model_x.subscribe(this);
-		this.master.modelRepo.add('RegCodeModel',model_x);
-		this.models['RegCodeModel'] = model_x;
-		
-		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
@@ -110,14 +98,6 @@ export default class UserPageController extends Controller {
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
-		
-		
-		// Testing Superuser functionality:
-		const model_x = new RegCodeModel({name:'RegCodeModel',src:'to-be-added-in-the-future'});
-		model_x.subscribe(this);
-		this.master.modelRepo.add('RegCodeModel',model_x);
-		this.models['RegCodeModel'] = model_x;
-		
 		
 		this.view = new UserPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

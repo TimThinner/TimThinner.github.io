@@ -20,6 +20,32 @@ const Regcode = require('../models/regcode');
 	enddate:     { type:Date, default: Date.now }
 */
 /*
+	Get all regcodes.
+*/
+router.get('/', checkAuth, (req,res,next)=>{
+	Regcode.find()
+		.select('_id email apartmentId code startdate enddate')
+		.exec()
+		.then(docs=>{
+			res.status(200).json({
+				count: docs.length,
+				regcodes: docs.map(doc=>{
+					return {
+						_id: doc._id,
+						email: doc.email,
+						apartmentId: doc.apartmentId,
+						code: doc.code,
+						startdate: doc.startdate,
+						enddate: doc.enddate
+					}
+				})
+			});
+		})
+		.catch(err=>{
+			res.status(500).json({error: err});
+		});
+});
+/*
 	Save a new regcode.
 */
 router.post('/', checkAuth, (req,res,next)=>{
@@ -66,4 +92,34 @@ router.post('/', checkAuth, (req,res,next)=>{
 			res.status(500).json({error:err});
 		});
 });
+
+router.delete('/:regcodeId', checkAuth, (req,res,next)=>{
+	
+	const id = req.params.regcodeId; // NOTE: id is a string!
+	
+	Regcode.findById(id)
+		.select('_id email apartmentId code startdate enddate')
+		.exec()
+		.then(doc=>{
+			if (doc) {
+				Regcode.deleteOne({_id:id})
+					.exec()
+					.then(result => {
+						res.status(200).json({message: 'Regcode deleted'});
+					})
+					.catch(err => {
+						console.log(err);
+						res.status(500).json({error:err});
+					});
+			
+			} else {
+				res.status(404).json({message:'Regcode not found'});
+			}
+		})
+		.catch(err=>{
+			res.status(500).json({error:err});
+		});
+	
+});
+
 module.exports = router;

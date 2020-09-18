@@ -11,7 +11,7 @@ export default class UserPageView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel'||key==='RegCodeModel') {
+			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -82,12 +82,6 @@ export default class UserPageView extends View {
 				console.log("UserPageView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
 				
-			} else if (options.model==='RegCodeModel' && options.method==='addOne') {
-				if (options.status === 201) {
-					console.log('RegCode ADDED!!!!!!!!!!!!!!');
-				} else {
-					console.log('RegCode Adding ERROR!!!!');
-				}
 			}
 		}
 	}
@@ -261,7 +255,7 @@ export default class UserPageView extends View {
 			
 			console.log('UserPageView => render Models ARE READY!');
 			
-			const UM = this.controller.master.modelRepo.get('UserModel')
+			//const UM = this.controller.master.modelRepo.get('UserModel')
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
@@ -308,7 +302,7 @@ export default class UserPageView extends View {
 					svgFile = './svg/userpage/UserPageSquare.svg';
 					svgClass = 'svg-square-container';
 				}
-				let html =
+				const html =
 					'<div class="row">'+
 						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
 							'<div class="'+svgClass+'">'+
@@ -319,33 +313,7 @@ export default class UserPageView extends View {
 					'<div class="row">'+
 						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 					'</div>';
-				
-				// New code to add Regcode. Works only if you are a superuser!
-				if (UM.is_superuser) {
-					html += '<div class="row">'+
-						'<div class="col s12 center">'+
-							'<button class="btn waves-effect waves-light" id="create-regcode">Create RegCode'+
-								//'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>';
-				}
 				$(html).appendTo(this.el);
-				
-				
-				if (UM.is_superuser) {
-					$('#create-regcode').on('click',function() {
-						// Must call RegCode model addOne -method.
-						const authToken = UM.token;
-						const data = {
-							email: 'juuso@foobar.fi',
-							apartmentId: '123',
-							code: 'HAH333'
-						};
-						self.models['RegCodeModel'].addOne(data, authToken);
-					});
-				}
-				
 				
 				// AND WAIT for SVG object to fully load, before assigning event handlers!
 				const svgObj = document.getElementById("svg-object");

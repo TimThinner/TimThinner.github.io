@@ -20,10 +20,22 @@ export default class UserPropsController extends Controller {
 				this.master.modelRepo.remove(key);
 			}
 		});
-		
 	}
 	
-	
+	clean() {
+		console.log('UserPropsController is now REALLY cleaned!');
+		this.remove();
+		
+		const model = new UserPropsModel({name:'UserPropsModel',src:'to-be-added-in-the-future'});
+		model.subscribe(this);
+		this.master.modelRepo.add('UserPropsModel',model);
+		this.models['UserPropsModel'] = model;
+		
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
+		this.view = new UserPropsView(this);
+	}
 	
 	init() {
 		const model = new UserPropsModel({name:'UserPropsModel',src:'to-be-added-in-the-future'});

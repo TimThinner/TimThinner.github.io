@@ -15,9 +15,7 @@ npm install
 This will create "node_modules"-dir and "package-lock.json"-file.
 
 Now we should be able to start our mongo-server:
-
 Run the nodemon script:
-
 D:\WWW\TimThinner\TimThinner.github.io\web\makingCity\backend>npm run start
 
 
@@ -72,5 +70,12 @@ In UserModel.js use a DB version of:
 	login(data)
 Also in FeedModel.js use a DB version of:
 	fetch(token)
+
+
+Q: How to delete one document from specific collection?
+A: db.regcodes.remove({email:'juuso@foobar.fi'});
+
+
+
 
 

@@ -16,7 +16,7 @@ import Model from '../../common/Model.js';
 		this.ready = true;
 	}
 */
-export default class RegCodeModel extends Model {
+export default class ReadKeyModel extends Model {
 	constructor(options) {
 		super(options);
 		/*this.id = undefined;
@@ -25,7 +25,7 @@ export default class RegCodeModel extends Model {
 		this.code = undefined;
 		this.startdate = undefined;
 		this.enddate = undefined;*/
-		this.regcodes = [];
+		this.readkeys = [];
 		this.selected = undefined;
 	}
 	
@@ -43,7 +43,7 @@ export default class RegCodeModel extends Model {
 		const authorizationToken = 'Bearer '+token;
 		myHeaders.append("Authorization", authorizationToken);
 		
-		const url = this.mongoBackend + '/regcodes';
+		const url = this.mongoBackend + '/readkeys';
 		fetch(url, {headers: myHeaders})
 			.then(function(response) {
 				status = response.status;
@@ -51,8 +51,8 @@ export default class RegCodeModel extends Model {
 			})
 			.then(function(myJson) {
 				console.log(['myJson=',myJson]);
-				self.regcodes = myJson.regcodes;
-				console.log(['self.regcodes=',self.regcodes]);
+				self.readkeys = myJson.readkeys;
+				console.log(['self.readkeys=',self.readkeys]);
 				self.fetching = false;
 				self.ready = true;
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
@@ -80,7 +80,7 @@ export default class RegCodeModel extends Model {
 		apartmentId: req.body.apartmentId,
 		code: req.body.code
 	*/
-	addOne(data, authToken) {
+	/*addOne(data, authToken) {
 		var self = this;
 		var myHeaders = new Headers();
 		var authorizationToken = 'Bearer '+authToken;
@@ -92,7 +92,7 @@ export default class RegCodeModel extends Model {
 			headers: myHeaders,
 			body: JSON.stringify(data)
 		};
-		var myRequest = new Request(this.mongoBackend + '/regcodes', myPost);
+		var myRequest = new Request(this.mongoBackend + '/readkeys', myPost);
 		var status = 500; // RESPONSE (OK: 201, Auth Failed: 401, error: 500)
 		
 		fetch(myRequest)
@@ -101,12 +101,12 @@ export default class RegCodeModel extends Model {
 				return response.json();
 			})
 			.then(function(myJson){
-				self.notifyAll({model:'RegCodeModel', method:'addOne', status:status, message:myJson.message});
+				self.notifyAll({model:'ReadKeyModel', method:'addOne', status:status, message:myJson.message});
 			})
 			.catch(function(error){
-				self.notifyAll({model:'RegCodeModel', method:'addOne', status:status, message:error});
+				self.notifyAll({model:'ReadKeyModel', method:'addOne', status:status, message:error});
 			});
-	}
+	}*/
 	
 	updateOne(id, data, authToken) {
 		const self = this;
@@ -120,7 +120,7 @@ export default class RegCodeModel extends Model {
 			headers: myHeaders,
 			body: JSON.stringify(data)
 		};
-		var myRequest = new Request(this.mongoBackend + '/regcodes/'+id, myPut);
+		var myRequest = new Request(this.mongoBackend + '/readkeys/'+id, myPut);
 		var status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
 		
 		fetch(myRequest)
@@ -131,10 +131,10 @@ export default class RegCodeModel extends Model {
 			.then(function(myJson){
 				// NOTE: When a product is updated, we fetch all products and orders from server.
 				// So no need for complex manipulation for in-memory model-lists here!
-				self.notifyAll({model:'RegCodeModel', method:'updateOne', status:status, message:myJson.message});
+				self.notifyAll({model:'ReadKeyModel', method:'updateOne', status:status, message:myJson.message});
 			})
 			.catch(function(error){
-				self.notifyAll({model:'RegCodeModel', method:'updateOne', status:status, message:error});
+				self.notifyAll({model:'ReadKeyModel', method:'updateOne', status:status, message:error});
 			});
 	}
 }

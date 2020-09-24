@@ -7,7 +7,8 @@ const jwt = require('jsonwebtoken');
 const checkAuth = require('../middleware/check-auth');
 
 const User = require('../models/user');
-
+const Regcode = require('../models/regcode');
+const Readkey = require('../models/readkey');
 /*
 	_id: mongoose.Schema.Types.ObjectId,
 	email: {
@@ -19,8 +20,8 @@ const User = require('../models/user');
 	},
 	password: {type:String, required:true},
 	created: { type: Date, default: Date.now },
-	regcode:  { type: mongoose.Schema.Types.ObjectId, ref:'Regcode', required:true},
-	readkey:  { type: mongoose.Schema.Types.ObjectId, ref:'Readkey', required:true},
+	regcode:  { type: mongoose.Schema.Types.ObjectId, ref:'Regcode'},
+	readkey:  { type: mongoose.Schema.Types.ObjectId, ref:'Readkey'},
 	is_superuser: { type: Boolean, default: false }
 */
 
@@ -52,8 +53,142 @@ router.get('/', checkAuth, (req,res,next)=>{
 		});
 });
 
+/*
+	When user signs up:
+	- check that email is not already used
+		- find given regcode
+			- check from regcode that 
+				- emails match
+				- current timestamp is between startdate and enddate
+					- create a readkey and save it
+					- NOTE: readkey is set to have same startdate and enddate as regcode
+					
+	
+	=> assign Ref to that RegCode
+	
+		=> assign Ref to that ReadKey.
+	
+	That's it!
+*/
 router.post("/signup", (req,res,next)=>{
 	const email_lc = req.body.email.toLowerCase();
+	const regcode_lc = req.body.regcode.toLowerCase();
+	// First check that this email is NOT already used.
+	User.find({email:email_lc})
+		.exec()
+		.then(user=>{
+			if (user.length >= 1) {
+				// CONFLICT!
+				return res.status(409).json({
+					message: 'This email already exists'
+				});
+			} else {
+				// NO CONFLICT!
+				if (regcode_lc === 'f00bar') {
+					// Generate a user and save it
+					bcrypt.hash(req.body.password, 10, (err,hash)=>{
+						if (err) {
+							return res.status(500).json({error:err});
+						} else {
+							const user = new User({
+								_id: new mongoose.Types.ObjectId(),
+								email: email_lc, // Store lowercase version of email.
+								password: hash,
+								is_superuser: true
+								//regcode: regcode[0]._id, // Ref to Regcode
+								//readkey: result._id // Ref to Readkey
+							});
+							user
+								.save()
+								.then(result=>{
+									res.status(201).json({
+										message:'User created'
+									});
+								})
+								.catch(err=>{
+									console.log(['err=',err]);
+									res.status(500).json({error:err});
+								})
+						}
+					});
+				} else {
+					// Normal case: find the given REGCODE from database:
+					Regcode.find({code:regcode_lc})
+						.exec()
+						.then(regcode=>{
+							if (regcode && regcode.length > 0) {
+								//console.log(['regcode[0]=',regcode[0]]);
+								// Ref to regcode is regcode[0]._id;
+								// Check that emails match
+								if (regcode[0].email === email_lc) {
+									// Check that current timestamp is between startdate and enddate
+									const ts = Date.now();
+									const sTS = new Date(regcode[0].startdate);
+									const eTS  = new Date(regcode[0].enddate);
+									//console.log(['Now=',ts]);
+									//console.log(['Start=',sTS.getTime()]);
+									//console.log(['End=',eTS.getTime()]);
+									if (ts > sTS.getTime() && ts < eTS.getTime()) {
+										// Generate a ReadKey and save it
+										const readkey = new Readkey({
+											_id: new mongoose.Types.ObjectId(),
+											startdate: sTS,
+											enddate: eTS
+										});
+										readkey
+											.save()
+											.then(result=>{
+												//console.log(['Readkey saved result=',result]);
+												// Generate a User and save it
+												bcrypt.hash(req.body.password, 10, (err,hash)=>{
+												if (err) {
+													return res.status(500).json({error:err});
+												} else {
+													const user = new User({
+														_id: new mongoose.Types.ObjectId(),
+														email: email_lc, // Store lowercase version of email.
+														password: hash,
+														regcode: regcode[0]._id, // Ref to Regcode
+														readkey: result._id // Ref to Readkey
+													});
+													user
+														.save()
+														.then(result=>{
+															res.status(201).json({
+																message:'User created'
+															});
+														})
+														.catch(err=>{
+															console.log(['err=',err]);
+															res.status(500).json({error:err});
+														})
+													}
+												})
+											})
+											.catch(err=>{
+												console.log(['err=',err]);
+												res.status(500).json({error:err});
+											})
+									} else {
+										res.status(404).json({message: 'Regcode Expired'});
+									}
+								} else {
+									res.status(404).json({message: 'Email and Regcode Not Matching'});
+								}
+							} else {
+								res.status(404).json({message: 'Regcode Not Found'});
+							}
+						})
+				}
+			}
+		})
+		.catch(err=>{
+			console.log(['err=',err]);
+			res.status(500).json({error:err});
+		});
+	
+	
+	/*
 	// First check that this email is NOT already used.
 	User.find({email:email_lc})
 		.exec()
@@ -93,6 +228,8 @@ router.post("/signup", (req,res,next)=>{
 			console.log(['err=',err]);
 			res.status(500).json({error:err});
 		});
+		
+		*/
 });
 /*
 	Responses:

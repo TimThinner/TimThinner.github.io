@@ -5,13 +5,13 @@ super.functionOnParent([arguments]);
 */
 import View from '../../common/View.js';
 
-export default class RegCodeView extends View {
+export default class ReadKeyView extends View {
 	
 	constructor(controller) {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'RegCodeModel' || key === 'MenuModel') {
+			if (key === 'ReadKeyModel' || key === 'MenuModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -38,8 +38,6 @@ export default class RegCodeView extends View {
 		this.rendered = false;
 		$(this.el).empty();
 	}
-	
-	
 	
 	dateTimeWithTimezoneOffset(dt) {
 		// See: http://usefulangle.com/post/30/javascript-get-date-time-with-offset-hours-minutes
@@ -93,48 +91,34 @@ export default class RegCodeView extends View {
 		<th>Start Date</th>
 		<th>End Date</th>
 	*/
-	updateRegcodes() {
+	updateReadKeys() {
 		const self = this;
 		console.log('UPDATE !!!!!!');
-		$('#regcodes-table').empty();
+		$('#readkeys-table').empty();
 		const regkey = 'blaa';
 		const readkey = 'blaa';
-		if (typeof this.models['RegCodeModel'].regcodes !== 'undefined') {
+		if (typeof this.models['ReadKeyModel'].readkeys !== 'undefined') {
 			
-			this.models['RegCodeModel'].regcodes.forEach(code => {
-				
-				
+			this.models['ReadKeyModel'].readkeys.forEach(code => {
 				
 				const id = code._id;
-				const title = '<a href="javascript:void(0);" id="edit-regcode-'+id+'">'+code.email+'</a>';
-				
+				const title = '<a href="javascript:void(0);" id="edit-readkey-'+id+'">'+id+'</a>';
 				
 				const startDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(code.startdate));
 				const endDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(code.enddate));
 				
 				/*
 					_id: doc._id,
-					email: doc.email,
-					apartmentId: doc.apartmentId,
-					code: doc.code,
 					startdate: doc.startdate,     "2020-09-22T21:00:00.000Z"
 					enddate: doc.enddate          "2020-10-22T21:00:00.000Z"
 				*/
 				
-				
 				console.log(['code._id=',id]);
-				const html = '<tr class="regcode-item"><td>'+
-					title+'</td><td>'+code.apartmentId+'</td><td>'+code.code+
-					'</td><td>'+startDateStringLocalTZ+'</td><td>'+endDateStringLocalTZ+'</td></tr>';
-				//title_markup = '<a href="javascript:void(0);" id="edit-product-item-'+code.id+'">'+v.name+'</a>';
-				//remove_button = '<button class="btn red darken-2" id="remove-product-item-'+v.id+'" style="float:right;">Remove</button>';
-				$(html).appendTo("#regcodes-table");
-				$('#edit-regcode-'+id).on('click', function(){
-					//self.productsModel.openForm(code);
-					
-					self.models['RegCodeModel'].selected = id;
-					//console.log(['Edit code=',code]);
-					self.models['MenuModel'].setSelected('REGCODEEDIT');
+				const html = '<tr class="readkey-item"><td>'+title+'</td><td>'+startDateStringLocalTZ+'</td><td>'+endDateStringLocalTZ+'</td></tr>';
+				$(html).appendTo("#readkeys-table");
+				$('#edit-readkey-'+id).on('click', function(){
+					self.models['ReadKeyModel'].selected = id;
+					self.models['MenuModel'].setSelected('READKEYEDIT');
 				});
 			});
 		}
@@ -142,12 +126,12 @@ export default class RegCodeView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='RegCodeModel' && options.method==='fetched') {
+			if (options.model==='ReadKeyModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('RegCodeView => RegCodeModel fetched!');
+					console.log('ReadKeyView => ReadKeyModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
-						this.updateRegcodes();
+						this.updateReadKeys();
 					} else {
 						this.render();
 					}
@@ -168,15 +152,6 @@ export default class RegCodeView extends View {
 					}
 				}
 			}
-			/*
-			else if (options.model==='RegCodeModel' && options.method==='addOne') {
-				if (options.status === 201) {
-					console.log('RegCode ADDED!!!!!!!!!!!!!!');
-				} else {
-					console.log('RegCode Adding ERROR!!!!');
-				}
-			}
-			*/
 		}
 	}
 	
@@ -192,9 +167,8 @@ export default class RegCodeView extends View {
 			//const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
 			//const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
 			
-			const localized_string_title = 'RegCodes';
-			const localized_string_description = 'Admin can list all RegCodes and generate new codes.';
-			
+			const localized_string_title = 'ReadKeys';
+			const localized_string_description = 'Admin can list all ReadKeys and edit dates.';
 			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
@@ -219,40 +193,28 @@ export default class RegCodeView extends View {
 				}
 				
 			} else {
-				
-				
 				const html =
 					'<div class="row">'+
 						'<div class="col s12">'+
 							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
 							'<p style="text-align:center;">'+localized_string_description+'</p>'+
 						'</div>'+
-						
 						'<div class="col s12">'+
 							'<table class="striped">'+
 								'<thead>'+
 									'<tr>'+
-										'<th>Email</th>'+
-										'<th>Apartment Id</th>'+
-										'<th>Code</th>'+
+										'<th>Id</th>'+
 										'<th>Start Date</th>'+
 										'<th>End Date</th>'+
-										'<th>&nbsp;</th>'+
 									'</tr>'+
 								'</thead>'+
-								'<tbody id="regcodes-table">'+
+								'<tbody id="readkeys-table">'+
 								'</tbody>'+
 							'</table>'+
 						'</div>'+
-						
 						'<div class="col s6 center" style="margin-top:16px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-						'<div class="col s6 center" style="margin-top:16px;">'+
-							'<button class="btn waves-effect waves-light" id="create-regcode">Create new Regcode'+
-								//'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
 						'</div>'+
 					'</div>'+
@@ -261,11 +223,7 @@ export default class RegCodeView extends View {
 					'</div>';
 				$(html).appendTo(this.el);
 				
-				this.updateRegcodes();
-				
-				$('#create-regcode').on('click',function() {
-					self.models['MenuModel'].setSelected('REGCODECREATE');
-				});
+				this.updateReadKeys();
 			}
 			$('#back').on('click',function() {
 				
@@ -274,7 +232,7 @@ export default class RegCodeView extends View {
 			});
 			this.rendered = true;
 		} else {
-			console.log('RegCodeView => render Model IS NOT READY!!!!');
+			console.log('ReadKeyView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

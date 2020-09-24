@@ -20,6 +20,7 @@ export default class UsersModel extends Model {
 	
 	constructor(options) {
 		super(options);
+		this.users = [];
 	}
 	
 	fetch(token) {
@@ -48,13 +49,6 @@ export default class UsersModel extends Model {
 		const authorizationToken = 'Bearer '+token;
 		myHeaders.append("Authorization", authorizationToken);
 		
-		/*var url;
-		if (user.is_superuser) {
-			url = this.mongoBackend + '/messages/'; // Get ALL messages!
-		} else {
-			url = this.mongoBackend + '/messages/user/'+user.id;
-		}
-		*/
 		const url = this.mongoBackend + '/users';
 		fetch(url, {headers: myHeaders})
 			.then(function(response) {
@@ -62,9 +56,9 @@ export default class UsersModel extends Model {
 				return response.json();
 			})
 			.then(function(myJson) {
-				
-				console.log(['myJson=',myJson]);
-				
+				//console.log(['myJson=',myJson]);
+				self.users = myJson.users;
+				console.log(['self.users=',self.users]);
 				self.fetching = false;
 				self.ready = true;
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});

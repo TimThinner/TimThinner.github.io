@@ -1,8 +1,8 @@
 import Controller from '../../common/Controller.js';
-import RegCodeModel from  './RegCodeModel.js';
-import RegCodeView from './RegCodeView.js';
+import ReadKeyModel from  './ReadKeyModel.js';
+import ReadKeyView from './ReadKeyView.js';
 
-export default class RegCodeController extends Controller {
+export default class ReadKeyController extends Controller {
 	
 	constructor(options) {
 		super(options);
@@ -17,7 +17,7 @@ export default class RegCodeController extends Controller {
 		// So I just add model removal here, to enable this in the future.
 		
 		Object.keys(this.models).forEach(key => {
-			if (key === 'RegCodeModel') {
+			if (key === 'ReadKeyModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
@@ -25,7 +25,7 @@ export default class RegCodeController extends Controller {
 	}
 	
 	clean() {
-		console.log('RegCodeController is now REALLY cleaned!');
+		console.log('ReadKeyController is now REALLY cleaned!');
 		this.remove();
 		/* IN PeriodicPoller:
 		Object.keys(this.timers).forEach(key => {
@@ -47,31 +47,31 @@ export default class RegCodeController extends Controller {
 		// AND in this.remove finally all models created here is removed.
 		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
 		// so there is no need to redefine them.
-		const model = new RegCodeModel({name:'RegCodeModel',src:'to-be-added-in-the-future'});
+		const model = new ReadKeyModel({name:'ReadKeyModel',src:'to-be-added-in-the-future'});
 		model.subscribe(this);
-		this.master.modelRepo.add('RegCodeModel',model);
-		this.models['RegCodeModel'] = model;
+		this.master.modelRepo.add('ReadKeyModel',model);
+		this.models['ReadKeyModel'] = model;
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.view = new RegCodeView(this);
+		this.view = new ReadKeyView(this);
 		
 	}
 	
 	
 	init() {
-		const model = new RegCodeModel({name:'RegCodeModel',src:'to-be-added-in-the-future'});
+		const model = new ReadKeyModel({name:'ReadKeyModel',src:'to-be-added-in-the-future'});
 		model.subscribe(this);
-		this.master.modelRepo.add('RegCodeModel',model);
-		this.models['RegCodeModel'] = model;
+		this.master.modelRepo.add('ReadKeyModel',model);
+		this.models['ReadKeyModel'] = model;
 		
-		this.timers['RegCodeModel'] = {timer: undefined, interval: -1, models:['RegCodeModel']};
+		this.timers['ReadKeyModel'] = {timer: undefined, interval: -1, models:['ReadKeyModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.view = new RegCodeView(this);
+		this.view = new ReadKeyView(this);
 		
 		
 		

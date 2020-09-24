@@ -56,6 +56,7 @@ export default class UserSignupView extends UserView {
 		const localized_string_signup_title = LM['translation'][sel]['USER_SIGNUP_TITLE'];
 		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
 		const localized_string_user_password = LM['translation'][sel]['USER_PASSWORD'];
+		const localized_string_user_regcode = LM['translation'][sel]['USER_REGCODE'];
 		const localized_string_signup_button_text = LM['translation'][sel]['USER_SIGNUP_BTN_TXT'];
 		
 		const html = 
@@ -67,24 +68,27 @@ export default class UserSignupView extends UserView {
 			*/
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<div class="col s12">'+
-						'<h4 style="text-align:center;">'+localized_string_signup_title+'</h4>'+
-					'</div>'+
-					
-					'<div class="input-field col s12 m6">'+
-						'<input id="signup-email" type="email" class="validate" required="" aria-required="true" />'+
-						'<label for="signup-email">'+localized_string_user_email+'</label>'+
-					'</div>'+
-					'<div class="input-field col s12 m6">'+
-						'<input id="signup-password" type="password" class="validate" required="" aria-required="true" />'+
-						'<label for="signup-password">'+localized_string_user_password+'</label>'+
-					'</div>'+
-					
-					'<div class="col s12 center" id="signup-failed"></div>'+
-					'<div class="col s12 center" id="signup-success"></div>'+
+					'<h4 style="text-align:center;">'+localized_string_signup_title+'</h4>'+
+				'</div>'+
+				'<div class="input-field col s12 m6">'+
+					'<input id="signup-email" type="email" class="validate" required="" aria-required="true" />'+
+					'<label for="signup-email">'+localized_string_user_email+'</label>'+
+				'</div>'+
+				'<div class="input-field col s12 m6">'+
+					'<input id="signup-password" type="password" class="validate" required="" aria-required="true" />'+
+					'<label for="signup-password">'+localized_string_user_password+'</label>'+
 				'</div>'+
 			'</div>'+
-			
+			'<div class="row">'+
+				'<div class="input-field col s12">'+
+					'<input id="signup-regcode" type="text" class="validate" required="" aria-required="true" />'+
+					'<label for="signup-regcode">'+localized_string_user_regcode+'</label>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center" id="signup-failed"></div>'+
+				'<div class="col s12 center" id="signup-success"></div>'+
+			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
@@ -109,8 +113,13 @@ export default class UserSignupView extends UserView {
 			$('#signup-failed').empty();
 			$('#signup-success').empty();
 		});
-		
+		/*
 		$('#signup-password').keypress(function(event){
+			if (event.keyCode == 13) {
+				$('#signup-submit').focus().click();
+			}
+		});*/
+		$('#signup-regcode').keypress(function(event){
 			if (event.keyCode == 13) {
 				$('#signup-submit').focus().click();
 			}
@@ -124,10 +133,12 @@ export default class UserSignupView extends UserView {
 			
 			const _email = $('#signup-email').val();
 			const _password = $('#signup-password').val();
+			const _regcode = $('#signup-regcode').val();
 			
 			const validateArray = [
 				{test:"email",name:"Email",value:_email},
-				{test:"pass",name:"Password",value:_password}
+				{test:"pass",name:"Password",value:_password},
+				{test:"exist",name:"Regcode",value:_regcode}
 			];
 			const v = new Validator();
 			const errors = v.validate(validateArray);
@@ -146,7 +157,8 @@ export default class UserSignupView extends UserView {
 				
 				var data = {
 					email: _email,
-					password: _password
+					password: _password,
+					regcode: _regcode
 				};
 				// disable both buttons
 				$("#cancel").prop("disabled", true);

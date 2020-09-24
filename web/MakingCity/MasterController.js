@@ -27,7 +27,12 @@ import UserElectricityCompensateController from './modules/userelectricitycompen
 
 
 import RegCodeController from './modules/admin/regcodes/RegCodeController.js';
+import RegCodeCreateController from './modules/admin/regcodes/RegCodeCreateController.js';
+import RegCodeEditController from './modules/admin/regcodes/RegCodeEditController.js';
 import UsersController from './modules/admin/users/UsersController.js';
+import ReadKeyController from './modules/admin/readkeys/ReadKeyController.js';
+import ReadKeyEditController from './modules/admin/readkeys/ReadKeyEditController.js';
+
 
 import GridPageController from './modules/gridpage/GridPageController.js';
 import SolarPageController from './modules/solarpage/SolarPageController.js';
@@ -139,8 +144,19 @@ class MasterController {
 		// Admin stuff:
 		this.controllers['REGCODES'] = new RegCodeController({name:'REGCODES', master:this, el:'#content', visible:false});
 		this.controllers['REGCODES'].init();
+		this.controllers['REGCODECREATE'] = new RegCodeCreateController({name:'REGCODECREATE', master:this, el:'#content', visible:false});
+		this.controllers['REGCODECREATE'].init();
+		this.controllers['REGCODEEDIT'] = new RegCodeEditController({name:'REGCODEEDIT', master:this, el:'#content', visible:false});
+		this.controllers['REGCODEEDIT'].init();
+		
 		this.controllers['USERS'] = new UsersController({name:'USERS', master:this, el:'#content', visible:false});
 		this.controllers['USERS'].init();
+		
+		this.controllers['READKEYS'] = new ReadKeyController({name:'READKEYS', master:this, el:'#content', visible:false});
+		this.controllers['READKEYS'].init();
+		this.controllers['READKEYEDIT'] = new ReadKeyEditController({name:'READKEYEDIT', master:this, el:'#content', visible:false});
+		this.controllers['READKEYEDIT'].init();
+		
 		
 		
 		

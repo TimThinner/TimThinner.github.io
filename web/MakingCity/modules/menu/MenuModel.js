@@ -5,6 +5,7 @@ export default class MenuModel extends Model {
 	
 	constructor(options) {
 		super(options);
+		this.ready = true; // Always true!
 		this.selected = undefined;
 	}
 	

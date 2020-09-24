@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const feedsRoutes = require('./api/routes/feeds');
 const usersRoutes = require('./api/routes/users');
 const regcodesRoutes = require('./api/routes/regcodes');
+const readkeysRoutes = require('./api/routes/readkeys');
 
 mongoose.connect('mongodb://localhost:27017/makingcity', {
 	useNewUrlParser: true,
@@ -44,6 +45,7 @@ app.use(bodyParser.json());
 app.use('/feeds', feedsRoutes);
 app.use('/users', usersRoutes);
 app.use('/regcodes', regcodesRoutes);
+app.use('/readkeys', readkeysRoutes);
 
 // If we reach this line we have to report an error.
 app.use((req,res,next)=>{

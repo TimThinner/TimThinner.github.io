@@ -61,11 +61,14 @@ router.post('/', checkAuth, (req,res,next)=>{
 				});
 			} else {
 				// NO CONFLICT!
+				const code_lc = req.body.code.toLowerCase();
 				const reg = new Regcode({
 					_id: new mongoose.Types.ObjectId(),
 					email: email_lc,
 					apartmentId: req.body.apartmentId,
-					code: req.body.code
+					code: code_lc,
+					startdate: req.body.startdate,
+					enddate: req.body.enddate
 				});
 				reg
 					.save()
@@ -89,6 +92,41 @@ router.post('/', checkAuth, (req,res,next)=>{
 		})
 		.catch(err=>{
 			console.log(['err=',err]);
+			res.status(500).json({error:err});
+		});
+});
+
+/*
+	Update a specified regcode.
+	https://www.youtube.com/watch?v=WDrU305J1yw&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=6
+*/
+
+/*
+	Update a specified regcode information.
+	https://www.youtube.com/watch?v=WDrU305J1yw&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=6
+	
+	
+	const data = [
+		{propName:'startdate', value:startdate},
+		{propName:'enddate', value:enddate}
+	];
+	
+*/
+router.put('/:regcodeId', checkAuth, (req,res,next)=>{
+	const id = req.params.regcodeId;
+	const updateOps = {};
+	for (const ops of req.body) {
+		updateOps[ops.propName] = ops.value;
+	}
+	Regcode.updateOne({_id:id},{$set: updateOps})
+		.exec()
+		.then(result => {
+			res.status(200).json({
+				message: 'Regcode updated'
+			});
+		})
+		.catch(err=>{
+			console.log(err);
 			res.status(500).json({error:err});
 		});
 });

@@ -76,12 +76,6 @@ export default class UserPropsView extends View {
 		}
 	}
 	
-	randomString(length, chars) {
-		let result = '';
-		for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-		return result;
-	}
-	
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -120,18 +114,35 @@ export default class UserPropsView extends View {
 				}
 				
 			} else {
-				let admin_html = '';
+				let buttons_html = '';
+				let admin_info = '';
 				if (UM.is_superuser) {
-					admin_html = '<div class="row">'+
-						'<div class="col s6 center">'+
-							'<button class="btn waves-effect waves-light" id="regcodes">RegCodes'+
-							'</button>'+
+					
+					admin_info = '<p>Admin can view and edit RegCodes, view Users and associated ReadKeys.</p>';
+					buttons_html = 
+						'<div class="col s4 center">'+
+							'<button class="btn waves-effect waves-light" id="regcodes">RegCodes</button>'+
 						'</div>'+
-						'<div class="col s6 center">'+
-							'<button class="btn waves-effect waves-light" id="users">Users'+
-							'</button>'+
+						'<div class="col s4 center">'+
+							'<button class="btn waves-effect waves-light" id="users">Users</button>'+
 						'</div>'+
-					'</div>';
+						'<div class="col s4 center">'+
+							'<button class="btn waves-effect waves-light" id="readkeys">Readkeys</button>'+
+						'</div>'+
+						'<div class="col s12 center" style="margin-top:32px;">'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+								'<i class="material-icons left">arrow_back</i>'+
+							'</button>'+
+						'</div>';
+						
+					
+				} else {
+					buttons_html = 
+						'<div class="col s12 center" style="margin-top:32px;">'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+								'<i class="material-icons left">arrow_back</i>'+
+							'</button>'+
+						'</div>';
 				}
 				
 				const html =
@@ -142,17 +153,12 @@ export default class UserPropsView extends View {
 							'<p style="text-align:center;">'+localized_string_description+'</p>'+
 						'</div>'+
 						'<div class="col s12 center" style="margin-top:32px;">'+
-							'<p>&nbsp;</p>'+
-							'<p>&nbsp;</p>'+
+							'<p>&nbsp;</p>'+admin_info+
+							
 							'<p>&nbsp;</p>'+
 						'</div>'+
-					'</div>'+ admin_html +
-					'<div class="row">'+
-						'<div class="col s12 center" style="margin-top:32px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
+					'</div>'+
+					'<div class="row">'+buttons_html+
 					'</div>'+
 					'<div class="row">'+
 						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
@@ -161,14 +167,13 @@ export default class UserPropsView extends View {
 				
 				if (UM.is_superuser) {
 					$('#regcodes').on('click',function() {
-						
-						console.log('REGCODES!');
 						self.menuModel.setSelected('REGCODES');
 					});
 					$('#users').on('click',function() {
-						
-						console.log('USERS!');
 						self.menuModel.setSelected('USERS');
+					});
+					$('#readkeys').on('click',function() {
+						self.menuModel.setSelected('READKEYS');
 					});
 				}
 				

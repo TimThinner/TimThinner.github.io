@@ -79,3 +79,18 @@ A: db.regcodes.remove({email:'juuso@foobar.fi'});
 
 
 
+> use makingcity
+switched to db makingcity
+> db.users.find()
+{ "_id" : ObjectId("5e5cdec9c0bcbb0d24ef0e31"), "is_superuser" : false, "email" : "timthinner@gmail.com", "password" : "$2b$10$WTYu6WizlJRhJRoAWg3MQeXcwVQaBe/Kv6VM.yRi5EINMUGI/Jcb.", "created" : ISODate("2020-03-02T10:24:09.062Z"), "__v" : 0 }
+{ "_id" : ObjectId("5e676503d337ac4294e2b2c0"), "is_superuser" : true, "email" : "timo.kinnunen@vtt.fi", "password" : "$2b$10$YJuvtYgDDkld0a0lXCXiHue75o1Aef.yyhZxZZhs3ydAQvOjUHqnS", "created" : ISODate("2020-03-10T09:59:31.950Z"), "__v" : 0 }
+{ "_id" : ObjectId("5f6c607cd483dc3bcc6885ca"), "is_superuser" : false, "email" : "dee@dee.fi", "password" : "$2b$10$eRXK6lbzJJ0kuFIc.Ompru1HJs3tv36oUQyimlhtlVmaHfAx2s6u6", "regcode" : ObjectId("5f6b3e4f589d113b9095d5f2"), "readkey" : ObjectId("5f6c607cd483dc3bcc6885c9"), "created" : ISODate("2020-09-24T09:01:48.487Z"), "__v" : 0 }
+> db.regcodes.find(9
+... ^C
+
+> db.regcodes.find()
+{ "_id" : ObjectId("5f6b3e4f589d113b9095d5f2"), "email" : "dee@dee.fi", "apartmentId" : "1234", "code" : "gy7dvx", "startdate" : ISODate("2020-09-22T21:00:00Z"), "enddate" : ISODate("2020-10-23T21:00:00Z"), "__v" : 0 }
+> db.readkeys.find()
+{ "_id" : ObjectId("5f6c607cd483dc3bcc6885c9"), "startdate" : ISODate("2020-09-22T21:00:00Z"), "enddate" : ISODate("2020-10-23T21:00:00Z"), "__v" : 0 }
+
+

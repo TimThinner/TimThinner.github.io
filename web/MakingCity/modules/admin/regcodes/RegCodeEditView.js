@@ -41,6 +41,9 @@ export default class RegCodeEditView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='RegCodeModel' && options.method==='updateOne') {
+				
+				const caller = this.models['RegCodeModel'].selected.caller;
+				
 				$('#failed').empty();
 				$('#success').empty();
 				if (options.status === 200) {
@@ -48,7 +51,7 @@ export default class RegCodeEditView extends View {
 					const html = '<div class="success-message"><p>'+options.message+'</p></div>';
 					$(html).appendTo('#success');
 					setTimeout(() => {
-						this.models['MenuModel'].setSelected('REGCODES');
+						this.models['MenuModel'].setSelected(caller);
 					}, 1000);
 					
 				} else {
@@ -146,7 +149,8 @@ export default class RegCodeEditView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		
-		const localized_string_title = 'Edit Start/End Dates';
+		const localized_string_title = 'RegCode';
+		const localized_string_description = 'Modify RegCodes validity period.';
 		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
 		const localized_string_apartment_id = 'Apartment Id';
 		const localized_string_da_cancel = LM['translation'][sel]['DA_CANCEL'];
@@ -161,7 +165,8 @@ export default class RegCodeEditView extends View {
 		// Should we reset this everytime we render the FORM?
 		//this.serviceDates = {'start':'','end':''};
 		// Get the selected RegCode (model) to see the old dates.
-		const sid = this.models['RegCodeModel'].selected;
+		const sid = this.models['RegCodeModel'].selected.id;
+		const caller = this.models['RegCodeModel'].selected.caller;
 		let email = '';
 		let apaId = '';
 		this.models['RegCodeModel'].regcodes.forEach(code => {
@@ -196,6 +201,7 @@ export default class RegCodeEditView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12">'+
 						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
+						'<p style="text-align:center;">'+localized_string_description+'</p>'+
 					'</div>'+
 					/*
 					'<div class="input-field col s12 m6">'+
@@ -242,8 +248,8 @@ export default class RegCodeEditView extends View {
 		this.rendered = true;
 		
 		$("#cancel").on('click', function() {
-			
-			self.models['MenuModel'].setSelected('REGCODES');
+			console.log(['CANCEL caller=',caller]);
+			self.models['MenuModel'].setSelected(caller);
 		});
 		
 		// https://xdsoft.net/jqplugins/datetimepicker/
@@ -279,13 +285,13 @@ export default class RegCodeEditView extends View {
 			const enddate = self.serviceDates.end;		// This is a Date object!
 			
 			// Validate dates with moment()!
-			const nowMoment = moment();
+			/*const nowMoment = moment();
 			nowMoment.second(0);
 			nowMoment.minute(0);
 			nowMoment.hour(0);
-			
-			const staMoment = moment(startDate);
-			const endMoment = moment(endDate);
+			*/
+			const staMoment = moment(startdate);
+			const endMoment = moment(enddate);
 			//console.log(['NOW=',nowMoment.format()]);
 			//console.log(['STA=',staMoment.format()]);
 			//console.log(['END=',endMoment.format()]);
@@ -297,10 +303,10 @@ export default class RegCodeEditView extends View {
 			if (endMoment.format() === 'Invalid date') {
 				date_errors.push('Invalid end date');
 			}
-			if (endMoment.isBefore(nowMoment)) {
+			/*if (endMoment.isBefore(nowMoment)) {
 				date_errors.push('End must be now or in the future.');
-			}
-			if (endMoment.isBefore(staMoment)) {
+			}*/
+			if (endMoment.isSameOrBefore(staMoment)) {
 				date_errors.push('End must be after the start.');
 			}
 			

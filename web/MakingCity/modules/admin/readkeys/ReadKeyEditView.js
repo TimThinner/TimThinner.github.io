@@ -41,6 +41,9 @@ export default class ReadKeyEditView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ReadKeyModel' && options.method==='updateOne') {
+				
+				const caller = this.models['ReadKeyModel'].selected.caller;
+				
 				$('#failed').empty();
 				$('#success').empty();
 				if (options.status === 200) {
@@ -48,7 +51,7 @@ export default class ReadKeyEditView extends View {
 					const html = '<div class="success-message"><p>'+options.message+'</p></div>';
 					$(html).appendTo('#success');
 					setTimeout(() => {
-						this.models['MenuModel'].setSelected('READKEYS');
+						this.models['MenuModel'].setSelected(caller);
 					}, 1000);
 					
 				} else {
@@ -146,7 +149,8 @@ export default class ReadKeyEditView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		
-		const localized_string_title = 'Edit Start/End Dates';
+		const localized_string_title = 'ReadKey';
+		const localized_string_description = 'Modify ReadKeys validity period.';
 		const localized_string_da_cancel = LM['translation'][sel]['DA_CANCEL'];
 		const localized_string_update_readkey = 'Update Readkey';
 		
@@ -158,13 +162,14 @@ export default class ReadKeyEditView extends View {
 		// Should we reset this everytime we render the FORM?
 		//this.serviceDates = {'start':'','end':''};
 		// Get the selected ReadKey (model) to see the old dates.
-		const sid = this.models['ReadKeyModel'].selected;
+		const sid = this.models['ReadKeyModel'].selected.id;
+		const caller = this.models['ReadKeyModel'].selected.caller;
 		let email = '';
 		let apaId = '';
-		this.models['ReadKeyModel'].readkeys.forEach(code => {
-			if (code._id === sid) {
-				this.serviceDates.start = code.startdate;
-				this.serviceDates.end = code.enddate;
+		this.models['ReadKeyModel'].readkeys.forEach(key => {
+			if (key._id === sid) {
+				this.serviceDates.start = key.startdate;
+				this.serviceDates.end = key.enddate;
 			}
 		});
 		/*
@@ -191,6 +196,7 @@ export default class ReadKeyEditView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12">'+
 						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
+						'<p style="text-align:center;">'+localized_string_description+'</p>'+
 					'</div>'+
 					'<div class="input-field col s12 m6" id="active-period-start-wrapper">'+
 						'<input id="active-period-start" type="text" value="'+display_start_datetime+'">'+
@@ -221,7 +227,8 @@ export default class ReadKeyEditView extends View {
 		
 		$("#cancel").on('click', function() {
 			
-			self.models['MenuModel'].setSelected('READKEYS');
+			console.log(['CANCEL caller=',caller]);
+			self.models['MenuModel'].setSelected(caller);
 		});
 		
 		// https://xdsoft.net/jqplugins/datetimepicker/
@@ -257,13 +264,13 @@ export default class ReadKeyEditView extends View {
 			const enddate = self.serviceDates.end;		// This is a Date object!
 			
 			// Validate dates with moment()!
-			const nowMoment = moment();
+			/*const nowMoment = moment();
 			nowMoment.second(0);
 			nowMoment.minute(0);
 			nowMoment.hour(0);
-			
-			const staMoment = moment(startDate);
-			const endMoment = moment(endDate);
+			*/
+			const staMoment = moment(startdate);
+			const endMoment = moment(enddate);
 			//console.log(['NOW=',nowMoment.format()]);
 			//console.log(['STA=',staMoment.format()]);
 			//console.log(['END=',endMoment.format()]);
@@ -275,10 +282,10 @@ export default class ReadKeyEditView extends View {
 			if (endMoment.format() === 'Invalid date') {
 				date_errors.push('Invalid end date');
 			}
-			if (endMoment.isBefore(nowMoment)) {
+			/*if (endMoment.isBefore(nowMoment)) {
 				date_errors.push('End must be now or in the future.');
-			}
-			if (endMoment.isBefore(staMoment)) {
+			}*/
+			if (endMoment.isSameOrBefore(staMoment)) {
 				date_errors.push('End must be after the start.');
 			}
 			

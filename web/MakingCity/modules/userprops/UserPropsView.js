@@ -120,15 +120,15 @@ export default class UserPropsView extends View {
 					
 					admin_info = '<p>Admin can view and edit RegCodes, view Users and associated ReadKeys.</p>';
 					buttons_html = 
-						'<div class="col s4 center">'+
+						'<div class="col s6 center">'+
 							'<button class="btn waves-effect waves-light" id="regcodes">RegCodes</button>'+
 						'</div>'+
-						'<div class="col s4 center">'+
+						'<div class="col s6 center">'+
 							'<button class="btn waves-effect waves-light" id="users">Users</button>'+
 						'</div>'+
-						'<div class="col s4 center">'+
-							'<button class="btn waves-effect waves-light" id="readkeys">Readkeys</button>'+
-						'</div>'+
+						//'<div class="col s4 center">'+
+						//	'<button class="btn waves-effect waves-light" id="readkeys">Readkeys</button>'+
+						//'</div>'+
 						'<div class="col s12 center" style="margin-top:32px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+

@@ -25,14 +25,12 @@ import UserElectricityChartsController from './modules/userelectricitycharts/Use
 import UserElectricityTargetsController from './modules/userelectricitytargets/UserElectricityTargetsController.js';
 import UserElectricityCompensateController from './modules/userelectricitycompensate/UserElectricityCompensateController.js';
 
-
 import RegCodeController from './modules/admin/regcodes/RegCodeController.js';
 import RegCodeCreateController from './modules/admin/regcodes/RegCodeCreateController.js';
 import RegCodeEditController from './modules/admin/regcodes/RegCodeEditController.js';
-import UsersController from './modules/admin/users/UsersController.js';
 import ReadKeyController from './modules/admin/readkeys/ReadKeyController.js';
 import ReadKeyEditController from './modules/admin/readkeys/ReadKeyEditController.js';
-
+import UsersController from './modules/admin/users/UsersController.js';
 
 import GridPageController from './modules/gridpage/GridPageController.js';
 import SolarPageController from './modules/solarpage/SolarPageController.js';
@@ -140,8 +138,7 @@ class MasterController {
 		this.controllers['USERELECTRICITYCOMPENSATE'] = new UserElectricityCompensateController({name:'USERELECTRICITYCOMPENSATE', master:this, el:'#content', visible:false});
 		this.controllers['USERELECTRICITYCOMPENSATE'].init();
 		
-		
-		// Admin stuff:
+		// Admin stuff start ------>
 		this.controllers['REGCODES'] = new RegCodeController({name:'REGCODES', master:this, el:'#content', visible:false});
 		this.controllers['REGCODES'].init();
 		this.controllers['REGCODECREATE'] = new RegCodeCreateController({name:'REGCODECREATE', master:this, el:'#content', visible:false});
@@ -149,16 +146,14 @@ class MasterController {
 		this.controllers['REGCODEEDIT'] = new RegCodeEditController({name:'REGCODEEDIT', master:this, el:'#content', visible:false});
 		this.controllers['REGCODEEDIT'].init();
 		
-		this.controllers['USERS'] = new UsersController({name:'USERS', master:this, el:'#content', visible:false});
-		this.controllers['USERS'].init();
-		
 		this.controllers['READKEYS'] = new ReadKeyController({name:'READKEYS', master:this, el:'#content', visible:false});
 		this.controllers['READKEYS'].init();
 		this.controllers['READKEYEDIT'] = new ReadKeyEditController({name:'READKEYEDIT', master:this, el:'#content', visible:false});
 		this.controllers['READKEYEDIT'].init();
 		
-		
-		
+		this.controllers['USERS'] = new UsersController({name:'USERS', master:this, el:'#content', visible:false});
+		this.controllers['USERS'].init();
+		// <------------- Admin stuff end.
 		
 		this.controllers['GRIDPAGE'] = new GridPageController({name:'GRIDPAGE', master:this, el:'#content', visible:false});
 		this.controllers['GRIDPAGE'].init();

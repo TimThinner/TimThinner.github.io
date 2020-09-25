@@ -11,7 +11,7 @@ export default class UsersView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UsersModel') {
+			if (key === 'UsersModel' || key === 'RegCodeModel' || key === 'ReadKeyModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -41,39 +41,102 @@ export default class UsersView extends View {
 	}
 	
 	
-	updateUsers() {
+	showUsers() {
+		const self = this;
 		$('#users-table').empty();
-		let regcode = '-';
+		let regcode_apaid = '-';
+		let regcode_code = '-';
+		let regcode_validity = '&nbsp;';
 		let readkey = '-';
+		let readkey_validity = '&nbsp;';
+		
 		if (typeof this.models['UsersModel'].users !== 'undefined') {
 			this.models['UsersModel'].users.forEach(user => {
-				
-				console.log(['user=',user]);
+				//console.log(['user=',user]);
 				if (typeof user.regcode !== 'undefined') {
-					regcode = user.regcode._id;
+					regcode_apaid = user.regcode.apartmentId;
+					regcode_code = '<a href="javascript:void(0);" id="edit-regcode-'+user.regcode._id+'">'+user.regcode.code+'</a>';
+					//regcode_validity = '<i style="color:green" class="material-icons small">brightness_1</i>';
+					const ts = Date.now();
+					const sTS = new Date(user.regcode.startdate);
+					const eTS  = new Date(user.regcode.enddate);
+					//console.log(['Now=',ts]);
+					//console.log(['Start=',sTS.getTime()]);
+					//console.log(['End=',eTS.getTime()]);
+					if (ts > sTS.getTime() && ts < eTS.getTime()) {
+						regcode_validity = '<i style="color:green" class="material-icons small">brightness_1</i>';
+					} else {
+						regcode_validity = '<i style="color:red" class="material-icons small">brightness_1</i>';
+					}
 				}
 				if (typeof user.readkey !== 'undefined') {
-					readkey = user.readkey._id;
+					readkey = '<a href="javascript:void(0);" id="edit-readkey-'+user.readkey._id+'">'+user.readkey._id+'</a>';
+					//readkey_validity = '<i style="color:green" class="material-icons small">brightness_1</i>';
+					const ts = Date.now();
+					const sTS = new Date(user.readkey.startdate);
+					const eTS  = new Date(user.readkey.enddate);
+					//console.log(['Now=',ts]);
+					//console.log(['Start=',sTS.getTime()]);
+					//console.log(['End=',eTS.getTime()]);
+					if (ts > sTS.getTime() && ts < eTS.getTime()) {
+						readkey_validity = '<i style="color:green" class="material-icons small">brightness_1</i>';
+					} else {
+						readkey_validity = '<i style="color:red" class="material-icons small">brightness_1</i>';
+					}
 				}
-				
-				const html = '<tr class="user-item"><td>'+user.email+'</td><td>'+user.created+'</td><td>'+regcode+'</td><td>'+readkey+'</td></tr>';
+				const html = '<tr class="user-item">'+
+					'<td>'+user.email+'</td>'+
+					'<td>'+user.created+'</td>'+
+					'<td>'+regcode_apaid+'</td>'+
+					'<td>'+regcode_code+'</td>'+
+					'<td>'+regcode_validity+'</td>'+
+					'<td>'+readkey+'</td>'+
+					'<td>'+readkey_validity+'</td>'+
+					'</tr>';
 				$(html).appendTo("#users-table");
+				
+				if (typeof user.regcode !== 'undefined') {
+					const id = user.regcode._id;
+					$('#edit-regcode-'+id).on('click', function(){
+						
+						self.models['RegCodeModel'].selected = {'id':id,'caller':'USERS'};
+						//console.log(['Edit code=',code]);
+						self.menuModel.setSelected('REGCODEEDIT');
+						//self.models['MenuModel'].setSelected('REGCODEEDIT');
+					});
+				}
+				if (typeof user.readkey !== 'undefined') {
+					const id = user.readkey._id;
+					$('#edit-readkey-'+id).on('click', function(){
+						
+						self.models['ReadKeyModel'].selected = {'id':id,'caller':'USERS'};
+						//console.log(['Edit code=',code]);
+						self.menuModel.setSelected('READKEYEDIT');
+						//self.models['MenuModel'].setSelected('READKEYEDIT');
+					});
+				}
 			});
 		}
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
-			
-			if (options.model==='UsersModel' && options.method==='fetched') {
+			if ((options.model==='UsersModel'||options.model==='RegCodeModel'||options.model==='ReadKeyModel') && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UsersView => UsersModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateUsers();
+					if (this.areModelsReady()) {
+						
+						console.log('UsersView => UsersModel fetched!');
+						if (this.rendered) {
+							$('#'+this.FELID).empty();
+							this.showUsers();
+						} else {
+							this.render();
+						}
 					} else {
-						this.render();
+						console.log('WAIT...');
 					}
+					
+					
 				} else { // Error in fetching.
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
@@ -154,8 +217,10 @@ export default class UsersView extends View {
 									'<tr>'+
 										'<th>Email</th>'+
 										'<th>Created</th>'+
-										'<th>Regcode</th>'+
-										'<th>Readkey</th>'+
+										'<th>ApartmentId</th>'+
+										'<th>RegCode</th>'+
+										'<th>&nbsp;</th>'+
+										'<th>ReadKey</th>'+
 										'<th>&nbsp;</th>'+
 									'</tr>'+
 								'</thead>'+
@@ -175,7 +240,7 @@ export default class UsersView extends View {
 					'</div>';
 				$(html).appendTo(this.el);
 				
-				this.updateUsers();
+				this.showUsers();
 				
 			}
 			$('#back').on('click',function() {

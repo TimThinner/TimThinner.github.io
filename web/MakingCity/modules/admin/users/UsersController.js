@@ -54,6 +54,13 @@ export default class UsersController extends Controller {
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
+		// Get also the RegCode and Readkey models.
+		this.models['RegCodeModel'] = this.master.modelRepo.get('RegCodeModel');
+		this.models['RegCodeModel'].subscribe(this);
+		
+		this.models['ReadKeyModel'] = this.master.modelRepo.get('ReadKeyModel');
+		this.models['ReadKeyModel'].subscribe(this);
+		
 		this.view = new UsersView(this);
 	}
 	
@@ -65,7 +72,14 @@ export default class UsersController extends Controller {
 		this.master.modelRepo.add('UsersModel',model);
 		this.models['UsersModel'] = model;
 		
-		this.timers['UsersView'] = {timer: undefined, interval: -1, models:['UsersModel']};
+		// Get also the RegCode and Readkey models.
+		this.models['RegCodeModel'] = this.master.modelRepo.get('RegCodeModel');
+		this.models['RegCodeModel'].subscribe(this);
+		
+		this.models['ReadKeyModel'] = this.master.modelRepo.get('ReadKeyModel');
+		this.models['ReadKeyModel'].subscribe(this);
+		
+		this.timers['UsersView'] = {timer: undefined, interval: -1, models:['UsersModel','RegCodeModel','ReadKeyModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

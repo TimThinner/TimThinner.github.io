@@ -39,8 +39,6 @@ export default class RegCodeView extends View {
 		$(this.el).empty();
 	}
 	
-	
-	
 	dateTimeWithTimezoneOffset(dt) {
 		// See: http://usefulangle.com/post/30/javascript-get-date-time-with-offset-hours-minutes
 		var timezone_offset_min = new Date().getTimezoneOffset(),
@@ -86,14 +84,7 @@ export default class RegCodeView extends View {
 		return current_datetime + timezone_standard;
 	}
 	
-	/*
-		<th>Email</th>
-		<th>Apartment Id</th>
-		<th>Code</th>
-		<th>Start Date</th>
-		<th>End Date</th>
-	*/
-	updateRegcodes() {
+	showRegcodes() {
 		const self = this;
 		console.log('UPDATE !!!!!!');
 		$('#regcodes-table').empty();
@@ -103,14 +94,26 @@ export default class RegCodeView extends View {
 			
 			this.models['RegCodeModel'].regcodes.forEach(code => {
 				
-				
-				
 				const id = code._id;
 				const title = '<a href="javascript:void(0);" id="edit-regcode-'+id+'">'+code.email+'</a>';
 				
-				
 				const startDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(code.startdate));
 				const endDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(code.enddate));
+				
+				let regcode_validity = '&nbsp;';
+				//<i style="color:red" class="material-icons small">brightness_1</i>
+				
+				const ts = Date.now();
+				const sTS = new Date(code.startdate);
+				const eTS  = new Date(code.enddate);
+				//console.log(['Now=',ts]);
+				//console.log(['Start=',sTS.getTime()]);
+				//console.log(['End=',eTS.getTime()]);
+				if (ts > sTS.getTime() && ts < eTS.getTime()) {
+					regcode_validity = '<i style="color:green" class="material-icons small">brightness_1</i>';
+				} else {
+					regcode_validity = '<i style="color:red" class="material-icons small">brightness_1</i>';
+				}
 				
 				/*
 					_id: doc._id,
@@ -120,19 +123,20 @@ export default class RegCodeView extends View {
 					startdate: doc.startdate,     "2020-09-22T21:00:00.000Z"
 					enddate: doc.enddate          "2020-10-22T21:00:00.000Z"
 				*/
+				//console.log(['code._id=',id]);
+				const html = '<tr class="regcode-item">'+
+					'<td>'+title+'</td>'+
+					'<td>'+code.apartmentId+'</td>'+
+					'<td>'+code.code+'</td>'+
+					'<td>'+startDateStringLocalTZ+'</td>'+
+					'<td>'+endDateStringLocalTZ+'</td>'+
+					'<td>'+regcode_validity+'</td>'+
+					'</tr>';
 				
-				
-				console.log(['code._id=',id]);
-				const html = '<tr class="regcode-item"><td>'+
-					title+'</td><td>'+code.apartmentId+'</td><td>'+code.code+
-					'</td><td>'+startDateStringLocalTZ+'</td><td>'+endDateStringLocalTZ+'</td></tr>';
-				//title_markup = '<a href="javascript:void(0);" id="edit-product-item-'+code.id+'">'+v.name+'</a>';
-				//remove_button = '<button class="btn red darken-2" id="remove-product-item-'+v.id+'" style="float:right;">Remove</button>';
 				$(html).appendTo("#regcodes-table");
 				$('#edit-regcode-'+id).on('click', function(){
-					//self.productsModel.openForm(code);
 					
-					self.models['RegCodeModel'].selected = id;
+					self.models['RegCodeModel'].selected = {'id':id,'caller':'REGCODES'};
 					//console.log(['Edit code=',code]);
 					self.models['MenuModel'].setSelected('REGCODEEDIT');
 				});
@@ -147,7 +151,7 @@ export default class RegCodeView extends View {
 					console.log('RegCodeView => RegCodeModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
-						this.updateRegcodes();
+						this.showRegcodes();
 					} else {
 						this.render();
 					}
@@ -168,15 +172,6 @@ export default class RegCodeView extends View {
 					}
 				}
 			}
-			/*
-			else if (options.model==='RegCodeModel' && options.method==='addOne') {
-				if (options.status === 201) {
-					console.log('RegCode ADDED!!!!!!!!!!!!!!');
-				} else {
-					console.log('RegCode Adding ERROR!!!!');
-				}
-			}
-			*/
 		}
 	}
 	
@@ -219,8 +214,6 @@ export default class RegCodeView extends View {
 				}
 				
 			} else {
-				
-				
 				const html =
 					'<div class="row">'+
 						'<div class="col s12">'+
@@ -261,7 +254,7 @@ export default class RegCodeView extends View {
 					'</div>';
 				$(html).appendTo(this.el);
 				
-				this.updateRegcodes();
+				this.showRegcodes();
 				
 				$('#create-regcode').on('click',function() {
 					self.models['MenuModel'].setSelected('REGCODECREATE');

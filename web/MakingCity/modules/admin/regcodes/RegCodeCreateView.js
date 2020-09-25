@@ -231,6 +231,13 @@ export default class RegCodeCreateView extends View {
 		// https://xdsoft.net/jqplugins/datetimepicker/
 		// Format MUST be: 2018-12-13 08:35:00
 		// format 	Y-m-d H:i:s
+		
+		
+		/*
+			ONE RULE ONLY:
+			Startdate MUST be BEFORE Enddate!
+		*/
+		
 		$('#active-period-start').datetimepicker({
 			format:'Y-m-d',
 			onShow:function( ct ){
@@ -265,11 +272,11 @@ export default class RegCodeCreateView extends View {
 			
 			
 			// Validate dates with moment()!
-			const nowMoment = moment();
+			/*const nowMoment = moment();
 			nowMoment.second(0);
 			nowMoment.minute(0);
 			nowMoment.hour(0);
-			
+			*/
 			const staMoment = moment(startDate);
 			const endMoment = moment(endDate);
 			//console.log(['NOW=',nowMoment.format()]);
@@ -283,10 +290,10 @@ export default class RegCodeCreateView extends View {
 			if (endMoment.format() === 'Invalid date') {
 				date_errors.push('Invalid end date');
 			}
-			if (endMoment.isBefore(nowMoment)) {
+			/*if (endMoment.isBefore(nowMoment)) {
 				date_errors.push('End must be now or in the future.');
-			}
-			if (endMoment.isBefore(staMoment)) {
+			}*/
+			if (endMoment.isSameOrBefore(staMoment)) {
 				date_errors.push('End must be after the start.');
 			}
 			

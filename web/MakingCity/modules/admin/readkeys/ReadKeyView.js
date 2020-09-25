@@ -84,40 +84,33 @@ export default class ReadKeyView extends View {
 		return current_datetime + timezone_standard;
 	}
 	
-	/*
-		<th>Email</th>
-		<th>Apartment Id</th>
-		<th>Code</th>
-		<th>Start Date</th>
-		<th>End Date</th>
-	*/
-	updateReadKeys() {
+	showReadKeys() {
 		const self = this;
-		console.log('UPDATE !!!!!!');
+		//console.log('UPDATE !!!!!!');
 		$('#readkeys-table').empty();
-		const regkey = 'blaa';
-		const readkey = 'blaa';
+		
+		
 		if (typeof this.models['ReadKeyModel'].readkeys !== 'undefined') {
 			
-			this.models['ReadKeyModel'].readkeys.forEach(code => {
-				
-				const id = code._id;
+			this.models['ReadKeyModel'].readkeys.forEach(key => {
+				const id = key._id;
 				const title = '<a href="javascript:void(0);" id="edit-readkey-'+id+'">'+id+'</a>';
-				
-				const startDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(code.startdate));
-				const endDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(code.enddate));
-				
+				const startDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(key.startdate));
+				const endDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(key.enddate));
 				/*
 					_id: doc._id,
 					startdate: doc.startdate,     "2020-09-22T21:00:00.000Z"
 					enddate: doc.enddate          "2020-10-22T21:00:00.000Z"
 				*/
+				//console.log(['key._id=',id]);
+				const html = '<tr class="readkey-item">'+
+					'<td>'+title+'</td>'+
+					'<td>'+startDateStringLocalTZ+'</td>'+
+					'<td>'+endDateStringLocalTZ+'</td></tr>';
 				
-				console.log(['code._id=',id]);
-				const html = '<tr class="readkey-item"><td>'+title+'</td><td>'+startDateStringLocalTZ+'</td><td>'+endDateStringLocalTZ+'</td></tr>';
 				$(html).appendTo("#readkeys-table");
 				$('#edit-readkey-'+id).on('click', function(){
-					self.models['ReadKeyModel'].selected = id;
+					self.models['ReadKeyModel'].selected = {'id':id,'caller':'READKEYS'};
 					self.models['MenuModel'].setSelected('READKEYEDIT');
 				});
 			});
@@ -131,7 +124,7 @@ export default class ReadKeyView extends View {
 					console.log('ReadKeyView => ReadKeyModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
-						this.updateReadKeys();
+						this.showReadKeys();
 					} else {
 						this.render();
 					}
@@ -223,7 +216,7 @@ export default class ReadKeyView extends View {
 					'</div>';
 				$(html).appendTo(this.el);
 				
-				this.updateReadKeys();
+				this.showReadKeys();
 			}
 			$('#back').on('click',function() {
 				

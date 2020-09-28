@@ -51,6 +51,7 @@ export default class UsersView extends View {
 		let readkey_validity = '&nbsp;';
 		
 		if (typeof this.models['UsersModel'].users !== 'undefined') {
+			
 			this.models['UsersModel'].users.forEach(user => {
 				//console.log(['user=',user]);
 				if (typeof user.regcode !== 'undefined') {
@@ -95,24 +96,24 @@ export default class UsersView extends View {
 					'</tr>';
 				$(html).appendTo("#users-table");
 				
+			});
+			
+			
+			this.models['UsersModel'].users.forEach(user => {
 				if (typeof user.regcode !== 'undefined') {
 					const id = user.regcode._id;
 					$('#edit-regcode-'+id).on('click', function(){
-						
-						self.models['RegCodeModel'].selected = {'id':id,'caller':'USERS'};
-						//console.log(['Edit code=',code]);
+						console.log(['SET RegCodeModel selected id=',id]);
+						self.models['RegCodeModel'].setSelected({'id':id,'caller':'USERS'});
 						self.menuModel.setSelected('REGCODEEDIT');
-						//self.models['MenuModel'].setSelected('REGCODEEDIT');
 					});
 				}
 				if (typeof user.readkey !== 'undefined') {
 					const id = user.readkey._id;
 					$('#edit-readkey-'+id).on('click', function(){
-						
-						self.models['ReadKeyModel'].selected = {'id':id,'caller':'USERS'};
-						//console.log(['Edit code=',code]);
+						console.log(['SET ReadkeyModel selected id=',id]);
+						self.models['ReadKeyModel'].setSelected({'id':id,'caller':'USERS'});
 						self.menuModel.setSelected('READKEYEDIT');
-						//self.models['MenuModel'].setSelected('READKEYEDIT');
 					});
 				}
 			});

@@ -175,6 +175,18 @@ export default class UserPropsView extends View {
 					$('#readkeys').on('click',function() {
 						self.menuModel.setSelected('READKEYS');
 					});
+					
+					
+					
+					
+					//const token = UM ? UM.token : undefined;
+					
+					// Try this: Fetch all models that need to be fetched.
+					//this.controller.master.modelRepo.get('UsersModel').fetch(token);
+					//this.controller.master.modelRepo.get('RegCodeModel').fetch(token);
+					//this.controller.master.modelRepo.get('ReadKeyModel').fetch(token);
+					
+					
 				}
 				
 				this.startSwipeEventListeners(

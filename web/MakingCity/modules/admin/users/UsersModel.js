@@ -25,6 +25,9 @@ export default class UsersModel extends Model {
 	
 	fetch(token) {
 		const self = this;
+		
+		console.log(['MODEL '+this.name+' FETCH CALLED! token=',token]);
+		
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
 			return;

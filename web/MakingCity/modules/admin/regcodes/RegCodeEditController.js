@@ -7,7 +7,12 @@ export default class RegCodeEditController extends Controller {
 		super(options);
 	}
 	
-	init() {
+	remove() {
+		super.remove();
+		this.models = {};
+	}
+	
+	initialize() {
 		this.models['RegCodeModel'] = this.master.modelRepo.get('RegCodeModel');
 		this.models['RegCodeModel'].subscribe(this);
 		
@@ -15,5 +20,15 @@ export default class RegCodeEditController extends Controller {
 		this.models['MenuModel'].subscribe(this);
 		
 		this.view = new RegCodeEditView(this);
+	}
+	
+	clean() {
+		console.log('RegCodeEditController is now REALLY cleaned!');
+		this.remove();
+		this.initialize();
+	}
+	
+	init() {
+		this.initialize();
 	}
 }

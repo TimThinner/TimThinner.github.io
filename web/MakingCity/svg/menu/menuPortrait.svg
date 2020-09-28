@@ -54,7 +54,7 @@
 
 <svg x="204" y="-400" width="100px" height="22px">
 	<!--<rect x="1" y="1" width="98" height="24" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-	<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="version-info">v 20.5.26</text>
+	<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="version-info">v 20.9.28</text>
 </svg>
 
 <path class="line" d="M110,-110 L200,-200" />

@@ -42,7 +42,8 @@ export default class ReadKeyEditView extends View {
 		if (this.controller.visible) {
 			if (options.model==='ReadKeyModel' && options.method==='updateOne') {
 				
-				const caller = this.models['ReadKeyModel'].selected.caller;
+				const selected = this.models['ReadKeyModel'].getSelected();
+				const caller = selected.caller;
 				
 				$('#failed').empty();
 				$('#success').empty();
@@ -162,8 +163,9 @@ export default class ReadKeyEditView extends View {
 		// Should we reset this everytime we render the FORM?
 		//this.serviceDates = {'start':'','end':''};
 		// Get the selected ReadKey (model) to see the old dates.
-		const sid = this.models['ReadKeyModel'].selected.id;
-		const caller = this.models['ReadKeyModel'].selected.caller;
+		const selected = this.models['ReadKeyModel'].getSelected();
+		const sid = selected.id;
+		const caller = selected.caller;
 		let email = '';
 		let apaId = '';
 		this.models['ReadKeyModel'].readkeys.forEach(key => {

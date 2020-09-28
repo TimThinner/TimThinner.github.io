@@ -21,7 +21,6 @@ export default class Controller extends PeriodicPoller {
 		this.visible = options.visible;
 		this.el      = options.el;
 		
-		//this.timers = {};
 		this.models = {};
 		this.view   = undefined;
 	}

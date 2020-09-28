@@ -20,37 +20,29 @@ export default class UserPropsController extends Controller {
 				this.master.modelRepo.remove(key);
 			}
 		});
+		this.models = {};
+	}
+	
+	initialize() {
+		const model = new UserPropsModel({name:'UserPropsModel',src:'to-be-added-in-the-future'});
+		model.subscribe(this);
+		this.master.modelRepo.add('UserPropsModel',model);
+		this.models['UserPropsModel'] = model;
+		
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
+		this.view = new UserPropsView(this);
 	}
 	
 	clean() {
 		console.log('UserPropsController is now REALLY cleaned!');
 		this.remove();
-		
-		const model = new UserPropsModel({name:'UserPropsModel',src:'to-be-added-in-the-future'});
-		model.subscribe(this);
-		this.master.modelRepo.add('UserPropsModel',model);
-		this.models['UserPropsModel'] = model;
-		
-		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
-		this.models['MenuModel'].subscribe(this);
-		
-		this.view = new UserPropsView(this);
+		this.initialize();
 	}
 	
 	init() {
-		const model = new UserPropsModel({name:'UserPropsModel',src:'to-be-added-in-the-future'});
-		model.subscribe(this);
-		this.master.modelRepo.add('UserPropsModel',model);
-		this.models['UserPropsModel'] = model;
-		
+		this.initialize();
 		this.timers['UserPropsView'] = {timer: undefined, interval: -1, models:['UserPropsModel']};
-		
-		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
-		this.models['MenuModel'].subscribe(this);
-		
-		this.view = new UserPropsView(this);
-		// If view is shown immediately and poller is used, like in this case, 
-		// we can just call show() and let it start fetching... 
-		//this.show(); // Try if this view can be shown right now!
 	}
 }

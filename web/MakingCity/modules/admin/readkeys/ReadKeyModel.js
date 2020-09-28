@@ -29,8 +29,19 @@ export default class ReadKeyModel extends Model {
 		this.selected = undefined;
 	}
 	
+	setSelected(sel) {
+		this.selected = sel;
+	}
+	
+	getSelected() {
+		return this.selected;
+	}
+	
 	fetch(token) {
 		const self = this;
+		
+		console.log(['MODEL '+this.name+' FETCH CALLED! token=',token]);
+		
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
 			return;

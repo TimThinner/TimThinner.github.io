@@ -7,7 +7,12 @@ export default class ReadKeyEditController extends Controller {
 		super(options);
 	}
 	
-	init() {
+	remove() {
+		super.remove();
+		this.models = {};
+	}
+	
+	initialize() {
 		this.models['ReadKeyModel'] = this.master.modelRepo.get('ReadKeyModel');
 		this.models['ReadKeyModel'].subscribe(this);
 		
@@ -15,5 +20,15 @@ export default class ReadKeyEditController extends Controller {
 		this.models['MenuModel'].subscribe(this);
 		
 		this.view = new ReadKeyEditView(this);
+	}
+	
+	clean() {
+		console.log('ReadKeyEditController is now REALLY cleaned!');
+		this.remove();
+		this.initialize();
+	}
+	
+	init() {
+		this.initialize();
 	}
 }

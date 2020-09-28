@@ -110,7 +110,7 @@ export default class ReadKeyView extends View {
 				
 				$(html).appendTo("#readkeys-table");
 				$('#edit-readkey-'+id).on('click', function(){
-					self.models['ReadKeyModel'].selected = {'id':id,'caller':'READKEYS'};
+					self.models['ReadKeyModel'].setSelected({'id':id,'caller':'READKEYS'});
 					self.models['MenuModel'].setSelected('READKEYEDIT');
 				});
 			});

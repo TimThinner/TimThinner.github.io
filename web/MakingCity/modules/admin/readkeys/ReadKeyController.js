@@ -18,10 +18,23 @@ export default class ReadKeyController extends Controller {
 		
 		Object.keys(this.models).forEach(key => {
 			if (key === 'ReadKeyModel') {
+				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
 		});
+		this.models = {};
+	}
+	
+	initialize() {
+		const model = new ReadKeyModel({name:'ReadKeyModel',src:'to-be-added-in-the-future'});
+		model.subscribe(this);
+		this.master.modelRepo.add('ReadKeyModel',model);
+		this.models['ReadKeyModel'] = model;
 		
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
+		this.view = new ReadKeyView(this);
 	}
 	
 	clean() {
@@ -47,34 +60,12 @@ export default class ReadKeyController extends Controller {
 		// AND in this.remove finally all models created here is removed.
 		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
 		// so there is no need to redefine them.
-		const model = new ReadKeyModel({name:'ReadKeyModel',src:'to-be-added-in-the-future'});
-		model.subscribe(this);
-		this.master.modelRepo.add('ReadKeyModel',model);
-		this.models['ReadKeyModel'] = model;
-		
-		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
-		this.models['MenuModel'].subscribe(this);
-		
-		this.view = new ReadKeyView(this);
-		
+		this.initialize();
 	}
 	
-	
 	init() {
-		const model = new ReadKeyModel({name:'ReadKeyModel',src:'to-be-added-in-the-future'});
-		model.subscribe(this);
-		this.master.modelRepo.add('ReadKeyModel',model);
-		this.models['ReadKeyModel'] = model;
-		
+		this.initialize();
 		this.timers['ReadKeyModel'] = {timer: undefined, interval: -1, models:['ReadKeyModel']};
-		
-		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
-		this.models['MenuModel'].subscribe(this);
-		
-		this.view = new ReadKeyView(this);
-		
-		
-		
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		//this.show(); // Try if this view can be shown right now!

@@ -25,7 +25,29 @@ export default class UserPageController extends Controller {
 				this.master.modelRepo.remove(key);
 			}
 		});
+		this.models = {};
+	}
+	
+	initialize() {
+		const model_1 = new UserWaterModel({name:'UserWaterModel',src:'to-be-added-in-the-future'});
+		model_1.subscribe(this);
+		this.master.modelRepo.add('UserWaterModel',model_1);
+		this.models['UserWaterModel'] = model_1;
 		
+		const model_2 = new UserHeatingModel({name:'UserHeatingModel',src:'to-be-added-in-the-future'});
+		model_2.subscribe(this);
+		this.master.modelRepo.add('UserHeatingModel',model_2);
+		this.models['UserHeatingModel'] = model_2;
+		
+		const model_3 = new UserElectricityModel({name:'UserElectricityModel',src:'to-be-added-in-the-future'});
+		model_3.subscribe(this);
+		this.master.modelRepo.add('UserElectricityModel',model_3);
+		this.models['UserElectricityModel'] = model_3;
+		
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
+		this.view = new UserPageView(this);
 	}
 	
 	clean() {
@@ -51,55 +73,12 @@ export default class UserPageController extends Controller {
 		// AND in this.remove finally all models created here is removed.
 		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
 		// so there is no need to redefine them.
-		
-		const model_1 = new UserWaterModel({name:'UserWaterModel',src:'to-be-added-in-the-future'});
-		model_1.subscribe(this);
-		this.master.modelRepo.add('UserWaterModel',model_1);
-		this.models['UserWaterModel'] = model_1;
-		
-		const model_2 = new UserHeatingModel({name:'UserHeatingModel',src:'to-be-added-in-the-future'});
-		model_2.subscribe(this);
-		this.master.modelRepo.add('UserHeatingModel',model_2);
-		this.models['UserHeatingModel'] = model_2;
-		
-		const model_3 = new UserElectricityModel({name:'UserElectricityModel',src:'to-be-added-in-the-future'});
-		model_3.subscribe(this);
-		this.master.modelRepo.add('UserElectricityModel',model_3);
-		this.models['UserElectricityModel'] = model_3;
-		
-		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
-		this.models['MenuModel'].subscribe(this);
-		
-		this.view = new UserPageView(this);
+		this.initialize();
 	}
 	
 	init() {
-		/*const model = new UserPageModel({name:'UserPageModel',src:'to-be-added-in-the-future'});
-		model.subscribe(this);
-		this.master.modelRepo.add('UserPageModel',model);
-		this.models['UserPageModel'] = model;
-		*/
-		const model_1 = new UserWaterModel({name:'UserWaterModel',src:'to-be-added-in-the-future'});
-		model_1.subscribe(this);
-		this.master.modelRepo.add('UserWaterModel',model_1);
-		this.models['UserWaterModel'] = model_1;
-		
-		const model_2 = new UserHeatingModel({name:'UserHeatingModel',src:'to-be-added-in-the-future'});
-		model_2.subscribe(this);
-		this.master.modelRepo.add('UserHeatingModel',model_2);
-		this.models['UserHeatingModel'] = model_2;
-		
-		const model_3 = new UserElectricityModel({name:'UserElectricityModel',src:'to-be-added-in-the-future'});
-		model_3.subscribe(this);
-		this.master.modelRepo.add('UserElectricityModel',model_3);
-		this.models['UserElectricityModel'] = model_3;
-		
+		this.initialize();
 		this.timers['UserPageView'] = {timer: undefined, interval: 30000, models:['UserWaterModel','UserHeatingModel','UserElectricityModel']};
-		
-		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
-		this.models['MenuModel'].subscribe(this);
-		
-		this.view = new UserPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		this.show(); // Try if this view can be shown right now!

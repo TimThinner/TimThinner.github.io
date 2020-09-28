@@ -18,9 +18,30 @@ export default class UsersController extends Controller {
 		
 		Object.keys(this.models).forEach(key => {
 			if (key === 'UsersModel') {
+				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
 		});
+		this.models = {};
+	}
+	
+	initialize() {
+		const model = new UsersModel({name:'UsersModel',src:'to-be-added-in-the-future'});
+		model.subscribe(this);
+		this.master.modelRepo.add('UsersModel',model);
+		this.models['UsersModel'] = model;
+		
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
+		// Get also the RegCode and Readkey models.
+		this.models['RegCodeModel'] = this.master.modelRepo.get('RegCodeModel');
+		this.models['RegCodeModel'].subscribe(this);
+		
+		this.models['ReadKeyModel'] = this.master.modelRepo.get('ReadKeyModel');
+		this.models['ReadKeyModel'].subscribe(this);
+		
+		this.view = new UsersView(this);
 	}
 	
 	clean() {
@@ -46,47 +67,12 @@ export default class UsersController extends Controller {
 		// AND in this.remove finally all models created here is removed.
 		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
 		// so there is no need to redefine them.
-		const model = new UsersModel({name:'UsersModel',src:'to-be-added-in-the-future'});
-		model.subscribe(this);
-		this.master.modelRepo.add('UsersModel',model);
-		this.models['UsersModel'] = model;
-		
-		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
-		this.models['MenuModel'].subscribe(this);
-		
-		// Get also the RegCode and Readkey models.
-		this.models['RegCodeModel'] = this.master.modelRepo.get('RegCodeModel');
-		this.models['RegCodeModel'].subscribe(this);
-		
-		this.models['ReadKeyModel'] = this.master.modelRepo.get('ReadKeyModel');
-		this.models['ReadKeyModel'].subscribe(this);
-		
-		this.view = new UsersView(this);
+		this.initialize();
 	}
 	
 	
 	init() {
-		
-		const model = new UsersModel({name:'UsersModel',src:'to-be-added-in-the-future'});
-		model.subscribe(this);
-		this.master.modelRepo.add('UsersModel',model);
-		this.models['UsersModel'] = model;
-		
-		// Get also the RegCode and Readkey models.
-		this.models['RegCodeModel'] = this.master.modelRepo.get('RegCodeModel');
-		this.models['RegCodeModel'].subscribe(this);
-		
-		this.models['ReadKeyModel'] = this.master.modelRepo.get('ReadKeyModel');
-		this.models['ReadKeyModel'].subscribe(this);
-		
+		this.initialize();
 		this.timers['UsersView'] = {timer: undefined, interval: -1, models:['UsersModel','RegCodeModel','ReadKeyModel']};
-		
-		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
-		this.models['MenuModel'].subscribe(this);
-		
-		this.view = new UsersView(this);
-		// If view is shown immediately and poller is used, like in this case, 
-		// we can just call show() and let it start fetching... 
-		//this.show(); // Try if this view can be shown right now!
 	}
 }

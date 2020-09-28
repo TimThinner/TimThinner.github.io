@@ -88,20 +88,15 @@ export default class RegCodeView extends View {
 		const self = this;
 		console.log('UPDATE !!!!!!');
 		$('#regcodes-table').empty();
-		const regkey = 'blaa';
-		const readkey = 'blaa';
+		
 		if (typeof this.models['RegCodeModel'].regcodes !== 'undefined') {
 			
 			this.models['RegCodeModel'].regcodes.forEach(code => {
-				
 				const id = code._id;
 				const title = '<a href="javascript:void(0);" id="edit-regcode-'+id+'">'+code.email+'</a>';
-				
 				const startDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(code.startdate));
 				const endDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(code.enddate));
-				
 				let regcode_validity = '&nbsp;';
-				//<i style="color:red" class="material-icons small">brightness_1</i>
 				
 				const ts = Date.now();
 				const sTS = new Date(code.startdate);
@@ -114,7 +109,6 @@ export default class RegCodeView extends View {
 				} else {
 					regcode_validity = '<i style="color:red" class="material-icons small">brightness_1</i>';
 				}
-				
 				/*
 					_id: doc._id,
 					email: doc.email,
@@ -132,11 +126,14 @@ export default class RegCodeView extends View {
 					'<td>'+endDateStringLocalTZ+'</td>'+
 					'<td>'+regcode_validity+'</td>'+
 					'</tr>';
-				
 				$(html).appendTo("#regcodes-table");
+			});
+			
+			this.models['RegCodeModel'].regcodes.forEach(code => {
+				const id = code._id;
 				$('#edit-regcode-'+id).on('click', function(){
-					
-					self.models['RegCodeModel'].selected = {'id':id,'caller':'REGCODES'};
+					console.log(['SET RegCodeModel selected id=',id]);
+					self.models['RegCodeModel'].setSelected({'id':id,'caller':'REGCODES'});
 					//console.log(['Edit code=',code]);
 					self.models['MenuModel'].setSelected('REGCODEEDIT');
 				});

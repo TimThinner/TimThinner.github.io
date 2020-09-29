@@ -21,13 +21,28 @@ router.get('/', checkAuth, (req,res,next)=>{
 				return {
 					//email: doc.email,
 					apartmentId: doc.regcode?doc.regcode.apartmentId:'-',
-					readkey: doc.readkey?doc.readkey._id:'-'
+					readkey: doc.readkey?doc.readkey._id:'-',
+					readkey_startdate: doc.readkey?doc.readkey.startdate:'-',
+					readkey_enddate: doc.readkey?doc.readkey.enddate:'-'
 				}
 			});
-			// Return ONLY those bindings that HAVE apartmentId and readkey!
-			const baa = ba.filter(b => b.apartmentId !== '-');
+			// Return ONLY those bindings that
+			//    - HAVE a readkey (and apartmentId)
+			//    - HAVE a valid readkey (now is between startdate and enddate)
+			//    
+			const baa = ba.filter(b => b.readkey !== '-');
+			const resu = [];
+			const ts = Date.now();
+			baa.forEach(b=>{
+				const sTS = new Date(b.readkey_startdate);
+				const eTS = new Date(b.readkey_enddate);
+				if (ts > sTS.getTime() && ts < eTS.getTime()) {
+					const n = {apartmentId:b.apartmentId, readkey:b.readkey};
+					resu.push(n);
+				}
+			});
 			res.status(200).json({
-				bindings: baa
+				bindings: resu
 			});
 		})
 		.catch(err=>{

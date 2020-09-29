@@ -51,7 +51,7 @@ export default class UserHeatingView extends View {
 				if (options.status === 200) {
 					console.log('UserHeatingView => UserHeatingModel fetched!');
 					if (this.rendered) {
-						$('#').empty();
+						$('#'+this.FELID).empty();
 						this.updateLatestValues();
 					} else {
 						this.render();

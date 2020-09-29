@@ -116,6 +116,7 @@ router.post("/signup", (req,res,next)=>{
 					Regcode.find({code:regcode_lc})
 						.exec()
 						.then(regcode=>{
+							console.log(['regcode=',regcode]);
 							if (regcode && regcode.length > 0) {
 								//console.log(['regcode[0]=',regcode[0]]);
 								// Ref to regcode is regcode[0]._id;
@@ -244,7 +245,8 @@ router.post("/login", (req,res,next)=>{
 	const email_lc = req.body.email.toLowerCase();
 	
 	User.find({email:email_lc})
-		.select('_id email password created is_superuser')
+		.select('_id email password created readkey is_superuser')
+		.populate('readkey')
 		.exec()
 		.then(user=>{
 			if (user.length < 1) {
@@ -273,11 +275,18 @@ router.post("/login", (req,res,next)=>{
 							expiresIn: "24h"
 						}
 					)
+					const rkey = user[0].readkey ? user[0].readkey._id : undefined;
+					//const rkey_startdate = user[0].readkey ? user[0].readkey.startdate : undefined;
+					//const rkey_enddate = user[0].readkey ? user[0].readkey.enddate : undefined;
+					
 					return res.status(200).json({
 						message: 'Auth successful',
 						token: token,
 						userId: user[0]._id,
 						created: user[0].created,
+						readkey: rkey,
+						//readkeystartdate: rkey_startdate,
+						//readkeyenddate: rkey_enddate,
 						is_superuser: user[0].is_superuser
 					});
 				}

@@ -133,7 +133,12 @@ export default class UserSignupView extends UserView {
 			
 			const _email = $('#signup-email').val();
 			const _password = $('#signup-password').val();
-			const _regcode = $('#signup-regcode').val();
+			// NOTE: If REGCODE is copy-pasted from somewhere, it might contain extra spaces... 
+			// MUST remove them just in case!
+			// The trim() method removes whitespace from both ends of a string. 
+			// Whitespace in this context is all the whitespace characters (space, tab, no-break space, etc.) 
+			// and all the line terminator characters (LF, CR, etc.).
+			const _regcode = $('#signup-regcode').val().trim();
 			
 			const validateArray = [
 				{test:"email",name:"Email",value:_email},

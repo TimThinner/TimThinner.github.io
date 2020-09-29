@@ -18,6 +18,7 @@ export default class RegCodeView extends View {
 		});
 		this.rendered = false;
 		this.FELID = 'view-failure';
+		this.layout = 'Table';
 	}
 	
 	show() {
@@ -87,8 +88,11 @@ export default class RegCodeView extends View {
 	showRegcodes() {
 		const self = this;
 		console.log('UPDATE !!!!!!');
-		$('#regcodes-table').empty();
-		
+		if (this.layout === 'Table') {
+			$('#regcodes-table').empty();
+		} else {
+			$('#regcodes-placeholder').empty();
+		}
 		if (typeof this.models['RegCodeModel'].regcodes !== 'undefined') {
 			
 			this.models['RegCodeModel'].regcodes.forEach(code => {
@@ -105,9 +109,9 @@ export default class RegCodeView extends View {
 				//console.log(['Start=',sTS.getTime()]);
 				//console.log(['End=',eTS.getTime()]);
 				if (ts > sTS.getTime() && ts < eTS.getTime()) {
-					regcode_validity = '<i style="color:green" class="material-icons small">brightness_1</i>';
+					regcode_validity = '<i style="color:green;vertical-align:middle;" class="material-icons small">brightness_1</i>';
 				} else {
-					regcode_validity = '<i style="color:red" class="material-icons small">brightness_1</i>';
+					regcode_validity = '<i style="color:red;vertical-align:middle;" class="material-icons small">brightness_1</i>';
 				}
 				/*
 					_id: doc._id,
@@ -118,15 +122,29 @@ export default class RegCodeView extends View {
 					enddate: doc.enddate          "2020-10-22T21:00:00.000Z"
 				*/
 				//console.log(['code._id=',id]);
-				const html = '<tr class="regcode-item">'+
-					'<td>'+title+'</td>'+
-					'<td>'+code.apartmentId+'</td>'+
-					'<td>'+code.code+'</td>'+
-					'<td>'+startDateStringLocalTZ+'</td>'+
-					'<td>'+endDateStringLocalTZ+'</td>'+
-					'<td>'+regcode_validity+'</td>'+
-					'</tr>';
-				$(html).appendTo("#regcodes-table");
+				
+				if (this.layout === 'Table') {
+					const html = '<tr>'+
+						'<td>'+title+'</td>'+
+						'<td>'+code.apartmentId+'</td>'+
+						'<td>'+code.code+'</td>'+
+						'<td>'+startDateStringLocalTZ+'</td>'+
+						'<td>'+endDateStringLocalTZ+'</td>'+
+						'<td>'+regcode_validity+'</td>'+
+						'</tr>';
+					$(html).appendTo("#regcodes-table");
+				} else {
+					const html = '<div class="row">'+
+						'<div class="col s12 regcode-item">'+
+							'<p>Email: '+title+'<br/>'+
+							'Apartment Id: '+code.apartmentId+'<br/>'+
+							'Code: '+code.code+'<br/>'+
+							'Start Date: '+startDateStringLocalTZ+' '+regcode_validity+'<br/>'+
+							'End Date: '+endDateStringLocalTZ+'</p>'+
+						'</div>'+
+					'</div>';
+					$(html).appendTo("#regcodes-placeholder");
+				}
 			});
 			
 			this.models['RegCodeModel'].regcodes.forEach(code => {
@@ -187,7 +205,6 @@ export default class RegCodeView extends View {
 			const localized_string_title = 'RegCodes';
 			const localized_string_description = 'Admin can list all RegCodes and generate new codes.';
 			
-			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
@@ -211,13 +228,7 @@ export default class RegCodeView extends View {
 				}
 				
 			} else {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12">'+
-							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-							'<p style="text-align:center;">'+localized_string_description+'</p>'+
-						'</div>'+
-						
+				let placeholder = 
 						'<div class="col s12">'+
 							'<table class="striped">'+
 								'<thead>'+
@@ -233,8 +244,32 @@ export default class RegCodeView extends View {
 								'<tbody id="regcodes-table">'+
 								'</tbody>'+
 							'</table>'+
+						'</div>';
+					
+				if (this.layout !== 'Table') {
+					placeholder = '<div class="col s12" id="regcodes-placeholder" style="padding: 0 24px;"></div>';
+				}
+				const html =
+					'<div class="row">'+
+						'<div class="col s12">'+
+							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
+							'<p style="text-align:center;">'+localized_string_description+'</p>'+
 						'</div>'+
-						
+						'<div class="col s12" style="padding: 0 24px;">'+
+						'<form action="#">'+
+							'<p>'+
+								'<label>'+
+									'<input name="layout" type="radio" value="Table" />'+
+									'<span>Table</span>'+
+								'</label>'+
+							'</p>'+
+							'<p>'+
+								'<label>'+
+									'<input name="layout" type="radio" value="Cards" />'+
+									'<span>Cards</span>'+
+								'</label>'+
+							'</p>'+
+						'</form></div>'+ placeholder +
 						'<div class="col s6 center" style="margin-top:16px;">'+
 							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 								'<i class="material-icons left">arrow_back</i>'+
@@ -250,6 +285,20 @@ export default class RegCodeView extends View {
 						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 					'</div>';
 				$(html).appendTo(this.el);
+				
+				if (this.layout === 'Table') {
+					$("input[value='Table']").prop('checked', true);
+				} else {
+					$("input[value='Cards']").prop('checked', true);
+				}
+				
+				$("input[type='radio']").click(function(){
+					var radioValue = $("input[name='layout']:checked").val();
+					if(radioValue){
+						self.layout = radioValue;
+						self.render();
+					}
+				});
 				
 				this.showRegcodes();
 				

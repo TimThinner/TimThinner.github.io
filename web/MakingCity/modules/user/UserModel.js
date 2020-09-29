@@ -14,6 +14,11 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		//this.expires = undefined;
+		
+		this.readkey = undefined;
+		//this.readkeystartdate = undefined;
+		//this.readkeyenddate = undefined;
+		
 		this.is_superuser = false;
 		this.localStorageLabel = 'MakingCityUserModel';
 	}
@@ -40,13 +45,25 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		//this.expires = undefined;
+		
+		this.readkey = undefined;
+		//this.readkeystartdate = undefined;
+		//this.readkeyenddate = undefined;
+		
 		this.is_superuser = false;
 	}
 	
 	/* For safety reasons the "is_superuser"-flag is never stored or restored automatically. */
 	store() {
 		var status = localStorage.getItem(this.localStorageLabel);
-		var new_status = {'id':this.id,'email':this.email,'token':this.token}; //,'expires':this.expires};
+		var new_status = {
+			'id':this.id,
+			'email':this.email,
+			'token':this.token,
+			'readkey': this.readkey
+			//'readkeystartdate': this.readkeystartdate,
+			//'readkeyenddate': this.readkeyenddate
+		}; //,'expires':this.expires};
 		
 		// EXCEPT HERE FOR TEST PURPOSES:
 		new_status.is_superuser = this.is_superuser;
@@ -76,6 +93,11 @@ export default class UserModel extends Model {
 			if (typeof stat.email !== 'undefined') { this.email = stat.email; }
 			if (typeof stat.token !== 'undefined') { this.token = stat.token; }
 			//if (typeof stat.expires !== 'undefined') { this.expires = stat.expires; }
+			
+			if (typeof stat.readkey !== 'undefined')          { this.readkey = stat.readkey; }
+			//if (typeof stat.readkeystartdate !== 'undefined') { this.readkeystartdate = stat.readkeystartdate; }
+			//if (typeof stat.readkeyenddate !== 'undefined')   { this.readkeyenddate = stat.readkeyenddate; }
+			
 			// EXCEPT HERE FOR TEST PURPOSES:
 			if (typeof stat.is_superuser !== 'undefined') { this.is_superuser = stat.is_superuser; }
 		}
@@ -143,6 +165,9 @@ export default class UserModel extends Model {
 				self.id = myJson.userId.toString();
 				self.email = data.email;
 				self.is_superuser = myJson.is_superuser;
+				self.readkey = myJson.readkey;
+				//self.readkeystartdate = myJson.readkeystartdate;
+				//self.readkeyenddate = myJson.readkeyenddate;
 				
 				// logged in moment()
 				//const exp = moment().add(24,'hours');

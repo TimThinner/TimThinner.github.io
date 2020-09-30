@@ -116,7 +116,7 @@ router.post("/signup", (req,res,next)=>{
 					Regcode.find({code:regcode_lc})
 						.exec()
 						.then(regcode=>{
-							console.log(['regcode=',regcode]);
+							//console.log(['regcode=',regcode]);
 							if (regcode && regcode.length > 0) {
 								//console.log(['regcode[0]=',regcode[0]]);
 								// Ref to regcode is regcode[0]._id;
@@ -239,8 +239,6 @@ router.post("/signup", (req,res,next)=>{
 	500: error description from NodeJS
 */
 router.post("/login", (req,res,next)=>{
-	
-	console.log(['req.body=',req.body]);
 	
 	const email_lc = req.body.email.toLowerCase();
 	

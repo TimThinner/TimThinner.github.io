@@ -93,8 +93,8 @@ router.post("/signup", (req,res,next)=>{
 							const user = new User({
 								_id: new mongoose.Types.ObjectId(),
 								email: email_lc, // Store lowercase version of email.
-								password: hash,
-								is_superuser: true
+								password: hash
+								//is_superuser: true
 								//regcode: regcode[0]._id, // Ref to Regcode
 								//readkey: result._id // Ref to Readkey
 							});

@@ -1,7 +1,6 @@
 import Model from '../common/Model.js';
 /*
 
-Datoja pääsee nyt alkajaisiksi lukemaan seuraavan urlin kautta :   https://smartiot.vtt.fi/data/sivakka/status/last.json?key=12E6F2B1236A
 ”Virtuaaliasuntoja” on aluksi se viisi kappaletta, joita pääsee lukemaan avaimilla
 
 12E6F2B1236A
@@ -12,26 +11,41 @@ Datoja pääsee nyt alkajaisiksi lukemaan seuraavan urlin kautta :   https://sma
 
 eli vain eka numero vaihtuu.
 
+Muistista:
+https://makingcity.vtt.fi/data/sivakka/apartments/last.json?apiKey=12E6F2B1236A
+
+ja tietokannasta:
+
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=power&limit=10&start=2020-09-30&end=2020-09-30
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=temperature&limit=10&start=2020-09-30&end=2020-09-30
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=water&limit=10&start=2020-09-30&end=2020-09-30
+
 {
+  "info": {
+    "buildingId": 1,
+    "apartmentId": 101
+  },
   "power": {
-    "powerId": "1001",
-    "lastImpulseCtr": 5,
-    "totImpulseCtr": 6,
-    "avPower": 117,
-    "totEnergy": 2,
-    "DateTime": "2020-09-30 11:43:34"
+    "powerId": 101,
+    "lastImpulseCtr": 0,
+    "totalImpulseCtr": 0,
+    "averagePower": 0,
+    "totalEnergy": 0,
+    "DateTime": ""
   },
   "temperature": {
-    "tempId": "101",
-    "temperature": 21.7,
-    "humidity": 31,
-    "DateTime": "2020-09-30 11:43:44"
+    "tempId": 201,
+    "temperature": 0,
+    "humidity": 0,
+    "DateTime": ""
   },
   "water": {
-    "waterId": "101",
-    "hotWaterTot": 11,
-    "coldWaterTot": 21,
-    "DateTime": "2020-09-30 11:43:39"
+    "waterId": 301,
+    "hotWaterAverage": 0,
+    "coldWaterAverage": 0,
+    "hotWaterTotal": 0,
+    "coldWaterTotal": 0,
+    "DateTime": ""
   }
 }
 */
@@ -72,14 +86,14 @@ export default class UserMeasurementModel extends Model {
 			myHeaders.append("Content-Type", "application/json");
 			
 			// Params example:
-			//req.body.url		https://smartiot.vtt.fi/data/sivakka/status/last.json
+			//req.body.url		https://makingcity.vtt.fi/data/sivakka/apartments/last.json
 			//req.body.readkey	5f743b8d49612827a005bd2c
 			//
 			if (typeof readkey !== 'undefined') {
 				// Normal user has a readkey, which was created when user registered into the system. 
 				const url = this.mongoBackend + '/measurements/';
 				//const body_url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
-				const body_url = 'https://smartiot.vtt.fi/data/sivakka/status/last.json';
+				const body_url = 'https://makingcity.vtt.fi/data/sivakka/apartments/last.json';
 				const body_readkey = readkey;
 				const data = {url:body_url, readkey:body_readkey};
 				
@@ -90,8 +104,8 @@ export default class UserMeasurementModel extends Model {
 				};
 				const myRequest = new Request(this.mongoBackend + '/measurements/', myPost);
 				
-				console.log('fetch url='+this.mongoBackend+'/measurements/');
-				console.log('body.url='+body_url);
+				//console.log('fetch url='+this.mongoBackend+'/measurements/');
+				//console.log('body.url='+body_url);
 				
 				fetch(myRequest)
 					.then(function(response) {
@@ -118,10 +132,34 @@ export default class UserMeasurementModel extends Model {
 				console.log('Using STATIC response!');
 				status = 200; // OK
 				self.measurement = {
-				"power":{"powerId":"1001","lastImpulseCtr":5,"totImpulseCtr":6,"avPower":81,"totEnergy":2,"DateTime":"2020-09-30 16:18:34"},
-				"temperature":{"tempId":"101","temperature":21.4,"humidity":31,"DateTime":"2020-09-30 16:18:44"},
-				"water":{"waterId":"101","hotWaterTot":11,"coldWaterTot":21,"DateTime":"2020-09-30 16:18:39"}
+					"info": {
+						"buildingId": 1,
+						"apartmentId": 101
+					},
+					"power": {
+						"powerId": 101,
+						"lastImpulseCtr": 0,
+						"totalImpulseCtr": 0,
+						"averagePower": 0,
+						"totalEnergy": 0,
+						"DateTime": ""
+					},
+					"temperature": {
+						"tempId": 201,
+						"temperature": 0,
+						"humidity": 0,
+						"DateTime": ""
+					},
+					"water": {
+						"waterId": 301,
+						"hotWaterAverage": 0,
+						"coldWaterAverage": 0,
+						"hotWaterTotal": 0,
+						"coldWaterTotal": 0,
+						"DateTime": ""
+					}
 				};
+				console.log(['self.measurement=',self.measurement]);
 				setTimeout(() => {
 					this.fetching = false;
 					this.ready = true;

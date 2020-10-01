@@ -50,16 +50,20 @@ export default class UsersView extends View {
 		} else {
 			$('#users-placeholder').empty();
 		}
-		let regcode_apaid = '-';
-		let regcode_code = '-';
-		let regcode_validity = '&nbsp;';
-		let readkey = '-';
-		let readkey_validity = '&nbsp;';
 		
 		if (typeof this.models['UsersModel'].users !== 'undefined') {
 			
 			this.models['UsersModel'].users.forEach(user => {
 				//console.log(['user=',user]);
+				
+				let regcode_apaid = '-';
+				let regcode_code = '-';
+				let regcode_validity = '&nbsp;';
+				let readkey = '-';
+				let readkey_validity = '&nbsp;';
+				
+				
+				
 				if (typeof user.regcode !== 'undefined') {
 					regcode_apaid = user.regcode.apartmentId;
 					regcode_code = '<a href="javascript:void(0);" id="edit-regcode-'+user.regcode._id+'">'+user.regcode.code+'</a>';

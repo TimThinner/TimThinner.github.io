@@ -56,22 +56,7 @@ export default class PeriodicPoller {
 				// In registering process a special READKEY is created, and it is unique for each user.
 				// The READKEY has startDate and endDate, when it is valid to fetch users data. This is managed 
 				// by the administrator.
-				// The Timers where READKEY must be used are:
-				//   - UserPageView
-				//   - UserElectricityView
-				//   - UserHeatingView
-				//   - UserWaterView
 				//
-				// The name is name of the timer:
-				/*
-				if (name==='UserPageView'||name==='UserElectricityView'||name==='UserHeatingView'||name==='UserWaterView') {
-					const readkey = um ? um.readkey : undefined;
-					const readkeystartdate = um ? um.readkeystartdate : undefined;
-					const readkeyenddate = um ? um.readkeyenddate : undefined;
-					console.log(['PERIODIC POLLER timername=',name,' interval=',this.timers[name].interval,
-						' readkey=',readkey, 'readkeystartdate=',readkeystartdate,' readkeyenddate',readkeyenddate]);
-				}
-				*/
 				this.timers[name].models.forEach(key => {
 					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey]);
 					this.models[key].fetch(token, readkey);
@@ -85,17 +70,9 @@ export default class PeriodicPoller {
 				const um = this.master.modelRepo.get('UserModel');
 				const token = um ? um.token : undefined;
 				const readkey = um ? um.readkey : undefined;
-				/*
-				if (name==='UserPageView'||name==='UserElectricityView'||name==='UserHeatingView'||name==='UserWaterView') {
-					const readkey = um ? um.readkey : undefined;
-					const readkeystartdate = um ? um.readkeystartdate : undefined;
-					const readkeyenddate = um ? um.readkeyenddate : undefined;
-					console.log(['PERIODIC POLLER timername=',name,' interval=',this.timers[name].interval,
-						' readkey=',readkey, 'readkeystartdate=',readkeystartdate,' readkeyenddate',readkeyenddate]);
-				}*/
+				
 				this.timers[name].models.forEach(key => {
 					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey]);
-					
 					this.models[key].fetch(token, readkey);
 				});
 			}

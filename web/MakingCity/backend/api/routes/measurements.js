@@ -12,11 +12,11 @@ const Readkey = require('../models/readkey');
 	
 	We are just passing the request URL adding Authorization into call.
 	
-	https://smartiot.vtt.fi/data/sivakka/status/last.json?key=12E6F2B1236A
+	https://makingcity.vtt.fi/data/sivakka/apartments/last.json?apiKey=12E6F2B1236A
 	
 	PARAMS:
 							EXAMPLE
-		req.body.url		https://smartiot.vtt.fi/data/sivakka/status/last.json
+		req.body.url		https://makingcity.vtt.fi/data/sivakka/apartments/last.json
 		req.body.readkey	5f743b8d49612827a005bd2c
 		
 		
@@ -26,7 +26,7 @@ router.post('/', checkAuth, (req,res,next)=>{
 	//What if we check the Readkey here and append it to URL?
 	
 	// check 
-	// req.body.url = https://smartiot.vtt.fi/data/sivakka/status/last.json
+	// req.body.url = 
 	//
 	const readkey = req.body.readkey;
 	//Readkey.find({code:regcode_lc})
@@ -50,7 +50,7 @@ router.post('/', checkAuth, (req,res,next)=>{
 					
 					// Use FAKE key now: '12E6F2B1236A'
 					const fakeKey = '12E6F2B1236A';
-					const url = req.body.url + '?key='+fakeKey; //readkey;
+					const url = req.body.url + '?apiKey='+fakeKey; //readkey;
 					const auth = req.headers.authorization;
 					const options = {
 						headers: {

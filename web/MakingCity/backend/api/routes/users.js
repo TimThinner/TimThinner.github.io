@@ -84,7 +84,7 @@ router.post("/signup", (req,res,next)=>{
 				});
 			} else {
 				// NO CONFLICT!
-				if (regcode_lc === 'f00bar') {
+				if (regcode_lc === 'f00baz') {
 					// Generate a user and save it
 					bcrypt.hash(req.body.password, 10, (err,hash)=>{
 						if (err) {
@@ -95,6 +95,33 @@ router.post("/signup", (req,res,next)=>{
 								email: email_lc, // Store lowercase version of email.
 								password: hash
 								//is_superuser: true
+								//regcode: regcode[0]._id, // Ref to Regcode
+								//readkey: result._id // Ref to Readkey
+							});
+							user
+								.save()
+								.then(result=>{
+									res.status(201).json({
+										message:'User created'
+									});
+								})
+								.catch(err=>{
+									console.log(['err=',err]);
+									res.status(500).json({error:err});
+								})
+						}
+					});
+				} else if (regcode_lc === 'f00bar') {
+					// Generate a user and save it
+					bcrypt.hash(req.body.password, 10, (err,hash)=>{
+						if (err) {
+							return res.status(500).json({error:err});
+						} else {
+							const user = new User({
+								_id: new mongoose.Types.ObjectId(),
+								email: email_lc, // Store lowercase version of email.
+								password: hash,
+								is_superuser: true
 								//regcode: regcode[0]._id, // Ref to Regcode
 								//readkey: result._id // Ref to Readkey
 							});

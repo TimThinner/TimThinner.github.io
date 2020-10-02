@@ -59,6 +59,8 @@ export default class UserMeasurementModel extends Model {
 		this.measurement = {};
 	}
 	
+	
+	/*
 	fetch(token, readkey) {
 		const self = this;
 		if (this.fetching) {
@@ -173,5 +175,56 @@ export default class UserMeasurementModel extends Model {
 			self.errorMessage = error
 			self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
 		}
+	}
+	*/
+	
+	
+	fetch(token) {
+		const self = this;
+		if (this.fetching) {
+			console.log('MEASUREMENT '+this.name+' FETCHING ALREADY IN PROCESS!');
+			return;
+		}
+		
+		let status = 500; // error: 500
+		this.errorMessage = '';
+		this.fetching = true;
+		
+		console.log('Using STATIC response!');
+		status = 200; // OK
+		this.measurement = {
+			"info": {
+				"buildingId": 1,
+				"apartmentId": 101
+			},
+			"power": {
+				"powerId": 101,
+				"lastImpulseCtr": 0,
+				"totalImpulseCtr": 0,
+				"averagePower": 0,
+				"totalEnergy": 0,
+				"DateTime": ""
+			},
+			"temperature": {
+				"tempId": 201,
+				"temperature": 0,
+				"humidity": 0,
+				"DateTime": ""
+			},
+			"water": {
+				"waterId": 301,
+				"hotWaterAverage": 0,
+				"coldWaterAverage": 0,
+				"hotWaterTotal": 0,
+				"coldWaterTotal": 0,
+				"DateTime": ""
+			}
+		};
+		console.log(['self.measurement=',self.measurement]);
+		setTimeout(() => {
+			this.fetching = false;
+			this.ready = true;
+			this.notifyAll({model:this.name, method:'fetched', status:status, message:'OK'});
+		}, 200);
 	}
 }

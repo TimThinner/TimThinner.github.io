@@ -109,7 +109,7 @@ export default class UserModel extends Model {
 			this.store();
 		}
 	}
-	/*
+	
 	signup(data) {
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:201,message:'Signup OK'}), 100);
 	}
@@ -130,7 +130,7 @@ export default class UserModel extends Model {
 		this.store();
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'login',status:200,message:'Login OK'}), 100);
 	}
-	*/
+	
 	logout() {
 		this.reset();
 		this.store();
@@ -141,7 +141,7 @@ export default class UserModel extends Model {
 	/*
 	this.mongoBackend = 'http://localhost:3000';
 	*/
-	
+	/*
 	login(data) {
 		var self = this;
 		var status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
@@ -210,6 +210,7 @@ export default class UserModel extends Model {
 			self.notifyAll({model:'UserModel',method:'signup',status:status,message:error});
 		});
 	}
+	*/
 	
 	/*
 	changePassword(data) {

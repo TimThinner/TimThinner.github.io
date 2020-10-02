@@ -192,6 +192,7 @@ export default class FeedModel extends Model {
 		//console.log([self.name+' fetch debug_time_elapse=',debug_time_elapse]);
 	}
 	
+	/*
 	fetch(token) {
 		const self = this;
 		if (this.fetching) {
@@ -292,7 +293,8 @@ export default class FeedModel extends Model {
 				});
 		}
 	}
-	/*
+	*/
+	
 	fetch(token) {
 		const self = this;
 		if (this.fetching) {
@@ -337,5 +339,5 @@ export default class FeedModel extends Model {
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
 			});
 	}
-	*/
+	
 }

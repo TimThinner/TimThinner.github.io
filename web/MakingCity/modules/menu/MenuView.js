@@ -445,7 +445,6 @@ These are filled with correct values in here:
 		}
 	}
 	
-	
 	localizeSVGTexts() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
@@ -453,20 +452,8 @@ These are filled with correct values in here:
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			
-			/*
-			const localized_d_a = LM['translation'][sel]['MENU_D_A_LABEL'];
-			const localized_d_b = LM['translation'][sel]['MENU_D_B_LABEL'];
-			const localized_d_c = LM['translation'][sel]['MENU_D_C_LABEL'];
-			const localized_d_d = LM['translation'][sel]['MENU_D_D_LABEL'];
-			const localized_d_e = LM['translation'][sel]['MENU_D_E_LABEL'];
-			
-			this.fillSVGTextElement(svgObject, 'district-a', localized_d_a);
-			this.fillSVGTextElement(svgObject, 'district-b', localized_d_b);
-			this.fillSVGTextElement(svgObject, 'district-c', localized_d_c);
-			this.fillSVGTextElement(svgObject, 'district-d', localized_d_d);
-			this.fillSVGTextElement(svgObject, 'district-e', localized_d_e);
-			
-			*/
+			const localized_version = LM['translation'][sel]['MENU_VERSION'];
+			this.fillSVGTextElement(svgObject, 'version', localized_version);
 		}
 	}
 	
@@ -519,7 +506,7 @@ These are filled with correct values in here:
 			
 			self.setLanguageSelection(LM.selected);
 			self.addSVGEventHandlers();
-			//self.localizeSVGTexts();
+			self.localizeSVGTexts();
 			
 			if (USER_MODEL.isLoggedIn()) {
 				self.addSVGUser();

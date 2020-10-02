@@ -1,10 +1,11 @@
 import Model from '../common/Model.js';
 /*
 	User has:
-		
+		id
 		email
 		token
-		
+		readkey
+		is_superuser
 */
 export default class UserModel extends Model {
 	
@@ -13,12 +14,7 @@ export default class UserModel extends Model {
 		this.id = undefined;
 		this.email = undefined;
 		this.token = undefined;
-		//this.expires = undefined;
-		
 		this.readkey = undefined;
-		//this.readkeystartdate = undefined;
-		//this.readkeyenddate = undefined;
-		
 		this.is_superuser = false;
 		this.localStorageLabel = 'MakingCityUserModel';
 	}
@@ -44,51 +40,44 @@ export default class UserModel extends Model {
 		this.id = undefined;
 		this.email = undefined;
 		this.token = undefined;
-		//this.expires = undefined;
-		
 		this.readkey = undefined;
-		//this.readkeystartdate = undefined;
-		//this.readkeyenddate = undefined;
-		
 		this.is_superuser = false;
 	}
 	
 	/* For safety reasons the "is_superuser"-flag is never stored or restored automatically. */
 	store() {
-		var status = localStorage.getItem(this.localStorageLabel);
-		var new_status = {
+		const status = localStorage.getItem(this.localStorageLabel);
+		const new_status = {
 			'id':this.id,
 			'email':this.email,
 			'token':this.token,
 			'readkey': this.readkey
-			//'readkeystartdate': this.readkeystartdate,
-			//'readkeyenddate': this.readkeyenddate
-		}; //,'expires':this.expires};
+		};
 		
 		// EXCEPT HERE FOR TEST PURPOSES:
 		new_status.is_superuser = this.is_superuser;
 		
 		if (status == null) {
 			// no previous status.
-			var encoded = JSON.stringify(new_status);
+			const encoded = JSON.stringify(new_status);
 			localStorage.setItem(this.localStorageLabel, encoded);
 			
 		} else {
 			// previous status exist.
 			localStorage.removeItem(this.localStorageLabel);
-			var encoded = JSON.stringify(new_status);
+			const encoded = JSON.stringify(new_status);
 			localStorage.setItem(this.localStorageLabel, encoded);
 		}
 	}
 	
 	/* For safety reasons the "is_superuser"-flag is never stored or restored automatically. */
 	restore() {
-		var status = localStorage.getItem(this.localStorageLabel);
+		const status = localStorage.getItem(this.localStorageLabel);
 		if (status == null) {
 			console.log('No status stored in localStorage.');
 		} else {
 			// Status exist: Restore current situation from localStorage.
-			var stat = JSON.parse(status);
+			const stat = JSON.parse(status);
 			if (typeof stat.id !== 'undefined')    { this.id = stat.id; }
 			if (typeof stat.email !== 'undefined') { this.email = stat.email; }
 			if (typeof stat.token !== 'undefined') { this.token = stat.token; }
@@ -110,26 +99,6 @@ export default class UserModel extends Model {
 		}
 	}
 	
-	signup(data) {
-		setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:201,message:'Signup OK'}), 100);
-	}
-	
-	login(data) {
-		this.id = 'nodatabaseid';
-		this.email = data.email;
-		this.token = 'nodatabasetoken';
-		this.is_superuser = false;
-		
-		// logged in moment()
-		//const exp = moment().add(24,'hours');
-		//const exp = moment().add(2,'minutes');
-		// Formats a string to the ISO8601 standard.
-		//this.expires = exp.toISOString(); // 2013-02-04T22:44:30.652Z
-		// Store token and email temporarily into localStorage.
-		// It will be removed when the user logs-out.
-		this.store();
-		setTimeout(() => this.notifyAll({model:'UserModel',method:'login',status:200,message:'Login OK'}), 100);
-	}
 	
 	logout() {
 		this.reset();
@@ -141,77 +110,96 @@ export default class UserModel extends Model {
 	/*
 	this.mongoBackend = 'http://localhost:3000';
 	*/
-	/*
+	
 	login(data) {
-		var self = this;
-		var status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
-		var url = this.mongoBackend + '/users/login';
-		fetch(url, {
-			method: 'POST',
-			body: JSON.stringify(data),
-			headers:{
-				'Content-Type': 'application/json'
-			}
-		})
-		.then(function(response) {
-			status = response.status;
-			return response.json();
-		})
-		.then(function(myJson) {
-			var message = myJson.message;
-			if (status === 200 && myJson.token) {
-				// Login was OK, set the Authentication-token to model.
-				self.token = myJson.token;
-				self.id = myJson.userId.toString();
-				self.email = data.email;
-				self.is_superuser = myJson.is_superuser;
-				self.readkey = myJson.readkey;
-				//self.readkeystartdate = myJson.readkeystartdate;
-				//self.readkeyenddate = myJson.readkeyenddate;
-				
-				// logged in moment()
-				//const exp = moment().add(24,'hours');
-				//const exp = moment().add(60,'seconds');
-				//const exp = moment().add(2,'minutes');
-				// Formats a string to the ISO8601 standard.
-				//self.expires = exp.toISOString(); // 2013-02-04T22:44:30.652Z
-				
-				// Store token and email temporarily into localStorage.
-				// It will be removed when the user logs-out.
-				self.store();
-			}
-			self.notifyAll({model:'UserModel',method:'login',status:status,message:message});
-		})
-		.catch(function(error) {
-			self.notifyAll({model:'UserModel',method:'login',status:status,message:error});
-		});
+		const self = this;
+		if (this.MOCKUP) {
+			this.id = 'nodatabaseid';
+			this.email = data.email;
+			this.token = 'nodatabasetoken';
+			this.is_superuser = false;
+			
+			// logged in moment()
+			//const exp = moment().add(24,'hours');
+			//const exp = moment().add(2,'minutes');
+			// Formats a string to the ISO8601 standard.
+			//this.expires = exp.toISOString(); // 2013-02-04T22:44:30.652Z
+			// Store token and email temporarily into localStorage.
+			// It will be removed when the user logs-out.
+			this.store();
+			setTimeout(() => this.notifyAll({model:'UserModel',method:'login',status:200,message:'Login OK'}), 100);
+		} else {
+			let status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
+			const url = this.mongoBackend + '/users/login';
+			fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers:{
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(function(response) {
+				status = response.status;
+				return response.json();
+			})
+			.then(function(myJson) {
+				const message = myJson.message;
+				if (status === 200 && myJson.token) {
+					// Login was OK, set the Authentication-token to model.
+					self.token = myJson.token;
+					self.id = myJson.userId.toString();
+					self.email = data.email;
+					self.is_superuser = myJson.is_superuser;
+					self.readkey = myJson.readkey;
+					//self.readkeystartdate = myJson.readkeystartdate;
+					//self.readkeyenddate = myJson.readkeyenddate;
+					
+					// logged in moment()
+					//const exp = moment().add(24,'hours');
+					//const exp = moment().add(60,'seconds');
+					//const exp = moment().add(2,'minutes');
+					// Formats a string to the ISO8601 standard.
+					//self.expires = exp.toISOString(); // 2013-02-04T22:44:30.652Z
+					
+					// Store token and email temporarily into localStorage.
+					// It will be removed when the user logs-out.
+					self.store();
+				}
+				self.notifyAll({model:'UserModel',method:'login',status:status,message:message});
+			})
+			.catch(function(error) {
+				self.notifyAll({model:'UserModel',method:'login',status:status,message:error});
+			});
+		}
 	}
 	
 	signup(data) {
-		var self = this;
-		var status = 500; // RESPONSE (OK: 201, MAIL EXISTS: 409, error: 500)
-		var url = this.mongoBackend + '/users/signup';
-		fetch(url, {
-			method: 'POST',
-			body: JSON.stringify(data),
-			headers:{
-				'Content-Type': 'application/json'
-			}
-		})
-		.then(function(response){
-			status = response.status;
-			return response.json();
-		})
-		.then(function(myJson){
-			var message = myJson.message;
-			self.notifyAll({model:'UserModel',method:'signup',status:status,message:message});
-		})
-		.catch(function(error){
-			self.notifyAll({model:'UserModel',method:'signup',status:status,message:error});
-		});
+		const self = this;
+		if (this.MOCKUP) {
+			setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:201,message:'Signup OK'}), 100);
+		} else {
+			let status = 500; // RESPONSE (OK: 201, MAIL EXISTS: 409, error: 500)
+			const url = this.mongoBackend + '/users/signup';
+			fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers:{
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(function(response){
+				status = response.status;
+				return response.json();
+			})
+			.then(function(myJson){
+				const message = myJson.message;
+				self.notifyAll({model:'UserModel',method:'signup',status:status,message:message});
+			})
+			.catch(function(error){
+				self.notifyAll({model:'UserModel',method:'signup',status:status,message:error});
+			});
+		}
 	}
-	*/
-	
 	/*
 	changePassword(data) {
 		const self = this;

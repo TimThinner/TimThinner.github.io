@@ -186,122 +186,12 @@ export default class FeedModel extends Model {
 			return aa - bb;
 		});
 		
-		console.log(['AFTER SORT self.energyValues=',self.energyValues]);
-		console.log(['self.values=',self.values]);
-		//const debug_time_elapse = moment().valueOf()-debug_time_start;
-		//console.log([self.name+' fetch debug_time_elapse=',debug_time_elapse]);
+		//console.log(['AFTER SORT self.energyValues=',self.energyValues]);
+		//console.log(['self.values=',self.values]);
 	}
 	
-	/*
-	fetch(token) {
+	fetch_d() {
 		const self = this;
-		if (this.fetching) {
-			console.log('FEED '+this.name+' FETCHING ALREADY IN PROCESS!');
-			return;
-		}
-		//const debug_time_start = moment().valueOf();
-		let status = 500; // error: 500
-		this.errorMessage = '';
-		this.fetching = true;
-		
-		let start_date = moment().format('YYYY-MM-DD');
-		let end_date = moment().format('YYYY-MM-DD');
-		
-		if (this.timerange > 1) {
-			const diffe = this.timerange-1;
-			start_date = moment().subtract(diffe, 'days').format('YYYY-MM-DD');
-		}
-		
-		if (typeof token !== 'undefined') {
-			
-			var myHeaders = new Headers();
-			var authorizationToken = 'Bearer '+token;
-			myHeaders.append("Authorization", authorizationToken);
-			myHeaders.append("Content-Type", "application/json");
-			
-			const url = this.mongoBackend + '/feeds/';
-			const body_url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
-			const data = {url:body_url};
-			
-			const myPost = {
-				method: 'POST',
-				headers: myHeaders,
-				body: JSON.stringify(data)
-			};
-			const myRequest = new Request(this.mongoBackend + '/feeds/', myPost);
-			
-			console.log('fetch url='+this.mongoBackend+'/feeds/');
-			console.log('body.url='+body_url);
-			
-			fetch(myRequest)
-				.then(function(response) {
-					status = response.status;
-					return response.json();
-				})
-				.then(function(myJson) {
-					self.values = []; // Start with fresh empty data.
-					self.energyValues = [];
-					
-					if (Array.isArray(myJson)) {
-						console.log(['Before process() myJson=',myJson]);
-						self.process(myJson);
-					}
-					console.log(['FeedModel fetch status=',status]);
-					self.fetching = false;
-					self.ready = true;
-					self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
-				})
-				.catch(error => {
-					console.log(['FeedModel fetch error=',error]);
-					self.fetching = false;
-					self.ready = true;
-					self.errorMessage = error;
-					self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
-				});
-			
-			
-			
-		} else {
-			// append start and end date
-			const url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
-			
-			console.log (['fetch url=',url]);
-			fetch(url)
-				.then(function(response) {
-					status = response.status;
-					return response.json();
-				})
-				.then(function(myJson) {
-					self.values = []; // Start with fresh empty data.
-					self.energyValues = [];
-					
-					if (Array.isArray(myJson)) {
-						console.log(['Before process() myJson=',myJson]);
-						self.process(myJson);
-					}
-					console.log(['FeedModel fetch status=',status]);
-					self.fetching = false;
-					self.ready = true;
-					self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
-				})
-				.catch(error => {
-					console.log(['FeedModel fetch error=',error]);
-					self.fetching = false;
-					self.ready = true;
-					self.errorMessage = error;
-					self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
-				});
-		}
-	}
-	*/
-	
-	fetch(token) {
-		const self = this;
-		if (this.fetching) {
-			console.log('FEED '+this.name+' FETCHING ALREADY IN PROCESS!');
-			return;
-		}
-		//const debug_time_start = moment().valueOf();
 		let status = 500; // error: 500
 		this.errorMessage = '';
 		this.fetching = true;
@@ -316,7 +206,7 @@ export default class FeedModel extends Model {
 		// append start and end date
 		const url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
 		
-		console.log (['fetch url=',url]);
+		//console.log (['fetch url=',url]);
 		fetch(url)
 			.then(function(response) {
 				status = response.status;
@@ -326,7 +216,10 @@ export default class FeedModel extends Model {
 				self.values = []; // Start with fresh empty data.
 				self.energyValues = [];
 				
-				self.process(myJson);
+				if (Array.isArray(myJson)) {
+					//console.log(['Before process() myJson=',myJson]);
+					self.process(myJson);
+				}
 				
 				self.fetching = false;
 				self.ready = true;
@@ -340,4 +233,78 @@ export default class FeedModel extends Model {
 			});
 	}
 	
+	fetch(token) {
+		const self = this;
+		
+		if (this.fetching) {
+			console.log(this.name+' FETCHING ALREADY IN PROCESS!');
+			return;
+		}
+		
+		if (this.MOCKUP) {
+			
+			this.fetch_d();
+			
+		} else if (typeof token !== 'undefined') {
+			
+			let status = 500; // error: 500
+			this.errorMessage = '';
+			this.fetching = true;
+			
+			let start_date = moment().format('YYYY-MM-DD');
+			let end_date = moment().format('YYYY-MM-DD');
+			
+			if (this.timerange > 1) {
+				const diffe = this.timerange-1;
+				start_date = moment().subtract(diffe, 'days').format('YYYY-MM-DD');
+			}
+			
+			var myHeaders = new Headers();
+			var authorizationToken = 'Bearer '+token;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const url = this.mongoBackend + '/feeds/';
+			const body_url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
+			const data = {url:body_url};
+				
+			const myPost = {
+				method: 'POST',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(this.mongoBackend + '/feeds/', myPost);
+			
+			//console.log('fetch url='+this.mongoBackend+'/feeds/');
+			//console.log('body.url='+body_url);
+			
+			fetch(myRequest)
+				.then(function(response) {
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson) {
+					self.values = []; // Start with fresh empty data.
+					self.energyValues = [];
+					
+					if (Array.isArray(myJson)) {
+						//console.log(['Before process() myJson=',myJson]);
+						self.process(myJson);
+					}
+					//console.log(['FeedModel fetch status=',status]);
+					self.fetching = false;
+					self.ready = true;
+					self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+				})
+				.catch(error => {
+					console.log(['FeedModel fetch error=',error]);
+					self.fetching = false;
+					self.ready = true;
+					self.errorMessage = error;
+					self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
+				});
+		} else {
+			this.fetch_d();
+		}
+	}
 }

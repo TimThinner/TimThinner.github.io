@@ -39,50 +39,53 @@ export default class RegCodeModel extends Model {
 	
 	fetch(token) {
 		const self = this;
-		
-		console.log(['MODEL '+this.name+' FETCH CALLED! token=',token]);
-		
 		if (this.fetching) {
-			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
+			console.log(this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
 		}
-		this.errorMessage = '';
-		this.fetching = true;
-		
-		let status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
-		const myHeaders = new Headers();
-		const authorizationToken = 'Bearer '+token;
-		myHeaders.append("Authorization", authorizationToken);
-		
-		const url = this.mongoBackend + '/regcodes';
-		fetch(url, {headers: myHeaders})
-			.then(function(response) {
-				status = response.status;
-				return response.json();
-			})
-			.then(function(myJson) {
-				console.log(['myJson=',myJson]);
-				self.regcodes = myJson.regcodes;
-				console.log(['self.regcodes=',self.regcodes]);
-				self.fetching = false;
-				self.ready = true;
-				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
-			})
-			.catch(error => {
-				self.fetching = false;
-				self.ready = true;
-				self.errorMessage = error;
-				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
-			});
-		/*
-		status = 200; // OK
-		setTimeout(() => {
+		if (this.MOCKUP) {
+			this.errorMessage = '';
+			this.fetching = true;
 			
-			this.fetching = false;
-			this.ready = true;
-			this.notifyAll({model:this.name, method:'fetched', status:status, message:'OK'});
+			setTimeout(() => {
+				this.regcodes = [
+{"_id":"5f75d04e251f6e38b8a6a735","email":"snoopy@vtt.fi","apartmentId":"123","code":"fzyjw6","startdate":"2020-09-30T21:00:00.000Z","enddate":"2020-10-30T22:00:00.000Z"}
+				];
+				this.fetching = false;
+				this.ready = true;
+				this.notifyAll({model:this.name, method:'fetched', status:200, message:'OK'});
+			}, 200);
 			
-		}, 200);*/
+		} else {
+			this.errorMessage = '';
+			this.fetching = true;
+			
+			let status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+token;
+			myHeaders.append("Authorization", authorizationToken);
+			
+			const url = this.mongoBackend + '/regcodes';
+			fetch(url, {headers: myHeaders})
+				.then(function(response) {
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson) {
+					console.log(['myJson=',myJson]);
+					self.regcodes = myJson.regcodes;
+					console.log(['self.regcodes=',self.regcodes]);
+					self.fetching = false;
+					self.ready = true;
+					self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+				})
+				.catch(error => {
+					self.fetching = false;
+					self.ready = true;
+					self.errorMessage = error;
+					self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
+				});
+		}
 	}
 	
 	/*
@@ -91,61 +94,76 @@ export default class RegCodeModel extends Model {
 		apartmentId: req.body.apartmentId,
 		code: req.body.code
 	*/
-	addOne(data, authToken) {
-		var self = this;
-		var myHeaders = new Headers();
-		var authorizationToken = 'Bearer '+authToken;
-		myHeaders.append("Authorization", authorizationToken);
-		myHeaders.append("Content-Type", "application/json");
+	addOne(data, token) {
+		const self = this;
 		
-		var myPost = {
-			method: 'POST',
-			headers: myHeaders,
-			body: JSON.stringify(data)
-		};
-		var myRequest = new Request(this.mongoBackend + '/regcodes', myPost);
-		var status = 500; // RESPONSE (OK: 201, Auth Failed: 401, error: 500)
-		
-		fetch(myRequest)
-			.then(function(response){
-				status = response.status;
-				return response.json();
-			})
-			.then(function(myJson){
-				self.notifyAll({model:'RegCodeModel', method:'addOne', status:status, message:myJson.message});
-			})
-			.catch(function(error){
-				self.notifyAll({model:'RegCodeModel', method:'addOne', status:status, message:error});
-			});
+		if (this.MOCKUP) {
+			setTimeout(() => {
+				this.notifyAll({model:this.name, method:'addOne', status:201, message:'OK'});
+			}, 200);
+		} else {
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+token;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myPost = {
+				method: 'POST',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(this.mongoBackend + '/regcodes', myPost);
+			let status = 500; // RESPONSE (OK: 201, Auth Failed: 401, error: 500)
+			
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					self.notifyAll({model:self.name, method:'addOne', status:status, message:myJson.message});
+				})
+				.catch(function(error){
+					self.notifyAll({model:self.name, method:'addOne', status:status, message:error});
+				});
+		}
 	}
 	
-	updateOne(id, data, authToken) {
+	updateOne(id, data, token) {
 		const self = this;
-		const myHeaders = new Headers();
-		const authorizationToken = 'Bearer '+authToken;
-		myHeaders.append("Authorization", authorizationToken);
-		myHeaders.append("Content-Type", "application/json");
 		
-		const myPut = {
-			method: 'PUT',
-			headers: myHeaders,
-			body: JSON.stringify(data)
-		};
-		var myRequest = new Request(this.mongoBackend + '/regcodes/'+id, myPut);
-		var status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
-		
-		fetch(myRequest)
-			.then(function(response){
-				status = response.status;
-				return response.json();
-			})
-			.then(function(myJson){
-				// NOTE: When a product is updated, we fetch all products and orders from server.
-				// So no need for complex manipulation for in-memory model-lists here!
-				self.notifyAll({model:'RegCodeModel', method:'updateOne', status:status, message:myJson.message});
-			})
-			.catch(function(error){
-				self.notifyAll({model:'RegCodeModel', method:'updateOne', status:status, message:error});
-			});
+		if (this.MOCKUP) {
+			setTimeout(() => {
+				this.notifyAll({model:this.name, method:'updateOne', status:200, message:'OK'});
+			}, 200);
+		} else {
+			
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+token;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myPut = {
+				method: 'PUT',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(this.mongoBackend + '/regcodes/'+id, myPut);
+			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+			
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					// NOTE: When a product is updated, we fetch all products and orders from server.
+					// So no need for complex manipulation for in-memory model-lists here!
+					self.notifyAll({model:self.name, method:'updateOne', status:status, message:myJson.message});
+				})
+				.catch(function(error){
+					self.notifyAll({model:self.name, method:'updateOne', status:status, message:error});
+				});
+		}
 	}
 }

@@ -95,15 +95,15 @@ export default class UserPageView extends View {
 			if (m) {
 				const meas = m.measurement;
 				if (typeof meas.power !== 'undefined') {
-					this.fillSVGTextElement(svgObject, 'user-electricity', meas.power.totalEnergy + ' kWh');
+					this.fillSVGTextElement(svgObject, 'user-electricity', meas.power.totalEnergy.toFixed(1) + ' kWh');
 				}
 				if (typeof meas.temperature !== 'undefined') {
-					this.fillSVGTextElement(svgObject, 'user-temperature', meas.temperature.temperature + '°C');
-					this.fillSVGTextElement(svgObject, 'user-humidity', meas.temperature.humidity + '%');
+					this.fillSVGTextElement(svgObject, 'user-temperature', meas.temperature.temperature.toFixed(1) + '°C');
+					this.fillSVGTextElement(svgObject, 'user-humidity', meas.temperature.humidity.toFixed(1) + '%');
 				}
 				if (typeof meas.water !== 'undefined') {
-					this.fillSVGTextElement(svgObject, 'user-water-hot', meas.water.hotWaterTotal + ' L');
-					this.fillSVGTextElement(svgObject, 'user-water-cold', meas.water.coldWaterTotal + ' L');
+					this.fillSVGTextElement(svgObject, 'user-water-hot', meas.water.hotWaterTotal.toFixed(0) + ' L');
+					this.fillSVGTextElement(svgObject, 'user-water-cold', meas.water.coldWaterTotal.toFixed(0)  + ' L');
 				}
 			}
 		}

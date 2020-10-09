@@ -34,7 +34,7 @@
 .version-info {
 	opacity: 0.75;
 	font-family: "Arial, Helvetica, sans-serif";
-	font-size: 22px;
+	font-size: 20px;
 	fill: #aaa;
 }
 </style>

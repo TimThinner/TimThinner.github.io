@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<!--Import Google Material Icons Font-->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import Materialize Styles-->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		<!--Import Google Open Sans Font-->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+		<!--Import My Styles-->
+		<link rel="stylesheet" href="styles.css">
+		<title>A Progress Bar</title>
+	</head>
+	<body>
+		<section class="container">
+			<div class="row">
+				<div class="col s12">
+					<h4 style="text-align:center;">The Progress Bar</h4>
+					<p style="text-align:center;">You have now <span id="days-left"></span> days before The Point of NO Return (to school).</p>
+				</div>
+			</div>
+		</section>
+		<section class="container">
+			<div id="content"></div>
+		</section>
+		
+		<section class="container">
+			<div class="row">
+				<div class="col s12 center">
+					<a href="../index.html#ProgressBar" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>
+				</div>
+			</div>
+		</section>
+		
+		<!--
+		<script
+			src="https://code.jquery.com/jquery-3.4.1.min.js"
+			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			crossorigin="anonymous"></script>
+		-->
+		<script
+			src="https://code.jquery.com/jquery-2.2.4.min.js"
+			integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+			crossorigin="anonymous"></script>
+		<!-- Compiled and minified JavaScript -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<script src="moment.js"></script>
+		<!-- Resources -->
+		<!--<script src="https://www.amcharts.com/lib/4/core.js"></script>
+		<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+		<script src="https://www.amcharts.com/lib/4/themes/dark.js"></script>
+		<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>-->
+		<script type="module" src="MasterController.js"></script>
+	</body>
+</html>

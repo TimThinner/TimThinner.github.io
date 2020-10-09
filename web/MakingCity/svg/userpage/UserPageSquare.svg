@@ -68,24 +68,36 @@
 </svg>
 <svg x="-340" y="10" width="200px" height="32px">
 	<!--<rect x="1" y="1" width="198" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-	<text class="medium-text" id="user-electricity" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">0.25 kWh</text>
+	<text class="medium-text" id="user-electricity" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
-<svg x="-100" y="240" width="200px" height="32px">
+
+<!--
+<svg x="-100" y="240" width="200px" height="32px">-->
 	<!--<rect x="1" y="1" width="198" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-	<text class="small-text" id="user-heating" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Climate Comfort:</text>
+	<!--<text class="small-text" id="user-heating" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Climate Comfort:</text>
 </svg>
 <image x="-30" y="270" width="60" height="60" xlink:href="SmileyHappy.svg" />
+-->
+
+<svg x="-100" y="250" width="200px" height="32px">
+	<!--<rect x="1" y="1" width="198" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<text class="medium-text" id="user-temperature" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+<svg x="-100" y="280" width="200px" height="32px">
+	<!--<rect x="1" y="1" width="198" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<text class="small-text" id="user-humidity" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
 
 <image x="160" y="0" width="40" height="30" xlink:href="watercold.svg" />
 <image x="160" y="30" width="40" height="30" xlink:href="waterhot.svg" />
 
 <svg x="190" y="5" width="120px" height="32px">
 	<!--<rect x="1" y="1" width="118" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-	<text class="medium-text" id="user-water-cold" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">5 L</text>
+	<text class="medium-text" id="user-water-cold" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
 <svg x="190" y="35" width="120px" height="32px">
 	<!--<rect x="1" y="1" width="118" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-	<text class="medium-text" id="user-water-hot" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">10 L</text>
+	<text class="medium-text" id="user-water-hot" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
 
 <!-- The User X:-50; Y: -->

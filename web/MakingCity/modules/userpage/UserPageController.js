@@ -45,7 +45,7 @@ export default class UserPageController extends Controller {
 		this.master.modelRepo.add('UserElectricityModel',model_3);
 		this.models['UserElectricityModel'] = model_3;
 		
-		const model_4 = new UserMeasurementModel({name:'UserMeasurementModel',src:'to-be-added-in-the-future'});
+		const model_4 = new UserMeasurementModel({name:'UserMeasurementModel',src:'data/sivakka/apartments/last.json?apiKey=12E6F2B1236A'});
 		model_4.subscribe(this);
 		this.master.modelRepo.add('UserMeasurementModel',model_4);
 		this.models['UserMeasurementModel'] = model_4;

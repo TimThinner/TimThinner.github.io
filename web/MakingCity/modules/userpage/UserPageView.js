@@ -5,6 +5,43 @@ super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
 
+/*
+#user-electricity
+#user-water-cold
+#user-water-hot
+#user-temperature
+#user-humidity
+
+{
+  "info": {
+    "buildingId": 1,
+    "apartmentId": 101
+  },
+  "power": {
+    "powerId": 1001,
+    "lastImpulseCtr": 22,
+    "totalImpulseCtr": 192099,
+    "averagePower": 1320,
+    "totalEnergy": 192.099,
+    "DateTime": "2020-10-09 07:13:38"
+  },
+  "temperature": {
+    "tempId": 201,
+    "temperature": 20.2,
+    "humidity": 32,
+    "DateTime": "2020-10-09 07:13:38"
+  },
+  "water": {
+    "waterId": 301,
+    "hotWaterAverage": 0,
+    "coldWaterAverage": 0,
+    "hotWaterTotal": 1151.2,
+    "coldWaterTotal": 1765.7,
+    "DateTime": "2020-10-09 07:13:38"
+  }
+}
+*/
+
 export default class UserPageView extends View {
 	
 	constructor(controller) {
@@ -45,7 +82,31 @@ export default class UserPageView extends View {
 	
 	
 	updateLatestValues() {
-		
+		/*
+		#user-electricity
+		#user-water-cold
+		#user-water-hot
+		#user-temperature
+		#user-humidity
+		*/
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const m = this.controller.master.modelRepo.get('UserMeasurementModel');
+			if (m) {
+				const meas = m.measurement;
+				if (typeof meas.power !== 'undefined') {
+					this.fillSVGTextElement(svgObject, 'user-electricity', meas.power.totalEnergy + ' kWh');
+				}
+				if (typeof meas.temperature !== 'undefined') {
+					this.fillSVGTextElement(svgObject, 'user-temperature', meas.temperature.temperature + '°C');
+					this.fillSVGTextElement(svgObject, 'user-humidity', meas.temperature.humidity + '%');
+				}
+				if (typeof meas.water !== 'undefined') {
+					this.fillSVGTextElement(svgObject, 'user-water-hot', meas.water.hotWaterTotal + ' L');
+					this.fillSVGTextElement(svgObject, 'user-water-cold', meas.water.coldWaterTotal + ' L');
+				}
+			}
+		}
 	}
 	
 	notify(options) {

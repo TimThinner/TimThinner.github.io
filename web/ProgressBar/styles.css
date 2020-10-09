@@ -1,0 +1,60 @@
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	color: #777;
+	background-color: #eee;
+}
+@media screen and (min-width: 601px) {
+	html, body {
+		font-size: 18px;
+	}
+}
+/* Materialize CSS */
+.container {
+	background-color: #eee;
+	color: #777;
+	margin: 0 auto;
+	max-width: 1920px;
+	width: 100%;
+	padding: 0;
+}
+/* svg width="800" height="300" */
+/* 300 = x/100 * 800 => x = 300/8 = 37.5 */
+.svg-landscape-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 37.5%;
+	vertical-align: middle;
+	overflow: hidden;
+}
+/* svg width="800" height="500" */
+/* 500 = x/100 * 800 => x = 500/8 = 62.5  */
+.svg-square-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 62.5%;
+	vertical-align: middle;
+	overflow: hidden;
+}
+/* svg width="600" height="800" */
+/* 800 = x/100 * 600 => x=800/6 = 133.333   */
+.svg-portrait-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 133.3333%;
+	vertical-align: middle;
+	overflow: hidden;
+}
+.svg-content { 
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+#days-left {
+	color: #000;
+	background-color: #ff0;
+}

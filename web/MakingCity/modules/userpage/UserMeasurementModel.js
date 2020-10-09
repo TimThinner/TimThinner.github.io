@@ -61,44 +61,71 @@ export default class UserMeasurementModel extends Model {
 	
 	
 	fetch_d() {
-		const status = 200; // OK
+		const self = this;
+		let status = 500; // error: 500
+		this.errorMessage = '';
+		this.fetching = true;
+		
+		const url = this.backend + '/' + this.src;
+		fetch(url)
+			.then(function(response) {
+				status = response.status;
+				return response.json();
+			})
+			.then(function(myJson) {
+				self.measurement = myJson;
+				console.log(['self.measurement=',self.measurement]);
+				console.log(['UserMeasurementModel fetch status=',status]);
+				self.fetching = false;
+				self.ready = true;
+				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+			})
+			.catch(error => {
+				console.log(['UserMeasurementModel fetch error=',error]);
+				self.fetching = false;
+				self.ready = true;
+				self.errorMessage = error;
+				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
+			});
+		/*const status = 200; // OK
 		this.errorMessage = '';
 		this.fetching = true;
 		console.log('Using STATIC response!');
 		this.measurement = {
-			"info": {
-				"buildingId": 1,
-				"apartmentId": 101
-			},
-			"power": {
-				"powerId": 101,
-				"lastImpulseCtr": 0,
-				"totalImpulseCtr": 0,
-				"averagePower": 0,
-				"totalEnergy": 0,
-				"DateTime": ""
-			},
-			"temperature": {
-				"tempId": 201,
-				"temperature": 0,
-				"humidity": 0,
-				"DateTime": ""
-			},
-			"water": {
-				"waterId": 301,
-				"hotWaterAverage": 0,
-				"coldWaterAverage": 0,
-				"hotWaterTotal": 0,
-				"coldWaterTotal": 0,
-				"DateTime": ""
-			}
-		};
+  "info": {
+    "buildingId": 1,
+    "apartmentId": 101
+  },
+  "power": {
+    "powerId": 1001,
+    "lastImpulseCtr": 46,
+    "totalImpulseCtr": 201273,
+    "averagePower": 2760,
+    "totalEnergy": 201.273,
+    "DateTime": "2020-10-09 11:18:38"
+  },
+  "temperature": {
+    "tempId": 201,
+    "temperature": 20.6,
+    "humidity": 31.9,
+    "DateTime": "2020-10-09 11:18:38"
+  },
+  "water": {
+    "waterId": 301,
+    "hotWaterAverage": 0,
+    "coldWaterAverage": 0,
+    "hotWaterTotal": 1197.2,
+    "coldWaterTotal": 1832.3,
+    "DateTime": "2020-10-09 11:18:38"
+  }
+};
 		console.log(['this.measurement=',this.measurement]);
 		setTimeout(() => {
 			this.fetching = false;
 			this.ready = true;
 				this.notifyAll({model:this.name, method:'fetched', status:status, message:'OK'});
 		}, 200);
+		*/
 	}
 	
 	fetch(token, readkey) {

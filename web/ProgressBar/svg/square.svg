@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800" height="500" viewBox="-400 -250 800 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
+<defs>
+	<radialGradient id="grad" cx="50%" cy="50%" r="100%">
+		<stop offset="10%" style="stop-color:#fff; stop-opacity:1" />
+		<stop offset="50%" style="stop-color:#ddd; stop-opacity:1" />
+		<stop offset="90%" style="stop-color:#bbb; stop-opacity:1" />
+	</radialGradient>
+</defs>
+<rect x="-400" y="-250" width="800" height="500" fill="url(#grad)" stroke-width="0" stroke="#000" />
+<!-- Horizontal lines -->
+<path d="M-400,-250 L400,-250 
+	M-400,-200 L400,-200 
+	M-400,-150 L400,-150 
+	M-400,-100 L400,-100 
+	M-400,-50 L400,-50 
+	M-400,0 L400,0 
+	M-400,50 L400,50 
+	M-400,100 L400,100 
+	M-400,150 L400,150 
+	M-400,200 L400,200 
+	M-400,250 L400,250"
+	style="stroke:#00f;stroke-width:1;opacity:0.25;" />
+<!-- Vertical lines -->
+<path d="M-400,-250 L-400,250 
+	M-350,-250 L-350,250 
+	M-300,-250 L-300,250 
+	M-250,-250 L-250,250 
+	M-200,-250 L-200,250 
+	M-150,-250 L-150,250 
+	M-100,-250 L-100,250 
+	M-50,-250 L-50,250 
+	M0,-250 L0,250 
+	M50,-250 L50,250 
+	M100,-250 L100,250 
+	M150,-250 L150,250 
+	M200,-250 L200,250 
+	M250,-250 L250,250 
+	M300,-250 L300,250 
+	M350,-250 L350,250 
+	M400,-250 L400,250"
+	style="stroke:#00f;stroke-width:1;opacity:0.25;" />
+<path d="M-300,-50 L345,-50 L345,50 L-300,50 L-300,-50Z" style="stroke:#000;stroke-width:3;fill:none;opacity:0.5;" />
+<rect id="bar" x="-300" y="-50" width="0" height="100" style="stroke:#000;stroke-width:3;fill:#0f0;opacity:0.5;" />
+
+<g id="dates-group">
+<path d="M-300,-120 L-250,-170 L-130,-170" style="stroke:#080;stroke-width:1;fill:none;opacity:0.5;" />
+<!-- Date of birth -->
+<svg x="-260" y="-190" width="150px" height="24px">
+	<!--<rect x="1" y="1" width="148" height="22" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
+	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">28.10.1960</text>
+</svg>
+<!-- Date of retirement -->
+<path d="M190,-170 L300,-170 L345,-125" style="stroke:#080;stroke-width:1;fill:none;opacity:0.5;" />
+<svg x="170" y="-190" width="150px" height="24px">
+	<!--<rect x="1" y="1" width="148" height="22" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
+	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">28.04.2025</text>
+</svg>
+</g>
+
+<g>
+<!-- Days from birth to pension start (all-days). -->
+<svg x="-75" y="-130" width="150px" height="28px">
+	<!--<rect x="1" y="1" width="178" height="26" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
+	<text id="all-days" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+<!-- Horizontal line with arrows at both ends. -->
+<path d="M-290,-100 L-290,-95 L-300,-100 L-290,-105 L-290,-100 L335,-100 L335,-105 L345,-100 L335,-95 L335,-100" style="stroke:#000;stroke-width:1;fill:none;opacity:0.5;" />
+<!-- Vertical lines in both ends. -->
+<path d="M-300,-140 L-300,120" style="stroke:#000;stroke-width:1;fill:none;opacity:0.5;" />
+<path d="M345,-140 L345,0" style="stroke:#000;stroke-width:1;fill:none;opacity:0.5;" />
+</g>
+
+<!-- How much is ready so far... percentage value. -->
+<svg x="100" y="-18" width="180px" height="40px">
+	<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
+	<text id="percentage-value" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#484" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+
+<g id="now-days-group">
+<!-- How much is ready so far... now-days. -->
+<svg x="-75" y="70" width="150px" height="28px">
+	<!--<rect x="1" y="1" width="178" height="26" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
+	<text id="now-days" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+</g>
+</svg>

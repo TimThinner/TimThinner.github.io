@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="600" height="800" viewBox="-300 -400 600 800" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
+<defs>
+	<radialGradient id="grad" cx="50%" cy="50%" r="100%">
+		<stop offset="10%" style="stop-color:#fff; stop-opacity:1" />
+		<stop offset="50%" style="stop-color:#ddd; stop-opacity:1" />
+		<stop offset="90%" style="stop-color:#bbb; stop-opacity:1" />
+	</radialGradient>
+</defs>
+<rect x="-300" y="-400" width="600" height="800" fill="url(#grad)" stroke-width="0" stroke="#000" />
+<!-- Horizontal lines -->
+<path d="
+	M-300,-400 L300,-400 
+	M-300,-350 L300,-350 
+	M-300,-300 L300,-300 
+	M-300,-250 L300,-250 
+	M-300,-200 L300,-200 
+	M-300,-150 L300,-150 
+	M-300,-100 L300,-100 
+	M-300,-50 L300,-50 
+	M-300,0 L300,0
+	M-300,50 L300,50 
+	M-300,100 L300,100 
+	M-300,150 L300,150 
+	M-300,200 L300,200 
+	M-300,250 L300,250 
+	M-300,300 L300,300
+	M-300,350 L300,350
+	M-300,400 L300,400"
+	style="stroke:#00f;stroke-width:1;opacity:0.25;" />
+<!-- Vertical lines -->
+<path d="M-300,-400 L-300,400 
+	M-250,-400 L-250,400 
+	M-200,-400 L-200,400 
+	M-150,-400 L-150,400 
+	M-100,-400 L-100,400 
+	M-50,-400 L-50,400 
+	M0,-400 L0,400 
+	M50,-400 L50,400 
+	M100,-400 L100,400 
+	M150,-400 L150,400 
+	M200,-400 L200,400
+	M250,-400 L250,400
+	M300,-400 L300,400"
+	style="stroke:#00f;stroke-width:1;opacity:0.25;" />
+<path d="M-300,-50 L345,-50 L345,50 L-300,50 L-300,-50Z" transform="rotate(270)" style="stroke:#000;stroke-width:3;fill:none;opacity:0.5;" />
+<rect id="bar" x="-300" y="-50" width="0" height="100" transform="rotate(270)" style="stroke:#000;stroke-width:3;fill:#0f0;opacity:0.5;" />
+
+<g id="dates-group">
+<!-- Date of birth -->
+<svg x="-180" y="305" width="150px" height="24px">
+	<!--<rect x="1" y="1" width="148" height="22" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
+	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">28.10.1960</text>
+</svg>
+<!-- Date of retirement -->
+<svg x="-180" y="-370" width="150px" height="24px">
+	<!--<rect x="1" y="1" width="148" height="22" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
+	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">28.04.2025</text>
+</svg>
+</g>
+
+<g transform="rotate(270)">
+<!-- Days from birth to pension start (all-days). -->
+<svg x="-75" y="-130" width="150px" height="28px">
+	<!--<rect x="1" y="1" width="178" height="26" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
+	<text id="all-days" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+<!-- Horizontal line with arrows at both ends. -->
+<path d="M-290,-100 L-290,-95 L-300,-100 L-290,-105 L-290,-100 L335,-100 L335,-105 L345,-100 L335,-95 L335,-100" style="stroke:#000;stroke-width:1;fill:none;opacity:0.5;" />
+<!-- Vertical lines in both ends. -->
+<path d="M-300,-120 L-300,120" style="stroke:#000;stroke-width:1;fill:none;opacity:0.5;" />
+<path d="M345,-120 L345,0" style="stroke:#000;stroke-width:1;fill:none;opacity:0.5;" />
+</g>
+
+<!-- How much is ready so far... percentage value. -->
+<svg x="-70" y="-280" width="140px" height="30px">
+	<!--<rect x="1" y="1" width="138" height="28" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
+	<text id="percentage-value" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#484" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+
+<g id="now-days-group" transform="rotate(270)">
+<!-- How much is ready so far... now-days. -->
+<svg x="-75" y="70" width="150px" height="28px">
+	<!--<rect x="1" y="1" width="178" height="26" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
+	<text id="now-days" font-family="Arial, Helvetica, sans-serif" font-size="24px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+</g>
+</svg>

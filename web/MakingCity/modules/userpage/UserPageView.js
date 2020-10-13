@@ -48,7 +48,7 @@ export default class UserPageView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel') {
+			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel'||key==='UserApartmentModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -91,9 +91,18 @@ export default class UserPageView extends View {
 		*/
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
-			const m = this.controller.master.modelRepo.get('UserMeasurementModel');
+			const m = this.controller.master.modelRepo.get('UserApartmentModel');
 			if (m) {
 				const meas = m.measurement;
+				// Possible messages: "Readkey Expired", "Readkey not found", some other error...
+				
+				console.log(['meas=',meas]);
+				
+				if (typeof meas.message !== 'undefined') {
+					console.log(['meas.message=',meas.message]);
+					this.fillSVGTextElement(svgObject, 'user-message', meas.message);
+				}
+				
 				if (typeof meas.power !== 'undefined') {
 					this.fillSVGTextElement(svgObject, 'user-electricity', meas.power.totalEnergy.toFixed(1) + ' kWh');
 				}
@@ -111,7 +120,7 @@ export default class UserPageView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserWaterModel'||options.model==='UserHeatingModel'||options.model==='UserElectricityModel') {
+			if (options.model==='UserWaterModel'||options.model==='UserHeatingModel'||options.model==='UserElectricityModel'||options.model==='UserApartmentModel') {
 				if (options.method==='fetched') {
 					if (options.status === 200) {
 						console.log(['UserPageView: ',options.model,' fetched!']);

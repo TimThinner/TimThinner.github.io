@@ -30,11 +30,7 @@ export default class UsersModel extends Model {
 			return;
 		}
 		if (this.MOCKUP) {
-			const status = 200; // OK
-			
 			setTimeout(() => {
-			
-			
 			this.users = [
 				{"_id":"5f75cff0251f6e38b8a6a733","email":"timo.kinnunen@vtt.fi","created":"2020-10-01T12:47:44.259Z"},
 				{"_id":"5f75d010251f6e38b8a6a734","email":"sivakka@vtt.fi","created":"2020-10-01T12:48:16.411Z"},
@@ -45,7 +41,7 @@ export default class UsersModel extends Model {
 			];
 				this.fetching = false;
 				this.ready = true;
-				this.notifyAll({model:this.name, method:'fetched', status:status, message:'OK'});
+				this.notifyAll({model:this.name, method:'fetched', status:200, message:'OK'});
 				
 			}, 200);
 			
@@ -70,7 +66,11 @@ export default class UsersModel extends Model {
 					console.log(['self.users=',self.users]);
 					self.fetching = false;
 					self.ready = true;
-					self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+					let message = 'OK';
+					if (typeof self.users.message !== 'undefined') {
+						message = self.users.message;
+					}
+					self.notifyAll({model:self.name, method:'fetched', status:status, message:message});
 				})
 				.catch(error => {
 					self.fetching = false;

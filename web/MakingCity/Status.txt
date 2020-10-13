@@ -1,0 +1,79 @@
+
+
+AUTHENTICATION:
+===============
+
+The super-user can administrate all users:
+
+1. Create a new RegCode
+Email, Apartment Id, Start, End => New RegCode
+
+2. This is sent to user (Email, Regcode)
+
+3. User makes the Sign up from website
+Email, Password, Registration code => ReadKey
+
+4. MongoDB "/bindings" returns array with will list See UserPropsModel for example.
+[  { apartmentId: "123", readkey: "5f75d08b251f6e38b8a6a736" } ]
+
+
+!!!   apiKey = readkey   !!!
+
+
+https://makingcity.vtt.fi/data/sivakka/apartments/last.json?apiKey=12E6F2B1236A
+
+{
+  "info": {
+    "buildingId": 1,
+    "apartmentId": 101
+  },
+  "power": {
+    "powerId": 1001,
+    "lastImpulseCtr": 34,
+    "totalImpulseCtr": 309855,
+    "averagePower": 2040,
+    "totalEnergy": 309.855,
+    "DateTime": "2020-10-12 06:59:38"
+  },
+  "temperature": {
+    "tempId": 201,
+    "temperature": 20.3,
+    "humidity": 32.7,
+    "DateTime": "2020-10-12 06:59:38"
+  },
+  "water": {
+    "waterId": 301,
+    "hotWaterAverage": 0,
+    "coldWaterAverage": 0,
+    "hotWaterTotal": 2077.1,
+    "coldWaterTotal": 3090.4,
+    "DateTime": "2020-10-12 06:59:38"
+  }
+}
+
+Status of timeseries API: power? temperature? water?
+
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=power&limit=10&start=2020-10-12&end=2020-10-12
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=temperature&limit=10&start=2020-10-12&end=2020-10-12
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=water&limit=10&start=2020-10-12&end=2020-10-12
+[
+  {
+    "created_at": "2020-10-12T06:51:38",
+    "residentId": 1,
+    "apartmentId": 101,
+    "meterId": 301,
+    "coldTotal": 3087.9,
+    "coldAverage": null,
+    "hotTotal": 2076.4,
+    "hotAverage": null
+  },
+
+One sample per minute => 1440 samples per day.
+
+
+- Usage logging? What actions needs to be logged?
+- 
+
+
+
+

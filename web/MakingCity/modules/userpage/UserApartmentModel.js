@@ -16,9 +16,9 @@ https://makingcity.vtt.fi/data/sivakka/apartments/last.json?apiKey=12E6F2B1236A
 
 ja tietokannasta:
 
-https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=power&limit=10&start=2020-09-30&end=2020-09-30
-https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=temperature&limit=10&start=2020-09-30&end=2020-09-30
-https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=water&limit=10&start=2020-09-30&end=2020-09-30
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=power&limit=10&start=2020-10-10&end=2020-10-10
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=temperature&limit=10&start=2020-10-12&end=2020-10-12
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=water&limit=10&start=2020-10-10&end=2020-10-10
 
 {
   "info": {
@@ -49,24 +49,26 @@ https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A
   }
 }
 */
-export default class UserMeasurementModel extends Model {
+export default class UserApartmentModel extends Model {
 	constructor(options) {
 		super(options);
-		// By default UserMeasurementModel shows data from today.
-		//this.start = moment().format('YYYY-MM-DD');
-		//this.end = moment().format('YYYY-MM-DD');
-		this.timerange = 1;
 		this.measurement = {};
 	}
 	
-	
+	/*
+		fetch_d
+		Calls directly from src using backend (NOT mongoBackend).
+	*/
 	fetch_d() {
 		const self = this;
 		let status = 500; // error: 500
+		const readkey = '12E6F2B1236A';
 		this.errorMessage = '';
 		this.fetching = true;
 		
-		const url = this.backend + '/' + this.src;
+		// this.src = 'data/sivakka/apartments/last.json' 
+		
+		const url = this.backend + '/' + this.src + '?apiKey='+readkey;
 		fetch(url)
 			.then(function(response) {
 				status = response.status;
@@ -74,58 +76,23 @@ export default class UserMeasurementModel extends Model {
 			})
 			.then(function(myJson) {
 				self.measurement = myJson;
-				console.log(['self.measurement=',self.measurement]);
-				console.log(['UserMeasurementModel fetch status=',status]);
+				//console.log(['self.measurement=',self.measurement]);
+				//console.log([self.name+' fetch status=',status]);
 				self.fetching = false;
 				self.ready = true;
-				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+				let message = 'OK';
+				if (typeof self.measurement.message !== 'undefined') {
+					message = self.measurement.message;
+				}
+				self.notifyAll({model:self.name, method:'fetched', status:status, message:message});
 			})
 			.catch(error => {
-				console.log(['UserMeasurementModel fetch error=',error]);
+				console.log([self.name+' fetch error=',error]);
 				self.fetching = false;
 				self.ready = true;
 				self.errorMessage = error;
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
 			});
-		/*const status = 200; // OK
-		this.errorMessage = '';
-		this.fetching = true;
-		console.log('Using STATIC response!');
-		this.measurement = {
-  "info": {
-    "buildingId": 1,
-    "apartmentId": 101
-  },
-  "power": {
-    "powerId": 1001,
-    "lastImpulseCtr": 46,
-    "totalImpulseCtr": 201273,
-    "averagePower": 2760,
-    "totalEnergy": 201.273,
-    "DateTime": "2020-10-09 11:18:38"
-  },
-  "temperature": {
-    "tempId": 201,
-    "temperature": 20.6,
-    "humidity": 31.9,
-    "DateTime": "2020-10-09 11:18:38"
-  },
-  "water": {
-    "waterId": 301,
-    "hotWaterAverage": 0,
-    "coldWaterAverage": 0,
-    "hotWaterTotal": 1197.2,
-    "coldWaterTotal": 1832.3,
-    "DateTime": "2020-10-09 11:18:38"
-  }
-};
-		console.log(['this.measurement=',this.measurement]);
-		setTimeout(() => {
-			this.fetching = false;
-			this.ready = true;
-				this.notifyAll({model:this.name, method:'fetched', status:status, message:'OK'});
-		}, 200);
-		*/
 	}
 	
 	fetch(token, readkey) {
@@ -142,13 +109,6 @@ export default class UserMeasurementModel extends Model {
 			this.errorMessage = '';
 			this.fetching = true;
 			
-			let start_date = moment().format('YYYY-MM-DD');
-			let end_date = moment().format('YYYY-MM-DD');
-			
-			if (this.timerange > 1) {
-				const diffe = this.timerange-1;
-				start_date = moment().subtract(diffe, 'days').format('YYYY-MM-DD');
-			}
 			if (typeof token !== 'undefined') {
 				
 				var myHeaders = new Headers();
@@ -160,11 +120,16 @@ export default class UserMeasurementModel extends Model {
 				//req.body.url		https://makingcity.vtt.fi/data/sivakka/apartments/last.json
 				//req.body.readkey	5f743b8d49612827a005bd2c
 				//
+				// https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=power&limit=10&start=2020-10-12&end=2020-10-12
+				// https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=temperature&limit=10&start=2020-10-12&end=2020-10-12
+				// https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=water&limit=10&start=2020-10-12&end=2020-10-12
+				
 				if (typeof readkey !== 'undefined') {
 					// Normal user has a readkey, which was created when user registered into the system. 
-					const url = this.mongoBackend + '/measurements/';
-					//const body_url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
-					const body_url = 'https://makingcity.vtt.fi/data/sivakka/apartments/last.json';
+					const url = this.mongoBackend + '/apartments/last/';
+					
+					// this.src = 'data/sivakka/apartments/last.json' 
+					const body_url = this.backend + '/' + this.src;
 					const body_readkey = readkey;
 					const data = {url:body_url, readkey:body_readkey};
 					
@@ -173,7 +138,7 @@ export default class UserMeasurementModel extends Model {
 						headers: myHeaders,
 						body: JSON.stringify(data)
 					};
-					const myRequest = new Request(this.mongoBackend + '/measurements/', myPost);
+					const myRequest = new Request(url, myPost);
 					fetch(myRequest)
 						.then(function(response) {
 							status = response.status;
@@ -181,14 +146,18 @@ export default class UserMeasurementModel extends Model {
 						})
 						.then(function(myJson) {
 							self.measurement = myJson;
-							console.log(['self.measurement=',self.measurement]);
-							console.log(['UserMeasurementModel fetch status=',status]);
+							//console.log(['self.measurement=',self.measurement]);
+							//console.log([self.name+' fetch status=',status]);
 							self.fetching = false;
 							self.ready = true;
-							self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+							let message = 'OK';
+							if (typeof self.measurement.message !== 'undefined') {
+								message = self.measurement.message;
+							}
+							self.notifyAll({model:self.name, method:'fetched', status:status, message:message});
 						})
 						.catch(error => {
-							console.log(['UserMeasurementModel fetch error=',error]);
+							console.log([self.name+' fetch error=',error]);
 							self.fetching = false;
 							self.ready = true;
 							self.errorMessage = error;
@@ -199,13 +168,12 @@ export default class UserMeasurementModel extends Model {
 					this.fetch_d();
 				}
 			} else {
-				// No token? Use STATIC response for testing purposes.
-				this.fetch_d();
-				//const error = 'Token MISSING';
-				//self.fetching = false;
-				//self.ready = true;
-				//self.errorMessage = error
-				//self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
+				// No token? Authentication failed (401).
+				self.errorMessage = 'Auth failed';
+				console.log([self.name+' fetch error = ',self.errorMessage]);
+				self.fetching = false;
+				self.ready = true;
+				self.notifyAll({model:self.name, method:'fetched', status:401, message:error});
 			}
 		}
 	}

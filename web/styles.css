@@ -140,3 +140,24 @@ html, body {
 	color:#333;
 	background-color: #ffa;
 }
+/* Fixed TO-TOP-button. */
+.to-top-button {
+	display: none; /* Hidden by default */
+	position: fixed; /* Fixed/sticky position */
+	bottom: 20px; /* Place the button at the bottom of the page */
+	right: 20px; /* Place the button 30px from the right */
+	z-index: 99; /* Make sure it does not overlap */
+	border: 1px solid #ccc;
+	outline: none; /* Remove outline */
+	background-color: #eee;
+	color: #aaa;
+	cursor: pointer; /* Add a mouse pointer on hover */
+	padding: 15px; /* Some padding */
+	border-radius: 50%;
+	font-size: 18px; /* Increase font size */
+}
+.to-top-button:hover { 
+	background-color: #fff;
+	color: #29b6f6;
+	border: 1px solid #bbb;
+}

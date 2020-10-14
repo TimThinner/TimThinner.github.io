@@ -6,6 +6,8 @@ export default class UserElectricityModel extends Model {
 	constructor(options) {
 		super(options);
 		this.timerange = 1;
+		this.type = 'energy';
+		this.limit = 1;
 		this.measurement = {};
 	}
 	
@@ -21,11 +23,14 @@ export default class UserElectricityModel extends Model {
 		this.fetching = true;
 		
 		// this.src = 'data/sivakka/apartments/feeds.json'   
-		//      must append: ?apiKey=12E6F2B1236A&type=temperature&start=2020-10-12&end=2020-10-12'
+		//      must append: ?apiKey=12E6F2B1236A&type=energy&start=2020-10-12&end=2020-10-12'
 		
-		const start_date = moment().format('YYYY-MM-DD');
-		const end_date = moment().format('YYYY-MM-DD');
-		const url = this.backend + '/' + this.src + '?apiKey='+readkey+'&type=power&start='+start_date+'&end='+end_date;
+		const e_m = moment();
+		const s_m = moment().subtract(10, 'minutes');
+		const start_date = s_m.format('YYYY-MM-DDTHH:mm');
+		const end_date = e_m.format('YYYY-MM-DDTHH:mm');
+		
+		const url = this.backend + '/' + this.src + '?apiKey='+readkey+'&type='+this.type+'&limit='+this.limit+'&start='+start_date+'&end='+end_date;
 		
 		fetch(url)
 			.then(function(response) {
@@ -34,8 +39,8 @@ export default class UserElectricityModel extends Model {
 			})
 			.then(function(myJson) {
 				self.measurement = myJson;
-				//console.log(['self.measurement=',self.measurement]);
-				//console.log([self.name+' fetch status=',status]);
+				console.log(['self.measurement=',self.measurement]);
+				console.log([self.name+' fetch status=',status]);
 				self.fetching = false;
 				self.ready = true;
 				let message = 'OK';
@@ -75,13 +80,18 @@ export default class UserElectricityModel extends Model {
 			this.errorMessage = '';
 			this.fetching = true;
 			
+			const e_m = moment();
+			const s_m = moment().subtract(10, 'minutes');
+			const start_date = s_m.format('YYYY-MM-DDTHH:mm');
+			const end_date = e_m.format('YYYY-MM-DDTHH:mm');
+			/*
 			let start_date = moment().format('YYYY-MM-DD');
 			let end_date = moment().format('YYYY-MM-DD');
-		
 			if (this.timerange > 1) {
 				const diffe = this.timerange-1;
 				start_date = moment().subtract(diffe, 'days').format('YYYY-MM-DD');
 			}
+			*/
 			if (typeof token !== 'undefined') {
 				var myHeaders = new Headers();
 				var authorizationToken = 'Bearer '+token;
@@ -94,11 +104,7 @@ export default class UserElectricityModel extends Model {
 					
 					// this.src = 'data/sivakka/apartments/feeds.json' 
 					const body_url = this.backend + '/' + this.src;
-					const body_readkey = readkey;
-					const body_type = 'power';
-					const body_start = start_date;
-					const body_end = end_date;
-					const data = {url:body_url, readkey:body_readkey, type: body_type, start: body_start, end: body_end };
+					const data = {url:body_url, readkey:readkey, type: this.type, limit:this.limit, start: start_date, end: end_date };
 					
 					const myPost = {
 						method: 'POST',

@@ -48,7 +48,7 @@ export default class UserPageView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel'||key==='UserApartmentModel') {
+			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel') {//||key==='UserApartmentModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -91,28 +91,41 @@ export default class UserPageView extends View {
 		*/
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
-			const m = this.controller.master.modelRepo.get('UserApartmentModel');
-			if (m) {
-				const meas = m.measurement;
-				// Possible messages: "Readkey Expired", "Readkey not found", some other error...
-				
-				console.log(['meas=',meas]);
-				
-				if (typeof meas.message !== 'undefined') {
+			
+			const m1 = this.controller.master.modelRepo.get('UserElectricityModel');
+			if (m1) {
+				const meas = m1.measurement; // is in normal situation an array.
+				if (Array.isArray(meas)) {
+					this.fillSVGTextElement(svgObject, 'user-electricity-power', meas[0].averagePower + 'W');
+					this.fillSVGTextElement(svgObject, 'user-electricity-energy', meas[0].totalEnergy.toFixed(1) + 'kWh');
+				} else if (typeof meas.message !== 'undefined') {
+					// Possible messages: "Readkey Expired", "Readkey not found", some other error...
 					console.log(['meas.message=',meas.message]);
 					this.fillSVGTextElement(svgObject, 'user-message', meas.message);
 				}
-				
-				if (typeof meas.power !== 'undefined') {
-					this.fillSVGTextElement(svgObject, 'user-electricity', meas.power.totalEnergy.toFixed(1) + ' kWh');
+			}
+			const m2 = this.controller.master.modelRepo.get('UserHeatingModel');
+			if (m2) {
+				const meas = m2.measurement; // is in normal situation an array.
+				if (Array.isArray(meas)) {
+					this.fillSVGTextElement(svgObject, 'user-temperature', meas[0].temperature.toFixed(1) + '°C');
+					this.fillSVGTextElement(svgObject, 'user-humidity', meas[0].humidity.toFixed(1) + '%');
+				} else if (typeof meas.message !== 'undefined') {
+					// Possible messages: "Readkey Expired", "Readkey not found", some other error...
+					console.log(['meas.message=',meas.message]);
+					this.fillSVGTextElement(svgObject, 'user-message', meas.message);
 				}
-				if (typeof meas.temperature !== 'undefined') {
-					this.fillSVGTextElement(svgObject, 'user-temperature', meas.temperature.temperature.toFixed(1) + '°C');
-					this.fillSVGTextElement(svgObject, 'user-humidity', meas.temperature.humidity.toFixed(1) + '%');
-				}
-				if (typeof meas.water !== 'undefined') {
-					this.fillSVGTextElement(svgObject, 'user-water-hot', meas.water.hotWaterTotal.toFixed(0) + ' L');
-					this.fillSVGTextElement(svgObject, 'user-water-cold', meas.water.coldWaterTotal.toFixed(0)  + ' L');
+			}
+			const m3 = this.controller.master.modelRepo.get('UserWaterModel');
+			if (m3) {
+				const meas = m3.measurement; // is in normal situation an array.
+				if (Array.isArray(meas)) {
+					this.fillSVGTextElement(svgObject, 'user-water-hot', meas[0].hotTotal.toFixed(0) + 'L');
+					this.fillSVGTextElement(svgObject, 'user-water-cold', meas[0].coldTotal.toFixed(0) + 'L');
+				} else if (typeof meas.message !== 'undefined') {
+					// Possible messages: "Readkey Expired", "Readkey not found", some other error...
+					console.log(['meas.message=',meas.message]);
+					this.fillSVGTextElement(svgObject, 'user-message', meas.message);
 				}
 			}
 		}
@@ -120,7 +133,7 @@ export default class UserPageView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserWaterModel'||options.model==='UserHeatingModel'||options.model==='UserElectricityModel'||options.model==='UserApartmentModel') {
+			if (options.model==='UserWaterModel'||options.model==='UserHeatingModel'||options.model==='UserElectricityModel') { //||options.model==='UserApartmentModel') {
 				if (options.method==='fetched') {
 					if (options.status === 200) {
 						console.log(['UserPageView: ',options.model,' fetched!']);
@@ -148,10 +161,8 @@ export default class UserPageView extends View {
 					}
 				}
 			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				
 				console.log("UserPageView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
-				
 			}
 		}
 	}

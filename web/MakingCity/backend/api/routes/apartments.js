@@ -100,6 +100,7 @@ router.post('/last/', checkAuth, (req,res,next)=>{
 		req.body.url
 		req.body.readkey
 		req.body.type
+		req.body.limit
 		req.body.start
 		req.body.end
 		
@@ -130,7 +131,7 @@ router.post('/feeds/', checkAuth, (req,res,next)=>{
 					// Use FAKE key now: '12E6F2B1236A'
 					const fakeKey = '12E6F2B1236A';
 					//const url = req.body.url + '?apiKey='+readkey+'&type='+req.body.type+'&start='+req.body.start+'&end='+req.body.end;
-					const url = req.body.url + '?apiKey='+fakeKey+'&type='+req.body.type+'&start='+req.body.start+'&end='+req.body.end;
+					const url = req.body.url + '?apiKey='+fakeKey+'&type='+req.body.type+'&limit='+req.body.limit+'&start='+req.body.start+'&end='+req.body.end;
 					
 					const auth = req.headers.authorization;
 					const options = {

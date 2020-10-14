@@ -1,6 +1,6 @@
 import Controller from '../common/Controller.js';
 
-import UserApartmentModel from  './UserApartmentModel.js';
+//import UserApartmentModel from  './UserApartmentModel.js';
 import UserWaterModel from  '../userwater/UserWaterModel.js';
 import UserHeatingModel from  '../userheating/UserHeatingModel.js';
 import UserElectricityModel from  '../userelectricity/UserElectricityModel.js';
@@ -21,7 +21,7 @@ export default class UserPageController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel'||key==='UserApartmentModel') {
+			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel') { //||key==='UserApartmentModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -45,11 +45,12 @@ export default class UserPageController extends Controller {
 		this.master.modelRepo.add('UserElectricityModel',model_3);
 		this.models['UserElectricityModel'] = model_3;
 		
+		/*
 		const model_4 = new UserApartmentModel({name:'UserApartmentModel',src:'data/sivakka/apartments/last.json'});
 		model_4.subscribe(this);
 		this.master.modelRepo.add('UserApartmentModel',model_4);
 		this.models['UserApartmentModel'] = model_4;
-		
+		*/
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
@@ -85,7 +86,7 @@ export default class UserPageController extends Controller {
 	
 	init() {
 		this.initialize();
-		this.timers['UserPageView'] = {timer: undefined, interval: 30000, models:['UserWaterModel','UserHeatingModel','UserElectricityModel','UserApartmentModel']};
+		this.timers['UserPageView'] = {timer: undefined, interval: 60000, models:['UserWaterModel','UserHeatingModel','UserElectricityModel']}; //,'UserApartmentModel']};
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		this.show(); // Try if this view can be shown right now!

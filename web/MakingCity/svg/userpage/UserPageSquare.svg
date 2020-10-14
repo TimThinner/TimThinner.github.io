@@ -72,10 +72,13 @@
 </svg>
 
 
-
 <svg x="-340" y="10" width="200px" height="32px">
 	<!--<rect x="1" y="1" width="198" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-	<text class="medium-text" id="user-electricity" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	<text class="medium-text" id="user-electricity-energy" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+<svg x="-340" y="40" width="200px" height="32px">
+	<!--<rect x="1" y="1" width="198" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<text class="small-text" id="user-electricity-power" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
 
 <!--

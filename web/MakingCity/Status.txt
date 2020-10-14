@@ -77,3 +77,82 @@ One sample per minute => 1440 samples per day.
 
 
 
+temperature => sensor
+power => energy
+
+
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=sensor&limit=10&start=2020-10-12&end=2020-10-12
+{
+    "created_at": "2020-10-12T23:50:38",
+    "residentId": 1,
+    "apartmentId": 101,
+    "meterId": 201,
+    "temperature": 19.8,
+    "humidity": 32.8
+  },
+  {
+    
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&limit=10&start=2020-10-12&end=2020-10-12
+
+ {
+    "created_at": "2020-10-12T23:50:38",
+    "residentId": 1,
+    "apartmentId": 101,
+    "meterId": 1001,
+    "averagePower": 420,
+    "totalEnergy": 343.198,
+    "impulseLastCtr": 7,
+    "impulseTotalCtr": 343198
+  },
+  {
+
+https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=water&limit=10&start=2020-10-12&end=2020-10-12
+[
+{
+    "created_at": "2020-10-12T00:00:38",
+    "residentId": 1,
+    "apartmentId": 101,
+    "meterId": 301,
+    "coldTotal": 2970.1,
+    "coldAverage": null,
+    "hotTotal": 1984.8,
+    "hotAverage": null
+},
+...
+
+https://makingcity.vtt.fi/data/sivakka/apartments/last.json?apiKey=12E6F2B1236A
+{
+  "info": {
+    "buildingId": 1,
+    "apartmentId": 101
+  },
+  "power": {
+    "powerId": 1001,
+    "lastImpulseCtr": 46,
+    "totalImpulseCtr": 356377,
+    "averagePower": 2760,
+    "totalEnergy": 356.377,
+    "DateTime": "2020-10-13 08:31:38"
+  },
+  "temperature": {
+    "tempId": 201,
+    "temperature": 19.2,
+    "humidity": 31.6,
+    "DateTime": "2020-10-13 08:31:38"
+  },
+  "water": {
+    "waterId": 301,
+    "hotWaterAverage": 0,
+    "coldWaterAverage": 0,
+    "hotWaterTotal": 2382,
+    "coldWaterTotal": 3532.3,
+    "DateTime": "2020-10-13 08:31:38"
+  }
+}
+
+humidity? percentages?
+minuutin välein 
+
+Water: minuutin välein
+    "coldTotal": 2970.1,
+    "hotTotal": 1984.8,

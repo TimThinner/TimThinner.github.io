@@ -1,9 +1,8 @@
 import Controller from '../common/Controller.js';
 
-//import UserApartmentModel from  './UserApartmentModel.js';
-import UserWaterModel from  '../userwater/UserWaterModel.js';
-import UserHeatingModel from  '../userheating/UserHeatingModel.js';
-import UserElectricityModel from  '../userelectricity/UserElectricityModel.js';
+import { UserWaterNowModel, UserWaterDayModel, UserWaterWeekModel, UserWaterMonthModel } from  '../userwater/UserWaterModel.js';
+import { UserHeatingNowModel, UserHeatingDayModel, UserHeatingWeekModel, UserHeatingMonthModel } from  '../userheating/UserHeatingModel.js';
+import { UserElectricityNowModel, UserElectricityDayModel, UserElectricityWeekModel, UserElectricityMonthModel } from  '../userelectricity/UserElectricityModel.js';
 
 import UserPageView from './UserPageView.js';
 
@@ -21,7 +20,7 @@ export default class UserPageController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key==='UserWaterModel'||key==='UserHeatingModel'||key==='UserElectricityModel') { //||key==='UserApartmentModel') {
+			if (key==='UserWaterNowModel'||key==='UserHeatingNowModel'||key==='UserElectricityNowModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -29,28 +28,45 @@ export default class UserPageController extends Controller {
 		this.models = {};
 	}
 	
+	/*
+		EXTRA params for Models:
+			this.type = options.type;    'sensor', 'energy', 'water'
+			this.limit = options.limit;  1
+			// timerange:
+			//   - "NOW"
+			//   - "NOW-24HOURS"
+			//   - "NOW-7DAYS"
+			//   - "NOW-1MONTH"
+			this.timerange = options.timerange;
+	*/
 	initialize() {
-		const model_1 = new UserWaterModel({name:'UserWaterModel',src:'data/sivakka/apartments/feeds.json'});
-		model_1.subscribe(this);
-		this.master.modelRepo.add('UserWaterModel',model_1);
-		this.models['UserWaterModel'] = model_1;
+		const model_WaterNow = new UserWaterNowModel({name:'UserWaterNowModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:'NOW'});
+		model_WaterNow.subscribe(this);
+		this.master.modelRepo.add('UserWaterNowModel',model_WaterNow);
+		this.models['UserWaterNowModel'] = model_WaterNow;
 		
-		const model_2 = new UserHeatingModel({name:'UserHeatingModel',src:'data/sivakka/apartments/feeds.json'});
-		model_2.subscribe(this);
-		this.master.modelRepo.add('UserHeatingModel',model_2);
-		this.models['UserHeatingModel'] = model_2;
+		const model_HeatingNow = new UserHeatingNowModel({name:'UserHeatingNowModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:1,timerange:'NOW'});
+		model_HeatingNow.subscribe(this);
+		this.master.modelRepo.add('UserHeatingNowModel',model_HeatingNow);
+		this.models['UserHeatingNowModel'] = model_HeatingNow;
 		
-		const model_3 = new UserElectricityModel({name:'UserElectricityModel',src:'data/sivakka/apartments/feeds.json'});
-		model_3.subscribe(this);
-		this.master.modelRepo.add('UserElectricityModel',model_3);
-		this.models['UserElectricityModel'] = model_3;
+		const model_EleNow = new UserElectricityNowModel({name:'UserElectricityNowModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:'NOW'});
+		model_EleNow.subscribe(this);
+		this.master.modelRepo.add('UserElectricityNowModel',model_EleNow);
+		this.models['UserElectricityNowModel'] = model_EleNow;
+		
 		
 		/*
-		const model_4 = new UserApartmentModel({name:'UserApartmentModel',src:'data/sivakka/apartments/last.json'});
-		model_4.subscribe(this);
-		this.master.modelRepo.add('UserApartmentModel',model_4);
-		this.models['UserApartmentModel'] = model_4;
+		
+		TODO:
+		
+		Add models for "NOW-24HOURS", "NOW-7DAYS" and "NOW-1MONTH" to be able to calculate TOTALS for different time periods!
+		
+		
 		*/
+		
+		
+		
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
@@ -86,7 +102,7 @@ export default class UserPageController extends Controller {
 	
 	init() {
 		this.initialize();
-		this.timers['UserPageView'] = {timer: undefined, interval: 60000, models:['UserWaterModel','UserHeatingModel','UserElectricityModel']}; //,'UserApartmentModel']};
+		this.timers['UserPageView'] = {timer: undefined, interval: 60000, models:['UserWaterNowModel','UserHeatingNowModel','UserElectricityNowModel']};
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		this.show(); // Try if this view can be shown right now!

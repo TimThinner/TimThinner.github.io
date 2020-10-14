@@ -1,58 +1,56 @@
 import Model from '../common/Model.js';
-/*
 
-”Virtuaaliasuntoja” on aluksi se viisi kappaletta, joita pääsee lukemaan avaimilla
-
-12E6F2B1236A
-22E6F2B1236A
-32E6F2B1236A
-42E6F2B1236A
-52E6F2B1236A
-
-eli vain eka numero vaihtuu.
-
-Muistista:
-https://makingcity.vtt.fi/data/sivakka/apartments/last.json?apiKey=12E6F2B1236A
-
-ja tietokannasta:
-
-https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=power&limit=10&start=2020-10-10&end=2020-10-10
-https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=temperature&limit=10&start=2020-10-12&end=2020-10-12
-https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=water&limit=10&start=2020-10-10&end=2020-10-10
-
-{
-  "info": {
-    "buildingId": 1,
-    "apartmentId": 101
-  },
-  "power": {
-    "powerId": 101,
-    "lastImpulseCtr": 0,
-    "totalImpulseCtr": 0,
-    "averagePower": 0,
-    "totalEnergy": 0,
-    "DateTime": ""
-  },
-  "temperature": {
-    "tempId": 201,
-    "temperature": 0,
-    "humidity": 0,
-    "DateTime": ""
-  },
-  "water": {
-    "waterId": 301,
-    "hotWaterAverage": 0,
-    "coldWaterAverage": 0,
-    "hotWaterTotal": 0,
-    "coldWaterTotal": 0,
-    "DateTime": ""
-  }
-}
-*/
 export default class UserApartmentModel extends Model {
+	
+	/* Model:
+		this.name = options.name;
+		this.src = options.src;
+		this.ready = false;
+		this.errorMessage = '';
+		this.fetching = false;
+	*/
+	
 	constructor(options) {
+		
 		super(options);
-		this.measurement = {};
+		
+		this.type = options.type;
+		this.limit = options.limit;
+		// timerange:
+		//   - "NOW"
+		//   - "NOW-24HOURS"
+		//   - "NOW-7DAYS"
+		//   - "NOW-1MONTH"
+		this.timerange = options.timerange;
+		this.measurement = [];
+		this.period = {start: undefined, end: undefined};
+	}
+	
+	setTimePeriod() {
+		if (this.timerange === 'NOW-24HOURS') {
+			const e_m = moment().subtract(24, 'hours');
+			const s_m = moment(e_m).subtract(10, 'minutes');
+			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
+			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
+			
+		} else if (this.timerange === 'NOW-7DAYS') {
+			const e_m = moment().subtract(7, 'days');
+			const s_m = moment(e_m).subtract(10, 'minutes');
+			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
+			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
+			
+		} else if (this.timerange === 'NOW-1MONTH') {
+			const e_m = moment().subtract(1, 'months');
+			const s_m = moment(e_m).subtract(10, 'minutes');
+			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
+			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
+			
+		} else { // 'NOW'
+			const e_m = moment();
+			const s_m = moment(e_m).subtract(10, 'minutes');
+			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
+			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
+		}
 	}
 	
 	/*
@@ -66,24 +64,39 @@ export default class UserApartmentModel extends Model {
 		this.errorMessage = '';
 		this.fetching = true;
 		
-		// this.src = 'data/sivakka/apartments/last.json' 
+		// this.src = 'data/sivakka/apartments/feeds.json'   
+		//      must append: ?apiKey=12E6F2B1236A&type=type&limit=limit&start=2020-10-12T09:00&end=2020-10-12T10:00'
 		
-		const url = this.backend + '/' + this.src + '?apiKey='+readkey;
+		const start_date = this.period.start;
+		const end_date = this.period.end;
+		
+		const url = this.backend + '/' + this.src + '?apiKey='+readkey+'&type='+this.type+'&limit='+this.limit+'&start='+start_date+'&end='+end_date;
+		
 		fetch(url)
 			.then(function(response) {
 				status = response.status;
 				return response.json();
 			})
 			.then(function(myJson) {
-				self.measurement = myJson;
-				//console.log(['self.measurement=',self.measurement]);
-				//console.log([self.name+' fetch status=',status]);
+				let message = 'OK';
+				if (Array.isArray(myJson)) {
+					self.measurement = myJson;
+				} else {
+					if (myJson === 'No data!') {
+						status = 404;
+						message = myJson;
+						self.measurement = [];
+					} else if (typeof self.measurement.message !== 'undefined') {
+						message = self.measurement.message;
+						self.measurement = [];
+					} else {
+						self.measurement = [];
+					}
+				}
+				console.log(['self.measurement=',self.measurement]);
+				console.log([self.name+' fetch status=',status]);
 				self.fetching = false;
 				self.ready = true;
-				let message = 'OK';
-				if (typeof self.measurement.message !== 'undefined') {
-					message = self.measurement.message;
-				}
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:message});
 			})
 			.catch(error => {
@@ -98,40 +111,36 @@ export default class UserApartmentModel extends Model {
 	fetch(token, readkey) {
 		const self = this;
 		if (this.fetching) {
-			console.log(this.name+' FETCHING ALREADY IN PROCESS!');
+			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
 		}
+		
+		// Always start with setting the TIME PERIOD!
+		this.setTimePeriod();
 		
 		if (this.MOCKUP) {
 			this.fetch_d();
 		} else {
-			let status = 500;
+			let status = 500; // error: 500
 			this.errorMessage = '';
 			this.fetching = true;
 			
+			const start_date = this.period.start;
+			const end_date = this.period.end;
+			
 			if (typeof token !== 'undefined') {
-				
 				var myHeaders = new Headers();
 				var authorizationToken = 'Bearer '+token;
 				myHeaders.append("Authorization", authorizationToken);
 				myHeaders.append("Content-Type", "application/json");
-			
-				// Params example:
-				//req.body.url		https://makingcity.vtt.fi/data/sivakka/apartments/last.json
-				//req.body.readkey	5f743b8d49612827a005bd2c
-				//
-				// https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=power&limit=10&start=2020-10-12&end=2020-10-12
-				// https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=temperature&limit=10&start=2020-10-12&end=2020-10-12
-				// https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=water&limit=10&start=2020-10-12&end=2020-10-12
 				
 				if (typeof readkey !== 'undefined') {
 					// Normal user has a readkey, which was created when user registered into the system. 
-					const url = this.mongoBackend + '/apartments/last/';
+					const url = this.mongoBackend + '/apartments/feeds/';
 					
-					// this.src = 'data/sivakka/apartments/last.json' 
+					// this.src = 'data/sivakka/apartments/feeds.json' 
 					const body_url = this.backend + '/' + this.src;
-					const body_readkey = readkey;
-					const data = {url:body_url, readkey:body_readkey};
+					const data = {url:body_url, readkey:readkey, type: this.type, limit:this.limit, start: start_date, end: end_date };
 					
 					const myPost = {
 						method: 'POST',
@@ -145,15 +154,25 @@ export default class UserApartmentModel extends Model {
 							return response.json();
 						})
 						.then(function(myJson) {
-							self.measurement = myJson;
-							//console.log(['self.measurement=',self.measurement]);
-							//console.log([self.name+' fetch status=',status]);
+							let message = 'OK';
+							if (Array.isArray(myJson)) {
+								self.measurement = myJson;
+							} else {
+								if (myJson === 'No data!') {
+									status = 404;
+									message = myJson;
+									self.measurement = [];
+								} else if (typeof self.measurement.message !== 'undefined') {
+									message = self.measurement.message;
+									self.measurement = [];
+								} else {
+									self.measurement = [];
+								}
+							}
+							console.log(['self.measurement=',self.measurement]);
+							console.log([self.name+' fetch status=',status]);
 							self.fetching = false;
 							self.ready = true;
-							let message = 'OK';
-							if (typeof self.measurement.message !== 'undefined') {
-								message = self.measurement.message;
-							}
 							self.notifyAll({model:self.name, method:'fetched', status:status, message:message});
 						})
 						.catch(error => {
@@ -164,9 +183,10 @@ export default class UserApartmentModel extends Model {
 							self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
 						});
 				} else {
-					// Abnormal user (admin) => no readkey. Use STATIC response for testing purposes.
+					// Abnormal user (admin) => no readkey. Use direct url for testing purposes.
 					this.fetch_d();
 				}
+				
 			} else {
 				// No token? Authentication failed (401).
 				self.errorMessage = 'Auth failed';

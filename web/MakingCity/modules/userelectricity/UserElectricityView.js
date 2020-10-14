@@ -11,7 +11,7 @@ export default class UserElectricityView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserElectricityModel') {
+			if (key === 'UserElectricityNowModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -46,9 +46,9 @@ export default class UserElectricityView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserElectricityModel' && options.method==='fetched') {
+			if (options.model==='UserElectricityNowModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserElectricityView => UserElectricityModel fetched!');
+					console.log('UserElectricityView => UserElectricityNowModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();

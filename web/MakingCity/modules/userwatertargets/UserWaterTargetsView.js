@@ -11,7 +11,7 @@ export default class UserWaterTargetsView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserWaterModel') {
+			if (key === 'UserWaterNowModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -46,9 +46,9 @@ export default class UserWaterTargetsView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserWaterModel' && options.method==='fetched') {
+			if (options.model==='UserWaterNowModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserWaterTargetsView => UserWaterModel fetched!');
+					console.log('UserWaterTargetsView => UserWaterNowModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();

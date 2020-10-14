@@ -11,7 +11,7 @@ export default class UserHeatingView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserHeatingModel') {
+			if (key === 'UserHeatingNowModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -47,9 +47,9 @@ export default class UserHeatingView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserHeatingModel' && options.method==='fetched') {
+			if (options.model==='UserHeatingNowModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserHeatingView => UserHeatingModel fetched!');
+					console.log('UserHeatingView => UserHeatingNowModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();

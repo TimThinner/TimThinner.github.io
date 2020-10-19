@@ -205,113 +205,91 @@ export default class RegCodeView extends View {
 			const localized_string_title = 'RegCodes';
 			const localized_string_description = 'Admin can list all RegCodes and generate new codes.';
 			
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-				
-				if (errorMessages.indexOf('Auth failed') >= 0) {
-					// Show message and then FORCE LOGOUT in 3 seconds.
-					this.forceLogout(this.FELID);
-				}
-				
-			} else {
-				let placeholder = 
-						'<div class="col s12">'+
-							'<table class="striped">'+
-								'<thead>'+
-									'<tr>'+
-										'<th>Email</th>'+
-										'<th>Apartment Id</th>'+
-										'<th>Code</th>'+
-										'<th>Start Date</th>'+
-										'<th>End Date</th>'+
-										'<th>&nbsp;</th>'+
-									'</tr>'+
-								'</thead>'+
-								'<tbody id="regcodes-table">'+
-								'</tbody>'+
-							'</table>'+
-						'</div>';
-					
-				if (this.layout !== 'Table') {
-					placeholder = '<div class="col s12" id="regcodes-placeholder" style="padding: 0 24px;"></div>';
-				}
-				const html =
-					'<div class="row">'+
-						'<div class="col s12">'+
-							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-							'<p style="text-align:center;">'+localized_string_description+'</p>'+
-						'</div>'+
-						'<div class="col s12" style="padding: 0 24px;">'+
-						'<form action="#">'+
-							'<p>'+
-								'<label>'+
-									'<input name="layout" type="radio" value="Table" />'+
-									'<span>Table</span>'+
-								'</label>'+
-							'</p>'+
-							'<p>'+
-								'<label>'+
-									'<input name="layout" type="radio" value="Cards" />'+
-									'<span>Cards</span>'+
-								'</label>'+
-							'</p>'+
-						'</form></div>'+ placeholder +
-						'<div class="col s6 center" style="margin-top:16px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-						'<div class="col s6 center" style="margin-top:16px;">'+
-							'<button class="btn waves-effect waves-light" id="create-regcode">Create new Regcode'+
-								//'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-				
-				if (this.layout === 'Table') {
-					$("input[value='Table']").prop('checked', true);
-				} else {
-					$("input[value='Cards']").prop('checked', true);
-				}
-				
-				$("input[type='radio']").click(function(){
-					var radioValue = $("input[name='layout']:checked").val();
-					if(radioValue){
-						self.layout = radioValue;
-						self.render();
-					}
-				});
-				
-				this.showRegcodes();
-				
-				$('#create-regcode').on('click',function() {
-					self.models['MenuModel'].setSelected('REGCODECREATE');
-				});
+			let placeholder = 
+				'<div class="col s12">'+
+					'<table class="striped">'+
+						'<thead>'+
+							'<tr>'+
+								'<th>Email</th>'+
+								'<th>Apartment Id</th>'+
+								'<th>Code</th>'+
+								'<th>Start Date</th>'+
+								'<th>End Date</th>'+
+								'<th>&nbsp;</th>'+
+							'</tr>'+
+						'</thead>'+
+						'<tbody id="regcodes-table">'+
+						'</tbody>'+
+					'</table>'+
+				'</div>';
+			
+			if (this.layout !== 'Table') {
+				placeholder = '<div class="col s12" id="regcodes-placeholder" style="padding: 0 24px;"></div>';
 			}
-			$('#back').on('click',function() {
-				
-				self.models['MenuModel'].setSelected('USERPROPS');
-				
+			const html =
+				'<div class="row">'+
+					'<div class="col s12">'+
+						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
+						'<p style="text-align:center;">'+localized_string_description+'</p>'+
+					'</div>'+
+					'<div class="col s12" style="padding: 0 24px;">'+
+					'<form action="#">'+
+						'<p>'+
+							'<label>'+
+								'<input name="layout" type="radio" value="Table" />'+
+								'<span>Table</span>'+
+							'</label>'+
+						'</p>'+
+						'<p>'+
+							'<label>'+
+								'<input name="layout" type="radio" value="Cards" />'+
+								'<span>Cards</span>'+
+							'</label>'+
+						'</p>'+
+					'</form></div>'+ placeholder +
+					'<div class="col s6 center" style="margin-top:16px;">'+
+						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+							'<i class="material-icons left">arrow_back</i>'+
+						'</button>'+
+					'</div>'+
+					'<div class="col s6 center" style="margin-top:16px;">'+
+						'<button class="btn waves-effect waves-light" id="create-regcode">Create new Regcode'+
+						'</button>'+
+					'</div>'+
+				'</div>'+
+				'<div class="row">'+
+					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+				'</div>';
+			$(html).appendTo(this.el);
+			
+			if (this.layout === 'Table') {
+				$("input[value='Table']").prop('checked', true);
+			} else {
+				$("input[value='Cards']").prop('checked', true);
+			}
+			
+			$("input[type='radio']").click(function(){
+				var radioValue = $("input[name='layout']:checked").val();
+				if(radioValue){
+					self.layout = radioValue;
+					self.render();
+				}
 			});
+			
+			this.showRegcodes();
+			
+			$('#create-regcode').on('click',function() {
+				self.models['MenuModel'].setSelected('REGCODECREATE');
+			});
+			
+			$('#back').on('click',function() {
+				self.models['MenuModel'].setSelected('USERPROPS');
+			});
+			
+			this.handleErrorMessages(this.FELID);
+			
 			this.rendered = true;
+			
 		} else {
 			console.log('RegCodeView => render Model IS NOT READY!!!!');
 			// this.el = '#content'

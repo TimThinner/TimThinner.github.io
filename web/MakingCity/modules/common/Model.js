@@ -8,6 +8,7 @@ export default class Model extends EventObserver {
 		this.src = options.src;
 		this.ready = false;
 		this.errorMessage = '';
+		this.status = 500;
 		this.fetching = false;
 	}
 	

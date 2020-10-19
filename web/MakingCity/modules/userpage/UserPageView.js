@@ -11,7 +11,7 @@ export default class UserPageView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key==='UserWaterNowModel'||key==='UserHeatingNowModel'||key==='UserElectricityNowModel') {
+			if (key==='UserWaterNowModel'||key==='UserHeatingNowModel'||key==='UserElectricityNowModel'||key==='UserWaterDayModel'||key==='UserElectricityDayModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -56,34 +56,54 @@ export default class UserPageView extends View {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
-			const m1 = this.controller.master.modelRepo.get('UserElectricityNowModel');
-			if (m1) {
-				const meas = m1.measurement; // is in normal situation an array.
-				if (Array.isArray(meas) && meas.length > 0) {
+			const ele_now = this.controller.master.modelRepo.get('UserElectricityNowModel');
+			const ele_24h = this.controller.master.modelRepo.get('UserElectricityDayModel');
+			
+			if (ele_now && ele_24h) {
+				const meas_now = ele_now.measurement; // is in normal situation an array.
+				const meas_24h = ele_24h.measurement; // is in normal situation an array.
+				
+				if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_24h) && meas_24h.length > 0) {
 					
-					const power = meas[0].averagePower;
-					if (typeof power !== 'undefined') {
-						this.fillSVGTextElement(svgObject, 'user-electricity-power', power + 'W');
+					// Average power now.
+					const power_now = meas_now[0].averagePower;
+					if (typeof power_now !== 'undefined') {
+						this.fillSVGTextElement(svgObject, 'user-electricity-power', power_now + 'W');
 					} else {
 						this.fillSVGTextElement(svgObject, 'user-electricity-power', '---');
 					}
 					
-					const energy = meas[0].totalEnergy;
-					if (typeof energy !== 'undefined') {
-						this.fillSVGTextElement(svgObject, 'user-electricity-energy', energy.toFixed(1) + 'kWh');
+					// Energy total
+					const energy_now = meas_now[0].totalEnergy;
+					const energy_24h = meas_24h[0].totalEnergy;
+					if (typeof energy_now !== 'undefined' && typeof energy_24h !== 'undefined') {
+						
+						const energy_24hours = energy_now - energy_24h;
+						this.fillSVGTextElement(svgObject, 'user-electricity-energy', energy_24hours.toFixed(1) + 'kWh');
 					} else {
 						this.fillSVGTextElement(svgObject, 'user-electricity-energy', '---');
 					}
 					
-				} else if (typeof meas.message !== 'undefined') {
-					// Possible messages: "Readkey Expired", "Readkey not found", some other error...
-					console.log(['meas.message=',meas.message]);
-					this.fillSVGTextElement(svgObject, 'user-message', meas.message);
+				} else {
+					if (typeof meas_now.message !== 'undefined' || typeof meas_24h.message !== 'undefined') {
+						// Possible messages: "Readkey Expired", "Readkey not found", some other error...
+						const messages = [];
+						if (typeof meas_now.message !== 'undefined') {
+							messages.push(meas_now.message);
+						}
+						if (typeof meas_24h.message !== 'undefined') {
+							messages.push(meas_24h.message);
+						}
+						const message = messages.join(' ');
+						console.log(['message=',message]);
+						this.fillSVGTextElement(svgObject, 'user-message', message);
+					}
 				}
 			}
-			const m2 = this.controller.master.modelRepo.get('UserHeatingNowModel');
-			if (m2) {
-				const meas = m2.measurement; // is in normal situation an array.
+			
+			const heating_now = this.controller.master.modelRepo.get('UserHeatingNowModel');
+			if (heating_now) {
+				const meas = heating_now.measurement; // is in normal situation an array.
 				if (Array.isArray(meas) && meas.length > 0) {
 					
 					const temp = meas[0].temperature;
@@ -106,29 +126,48 @@ export default class UserPageView extends View {
 					this.fillSVGTextElement(svgObject, 'user-message', meas.message);
 				}
 			}
-			const m3 = this.controller.master.modelRepo.get('UserWaterNowModel');
-			if (m3) {
-				const meas = m3.measurement; // is in normal situation an array.
-				if (Array.isArray(meas) && meas.length > 0) {
+			
+			const water_now = this.controller.master.modelRepo.get('UserWaterNowModel');
+			const water_24h = this.controller.master.modelRepo.get('UserWaterDayModel');
+			if (water_now && water_24h) {
+				
+				const meas_now = water_now.measurement; // is in normal situation an array.
+				const meas_24h = water_24h.measurement; // is in normal situation an array.
+				
+				if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_24h) && meas_24h.length > 0) {
 					
-					const hot = meas[0].hotTotal;
-					if (typeof hot !== 'undefined') {
-						this.fillSVGTextElement(svgObject, 'user-water-hot', hot.toFixed(0) + 'L');
+					const hot_now = meas_now[0].hotTotal;
+					const hot_24h = meas_24h[0].hotTotal;
+					if (typeof hot_now !== 'undefined' && typeof hot_24h !== 'undefined') {
+						const hot_24hours = hot_now - hot_24h;
+						this.fillSVGTextElement(svgObject, 'user-water-hot', hot_24hours.toFixed(0) + 'L');
 					} else {
 						this.fillSVGTextElement(svgObject, 'user-water-hot', '---');
 					}
 					
-					const cold = meas[0].coldTotal;
-					if (typeof cold !== 'undefined') {
-						this.fillSVGTextElement(svgObject, 'user-water-cold', cold.toFixed(0) + 'L');
+					const cold_now = meas_now[0].coldTotal;
+					const cold_24h = meas_24h[0].coldTotal;
+					if (typeof cold_now !== 'undefined' && typeof cold_24h !== 'undefined') {
+						const cold_24hours = cold_now - cold_24h;
+						this.fillSVGTextElement(svgObject, 'user-water-cold', cold_24hours.toFixed(0) + 'L');
 					} else {
 						this.fillSVGTextElement(svgObject, 'user-water-cold', '---');
 					}
 					
-				} else if (typeof meas.message !== 'undefined') {
-					// Possible messages: "Readkey Expired", "Readkey not found", some other error...
-					console.log(['meas.message=',meas.message]);
-					this.fillSVGTextElement(svgObject, 'user-message', meas.message);
+				} else {
+					if (typeof meas_now.message !== 'undefined' || typeof meas_24h.message !== 'undefined') {
+						// Possible messages: "Readkey Expired", "Readkey not found", some other error...
+						const messages = [];
+						if (typeof meas_now.message !== 'undefined') {
+							messages.push(meas_now.message);
+						}
+						if (typeof meas_24h.message !== 'undefined') {
+							messages.push(meas_24h.message);
+						}
+						const message = messages.join(' ');
+						console.log(['message=',message]);
+						this.fillSVGTextElement(svgObject, 'user-message', message);
+					}
 				}
 			}
 		}
@@ -136,7 +175,7 @@ export default class UserPageView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserWaterNowModel'||options.model==='UserHeatingNowModel'||options.model==='UserElectricityNowModel') {
+			if (options.model==='UserWaterNowModel'||options.model==='UserHeatingNowModel'||options.model==='UserElectricityNowModel'||options.model==='UserWaterDayModel'||options.model==='UserElectricityDayModel') {
 				if (options.method==='fetched') {
 					if (options.status === 200) {
 						console.log(['UserPageView: ',options.model,' fetched!']);
@@ -344,71 +383,47 @@ export default class UserPageView extends View {
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-				
-				$('#back').on('click',function() {
-					self.menuModel.setSelected('menu');
-				});
-				
-				if (errorMessages.indexOf('Auth failed') >= 0) {
-					// Show message and then FORCE LOGOUT in 3 seconds.
-					this.forceLogout(this.FELID);
-				}
-				
+			const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
+			let svgFile, svgClass;
+			if (mode === 'LANDSCAPE') {
+				console.log('LANDSCAPE');
+				svgFile = './svg/userpage/UserPageLandscape.svg';
+				svgClass = 'svg-landscape-container';
+			} else if (mode === 'PORTRAIT') {
+				console.log('PORTRAIT');
+				svgFile = './svg/userpage/UserPagePortrait.svg';
+				svgClass = 'svg-portrait-container';
 			} else {
-				const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
-				let svgFile, svgClass;
-				if (mode === 'LANDSCAPE') {
-					console.log('LANDSCAPE');
-					svgFile = './svg/userpage/UserPageLandscape.svg';
-					svgClass = 'svg-landscape-container';
-				} else if (mode === 'PORTRAIT') {
-					console.log('PORTRAIT');
-					svgFile = './svg/userpage/UserPagePortrait.svg';
-					svgClass = 'svg-portrait-container';
-				} else {
-					console.log('SQUARE');
-					svgFile = './svg/userpage/UserPageSquare.svg';
-					svgClass = 'svg-square-container';
-				}
-				const html =
-					'<div class="row">'+
-						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
-							'<div class="'+svgClass+'">'+
-								'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
-							'</div>'+
+				console.log('SQUARE');
+				svgFile = './svg/userpage/UserPageSquare.svg';
+				svgClass = 'svg-square-container';
+			}
+			const html =
+				'<div class="row">'+
+					'<div class="col s12" style="padding-left:0;padding-right:0;">'+
+						'<div class="'+svgClass+'">'+
+							'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
 						'</div>'+
 					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-					'</div>';
-				$(html).appendTo(this.el);
+				'</div>'+
+				'<div class="row">'+
+					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+				'</div>';
+			$(html).appendTo(this.el);
+			
+			// AND WAIT for SVG object to fully load, before assigning event handlers!
+			const svgObj = document.getElementById("svg-object");
+			svgObj.addEventListener('load', function(){
 				
-				// AND WAIT for SVG object to fully load, before assigning event handlers!
-				const svgObj = document.getElementById("svg-object");
-				svgObj.addEventListener('load', function(){
-					
-					self.addSVGEventHandlers();
-					self.localizeSVGTexts();
-					self.updateLatestValues();
-				});
-			}
+				self.addSVGEventHandlers();
+				self.localizeSVGTexts();
+				self.updateLatestValues();
+			});
+			
+			this.handleErrorMessages(this.FELID);
+			
 			this.rendered = true;
+			
 		} else {
 			console.log('UserPageView => render Models ARE NOT READY!!!!');
 			// this.el = '#content'

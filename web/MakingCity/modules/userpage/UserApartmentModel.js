@@ -7,6 +7,7 @@ export default class UserApartmentModel extends Model {
 		this.src = options.src;
 		this.ready = false;
 		this.errorMessage = '';
+		this.status = 500;
 		this.fetching = false;
 	*/
 	
@@ -59,10 +60,7 @@ export default class UserApartmentModel extends Model {
 	*/
 	fetch_d() {
 		const self = this;
-		let status = 500; // error: 500
 		const readkey = '12E6F2B1236A';
-		this.errorMessage = '';
-		this.fetching = true;
 		
 		// this.src = 'data/sivakka/apartments/feeds.json'   
 		//      must append: ?apiKey=12E6F2B1236A&type=type&limit=limit&start=2020-10-12T09:00&end=2020-10-12T10:00'
@@ -74,7 +72,7 @@ export default class UserApartmentModel extends Model {
 		
 		fetch(url)
 			.then(function(response) {
-				status = response.status;
+				self.status = response.status;
 				return response.json();
 			})
 			.then(function(myJson) {
@@ -83,8 +81,9 @@ export default class UserApartmentModel extends Model {
 					self.measurement = myJson;
 				} else {
 					if (myJson === 'No data!') {
-						status = 404;
-						message = myJson;
+						self.status = 404;
+						message = self.name+': '+myJson;
+						self.errorMessage = message;
 						self.measurement = [];
 					} else if (typeof self.measurement.message !== 'undefined') {
 						message = self.measurement.message;
@@ -94,17 +93,18 @@ export default class UserApartmentModel extends Model {
 					}
 				}
 				console.log(['self.measurement=',self.measurement]);
-				console.log([self.name+' fetch status=',status]);
+				console.log([self.name+' fetch status=',self.status]);
 				self.fetching = false;
 				self.ready = true;
-				self.notifyAll({model:self.name, method:'fetched', status:status, message:message});
+				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 			})
 			.catch(error => {
 				console.log([self.name+' fetch error=',error]);
 				self.fetching = false;
 				self.ready = true;
-				self.errorMessage = error;
-				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
+				const message = self.name+': '+error;
+				self.errorMessage = message;
+				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 			});
 	}
 	
@@ -117,14 +117,13 @@ export default class UserApartmentModel extends Model {
 		
 		// Always start with setting the TIME PERIOD!
 		this.setTimePeriod();
+		this.status = 500; // error: 500
+		this.errorMessage = '';
+		this.fetching = true;
 		
 		if (this.MOCKUP) {
 			this.fetch_d();
 		} else {
-			let status = 500; // error: 500
-			this.errorMessage = '';
-			this.fetching = true;
-			
 			const start_date = this.period.start;
 			const end_date = this.period.end;
 			
@@ -150,7 +149,7 @@ export default class UserApartmentModel extends Model {
 					const myRequest = new Request(url, myPost);
 					fetch(myRequest)
 						.then(function(response) {
-							status = response.status;
+							self.status = response.status;
 							return response.json();
 						})
 						.then(function(myJson) {
@@ -159,8 +158,9 @@ export default class UserApartmentModel extends Model {
 								self.measurement = myJson;
 							} else {
 								if (myJson === 'No data!') {
-									status = 404;
-									message = myJson;
+									self.status = 404;
+									message = self.name+': '+myJson;
+									self.errorMessage = message;
 									self.measurement = [];
 								} else if (typeof self.measurement.message !== 'undefined') {
 									message = self.measurement.message;
@@ -169,18 +169,19 @@ export default class UserApartmentModel extends Model {
 									self.measurement = [];
 								}
 							}
-							console.log(['self.measurement=',self.measurement]);
-							console.log([self.name+' fetch status=',status]);
+							//console.log(['self.measurement=',self.measurement]);
+							//console.log([self.name+' fetch status=',self.status]);
 							self.fetching = false;
 							self.ready = true;
-							self.notifyAll({model:self.name, method:'fetched', status:status, message:message});
+							self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 						})
 						.catch(error => {
 							console.log([self.name+' fetch error=',error]);
 							self.fetching = false;
 							self.ready = true;
-							self.errorMessage = error;
-							self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
+							const message = self.name+': '+error;
+							self.errorMessage = message;
+							self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 						});
 				} else {
 					// Abnormal user (admin) => no readkey. Use direct url for testing purposes.
@@ -189,11 +190,12 @@ export default class UserApartmentModel extends Model {
 				
 			} else {
 				// No token? Authentication failed (401).
-				self.errorMessage = 'Auth failed';
-				console.log([self.name+' fetch error = ',self.errorMessage]);
+				self.status = 401;
 				self.fetching = false;
 				self.ready = true;
-				self.notifyAll({model:self.name, method:'fetched', status:401, message:error});
+				const message = self.name+': Auth failed';
+				self.errorMessage = message;
+				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 			}
 		}
 	}

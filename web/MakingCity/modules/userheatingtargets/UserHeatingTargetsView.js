@@ -85,62 +85,41 @@ export default class UserHeatingTargetsView extends View {
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 			
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
+			const html =
+				'<div class="row">'+
+					'<div class="col s12">'+
+						'<h4 style="text-align:center;">Heating Targets</h4>'+
+						'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-				
-				if (errorMessages.indexOf('Auth failed') >= 0) {
-					// Show message and then FORCE LOGOUT in 3 seconds.
-					this.forceLogout(this.FELID);
-				}
-				
-			} else {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12">'+
-							'<h4 style="text-align:center;">Heating Targets</h4>'+
-							'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
-						'</div>'+
-						'<div class="col s12 center" style="margin-top:32px;">'+
-							'<p>&nbsp;</p>'+
-							'<p>&nbsp;</p>'+
-							'<p>&nbsp;</p>'+
-						'</div>'+
-						'<div class="col s12 center" style="margin-top:32px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
+					'<div class="col s12 center" style="margin-top:32px;">'+
+						'<p>&nbsp;</p>'+
+						'<p>&nbsp;</p>'+
+						'<p>&nbsp;</p>'+
 					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-				
-				this.startSwipeEventListeners(
-					()=>{this.menuModel.setSelected('USERHEATING');},
-					()=>{this.menuModel.setSelected('USERHEATINGCOMPENSATE');}
-				);
-			}
+					'<div class="col s12 center" style="margin-top:32px;">'+
+						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+							'<i class="material-icons left">arrow_back</i>'+
+						'</button>'+
+					'</div>'+
+				'</div>'+
+				'<div class="row">'+
+					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+				'</div>';
+			$(html).appendTo(this.el);
+			
+			this.startSwipeEventListeners(
+				()=>{this.menuModel.setSelected('USERHEATING');},
+				()=>{this.menuModel.setSelected('USERHEATINGCOMPENSATE');}
+			);
+			
 			$('#back').on('click',function() {
-				
 				self.menuModel.setSelected('USERHEATING');
-				
 			});
+			
+			this.handleErrorMessages(this.FELID);
+			
 			this.rendered = true;
+			
 		} else {
 			console.log('UserHeatingTargetsView => render Model IS NOT READY!!!!');
 			// this.el = '#content'

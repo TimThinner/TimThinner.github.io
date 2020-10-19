@@ -163,67 +163,46 @@ export default class ReadKeyView extends View {
 			const localized_string_title = 'ReadKeys';
 			const localized_string_description = 'Admin can list all ReadKeys and edit dates.';
 			
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
+			const html =
+				'<div class="row">'+
+					'<div class="col s12">'+
+						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
+						'<p style="text-align:center;">'+localized_string_description+'</p>'+
 					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-				
-				if (errorMessages.indexOf('Auth failed') >= 0) {
-					// Show message and then FORCE LOGOUT in 3 seconds.
-					this.forceLogout(this.FELID);
-				}
-				
-			} else {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12">'+
-							'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-							'<p style="text-align:center;">'+localized_string_description+'</p>'+
-						'</div>'+
-						'<div class="col s12">'+
-							'<table class="striped">'+
-								'<thead>'+
-									'<tr>'+
-										'<th>Id</th>'+
-										'<th>Start Date</th>'+
-										'<th>End Date</th>'+
-									'</tr>'+
-								'</thead>'+
-								'<tbody id="readkeys-table">'+
-								'</tbody>'+
-							'</table>'+
-						'</div>'+
-						'<div class="col s6 center" style="margin-top:16px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
+					'<div class="col s12">'+
+						'<table class="striped">'+
+							'<thead>'+
+								'<tr>'+
+									'<th>Id</th>'+
+									'<th>Start Date</th>'+
+									'<th>End Date</th>'+
+								'</tr>'+
+							'</thead>'+
+							'<tbody id="readkeys-table">'+
+							'</tbody>'+
+						'</table>'+
 					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-				
-				this.showReadKeys();
-			}
+					'<div class="col s6 center" style="margin-top:16px;">'+
+						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+							'<i class="material-icons left">arrow_back</i>'+
+						'</button>'+
+					'</div>'+
+				'</div>'+
+				'<div class="row">'+
+					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+				'</div>';
+			$(html).appendTo(this.el);
+			
+			this.showReadKeys();
+			
 			$('#back').on('click',function() {
-				
 				self.models['MenuModel'].setSelected('USERPROPS');
-				
 			});
+			
+			this.handleErrorMessages(this.FELID);
+			
 			this.rendered = true;
+			
 		} else {
 			console.log('ReadKeyView => render Model IS NOT READY!!!!');
 			// this.el = '#content'

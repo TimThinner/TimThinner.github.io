@@ -50,6 +50,18 @@ export default class View {
 		});
 		return retval;
 	}
+	/*
+		If one (or more) of the models has status 401 => returns false.
+	*/
+	is401Detected() {
+		let retval = false;
+		Object.keys(this.models).forEach(key => {
+			if (this.models[key].status===401) {
+				retval = true;
+			}
+		});
+		return retval;
+	}
 	
 	modelsErrorMessages() {
 		let retval = '';
@@ -73,6 +85,20 @@ export default class View {
 		setTimeout(() => {
 			this.controller.forceLogout();
 		}, 3000);
+	}
+	
+	handleErrorMessages(FELID) {
+		const errorMessages = this.modelsErrorMessages();
+		if (errorMessages.length > 0) {
+			const html = '<div class="error-message"><p>'+errorMessages+'</p></div>';
+			$(html).appendTo('#'+FELID);
+			if (this.is401Detected()) {
+				// 401 Unauthorized must be caught and wired to forceLogout() action.
+				// Force LOGOUT if Auth failed!
+				// Show message and then FORCE LOGOUT in 3 seconds.
+				this.forceLogout(FELID);
+			}
+		}
 	}
 	
 	fillSVGTextElement(svgObject, id, txt) {

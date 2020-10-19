@@ -420,91 +420,44 @@ meterId
 			//const localized_string_auto_update_msg_1 = LM['translation'][sel]['AUTO_UPDATE_MSG_1_B'];
 			//const localized_string_auto_update_msg_2 = LM['translation'][sel]['AUTO_UPDATE_MSG_2'];
 			
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-				
-				$('#back').on('click',function() {
-					self.menuModel.setSelected('D');
-				});
-				
-				if (errorMessages.indexOf('Auth failed') >= 0) {
-					// Show message and then FORCE LOGOUT in 3 seconds.
-					this.forceLogout(this.FELID);
-				}
-				
+			const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
+			let svgFile, svgClass;
+			if (mode === 'LANDSCAPE') {
+				//console.log('LANDSCAPE');
+				svgFile = './svg/DA/DALandscape.svg';
+				svgClass = 'svg-landscape-container';
+			} else if (mode === 'PORTRAIT') {
+				//console.log('PORTRAIT');
+				svgFile = './svg/DA/DAPortrait.svg';
+				svgClass = 'svg-portrait-container';
 			} else {
-				const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
-				let svgFile, svgClass;
-				if (mode === 'LANDSCAPE') {
-					//console.log('LANDSCAPE');
-					svgFile = './svg/DA/DALandscape.svg';
-					svgClass = 'svg-landscape-container';
-				} else if (mode === 'PORTRAIT') {
-					//console.log('PORTRAIT');
-					svgFile = './svg/DA/DAPortrait.svg';
-					svgClass = 'svg-portrait-container';
-				} else {
-					//console.log('SQUARE');
-					svgFile = './svg/DA/DASquare.svg';
-					svgClass = 'svg-square-container';
-				}
-				const html =
-					'<div class="row">'+
-						'<div class="col s12" style="padding-left:0;padding-right:0;">'+
-							'<div class="'+svgClass+'">'+
-								'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
-							'</div>'+
-						'</div>'+
-						/*
-						'<div class="col s6 center" style="margin-top:14px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-						'<div class="col s6">'+
-							'<p style="font-size:14px;color:#888">'+localized_string_auto_update_msg_1+' 30 '+localized_string_auto_update_msg_2+'.</p>'+
-						'</div>'+
-						*/
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-					'</div>';
-					/*
-					'<div class="row">'+
-						'<div class="col s6">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-						'<div class="col s6">'+
-							'<p style="color:#aaa">'+localized_string_auto_update_msg_1+' 30 '+localized_string_auto_update_msg_2+'.</p>'+
-						'</div>'+
-					'</div>';*/
-				$(html).appendTo(this.el);
-				
-				// AND WAIT for SVG object to fully load, before assigning event handlers!
-				const svgObj = document.getElementById("svg-object");
-				svgObj.addEventListener('load', function(){
-					
-					self.addSVGEventHandlers();
-					self.localizeSVGTexts();
-					self.updateLatestValues();
-				});
+				//console.log('SQUARE');
+				svgFile = './svg/DA/DASquare.svg';
+				svgClass = 'svg-square-container';
 			}
+			const html =
+				'<div class="row">'+
+					'<div class="col s12" style="padding-left:0;padding-right:0;">'+
+						'<div class="'+svgClass+'">'+
+							'<object type="image/svg+xml" data="'+svgFile+'" id="svg-object" width="100%" height="100%" class="svg-content"></object>'+
+						'</div>'+
+					'</div>'+
+				'</div>'+
+				'<div class="row">'+
+					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+				'</div>';
+			$(html).appendTo(this.el);
+			
+			// AND WAIT for SVG object to fully load, before assigning event handlers!
+			const svgObj = document.getElementById("svg-object");
+			svgObj.addEventListener('load', function(){
+				
+				self.addSVGEventHandlers();
+				self.localizeSVGTexts();
+				self.updateLatestValues();
+			});
+			
+			this.handleErrorMessages(this.FELID);
 			
 			this.rendered = true;
 			

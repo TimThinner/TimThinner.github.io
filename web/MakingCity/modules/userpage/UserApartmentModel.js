@@ -87,6 +87,7 @@ export default class UserApartmentModel extends Model {
 						self.measurement = [];
 					} else if (typeof self.measurement.message !== 'undefined') {
 						message = self.measurement.message;
+						self.errorMessage = message;
 						self.measurement = [];
 					} else {
 						self.measurement = [];
@@ -164,6 +165,7 @@ export default class UserApartmentModel extends Model {
 									self.measurement = [];
 								} else if (typeof self.measurement.message !== 'undefined') {
 									message = self.measurement.message;
+									self.errorMessage = message;
 									self.measurement = [];
 								} else {
 									self.measurement = [];

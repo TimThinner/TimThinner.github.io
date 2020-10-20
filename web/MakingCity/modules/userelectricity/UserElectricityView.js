@@ -41,7 +41,71 @@ export default class UserElectricityView extends View {
 	}
 	
 	updateLatestValues() {
-		console.log('UPDATE UserElectricity !!!!!!!');
+		
+		const ele_now = this.controller.master.modelRepo.get('UserElectricityNowModel');
+		const ele_day = this.controller.master.modelRepo.get('UserElectricityDayModel');
+		const ele_week = this.controller.master.modelRepo.get('UserElectricityWeekModel');
+		const ele_month = this.controller.master.modelRepo.get('UserElectricityMonthModel');
+		
+		if (ele_now && ele_day) {
+			
+			const meas_now = ele_now.measurement; // is in normal situation an array.
+			const meas_day = ele_day.measurement; // is in normal situation an array.
+			
+			if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_day) && meas_day.length > 0) {
+				
+				const energy_now = meas_now[0].totalEnergy;
+				const energy_day = meas_day[0].totalEnergy;
+				if (typeof energy_now !== 'undefined' && typeof energy_day !== 'undefined') {
+					const energy_diffe = energy_now - energy_day;
+					$('#day-energy').empty().append(energy_diffe.toFixed(1));
+				} else {
+					$('#day-energy').empty().append('---');
+				}
+				
+			} else {
+				$('#day-energy').empty().append('---');
+			}
+		}
+		
+		if (ele_now && ele_week) {
+			
+			const meas_now = ele_now.measurement; // is in normal situation an array.
+			const meas_week = ele_week.measurement; // is in normal situation an array.
+			if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_week) && meas_week.length > 0) {
+				
+				const energy_now = meas_now[0].totalEnergy;
+				const energy_week = meas_week[0].totalEnergy;
+				if (typeof energy_now !== 'undefined' && typeof energy_week !== 'undefined') {
+					const energy_diffe = energy_now - energy_week;
+					$('#week-energy').empty().append(energy_diffe.toFixed(1));
+				} else {
+					$('#week-energy').empty().append('---');
+				}
+				
+			} else {
+				$('#week-energy').empty().append('---');
+			}
+		}
+		
+		if (ele_now && ele_month) {
+			const meas_now = ele_now.measurement; // is in normal situation an array.
+			const meas_month = ele_month.measurement; // is in normal situation an array.
+			if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_month) && meas_month.length > 0) {
+				
+				const energy_now = meas_now[0].totalEnergy;
+				const energy_month = meas_month[0].totalEnergy;
+				if (typeof energy_now !== 'undefined' && typeof energy_month !== 'undefined') {
+					const energy_diffe = energy_now - energy_month;
+					$('#month-energy').empty().append(energy_diffe.toFixed(1));
+				} else {
+					$('#month-energy').empty().append('---');
+				}
+				
+			} else {
+				$('#month-energy').empty().append('---');
+			}
+		}
 	}
 	
 	notify(options) {
@@ -93,21 +157,21 @@ export default class UserElectricityView extends View {
 							'<tbody>'+
 								'<tr>'+
 									'<td>Today</td>'+
-									'<td>3.65</td>'+
-									'<td>0.41</td>'+
-									'<td>1</td>'+
+									'<td id="day-energy"></td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
 									'<td>This week</td>'+
-									'<td>20.56</td>'+
-									'<td>2.36</td>'+
-									'<td>5.65</td>'+
+									'<td id="week-energy"></td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
 									'<td>This month</td>'+
-									'<td>295</td>'+
-									'<td>33.9</td>'+
-									'<td>81.1</td>'+
+									'<td id="month-energy"></td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
 								'</tr>'+
 							'</tbody>'+
 						'</table>'+
@@ -165,7 +229,7 @@ export default class UserElectricityView extends View {
 			});
 			
 			this.handleErrorMessages(this.FELID);
-			
+			this.updateLatestValues();
 			this.rendered = true;
 			
 		} else {

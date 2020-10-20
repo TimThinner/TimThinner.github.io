@@ -99,21 +99,21 @@ export default class UserHeatingView extends View {
 							'<tbody>'+
 								'<tr>'+
 									'<td>Today</td>'+
-									'<td>3.65</td>'+
-									'<td>0.41</td>'+
-									'<td>1</td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
 									'<td>This week</td>'+
-									'<td>20.56</td>'+
-									'<td>2.36</td>'+
-									'<td>5.65</td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
 									'<td>This month</td>'+
-									'<td>295</td>'+
-									'<td>33.9</td>'+
-									'<td>81.1</td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
 								'</tr>'+
 							'</tbody>'+
 						'</table>'+

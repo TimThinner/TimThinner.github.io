@@ -177,29 +177,14 @@ export default class UserPageView extends View {
 		if (this.controller.visible) {
 			if (options.model==='UserWaterNowModel'||options.model==='UserHeatingNowModel'||options.model==='UserElectricityNowModel'||options.model==='UserWaterDayModel'||options.model==='UserElectricityDayModel') {
 				if (options.method==='fetched') {
-					if (options.status === 200) {
-						console.log(['UserPageView: ',options.model,' fetched!']);
-						if (this.rendered) {
-							$('#'+this.FELID).empty();
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
+						if (options.status === 200) {
 							this.updateLatestValues();
-						} else {
-							this.render();
 						}
-					} else { // Error in fetching.
-						if (this.rendered) {
-							$('#'+this.FELID).empty();
-							if (options.status === 401) {
-								// This status code must be caught and wired to forceLogout() action.
-								// Force LOGOUT if Auth failed!
-								this.forceLogout(this.FELID);
-								
-							} else {
-								const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-								$(html).appendTo('#'+this.FELID);
-							}
-						} else {
-							this.render();
-						}
+					} else {
+						this.render();
 					}
 				}
 			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {

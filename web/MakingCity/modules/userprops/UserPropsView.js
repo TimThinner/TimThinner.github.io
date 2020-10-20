@@ -134,6 +134,12 @@ export default class UserPropsView extends View {
 				'</div>';
 			$(html).appendTo(this.el);
 			
+			
+			// How to input energy price? For example 4,38 snt/kWh.
+			// Are there any additional costs per month for example?
+			
+			
+			
 			if (UM.is_superuser) {
 				$('#regcodes').on('click',function() {
 					self.menuModel.setSelected('REGCODES');

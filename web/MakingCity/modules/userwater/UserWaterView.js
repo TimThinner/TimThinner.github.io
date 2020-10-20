@@ -41,7 +41,94 @@ export default class UserWaterView extends View {
 	}
 	
 	updateLatestValues() {
-		console.log('UPDATE UserWater !!!!!!!');
+		
+		const water_now = this.controller.master.modelRepo.get('UserWaterNowModel');
+		const water_day = this.controller.master.modelRepo.get('UserWaterDayModel');
+		const water_week = this.controller.master.modelRepo.get('UserWaterWeekModel');
+		const water_month = this.controller.master.modelRepo.get('UserWaterMonthModel');
+		
+		if (water_now && water_day) {
+			
+			const meas_now = water_now.measurement; // is in normal situation an array.
+			const meas_day = water_day.measurement; // is in normal situation an array.
+			
+			if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_day) && meas_day.length > 0) {
+				
+				const hot_now = meas_now[0].hotTotal;
+				const hot_day = meas_day[0].hotTotal;
+				if (typeof hot_now !== 'undefined' && typeof hot_day !== 'undefined') {
+					const hot_diffe = hot_now - hot_day;
+					$('#day-hot').empty().append(hot_diffe.toFixed(0));
+				} else {
+					$('#day-hot').empty().append('---');
+				}
+				const cold_now = meas_now[0].coldTotal;
+				const cold_day = meas_day[0].coldTotal;
+				if (typeof cold_now !== 'undefined' && typeof cold_day !== 'undefined') {
+					const cold_diffe = cold_now - cold_day;
+					$('#day-cold').empty().append(cold_diffe.toFixed(0));
+				} else {
+					$('#day-cold').empty().append('---');
+				}
+			} else {
+				$('#day-hot').empty().append('---');
+				$('#day-cold').empty().append('---');
+			}
+		}
+		
+		if (water_now && water_week) {
+			const meas_now = water_now.measurement; // is in normal situation an array.
+			const meas_week = water_week.measurement; // is in normal situation an array.
+			if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_week) && meas_week.length > 0) {
+				
+				const hot_now = meas_now[0].hotTotal;
+				const hot_week = meas_week[0].hotTotal;
+				if (typeof hot_now !== 'undefined' && typeof hot_week !== 'undefined') {
+					const hot_diffe = hot_now - hot_week;
+					$('#week-hot').empty().append(hot_diffe.toFixed(0));
+				} else {
+					$('#week-hot').empty().append('---');
+				}
+				const cold_now = meas_now[0].coldTotal;
+				const cold_week = meas_week[0].coldTotal;
+				if (typeof cold_now !== 'undefined' && typeof cold_week !== 'undefined') {
+					const cold_diffe = cold_now - cold_week;
+					$('#week-cold').empty().append(cold_diffe.toFixed(0));
+				} else {
+					$('#week-cold').empty().append('---');
+				}
+			} else {
+				$('#week-hot').empty().append('---');
+				$('#week-cold').empty().append('---');
+			}
+		}
+		
+		if (water_now && water_month) {
+			const meas_now = water_now.measurement; // is in normal situation an array.
+			const meas_month = water_month.measurement; // is in normal situation an array.
+			if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_month) && meas_month.length > 0) {
+				
+				const hot_now = meas_now[0].hotTotal;
+				const hot_month = meas_month[0].hotTotal;
+				if (typeof hot_now !== 'undefined' && typeof hot_month !== 'undefined') {
+					const hot_diffe = hot_now - hot_month;
+					$('#month-hot').empty().append(hot_diffe.toFixed(0));
+				} else {
+					$('#month-hot').empty().append('---');
+				}
+				const cold_now = meas_now[0].coldTotal;
+				const cold_month = meas_month[0].coldTotal;
+				if (typeof cold_now !== 'undefined' && typeof cold_month !== 'undefined') {
+					const cold_diffe = cold_now - cold_month;
+					$('#month-cold').empty().append(cold_diffe.toFixed(0));
+				} else {
+					$('#month-cold').empty().append('---');
+				}
+			} else {
+				$('#month-hot').empty().append('---');
+				$('#month-cold').empty().append('---');
+			}
+		}
 	}
 	
 	notify(options) {
@@ -96,24 +183,24 @@ export default class UserWaterView extends View {
 							'<tbody>'+
 								'<tr>'+
 									'<td>Today</td>'+
-									'<td>10.5</td>'+
-									'<td>22</td>'+
-									'<td>2.3</td>'+
-									'<td>3.4</td>'+
+									'<td id="day-hot"></td>'+
+									'<td id="day-cold"></td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
 									'<td>This week</td>'+
-									'<td>123</td>'+
-									'<td>400</td>'+
-									'<td>19.4</td>'+
-									'<td>26.1</td>'+
+									'<td id="week-hot"></td>'+
+									'<td id="week-cold"></td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
 									'<td>This month</td>'+
-									'<td>523</td>'+
-									'<td>1621</td>'+
-									'<td>51.1</td>'+
-									'<td>95.3</td>'+
+									'<td id="month-hot"></td>'+
+									'<td id="month-cold"></td>'+
+									'<td>---</td>'+
+									'<td>---</td>'+
 								'</tr>'+
 							'</tbody>'+
 						'</table>'+
@@ -169,7 +256,7 @@ export default class UserWaterView extends View {
 			});
 			
 			this.handleErrorMessages(this.FELID);
-			
+			this.updateLatestValues();
 			this.rendered = true;
 			
 		} else {

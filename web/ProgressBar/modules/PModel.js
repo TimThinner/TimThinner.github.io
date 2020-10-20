@@ -13,7 +13,7 @@ export default class PModel extends EventObserver {
 		//this.value = 0;
 		this.alldays = 0;
 		this.nowdays = 0;
-		this.nowdate = moment(); //'2020-10-28');//.format('YYYY-MM-DD');
+		this.nowdate = moment();//'2020-10-28');//.format('YYYY-MM-DD');
 	}
 	
 	reset() {

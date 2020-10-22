@@ -97,11 +97,6 @@ router.post('/', checkAuth, (req,res,next)=>{
 });
 
 /*
-	Update a specified regcode.
-	https://www.youtube.com/watch?v=WDrU305J1yw&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=6
-*/
-
-/*
 	Update a specified regcode information.
 	https://www.youtube.com/watch?v=WDrU305J1yw&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=6
 	
@@ -130,7 +125,7 @@ router.put('/:regcodeId', checkAuth, (req,res,next)=>{
 			res.status(500).json({error:err});
 		});
 });
-
+/*
 router.delete('/:regcodeId', checkAuth, (req,res,next)=>{
 	
 	const id = req.params.regcodeId; // NOTE: id is a string!
@@ -159,5 +154,5 @@ router.delete('/:regcodeId', checkAuth, (req,res,next)=>{
 		});
 	
 });
-
+*/
 module.exports = router;

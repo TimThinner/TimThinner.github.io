@@ -60,7 +60,7 @@ router.post('/', checkAuth, (req,res,next)=>{
 		if (error) {
 			// Consume response data to free up memory
 			res2.resume();
-			return res.status(500).json({message: error.message});
+			return res.status(500).json({error: error});
 		}
 		res2.setEncoding('utf8');
 		let rawData = '';
@@ -72,13 +72,13 @@ router.post('/', checkAuth, (req,res,next)=>{
 				res.status(200).json(parsedData);
 			} catch (e) {
 				console.log(['error message=',e.message]);
-				res.status(500).json({message: e.message});
+				res.status(500).json({error: e});
 			}
 		});
 		
 	}).on('error', (e) => {
 		console.log(['error message=',e.message]);
-		res.status(500).json({message: e.message});
+		res.status(500).json({error: e});
 	});
 });
 /*

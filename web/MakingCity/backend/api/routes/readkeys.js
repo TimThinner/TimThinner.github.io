@@ -34,10 +34,6 @@ router.get('/', checkAuth, (req,res,next)=>{
 		});
 });
 /*
-	Update a specified readkey.
-	https://www.youtube.com/watch?v=WDrU305J1yw&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=6
-*/
-/*
 	Update a specified readkey information.
 	https://www.youtube.com/watch?v=WDrU305J1yw&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=6
 	const data = [
@@ -63,11 +59,9 @@ router.put('/:readkeyId', checkAuth, (req,res,next)=>{
 			res.status(500).json({error:err});
 		});
 });
-
+/*
 router.delete('/:readkeyId', checkAuth, (req,res,next)=>{
-	
 	const id = req.params.readkeyId; // NOTE: id is a string!
-	
 	Readkey.findById(id)
 		.select('_id startdate enddate')
 		.exec()
@@ -92,5 +86,5 @@ router.delete('/:readkeyId', checkAuth, (req,res,next)=>{
 		});
 	
 });
-
+*/
 module.exports = router;

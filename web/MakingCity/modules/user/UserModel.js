@@ -200,7 +200,7 @@ export default class UserModel extends Model {
 			});
 		}
 	}
-	/*
+	
 	changePassword(data) {
 		const self = this;
 		const myHeaders = new Headers();
@@ -213,7 +213,7 @@ export default class UserModel extends Model {
 			headers: myHeaders,
 			body: JSON.stringify(data)
 		};
-		const url = this.mongoBackend + '/users/changepassword';
+		const url = this.mongoBackend + '/users/changepsw';
 		const myRequest = new Request(url, myPost);
 		let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
 		
@@ -229,5 +229,4 @@ export default class UserModel extends Model {
 				self.notifyAll({model:'UserModel', method:'changePassword', status:status, message:error});
 			});
 	}
-	*/
 }

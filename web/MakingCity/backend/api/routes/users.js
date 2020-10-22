@@ -325,7 +325,7 @@ router.post("/login", (req,res,next)=>{
 			res.status(500).json({error:err});
 		});
 });
-
+/*
 router.get("/verify", (req,res,next)=>{
 	try {
 		const token = req.headers.authorization.split(" ")[1]; // split "Bearer ggb78h4u3ih3r2b989yg"
@@ -341,8 +341,8 @@ router.get("/verify", (req,res,next)=>{
 		});
 	}
 });
-
-router.post("/changepassword", checkAuth, (req,res,next)=>{
+*/
+router.post("/changepsw", checkAuth, (req,res,next)=>{
 	// After checkAuth the req.userData contains ['userId'] and ['email'] of CURRENT USER!
 	// NOTE that this can be different user as in req.body.email, meaning that we allow 
 	// super-users to change passwords for other users.
@@ -427,6 +427,7 @@ router.post("/changepassword", checkAuth, (req,res,next)=>{
 	200: {message:'User deleted'}
 	500: error description from NodeJS
 */
+/*
 router.delete("/:userId", checkAuth, (req,res,next)=>{
 	const id = req.params.userId;
 	User.remove({_id:id})
@@ -438,6 +439,6 @@ router.delete("/:userId", checkAuth, (req,res,next)=>{
 			console.log(err);
 			res.status(500).json({error:err});
 		});
-});
+});*/
 
 module.exports = router;

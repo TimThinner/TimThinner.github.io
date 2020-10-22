@@ -1,0 +1,248 @@
+
+
+Documentation:
+
+
+BACKEND
+Backend stores user data into MongoDB [1] database. Backend uses Mongoose, MongoDB object modeling for Node.js. "Mongoose provides a straight-forward, schema-based solution to model your application data. It includes built-in type casting, validation, query building, business logic hooks and more, out of the box." [2]
+
+Almost all backend API calls are verified with JSON Web Token (JWT) [3] to protect from unauthorized use.
+The JWT is created at server and sent to client during successful login. Client stores and uses it in following communication between client and server.
+
+At login the token is created. It is valid for 24 hours:
+    const token = jwt.sign(
+     {
+      email:user[0].email,
+      userId: user[0]._id
+     },
+     process.env.JWT_KEY,
+     {
+      expiresIn: "24h"
+     }
+
+1. https://www.mongodb.com/
+2. https://mongoosejs.com/
+3. https://www.npmjs.com/package/jsonwebtoken
+
+
+Middleware function "checkAuth" is called first to verify and decode the user data encoded into token.
+  DESCRIPTION                     |  PARAMS                   |  SUCCESS               |  ERROR
+----------------------------------|---------------------------|------------------------|-----------------------------------
+ Verifies token given in request. | req.headers.authorization | req.userData['userId'] | status 401 {message:'Auth failed'}
+                                  |                           | req.userData['email']  |
+----------------------------------|---------------------------|------------------------|-----------------------------------
+
+app.use('/users', usersRoutes);
+app.use('/regcodes', regcodesRoutes);
+app.use('/readkeys', readkeysRoutes);
+app.use('/bindings', bindingsRoutes);
+app.use('/feeds', feedsRoutes);
+app.use('/apartments', apartmentsRoutes);
+
+
+Following models and routes are used:
+User model:
+ _id    ObjectId
+ email   String
+ password  String
+ created   Date
+ regcode   reference to Regcode
+ readkey   reference to Readkey
+ is_superuser Boolean
+
+User routes:
+  ROUTE                 |  DESCRIPTION                       |  PARAMS                   |  SUCCESS                            |  ERROR
+------------------------|------------------------------------|---------------------------|-------------------------------------|------------------------------------
+POST '/users/signup'    | Create and save a new USER.        | req.body.email            | 201 {message:'User created'}        | status 409 {message:'This email already exists'}
+                        | 1. Check that email is not         | req.body.password         |                                     | status 404 {message:'Regcode Expired'}
+                        |    already used.                   | req.body.regcode          |                                     | status 404 {message:'Email and Regcode Not Matching'}
+                        | 2. Find the REGCODE from database. |                           |                                     | status 404 {message:'Regcode Not Found'}
+                        | 3. Check that emails match.        |                           |                                     | status 500 {error:err}
+                        | 4. Check that current timestamp is |                           |                                     |
+                        |    between startdate and enddate.  |                           |                                     |
+                        | 5. Create READKEY and USER.        |                           |                                     |
+------------------------|------------------------------------|---------------------------|-------------------------------------|------------------------------------
+POST '/users/login'     | Find the USER from database with   | req.body.email            | status 200                          | status 401 {message:'Auth failed'}
+                        | given email. Compare passwords and | req.body.password         | {message:'Auth successful',         | status 500 {error:err}
+                        | if they match create and return a  |                           |   token:...,userId:...,created:..., |
+                        | token with other user data.        |                           |   readkey:...,is_superuser:...}     |
+------------------------|------------------------------------|---------------------------|-------------------------------------|------------------------------------
+POST '/users/changepsw' | Uses checkAuth middleware          | req.headers.authorization | status 200                          | status 401 {message:'Auth failed'}
+                        | If the current user is a SUPERUSER | req.body.email            | {message:'Password is now changed'} | status 404 {message:'Not Found'}
+                        | password can be changed without    | req.body.newpassword      |                                     | status 500 {error:err}
+                        | oldpassword.                       | req.body.oldpassword      |                                     |
+------------------------|------------------------------------|---------------------------|-------------------------------------|------------------------------------
+GET '/users'            | Get a list of all USERS.           | req.headers.authorization | status 200 {count:...,users:[...]}  | status 401 {message:'Auth failed'}
+                        | Uses checkAuth middleware.         |                           |                                     | status 500 {error: err}
+                        |   select('_id email created        |                           |                                     |
+                        |     regcode readkey')              |                           |                                     |
+                        |       populate('regcode')          |                           |                                     |
+                        |       populate('readkey')          |                           |                                     |
+                        | For ADMIN usage                    |                           |                                     |
+------------------------|------------------------------------|---------------------------|-------------------------------------|------------------------------------
+
+Regcode model:
+ _id    ObjectId
+ email   String
+ apartmentId  String
+ code   String
+ startdate  Date
+ enddate   Date
+
+Regcode routes:
+  ROUTE                    |  DESCRIPTION                    |  PARAMS                   |  SUCCESS                                 |  ERROR
+---------------------------|---------------------------------|---------------------------|------------------------------------------|------------------------------------
+GET '/regcodes'            | Get a list of all REGCODES.     | req.headers.authorization | status 200 {count:...,regcodes:[...]}    | status 401 {message:'Auth failed'}
+                           | Uses checkAuth middleware.      |                           |                                          | status 500 {error: err}
+                           |   select('_id email apartmentId |                           |                                          |
+                           |     code startdate enddate')    |                           |                                          |
+                           | For ADMIN usage                 |                           |                                          |
+---------------------------|---------------------------------|---------------------------|------------------------------------------|------------------------------------
+POST '/regcodes'           | Create and save a new REGCODE.  | req.headers.authorization | status 201                               | status 401 {message:'Auth failed'}
+                           | Uses checkAuth middleware.      | req.body.email            | {message:'Created regcode successfully', | status 409 {message:'This email already exists'}
+                           | For ADMIN usage                 | req.body.code             |   _id:...,email:...,apartmentId:...,     | status 500 {error: err}
+                           |                                 | req.body.apartmentId      |   code:...,startdate:...,enddate:...}    |
+                           |                                 | req.body.startdate        |                                          |
+                           |                                 | req.body.enddate          |                                          |
+---------------------------|---------------------------------|---------------------------|------------------------------------------|------------------------------------
+PUT '/regcodes/:regcodeId' | Update REGCODE startdate and    | req.headers.authorization | status 200 {message:'Regcode updated'}   | status 401 {message:'Auth failed'}
+                           | enddate.                        | req.params.regcodeId      |                                          | status 500 {error: err}
+                           | Uses checkAuth middleware.      | req.body.startdate        |                                          |
+                           | For ADMIN usage                 | req.body.enddate          |                                          |
+---------------------------|---------------------------------|---------------------------|------------------------------------------|------------------------------------
+
+Readkey model:
+ _id    ObjectId
+ startdate  Date
+ enddate   Date
+
+Readkey routes:
+  ROUTE                    |  DESCRIPTION                      |  PARAMS                   |  SUCCESS                               |  ERROR
+---------------------------|-----------------------------------|---------------------------|----------------------------------------|------------------------------------
+GET '/readkeys'            | Get a list of all READKEYS.       | req.headers.authorization | status 200 {count:...,readkeys:[...]}  | status 401 {message:'Auth failed'}
+                           | Uses checkAuth middleware.        |                           |                                        | status 500 {error: err}
+                           |   select('_id startdate enddate') |                           |                                        |
+                           | For ADMIN usage                   |                           |                                        |
+                           |                                   |                           |                                        |
+---------------------------|-----------------------------------|---------------------------|----------------------------------------|------------------------------------
+PUT '/readkeys/:readkeyId' | Update READKEY startdate and      | req.headers.authorization | status 200 {message:'Readkey updated'} | status 401 {message:'Auth failed'}
+                           | enddate.                          | req.params.readkeyId      |                                        | status 500 {error: err}
+                           | Uses checkAuth middleware.        | req.body.startdate        |                                        |
+                           | For ADMIN usage                   | req.body.enddate          |                                        |
+---------------------------|-----------------------------------|---------------------------|----------------------------------------|------------------------------------
+NOTE that there is no API-call to create a READKEY. This is because READKEY is automatically created when the USER registers (at signup).
+The READKEY is the MongoDB ObjectId of the Readkey model (_id), 12-byte hexadecimal string, for example: "5f75d08b251f6e38b8a6a736".
+
+
+Bindings routes:
+  ROUTE                 |  DESCRIPTION                      |  PARAMS                   |  SUCCESS                            |  ERROR
+------------------------|-----------------------------------|---------------------------|-------------------------------------|------------------------------------
+GET '/bindings'         | Get a list of all BINDINGS.       | req.headers.authorization | status 200 {bindings:[...]}         | status 401 {message:'Auth failed'}
+                        | Uses checkAuth middleware.        |                           |                                     | status 500 {error: err}
+                        |   select('_id email created       |                           |                                     |
+                        |     regcode readkey')             |                           |                                     |
+                        |       populate('regcode')         |                           |                                     |
+                        |       populate('readkey')         |                           |                                     |
+                        | For SERVER usage                  |                           |                                     |
+------------------------|-----------------------------------|---------------------------|-------------------------------------|------------------------------------
+NOTE: Return ONLY those bindings that have a readkey and apartmentId and have a valid readkey (now is between startdate and enddate).
+Here is an example of RESPONSE: {"bindings":[{"apartmentId":"123","readkey":"5f75d08b251f6e38b8a6a736"},{"apartmentId":"333ded","readkey":"5f8589ff1e6aae446ca9443a"}]}
+
+
+
+Following two routes ('/apartments' and '/feeds') just re-route the request URL adding Authorization into call.
+
+Apartments routes:
+-------------------------|----------------------------------|---------------------------|-------------------------------------|------------------------------------
+  ROUTE                  |  DESCRIPTION                     |  PARAMS                   |  SUCCESS                            |  ERROR
+-------------------------|----------------------------------|---------------------------|-------------------------------------|------------------------------------
+POST '/apartments/feeds' | Fetch data from one apartment.   | req.headers.authorization | status 200 {parsedData}             | status 401 {message:'Auth failed'}
+                         | If READKEY is valid, make a      | req.body.readkey          |                                     | status 404 {message: 'Readkey Expired'}
+                         | HTTPS GET with given params.     | req.body.url              |                                     | status 404 {message:'Readkey not found'}
+                         | Uses checkAuth middleware.       | req.body.type             |                                     | status 500 {error: err}
+                         |                                  | req.body.limit            |                                     |
+                         |                                  | req.body.start            |                                     |
+                         |                                  | req.body.end              |                                     |
+-------------------------|----------------------------------|---------------------------|-------------------------------------|------------------------------------
+
+
+Feeds routes:
+----------------------|-------------------------------------|---------------------------|-------------------------------------|------------------------------------
+  ROUTE               |  DESCRIPTION                        |  PARAMS                   |  SUCCESS                            |  ERROR
+----------------------|-------------------------------------|---------------------------|-------------------------------------|------------------------------------
+POST '/feeds'         | Fetch data from S-Market.           | req.headers.authorization | status 200 {parsedData}             | status 401 {message:'Auth failed'}
+                      | Make a HTTPS GET with given params. | req.body.url              |                                     | status 500 {error: err}
+                      | Uses checkAuth middleware.          |                           |                                     | 
+----------------------|-------------------------------------|---------------------------|-------------------------------------|------------------------------------
+NOTE: There are 3 different types of calls to S-Market data:
+1. GET backend + '/' + 'data/arina/iss/status'
+  - Returns latest status (JSON) for all meterId's, it is an array of objects, for example:
+    [{ "meterId":101,
+      "meterName":"JK_101_LVI_sahko",
+      "meterType":1,
+      "dateTime":"2020-10-22 11:14:19",
+      "energy":22769.255,
+      "avPower":1.948,
+      "timeDiff":61,
+      "energyDiff":0.033 }, ... ]
+2. GET backend + '/' + 'data/arina/iss/feeds.json?meterId=NNN' + '&start=YYYY-MM-DD&end=YYYY-MM-DD'
+3. GET backend + '/' + 'data/arina/iss/feeds.json?calc=1&meterId=NNN' + '&start=YYYY-MM-DD&end=YYYY-MM-DD'
+  - Returns all measurements for given meterId and timerange. The mesurement frequency is 1 sample per minute, so there are 1440 measurements for each day.
+    [{"created_at":"2020-10-22T00:00:20","meterId":101,"averagePower":0.286,"totalEnergy":22752.098,"energyDiff":0.005 }, ... ]
+  - The "calc=1" parameter is needed in meterId=117 (Cooler117Model) and meterId=115 (GeothermalModel).
+
+
+
+
+
+RESPONSE:
+
+
+EXAMPLE RESPONSE:
+{
+"count":4,
+"users":[
+ {"_id":"5f75cff0251f6e38b8a6a733","email":"timo.kinnunen@vtt.fi","created":"2020-10-01T12:47:44.259Z"},
+ {"_id":"5f75d010251f6e38b8a6a734","email":"sivakka@vtt.fi","created":"2020-10-01T12:48:16.411Z"},
+ {"_id":"5f75d08b251f6e38b8a6a737","email":"snoopy@vtt.fi","created":"2020-10-01T12:50:19.865Z",
+  "regcode":{"_id":"5f75d04e251f6e38b8a6a735","email":"snoopy@vtt.fi","apartmentId":"123","code":"fzyjw6","startdate":"2020-09-30T21:00:00.000Z","enddate":"2020-10-27T22:00:00.000Z","__v":0},
+  "readkey":{"_id":"5f75d08b251f6e38b8a6a736","startdate":"2020-09-30T21:00:00.000Z","enddate":"2020-10-27T22:00:00.000Z","__v":0}
+ },
+ {"_id":"5f8589ff1e6aae446ca9443b","email":"charlie@vtt.fi","created":"2020-10-13T11:05:35.426Z",
+  "regcode":{"_id":"5f8589b51e6aae446ca94439","email":"charlie@vtt.fi","apartmentId":"333ded","code":"m9yxum","startdate":"2020-10-12T21:00:00.000Z","enddate":"2020-10-27T22:00:00.000Z","__v":0},
+  "readkey":{"_id":"5f8589ff1e6aae446ca9443a","startdate":"2020-10-12T21:00:00.000Z","enddate":"2020-10-27T22:00:00.000Z","__v":0}
+ }
+]
+}
+ 
+ {
+ count: docs.length,
+    users: docs.map(doc=>{
+     return {
+      _id: doc._id,
+      email: doc.email,
+      created: doc.created,
+      regcode: doc.regcode,
+      readkey: doc.readkey
+     }
+    })
+
+
+
+FRONTEND EXAMPLE
+For example, when new Regcode is created, an Authorization HEADER is constructed like this:
+   
+   const myHeaders = new Headers();
+   const authorizationToken = 'Bearer '+token;
+   myHeaders.append("Authorization", authorizationToken);
+   myHeaders.append("Content-Type", "application/json");
+   const myPost = {
+    method: 'POST',
+    headers: myHeaders,
+    body: JSON.stringify(data)
+   };
+   const myRequest = new Request(this.mongoBackend + '/regcodes', myPost);
+   fetch(myRequest)
+    ...
+
+

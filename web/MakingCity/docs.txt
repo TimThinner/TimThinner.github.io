@@ -26,18 +26,14 @@ At login the token is created. It is valid for 24 hours:
 
 
 Middleware function "checkAuth" is called first to verify and decode the user data encoded into token.
+----------------------------------|---------------------------|------------------------|-----------------------------------
   DESCRIPTION                     |  PARAMS                   |  SUCCESS               |  ERROR
 ----------------------------------|---------------------------|------------------------|-----------------------------------
  Verifies token given in request. | req.headers.authorization | req.userData['userId'] | status 401 {message:'Auth failed'}
                                   |                           | req.userData['email']  |
 ----------------------------------|---------------------------|------------------------|-----------------------------------
 
-app.use('/users', usersRoutes);
-app.use('/regcodes', regcodesRoutes);
-app.use('/readkeys', readkeysRoutes);
-app.use('/bindings', bindingsRoutes);
-app.use('/feeds', feedsRoutes);
-app.use('/apartments', apartmentsRoutes);
+
 
 
 Following models and routes are used:
@@ -51,6 +47,7 @@ User model:
  is_superuser Boolean
 
 User routes:
+------------------------|------------------------------------|---------------------------|-------------------------------------|------------------------------------
   ROUTE                 |  DESCRIPTION                       |  PARAMS                   |  SUCCESS                            |  ERROR
 ------------------------|------------------------------------|---------------------------|-------------------------------------|------------------------------------
 POST '/users/signup'    | Create and save a new USER.        | req.body.email            | 201 {message:'User created'}        | status 409 {message:'This email already exists'}
@@ -90,6 +87,7 @@ Regcode model:
  enddate   Date
 
 Regcode routes:
+---------------------------|---------------------------------|---------------------------|------------------------------------------|------------------------------------
   ROUTE                    |  DESCRIPTION                    |  PARAMS                   |  SUCCESS                                 |  ERROR
 ---------------------------|---------------------------------|---------------------------|------------------------------------------|------------------------------------
 GET '/regcodes'            | Get a list of all REGCODES.     | req.headers.authorization | status 200 {count:...,regcodes:[...]}    | status 401 {message:'Auth failed'}
@@ -117,6 +115,7 @@ Readkey model:
  enddate   Date
 
 Readkey routes:
+---------------------------|-----------------------------------|---------------------------|----------------------------------------|------------------------------------
   ROUTE                    |  DESCRIPTION                      |  PARAMS                   |  SUCCESS                               |  ERROR
 ---------------------------|-----------------------------------|---------------------------|----------------------------------------|------------------------------------
 GET '/readkeys'            | Get a list of all READKEYS.       | req.headers.authorization | status 200 {count:...,readkeys:[...]}  | status 401 {message:'Auth failed'}
@@ -135,6 +134,7 @@ The READKEY is the MongoDB ObjectId of the Readkey model (_id), 12-byte hexadeci
 
 
 Bindings routes:
+------------------------|-----------------------------------|---------------------------|-------------------------------------|------------------------------------
   ROUTE                 |  DESCRIPTION                      |  PARAMS                   |  SUCCESS                            |  ERROR
 ------------------------|-----------------------------------|---------------------------|-------------------------------------|------------------------------------
 GET '/bindings'         | Get a list of all BINDINGS.       | req.headers.authorization | status 200 {bindings:[...]}         | status 401 {message:'Auth failed'}
@@ -164,6 +164,24 @@ POST '/apartments/feeds' | Fetch data from one apartment.   | req.headers.author
                          |                                  | req.body.start            |                                     |
                          |                                  | req.body.end              |                                     |
 -------------------------|----------------------------------|---------------------------|-------------------------------------|------------------------------------
+NOTE: The READKEY identifies apartment and user. 
+We fetch only one measurement (limit=1) for four short (10 minute) timeranges, which are "NOW", "NOW-24HOURS", "NOW-7DAYS" and "NOW-1MONTH" and type can be 'sensor' or 'energy' or 'water'.
+With these four "totalEnergy" values we can calculate energy consumption for last 24 hours, last week and last month.
+
+For example URL for "NOW" is (returned values are always the last ones):
+{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-10-22T15:39","end":"2020-10-22T15:49"}
+URL for "NOW-24HOURS" is:
+{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-10-21T15:39","end":"2020-10-21T15:49"}
+URL for "NOW-7DAYS" is:
+{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-10-15T15:39","end":"2020-10-15T15:49"}
+URL for "NOW-1MONTH" is:
+{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-09-22T15:39","end":"2020-09-22T15:49"}
+
+and the RESPONSE is like this:
+[{"created_at":"2020-10-15T15:46:38","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":420,"totalEnergy":425.019,"impulseLastCtr":7,"impulseTotalCtr":425019}]
+
+NOTE: If there is no data for specified timerange, the return value is a string: "No data!".
+
 
 
 Feeds routes:
@@ -187,16 +205,22 @@ NOTE: There are 3 different types of calls to S-Market data:
       "energyDiff":0.033 }, ... ]
 2. GET backend + '/' + 'data/arina/iss/feeds.json?meterId=NNN' + '&start=YYYY-MM-DD&end=YYYY-MM-DD'
 3. GET backend + '/' + 'data/arina/iss/feeds.json?calc=1&meterId=NNN' + '&start=YYYY-MM-DD&end=YYYY-MM-DD'
-  - Returns all measurements for given meterId and timerange. The mesurement frequency is 1 sample per minute, so there are 1440 measurements for each day.
+  - Returns all measurements for given meterId and timerange, for example:
     [{"created_at":"2020-10-22T00:00:20","meterId":101,"averagePower":0.286,"totalEnergy":22752.098,"energyDiff":0.005 }, ... ]
+  - The mesurement frequency is 1 sample per minute, so there are 1440 measurements for each day.
   - The "calc=1" parameter is needed in meterId=117 (Cooler117Model) and meterId=115 (GeothermalModel).
 
 
 
 
 
-RESPONSE:
 
+
+
+
+
+
+RESPONSE:
 
 EXAMPLE RESPONSE:
 {
@@ -244,5 +268,4 @@ For example, when new Regcode is created, an Authorization HEADER is constructed
    const myRequest = new Request(this.mongoBackend + '/regcodes', myPost);
    fetch(myRequest)
     ...
-
 

@@ -1,5 +1,4 @@
-import Controller from '../common/Controller.js';
-import { UserWaterNowModel } from  '../userwater/UserWaterModel.js';
+import Controller from '../../common/Controller.js';
 import UserWaterChartsView from './UserWaterChartsView.js';
 
 export default class UserWaterChartsController extends Controller {

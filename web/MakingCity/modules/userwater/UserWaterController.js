@@ -1,5 +1,5 @@
 import Controller from '../common/Controller.js';
-import { UserWaterWeekModel, UserWaterMonthModel } from  './UserWaterModel.js';
+import UserApartmentModel from '../userpage/UserApartmentModel.js';
 import UserWaterView from './UserWaterView.js';
 
 export default class UserWaterController extends Controller {
@@ -26,14 +26,16 @@ export default class UserWaterController extends Controller {
 		EXTRA params for Models:
 			this.type = options.type;    'sensor', 'energy', 'water'
 			this.limit = options.limit;  1
-			// timerange:
-			//   - "NOW"
-			//   - "NOW-24HOURS"
-			//   - "NOW-7DAYS"
-			//   - "NOW-1MONTH"
 			this.timerange = options.timerange;
+			// timerange:
+			//   - {ends:{value:0,unit:'minutes'},starts:{value:10,unit:'minutes'}}
+			//   - {ends:{value:24,unit:'hours'},starts:{value:10,unit:'minutes'}}
+			//   - {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}}
+			//   - {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}}
 	*/
 	initialize() {
+		const weekTR = {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}};
+		const monthTR = {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}};
 		
 		this.models['UserWaterNowModel'] = this.master.modelRepo.get('UserWaterNowModel');
 		this.models['UserWaterNowModel'].subscribe(this);
@@ -41,12 +43,12 @@ export default class UserWaterController extends Controller {
 		this.models['UserWaterDayModel'] = this.master.modelRepo.get('UserWaterDayModel');
 		this.models['UserWaterDayModel'].subscribe(this);
 		
-		const model_WaterWeek = new UserWaterWeekModel({name:'UserWaterWeekModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:'NOW-7DAYS'});
+		const model_WaterWeek = new UserApartmentModel({name:'UserWaterWeekModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:weekTR});
 		model_WaterWeek.subscribe(this);
 		this.master.modelRepo.add('UserWaterWeekModel',model_WaterWeek);
 		this.models['UserWaterWeekModel'] = model_WaterWeek;
 		
-		const model_WaterMonth = new UserWaterMonthModel({name:'UserWaterMonthModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:'NOW-1MONTH'});
+		const model_WaterMonth = new UserApartmentModel({name:'UserWaterMonthModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:monthTR});
 		model_WaterMonth.subscribe(this);
 		this.master.modelRepo.add('UserWaterMonthModel',model_WaterMonth);
 		this.models['UserWaterMonthModel'] = model_WaterMonth;

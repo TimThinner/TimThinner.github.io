@@ -1,5 +1,4 @@
-import Controller from '../common/Controller.js';
-import { UserElectricityNowModel } from  '../userelectricity/UserElectricityModel.js';
+import Controller from '../../common/Controller.js';
 import UserElectricityCompensateView from './UserElectricityCompensateView.js';
 
 export default class UserElectricityCompensateController extends Controller {

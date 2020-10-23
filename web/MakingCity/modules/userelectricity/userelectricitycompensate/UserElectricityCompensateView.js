@@ -3,22 +3,22 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/supe
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
-import View from '../common/View.js';
+import View from '../../common/View.js';
 
-export default class UserHeatingChartsView extends View {
+export default class UserElectricityCompensateView extends View {
 	
 	constructor(controller) {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserHeatingNowModel') {
+			if (key === 'UserElectricityNowModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
-		this.FELID = 'user-heating-view-failure';
+		this.FELID = 'user-electricity-view-failure';
 	}
 	
 	show() {
@@ -41,14 +41,14 @@ export default class UserHeatingChartsView extends View {
 	}
 	
 	updateLatestValues() {
-		console.log('UPDATE UserHeatingCharts !!!!!!!');
+		console.log('UPDATE UserElectricityCompensate !!!!!!!');
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserHeatingNowModel' && options.method==='fetched') {
+			if (options.model==='UserElectricityNowModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserHeatingChartsView => UserHeatingNowModel fetched!');
+					console.log('UserElectricityCompensateView => UserElectricityNowModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();
@@ -88,7 +88,7 @@ export default class UserHeatingChartsView extends View {
 			const html =
 				'<div class="row">'+
 					'<div class="col s12">'+
-						'<h4 style="text-align:center;">Heating Charts</h4>'+
+						'<h4 style="text-align:center;">Electricity Compensate</h4>'+
 						'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'</div>'+
 					'<div class="col s12 center" style="margin-top:32px;">'+
@@ -108,12 +108,12 @@ export default class UserHeatingChartsView extends View {
 			$(html).appendTo(this.el);
 			
 			this.startSwipeEventListeners(
-				()=>{this.menuModel.setSelected('USERHEATING');},
-				()=>{this.menuModel.setSelected('USERHEATINGTARGETS');}
+				()=>{this.menuModel.setSelected('USERELECTRICITY');},
+				()=>{this.menuModel.setSelected('USERELECTRICITYCHARTS');}
 			);
 			
 			$('#back').on('click',function() {
-				self.menuModel.setSelected('USERHEATING');
+				self.menuModel.setSelected('USERELECTRICITY');
 			});
 			
 			this.handleErrorMessages(this.FELID);
@@ -121,7 +121,7 @@ export default class UserHeatingChartsView extends View {
 			this.rendered = true;
 			
 		} else {
-			console.log('UserHeatingChartsView => render Model IS NOT READY!!!!');
+			console.log('UserElectricityCompensateView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

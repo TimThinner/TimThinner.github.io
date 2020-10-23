@@ -29,10 +29,6 @@ export default class SolarPageModel extends Model {
 		let start_date = moment().format('YYYY-MM-DD');
 		let end_date = moment().format('YYYY-MM-DD');
 		
-		//if (this.timerange > 1) {
-		//	const diffe = this.timerange-1;
-		//	start_date = moment().subtract(diffe, 'days').format('YYYY-MM-DD');
-		//}
 		// append start and end date
 		const url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
 		

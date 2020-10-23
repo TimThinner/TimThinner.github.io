@@ -48,8 +48,11 @@ router.post('/feeds/', checkAuth, (req,res,next)=>{
 					// OK.
 					// Use FAKE key now: '12E6F2B1236A'
 					const fakeKey = '12E6F2B1236A';
-					//const url = req.body.url + '?apiKey='+readkey+'&type='+req.body.type+'&start='+req.body.start+'&end='+req.body.end;
-					const url = req.body.url + '?apiKey='+fakeKey+'&type='+req.body.type+'&limit='+req.body.limit+'&start='+req.body.start+'&end='+req.body.end;
+					let url = req.body.url + '?apiKey='+fakeKey+'&type='+req.body.type;
+					if (req.body.limit > 0) {
+						url += '&limit='+req.body.limit;
+					}
+					url += '&start='+req.body.start+'&end='+req.body.end;
 					
 					const auth = req.headers.authorization;
 					const options = {

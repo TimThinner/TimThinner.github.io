@@ -1,9 +1,5 @@
 import Controller from '../common/Controller.js';
-
-import { UserWaterNowModel, UserWaterDayModel } from  '../userwater/UserWaterModel.js';
-import { UserHeatingNowModel } from  '../userheating/UserHeatingModel.js';
-import { UserElectricityNowModel, UserElectricityDayModel } from  '../userelectricity/UserElectricityModel.js';
-
+import UserApartmentModel from './UserApartmentModel.js';
 import UserPageView from './UserPageView.js';
 
 export default class UserPageController extends Controller {
@@ -32,44 +28,38 @@ export default class UserPageController extends Controller {
 		EXTRA params for Models:
 			this.type = options.type;    'sensor', 'energy', 'water'
 			this.limit = options.limit;  1
-			// timerange:
-			//   - "NOW"
-			//   - "NOW-24HOURS"
-			//   - "NOW-7DAYS"
-			//   - "NOW-1MONTH"
 			this.timerange = options.timerange;
+			// timerange:
+			//   - {ends:{value:0,unit:'minutes'},starts:{value:10,unit:'minutes'}}
+			//   - {ends:{value:24,unit:'hours'},starts:{value:10,unit:'minutes'}}
+			//   - {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}}
+			//   - {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}}
 	*/
 	initialize() {
-		const model_WaterNow = new UserWaterNowModel({name:'UserWaterNowModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:'NOW'});
+		const nowTR = {ends:{value:0,unit:'minutes'},starts:{value:10,unit:'minutes'}};
+		const dayTR = {ends:{value:24,unit:'hours'},starts:{value:10,unit:'minutes'}};
+		
+		const model_WaterNow = new UserApartmentModel({name:'UserWaterNowModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:nowTR});
 		model_WaterNow.subscribe(this);
 		this.master.modelRepo.add('UserWaterNowModel',model_WaterNow);
 		this.models['UserWaterNowModel'] = model_WaterNow;
 		
-		const model_HeatingNow = new UserHeatingNowModel({name:'UserHeatingNowModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:1,timerange:'NOW'});
+		const model_HeatingNow = new UserApartmentModel({name:'UserHeatingNowModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:1,timerange:nowTR});
 		model_HeatingNow.subscribe(this);
 		this.master.modelRepo.add('UserHeatingNowModel',model_HeatingNow);
 		this.models['UserHeatingNowModel'] = model_HeatingNow;
 		
-		const model_EleNow = new UserElectricityNowModel({name:'UserElectricityNowModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:'NOW'});
+		const model_EleNow = new UserApartmentModel({name:'UserElectricityNowModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:nowTR});
 		model_EleNow.subscribe(this);
 		this.master.modelRepo.add('UserElectricityNowModel',model_EleNow);
 		this.models['UserElectricityNowModel'] = model_EleNow;
 		
-		
-		/*
-		
-		TODO:
-		
-		Add models for "NOW-24HOURS", "NOW-7DAYS" and "NOW-1MONTH" to be able to calculate TOTALS for different time periods!
-		
-		
-		*/
-		const model_WaterDay = new UserWaterDayModel({name:'UserWaterDayModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:'NOW-24HOURS'});
+		const model_WaterDay = new UserApartmentModel({name:'UserWaterDayModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:dayTR});
 		model_WaterDay.subscribe(this);
 		this.master.modelRepo.add('UserWaterDayModel',model_WaterDay);
 		this.models['UserWaterDayModel'] = model_WaterDay;
 		
-		const model_EleDay = new UserElectricityDayModel({name:'UserElectricityDayModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:'NOW-24HOURS'});
+		const model_EleDay = new UserApartmentModel({name:'UserElectricityDayModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:dayTR});
 		model_EleDay.subscribe(this);
 		this.master.modelRepo.add('UserElectricityDayModel',model_EleDay);
 		this.models['UserElectricityDayModel'] = model_EleDay;

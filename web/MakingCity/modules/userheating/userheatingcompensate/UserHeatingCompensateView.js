@@ -3,22 +3,22 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/supe
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
-import View from '../common/View.js';
+import View from '../../common/View.js';
 
-export default class UserWaterCompensateView extends View {
+export default class UserHeatingCompensateView extends View {
 	
 	constructor(controller) {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserWaterNowModel') {
+			if (key === 'UserHeatingNowModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
-		this.FELID = 'user-water-view-failure';
+		this.FELID = 'user-heating-view-failure';
 	}
 	
 	show() {
@@ -41,14 +41,14 @@ export default class UserWaterCompensateView extends View {
 	}
 	
 	updateLatestValues() {
-		console.log('UPDATE UserWaterCompensate !!!!!!!');
+		console.log('UPDATE UserHeatingCompensate !!!!!!!');
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserWaterNowModel' && options.method==='fetched') {
+			if (options.model==='UserHeatingNowModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserWaterCompensateView => UserWaterNowModel fetched!');
+					console.log('UserHeatingCompensateView => UserHeatingNowModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();
@@ -88,7 +88,7 @@ export default class UserWaterCompensateView extends View {
 			const html =
 				'<div class="row">'+
 					'<div class="col s12">'+
-						'<h4 style="text-align:center;">Water Compensate</h4>'+
+						'<h4 style="text-align:center;">Heating Compensate</h4>'+
 						'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'</div>'+
 					'<div class="col s12 center" style="margin-top:32px;">'+
@@ -108,12 +108,12 @@ export default class UserWaterCompensateView extends View {
 			$(html).appendTo(this.el);
 			
 			this.startSwipeEventListeners(
-				()=>{this.menuModel.setSelected('USERWATER');},
-				()=>{this.menuModel.setSelected('USERWATERCHARTS');}
+				()=>{this.menuModel.setSelected('USERHEATING');},
+				()=>{this.menuModel.setSelected('USERHEATINGCHARTS');}
 			);
 			
 			$('#back').on('click',function() {
-				self.menuModel.setSelected('USERWATER');
+				self.menuModel.setSelected('USERHEATING');
 			});
 			
 			this.handleErrorMessages(this.FELID);
@@ -121,7 +121,7 @@ export default class UserWaterCompensateView extends View {
 			this.rendered = true;
 			
 		} else {
-			console.log('UserWaterCompensateView => render Model IS NOT READY!!!!');
+			console.log('UserHeatingCompensateView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

@@ -3,9 +3,9 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/supe
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
-import View from '../common/View.js';
+import View from '../../common/View.js';
 
-export default class UserWaterTargetsView extends View {
+export default class UserWaterCompensateView extends View {
 	
 	constructor(controller) {
 		super(controller);
@@ -41,14 +41,14 @@ export default class UserWaterTargetsView extends View {
 	}
 	
 	updateLatestValues() {
-		console.log('UPDATE UserWaterTargets !!!!!!!');
+		console.log('UPDATE UserWaterCompensate !!!!!!!');
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='UserWaterNowModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserWaterTargetsView => UserWaterNowModel fetched!');
+					console.log('UserWaterCompensateView => UserWaterNowModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();
@@ -88,7 +88,7 @@ export default class UserWaterTargetsView extends View {
 			const html =
 				'<div class="row">'+
 					'<div class="col s12">'+
-						'<h4 style="text-align:center;">Water Targets</h4>'+
+						'<h4 style="text-align:center;">Water Compensate</h4>'+
 						'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'</div>'+
 					'<div class="col s12 center" style="margin-top:32px;">'+
@@ -109,7 +109,7 @@ export default class UserWaterTargetsView extends View {
 			
 			this.startSwipeEventListeners(
 				()=>{this.menuModel.setSelected('USERWATER');},
-				()=>{this.menuModel.setSelected('USERWATERCOMPENSATE');}
+				()=>{this.menuModel.setSelected('USERWATERCHARTS');}
 			);
 			
 			$('#back').on('click',function() {
@@ -121,7 +121,7 @@ export default class UserWaterTargetsView extends View {
 			this.rendered = true;
 			
 		} else {
-			console.log('UserWaterTargetsView => render Model IS NOT READY!!!!');
+			console.log('UserWaterCompensateView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

@@ -3,9 +3,9 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/supe
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
-import View from '../common/View.js';
+import View from '../../common/View.js';
 
-export default class UserHeatingCompensateView extends View {
+export default class UserHeatingChartsView extends View {
 	
 	constructor(controller) {
 		super(controller);
@@ -41,14 +41,14 @@ export default class UserHeatingCompensateView extends View {
 	}
 	
 	updateLatestValues() {
-		console.log('UPDATE UserHeatingCompensate !!!!!!!');
+		console.log('UPDATE UserHeatingCharts !!!!!!!');
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='UserHeatingNowModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserHeatingCompensateView => UserHeatingNowModel fetched!');
+					console.log('UserHeatingChartsView => UserHeatingNowModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();
@@ -88,7 +88,7 @@ export default class UserHeatingCompensateView extends View {
 			const html =
 				'<div class="row">'+
 					'<div class="col s12">'+
-						'<h4 style="text-align:center;">Heating Compensate</h4>'+
+						'<h4 style="text-align:center;">Heating Charts</h4>'+
 						'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'</div>'+
 					'<div class="col s12 center" style="margin-top:32px;">'+
@@ -109,7 +109,7 @@ export default class UserHeatingCompensateView extends View {
 			
 			this.startSwipeEventListeners(
 				()=>{this.menuModel.setSelected('USERHEATING');},
-				()=>{this.menuModel.setSelected('USERHEATINGCHARTS');}
+				()=>{this.menuModel.setSelected('USERHEATINGTARGETS');}
 			);
 			
 			$('#back').on('click',function() {
@@ -121,7 +121,7 @@ export default class UserHeatingCompensateView extends View {
 			this.rendered = true;
 			
 		} else {
-			console.log('UserHeatingCompensateView => render Model IS NOT READY!!!!');
+			console.log('UserHeatingChartsView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

@@ -1,5 +1,5 @@
 import Controller from '../common/Controller.js';
-import { UserElectricityWeekModel, UserElectricityMonthModel } from  './UserElectricityModel.js';
+import UserApartmentModel from '../userpage/UserApartmentModel.js';
 import UserElectricityView from './UserElectricityView.js';
 
 export default class UserElectricityController extends Controller {
@@ -27,14 +27,16 @@ export default class UserElectricityController extends Controller {
 		EXTRA params for Models:
 			this.type = options.type;    'sensor', 'energy', 'water'
 			this.limit = options.limit;  1
-			// timerange:
-			//   - "NOW"
-			//   - "NOW-24HOURS"
-			//   - "NOW-7DAYS"
-			//   - "NOW-1MONTH"
 			this.timerange = options.timerange;
+			// timerange:
+			//   - {ends:{value:0,unit:'minutes'},starts:{value:10,unit:'minutes'}}
+			//   - {ends:{value:24,unit:'hours'},starts:{value:10,unit:'minutes'}}
+			//   - {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}}
+			//   - {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}}
 	*/
 	initialize() {
+		const weekTR = {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}};
+		const monthTR = {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}};
 		
 		this.models['UserElectricityNowModel'] = this.master.modelRepo.get('UserElectricityNowModel');
 		this.models['UserElectricityNowModel'].subscribe(this);
@@ -42,12 +44,12 @@ export default class UserElectricityController extends Controller {
 		this.models['UserElectricityDayModel'] = this.master.modelRepo.get('UserElectricityDayModel');
 		this.models['UserElectricityDayModel'].subscribe(this);
 		
-		const model_ElectricityWeek = new UserElectricityWeekModel({name:'UserElectricityWeekModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:'NOW-7DAYS'});
+		const model_ElectricityWeek = new UserApartmentModel({name:'UserElectricityWeekModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:weekTR});
 		model_ElectricityWeek.subscribe(this);
 		this.master.modelRepo.add('UserElectricityWeekModel',model_ElectricityWeek);
 		this.models['UserElectricityWeekModel'] = model_ElectricityWeek;
 		
-		const model_ElectricityMonth = new UserElectricityMonthModel({name:'UserElectricityMonthModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:'NOW-1MONTH'});
+		const model_ElectricityMonth = new UserApartmentModel({name:'UserElectricityMonthModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:monthTR});
 		model_ElectricityMonth.subscribe(this);
 		this.master.modelRepo.add('UserElectricityMonthModel',model_ElectricityMonth);
 		this.models['UserElectricityMonthModel'] = model_ElectricityMonth;

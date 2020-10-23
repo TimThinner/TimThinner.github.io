@@ -3,22 +3,22 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/supe
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
-import View from '../common/View.js';
+import View from '../../common/View.js';
 
-export default class UserWaterChartsView extends View {
+export default class UserElectricityChartsView extends View {
 	
 	constructor(controller) {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserWaterNowModel') {
+			if (key === 'UserElectricityALLModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
-		this.FELID = 'user-water-view-failure';
+		this.FELID = 'user-electricity-view-failure';
 	}
 	
 	show() {
@@ -41,14 +41,14 @@ export default class UserWaterChartsView extends View {
 	}
 	
 	updateLatestValues() {
-		console.log('UPDATE UserWaterCharts !!!!!!!');
+		console.log('UPDATE UserElectricityCharts !!!!!!!');
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserWaterNowModel' && options.method==='fetched') {
+			if (options.model==='UserElectricityALLModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserWaterChartsView => UserWaterNowModel fetched!');
+					console.log('UserElectricityChartsView => UserElectricityALLModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();
@@ -88,7 +88,7 @@ export default class UserWaterChartsView extends View {
 			const html =
 				'<div class="row">'+
 					'<div class="col s12">'+
-						'<h4 style="text-align:center;">Water Charts</h4>'+
+						'<h4 style="text-align:center;">Electricity Charts</h4>'+
 						'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'</div>'+
 					'<div class="col s12 center" style="margin-top:32px;">'+
@@ -108,12 +108,12 @@ export default class UserWaterChartsView extends View {
 			$(html).appendTo(this.el);
 			
 			this.startSwipeEventListeners(
-				()=>{this.menuModel.setSelected('USERWATER');},
-				()=>{this.menuModel.setSelected('USERWATERTARGETS');}
+				()=>{this.menuModel.setSelected('USERELECTRICITY');},
+				()=>{this.menuModel.setSelected('USERELECTRICITYTARGETS');}
 			);
 			
 			$('#back').on('click',function() {
-				self.menuModel.setSelected('USERWATER');
+				self.menuModel.setSelected('USERELECTRICITY');
 			});
 			
 			this.handleErrorMessages(this.FELID);
@@ -121,7 +121,7 @@ export default class UserWaterChartsView extends View {
 			this.rendered = true;
 			
 		} else {
-			console.log('UserWaterChartsView => render Model IS NOT READY!!!!');
+			console.log('UserElectricityChartsView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

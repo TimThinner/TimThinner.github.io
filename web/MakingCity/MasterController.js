@@ -13,17 +13,17 @@ import UserElectricityController from './modules/userelectricity/UserElectricity
 import UserHeatingController from './modules/userheating/UserHeatingController.js';
 import UserWaterController from './modules/userwater/UserWaterController.js';
 
-import UserWaterChartsController from './modules/userwatercharts/UserWaterChartsController.js';
-import UserWaterTargetsController from './modules/userwatertargets/UserWaterTargetsController.js';
-import UserWaterCompensateController from './modules/userwatercompensate/UserWaterCompensateController.js';
+import UserWaterChartsController from './modules/userwater/userwatercharts/UserWaterChartsController.js';
+import UserWaterTargetsController from './modules/userwater/userwatertargets/UserWaterTargetsController.js';
+import UserWaterCompensateController from './modules/userwater/userwatercompensate/UserWaterCompensateController.js';
 
-import UserHeatingChartsController from './modules/userheatingcharts/UserHeatingChartsController.js';
-import UserHeatingTargetsController from './modules/userheatingtargets/UserHeatingTargetsController.js';
-import UserHeatingCompensateController from './modules/userheatingcompensate/UserHeatingCompensateController.js';
+import UserHeatingChartsController from './modules/userheating/userheatingcharts/UserHeatingChartsController.js';
+import UserHeatingTargetsController from './modules/userheating/userheatingtargets/UserHeatingTargetsController.js';
+import UserHeatingCompensateController from './modules/userheating/userheatingcompensate/UserHeatingCompensateController.js';
 
-import UserElectricityChartsController from './modules/userelectricitycharts/UserElectricityChartsController.js';
-import UserElectricityTargetsController from './modules/userelectricitytargets/UserElectricityTargetsController.js';
-import UserElectricityCompensateController from './modules/userelectricitycompensate/UserElectricityCompensateController.js';
+import UserElectricityChartsController from './modules/userelectricity/userelectricitycharts/UserElectricityChartsController.js';
+import UserElectricityTargetsController from './modules/userelectricity/userelectricitytargets/UserElectricityTargetsController.js';
+import UserElectricityCompensateController from './modules/userelectricity/userelectricitycompensate/UserElectricityCompensateController.js';
 
 import RegCodeController from './modules/admin/regcodes/RegCodeController.js';
 import RegCodeCreateController from './modules/admin/regcodes/RegCodeCreateController.js';

@@ -1,5 +1,4 @@
-import Controller from '../common/Controller.js';
-import { UserHeatingNowModel } from  '../userheating/UserHeatingModel.js';
+import Controller from '../../common/Controller.js';
 import UserHeatingTargetsView from './UserHeatingTargetsView.js';
 
 export default class UserHeatingTargetsController extends Controller {

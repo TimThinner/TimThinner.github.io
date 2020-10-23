@@ -3,9 +3,9 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/supe
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
-import View from '../common/View.js';
+import View from '../../common/View.js';
 
-export default class UserElectricityCompensateView extends View {
+export default class UserElectricityTargetsView extends View {
 	
 	constructor(controller) {
 		super(controller);
@@ -41,14 +41,14 @@ export default class UserElectricityCompensateView extends View {
 	}
 	
 	updateLatestValues() {
-		console.log('UPDATE UserElectricityCompensate !!!!!!!');
+		console.log('UPDATE UserElectricityTargets !!!!!!!');
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='UserElectricityNowModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('UserElectricityCompensateView => UserElectricityNowModel fetched!');
+					console.log('UserElectricityTargetsView => UserElectricityNowModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();
@@ -88,7 +88,7 @@ export default class UserElectricityCompensateView extends View {
 			const html =
 				'<div class="row">'+
 					'<div class="col s12">'+
-						'<h4 style="text-align:center;">Electricity Compensate</h4>'+
+						'<h4 style="text-align:center;">Electricity Targets</h4>'+
 						'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'</div>'+
 					'<div class="col s12 center" style="margin-top:32px;">'+
@@ -109,7 +109,7 @@ export default class UserElectricityCompensateView extends View {
 			
 			this.startSwipeEventListeners(
 				()=>{this.menuModel.setSelected('USERELECTRICITY');},
-				()=>{this.menuModel.setSelected('USERELECTRICITYCHARTS');}
+				()=>{this.menuModel.setSelected('USERELECTRICITYCOMPENSATE');}
 			);
 			
 			$('#back').on('click',function() {
@@ -121,7 +121,7 @@ export default class UserElectricityCompensateView extends View {
 			this.rendered = true;
 			
 		} else {
-			console.log('UserElectricityCompensateView => render Model IS NOT READY!!!!');
+			console.log('UserElectricityTargetsView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

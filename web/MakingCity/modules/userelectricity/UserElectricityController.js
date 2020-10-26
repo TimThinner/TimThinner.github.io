@@ -29,14 +29,14 @@ export default class UserElectricityController extends Controller {
 			this.limit = options.limit;  1
 			this.timerange = options.timerange;
 			// timerange:
-			//   - {ends:{value:0,unit:'minutes'},starts:{value:10,unit:'minutes'}}
-			//   - {ends:{value:24,unit:'hours'},starts:{value:10,unit:'minutes'}}
-			//   - {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}}
-			//   - {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}}
+			//   - {ends:{value:0,unit:'minutes'},starts:{value:60,unit:'seconds'}}
+			//   - {ends:{value:24,unit:'hours'},starts:{value:60,unit:'seconds'}}
+			//   - {ends:{value:7,unit:'days'},starts:{value:60,unit:'seconds'}}
+			//   - {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}}
 	*/
 	initialize() {
-		const weekTR = {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}};
-		const monthTR = {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}};
+		const weekTR = {ends:{value:7,unit:'days'},starts:{value:60,unit:'seconds'}};
+		const monthTR = {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}};
 		
 		this.models['UserElectricityNowModel'] = this.master.modelRepo.get('UserElectricityNowModel');
 		this.models['UserElectricityNowModel'].subscribe(this);

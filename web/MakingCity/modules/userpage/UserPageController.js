@@ -30,14 +30,14 @@ export default class UserPageController extends Controller {
 			this.limit = options.limit;  1
 			this.timerange = options.timerange;
 			// timerange:
-			//   - {ends:{value:0,unit:'minutes'},starts:{value:10,unit:'minutes'}}
-			//   - {ends:{value:24,unit:'hours'},starts:{value:10,unit:'minutes'}}
-			//   - {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}}
-			//   - {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}}
+			//   - {ends:{value:10,unit:'seconds'},starts:{value:60,unit:'seconds'}}
+			//   - {ends:{value:24,unit:'hours'},starts:{value:60,unit:'seconds'}}
+			//   - {ends:{value:7,unit:'days'},starts:{value:60,unit:'seconds'}}
+			//   - {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}}
 	*/
 	initialize() {
-		const nowTR = {ends:{value:0,unit:'minutes'},starts:{value:10,unit:'minutes'}};
-		const dayTR = {ends:{value:24,unit:'hours'},starts:{value:10,unit:'minutes'}};
+		const nowTR = {ends:{value:10,unit:'seconds'},starts:{value:60,unit:'seconds'}};
+		const dayTR = {ends:{value:24,unit:'hours'},starts:{value:60,unit:'seconds'}};
 		
 		const model_WaterNow = new UserApartmentModel({name:'UserWaterNowModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:nowTR});
 		model_WaterNow.subscribe(this);
@@ -99,7 +99,7 @@ export default class UserPageController extends Controller {
 	
 	init() {
 		this.initialize();
-		this.timers['UserPageView'] = {timer: undefined, interval: 60000, models:['UserWaterNowModel','UserHeatingNowModel','UserElectricityNowModel','UserWaterDayModel','UserElectricityDayModel']};
+		this.timers['UserPageView'] = {timer: undefined, interval: 30000, models:['UserWaterNowModel','UserHeatingNowModel','UserElectricityNowModel','UserWaterDayModel','UserElectricityDayModel']};
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		this.show(); // Try if this view can be shown right now!

@@ -1,6 +1,7 @@
 import Controller from '../../common/Controller.js';
 import UserApartmentModel from '../../userpage/UserApartmentModel.js';
-import UserElectricityChartsView from './UserElectricityChartsView.js';
+//import UserElectricityChartsView from './UserElectricityChartsView.js';
+import UECWrapperView from './UECWrapperView.js';
 
 export default class UserElectricityChartsController extends Controller {
 	
@@ -12,7 +13,7 @@ export default class UserElectricityChartsController extends Controller {
 		super.remove();
 		// We must remove all models that were created here at the initialize-method.
 		Object.keys(this.models).forEach(key => {
-			if (key==='UserElectricityALLModel'||key==='UserElectricityALLModel') {
+			if (key==='UserElectricityALLModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -22,9 +23,16 @@ export default class UserElectricityChartsController extends Controller {
 	
 	initialize() {
 		
-		const allTR = {ends:{value:0,unit:'minutes'},starts:{value:7,unit:'days'}};
 		
-		const model = new UserApartmentModel({name:'UserElectricityALLModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:0,timerange:allTR});
+		// NOTE: ALL is now actually set to 7 days!
+		// This must be maybe set up like in S-Market case where USER selects the timerange (from 1 to 7 days).
+		// Now = now - 60 seconds! 
+		const dayz = 7; 
+		
+		
+		const allTR = {ends:{value:60,unit:'seconds'},starts:{value:dayz,unit:'days'}};
+		
+		const model = new UserApartmentModel({name:'UserElectricityALLModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:0,dayz:dayz,timerange:allTR});
 		model.subscribe(this);
 		this.master.modelRepo.add('UserElectricityALLModel',model);
 		this.models['UserElectricityALLModel'] = model;
@@ -32,7 +40,9 @@ export default class UserElectricityChartsController extends Controller {
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.view = new UserElectricityChartsView(this);
+		//this.view = new UserElectricityChartsView(this);
+		
+		this.view = new UECWrapperView(this);
 	}
 	
 	clean() {
@@ -63,7 +73,7 @@ export default class UserElectricityChartsController extends Controller {
 	
 	init() {
 		this.initialize();
-		this.timers['UserElectricityView'] = {timer: undefined, interval: 60000, models:['UserElectricityALLModel']};
+		this.timers['UserElectricityChartsView'] = {timer: undefined, interval: 60000, models:['UserElectricityALLModel']};
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		this.show(); // Try if this view can be shown right now!

@@ -1,6 +1,16 @@
 import Model from '../common/Model.js';
 import CalculatedEnergy from '../common/CalculatedEnergy.js';
 
+
+export class ApaFeed {
+	constructor(obj) {
+		this.time = new Date(obj.created_at); // "2020-02-10T00:01:06"
+		this.meterId = obj.meterId; // Number
+		this.averagePower = obj.averagePower; // Float
+		this.totalEnergy = obj.totalEnergy; // Float
+	}
+}
+
 export default class UserApartmentModel extends Model {
 	
 	/* Model:
@@ -29,14 +39,20 @@ export default class UserApartmentModel extends Model {
 	
 	
 	
-	apartmentId: 101
-​​​​​	averagePower: 660
-	created_at: "2020-10-17T06:48:38"
-​​​​​	impulseLastCtr: 11
-​​​​​	impulseTotalCtr: 474430
-​​​​​	meterId: 1001
-​​​​​	residentId: 1
-​​​​​	totalEnergy: 474.43
+	IN FeedModel we have:
+		[
+		
+		{"created_at":"2020-10-26T00:00:45","meterId":116,"averagePower":0,"totalEnergy":50932.2,"energyDiff":0},
+		{"created_at":"2020-10-26T00:01:42","meterId":116,"averagePower":0,"totalEnergy":50932.2,"energyDiff":0},
+		{"created_at":"2020-10-26T00:02:43","meterId":116,"averagePower":0,"totalEnergy":50932.2,"energyDiff":0},
+		...
+		
+	IN ApartmentModel:
+	
+	
+	{"created_at": "2020-10-20T03:21:38","apartmentId":101,"averagePower":2040,"impulseLastCtr": 34,"​​​​​impulseTotalCtr": 585464,"​​​​​meterId": 1001,"​​​​​residentId": 1,"​​​​​totalEnergy": 585.464}
+	
+	
 	*/
 	
 	constructor(options) {
@@ -51,13 +67,16 @@ export default class UserApartmentModel extends Model {
 		//   - {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}}
 		//   - {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}}
 		this.timerange = options.timerange;
+		if (typeof options.dayz !== 'undefined') {
+			this.dayz = options.dayz;
+		} else {
+			this.dayz = 1;
+		}
+		
 		this.measurement = [];
 		this.period = {start: undefined, end: undefined};
-		
-		
 		this.values = [];
 		this.energyValues = [];
-		
 	}
 	
 	setTimePeriod() {
@@ -79,7 +98,7 @@ export default class UserApartmentModel extends Model {
 		json.forEach(item => {
 			const datetime = item.created_at;
 			if (test.hasOwnProperty(datetime)) {
-				//console.log(['DUPLICATE!!!!!! averagePower=',item.averagePower]);
+				console.log(['DUPLICATE!!!!!! datetime=',datetime,' averagePower=',item.averagePower]);
 				if (item.averagePower > test[datetime].averagePower) {
 					//console.log('This has MORE averagePower so probably this is the correct one?');
 					
@@ -104,13 +123,39 @@ export default class UserApartmentModel extends Model {
 	
 	process(myJson) {
 		const self = this;
+		
+		
+		self.values = []; // Start with fresh empty data.
+		self.energyValues = [];
+		
 		const newson = this.removeDuplicates(myJson);
 		let myce = new CalculatedEnergy();
 		
-		
 		console.log(['After process() myJson=',newson]);
 		
-		// More to come.....
+		myce.resetEnergyHours(this.dayz*24);
+		console.log(['myce.energy=',myce.energy]);
+		$.each(newson, function(i,v){
+			// set cumulative energy for each hour.
+			myce.addEnergy(v);
+			const p = new ApaFeed(v);
+			self.values.push(p);
+		});
+		
+		//console.log(['HUU myce.energy=',myce.energy]);
+		myce.calculateAverage(); 
+		myce.copyTo(self.energyValues);
+		console.log(['BEFORE SORT self.energyValues=',self.energyValues]);
+		
+		// Then sort array based according to time, oldest entry first.
+		self.energyValues.sort(function(a,b){
+			var bb = moment(b.time);
+			var aa = moment(a.time);
+			return aa - bb;
+		});
+		
+		
+		console.log(['AFTER SORT self.energyValues=',self.energyValues]);
 		
 	}
 	
@@ -142,12 +187,16 @@ export default class UserApartmentModel extends Model {
 			})
 			.then(function(myJson) {
 				let message = 'OK';
+				
+				
 				if (Array.isArray(myJson)) {
 					
 					if (myJson.length === 1) {
 						self.measurement = myJson;
 					} else {
 						console.log(['Before process() myJson=',myJson]);
+						
+						
 						self.process(myJson);
 					}
 					
@@ -228,12 +277,20 @@ export default class UserApartmentModel extends Model {
 						})
 						.then(function(myJson) {
 							let message = 'OK';
+							
+							
+							
+							
 							if (Array.isArray(myJson)) {
 								
 								if (myJson.length === 1) {
 									self.measurement = myJson;
 								} else {
 									console.log(['Before process() myJson=',myJson]);
+									
+									
+									
+									
 									self.process(myJson);
 								}
 								

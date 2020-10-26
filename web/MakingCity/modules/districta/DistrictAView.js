@@ -415,7 +415,6 @@ meterId
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			
-			//const localized_string_da_description = LM['translation'][sel]['DA_DESCRIPTION'];
 			//const localized_string_da_toggle = LM['translation'][sel]['DA_TOGGLE_DIRECTION'];
 			//const localized_string_auto_update_msg_1 = LM['translation'][sel]['AUTO_UPDATE_MSG_1_B'];
 			//const localized_string_auto_update_msg_2 = LM['translation'][sel]['AUTO_UPDATE_MSG_2'];

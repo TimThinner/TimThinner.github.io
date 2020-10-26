@@ -34,8 +34,8 @@ export default class UserWaterController extends Controller {
 			//   - {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}}
 	*/
 	initialize() {
-		const weekTR = {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}};
-		const monthTR = {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}};
+		const weekTR = {ends:{value:7,unit:'days'},starts:{value:60,unit:'seconds'}};
+		const monthTR = {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}};
 		
 		this.models['UserWaterNowModel'] = this.master.modelRepo.get('UserWaterNowModel');
 		this.models['UserWaterNowModel'].subscribe(this);

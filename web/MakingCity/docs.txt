@@ -269,9 +269,25 @@ For example, when new Regcode is created, an Authorization HEADER is constructed
    fetch(myRequest)
     ...
 
-
-
 https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=water&limit=1&start=2020-10-25T10:06&end=2020-10-25T10:16
-
-
 https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&limit=1&start=2020-10-26T09:32&end=2020-10-26T10:32
+
+
+
+
+
+How many values are there in power chart if interval is one minute?
+How many values are there in energy chart if interval is one hour?
+days         power       energy
+ 1            1440        24
+ 2            2880        48
+ 3            4320        72
+ 4            5760        96
+ 5            7200       120
+ 6            8640       144
+ 7           10080       168
+14           20160       336
+28           40320       672
+
+
+

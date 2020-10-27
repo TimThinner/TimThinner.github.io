@@ -131,7 +131,7 @@ export default class UserApartmentModel extends Model {
 		const newson = this.removeDuplicates(myJson);
 		let myce = new CalculatedEnergy();
 		
-		console.log(['After process() myJson=',newson]);
+		console.log(['After removeDuplicates myJson=',newson]);
 		
 		myce.resetEnergyHours(this.dayz*24);
 		console.log(['myce.energy=',myce.energy]);
@@ -155,6 +155,10 @@ export default class UserApartmentModel extends Model {
 		});
 		
 		
+		self.energyValues.forEach(val => {
+			console.log(['val=',val]);
+			val.energy = val.energy/1000;
+		});
 		console.log(['AFTER SORT self.energyValues=',self.energyValues]);
 		
 	}
@@ -187,19 +191,14 @@ export default class UserApartmentModel extends Model {
 			})
 			.then(function(myJson) {
 				let message = 'OK';
-				
-				
 				if (Array.isArray(myJson)) {
 					
 					if (myJson.length === 1) {
 						self.measurement = myJson;
 					} else {
 						console.log(['Before process() myJson=',myJson]);
-						
-						
 						self.process(myJson);
 					}
-					
 					
 				} else {
 					if (myJson === 'No data!') {
@@ -277,20 +276,12 @@ export default class UserApartmentModel extends Model {
 						})
 						.then(function(myJson) {
 							let message = 'OK';
-							
-							
-							
-							
 							if (Array.isArray(myJson)) {
 								
 								if (myJson.length === 1) {
 									self.measurement = myJson;
 								} else {
 									console.log(['Before process() myJson=',myJson]);
-									
-									
-									
-									
 									self.process(myJson);
 								}
 								

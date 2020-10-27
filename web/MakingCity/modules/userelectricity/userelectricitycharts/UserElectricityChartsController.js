@@ -1,7 +1,9 @@
 import Controller from '../../common/Controller.js';
 import UserApartmentModel from '../../userpage/UserApartmentModel.js';
 //import UserElectricityChartsView from './UserElectricityChartsView.js';
-import UECWrapperView from './UECWrapperView.js';
+//import UECWrapperView from './UECWrapperView.js';
+
+import UECEnergyChartViewOnly from './UECEnergyChartViewOnly.js';
 
 export default class UserElectricityChartsController extends Controller {
 	
@@ -27,9 +29,30 @@ export default class UserElectricityChartsController extends Controller {
 		// NOTE: ALL is now actually set to 7 days!
 		// This must be maybe set up like in S-Market case where USER selects the timerange (from 1 to 7 days).
 		// Now = now - 60 seconds! 
-		const dayz = 7; 
+		const dayz = 7; // 7 x 24 = 168 hours
+/*
+How many values are there in power chart if interval is one minute?
+How many values are there in energy chart if interval is one hour?
+days         power       energy
+ 1            1440        24
+ 2            2880        48
+ 3            4320        72
+ 4            5760        96
+ 5            7200       120
+ 6            8640       144
+ 7           10080       168
+14           20160       336
+28           40320       672
+*/
 		
-		
+		// In energy-chart energy values are calculated from averagePower value given once a minute. 
+		// So from timestamp the YYYYMMDDHH hash key is taken and values are added to form a sum and 
+		// finally average is calculated for the hour.
+		// 
+		// NOTE: If power-chart is also displayed, it will have 168 x 60 values = 10 080 values to display!!!
+		//
+		//
+		//
 		const allTR = {ends:{value:60,unit:'seconds'},starts:{value:dayz,unit:'days'}};
 		
 		const model = new UserApartmentModel({name:'UserElectricityALLModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:0,dayz:dayz,timerange:allTR});
@@ -42,7 +65,9 @@ export default class UserElectricityChartsController extends Controller {
 		
 		//this.view = new UserElectricityChartsView(this);
 		
-		this.view = new UECWrapperView(this);
+		//this.view = new UECWrapperView(this);
+		
+		this.view = new UECEnergyChartViewOnly(this);
 	}
 	
 	clean() {

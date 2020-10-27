@@ -36,7 +36,7 @@ export default class UserPageController extends Controller {
 			//   - {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}}
 	*/
 	initialize() {
-		const nowTR = {ends:{value:10,unit:'seconds'},starts:{value:60,unit:'seconds'}};
+		const nowTR = {ends:{value:60,unit:'seconds'},starts:{value:5,unit:'minutes'}};
 		const dayTR = {ends:{value:24,unit:'hours'},starts:{value:60,unit:'seconds'}};
 		
 		const model_WaterNow = new UserApartmentModel({name:'UserWaterNowModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:nowTR});

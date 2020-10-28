@@ -1,6 +1,6 @@
 import Model from '../common/Model.js';
 import CalculatedEnergy from '../common/CalculatedEnergy.js';
-
+import CalculatedWater from '../common/CalculatedWater.js';
 
 export class ApaFeed {
 	constructor(obj) {
@@ -8,6 +8,8 @@ export class ApaFeed {
 		this.meterId = obj.meterId; // Number
 		this.averagePower = obj.averagePower; // Float
 		this.totalEnergy = obj.totalEnergy; // Float
+		this.coldTotal = obj.coldTotal; // Float
+		this.hotTotal = obj.hotTotal; // Float
 	}
 }
 
@@ -22,22 +24,12 @@ export default class UserApartmentModel extends Model {
 		this.fetching = false;
 	*/
 	
-	
-	
 	/*
 	
 	Todo: 
-	
 	When we process response with more than one measurement, we must form result per hour (YYYYMMDDHH) => approx. 60 measurements 
 	are summed into object with timestamp as a key (like in FeedModel).
-	
-	
-	created_at: "2020-10-23T00:21:45", meterId: 114, averag
-	
 	this.energy[YYYYMMDDHH] = {};
-	
-	
-	
 	
 	IN FeedModel we have:
 		[
@@ -48,13 +40,8 @@ export default class UserApartmentModel extends Model {
 		...
 		
 	IN ApartmentModel:
-	
-	
 	{"created_at": "2020-10-20T03:21:38","apartmentId":101,"averagePower":2040,"impulseLastCtr": 34,"​​​​​impulseTotalCtr": 585464,"​​​​​meterId": 1001,"​​​​​residentId": 1,"​​​​​totalEnergy": 585.464}
-	
-	
 	*/
-	
 	constructor(options) {
 		
 		super(options);
@@ -70,32 +57,29 @@ export default class UserApartmentModel extends Model {
 		// Now we need to define END-POINT to somewhere not always NOW-moment. And then the START-POINT to create period.
 		// After that timerange just moves the startpoint further past but with 24 hour steps.
 		// 
+		/*
 		if (typeof options.timerange !== 'undefined') {
 			this.timerange = options.timerange;
 		} else {
 			this.timerange = undefined;
 		}
+		*/
+		this.timerange = 1; // User can change this from 1 ... 7.
 		this.measurement = [];
 		this.period = {start: undefined, end: undefined};
 		this.values = [];
 		this.energyValues = [];
+		this.waterValues = [];
 	}
-	
-	//const nowTR = {ends:{value:60,unit:'seconds'},starts:{value:5,unit:'minutes'}};
-	//const dayTR = {ends:{value:24,unit:'hours'},starts:{value:60,unit:'seconds'}};
-	
-	//const weekTR = {ends:{value:7,unit:'days'},starts:{value:60,unit:'seconds'}};
-	//const monthTR = {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}};
-	
-	//const allTR = {ends:{value:60,unit:'seconds'},starts:{value:dayz,unit:'days'}};
 	
 	setTimePeriod() {
 		const e_v = this.range.ends.value;
 		const e_u = this.range.ends.unit;
 		let s_v;
 		let s_u;
-		
-		if (typeof this.timerange !== 'undefined') {
+		// NOTE: In charts we don't restrict number of values in response => we
+		// use timerange to specify how many days to include in database query.
+		if (this.limit === 0) {
 			s_v = this.timerange;
 			s_u = 'days';
 		} else {
@@ -108,7 +92,7 @@ export default class UserApartmentModel extends Model {
 		this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
 	}
 	
-	removeDuplicates(json) {
+	removePowerDuplicates(json) {
 		// Check if there are timestamp duplicates?
 		// And remove those with averagePower=0 at the same time.
 		const test = {};
@@ -119,7 +103,7 @@ export default class UserApartmentModel extends Model {
 				//console.log(['DUPLICATE!!!!!! datetime=',datetime,' averagePower=',item.averagePower]);
 				if (test[datetime].averagePower === 0 && item.averagePower > 0) {
 					// Replacing duplicate ONLY if old value was zero and new value is NOT zero!
-					console.log('REPLACE DUPLICATE (OLD HAD ZERO VALUE)!!!');
+					console.log('REPLACE DUPLICATE (OLD WAS ZERO VALUE)!!!');
 					test[datetime] = item;
 				}
 				/*
@@ -145,42 +129,82 @@ export default class UserApartmentModel extends Model {
 		return newJson;
 	}
 	
+	removeWaterDuplicates(json) {
+		// Check if there are timestamp duplicates?
+		const test = {};
+		const newJson = [];
+		json.forEach(item => {
+			const datetime = item.created_at;
+			if (test.hasOwnProperty(datetime)) {
+				console.log(['DUPLICATE IGNORED! datetime=',datetime,' hotTotal=',item.hotTotal,' coldTotal=',item.coldTotal]);
+			} else {
+				test[datetime] = item;
+				newJson.push(item);
+			}
+		});
+		return newJson;
+	}
+	
+	
 	process(myJson) {
 		const self = this;
-		
-		
-		self.values = []; // Start with fresh empty data.
-		self.energyValues = [];
-		
-		const newson = this.removeDuplicates(myJson);
-		let myce = new CalculatedEnergy();
-		
-		console.log(['After removeDuplicates myJson=',newson]);
-		
-		myce.resetEnergyHours(this.timerange*24);
-		console.log(['myce.energy=',myce.energy]);
-		$.each(newson, function(i,v){
-			// set cumulative energy for each hour.
-			myce.addEnergy(v);
-			const p = new ApaFeed(v);
-			self.values.push(p);
-		});
-		
-		//console.log(['HUU myce.energy=',myce.energy]);
-		myce.calculateAverage(); 
-		myce.copyTo(self.energyValues);
-		//console.log(['BEFORE SORT self.energyValues=',self.energyValues]);
-		// Then sort array based according to time, oldest entry first.
-		self.energyValues.sort(function(a,b){
-			var bb = moment(b.time);
-			var aa = moment(a.time);
-			return aa - bb;
-		});
-		self.energyValues.forEach(val => {
-			//console.log(['val=',val]);
-			val.energy = val.energy/1000;
-		});
-		//console.log(['AFTER SORT self.energyValues=',self.energyValues]);
+		if (this.type === 'energy') {
+			
+			self.values = []; // Start with fresh empty data.
+			self.energyValues = [];
+			
+			const newson = this.removePowerDuplicates(myJson);
+			
+			let myce = new CalculatedEnergy();
+			myce.resetEnergyHours(this.timerange*24);
+			//console.log(['myce.energy=',myce.energy]);
+			$.each(newson, function(i,v){
+				// set cumulative energy for each hour.
+				myce.addEnergy(v);
+				//const p = new ApaFeed(v);
+				//self.values.push(p);
+			});
+			myce.calculateAverage(); 
+			myce.copyTo(self.energyValues);
+			// Then sort array based according to time, oldest entry first.
+			self.energyValues.sort(function(a,b){
+				var bb = moment(b.time);
+				var aa = moment(a.time);
+				return aa - bb;
+			});
+			self.energyValues.forEach(val => {
+				val.energy = val.energy/1000;
+			});
+			
+			
+		} else if (this.type === 'water') {
+			self.values = []; // Start with fresh empty data.
+			self.waterValues = [];
+			const newson = this.removeWaterDuplicates(myJson);
+			
+			console.log(['Water newson=',newson]);
+			
+			let mycw = new CalculatedWater();
+			mycw.resetWaterHours(this.timerange*24);
+			
+			$.each(newson, function(i,v){
+				// set min and max values for hot and cold water for each hour.
+				mycw.addWater(v);
+				//const p = new ApaFeed(v);
+				//self.values.push(p);
+			});
+			
+			mycw.printWater();
+			mycw.copyTo(self.waterValues);
+			// Then sort array based according to time, oldest entry first.
+			self.waterValues.sort(function(a,b){
+				var bb = moment(b.time);
+				var aa = moment(a.time);
+				return aa - bb;
+			});
+			
+			console.log(['Sorted WaterValues=',self.waterValues]);
+		}
 	}
 	
 	/*

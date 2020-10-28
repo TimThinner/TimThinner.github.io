@@ -27,12 +27,7 @@ export default class UserElectricityController extends Controller {
 		EXTRA params for Models:
 			this.type = options.type;    'sensor', 'energy', 'water'
 			this.limit = options.limit;  1
-			this.timerange = options.timerange;
-			// timerange:
-			//   - {ends:{value:0,unit:'minutes'},starts:{value:60,unit:'seconds'}}
-			//   - {ends:{value:24,unit:'hours'},starts:{value:60,unit:'seconds'}}
-			//   - {ends:{value:7,unit:'days'},starts:{value:60,unit:'seconds'}}
-			//   - {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}}
+			this.range = options.range;
 	*/
 	initialize() {
 		const weekTR = {ends:{value:7,unit:'days'},starts:{value:2,unit:'minutes'}};

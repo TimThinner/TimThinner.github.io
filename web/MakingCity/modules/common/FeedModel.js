@@ -66,7 +66,7 @@ export default class FeedModel extends Model {
 				//console.log(['DUPLICATE!!!!!! averagePower=',item.averagePower]);
 				if (test[datetime].averagePower === 0 && item.averagePower > 0) {
 					// Replacing duplicate ONLY if old value was zero and new value is NOT zero!
-					console.log('REPLACE DUPLICATE (OLD HAD ZERO VALUE)!!!');
+					console.log('REPLACE DUPLICATE (OLD WAS ZERO VALUE)!!!');
 					test[datetime] = item;
 				}
 				/*

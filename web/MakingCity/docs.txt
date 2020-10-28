@@ -291,3 +291,42 @@ days         power       energy
 
 
 
+UserPageController
+
+--------------------------|---------|---------|-------------------------------------------------------------
+  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
+--------------------------|---------|---------|-------------------------------------------------------------
+UserWaterNowModel         |  water  |    1    |  {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}
+UserHeatingNowModel       |  sensor |    1    |  {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}
+UserElectricityNowModel   |  energy |    1    |  {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}
+UserWaterDayModel         |  water  |    1    |  {ends:{value:24,unit:'hours'},starts:{value:2,unit:'minutes'}
+UserElectricityDayModel   |  energy |    1    |  {ends:{value:24,unit:'hours'},starts:{value:2,unit:'minutes'}
+--------------------------|---------|---------|-------------------------------------------------------------
+
+UserElectricityController
+--------------------------|---------|---------|-------------------------------------------------------------
+  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
+--------------------------|---------|---------|-------------------------------------------------------------
+UserElectricityWeekModel  | energy  |    1    |  {ends:{value:7,unit:'days'},starts:{value:2,unit:'minutes'}
+UserElectricityMonthModel | energy  |    1    |  {ends:{value:1,unit:'months'},starts:{value:2,unit:'minutes'}
+--------------------------|---------|---------|-------------------------------------------------------------
+
+UserWaterController
+--------------------------|---------|---------|-------------------------------------------------------------
+  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
+--------------------------|---------|---------|-------------------------------------------------------------
+UserWaterWeekModel        | water   |    1    |  {ends:{value:7,unit:'days'},starts:{value:2,unit:'minutes'}
+UserWaterMonthModel       | water   |    1    |  {ends:{value:1,unit:'months'},starts:{value:2,unit:'minutes'}
+--------------------------|---------|---------|-------------------------------------------------------------
+
+UserElectricityChartsController
+--------------------------|---------|---------|-------------------------------------------------------------
+  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
+--------------------------|---------|---------|-------------------------------------------------------------
+UserElectricityALLModel   | energy  |    0    |  {ends:{value:10,unit:'seconds'},starts:{value:1,unit:'days'}
+--------------------------|---------|---------|-------------------------------------------------------------
+
+
+
+
+

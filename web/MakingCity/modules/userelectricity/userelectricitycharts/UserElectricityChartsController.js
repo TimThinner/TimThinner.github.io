@@ -1,9 +1,6 @@
 import Controller from '../../common/Controller.js';
 import UserApartmentModel from '../../userpage/UserApartmentModel.js';
-//import UserElectricityChartsView from './UserElectricityChartsView.js';
 import UECWrapperView from './UECWrapperView.js';
-
-//import UECEnergyChartViewOnly from './UECEnergyChartViewOnly.js';
 
 export default class UserElectricityChartsController extends Controller {
 	
@@ -23,7 +20,6 @@ export default class UserElectricityChartsController extends Controller {
 		this.models = {};
 	}
 	
-	
 	refreshTimerange() {
 		const timerName = 'UserElectricityChartsView';
 		this.restartPollingInterval(timerName);
@@ -32,9 +28,9 @@ export default class UserElectricityChartsController extends Controller {
 	initialize() {
 		
 		
-		// NOTE: ALL is now actually set to 7 days!
+		// NOTE: ALL is now actually set to 1 day!
 		// This must be maybe set up like in S-Market case where USER selects the timerange (from 1 to 7 days).
-		// Now = now - 60 seconds! 
+		// Now = now - 10 seconds! 
 		//const dayz = 7; // 7 x 24 = 168 hours
 /*
 How many values are there in power chart if interval is one minute?
@@ -52,17 +48,17 @@ days         power       energy
 */
 		
 		// In energy-chart energy values are calculated from averagePower value given once a minute. 
-		// So from timestamp the YYYYMMDDHH hash key is taken and values are added to form a sum and 
+		// So from timestamp the hash-key is created using format YYYYMMDDHH and values are added to form a sum and 
 		// finally average is calculated for the hour.
 		// 
 		// NOTE: If power-chart is also displayed, it will have 168 x 60 values = 10 080 values to display!!!
 		//
 		//
 		//
-		const TR = 1;
-		const allTR = {ends:{value:10,unit:'seconds'},starts:{value:TR,unit:'days'}};
 		
-		const model = new UserApartmentModel({name:'UserElectricityALLModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:0,timerange:TR,range:allTR});
+		const allTR = {ends:{value:10,unit:'seconds'},starts:{value:1,unit:'days'}};
+		
+		const model = new UserApartmentModel({name:'UserElectricityALLModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:0,range:allTR});
 		model.subscribe(this);
 		this.master.modelRepo.add('UserElectricityALLModel',model);
 		this.models['UserElectricityALLModel'] = model;
@@ -70,11 +66,7 @@ days         power       energy
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		//this.view = new UserElectricityChartsView(this);
-		
 		this.view = new UECWrapperView(this);
-		
-		//this.view = new UECEnergyChartViewOnly(this);
 	}
 	
 	clean() {

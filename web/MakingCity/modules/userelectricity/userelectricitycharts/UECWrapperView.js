@@ -1,6 +1,6 @@
 
 import WrapperView from '../../common/WrapperView.js';
-import UECPowerChartView from './UECPowerChartView.js';
+//import UECPowerChartView from './UECPowerChartView.js';
 import UECEnergyChartView from './UECEnergyChartView.js';
 
 export default class UECWrapperView extends WrapperView {
@@ -11,8 +11,10 @@ export default class UECWrapperView extends WrapperView {
 		// This is a wrapper for two different "subviews":
 		//   - Chart which contains TOTAL POWER for current day
 		//   - Chart which contains TOTAL ENERGY for current day
-		this.subviews.push(new UECPowerChartView(this, '#subview-1'));
-		this.subviews.push(new UECEnergyChartView(this, '#subview-2'));
+		//this.subviews.push(new UECPowerChartView(this, '#subview-1'));
+		//this.subviews.push(new UECEnergyChartView(this, '#subview-2'));
+		
+		this.subviews.push(new UECEnergyChartView(this, '#subview-1'));
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 	}
 	
@@ -24,14 +26,18 @@ export default class UECWrapperView extends WrapperView {
 		const sel = LM.selected;
 		const localized_string_daa_title = 'Energy Charts'; //LM['translation'][sel]['DAA_TITLE'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-		//const localized_string_daw_sel_timerange = LM['translation'][sel]['DAW_SEL_TIMERANGE']; // Select timerange for database query:
+		const localized_string_daw_sel_timerange = LM['translation'][sel]['DAW_SEL_TIMERANGE']; // Select timerange for database query:
 		
-		let extra = '';
+		// If we are not logged in make sure that model timerange is one day.
+		//this.controller.models['UserElectricityALLModel'].timerange = 1;
 		
-		/*
-		const um = this.controller.master.modelRepo.get('UserModel');
-		if (um.isLoggedIn()) {
-			extra = '<div class="row">'+
+		const html = 
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					'<h3 class="da-wrapper-title">'+localized_string_daa_title+'</h3>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
 				'<div class="col s12 center">'+
 					'<p style="color:#aaa;margin-top:-16px;padding:0;">'+localized_string_daw_sel_timerange+'</p>'+
 					'<a href="javascript:void(0);" id="b1d" class="my-range-button" style="float:right;">1d</a>'+
@@ -42,26 +48,15 @@ export default class UECWrapperView extends WrapperView {
 					'<a href="javascript:void(0);" id="b6d" class="my-range-button" style="float:right;">6d</a>'+
 					'<a href="javascript:void(0);" id="b7d" class="my-range-button" style="float:right;">7d</a>'+
 				'</div>'+
-			'</div>';
-		} else {
-			// If we are not logged in make sure that model timerange is one day.
-			this.controller.models['TotalModel'].timerange = 1;
-		}
-		*/
-		const html = 
-			'<div class="row">'+
-				'<div class="col s12 center">'+
-					'<h3 class="da-wrapper-title">'+localized_string_daa_title+'</h3>'+
-				'</div>'+
-			'</div>'+ extra +
+			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center" id="subview-1">'+
 				'</div>'+
 			'</div>'+
-			'<div class="row">'+
-				'<div class="col s12 center" id="subview-2">'+
-				'</div>'+
-			'</div>'+
+			//'<div class="row">'+
+			//	'<div class="col s12 center" id="subview-2">'+
+			//	'</div>'+
+			//'</div>'+
 			'<div class="row">'+
 				'<div class="col s6 center">'+
 					'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
@@ -71,7 +66,7 @@ export default class UECWrapperView extends WrapperView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		//this.setTimerangeHandlers();
+		this.setTimerangeHandlers();
 		/*
 		this.startSwipeEventListeners(
 			()=>{this.menuModel.setSelected('USERELECTRICITY');},
@@ -84,7 +79,7 @@ export default class UECWrapperView extends WrapperView {
 		});
 		
 		this.showSpinner('#subview-1');
-		this.showSpinner('#subview-2');
+		//this.showSpinner('#subview-2');
 		
 		// Finally render all subviews.
 		//setTimeout(() => {
@@ -94,7 +89,6 @@ export default class UECWrapperView extends WrapperView {
 				view.render();
 			},timeout);
 			timeout += 200;
-			//view.render();
 		});
 		// Init the "Adjust the update interval:" -range input in ALL three charts:
 		//M.Range.init(document.querySelectorAll("input[type=range]"));

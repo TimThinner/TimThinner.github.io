@@ -26,16 +26,11 @@ export default class UserWaterController extends Controller {
 		EXTRA params for Models:
 			this.type = options.type;    'sensor', 'energy', 'water'
 			this.limit = options.limit;  1
-			this.timerange = options.timerange;
-			// timerange:
-			//   - {ends:{value:0,unit:'minutes'},starts:{value:10,unit:'minutes'}}
-			//   - {ends:{value:24,unit:'hours'},starts:{value:10,unit:'minutes'}}
-			//   - {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}}
-			//   - {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}}
+			this.range = options.range;
 	*/
 	initialize() {
-		const weekTR = {ends:{value:7,unit:'days'},starts:{value:60,unit:'seconds'}};
-		const monthTR = {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}};
+		const weekTR = {ends:{value:7,unit:'days'},starts:{value:2,unit:'minutes'}};
+		const monthTR = {ends:{value:1,unit:'months'},starts:{value:2,unit:'minutes'}};
 		
 		this.models['UserWaterNowModel'] = this.master.modelRepo.get('UserWaterNowModel');
 		this.models['UserWaterNowModel'].subscribe(this);
@@ -43,12 +38,12 @@ export default class UserWaterController extends Controller {
 		this.models['UserWaterDayModel'] = this.master.modelRepo.get('UserWaterDayModel');
 		this.models['UserWaterDayModel'].subscribe(this);
 		
-		const model_WaterWeek = new UserApartmentModel({name:'UserWaterWeekModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:weekTR});
+		const model_WaterWeek = new UserApartmentModel({name:'UserWaterWeekModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,range:weekTR});
 		model_WaterWeek.subscribe(this);
 		this.master.modelRepo.add('UserWaterWeekModel',model_WaterWeek);
 		this.models['UserWaterWeekModel'] = model_WaterWeek;
 		
-		const model_WaterMonth = new UserApartmentModel({name:'UserWaterMonthModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:monthTR});
+		const model_WaterMonth = new UserApartmentModel({name:'UserWaterMonthModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,range:monthTR});
 		model_WaterMonth.subscribe(this);
 		this.master.modelRepo.add('UserWaterMonthModel',model_WaterMonth);
 		this.models['UserWaterMonthModel'] = model_WaterMonth;

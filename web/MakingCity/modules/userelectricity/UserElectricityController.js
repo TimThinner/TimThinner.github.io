@@ -35,8 +35,8 @@ export default class UserElectricityController extends Controller {
 			//   - {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}}
 	*/
 	initialize() {
-		const weekTR = {ends:{value:7,unit:'days'},starts:{value:60,unit:'seconds'}};
-		const monthTR = {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}};
+		const weekTR = {ends:{value:7,unit:'days'},starts:{value:2,unit:'minutes'}};
+		const monthTR = {ends:{value:1,unit:'months'},starts:{value:2,unit:'minutes'}};
 		
 		this.models['UserElectricityNowModel'] = this.master.modelRepo.get('UserElectricityNowModel');
 		this.models['UserElectricityNowModel'].subscribe(this);
@@ -44,12 +44,12 @@ export default class UserElectricityController extends Controller {
 		this.models['UserElectricityDayModel'] = this.master.modelRepo.get('UserElectricityDayModel');
 		this.models['UserElectricityDayModel'].subscribe(this);
 		
-		const model_ElectricityWeek = new UserApartmentModel({name:'UserElectricityWeekModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:weekTR});
+		const model_ElectricityWeek = new UserApartmentModel({name:'UserElectricityWeekModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,range:weekTR});
 		model_ElectricityWeek.subscribe(this);
 		this.master.modelRepo.add('UserElectricityWeekModel',model_ElectricityWeek);
 		this.models['UserElectricityWeekModel'] = model_ElectricityWeek;
 		
-		const model_ElectricityMonth = new UserApartmentModel({name:'UserElectricityMonthModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:monthTR});
+		const model_ElectricityMonth = new UserApartmentModel({name:'UserElectricityMonthModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,range:monthTR});
 		model_ElectricityMonth.subscribe(this);
 		this.master.modelRepo.add('UserElectricityMonthModel',model_ElectricityMonth);
 		this.models['UserElectricityMonthModel'] = model_ElectricityMonth;

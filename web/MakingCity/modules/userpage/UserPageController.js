@@ -28,38 +28,33 @@ export default class UserPageController extends Controller {
 		EXTRA params for Models:
 			this.type = options.type;    'sensor', 'energy', 'water'
 			this.limit = options.limit;  1
-			this.timerange = options.timerange;
-			// timerange:
-			//   - {ends:{value:10,unit:'seconds'},starts:{value:60,unit:'seconds'}}
-			//   - {ends:{value:24,unit:'hours'},starts:{value:60,unit:'seconds'}}
-			//   - {ends:{value:7,unit:'days'},starts:{value:60,unit:'seconds'}}
-			//   - {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}}
+			this.range = options.range;
 	*/
 	initialize() {
-		const nowTR = {ends:{value:60,unit:'seconds'},starts:{value:5,unit:'minutes'}};
-		const dayTR = {ends:{value:24,unit:'hours'},starts:{value:60,unit:'seconds'}};
+		const nowTR = {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}};
+		const dayTR = {ends:{value:24,unit:'hours'},starts:{value:2,unit:'minutes'}};
 		
-		const model_WaterNow = new UserApartmentModel({name:'UserWaterNowModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:nowTR});
+		const model_WaterNow = new UserApartmentModel({name:'UserWaterNowModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,range:nowTR});
 		model_WaterNow.subscribe(this);
 		this.master.modelRepo.add('UserWaterNowModel',model_WaterNow);
 		this.models['UserWaterNowModel'] = model_WaterNow;
 		
-		const model_HeatingNow = new UserApartmentModel({name:'UserHeatingNowModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:1,timerange:nowTR});
+		const model_HeatingNow = new UserApartmentModel({name:'UserHeatingNowModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:1,range:nowTR});
 		model_HeatingNow.subscribe(this);
 		this.master.modelRepo.add('UserHeatingNowModel',model_HeatingNow);
 		this.models['UserHeatingNowModel'] = model_HeatingNow;
 		
-		const model_EleNow = new UserApartmentModel({name:'UserElectricityNowModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:nowTR});
+		const model_EleNow = new UserApartmentModel({name:'UserElectricityNowModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,range:nowTR});
 		model_EleNow.subscribe(this);
 		this.master.modelRepo.add('UserElectricityNowModel',model_EleNow);
 		this.models['UserElectricityNowModel'] = model_EleNow;
 		
-		const model_WaterDay = new UserApartmentModel({name:'UserWaterDayModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,timerange:dayTR});
+		const model_WaterDay = new UserApartmentModel({name:'UserWaterDayModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,range:dayTR});
 		model_WaterDay.subscribe(this);
 		this.master.modelRepo.add('UserWaterDayModel',model_WaterDay);
 		this.models['UserWaterDayModel'] = model_WaterDay;
 		
-		const model_EleDay = new UserApartmentModel({name:'UserElectricityDayModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,timerange:dayTR});
+		const model_EleDay = new UserApartmentModel({name:'UserElectricityDayModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,range:dayTR});
 		model_EleDay.subscribe(this);
 		this.master.modelRepo.add('UserElectricityDayModel',model_EleDay);
 		this.models['UserElectricityDayModel'] = model_EleDay;

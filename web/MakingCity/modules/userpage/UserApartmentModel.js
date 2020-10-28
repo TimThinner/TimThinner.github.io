@@ -61,29 +61,47 @@ export default class UserApartmentModel extends Model {
 		
 		this.type = options.type;
 		this.limit = options.limit;
-		// timerange:
-		//   - {ends:{value:0,unit:'minutes'},starts:{value:10,unit:'minutes'}}
-		//   - {ends:{value:24,unit:'hours'},starts:{value:10,unit:'minutes'}}
-		//   - {ends:{value:7,unit:'days'},starts:{value:10,unit:'minutes'}}
-		//   - {ends:{value:1,unit:'months'},starts:{value:10,unit:'minutes'}}
-		this.timerange = options.timerange;
-		if (typeof options.dayz !== 'undefined') {
-			this.dayz = options.dayz;
+		this.range = options.range;
+		// In the old implementation we had always end NOW and START was adjusted to be 
+		// todays (00:00)    timerange 1
+		// yesterdays 00:00  timerange 2
+		// etc.
+		// 
+		// Now we need to define END-POINT to somewhere not always NOW-moment. And then the START-POINT to create period.
+		// After that timerange just moves the startpoint further past but with 24 hour steps.
+		// 
+		if (typeof options.timerange !== 'undefined') {
+			this.timerange = options.timerange;
 		} else {
-			this.dayz = 1;
+			this.timerange = undefined;
 		}
-		
 		this.measurement = [];
 		this.period = {start: undefined, end: undefined};
 		this.values = [];
 		this.energyValues = [];
 	}
 	
+	//const nowTR = {ends:{value:60,unit:'seconds'},starts:{value:5,unit:'minutes'}};
+	//const dayTR = {ends:{value:24,unit:'hours'},starts:{value:60,unit:'seconds'}};
+	
+	//const weekTR = {ends:{value:7,unit:'days'},starts:{value:60,unit:'seconds'}};
+	//const monthTR = {ends:{value:1,unit:'months'},starts:{value:60,unit:'seconds'}};
+	
+	//const allTR = {ends:{value:60,unit:'seconds'},starts:{value:dayz,unit:'days'}};
+	
 	setTimePeriod() {
-		const e_v = this.timerange.ends.value;
-		const e_u = this.timerange.ends.unit;
-		const s_v = this.timerange.starts.value;
-		const s_u = this.timerange.starts.unit;
+		const e_v = this.range.ends.value;
+		const e_u = this.range.ends.unit;
+		let s_v;
+		let s_u;
+		
+		if (typeof this.timerange !== 'undefined') {
+			s_v = this.timerange;
+			s_u = 'days';
+		} else {
+			s_v = this.range.starts.value;
+			s_u = this.range.starts.unit;
+		}
 		const e_m = moment().subtract(e_v, e_u);
 		const s_m = moment(e_m).subtract(s_v, s_u);
 		this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
@@ -98,10 +116,15 @@ export default class UserApartmentModel extends Model {
 		json.forEach(item => {
 			const datetime = item.created_at;
 			if (test.hasOwnProperty(datetime)) {
-				console.log(['DUPLICATE!!!!!! datetime=',datetime,' averagePower=',item.averagePower]);
+				//console.log(['DUPLICATE!!!!!! datetime=',datetime,' averagePower=',item.averagePower]);
+				if (test[datetime].averagePower === 0 && item.averagePower > 0) {
+					// Replacing duplicate ONLY if old value was zero and new value is NOT zero!
+					console.log('REPLACE DUPLICATE (OLD HAD ZERO VALUE)!!!');
+					test[datetime] = item;
+				}
+				/*
 				if (item.averagePower > test[datetime].averagePower) {
 					//console.log('This has MORE averagePower so probably this is the correct one?');
-					
 					const huh = newJson.pop();
 					if (huh.created_at === datetime) {
 						//console.log('YES, Replacing THE CORRECT ONE!');
@@ -109,10 +132,11 @@ export default class UserApartmentModel extends Model {
 						test[datetime] = item;
 						newJson.push(item);
 					} else {
-						console.log('SOMETHING IS FISHY HERE!!!????!!!!');
+						console.log(['SOMETHING IS FISHY HERE! huh.created_at=',huh.created_at,' datetime=',datetime]);
 						newJson.push(huh);
 					}
 				}
+				*/
 			} else {
 				test[datetime] = item;
 				newJson.push(item);
@@ -133,7 +157,7 @@ export default class UserApartmentModel extends Model {
 		
 		console.log(['After removeDuplicates myJson=',newson]);
 		
-		myce.resetEnergyHours(this.dayz*24);
+		myce.resetEnergyHours(this.timerange*24);
 		console.log(['myce.energy=',myce.energy]);
 		$.each(newson, function(i,v){
 			// set cumulative energy for each hour.
@@ -145,24 +169,19 @@ export default class UserApartmentModel extends Model {
 		//console.log(['HUU myce.energy=',myce.energy]);
 		myce.calculateAverage(); 
 		myce.copyTo(self.energyValues);
-		console.log(['BEFORE SORT self.energyValues=',self.energyValues]);
-		
+		//console.log(['BEFORE SORT self.energyValues=',self.energyValues]);
 		// Then sort array based according to time, oldest entry first.
 		self.energyValues.sort(function(a,b){
 			var bb = moment(b.time);
 			var aa = moment(a.time);
 			return aa - bb;
 		});
-		
-		
 		self.energyValues.forEach(val => {
-			console.log(['val=',val]);
+			//console.log(['val=',val]);
 			val.energy = val.energy/1000;
 		});
-		console.log(['AFTER SORT self.energyValues=',self.energyValues]);
-		
+		//console.log(['AFTER SORT self.energyValues=',self.energyValues]);
 	}
-	
 	
 	/*
 		fetch_d

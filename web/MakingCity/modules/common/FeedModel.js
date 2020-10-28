@@ -64,9 +64,14 @@ export default class FeedModel extends Model {
 			const datetime = item.created_at;
 			if (test.hasOwnProperty(datetime)) {
 				//console.log(['DUPLICATE!!!!!! averagePower=',item.averagePower]);
+				if (test[datetime].averagePower === 0 && item.averagePower > 0) {
+					// Replacing duplicate ONLY if old value was zero and new value is NOT zero!
+					console.log('REPLACE DUPLICATE (OLD HAD ZERO VALUE)!!!');
+					test[datetime] = item;
+				}
+				/*
 				if (item.averagePower > test[datetime].averagePower) {
 					//console.log('This has MORE averagePower so probably this is the correct one?');
-					
 					const huh = newJson.pop();
 					if (huh.created_at === datetime) {
 						//console.log('YES, Replacing THE CORRECT ONE!');
@@ -78,6 +83,7 @@ export default class FeedModel extends Model {
 						newJson.push(huh);
 					}
 				}
+				*/
 			} else {
 				test[datetime] = item;
 				newJson.push(item);

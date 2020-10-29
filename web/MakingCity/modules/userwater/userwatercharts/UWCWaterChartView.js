@@ -57,6 +57,16 @@ export default class UWCWaterChartView extends View {
 		});
 	}
 	
+	appendTotal() {
+		const minmax = this.models['UserWaterALLModel'].waterMinMax;
+		
+		const hot = minmax.hotmax - minmax.hotmin;
+		const cold = minmax.coldmax - minmax.coldmin;
+		
+		const html = '<p>TOTAL: <span style="color:#f00">HOT: '+hot.toFixed(0)+' L</span><span style="color:#0ff">&nbsp;COLD: '+cold.toFixed(0)+' L</span></p>';
+		$('#uwc-water-total').empty().append(html);
+	}
+	
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
@@ -65,23 +75,18 @@ export default class UWCWaterChartView extends View {
 					if (options.status === 200) {
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... UWCWaterChartView CHART UPDATED!');
-							
+							//console.log('fetched ..... UWCWaterChartView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								/*
-								if (s.name === 'COLD') {
-									s.data = self.models['UserWaterALLModel'].waterValues;
-								} else {
-									s.data = self.models['UserWaterALLModel'].waterValues;
-								}
-								*/
 								s.data = self.models['UserWaterALLModel'].waterValues;
 							});
+							this.appendTotal();
 							
 						} else {
 							console.log('fetched ..... render UWCWaterChartView()');
 							this.renderChart();
 						}
+						
+						
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
 						if (options.status === 401) {
@@ -104,8 +109,8 @@ export default class UWCWaterChartView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_water = 'Water';//LM['translation'][sel]['DAA_ENERGY'];
-		
+		const localized_string_water = LM['translation'][sel]['USER_PAGE_WATER'];
+
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
 			// Themes begin
@@ -183,7 +188,7 @@ export default class UWCWaterChartView extends View {
 			//const series1 = self.chart.series.push(new am4charts.LineSeries());
 			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			series1.defaultState.transitionDuration = 0;
-			series1.tooltipText = localized_string_water + ": HOT {valueY.value} L";
+			series1.tooltipText = "HOT {valueY.value} L";
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
@@ -206,7 +211,7 @@ export default class UWCWaterChartView extends View {
 			//const series2 = self.chart.series.push(new am4charts.LineSeries());
 			//const series2 = self.chart.series.push(new am4charts.StepLineSeries());
 			series2.defaultState.transitionDuration = 0;
-			series2.tooltipText = localized_string_water + ": COLD {valueY.value} L";
+			series2.tooltipText = "COLD {valueY.value} L";
 			
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
@@ -243,6 +248,7 @@ export default class UWCWaterChartView extends View {
  			*/
 			
 			// Date format to be used in input fields
+			/*
 			const inputFieldFormat = "yyyy-MM-dd HH:mm";
 			
 			dateAxis.events.on("selectionextremeschanged", function() {
@@ -278,9 +284,14 @@ export default class UWCWaterChartView extends View {
 						dateAxis.zoomToDates(startDate, endDate);
 					}
 				}, 500);
-			}
+				
+			}*/
 			console.log('UWC WATER RENDER CHART END =====================');
 		}); // end am4core.ready()
+		
+		
+		this.appendTotal();
+		
 	}
 	
 	
@@ -297,6 +308,7 @@ export default class UWCWaterChartView extends View {
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
+					/*
 					'<div style="width: 100%; overflow: hidden;">'+ // id="controls"
 						'<div class="input-field col s6">'+
 							'<input id="'+refreshId+'-fromfield" type="text" class="amcharts-input">'+
@@ -307,7 +319,12 @@ export default class UWCWaterChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
+					*/
 					'<div id="uwc-water-chart" class="energy-chart"></div>'+
+					
+					
+					'<div id="uwc-water-total"></div>'+
+					
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

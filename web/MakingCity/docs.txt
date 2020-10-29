@@ -326,6 +326,17 @@ UserElectricityChartsController
 UserElectricityALLModel   | energy  |    0    |  {ends:{value:10,unit:'seconds'},starts:{value:1,unit:'days'}
 --------------------------|---------|---------|-------------------------------------------------------------
 
+UserWaterChartsController
+--------------------------|---------|---------|-------------------------------------------------------------
+  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
+--------------------------|---------|---------|-------------------------------------------------------------
+UserWaterALLModel         |  water  |    0    |  {ends:{value:10,unit:'seconds'},starts:{value:1,unit:'days'}
+--------------------------|---------|---------|-------------------------------------------------------------
+
+
+NOTE: For charts, where all values for specified range are fetched, we must snap range to previous FULL HOUR value.
+Therefore we are one hour behind real-time in the worst case.
+
 
 
 

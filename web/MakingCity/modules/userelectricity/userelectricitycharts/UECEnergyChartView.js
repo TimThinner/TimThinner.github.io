@@ -59,6 +59,13 @@ export default class UECEnergyChartView extends View {
 		});
 	}
 	
+	appendTotal() {
+		const total = this.models['UserElectricityALLModel'].energyTotal;
+		const html = '<p>TOTAL: <span style="color:#0f0">'+total.toFixed(1)+' kWh</span></p>';
+		$('#uec-energy-total').empty().append(html);
+	}
+	
+	
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
@@ -71,6 +78,9 @@ export default class UECEnergyChartView extends View {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								s.data = self.models['UserElectricityALLModel'].energyValues;
 							});
+							
+							this.appendTotal();
+							
 						} else {
 							console.log('fetched ..... render UECEnergyChartView()');
 							this.renderChart();
@@ -178,7 +188,7 @@ export default class UECEnergyChartView extends View {
 			
 			series1.defaultState.transitionDuration = 0;
 			//series1.tooltipText = "{name}: {valueY.value} kWh";
-			series1.tooltipText = localized_string_energy + ": {valueY.value} kWh";
+			series1.tooltipText = "{valueY.value} kWh";
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
@@ -213,6 +223,7 @@ export default class UECEnergyChartView extends View {
  			* Set up external controls
  			*/
 			
+			/*
 			// Date format to be used in input fields
 			const inputFieldFormat = "yyyy-MM-dd HH:mm";
 			
@@ -250,8 +261,12 @@ export default class UECEnergyChartView extends View {
 					}
 				}, 500);
 			}
+			*/
+			
 			console.log('UEC Energy RENDER CHART END =====================');
 		}); // end am4core.ready()
+		
+		this.appendTotal();
 	}
 	
 	
@@ -268,6 +283,7 @@ export default class UECEnergyChartView extends View {
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
+					/*
 					'<div style="width: 100%; overflow: hidden;">'+ // id="controls"
 						'<div class="input-field col s6">'+
 							'<input id="'+refreshId+'-fromfield" type="text" class="amcharts-input">'+
@@ -278,7 +294,11 @@ export default class UECEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
+					*/
 					'<div id="uec-energy-chart" class="energy-chart"></div>'+
+					
+					'<div id="uec-energy-total"></div>'+
+					
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

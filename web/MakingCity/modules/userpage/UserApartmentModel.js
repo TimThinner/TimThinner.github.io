@@ -69,7 +69,14 @@ export default class UserApartmentModel extends Model {
 		this.period = {start: undefined, end: undefined};
 		this.values = [];
 		this.energyValues = [];
+		this.energyTotal = 0;
 		this.waterValues = [];
+		this.waterMinMax = {
+			hotmin: 0,
+			hotmax: 0,
+			coldmin: 0,
+			coldmax: 0
+		};
 	}
 	
 	setTimePeriod() {
@@ -82,14 +89,29 @@ export default class UserApartmentModel extends Model {
 		if (this.limit === 0) {
 			s_v = this.timerange;
 			s_u = 'days';
+			const e_m = moment().subtract(e_v, e_u);
+			// Snap end to this current full hour.
+			e_m.minutes(0);
+			e_m.seconds(0);
+			
+			const s_m = moment(e_m).subtract(s_v, s_u);
+			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
+			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
+			
+			
 		} else {
 			s_v = this.range.starts.value;
 			s_u = this.range.starts.unit;
+			
+			const e_m = moment().subtract(e_v, e_u);
+			// Snap end to this current full hour.
+			//e_m.minutes(0);
+			//e_m.seconds(0);
+			
+			const s_m = moment(e_m).subtract(s_v, s_u);
+			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
+			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
 		}
-		const e_m = moment().subtract(e_v, e_u);
-		const s_m = moment(e_m).subtract(s_v, s_u);
-		this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
-		this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
 	}
 	
 	removePowerDuplicates(json) {
@@ -155,7 +177,7 @@ export default class UserApartmentModel extends Model {
 			
 			const newson = this.removePowerDuplicates(myJson);
 			
-			let myce = new CalculatedEnergy();
+			const myce = new CalculatedEnergy();
 			myce.resetEnergyHours(this.timerange*24);
 			//console.log(['myce.energy=',myce.energy]);
 			$.each(newson, function(i,v){
@@ -175,7 +197,7 @@ export default class UserApartmentModel extends Model {
 			self.energyValues.forEach(val => {
 				val.energy = val.energy/1000;
 			});
-			
+			self.energyTotal = myce.getTotal();
 			
 		} else if (this.type === 'water') {
 			self.values = []; // Start with fresh empty data.
@@ -184,7 +206,7 @@ export default class UserApartmentModel extends Model {
 			
 			console.log(['Water newson=',newson]);
 			
-			let mycw = new CalculatedWater();
+			const mycw = new CalculatedWater();
 			mycw.resetWaterHours(this.timerange*24);
 			
 			$.each(newson, function(i,v){
@@ -194,8 +216,15 @@ export default class UserApartmentModel extends Model {
 				//self.values.push(p);
 			});
 			
-			mycw.printWater();
+			
+			self.waterMinMax.hotmin = mycw.minmax.hotmin;
+			self.waterMinMax.hotmax = mycw.minmax.hotmax;
+			self.waterMinMax.coldmin = mycw.minmax.coldmin;
+			self.waterMinMax.coldmax = mycw.minmax.coldmax;
+			
+			//mycw.printWater();
 			mycw.copyTo(self.waterValues);
+			
 			// Then sort array based according to time, oldest entry first.
 			self.waterValues.sort(function(a,b){
 				var bb = moment(b.time);

@@ -19,13 +19,15 @@ export default class CalculatedEnergy {
 			const diffe = timerange-1;
 			start = moment().subtract(diffe, 'days');//.format('YYYY-MM-DD');
 		}
-		start.hours(0);
+		//start.hours(0);
 		start.minutes(0);
 		start.seconds(0);
 		
 		// Make sure that Hour is entered into energy object AFTER it is fully done!
 		now.minutes(0);
 		now.seconds(0);
+		
+		this.energy = {};
 		
 		while(now.isAfter(start)) {
 			const YYYYMMDDHH = start.format('YYYYMMDDHH');
@@ -46,6 +48,7 @@ export default class CalculatedEnergy {
 		const now = moment();
 		let start = moment().subtract(numOfHours, 'hours');
 		
+		//start.hours(0);
 		start.minutes(0);
 		start.seconds(0);
 		
@@ -86,5 +89,14 @@ export default class CalculatedEnergy {
 			const e = {'time':this.energy[key]['time'],'energy':this.energy[key]['average']};
 			v.push(e);
 		});
+	}
+	
+	getTotal() {
+		let total = 0;
+		Object.keys(this.energy).forEach(key => {
+			//console.log(['key=',key]);
+			total += this.energy[key]['average']/1000;
+		});
+		return total;
 	}
 }

@@ -24,17 +24,14 @@ export default class UECWrapperView extends WrapperView {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_daa_title = 'Energy Charts'; //LM['translation'][sel]['DAA_TITLE'];
+		const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_daw_sel_timerange = LM['translation'][sel]['DAW_SEL_TIMERANGE']; // Select timerange for database query:
-		
-		// If we are not logged in make sure that model timerange is one day.
-		//this.controller.models['UserElectricityALLModel'].timerange = 1;
 		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h3 class="da-wrapper-title">'+localized_string_daa_title+'</h3>'+
+					'<h3 class="da-wrapper-title">'+localized_string_title+'</h3>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

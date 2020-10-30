@@ -115,7 +115,7 @@ export default class UWCWaterChartView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_water = LM['translation'][sel]['USER_PAGE_WATER'];
+		const localized_string_water = LM['translation'][sel]['USER_WATER_CHART_TITLE'];
 		const localized_string_hot = LM['translation'][sel]['USER_WATER_CHART_LEGEND_HOT'];
 		const localized_string_cold = LM['translation'][sel]['USER_WATER_CHART_LEGEND_COLD'];
 		

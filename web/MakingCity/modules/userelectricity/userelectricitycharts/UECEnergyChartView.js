@@ -107,7 +107,7 @@ export default class UECEnergyChartView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_energy = LM['translation'][sel]['DAA_ENERGY'];
+		const localized_string_energy = LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE'];
 		
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {

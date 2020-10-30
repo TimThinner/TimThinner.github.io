@@ -1,6 +1,7 @@
 import Model from '../common/Model.js';
 import CalculatedEnergy from '../common/CalculatedEnergy.js';
 import CalculatedWater from '../common/CalculatedWater.js';
+import CalculatedHeating from '../common/CalculatedHeating.js';
 
 export class ApaFeed {
 	constructor(obj) {
@@ -93,21 +94,20 @@ export default class UserApartmentModel extends Model {
 			// Snap end to this current full hour.
 			e_m.minutes(0);
 			e_m.seconds(0);
-			
+			// ... it automatically snaps start to full hour of yesterday or day before that or ...
+			// which makes it different than calls to get only one value (limit==1).
 			const s_m = moment(e_m).subtract(s_v, s_u);
 			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
 			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
-			
 			
 		} else {
 			s_v = this.range.starts.value;
 			s_u = this.range.starts.unit;
 			
 			const e_m = moment().subtract(e_v, e_u);
-			// Snap end to this current full hour.
+			// Do NOT snap end to current full hour, instead use current REAL-TIME!
 			//e_m.minutes(0);
 			//e_m.seconds(0);
-			
 			const s_m = moment(e_m).subtract(s_v, s_u);
 			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
 			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
@@ -128,21 +128,6 @@ export default class UserApartmentModel extends Model {
 					console.log('REPLACE DUPLICATE (OLD WAS ZERO VALUE)!!!');
 					test[datetime] = item;
 				}
-				/*
-				if (item.averagePower > test[datetime].averagePower) {
-					//console.log('This has MORE averagePower so probably this is the correct one?');
-					const huh = newJson.pop();
-					if (huh.created_at === datetime) {
-						//console.log('YES, Replacing THE CORRECT ONE!');
-						// Just re-assign item 
-						test[datetime] = item;
-						newJson.push(item);
-					} else {
-						console.log(['SOMETHING IS FISHY HERE! huh.created_at=',huh.created_at,' datetime=',datetime]);
-						newJson.push(huh);
-					}
-				}
-				*/
 			} else {
 				test[datetime] = item;
 				newJson.push(item);
@@ -167,6 +152,21 @@ export default class UserApartmentModel extends Model {
 		return newJson;
 	}
 	
+	removeHeatingDuplicates(json) {
+		// Check if there are timestamp duplicates?
+		const test = {};
+		const newJson = [];
+		json.forEach(item => {
+			const datetime = item.created_at;
+			if (test.hasOwnProperty(datetime)) {
+				console.log(['DUPLICATE IGNORED! datetime=',datetime]);
+			} else {
+				test[datetime] = item;
+				newJson.push(item);
+			}
+		});
+		return newJson;
+	}
 	
 	process(myJson) {
 		const self = this;
@@ -204,8 +204,6 @@ export default class UserApartmentModel extends Model {
 			self.waterValues = [];
 			const newson = this.removeWaterDuplicates(myJson);
 			
-			console.log(['Water newson=',newson]);
-			
 			const mycw = new CalculatedWater();
 			mycw.resetWaterHours(this.timerange*24);
 			
@@ -215,7 +213,6 @@ export default class UserApartmentModel extends Model {
 				//const p = new ApaFeed(v);
 				//self.values.push(p);
 			});
-			
 			
 			self.waterMinMax.hotmin = mycw.minmax.hotmin;
 			self.waterMinMax.hotmax = mycw.minmax.hotmax;
@@ -231,8 +228,37 @@ export default class UserApartmentModel extends Model {
 				var aa = moment(a.time);
 				return aa - bb;
 			});
+			//console.log(['Sorted WaterValues=',self.waterValues]);
+		} else {
+			// type = sensor (Temperature and Humidity)
+			self.values = []; // Start with fresh empty data.
+			const newson = this.removeHeatingDuplicates(myJson);
+			console.log(['newson=',newson]);
 			
-			console.log(['Sorted WaterValues=',self.waterValues]);
+			/*
+				humidity: 37.7
+				meterId: 201​​​​
+				residentId: 1
+				temperature: 22.8
+			*/
+			
+			const mych = new CalculatedHeating();
+			mych.resetHours(this.timerange*24);
+			
+			$.each(newson, function(i,v){
+				// set cumulative energy for each hour.
+				mych.addMeasurement(v);
+				//const p = new ApaFeed(v);
+				//self.values.push(p);
+			});
+			mych.calculateAverage(); 
+			mych.copyTo(self.values);
+			// Then sort array based according to time, oldest entry first.
+			self.values.sort(function(a,b){
+				var bb = moment(b.time);
+				var aa = moment(a.time);
+				return aa - bb;
+			});
 		}
 	}
 	

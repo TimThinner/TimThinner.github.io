@@ -40,7 +40,7 @@ export default class UserWaterChartsController extends Controller {
 	}
 	
 	clean() {
-		console.log('UserElectricityChartsController is now REALLY cleaned!');
+		console.log('UserWaterChartsController is now REALLY cleaned!');
 		this.remove();
 		this.initialize();
 	}

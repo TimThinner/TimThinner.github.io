@@ -6,6 +6,9 @@ export default class CalculatedEnergy {
 	
 	
 	/*
+		resetEnergy(timerange) function is used by FeedModel (S-Market) data acquisition.
+		The timescale always starts from midnight (00:00 hours) and ends at previous FULL hour.
+		
 		timerange = how many days.
 		Default is  1 => we focus on this current day starting from midnight (00:00).
 					2 => We start from yesterday 00:00 up until now.
@@ -17,7 +20,7 @@ export default class CalculatedEnergy {
 		
 		if (timerange > 1) {
 			const diffe = timerange-1;
-			start = moment().subtract(diffe, 'days');//.format('YYYY-MM-DD');
+			start = moment().subtract(diffe, 'days');
 		}
 		start.hours(0);
 		start.minutes(0);
@@ -31,7 +34,7 @@ export default class CalculatedEnergy {
 		
 		while(now.isAfter(start)) {
 			const YYYYMMDDHH = start.format('YYYYMMDDHH');
-			const startTimeDate = start.format();//'YYYY-MM-DDTHH:mm:ss');
+			const startTimeDate = start.format();
 			this.energy[YYYYMMDDHH] = {};
 			this.energy[YYYYMMDDHH]['time'] = new Date(startTimeDate);
 			this.energy[YYYYMMDDHH]['sum'] = 0;
@@ -41,7 +44,8 @@ export default class CalculatedEnergy {
 		};
 	}
 	/*
-		We don't start from midnight (00:00), but select predefined number of hours from this moment.
+		resetEnergyHours(numOfHours) function is used by UserApartmentModel data acquisition.
+		The timescale starts from current moment (hour precision) and ends at previous FULL hour.
 	*/
 	resetEnergyHours(numOfHours) {
 		

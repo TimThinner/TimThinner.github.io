@@ -1,5 +1,6 @@
 import Controller from '../../common/Controller.js';
-import UserHeatingChartsView from './UserHeatingChartsView.js';
+import UserApartmentModel from '../../userpage/UserApartmentModel.js';
+import UHCWrapperView from './UHCWrapperView.js';
 
 export default class UserHeatingChartsController extends Controller {
 	
@@ -9,20 +10,45 @@ export default class UserHeatingChartsController extends Controller {
 	
 	remove() {
 		super.remove();
+		// We must remove all models that were created here at the initialize-method.
+		Object.keys(this.models).forEach(key => {
+			if (key==='UserHeatingALLModel') {
+				console.log(['remove ',key,' from the REPO']);
+				this.master.modelRepo.remove(key);
+			}
+		});
+		this.models = {};
 	}
 	
-	init() {
-		this.models['UserHeatingNowModel'] = this.master.modelRepo.get('UserHeatingNowModel');
-		this.models['UserHeatingNowModel'].subscribe(this);
+	refreshTimerange() {
+		const timerName = 'UserHeatingChartsView';
+		this.restartPollingInterval(timerName);
+	}
+	
+	
+	initialize() {
+		const allTR = {ends:{value:10,unit:'seconds'},starts:{value:1,unit:'days'}};
 		
-		this.timers['UserHeatingView'] = {timer: undefined, interval: 30000, models:['UserHeatingNowModel']};
+		const model = new UserApartmentModel({name:'UserHeatingALLModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:0,range:allTR});
+		model.subscribe(this);
+		this.master.modelRepo.add('UserHeatingALLModel',model);
+		this.models['UserHeatingALLModel'] = model;
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.view = new UserHeatingChartsView(this);
-		// If view is shown immediately and poller is used, like in this case, 
-		// we can just call show() and let it start fetching... 
-		//this.show(); // Try if this view can be shown right now!
+		this.view = new UHCWrapperView(this);
+	}
+	
+	clean() {
+		console.log('UserHeatingChartsController is now REALLY cleaned!');
+		this.remove();
+		this.initialize();
+	}
+	
+	init() {
+		this.initialize();
+		this.timers['UserHeatingChartsView'] = {timer: undefined, interval: 60000, models:['UserHeatingALLModel']};
+		this.show(); // Try if this view can be shown right now!
 	}
 }

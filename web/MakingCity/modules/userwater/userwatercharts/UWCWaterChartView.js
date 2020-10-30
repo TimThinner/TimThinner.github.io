@@ -184,17 +184,18 @@ export default class UWCWaterChartView extends View {
 			
 			//valueAxis.min = 0;
 			//valueAxis.max = 200;
-			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
+			//const series1 = self.chart.series.push(new am4charts.ColumnSeries());
 			//const series1 = self.chart.series.push(new am4charts.LineSeries());
-			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
+			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			series1.defaultState.transitionDuration = 0;
 			series1.tooltipText = "HOT {valueY.value} L";
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
 			series1.stroke = am4core.color("#f00");
+			series1.strokeWidth = 3;
 			series1.fill = series1.stroke;
-			series1.fillOpacity = 0.5;
+			series1.fillOpacity = 0;
 			
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
@@ -207,17 +208,18 @@ export default class UWCWaterChartView extends View {
 			series1.yAxis = valueAxis;
 			
 			
-			const series2 = self.chart.series.push(new am4charts.ColumnSeries());
+			//const series2 = self.chart.series.push(new am4charts.ColumnSeries());
 			//const series2 = self.chart.series.push(new am4charts.LineSeries());
-			//const series2 = self.chart.series.push(new am4charts.StepLineSeries());
+			const series2 = self.chart.series.push(new am4charts.StepLineSeries());
 			series2.defaultState.transitionDuration = 0;
 			series2.tooltipText = "COLD {valueY.value} L";
 			
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
 			series2.stroke = am4core.color("#0ff");
+			series2.strokeWidth = 3;
 			series2.fill = series2.stroke;
-			series2.fillOpacity = 0.5;
+			series2.fillOpacity = 0;
 			
 			series2.tooltip.background.fill = am4core.color("#000");
 			series2.tooltip.background.strokeWidth = 1;
@@ -320,7 +322,7 @@ export default class UWCWaterChartView extends View {
 						'</div>'+
 					'</div>'+
 					*/
-					'<div id="uwc-water-chart" class="energy-chart"></div>'+
+					'<div id="uwc-water-chart" class="energy-chart-tall"></div>'+
 					
 					
 					'<div id="uwc-water-total"></div>'+

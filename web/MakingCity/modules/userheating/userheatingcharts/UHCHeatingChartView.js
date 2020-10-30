@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../../common/View.js';
-export default class UECEnergyChartView extends View {
+export default class UHCHeatingChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -22,14 +22,14 @@ export default class UECEnergyChartView extends View {
 		
 		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserElectricityALLModel') {
+			if (key === 'UserHeatingALLModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
 		this.chart = undefined;
 		this.rendered = false;
-		this.FELID = 'uec-energy-chart-view-failure';
+		this.FELID = 'uhc-heating-chart-view-failure';
 	}
 	
 	show() {
@@ -37,7 +37,6 @@ export default class UECEnergyChartView extends View {
 	}
 	
 	hide() {
-		//console.log('UECEnergyChartView hide!!!!');
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -47,7 +46,6 @@ export default class UECEnergyChartView extends View {
 	}
 	
 	remove() {
-		//console.log('UECEnergyChartView remove!!!!');
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -59,32 +57,25 @@ export default class UECEnergyChartView extends View {
 		});
 	}
 	
-	appendTotal() {
-		const total = this.models['UserElectricityALLModel'].energyTotal;
-		const html = '<p>TOTAL: <span style="color:#0f0">'+total.toFixed(1)+' kWh</span></p>';
-		$('#uec-energy-total').empty().append(html);
-	}
-	
-	
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if (options.model==='UserElectricityALLModel' && options.method==='fetched') {
+			if (options.model==='UserHeatingALLModel' && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... UECEnergyChartView CHART UPDATED!');
+							//console.log('fetched ..... UHCHeatingChartView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['UserElectricityALLModel'].energyValues;
+								s.data = self.models['UserHeatingALLModel'].values;
 							});
 							
-							this.appendTotal();
-							
 						} else {
-							console.log('fetched ..... render UECEnergyChartView()');
+							console.log('fetched ..... render UHCHeatingChartView()');
 							this.renderChart();
 						}
+						
+						
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
 						if (options.status === 401) {
@@ -102,13 +93,20 @@ export default class UECEnergyChartView extends View {
 		}
 	}
 	
+	/*
+	humidity: 37.7
+	meterId: 201​​​​
+	residentId: 1
+	temperature: 22.8
+	*/
+	
 	renderChart() {
 		const self = this;
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_energy = LM['translation'][sel]['DAA_ENERGY'];
-		
+		const localized_string_heating = LM['translation'][sel]['USER_PAGE_HEATING'];
+
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
 			// Themes begin
@@ -118,10 +116,10 @@ export default class UECEnergyChartView extends View {
 			
 			am4core.options.autoSetClassName = true;
 			am4core.options.autoDispose = true;
-			console.log(['values=',self.models['UserElectricityALLModel'].energyValues]);
+			console.log(['values=',self.models['UserHeatingALLModel'].values]);
 			
 			// Create chart
-			self.chart = am4core.create("uec-energy-chart", am4charts.XYChart);
+			self.chart = am4core.create("uhc-heating-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -131,7 +129,7 @@ export default class UECEnergyChartView extends View {
 			// uncomment this line if you want to change order of axes
 			//chart.bottomAxesContainer.reverseOrder = true;
 			
-			self.chart.numberFormatter.numberFormat = "#.##";
+			self.chart.numberFormatter.numberFormat = "#.#";
 			
 			const dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
 			
@@ -175,41 +173,65 @@ export default class UECEnergyChartView extends View {
 			
 			valueAxis.renderer.maxLabelPosition = 0.95;
 			valueAxis.renderer.fontSize = "0.75em";
-			valueAxis.title.text = localized_string_energy;
+			valueAxis.title.text = localized_string_heating;
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " kWh";
+				return text; // + " L";
 			});
 			
 			//valueAxis.min = 0;
 			//valueAxis.max = 200;
-			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
-			//const series1 = self.chart.series.push(new am4charts.LineSeries());
+			//const series1 = self.chart.series.push(new am4charts.ColumnSeries());
+			const series1 = self.chart.series.push(new am4charts.LineSeries());
 			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
-			
 			series1.defaultState.transitionDuration = 0;
-			//series1.tooltipText = "{name}: {valueY.value} kWh";
-			series1.tooltipText = "{valueY.value} kWh";
+			series1.tooltipText = "{valueY.value} °C";
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
-			series1.stroke = am4core.color("#0f0");
+			series1.stroke = am4core.color("#f00");
+			series1.strokeWidth = 3;
 			series1.fill = series1.stroke;
-			series1.fillOpacity = 0.2;
+			series1.fillOpacity = 0;
 			
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
 			
-			series1.data = self.models['UserElectricityALLModel'].energyValues;
+			series1.data = self.models['UserHeatingALLModel'].values;
 			series1.dataFields.dateX = "time";
-			series1.dataFields.valueY = "energy";
-			series1.name = "ENERGY";
+			series1.dataFields.valueY = "temperature";
+			series1.name = "TEMP";
 			series1.yAxis = valueAxis;
+			
+			
+			//const series2 = self.chart.series.push(new am4charts.ColumnSeries());
+			const series2 = self.chart.series.push(new am4charts.LineSeries());
+			//const series2 = self.chart.series.push(new am4charts.StepLineSeries());
+			series2.defaultState.transitionDuration = 0;
+			series2.tooltipText = "{valueY.value} %";
+			
+			series2.tooltip.getFillFromObject = false;
+			series2.tooltip.getStrokeFromObject = true;
+			series2.stroke = am4core.color("#0ff");
+			series2.strokeWidth = 3;
+			series2.fill = series2.stroke;
+			series2.fillOpacity = 0;
+			
+			series2.tooltip.background.fill = am4core.color("#000");
+			series2.tooltip.background.strokeWidth = 1;
+			series2.tooltip.label.fill = series2.stroke;
+			
+			series2.data = self.models['UserHeatingALLModel'].values;
+			series2.dataFields.dateX = "time";
+			series2.dataFields.valueY = "humidity";
+			series2.name = "HUMIDITY";
+			series2.yAxis = valueAxis;
+			
 			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
 			
-			console.log(['series1.data=',series1.data]);
+			//console.log(['series1.data=',series1.data]);
 			
 			// Scrollbar
 			//const scrollbarX = new am4charts.XYChartScrollbar();
@@ -223,8 +245,8 @@ export default class UECEnergyChartView extends View {
  			* Set up external controls
  			*/
 			
-			/*
 			// Date format to be used in input fields
+			/*
 			const inputFieldFormat = "yyyy-MM-dd HH:mm";
 			
 			dateAxis.events.on("selectionextremeschanged", function() {
@@ -260,13 +282,10 @@ export default class UECEnergyChartView extends View {
 						dateAxis.zoomToDates(startDate, endDate);
 					}
 				}, 500);
-			}
-			*/
-			
-			console.log('UEC Energy RENDER CHART END =====================');
+				
+			}*/
+			console.log('UWC HEATING RENDER CHART END =====================');
 		}); // end am4core.ready()
-		
-		this.appendTotal();
 	}
 	
 	
@@ -295,9 +314,10 @@ export default class UECEnergyChartView extends View {
 						'</div>'+
 					'</div>'+
 					*/
-					'<div id="uec-energy-chart" class="energy-chart-tall"></div>'+
+					'<div id="uhc-heating-chart" class="energy-chart-tall"></div>'+
 					
-					'<div id="uec-energy-total"></div>'+
+					
+					//'<div id="uhc-heating-total"></div>'+
 					
 				'</div>'+
 			'</div>'+
@@ -305,11 +325,16 @@ export default class UECEnergyChartView extends View {
 				'<div class="col s12" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
+/*.energy-chart {
+	width: 100%;
+	height: 300px;
+	max-width: 100%;
+}*/
 		
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
-			console.log('UECEnergyChartView => render models READY!!!!');
+			console.log('UHCHeatingChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
@@ -326,8 +351,8 @@ export default class UECEnergyChartView extends View {
 				this.renderChart();
 			}
 		} else {
-			console.log('UECEnergyChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#uec-energy-chart');
+			console.log('UHCHeatingChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#uhc-heating-chart');
 		}
 	}
 }

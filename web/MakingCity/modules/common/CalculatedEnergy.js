@@ -19,7 +19,7 @@ export default class CalculatedEnergy {
 			const diffe = timerange-1;
 			start = moment().subtract(diffe, 'days');//.format('YYYY-MM-DD');
 		}
-		//start.hours(0);
+		start.hours(0);
 		start.minutes(0);
 		start.seconds(0);
 		

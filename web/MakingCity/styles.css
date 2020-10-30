@@ -109,24 +109,19 @@ html, body {
 	font-size: 32px;
 	padding: 16px;
 }
-.power-chart {
+.small-chart {
 	width: 100%;
 	height: 300px;
 	max-width: 100%;
 }
-.power-chart-tall {
+.medium-chart {
 	width: 100%;
 	height: 400px;
 	max-width: 100%;
 }
-.energy-chart {
+.large-chart {
 	width: 100%;
-	height: 300px;
-	max-width: 100%;
-}
-.energy-chart-tall {
-	width: 100%;
-	height: 400px;
+	height: 500px;
 	max-width: 100%;
 }
 .chart-wrapper {

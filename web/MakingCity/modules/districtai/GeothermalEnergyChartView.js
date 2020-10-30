@@ -326,7 +326,7 @@ export default class GeothermalEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					'<div id="geothermal-energy-chart" class="energy-chart"></div>'+
+					'<div id="geothermal-energy-chart" class="small-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

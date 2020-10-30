@@ -346,7 +346,7 @@ export default class KitchenEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					'<div id="kitchen-energy-chart" class="energy-chart-tall"></div>'+
+					'<div id="kitchen-energy-chart" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

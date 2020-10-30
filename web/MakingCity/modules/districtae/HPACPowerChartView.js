@@ -316,7 +316,7 @@ export default class HPACPowerChartView extends View {
 						'</div>'+
 					'</div>'+
 					
-					'<div id="hpac-power-chart" class="power-chart-tall"></div>'+
+					'<div id="hpac-power-chart" class="medium-chart"></div>'+
 					
 					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
 					'<p style="font-size:14px;text-align:left;" class="range-field">'+localized_string_adjust_interval+

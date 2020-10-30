@@ -331,7 +331,7 @@ export default class CoolerEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					'<div id="cooler-energy-chart" class="energy-chart-tall"></div>'+
+					'<div id="cooler-energy-chart" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

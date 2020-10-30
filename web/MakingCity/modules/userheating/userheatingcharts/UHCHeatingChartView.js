@@ -106,7 +106,9 @@ export default class UHCHeatingChartView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_heating = LM['translation'][sel]['USER_PAGE_HEATING'];
-
+		const localized_string_temperature = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_TEMPERATURE'];
+		const localized_string_humidity = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_HUMIDITY'];
+		
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
 			// Themes begin
@@ -200,7 +202,7 @@ export default class UHCHeatingChartView extends View {
 			series1.data = self.models['UserHeatingALLModel'].values;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "temperature";
-			series1.name = "TEMP";
+			series1.name = localized_string_temperature;
 			series1.yAxis = valueAxis;
 			
 			
@@ -224,8 +226,18 @@ export default class UHCHeatingChartView extends View {
 			series2.data = self.models['UserHeatingALLModel'].values;
 			series2.dataFields.dateX = "time";
 			series2.dataFields.valueY = "humidity";
-			series2.name = "HUMIDITY";
+			series2.name = localized_string_humidity;
 			series2.yAxis = valueAxis;
+			
+			
+			self.chart.legend = new am4charts.Legend();
+			self.chart.legend.useDefaultMarker = true;
+			var marker = self.chart.legend.markers.template.children.getIndex(0);
+			marker.cornerRadius(12, 12, 12, 12);
+			marker.strokeWidth = 2;
+			marker.strokeOpacity = 1;
+			marker.stroke = am4core.color("#000");
+			
 			
 			
 			// Cursor
@@ -314,7 +326,7 @@ export default class UHCHeatingChartView extends View {
 						'</div>'+
 					'</div>'+
 					*/
-					'<div id="uhc-heating-chart" class="energy-chart-tall"></div>'+
+					'<div id="uhc-heating-chart" class="medium-chart"></div>'+
 					
 					
 					//'<div id="uhc-heating-total"></div>'+

@@ -267,7 +267,7 @@ export default class TotalEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					'<div id="total-energy-chart" class="energy-chart"></div>'+
+					'<div id="total-energy-chart" class="small-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

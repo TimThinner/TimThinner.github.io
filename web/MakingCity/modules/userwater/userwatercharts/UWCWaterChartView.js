@@ -58,12 +58,18 @@ export default class UWCWaterChartView extends View {
 	}
 	
 	appendTotal() {
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_hot = LM['translation'][sel]['USER_WATER_CHART_LEGEND_HOT'];
+		const localized_string_cold = LM['translation'][sel]['USER_WATER_CHART_LEGEND_COLD'];
+		
 		const minmax = this.models['UserWaterALLModel'].waterMinMax;
 		
 		const hot = minmax.hotmax - minmax.hotmin;
 		const cold = minmax.coldmax - minmax.coldmin;
 		
-		const html = '<p>TOTAL: <span style="color:#f00">HOT: '+hot.toFixed(0)+' L</span><span style="color:#0ff">&nbsp;COLD: '+cold.toFixed(0)+' L</span></p>';
+		const html = '<p>TOTAL: <span style="color:#f00">'+localized_string_hot+': '+hot.toFixed(0)+' L</span><span style="color:#0ff">&nbsp;'+localized_string_cold+': '+cold.toFixed(0)+' L</span></p>';
 		$('#uwc-water-total').empty().append(html);
 	}
 	
@@ -110,7 +116,9 @@ export default class UWCWaterChartView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_water = LM['translation'][sel]['USER_PAGE_WATER'];
-
+		const localized_string_hot = LM['translation'][sel]['USER_WATER_CHART_LEGEND_HOT'];
+		const localized_string_cold = LM['translation'][sel]['USER_WATER_CHART_LEGEND_COLD'];
+		
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
 			// Themes begin
@@ -188,7 +196,7 @@ export default class UWCWaterChartView extends View {
 			//const series1 = self.chart.series.push(new am4charts.LineSeries());
 			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			series1.defaultState.transitionDuration = 0;
-			series1.tooltipText = "HOT {valueY.value} L";
+			series1.tooltipText = "{valueY.value} L";
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
@@ -204,7 +212,7 @@ export default class UWCWaterChartView extends View {
 			series1.data = self.models['UserWaterALLModel'].waterValues;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "hot";
-			series1.name = "HOT";
+			series1.name = localized_string_hot;
 			series1.yAxis = valueAxis;
 			
 			
@@ -212,7 +220,7 @@ export default class UWCWaterChartView extends View {
 			//const series2 = self.chart.series.push(new am4charts.LineSeries());
 			const series2 = self.chart.series.push(new am4charts.StepLineSeries());
 			series2.defaultState.transitionDuration = 0;
-			series2.tooltipText = "COLD {valueY.value} L";
+			series2.tooltipText = "{valueY.value} L";
 			
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
@@ -228,9 +236,16 @@ export default class UWCWaterChartView extends View {
 			series2.data = self.models['UserWaterALLModel'].waterValues;
 			series2.dataFields.dateX = "time";
 			series2.dataFields.valueY = "cold";
-			series2.name = "COLD";
+			series2.name = localized_string_cold;
 			series2.yAxis = valueAxis;
 			
+			self.chart.legend = new am4charts.Legend();
+			self.chart.legend.useDefaultMarker = true;
+			var marker = self.chart.legend.markers.template.children.getIndex(0);
+			marker.cornerRadius(12, 12, 12, 12);
+			marker.strokeWidth = 2;
+			marker.strokeOpacity = 1;
+			marker.stroke = am4core.color("#000");
 			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
@@ -322,7 +337,7 @@ export default class UWCWaterChartView extends View {
 						'</div>'+
 					'</div>'+
 					*/
-					'<div id="uwc-water-chart" class="energy-chart-tall"></div>'+
+					'<div id="uwc-water-chart" class="medium-chart"></div>'+
 					
 					
 					'<div id="uwc-water-total"></div>'+

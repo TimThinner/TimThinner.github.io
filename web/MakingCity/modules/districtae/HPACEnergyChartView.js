@@ -305,7 +305,7 @@ export default class HPACEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					'<div id="hpac-energy-chart" class="energy-chart-tall"></div>'+
+					'<div id="hpac-energy-chart" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

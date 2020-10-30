@@ -280,7 +280,7 @@ export default class TotalPowerChartView extends View {
 						'</div>'+
 					'</div>'+
 					
-					'<div id="total-power-chart" class="power-chart"></div>'+
+					'<div id="total-power-chart" class="small-chart"></div>'+
 					
 					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
 					'<p style="font-size:14px;text-align:left;" class="range-field">'+localized_string_adjust_interval+

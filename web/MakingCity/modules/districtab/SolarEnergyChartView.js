@@ -270,7 +270,7 @@ export default class SolarEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					'<div id="solar-energy-chart" class="energy-chart"></div>'+
+					'<div id="solar-energy-chart" class="small-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

@@ -280,7 +280,7 @@ export default class UECPowerChartView extends View {
 						'</div>'+
 					'</div>'+
 					
-					'<div id="uec-power-chart" class="power-chart"></div>'+
+					'<div id="uec-power-chart" class="small-chart"></div>'+
 					
 					
 					/*

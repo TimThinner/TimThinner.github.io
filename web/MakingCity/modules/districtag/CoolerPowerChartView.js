@@ -335,7 +335,7 @@ export default class CoolerPowerChartView extends View {
 						'</div>'+
 					'</div>'+
 					
-					'<div id="cooler-power-chart" class="power-chart-tall"></div>'+
+					'<div id="cooler-power-chart" class="medium-chart"></div>'+
 					
 					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
 					'<p style="font-size:14px;text-align:left;" class="range-field">'+localized_string_adjust_interval+

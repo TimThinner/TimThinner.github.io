@@ -308,7 +308,7 @@ export default class OtherEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					'<div id="other-energy-chart" class="energy-chart-tall"></div>'+
+					'<div id="other-energy-chart" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

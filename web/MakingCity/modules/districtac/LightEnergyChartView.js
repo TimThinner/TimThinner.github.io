@@ -364,7 +364,7 @@ export default class LightEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					'<div id="light-energy-chart" class="energy-chart-tall"></div>'+
+					'<div id="light-energy-chart" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

@@ -295,7 +295,7 @@ export default class UECEnergyChartView extends View {
 						'</div>'+
 					'</div>'+
 					*/
-					'<div id="uec-energy-chart" class="energy-chart-tall"></div>'+
+					'<div id="uec-energy-chart" class="medium-chart"></div>'+
 					
 					'<div id="uec-energy-total"></div>'+
 					

@@ -47,11 +47,11 @@ days         power       energy
 28           40320       672
 */
 		
-		// In energy-chart energy values are calculated from averagePower value given once a minute. 
+		// Energy values are calculated from averagePower value given once a minute. 
 		// So from timestamp the hash-key is created using format YYYYMMDDHH and values are added to form a sum and 
 		// finally average is calculated for the hour.
 		// 
-		// NOTE: If power-chart is also displayed, it will have 168 x 60 values = 10 080 values to display!!!
+		// NOTE: If Power Chart is also displayed, it will have 168 x 60 values = 10 080 values to display!!!
 		//
 		//
 		//

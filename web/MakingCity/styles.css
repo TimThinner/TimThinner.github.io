@@ -232,3 +232,22 @@ table.striped > tbody > tr:nth-child(odd) {
 table.striped > tbody > tr > td {
 	border-radius: 0;
 }
+/*.user-property-box {
+	border: 3px solid #ccc;
+}*/
+.price-field {
+	font-size:24px;
+	color: #26a69a; /* #26a69a teal lighten-1 */
+}
+.price-field-postfix {
+	font-size:20px;
+	color: #26a69a; /* #26a69a teal lighten-1 */
+}
+/*
+#e0f2f1 teal lighten-5
+#b2dfdb teal lighten-4
+#80cbc4 teal lighten-3
+#4db6ac teal lighten-2
+#26a69a teal lighten-1
+#009688 teal
+*/

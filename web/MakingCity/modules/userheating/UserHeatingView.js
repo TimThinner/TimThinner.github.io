@@ -73,6 +73,10 @@ export default class UserHeatingView extends View {
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			const localized_string_title = LM['translation'][sel]['USER_HEATING_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_HEATING_DESCRIPTION'];
+			const localized_string_period = LM['translation'][sel]['USER_DATA_PERIOD']; // 'Period'
+			const localized_string_period_day = LM['translation'][sel]['USER_DATA_PERIOD_DAY']; //'24h'
+			const localized_string_period_week = LM['translation'][sel]['USER_DATA_PERIOD_WEEK']; //'Week'
+			const localized_string_period_month = LM['translation'][sel]['USER_DATA_PERIOD_MONTH']; // 'Month'
 			
 			const html =
 				'<div class="row">'+
@@ -90,7 +94,7 @@ export default class UserHeatingView extends View {
 						'<table class="centered striped">'+
 							'<thead>'+
 								'<tr>'+
-									'<th>Period</th>'+
+									'<th>'+localized_string_period+'</th>'+
 									'<th>kWh</th>'+
 									'<th>€</th>'+
 									'<th>kgCO2</th>'+
@@ -98,19 +102,19 @@ export default class UserHeatingView extends View {
 							'</thead>'+
 							'<tbody>'+
 								'<tr>'+
-									'<td>Today</td>'+
+									'<td>'+localized_string_period_day+'</td>'+
 									'<td>---</td>'+
 									'<td>---</td>'+
 									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
-									'<td>This week</td>'+
+									'<td>'+localized_string_period_week+'</td>'+
 									'<td>---</td>'+
 									'<td>---</td>'+
 									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
-									'<td>This month</td>'+
+									'<td>'+localized_string_period_month+'</td>'+
 									'<td>---</td>'+
 									'<td>---</td>'+
 									'<td>---</td>'+

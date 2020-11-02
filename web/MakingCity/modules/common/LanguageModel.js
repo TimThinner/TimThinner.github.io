@@ -1,7 +1,7 @@
 export default class LanguageModel {
 	constructor() {
 		this.languages = ['en','fi'];
-		this.selected = 'en';
+		this.selected = 'fi';
 		this.translation = {
 			'en':{
 				'USER_LOGIN_TITLE':'Login',
@@ -20,6 +20,7 @@ export default class LanguageModel {
 				'USER_LOGOUT':'LOGOUT',
 				'COMING_SOON':'COMING SOON!',
 				'USER_PAGE_TITLE':'The User Page',
+				'USER_PAGE_SUBTITLE':'Your Home Page',
 				'USER_PAGE_ELECTRICITY':'Electricity',
 				'USER_PAGE_HEATING':'Heating',
 				'USER_PAGE_WATER':'Water',
@@ -31,6 +32,12 @@ export default class LanguageModel {
 				'ENVIRONMENT_PAGE_DESCRIPTION':'Here you will find more information about the environmental load of the energy used.',
 				'USER_PROPS_TITLE':'User Properties',
 				'USER_PROPS_DESCRIPTION':'Here you will find your information and settings.',
+				'USER_DATA_PERIOD':'Period',
+				'USER_DATA_PERIOD_DAY':'24h',
+				'USER_DATA_PERIOD_WEEK':'Week',
+				'USER_DATA_PERIOD_MONTH':'Month',
+				'USER_DATA_WATER_HOT':'HOT (L)',
+				'USER_DATA_WATER_COLD':'COLD (L)',
 				'USER_ELECTRICITY_TITLE':'Electricity',
 				'USER_ELECTRICITY_DESCRIPTION':'Here you will find more information about your electricity consumption.',
 				'USER_ELECTRICITY_CHART_TITLE':'Electricity consumption',
@@ -51,7 +58,7 @@ export default class LanguageModel {
 				'DISTRICT_E_LABEL':'YIT 1',
 				'MENU_TITLE':'Positive Energy Districts',
 				'MENU_DESCRIPTION':'<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">THE MAKING-CITY PROJECT</a> is funded by EU’s Horizon 2020 programme and is a part of the Smart Cities and Communities (SCC) theme.',
-				'MENU_VERSION':'v 20.10.30',
+				'MENU_VERSION':'v 20.11.02',
 				'SOLAR_PANELS':'SOLAR PANELS',
 				'GRID_TEXT':'GRID',
 				'DA_BACK':'BACK',
@@ -98,6 +105,7 @@ export default class LanguageModel {
 				'USER_LOGOUT':'KIRJAUDU ULOS',
 				'COMING_SOON':'TULOSSA PIAN!',
 				'USER_PAGE_TITLE':'Koti',
+				'USER_PAGE_SUBTITLE':'Sinun kotisivusi',
 				'USER_PAGE_ELECTRICITY':'Sähkö',
 				'USER_PAGE_HEATING':'Lämmitys',
 				'USER_PAGE_WATER':'Vesi',
@@ -109,6 +117,12 @@ export default class LanguageModel {
 				'ENVIRONMENT_PAGE_DESCRIPTION':'Täältä löytyy lisätietoa kulutetun energian vaikutuksesta ympäristöön.',
 				'USER_PROPS_TITLE':'Käyttäjätiedot',
 				'USER_PROPS_DESCRIPTION':'Täältä löytyvät kaikki sinun tietosi ja asetuksesi.',
+				'USER_DATA_PERIOD':'Jakso',
+				'USER_DATA_PERIOD_DAY':'24h',
+				'USER_DATA_PERIOD_WEEK':'Viikko',
+				'USER_DATA_PERIOD_MONTH':'Kuukausi',
+				'USER_DATA_WATER_HOT':'KUUMA (L)',
+				'USER_DATA_WATER_COLD':'KYLMÄ (L)',
 				'USER_ELECTRICITY_TITLE':'Asuntokohtainen sähkönkulutus',
 				'USER_ELECTRICITY_DESCRIPTION':'Täältä löytyvät tiedot asuntokohtaisesta sähkönkulutuksesta.',
 				'USER_ELECTRICITY_CHART_TITLE':'Sähkönkulutus',
@@ -129,7 +143,7 @@ export default class LanguageModel {
 				'DISTRICT_E_LABEL':'YIT 1',
 				'MENU_TITLE':'Energiataseeltaan positiivinen alue',
 				'MENU_DESCRIPTION':'<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">MAKING-CITY HANKE</a> saa rahoitusta EU:n Horizon 2020 -ohjelmasta. Se kuuluu Smart Cities and Communities (SCC) -teemaan.',
-				'MENU_VERSION':'v 20.10.30',
+				'MENU_VERSION':'v 20.11.02',
 				'SOLAR_PANELS':'AURINKOPANEELIT',
 				'GRID_TEXT':'SÄHKÖVERKKO',
 				'DA_BACK':'TAKAISIN',

@@ -159,6 +159,12 @@ export default class UserWaterView extends View {
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			const localized_string_title = LM['translation'][sel]['USER_WATER_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_WATER_DESCRIPTION'];
+			const localized_string_period = LM['translation'][sel]['USER_DATA_PERIOD']; // 'Period'
+			const localized_string_period_day = LM['translation'][sel]['USER_DATA_PERIOD_DAY']; //'24h'
+			const localized_string_period_week = LM['translation'][sel]['USER_DATA_PERIOD_WEEK']; //'Week'
+			const localized_string_period_month = LM['translation'][sel]['USER_DATA_PERIOD_MONTH']; // 'Month'
+			const localized_string_water_hot = LM['translation'][sel]['USER_DATA_WATER_HOT']; // 'HOT (L)'
+			const localized_string_water_cold = LM['translation'][sel]['USER_DATA_WATER_COLD']; // 'COLD (L)'
 			
 			const html =
 				'<div class="row">'+
@@ -171,32 +177,32 @@ export default class UserWaterView extends View {
 						'<table class="centered striped">'+
 							'<thead>'+
 								'<tr>'+
-									'<th>Period</th>'+
+									'<th>'+localized_string_period+'</th>'+
 									//'<th><img src="./svg/userpage/waterhot.svg" height="30"/> L</th>'+
 									//'<th><img src="./svg/userpage/watercold.svg" height="30"/> L</th>'+
-									'<th>HOT (L)</th>'+
-									'<th>COLD (L)</th>'+
+									'<th>'+localized_string_water_hot+'</th>'+
+									'<th>'+localized_string_water_cold+'</th>'+
 									'<th>€</th>'+
 									'<th>kgCO2</th>'+
 								'</tr>'+
 							'</thead>'+
 							'<tbody>'+
 								'<tr>'+
-									'<td>Today</td>'+
+									'<td>'+localized_string_period_day+'</td>'+
 									'<td id="day-hot"></td>'+
 									'<td id="day-cold"></td>'+
 									'<td>---</td>'+
 									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
-									'<td>This week</td>'+
+									'<td>'+localized_string_period_week+'</td>'+
 									'<td id="week-hot"></td>'+
 									'<td id="week-cold"></td>'+
 									'<td>---</td>'+
 									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
-									'<td>This month</td>'+
+									'<td>'+localized_string_period_month+'</td>'+
 									'<td id="month-hot"></td>'+
 									'<td id="month-cold"></td>'+
 									'<td>---</td>'+

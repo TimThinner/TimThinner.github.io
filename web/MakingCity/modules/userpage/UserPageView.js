@@ -345,6 +345,11 @@ export default class UserPageView extends View {
 	}
 	
 	localizeSVGTexts() {
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_subtitle = LM['translation'][sel]['USER_PAGE_SUBTITLE'];
+		
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			const UM = this.controller.master.modelRepo.get('UserModel');
@@ -353,6 +358,7 @@ export default class UserPageView extends View {
 				const email = UM.email.slice(0,index);
 				this.fillSVGTextElement(svgObject, 'user-email', email);
 			}
+			this.fillSVGTextElement(svgObject, 'user-page-subtitle', localized_string_subtitle);
 		}
 	}
 	
@@ -363,7 +369,6 @@ export default class UserPageView extends View {
 			
 			console.log('UserPageView => render Models ARE READY!');
 			
-			//const UM = this.controller.master.modelRepo.get('UserModel')
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];

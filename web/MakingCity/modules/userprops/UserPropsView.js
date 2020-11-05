@@ -192,6 +192,12 @@ export default class UserPropsView extends View {
 	*/
 	showEdit(type, postfix) {
 		const self = this;
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_da_cancel = LM['translation'][sel]['DA_CANCEL'];
+		const localized_string_da_save = LM['translation'][sel]['DA_SAVE'];
+		
 		const place = '#energy-'+type+'-price-edit-placeholder';
 		
 		let current_value = '';
@@ -221,7 +227,7 @@ export default class UserPropsView extends View {
 		// Ones, Tens, Hundreds
 		// Tenths, Hundredths
 		const html =
-			'<div class="row">'+
+			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
 				'<div class="col s2 m1 offset-m3 price-change-button"><a href="javascript:void(0);" id="hundreds-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
 				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
 				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
@@ -229,7 +235,7 @@ export default class UserPropsView extends View {
 				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="tenths-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
 				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="hundredths-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
 			'</div>'+
-			'<div class="row">'+
+			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
 				'<div class="col s2 m1 offset-m3 price-change-number" id="hundreds">'+hundreds+'</div>'+
 				'<div class="col s2 m1 price-change-number" id="tens">'+tens+'</div>'+
 				'<div class="col s2 m1 price-change-number" id="ones">'+ones+'</div>'+
@@ -237,7 +243,7 @@ export default class UserPropsView extends View {
 				'<div class="col s2 m1 price-change-number" id="tenths">'+tenths+'</div>'+
 				'<div class="col s2 m1 price-change-number" id="hundredths">'+hundredths+'</div>'+
 			'</div>'+
-			'<div class="row">'+
+			'<div class="row" style="margin-top:0;">'+
 				'<div class="col s2 m1 offset-m3 price-change-button"><a href="javascript:void(0);" id="hundreds-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
 				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
 				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
@@ -246,11 +252,17 @@ export default class UserPropsView extends View {
 				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="hundredths-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s3 offset-s3 center">'+
-					'<button class="btn waves-effect waves-light" id="cancel-price">Cancel</button>'+
+				'<div class="col s2 center">'+
+					'<p>&nbsp;</p>'+
 				'</div>'+
-				'<div class="col s3 center">'+
-					'<button class="btn waves-effect waves-light" id="update-price">&nbsp;SAVE&nbsp;</button>'+
+				'<div class="col s4 center">'+
+					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel-price">'+localized_string_da_cancel+'</button>'+
+				'</div>'+
+				'<div class="col s4 center">'+
+					'<button class="btn waves-effect waves-light" id="update-price">'+localized_string_da_save+'</button>'+
+				'</div>'+
+				'<div class="col s2 center">'+
+					'<p>&nbsp;</p>'+
 				'</div>'+
 			'</div>';
 		$(html).appendTo(place);
@@ -355,8 +367,18 @@ export default class UserPropsView extends View {
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+			
 			const localized_string_title = LM['translation'][sel]['USER_PROPS_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_PROPS_DESCRIPTION'];
+			
+			const localized_string_energy_prices_title = LM['translation'][sel]['USER_ENERGY_PRICES_TITLE'];
+			const localized_string_energy_prices_description = LM['translation'][sel]['USER_ENERGY_PRICES_DESCRIPTION'];
+			const localized_string_energy_prices_monthly = LM['translation'][sel]['USER_ENERGY_PRICES_MONTHLY'];
+			const localized_string_energy_prices_energy = LM['translation'][sel]['USER_ENERGY_PRICES_ENERGY'];
+			const localized_string_energy_prices_transfer = LM['translation'][sel]['USER_ENERGY_PRICES_TRANSFER'];
+			const localized_string_energy_prices_monthly_unit = LM['translation'][sel]['USER_ENERGY_PRICES_MONTHLY_UNIT'];
+			const localized_string_energy_prices_energy_unit = LM['translation'][sel]['USER_ENERGY_PRICES_ENERGY_UNIT'];
+			const localized_string_energy_prices_transfer_unit = LM['translation'][sel]['USER_ENERGY_PRICES_TRANSFER_UNIT'];
 			
 			let buttons_html = '';
 			if (UM.is_superuser) {
@@ -391,16 +413,16 @@ export default class UserPropsView extends View {
 			// Siirtomaksu snt/kWh
 			const html =
 				'<div class="row">'+
-					'<div class="col s12">'+
-						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-						'<p style="text-align:center;"><img src="./svg/userpage/user.svg" height="80"/></p>'+
-						'<p style="text-align:center;">'+localized_string_description+'</p>'+
+					'<div class="col s12 center">'+
+						'<h4>'+localized_string_title+'</h4>'+
+						'<p><img src="./svg/userpage/user.svg" height="80"/></p>'+
+						'<p>'+localized_string_description+'</p>'+
 					'</div>'+
 				'</div>'+
 				'<div class="row">'+
-					'<div class="col s12">'+
-						'<h5 style="text-align:center;">Sähkömaksut</h5>'+
-						'<p style="text-align:center;">Syötä hinnat omasta sähkösopimuksestasi, niin voimme tehdä arvion sinun sähkölaskustasi.</p>'+
+					'<div class="col s12 center">'+
+						'<h5>'+localized_string_energy_prices_title+'</h5>'+
+						'<p>'+localized_string_energy_prices_description+'</p>'+
 					'</div>'+
 				'</div>'+
 				// THREE ITEMS:
@@ -414,10 +436,10 @@ export default class UserPropsView extends View {
 						'<div class="col s12 center">'+
 							'<p class="price-field">'+
 							'<a href="javascript:void(0);" id="energy-monthly-price-edit">'+
-							'Kuukausimaksu: '+
+							localized_string_energy_prices_monthly +
 							'<span id="energy-monthly-price-value"></span>,'+
 							'<span id="energy-monthly-price-fractions-value"></span>'+
-							'<span class="price-field-postfix"> €/kk</span></a></p>'+
+							'<span class="price-field-postfix"> '+localized_string_energy_prices_monthly_unit+'</span></a></p>'+
 						'</div>'+
 						'<div class="col s12 center" id="energy-monthly-price-edit-placeholder">'+
 						'</div>'+
@@ -427,10 +449,10 @@ export default class UserPropsView extends View {
 						'<div class="col s12 center">'+
 							'<p class="price-field">'+
 							'<a href="javascript:void(0);" id="energy-basic-price-edit">'+
-							'Energiamaksu: '+
+							localized_string_energy_prices_energy +
 							'<span id="energy-basic-price-value"></span>,'+
 							'<span id="energy-basic-price-fractions-value"></span>'+
-							'<span class="price-field-postfix"> snt/kWh</span></a></p>'+
+							'<span class="price-field-postfix"> '+localized_string_energy_prices_energy_unit+'</span></a></p>'+
 						'</div>'+
 						'<div class="col s12 center" id="energy-basic-price-edit-placeholder">'+
 						'</div>'+
@@ -440,10 +462,10 @@ export default class UserPropsView extends View {
 						'<div class="col s12 center">'+
 							'<p class="price-field">'+
 							'<a href="javascript:void(0);" id="energy-transfer-price-edit">'+
-							'Siirtomaksu: '+
+							localized_string_energy_prices_transfer +
 							'<span id="energy-transfer-price-value"></span>,'+
 							'<span id="energy-transfer-price-fractions-value"></span>'+
-							'<span class="price-field-postfix"> snt/kWh</span></a></p>'+
+							'<span class="price-field-postfix"> '+localized_string_energy_prices_transfer_unit+'</span></a></p>'+
 						'</div>'+
 						'<div class="col s12 center" id="energy-transfer-price-edit-placeholder">'+
 						'</div>'+

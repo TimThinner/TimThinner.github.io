@@ -270,7 +270,7 @@ router.post("/login", (req,res,next)=>{
 	const email_lc = req.body.email.toLowerCase();
 	
 	User.find({email:email_lc})
-		.select('_id email password created readkey is_superuser')
+		.select('_id email password created readkey price_energy_monthly price_energy_basic price_energy_transfer is_superuser')
 		.populate('readkey')
 		.exec()
 		.then(user=>{
@@ -304,12 +304,19 @@ router.post("/login", (req,res,next)=>{
 					//const rkey_startdate = user[0].readkey ? user[0].readkey.startdate : undefined;
 					//const rkey_enddate = user[0].readkey ? user[0].readkey.enddate : undefined;
 					
+					const pem = user[0].price_energy_monthly ? user[0].price_energy_monthly : 0;
+					const peb = user[0].price_energy_basic ? user[0].price_energy_basic : 0;
+					const pet = user[0].price_energy_transfer ? user[0].price_energy_transfer : 0;
+					
 					return res.status(200).json({
 						message: 'Auth successful',
 						token: token,
 						userId: user[0]._id,
 						created: user[0].created,
 						readkey: rkey,
+						price_energy_monthly: pem,
+						price_energy_basic: peb,
+						price_energy_transfer: pet,
 						//readkeystartdate: rkey_startdate,
 						//readkeyenddate: rkey_enddate,
 						is_superuser: user[0].is_superuser
@@ -440,5 +447,52 @@ router.delete("/:userId", checkAuth, (req,res,next)=>{
 			res.status(500).json({error:err});
 		});
 });*/
+
+
+/*
+	Update a specified User information.
+	https://www.youtube.com/watch?v=WDrU305J1yw&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=6
+	
+	price_energy_monthly: {type:Number, default:0},
+	price_energy_basic: {type:Number, default:0},
+	price_energy_transfer: {type:Number, default:0},
+	
+	For example:
+	const data = [
+		{propName:'price_energy_monthly', value:6.0},
+		{propName:'price_energy_basic', value:4.6},
+		{propName:'price_energy_transfer', value:3.1}
+	];
+	
+*/
+router.put('/:userId', checkAuth, (req,res,next)=>{
+	const id = req.params.userId;
+	const updateOps = {};
+	let filled = false;
+	for (const ops of req.body) {
+		// Allow only "price_" changes!
+		if (ops.propName.indexOf('price_') === 0) {
+			updateOps[ops.propName] = ops.value;
+			filled = true;
+		}
+	}
+	if (filled) {
+		User.updateOne({_id:id},{$set: updateOps})
+			.exec()
+			.then(result => {
+				res.status(200).json({
+					message: 'User updated'
+				});
+			})
+			.catch(err=>{
+				console.log(err);
+				res.status(500).json({error:err});
+			});
+	} else {
+		res.status(404).json({
+			message: 'Nothing to update'
+		});
+	}
+});
 
 module.exports = router;

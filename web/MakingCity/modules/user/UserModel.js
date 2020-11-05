@@ -5,6 +5,9 @@ import Model from '../common/Model.js';
 		email
 		token
 		readkey
+		price_energy_monthly
+		price_energy_basic
+		price_energy_transfer
 		is_superuser
 */
 export default class UserModel extends Model {
@@ -15,6 +18,9 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
+		this.price_energy_monthly = 0;
+		this.price_energy_basic = 0;
+		this.price_energy_transfer = 0;
 		this.is_superuser = false;
 		this.localStorageLabel = 'MakingCityUserModel';
 	}
@@ -41,6 +47,9 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
+		this.price_energy_monthly = 0;
+		this.price_energy_basic = 0;
+		this.price_energy_transfer = 0;
 		this.is_superuser = false;
 	}
 	
@@ -48,10 +57,13 @@ export default class UserModel extends Model {
 	store() {
 		const status = localStorage.getItem(this.localStorageLabel);
 		const new_status = {
-			'id':this.id,
-			'email':this.email,
-			'token':this.token,
-			'readkey': this.readkey
+			'id': this.id,
+			'email': this.email,
+			'token': this.token,
+			'readkey': this.readkey,
+			'price_energy_monthly': this.price_energy_monthly,
+			'price_energy_basic': this.price_energy_basic,
+			'price_energy_transfer': this.price_energy_transfer
 		};
 		
 		// EXCEPT HERE FOR TEST PURPOSES:
@@ -83,7 +95,12 @@ export default class UserModel extends Model {
 			if (typeof stat.token !== 'undefined') { this.token = stat.token; }
 			//if (typeof stat.expires !== 'undefined') { this.expires = stat.expires; }
 			
-			if (typeof stat.readkey !== 'undefined')          { this.readkey = stat.readkey; }
+			if (typeof stat.readkey !== 'undefined') { this.readkey = stat.readkey; }
+			
+			if (typeof stat.price_energy_monthly !== 'undefined')  { this.price_energy_monthly = stat.price_energy_monthly; }
+			if (typeof stat.price_energy_basic !== 'undefined')    { this.price_energy_basic = stat.price_energy_basic; }
+			if (typeof stat.price_energy_transfer !== 'undefined') { this.price_energy_transfer = stat.price_energy_transfer; }
+			
 			//if (typeof stat.readkeystartdate !== 'undefined') { this.readkeystartdate = stat.readkeystartdate; }
 			//if (typeof stat.readkeyenddate !== 'undefined')   { this.readkeyenddate = stat.readkeyenddate; }
 			
@@ -118,6 +135,10 @@ export default class UserModel extends Model {
 			this.email = data.email;
 			this.token = 'nodatabasetoken';
 			this.is_superuser = false;
+			// Set energy prices for some reasonable level:
+			this.price_energy_monthly = 10;
+			this.price_energy_basic = 4.5;
+			this.price_energy_transfer = 3.5;
 			
 			// logged in moment()
 			//const exp = moment().add(24,'hours');
@@ -151,6 +172,22 @@ export default class UserModel extends Model {
 					self.email = data.email;
 					self.is_superuser = myJson.is_superuser;
 					self.readkey = myJson.readkey;
+					
+					if (typeof myJson.price_energy_monthly !== 'undefined') {
+						self.price_energy_monthly = myJson.price_energy_monthly;
+					} else {
+						self.price_energy_monthly = 0;
+					}
+					if (typeof myJson.price_energy_basic !== 'undefined') {
+						self.price_energy_basic = myJson.price_energy_basic;
+					} else {
+						self.price_energy_basic = 0;
+					}
+					if (typeof myJson.price_energy_transfer !== 'undefined') {
+						self.price_energy_transfer = myJson.price_energy_transfer;
+					} else {
+						self.price_energy_transfer = 0;
+					}
 					//self.readkeystartdate = myJson.readkeystartdate;
 					//self.readkeyenddate = myJson.readkeyenddate;
 					
@@ -228,5 +265,67 @@ export default class UserModel extends Model {
 			.catch(function(error){
 				self.notifyAll({model:'UserModel', method:'changePassword', status:status, message:error});
 			});
+	}
+	
+	updateEnergyPrices(id, data, authToken, type) {
+		const self = this;
+		
+		if (this.MOCKUP) {
+			
+			data.forEach(d => {
+				if (d.propName === 'price_energy_monthly') {
+					self.price_energy_monthly = d.value;
+				} else if (d.propName === 'price_energy_basic') {
+					self.price_energy_basic = d.value;
+				} else if (d.propName === 'price_energy_transfer') {
+					self.price_energy_transfer = d.value;
+				}
+			});
+			setTimeout(() => {
+				this.notifyAll({model:this.name, method:'updateEnergyPrices', status:200, message:'OK', type:type});
+			}, 200);
+			
+		} else {
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+authToken;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myPut = {
+				method: 'PUT',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(this.mongoBackend + '/users/'+id, myPut);
+			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+		
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					if (status === 200) {
+						/*const data = [
+							{propName:'price_energy_monthly', value:pmi},
+							{propName:'price_energy_basic', value:pei},
+							{propName:'price_energy_transfer', value:pti}
+						];*/
+						data.forEach(d => {
+							if (d.propName === 'price_energy_monthly') {
+								self.price_energy_monthly = d.value;
+							} else if (d.propName === 'price_energy_basic') {
+								self.price_energy_basic = d.value;
+							} else if (d.propName === 'price_energy_transfer') {
+								self.price_energy_transfer = d.value;
+							}
+						});
+					}
+					self.notifyAll({model:'UserModel', method:'updateEnergyPrices', status:status, message:myJson.message, type:type});
+				})
+				.catch(function(error){
+					self.notifyAll({model:'UserModel', method:'updateEnergyPrices', status:status, message:error, type:type});
+				});
+		}
 	}
 }

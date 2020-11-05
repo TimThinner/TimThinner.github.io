@@ -44,7 +44,22 @@ export default class UserLoginView extends UserView {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_da_cancel = LM['translation'][sel]['DA_CANCEL'];
+		const localized_quick_login = LM['translation'][sel]['DA_QUICK_LOGIN'];
+		const localized_quick_login_message = LM['translation'][sel]['DA_QUICK_LOGIN_MESSAGE'];
 		
+		const USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+		let mockup_button_markup = '';
+		if (USER_MODEL.MOCKUP===true) {
+			mockup_button_markup = 
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<div class="col s12 center">'+
+						'<p class="success-message" style="padding:10px;">'+localized_quick_login_message+'</p>'+
+						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="quick-login">'+localized_quick_login+'</button>'+
+					'</div>'+
+				'</div>'+
+			'</div>';
+		}
 		const localized_string_login_title = LM['translation'][sel]['USER_LOGIN_TITLE'];
 		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
 		const localized_string_user_password = LM['translation'][sel]['USER_PASSWORD'];
@@ -82,9 +97,11 @@ export default class UserLoginView extends UserView {
 					'</div>'+
 				'</div>'+
 			'</div>'+
-			'<div class="col s12 center" style="margin-top:1rem">'+
-				'<a href="javascript:void(0);" id="show-signup-form">'+localized_string_open_signup_form_link_text+'</a>'+
-			'</div>';
+			'<div class="row">'+
+				'<div class="col s12 center" style="margin-top:1rem">'+
+					'<a href="javascript:void(0);" id="show-signup-form">'+localized_string_open_signup_form_link_text+'</a>'+
+				'</div>'+
+			'</div>'+mockup_button_markup;
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
@@ -147,5 +164,18 @@ export default class UserLoginView extends UserView {
 				self.models['UserModel'].login(data);
 			}
 		});
+		if (USER_MODEL.MOCKUP===true) {
+			$("#quick-login").on('click', function() {
+				const _email = 'testuser@testdomain.com';
+				const _password = 'anything123';
+				var data = {
+					email: _email,
+					password: _password
+				};
+				// disable the submit button
+				$("#login-submit").prop("disabled", true);
+				self.models['UserModel'].login(data);
+			});
+		}
 	}
 }

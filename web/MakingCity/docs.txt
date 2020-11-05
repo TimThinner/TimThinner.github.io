@@ -307,16 +307,16 @@ UserElectricityController
 --------------------------|---------|---------|-------------------------------------------------------------
   MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
 --------------------------|---------|---------|-------------------------------------------------------------
-UserElectricityWeekModel  | energy  |    1    |  {ends:{value:7,unit:'days'},starts:{value:2,unit:'minutes'}
-UserElectricityMonthModel | energy  |    1    |  {ends:{value:1,unit:'months'},starts:{value:2,unit:'minutes'}
+UserElectricityWeekModel  | energy  |    1    |  {ends:{value:7,unit:'days'},starts:{value:60,unit:'minutes'}
+UserElectricityMonthModel | energy  |    1    |  {ends:{value:1,unit:'months'},starts:{value:60,unit:'minutes'}
 --------------------------|---------|---------|-------------------------------------------------------------
 
 UserWaterController
 --------------------------|---------|---------|-------------------------------------------------------------
   MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
 --------------------------|---------|---------|-------------------------------------------------------------
-UserWaterWeekModel        | water   |    1    |  {ends:{value:7,unit:'days'},starts:{value:2,unit:'minutes'}
-UserWaterMonthModel       | water   |    1    |  {ends:{value:1,unit:'months'},starts:{value:2,unit:'minutes'}
+UserWaterWeekModel        | water   |    1    |  {ends:{value:7,unit:'days'},starts:{value:60,unit:'minutes'}
+UserWaterMonthModel       | water   |    1    |  {ends:{value:1,unit:'months'},starts:{value:60,unit:'minutes'}
 --------------------------|---------|---------|-------------------------------------------------------------
 
 UserElectricityChartsController

@@ -47,6 +47,16 @@ export default class UserElectricityView extends View {
 		const ele_week = this.controller.master.modelRepo.get('UserElectricityWeekModel');
 		const ele_month = this.controller.master.modelRepo.get('UserElectricityMonthModel');
 		
+		const UM = this.controller.master.modelRepo.get('UserModel');
+		
+		const dim = moment().daysInMonth();
+		
+		/*
+		UM.price_energy_monthly
+		UM.price_energy_basic
+		UM.price_energy_transfer
+		*/
+		
 		if (ele_now && ele_day) {
 			
 			const meas_now = ele_now.measurement; // is in normal situation an array.
@@ -57,14 +67,20 @@ export default class UserElectricityView extends View {
 				const energy_now = meas_now[0].totalEnergy;
 				const energy_day = meas_day[0].totalEnergy;
 				if (typeof energy_now !== 'undefined' && typeof energy_day !== 'undefined') {
+					
 					const energy_diffe = energy_now - energy_day;
+					const dayprice = UM.price_energy_monthly/dim + (UM.price_energy_basic*energy_diffe)/100 + (UM.price_energy_transfer*energy_diffe)/100;
 					$('#day-energy').empty().append(energy_diffe.toFixed(1));
+					$('#day-price').empty().append(dayprice.toFixed(2));
+					
 				} else {
 					$('#day-energy').empty().append('---');
+					$('#day-price').empty().append('---');
 				}
 				
 			} else {
 				$('#day-energy').empty().append('---');
+				$('#day-price').empty().append('---');
 			}
 		}
 		
@@ -76,15 +92,22 @@ export default class UserElectricityView extends View {
 				
 				const energy_now = meas_now[0].totalEnergy;
 				const energy_week = meas_week[0].totalEnergy;
+				
 				if (typeof energy_now !== 'undefined' && typeof energy_week !== 'undefined') {
+					
 					const energy_diffe = energy_now - energy_week;
+					const weekprice = UM.price_energy_monthly/4 + (UM.price_energy_basic*energy_diffe)/100 + (UM.price_energy_transfer*energy_diffe)/100;
 					$('#week-energy').empty().append(energy_diffe.toFixed(1));
+					$('#week-price').empty().append(weekprice.toFixed(2));
+					
 				} else {
 					$('#week-energy').empty().append('---');
+					$('#week-price').empty().append('---');
 				}
 				
 			} else {
 				$('#week-energy').empty().append('---');
+				$('#week-price').empty().append('---');
 			}
 		}
 		
@@ -96,14 +119,20 @@ export default class UserElectricityView extends View {
 				const energy_now = meas_now[0].totalEnergy;
 				const energy_month = meas_month[0].totalEnergy;
 				if (typeof energy_now !== 'undefined' && typeof energy_month !== 'undefined') {
+					
 					const energy_diffe = energy_now - energy_month;
+					const monthprice = UM.price_energy_monthly + (UM.price_energy_basic*energy_diffe)/100 + (UM.price_energy_transfer*energy_diffe)/100;
 					$('#month-energy').empty().append(energy_diffe.toFixed(1));
+					$('#month-price').empty().append(monthprice.toFixed(2));
+					
 				} else {
 					$('#month-energy').empty().append('---');
+					$('#month-price').empty().append('---');
 				}
 				
 			} else {
 				$('#month-energy').empty().append('---');
+				$('#month-price').empty().append('---');
 			}
 		}
 	}
@@ -162,19 +191,19 @@ export default class UserElectricityView extends View {
 								'<tr>'+
 									'<td>'+localized_string_period_day+'</td>'+
 									'<td id="day-energy"></td>'+
-									'<td>---</td>'+
+									'<td id="day-price"></td>'+
 									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
 									'<td>'+localized_string_period_week+'</td>'+
 									'<td id="week-energy"></td>'+
-									'<td>---</td>'+
+									'<td id="week-price"></td>'+
 									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
 									'<td>'+localized_string_period_month+'</td>'+
 									'<td id="month-energy"></td>'+
-									'<td>---</td>'+
+									'<td id="month-price"></td>'+
 									'<td>---</td>'+
 								'</tr>'+
 							'</tbody>'+

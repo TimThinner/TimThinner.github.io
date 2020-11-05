@@ -15,8 +15,11 @@ const userSchema = mongoose.Schema({
 	/*address_street: {type:String},
 	address_postal_code: {type:String},
 	address_city: {type:String},*/
-	regcode:  { type: mongoose.Schema.Types.ObjectId, ref:'Regcode'},
-	readkey:  { type: mongoose.Schema.Types.ObjectId, ref:'Readkey'},
+	regcode: { type: mongoose.Schema.Types.ObjectId, ref:'Regcode'},
+	readkey: { type: mongoose.Schema.Types.ObjectId, ref:'Readkey'},
+	price_energy_monthly: {type:Number, default:0},
+	price_energy_basic: {type:Number, default:0},
+	price_energy_transfer: {type:Number, default:0},
 	is_superuser: { type: Boolean, default: false }
 });
 

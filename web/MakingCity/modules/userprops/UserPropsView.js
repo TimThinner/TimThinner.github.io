@@ -16,16 +16,26 @@ export default class UserPropsView extends View {
 				this.models[key].subscribe(this);
 			}
 		});
+		this.userModel = this.controller.master.modelRepo.get('UserModel');
+		this.userModel.subscribe(this);
+		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
 		this.FELID = 'user-props-view-failure';
+		
+		// Always fill the price-object with values from UserModel.
+		/*
+		UM.price_energy_monthly
+		UM.price_energy_basic
+		UM.price_energy_transfer
+		*/
 		this.price = {
-			energy: 4, // sents
-			energy_frac: 56,
-			transfer: 2, // sents
-			transfer_frac: 34,
-			monthly: 4, // euros
-			monthly_frac: 95 // sents
+			energy: 0, // sents
+			energy_frac: 0,
+			transfer: 0, // sents
+			transfer_frac: 0,
+			monthly: 0, // euros
+			monthly_frac: 0 // sents
 		};
 	}
 	
@@ -44,6 +54,7 @@ export default class UserPropsView extends View {
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
+		this.userModel.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -51,6 +62,36 @@ export default class UserPropsView extends View {
 	
 	updateLatestValues() {
 		console.log('UPDATE UserProps  !!!!!!!');
+	}
+	
+	fillPriceFromUM() {
+		// Fill the price-object with values from UserModel.
+		const UM = this.userModel;
+		
+		const pem_integer_part = Math.floor(UM.price_energy_monthly);
+		const pem_fractions_part = Math.round((UM.price_energy_monthly-pem_integer_part)*100);
+		//console.log(['pem_integer_part=',pem_integer_part,' pem_fractions_part',pem_fractions_part]);
+		
+		const peb_integer_part = Math.floor(UM.price_energy_basic);
+		const peb_fractions_part = Math.round((UM.price_energy_basic-peb_integer_part)*100);
+		//console.log(['peb_integer_part=',peb_integer_part,' peb_fractions_part',peb_fractions_part]);
+		
+		const pet_integer_part = Math.floor(UM.price_energy_transfer);
+		const pet_fractions_part = Math.round((UM.price_energy_transfer-pet_integer_part)*100);
+		//console.log(['pet_integer_part=',pet_integer_part,' pet_fractions_part',pet_fractions_part]);
+		
+		
+		/*
+		UM.price_energy_monthly
+		UM.price_energy_basic
+		UM.price_energy_transfer
+		*/
+		this.price.monthly       = pem_integer_part;
+		this.price.monthly_frac  = pem_fractions_part;
+		this.price.energy        = peb_integer_part;
+		this.price.energy_frac   = peb_fractions_part;
+		this.price.transfer      = pet_integer_part;
+		this.price.transfer_frac = pet_fractions_part;
 	}
 	
 	notify(options) {
@@ -80,37 +121,228 @@ export default class UserPropsView extends View {
 						this.render();
 					}
 				}
+			} else if (options.model==='UserModel' && options.method==='updateEnergyPrices') {
+				if (options.status === 200) {
+					
+					// Show Toast: Saved OK!
+					//M.toast({displayLength:1000, html: 'Energy Prices SAVED OK!'});
+					
+					$('#energy-'+options.type+'-price-edit-placeholder').empty();
+					
+					this.fillPriceFromUM();
+					
+					if (options.type === 'monthly') {
+						$('#energy-basic-price-wrapper').show();
+						$('#energy-transfer-price-wrapper').show();
+						
+						// Fill UI elements with correct values.
+						$('#energy-monthly-price-value').empty().append(this.price.monthly.toString());
+						if (this.price.monthly_frac < 10) {
+							$('#energy-monthly-price-fractions-value').empty().append('0'+this.price.monthly_frac.toString());
+						} else {
+							$('#energy-monthly-price-fractions-value').empty().append(this.price.monthly_frac.toString());
+						}
+					} else if (options.type === 'basic') {
+						
+						$('#energy-monthly-price-wrapper').show();
+						$('#energy-transfer-price-wrapper').show();
+						
+						// Fill UI elements with correct values.
+						$('#energy-basic-price-value').empty().append(this.price.energy.toString());
+						if (this.price.energy_frac < 10) {
+							$('#energy-basic-price-fractions-value').empty().append('0'+this.price.energy_frac.toString());
+						} else {
+							$('#energy-basic-price-fractions-value').empty().append(this.price.energy_frac.toString());
+						}
+					} else { // 'transfer'
+						$('#energy-monthly-price-wrapper').show();
+						$('#energy-basic-price-wrapper').show();
+						
+						// Fill UI elements with correct values.
+						$('#energy-transfer-price-value').empty().append(this.price.transfer.toString());
+						if (this.price.transfer_frac < 10) {
+							$('#energy-transfer-price-fractions-value').empty().append('0'+this.price.transfer_frac.toString());
+						} else {
+							$('#energy-transfer-price-fractions-value').empty().append(this.price.transfer_frac.toString());
+						}
+					}
+					
+				} else {
+					// TODO: Report ERROR!
+				}
 			}
 		}
 	}
 	
-	handlePriceSlider(id, hash) {
+	pad(num, size) {
+		num = num.toString();
+		while (num.length < size) num = "0" + num;
+		return num;
+	}
+	
+	/*
+		this.price = {
+			energy: 0, // sents
+			energy_frac: 0,
+			transfer: 0, // sents
+			transfer_frac: 0,
+			monthly: 0, // euros
+			monthly_frac: 0 // sents
+		};
+	*/
+	showEdit(type, postfix) {
 		const self = this;
+		const place = '#energy-'+type+'-price-edit-placeholder';
 		
-		const value = this.price[hash];
-		let s_value = value.toString();
-		if (id.indexOf('frac') > 0 && value < 10) {
-			s_value = '0'+s_value;
-		}
-		$('#'+id+'-value').empty().append(s_value);
-		//console.log(['value=',value]);
+		let current_value = '';
+		let current_value_frac = '';
 		
-		//	energy: 4, // sents
-		//	energy_frac: 36,
-		//	transfer: 2, // sents
-		//	transfer_frac: 99,
-		//	monthly: 6, // euros
-		//	monthly_frac: 30 // sents
-		$('#'+id).change(function(){
-			let val = $(this).val(); // "20"
-			const vali = parseInt(val, 10);
-			self.price[hash] = vali;
+		if (type === 'monthly') {
+			current_value = this.pad(this.price.monthly,3);
+			current_value_frac = this.pad(this.price.monthly_frac,2);
 			
-			if (id.indexOf('frac') > 0 && vali < 10) {
-				val = '0'+val;
+		} else if (type === 'basic') {
+			current_value = this.pad(this.price.energy,3);
+			current_value_frac = this.pad(this.price.energy_frac,2);
+			
+		} else {
+			current_value = this.pad(this.price.transfer,3);
+			current_value_frac = this.pad(this.price.transfer_frac,2);
+		}
+		
+		let hundreds = parseInt(current_value[0], 10);
+		let tens = parseInt(current_value[1], 10);
+		let ones = parseInt(current_value[2], 10);
+		
+		let tenths = parseInt(current_value_frac[0], 10);
+		let hundredths = parseInt(current_value_frac[1], 10);
+		
+		$(place).empty();
+		// Ones, Tens, Hundreds
+		// Tenths, Hundredths
+		const html =
+			'<div class="row">'+
+				'<div class="col s2 m1 offset-m3 price-change-button"><a href="javascript:void(0);" id="hundreds-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1">&nbsp;</div>'+
+				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="tenths-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="hundredths-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s2 m1 offset-m3 price-change-number" id="hundreds">'+hundreds+'</div>'+
+				'<div class="col s2 m1 price-change-number" id="tens">'+tens+'</div>'+
+				'<div class="col s2 m1 price-change-number" id="ones">'+ones+'</div>'+
+				'<div class="col s2 m1 price-change-number">,</div>'+
+				'<div class="col s2 m1 price-change-number" id="tenths">'+tenths+'</div>'+
+				'<div class="col s2 m1 price-change-number" id="hundredths">'+hundredths+'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s2 m1 offset-m3 price-change-button"><a href="javascript:void(0);" id="hundreds-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1">&nbsp;</div>'+
+				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="tenths-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="hundredths-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s3 offset-s3 center">'+
+					'<button class="btn waves-effect waves-light" id="cancel-price">Cancel</button>'+
+				'</div>'+
+				'<div class="col s3 center">'+
+					'<button class="btn waves-effect waves-light" id="update-price">&nbsp;SAVE&nbsp;</button>'+
+				'</div>'+
+			'</div>';
+		$(html).appendTo(place);
+		
+		// All digits can be set to values from 0 to 9.
+		$('#hundreds-up').on('click',function() {
+			if (hundreds < 9) {
+				hundreds++;
+				$('#hundreds').empty().append(hundreds);
 			}
-			//console.log(['val=',val]);
-			$('#'+id+'-value').empty().append(val);
+		});
+		$('#hundreds-down').on('click',function() {
+			if (hundreds > 0) {
+				hundreds--;
+				$('#hundreds').empty().append(hundreds);
+			}
+		});
+		$('#tens-up').on('click',function() {
+			if (tens < 9) {
+				tens++;
+				$('#tens').empty().append(tens);
+			}
+		});
+		$('#tens-down').on('click',function() {
+			if (tens > 0) {
+				tens--;
+				$('#tens').empty().append(tens);
+			}
+		});
+		$('#ones-up').on('click',function() {
+			if (ones < 9) {
+				ones++;
+				$('#ones').empty().append(ones);
+			}
+		});
+		$('#ones-down').on('click',function() {
+			if (ones > 0) {
+				ones--;
+				$('#ones').empty().append(ones);
+			}
+		});
+		$('#tenths-up').on('click',function() {
+			if (tenths < 9) {
+				tenths++;
+				$('#tenths').empty().append(tenths);
+			}
+		});
+		$('#tenths-down').on('click',function() {
+			if (tenths > 0) {
+				tenths--;
+				$('#tenths').empty().append(tenths);
+			}
+		});
+		$('#hundredths-up').on('click',function() {
+			if (hundredths < 9) {
+				hundredths++;
+				$('#hundredths').empty().append(hundredths);
+			}
+		});
+		$('#hundredths-down').on('click',function() {
+			if (hundredths > 0) {
+				hundredths--;
+				$('#hundredths').empty().append(hundredths);
+			}
+		});
+		
+		$('#cancel-price').on('click',function() {
+			$(place).empty();
+			if (type === 'monthly') {
+				$('#energy-basic-price-wrapper').show();
+				$('#energy-transfer-price-wrapper').show();
+				
+			} else if (type === 'basic') {
+				$('#energy-monthly-price-wrapper').show();
+				$('#energy-transfer-price-wrapper').show();
+				
+			} else {
+				$('#energy-monthly-price-wrapper').show();
+				$('#energy-basic-price-wrapper').show();
+			}
+		});
+		
+		$('#update-price').on('click',function() {
+			const UM = self.userModel;
+			const id = UM.id;
+			const authToken = UM.token;
+			
+			const newfloat = hundreds*100 + tens*10 + ones + tenths/10 + hundredths/100;
+			console.log(['newfloat=',newfloat]);
+			
+			const data = [{propName:'price_energy_'+type, value:newfloat}];
+			UM.updateEnergyPrices(id, data, authToken, type);
 		});
 	}
 	
@@ -119,7 +351,7 @@ export default class UserPropsView extends View {
 		$(this.el).empty();
 		if (this.areModelsReady()) {
 			
-			const UM = this.controller.master.modelRepo.get('UserModel')
+			const UM = this.userModel;
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
@@ -152,8 +384,6 @@ export default class UserPropsView extends View {
 						'</button>'+
 					'</div>';
 			}
-			
-			const localized_string_amount = 'Anna energian hinta (sentteinä)';
 			// Ones, Tens, Hundreds
 			// Tenths, Hundredths
 			// Perusmaksu €/kk
@@ -173,65 +403,53 @@ export default class UserPropsView extends View {
 						'<p style="text-align:center;">Syötä hinnat omasta sähkösopimuksestasi, niin voimme tehdä arvion sinun sähkölaskustasi.</p>'+
 					'</div>'+
 				'</div>'+
-				
-				'<div class="row user-property-box">'+
-					'<div class="col s12 center">'+
-						'<p class="price-field">Perusmaksu: '+
+				// THREE ITEMS:
+				// ToDo: Show values with "Edit"-button on side
+				// Edit ONE ITEM at a time.
+				//    Arrow-buttons appear in edit-view 
+				// Save button visible in edit-view ONLY.
+				// 
+				'<div class="row">'+
+					'<div class="col s12 center price-wrapper" id="energy-monthly-price-wrapper">'+
+						'<div class="col s12 center">'+
+							'<p class="price-field">'+
+							'<a href="javascript:void(0);" id="energy-monthly-price-edit">'+
+							'Kuukausimaksu: '+
 							'<span id="energy-monthly-price-value"></span>,'+
 							'<span id="energy-monthly-price-fractions-value"></span>'+
-							'<span class="price-field-postfix"> €/kk</span></p>'+
+							'<span class="price-field-postfix"> €/kk</span></a></p>'+
+						'</div>'+
+						'<div class="col s12 center" id="energy-monthly-price-edit-placeholder">'+
+						'</div>'+
 					'</div>'+
-					'<div class="col s6 center" style="margin-top:-42px">'+
-						'<p style="font-size:14px;text-align:left;" class="range-field">'+
-							'<input type="range" id="energy-monthly-price" min="0" max="100"><span class="thumb"><span class="value"></span></span>'+
-						'</p>'+
-					'</div>'+
-					'<div class="col s6 center" style="margin-top:-42px">'+
-						'<p style="font-size:14px;text-align:left;" class="range-field">'+
-							'<input type="range" id="energy-monthly-price-fractions" min="0" max="99"><span class="thumb"><span class="value"></span></span>'+
-						'</p>'+
-					'</div>'+
-				'</div>'+
 					
-				'<div class="row user-property-box">'+
-					'<div class="col s12 center">'+
-						'<p class="price-field">Energiamaksu: '+
-							'<span id="energy-price-value"></span>,'+
-							'<span id="energy-price-fractions-value"></span>'+
-							'<span class="price-field-postfix"> snt/kWh</span></p>'+
+					'<div class="col s12 center price-wrapper" id="energy-basic-price-wrapper">'+
+						'<div class="col s12 center">'+
+							'<p class="price-field">'+
+							'<a href="javascript:void(0);" id="energy-basic-price-edit">'+
+							'Energiamaksu: '+
+							'<span id="energy-basic-price-value"></span>,'+
+							'<span id="energy-basic-price-fractions-value"></span>'+
+							'<span class="price-field-postfix"> snt/kWh</span></a></p>'+
+						'</div>'+
+						'<div class="col s12 center" id="energy-basic-price-edit-placeholder">'+
+						'</div>'+
 					'</div>'+
-					'<div class="col s6 center" style="margin-top:-42px">'+
-						'<p style="font-size:14px;text-align:left;" class="range-field">'+
-							'<input type="range" id="energy-price" min="0" max="100"><span class="thumb"><span class="value"></span></span>'+
-						'</p>'+
-					'</div>'+
-					'<div class="col s6 center" style="margin-top:-42px">'+
-						'<p style="font-size:14px;text-align:left;" class="range-field">'+
-							'<input type="range" id="energy-price-fractions" min="0" max="99"><span class="thumb"><span class="value"></span></span>'+
-						'</p>'+
-					'</div>'+
-				'</div>'+
-				
-				'<div class="row user-property-box">'+
-					'<div class="col s12 center">'+
-						'<p class="price-field">Siirtomaksu: '+
+					
+					'<div class="col s12 center price-wrapper" id="energy-transfer-price-wrapper">'+
+						'<div class="col s12 center">'+
+							'<p class="price-field">'+
+							'<a href="javascript:void(0);" id="energy-transfer-price-edit">'+
+							'Siirtomaksu: '+
 							'<span id="energy-transfer-price-value"></span>,'+
 							'<span id="energy-transfer-price-fractions-value"></span>'+
-							'<span class="price-field-postfix"> snt/kWh</span></p>'+
+							'<span class="price-field-postfix"> snt/kWh</span></a></p>'+
+						'</div>'+
+						'<div class="col s12 center" id="energy-transfer-price-edit-placeholder">'+
+						'</div>'+
 					'</div>'+
-					'<div class="col s6 center" style="margin-top:-42px">'+
-						'<p style="font-size:14px;text-align:left;" class="range-field">'+
-							'<input type="range" id="energy-transfer-price" min="0" max="100"><span class="thumb"><span class="value"></span></span>'+
-						'</p>'+
-					'</div>'+
-					'<div class="col s6 center" style="margin-top:-42px">'+
-						'<p style="font-size:14px;text-align:left;" class="range-field">'+
-							'<input type="range" id="energy-transfer-price-fractions" min="0" max="99"><span class="thumb"><span class="value"></span></span>'+
-						'</p>'+
-					'</div>'+
+					
 				'</div>'+
-				
-				
 				'<div class="row">'+buttons_html+
 				'</div>'+
 				'<div class="row">'+
@@ -239,33 +457,52 @@ export default class UserPropsView extends View {
 				'</div>';
 			$(html).appendTo(this.el);
 			
-			// Initialize the sliders.
-			$("#energy-price").val(this.price.energy);
-			$("#energy-price-fractions").val(this.price.energy_frac);
-			$("#energy-transfer-price").val(this.price.transfer);
-			$("#energy-transfer-price-fractions").val(this.price.transfer_frac);
-			$("#energy-monthly-price").val(this.price.monthly);
-			$("#energy-monthly-price-fractions").val(this.price.monthly_frac);
+			// Fill the price-object with values from UserModel.
+			this.fillPriceFromUM();
 			
-			this.handlePriceSlider('energy-price','energy');
-			this.handlePriceSlider('energy-price-fractions','energy_frac');
-			this.handlePriceSlider('energy-transfer-price','transfer');
-			this.handlePriceSlider('energy-transfer-price-fractions','transfer_frac');
-			this.handlePriceSlider('energy-monthly-price','monthly');
-			this.handlePriceSlider('energy-monthly-price-fractions','monthly_frac');
+			// Fill UI elements with correct values.
+			$('#energy-monthly-price-value').empty().append(this.price.monthly.toString());
+			$('#energy-basic-price-value').empty().append(this.price.energy.toString());
+			$('#energy-transfer-price-value').empty().append(this.price.transfer.toString());
 			
+			if (this.price.monthly_frac < 10) {
+				$('#energy-monthly-price-fractions-value').empty().append('0'+this.price.monthly_frac.toString());
+			} else {
+				$('#energy-monthly-price-fractions-value').empty().append(this.price.monthly_frac.toString());
+			}
+			if (this.price.energy_frac < 10) {
+				$('#energy-basic-price-fractions-value').empty().append('0'+this.price.energy_frac.toString());
+			} else {
+				$('#energy-basic-price-fractions-value').empty().append(this.price.energy_frac.toString());
+			}
+			if (this.price.transfer_frac < 10) {
+				$('#energy-transfer-price-fractions-value').empty().append('0'+this.price.transfer_frac.toString());
+			} else {
+				$('#energy-transfer-price-fractions-value').empty().append(this.price.transfer_frac.toString());
+			}
 			
+			$('#energy-monthly-price-edit').on('click',function() {
+				$('#energy-basic-price-wrapper').hide();
+				$('#energy-transfer-price-wrapper').hide();
+				self.showEdit('monthly');
+			});
 			
-			// How to input energy price? For example 4,38 snt/kWh.
-			// Are there any additional costs per month for example?
+			$('#energy-basic-price-edit').on('click',function() {
+				$('#energy-monthly-price-wrapper').hide();
+				$('#energy-transfer-price-wrapper').hide();
+				self.showEdit('basic');
+			});
+			
+			$('#energy-transfer-price-edit').on('click',function() {
+				$('#energy-monthly-price-wrapper').hide();
+				$('#energy-basic-price-wrapper').hide();
+				self.showEdit('transfer');
+			});
 			
 			// Three input fields:
+			//   - Monthly fee:    NN,NN € / kk
 			//   - Energy price    snt/kWh?   NN,NN
 			//   - Transfer price  snt/kWh?   05,34 snt/kWh
-			//   - Monthly fee:    NN,NN € / kk
-			
-			
-			
 			
 			if (UM.is_superuser) {
 				$('#regcodes').on('click',function() {

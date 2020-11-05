@@ -232,16 +232,26 @@ table.striped > tbody > tr:nth-child(odd) {
 table.striped > tbody > tr > td {
 	border-radius: 0;
 }
-/*.user-property-box {
-	border: 3px solid #ccc;
+/*
+.price-wrapper {
+	border: 1px solid #ccc;
 }*/
 .price-field {
-	font-size:24px;
-	color: #26a69a; /* #26a69a teal lighten-1 */
+	font-size:20px;
+	/*color: #26a69a;*/ /* #26a69a teal lighten-1 */
 }
 .price-field-postfix {
-	font-size:20px;
-	color: #26a69a; /* #26a69a teal lighten-1 */
+	font-size:18px;
+	/*color: #26a69a;*/ /* #26a69a teal lighten-1 */
+}
+.price-change-number {
+	font-size:32px;
+	font-weight: bold;
+}
+.price-change-button a i {
+	border: 1px solid #ccc;
+	padding: 8px 8px;
+	text-align: center;
 }
 /*
 #e0f2f1 teal lighten-5

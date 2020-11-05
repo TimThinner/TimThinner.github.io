@@ -30,8 +30,8 @@ export default class UserElectricityController extends Controller {
 			this.range = options.range;
 	*/
 	initialize() {
-		const weekTR = {ends:{value:7,unit:'days'},starts:{value:2,unit:'minutes'}};
-		const monthTR = {ends:{value:1,unit:'months'},starts:{value:2,unit:'minutes'}};
+		const weekTR = {ends:{value:7,unit:'days'},starts:{value:60,unit:'minutes'}};
+		const monthTR = {ends:{value:1,unit:'months'},starts:{value:60,unit:'minutes'}};
 		
 		this.models['UserElectricityNowModel'] = this.master.modelRepo.get('UserElectricityNowModel');
 		this.models['UserElectricityNowModel'].subscribe(this);

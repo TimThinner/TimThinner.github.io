@@ -29,7 +29,7 @@ export default class EnvironmentPageController extends Controller {
 		this.master.modelRepo.add('EnvironmentPageModel',model);
 		this.models['EnvironmentPageModel'] = model;
 		
-		this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 30000, models:['EnvironmentPageModel']};
+		this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 60000, models:['EnvironmentPageModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

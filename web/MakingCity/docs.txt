@@ -34,17 +34,19 @@ Middleware function "checkAuth" is called first to verify and decode the user da
 ----------------------------------|---------------------------|------------------------|-----------------------------------
 
 
-
-
 Following models and routes are used:
+
 User model:
- _id    ObjectId
- email   String
- password  String
- created   Date
- regcode   reference to Regcode
- readkey   reference to Readkey
- is_superuser Boolean
+_id                    ObjectId
+email                  String
+password               String
+created                Date
+regcode                reference to Regcode
+readkey                reference to Readkey
+price_energy_monthly   Number
+price_energy_basic     Number
+price_energy_transfer  Number
+is_superuser           Boolean
 
 User routes:
 ------------------------|------------------------------------|---------------------------|-------------------------------------|------------------------------------
@@ -69,6 +71,10 @@ POST '/users/changepsw' | Uses checkAuth middleware          | req.headers.autho
                         | password can be changed without    | req.body.newpassword      |                                     | status 500 {error:err}
                         | oldpassword.                       | req.body.oldpassword      |                                     |
 ------------------------|------------------------------------|---------------------------|-------------------------------------|------------------------------------
+PUT '/users/:userId'    | Uses checkAuth middleware          | req.headers.authorization | status 200                          | status 401 {message:'Auth failed'}
+                        | API-call to modify energy prices   | req.body is an array of   | {message:'user updated'}            | status 404 {message:'Nothing to update'}
+                        | of logged-in user.                 | {propName, value} -pairs. |                                     | status 500 {error:err}
+------------------------|------------------------------------|---------------------------|-------------------------------------|------------------------------------
 GET '/users'            | Get a list of all USERS.           | req.headers.authorization | status 200 {count:...,users:[...]}  | status 401 {message:'Auth failed'}
                         | Uses checkAuth middleware.         |                           |                                     | status 500 {error: err}
                         |   select('_id email created        |                           |                                     |
@@ -79,12 +85,12 @@ GET '/users'            | Get a list of all USERS.           | req.headers.autho
 ------------------------|------------------------------------|---------------------------|-------------------------------------|------------------------------------
 
 Regcode model:
- _id    ObjectId
- email   String
- apartmentId  String
- code   String
- startdate  Date
- enddate   Date
+_id                    ObjectId
+email                  String
+apartmentId            String
+code                   String
+startdate              Date
+enddate                Date
 
 Regcode routes:
 ---------------------------|---------------------------------|---------------------------|------------------------------------------|------------------------------------
@@ -110,9 +116,9 @@ PUT '/regcodes/:regcodeId' | Update REGCODE startdate and    | req.headers.autho
 ---------------------------|---------------------------------|---------------------------|------------------------------------------|------------------------------------
 
 Readkey model:
- _id    ObjectId
- startdate  Date
- enddate   Date
+_id                    ObjectId
+startdate              Date
+enddate                Date
 
 Readkey routes:
 ---------------------------|-----------------------------------|---------------------------|----------------------------------------|------------------------------------
@@ -149,7 +155,6 @@ NOTE: Return ONLY those bindings that have a readkey and apartmentId and have a 
 Here is an example of RESPONSE: {"bindings":[{"apartmentId":"123","readkey":"5f75d08b251f6e38b8a6a736"},{"apartmentId":"333ded","readkey":"5f8589ff1e6aae446ca9443a"}]}
 
 
-
 Following two routes ('/apartments' and '/feeds') just re-route the request URL adding Authorization into call.
 
 Apartments routes:
@@ -165,24 +170,6 @@ POST '/apartments/feeds' | Fetch data from one apartment.   | req.headers.author
                          |                                  | req.body.end              |                                     |
 -------------------------|----------------------------------|---------------------------|-------------------------------------|------------------------------------
 NOTE: The READKEY identifies apartment and user. 
-We fetch only one measurement (limit=1) for four short (10 minute) timeranges, which are "NOW", "NOW-24HOURS", "NOW-7DAYS" and "NOW-1MONTH" and type can be 'sensor' or 'energy' or 'water'.
-With these four "totalEnergy" values we can calculate energy consumption for last 24 hours, last week and last month.
-
-For example URL for "NOW" is (returned values are always the last ones):
-{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-10-22T15:39","end":"2020-10-22T15:49"}
-URL for "NOW-24HOURS" is:
-{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-10-21T15:39","end":"2020-10-21T15:49"}
-URL for "NOW-7DAYS" is:
-{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-10-15T15:39","end":"2020-10-15T15:49"}
-URL for "NOW-1MONTH" is:
-{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-09-22T15:39","end":"2020-09-22T15:49"}
-
-and the RESPONSE is like this:
-[{"created_at":"2020-10-15T15:46:38","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":420,"totalEnergy":425.019,"impulseLastCtr":7,"impulseTotalCtr":425019}]
-
-NOTE: If there is no data for specified timerange, the return value is a string: "No data!".
-
-
 
 Feeds routes:
 ----------------------|-------------------------------------|---------------------------|-------------------------------------|------------------------------------
@@ -209,6 +196,155 @@ NOTE: There are 3 different types of calls to S-Market data:
     [{"created_at":"2020-10-22T00:00:20","meterId":101,"averagePower":0.286,"totalEnergy":22752.098,"energyDiff":0.005 }, ... ]
   - The mesurement frequency is 1 sample per minute, so there are 1440 measurements for each day.
   - The "calc=1" parameter is needed in meterId=117 (Cooler117Model) and meterId=115 (GeothermalModel).
+
+
+
+
+
+
+
+
+
+FRONTEND
+
+
+
+
+MAINPAGE
+- language selection (fi,en)
+- link to project page
+
+- The User Home Page
+  - User Properties
+    - Energy price
+  - User Apartment Electricity
+    - Consumption (kWh, €, kgCO2) for periods: 24h, Week, Month
+      - Charts         for 1 to 7 days OK
+      - Targets        TODO
+      - Compensate     TODO?
+  - User Apartment Water
+    - Consumption (HOT, COLD, €, kgCO2) for periods: 24h, Week, Month
+      - Charts         for 1 to 7 days OK
+      - Targets        TODO
+      - Compensate     TODO?
+  - User Apartment Heating
+    - Consumption (kWh, €, kgCO2) for periods: 24h, Week, Month
+      - Charts         for 1 to 7 days OK
+      - Targets        TODO
+      - Compensate     TODO?
+- The Solar Page       TODO
+- The Grid Page        TODO
+- The Environment Page TODO
+- PED AREA
+  - S-Arina
+      - Grid
+      - Solar power
+      - Geothermal power
+      - Compressors
+      - Lights and appliances
+      - Kitchen appliances
+      - HPAC
+      - Other
+      - Cooler equipment
+      - Cooling
+      - Heating
+      - District heating network
+  - Sivakka 1          TODO
+  - Sivakka 2          TODO
+  - Sivakka 3          TODO
+  - YIT 1              TODO
+
+
+Fetching apartment data
+
+Fetching one measurement
+
+
+Fetching an array of measurements
+
+
+
+
+
+The measurement database contains measurements one minute interval.
+We fetch only one measurement (limit=1) for four short (2 minute) timeranges, which are "Now", "Day", "Week" and "Month". Type can be 'sensor' or 'energy' or 'water'.
+REST-API returns the latest value.
+
+
+UserPageController
+--------------------------|---------|---------|-------------------------------------------------------------
+  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
+--------------------------|---------|---------|-------------------------------------------------------------
+UserWaterNowModel         |  water  |    1    |  {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}
+UserHeatingNowModel       |  sensor |    1    |  {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}
+UserElectricityNowModel   |  energy |    1    |  {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}
+UserWaterDayModel         |  water  |    1    |  {ends:{value:24,unit:'hours'},starts:{value:2,unit:'minutes'}
+UserElectricityDayModel   |  energy |    1    |  {ends:{value:24,unit:'hours'},starts:{value:2,unit:'minutes'}
+--------------------------|---------|---------|-------------------------------------------------------------
+
+UserElectricityController
+--------------------------|---------|---------|-------------------------------------------------------------
+  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
+--------------------------|---------|---------|-------------------------------------------------------------
+UserElectricityWeekModel  | energy  |    1    |  {ends:{value:7,unit:'days'},starts:{value:60,unit:'minutes'}
+UserElectricityMonthModel | energy  |    1    |  {ends:{value:1,unit:'months'},starts:{value:60,unit:'minutes'}
+--------------------------|---------|---------|-------------------------------------------------------------
+
+UserWaterController
+--------------------------|---------|---------|-------------------------------------------------------------
+  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
+--------------------------|---------|---------|-------------------------------------------------------------
+UserWaterWeekModel        | water   |    1    |  {ends:{value:7,unit:'days'},starts:{value:60,unit:'minutes'}
+UserWaterMonthModel       | water   |    1    |  {ends:{value:1,unit:'months'},starts:{value:60,unit:'minutes'}
+--------------------------|---------|---------|-------------------------------------------------------------
+
+
+UserElectricityChartsController
+--------------------------|---------|---------|-------------------------------------------------------------
+  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
+--------------------------|---------|---------|-------------------------------------------------------------
+UserElectricityALLModel   | energy  |    0    |  {ends:{value:10,unit:'seconds'},starts:{value:1,unit:'days'}
+--------------------------|---------|---------|-------------------------------------------------------------
+
+UserWaterChartsController
+--------------------------|---------|---------|-------------------------------------------------------------
+  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
+--------------------------|---------|---------|-------------------------------------------------------------
+UserWaterALLModel         |  water  |    0    |  {ends:{value:10,unit:'seconds'},starts:{value:1,unit:'days'}
+--------------------------|---------|---------|-------------------------------------------------------------
+
+UserHeatingChartsController
+--------------------------|---------|---------|-------------------------------------------------------------
+  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
+--------------------------|---------|---------|-------------------------------------------------------------
+UserHeatingALLModel       |  sensor |    0    |  {ends:{value:10,unit:'seconds'},starts:{value:1,unit:'days'}
+--------------------------|---------|---------|-------------------------------------------------------------
+
+NOTE: For charts, where all values for specified range are fetched (LIMIT=0), we must snap range to previous FULL HOUR value.
+Therefore we are one hour behind real-time in the worst case. User can select range between 1 (=default) to 7 days from the user interface.
+
+
+
+
+
+
+
+With these four "totalEnergy" values we can calculate energy consumption for last 24 hours, last week and last month.
+
+For example URL for "NOW" is (returned values are always the last ones):
+{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-10-22T15:39","end":"2020-10-22T15:49"}
+URL for "NOW-24HOURS" is:
+{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-10-21T15:39","end":"2020-10-21T15:49"}
+URL for "NOW-7DAYS" is:
+{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-10-15T15:39","end":"2020-10-15T15:49"}
+URL for "NOW-1MONTH" is:
+{"url":"https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json","readkey":"5f75d08b251f6e38b8a6a736","type":"energy","limit":1,"start":"2020-09-22T15:39","end":"2020-09-22T15:49"}
+
+and the RESPONSE is like this:
+[{"created_at":"2020-10-15T15:46:38","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":420,"totalEnergy":425.019,"impulseLastCtr":7,"impulseTotalCtr":425019}]
+
+NOTE: If there is no data for specified timerange, the return value is a string: "No data!".
+
 
 
 
@@ -288,56 +424,6 @@ days         power       energy
  7           10080       168
 14           20160       336
 28           40320       672
-
-
-
-UserPageController
-
---------------------------|---------|---------|-------------------------------------------------------------
-  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
---------------------------|---------|---------|-------------------------------------------------------------
-UserWaterNowModel         |  water  |    1    |  {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}
-UserHeatingNowModel       |  sensor |    1    |  {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}
-UserElectricityNowModel   |  energy |    1    |  {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}
-UserWaterDayModel         |  water  |    1    |  {ends:{value:24,unit:'hours'},starts:{value:2,unit:'minutes'}
-UserElectricityDayModel   |  energy |    1    |  {ends:{value:24,unit:'hours'},starts:{value:2,unit:'minutes'}
---------------------------|---------|---------|-------------------------------------------------------------
-
-UserElectricityController
---------------------------|---------|---------|-------------------------------------------------------------
-  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
---------------------------|---------|---------|-------------------------------------------------------------
-UserElectricityWeekModel  | energy  |    1    |  {ends:{value:7,unit:'days'},starts:{value:60,unit:'minutes'}
-UserElectricityMonthModel | energy  |    1    |  {ends:{value:1,unit:'months'},starts:{value:60,unit:'minutes'}
---------------------------|---------|---------|-------------------------------------------------------------
-
-UserWaterController
---------------------------|---------|---------|-------------------------------------------------------------
-  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
---------------------------|---------|---------|-------------------------------------------------------------
-UserWaterWeekModel        | water   |    1    |  {ends:{value:7,unit:'days'},starts:{value:60,unit:'minutes'}
-UserWaterMonthModel       | water   |    1    |  {ends:{value:1,unit:'months'},starts:{value:60,unit:'minutes'}
---------------------------|---------|---------|-------------------------------------------------------------
-
-UserElectricityChartsController
---------------------------|---------|---------|-------------------------------------------------------------
-  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
---------------------------|---------|---------|-------------------------------------------------------------
-UserElectricityALLModel   | energy  |    0    |  {ends:{value:10,unit:'seconds'},starts:{value:1,unit:'days'}
---------------------------|---------|---------|-------------------------------------------------------------
-
-UserWaterChartsController
---------------------------|---------|---------|-------------------------------------------------------------
-  MODEL NAME              |  TYPE   |  LIMIT  |  RANGE 
---------------------------|---------|---------|-------------------------------------------------------------
-UserWaterALLModel         |  water  |    0    |  {ends:{value:10,unit:'seconds'},starts:{value:1,unit:'days'}
---------------------------|---------|---------|-------------------------------------------------------------
-
-
-NOTE: For charts, where all values for specified range are fetched, we must snap range to previous FULL HOUR value.
-Therefore we are one hour behind real-time in the worst case.
-
-
 
 
 

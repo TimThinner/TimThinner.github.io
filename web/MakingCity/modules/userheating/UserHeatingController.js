@@ -18,7 +18,7 @@ export default class UserHeatingController extends Controller {
 		this.models['UserHeatingNowModel'] = this.master.modelRepo.get('UserHeatingNowModel');
 		this.models['UserHeatingNowModel'].subscribe(this);
 		
-		this.timers['UserHeatingView'] = {timer: undefined, interval: 30000, models:['UserHeatingNowModel']};
+		this.timers['UserHeatingView'] = {timer: undefined, interval: 60000, models:['UserHeatingNowModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

@@ -29,7 +29,7 @@ export default class GridPageController extends Controller {
 		this.master.modelRepo.add('GridPageModel',model);
 		this.models['GridPageModel'] = model;
 		
-		this.timers['GridPageChartView'] = {timer: undefined, interval: 30000, models:['GridPageModel']};
+		this.timers['GridPageChartView'] = {timer: undefined, interval: 60000, models:['GridPageModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

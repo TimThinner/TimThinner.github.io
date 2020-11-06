@@ -138,7 +138,7 @@ export default class UECEnergyChartView extends View {
 			dateAxis.renderer.grid.template.location = 0;
 			dateAxis.renderer.ticks.template.length = 8;
 			dateAxis.renderer.ticks.template.strokeOpacity = 0.3;
-			dateAxis.renderer.grid.template.disabled = true;
+			dateAxis.renderer.grid.template.disabled = false;
 			dateAxis.renderer.ticks.template.disabled = false;
 			//dateAxis.renderer.ticks.template.strokeOpacity = 0.2;
 			dateAxis.renderer.minLabelPosition = 0.1; //0.01;

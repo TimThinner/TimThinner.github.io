@@ -29,7 +29,7 @@ export default class SolarPageController extends Controller {
 		this.master.modelRepo.add('SolarPageModel',model);
 		this.models['SolarPageModel'] = model;
 		
-		this.timers['SolarPageChartView'] = {timer: undefined, interval: 30000, models:['SolarPageModel']};
+		this.timers['SolarPageChartView'] = {timer: undefined, interval: 60000, models:['SolarPageModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

@@ -3,10 +3,13 @@
 Documentation:
 
 
-BACKEND
-Backend stores user data into MongoDB [1] database. Backend uses Mongoose, MongoDB object modeling for Node.js. "Mongoose provides a straight-forward, schema-based solution to model your application data. It includes built-in type casting, validation, query building, business logic hooks and more, out of the box." [2]
+BACKEND FOR USER DATA
 
-Almost all backend API calls are verified with JSON Web Token (JWT) [3] to protect from unauthorized use.
+Backend is written with Node.js [1]. Node.js is an open-source, cross-platform, back-end, JavaScript runtime environment that executes JavaScript code outside a web browser. Node.js represents a "JavaScript everywhere" paradigm, unifying web-application development around a single programming language, rather than different languages for server- and client-side scripts.
+
+Backend stores user data into MongoDB [2] database. Backend uses Mongoose, MongoDB object modeling for Node.js. "Mongoose provides a straight-forward, schema-based solution to model your application data. It includes built-in type casting, validation, query building, business logic hooks and more, out of the box." [3]
+
+Almost all backend API calls are verified with JSON Web Token (JWT) [4] to protect from unauthorized use.
 The JWT is created at server and sent to client during successful login. Client stores and uses it in following communication between client and server.
 
 At login the token is created. It is valid for 24 hours:
@@ -20,9 +23,14 @@ At login the token is created. It is valid for 24 hours:
       expiresIn: "24h"
      }
 
-1. https://www.mongodb.com/
-2. https://mongoosejs.com/
-3. https://www.npmjs.com/package/jsonwebtoken
+
+References
+
+1. https://nodejs.org/en/
+2. https://www.mongodb.com/
+3. https://mongoosejs.com/
+4. https://www.npmjs.com/package/jsonwebtoken
+
 
 
 Middleware function "checkAuth" is called first to verify and decode the user data encoded into token.
@@ -206,6 +214,103 @@ NOTE: There are 3 different types of calls to S-Market data:
 
 
 FRONTEND
+
+
+
+
+
+
+
+Frontend is written with ECMAScript (AKA JavaScript) [1]. ECMAScript is a general-purpose programming language, standardized by Ecma International according to the document ECMA-262. It is a JavaScript standard meant to ensure the interoperability of Web pages across different Web browsers. ECMAScript is commonly used for client-side scripting on the World Wide Web, and it is increasingly being used for writing server applications and services using Node.js.
+
+The 6th edition, initially known as ECMAScript 6 (ES6) then and later renamed to ECMAScript 2015, adds significant new syntax for writing complex applications, including class declarations, ES6 modules like import and export. ES6 is therefore well suited to implement modular software design patterns like Model–view–controller (usually known as MVC) [2].
+
+MVC is a software design pattern commonly used for developing user interfaces that divides the related program logic into three interconnected elements. This is done to separate internal representations of information from the ways information is presented to and accepted from the user. Traditionally used for desktop graphical user interfaces (GUIs), this pattern has become popular for designing web applications.
+
+Another pattern used in Making City frontend is the observer pattern [3]. It is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods.
+
+
+Figure N.N Observer Design Pattern. File:1920px-Observer_w_update.svg.png [4]
+
+
+
+In our case Models are Subjects, which call notify()-method on Views (or Controllers) which are Observers. Model calls notify()-method when new data is fetched or updated, then those views and controllers which are registered as observers to that model will execute their notify()-method.
+
+
+
+Scalable Vector Graphics (SVG) [5] is used extensively in 
+In the heart of Making City UI 
+MENU, User Page, PED page, S-Market, Sivakka 1, ... 
+
+Scalable Vector Graphics (SVG) [5] is an Extensible Markup Language (XML)-based vector image format for two-dimensional graphics with support for interactivity and animation. The SVG specification is an open standard developed by the World Wide Web Consortium (W3C) since 1999. 
+
+
+
+Responsive web design (RWD) is an approach to web design that makes web pages render well on a variety of devices and window or screen sizes.[6][7]
+
+
+Figure N.N File: RWDMC.jpg
+
+
+
+
+
+MasterController keeps track of ALL controllers and Models in the FRONTEND.
+It has two instance properties to do that:
+	this.controllers = {};
+	this.modelRepo = new ModelRepo();
+The ModelRepo is just a collection of (key, value) pairs, such that each possible key appears at most once in the collection.
+
+
+First the MasterController creates all controllers and adds them to its controllers hash, for example:
+	this.controllers['DAB'] = new DistrictABController({name:'DAB', master:this, el:'#content', visible:false});
+	this.controllers['DAB'].init();
+
+The init()-method creates all models and a view for this Controller.
+
+For example here is how a SolarModel is added to modelRepo in "SolarController":
+	const model = new SolarModel({name:'SolarModel',src:'data/arina/iss/feeds.json?meterId=116'});
+	model.subscribe(this);
+	this.master.modelRepo.add('SolarModel',model);
+	this.models['SolarModel'] = model;
+
+And a timer is defined for periodic fetching of data for "SolarModel":
+	this.timers['SolarChartView'] = {timer: undefined, interval: 30000, models:['SolarModel']};
+It is important to notice here that one chart can display data from multiple models, but one chart can have only one timer.
+
+We also have to listen MenuModel for View changes from USER:
+	this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+	this.models['MenuModel'].subscribe(this);
+
+If there are many charts in one view, a Controller creates a WrapperView, which holds all subviews.
+So finally a WrapperView is created and shown (if this controller is visible):
+	this.view = new DistrictABWrapperView(this);
+	this.show();
+
+Actually Controller's show() -method shows view and starts the poller:
+	this.view.show();
+	this.startPollers();
+Which starts polling all timers for this controller. 
+This is important, because all views must always show "the latest" data fetched from the server.
+When a view is shown (=rendered), it first creates a skeleton of HTML markup, where empty data-placeholders are inserted into parent element. 
+If all models are ready (areModelsReady()) then also the data is available and it is appended into placeholders. 
+But if all models are NOT ready we show a Wait-spinner and wait for Model to trigger "fetched" notification. The models (one or many) also notify View whenever new data is fetched. So the chart update can happen "out-of-sync", one model at a time. 
+
+
+
+
+
+
+
+References
+
+1. https://en.wikipedia.org/wiki/ECMAScript
+2. https://en.wikipedia.org/wiki/Model-view-controller
+3. https://en.wikipedia.org/wiki/Observer_pattern
+4. Observer Design Pattern SVG By Gregorybleiker - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=65617132
+5. https://en.wikipedia.org/wiki/Scalable_Vector_Graphics
+6. https://en.wikipedia.org/wiki/Responsive_web_design
+7. https://alistapart.com/article/responsive-web-design/
 
 
 

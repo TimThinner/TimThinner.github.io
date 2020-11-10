@@ -49,7 +49,7 @@ export default class RegCodeModel extends Model {
 			
 			setTimeout(() => {
 				this.regcodes = [
-{"_id":"5f75d04e251f6e38b8a6a735","email":"snoopy@vtt.fi","apartmentId":"123","code":"fzyjw6","startdate":"2020-09-30T21:00:00.000Z","enddate":"2020-10-30T22:00:00.000Z"}
+{"_id":"5f75d04e251f6e38b8a6a735","email":"snoopy@vtt.fi","apartmentId":"123","code":"fzyjw6","startdate":"2020-09-30T21:00:00.000Z","enddate":"2020-12-31T22:00:00.000Z"}
 				];
 				this.fetching = false;
 				this.ready = true;

@@ -78,7 +78,6 @@ export default class UECEnergyChartView extends View {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								s.data = self.models['UserElectricityALLModel'].energyValues;
 							});
-							
 							this.appendTotal();
 							
 						} else {

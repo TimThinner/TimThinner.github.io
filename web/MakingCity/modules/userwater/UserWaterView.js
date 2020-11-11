@@ -228,7 +228,7 @@ export default class UserWaterView extends View {
 						'</a>'+
 					'</div>'+
 					
-					'<div class="col s12 center" style="margin-top:32px;">'+
+					'<div class="col s12 center" style="margin-top:16px;">'+
 						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 							'<i class="material-icons left">arrow_back</i>'+
 						'</button>'+

@@ -65,7 +65,12 @@ export default class UserApartmentModel extends Model {
 			this.timerange = undefined;
 		}
 		*/
-		this.timerange = 1; // User can change this from 1 ... 7.
+		if (typeof options.timerange !== 'undefined') {
+			this.timerange = options.timerange;
+		} else {
+			this.timerange = 1; // User can change this from 1 ... 7.
+		}
+		
 		this.measurement = [];
 		this.period = {start: undefined, end: undefined};
 		this.values = [];

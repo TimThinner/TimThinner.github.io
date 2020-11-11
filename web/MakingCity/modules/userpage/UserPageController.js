@@ -16,7 +16,7 @@ export default class UserPageController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key==='UserWaterNowModel'||key==='UserHeatingNowModel'||key==='UserElectricityNowModel'||key==='UserWaterDayModel'||key==='UserElectricityDayModel') {
+			if (key==='UserWaterNowModel'||key==='UserElectricityNowModel'||key==='UserHeatingNowModel'||key==='UserWaterDayModel'||key==='UserElectricityDayModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -39,15 +39,15 @@ export default class UserPageController extends Controller {
 		this.master.modelRepo.add('UserWaterNowModel',model_WaterNow);
 		this.models['UserWaterNowModel'] = model_WaterNow;
 		
-		const model_HeatingNow = new UserApartmentModel({name:'UserHeatingNowModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:1,range:nowTR});
-		model_HeatingNow.subscribe(this);
-		this.master.modelRepo.add('UserHeatingNowModel',model_HeatingNow);
-		this.models['UserHeatingNowModel'] = model_HeatingNow;
-		
 		const model_EleNow = new UserApartmentModel({name:'UserElectricityNowModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,range:nowTR});
 		model_EleNow.subscribe(this);
 		this.master.modelRepo.add('UserElectricityNowModel',model_EleNow);
 		this.models['UserElectricityNowModel'] = model_EleNow;
+		
+		const model_HeatingNow = new UserApartmentModel({name:'UserHeatingNowModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:1,range:nowTR});
+		model_HeatingNow.subscribe(this);
+		this.master.modelRepo.add('UserHeatingNowModel',model_HeatingNow);
+		this.models['UserHeatingNowModel'] = model_HeatingNow;
 		
 		const model_WaterDay = new UserApartmentModel({name:'UserWaterDayModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,range:dayTR});
 		model_WaterDay.subscribe(this);
@@ -94,7 +94,7 @@ export default class UserPageController extends Controller {
 	
 	init() {
 		this.initialize();
-		this.timers['UserPageView'] = {timer: undefined, interval: 60000, models:['UserWaterNowModel','UserHeatingNowModel','UserElectricityNowModel','UserWaterDayModel','UserElectricityDayModel']};
+		this.timers['UserPageView'] = {timer: undefined, interval: 60000, models:['UserWaterNowModel','UserElectricityNowModel','UserHeatingNowModel','UserWaterDayModel','UserElectricityDayModel']};
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		this.show(); // Try if this view can be shown right now!

@@ -11,7 +11,7 @@ export default class UserHeatingView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserHeatingNowModel') {
+			if (key === 'UserHeatingWeekModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -43,11 +43,62 @@ export default class UserHeatingView extends View {
 	
 	updateLatestValues() {
 		console.log('UPDATE UserHeating !!!!!!!');
+		const heat_week = this.controller.master.modelRepo.get('UserHeatingWeekModel');
+		if (heat_week) {
+			const values = heat_week.values;
+			if (Array.isArray(values) && values.length > 0) {
+				
+				
+				// 168 values, like this:
+				// {	time: Date Sun Nov 08 2020 08:00:00 GMT+0200 (Eastern European Standard Time), 
+				//		temperature: 20.12833333333333, 
+				//		humidity: 30.536666666666683 
+				//	}
+				// Calculate averages for last 24 hours and also fron last 168 hours.
+				// toFixed(1)
+				let sum_week_temp = 0;
+				let sum_week_humi = 0;
+				
+				//console.log(['values=',values]);
+				
+				values.forEach(v => {
+					sum_week_temp += v.temperature;
+					sum_week_humi += v.humidity;
+				});
+				const ave_week_temp = sum_week_temp/values.length;
+				const ave_week_humi = sum_week_humi/values.length;
+				$('#week-temp').empty().append(ave_week_temp.toFixed(1));
+				$('#week-humi').empty().append(ave_week_humi.toFixed(1));
+				
+				
+				const val24h = values.slice(-24); // extracts the last 24 elements in the sequence.
+				
+				let sum_24h_temp = 0;
+				let sum_24h_humi = 0;
+				val24h.forEach(v => {
+					sum_24h_temp += v.temperature;
+					sum_24h_humi += v.humidity;
+				});
+				const ave_24h_temp = sum_24h_temp/val24h.length;
+				const ave_24h_humi = sum_24h_humi/val24h.length;
+				$('#day-temp').empty().append(ave_24h_temp.toFixed(1));
+				$('#day-humi').empty().append(ave_24h_humi.toFixed(1));
+				
+				
+				
+				
+			} else {
+				$('#day-temp').empty().append('---');
+				$('#day-humi').empty().append('---');
+				$('#week-temp').empty().append('---');
+				$('#week-humi').empty().append('---');
+			}
+		}
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserHeatingNowModel') {
+			if (options.model==='UserHeatingWeekModel') {
 				if (options.method==='fetched') {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
@@ -95,22 +146,22 @@ export default class UserHeatingView extends View {
 							'<thead>'+
 								'<tr>'+
 									'<th>'+localized_string_period+'</th>'+
-									'<th>kWh</th>'+
-									'<th>€</th>'+
+									'<th>°C</th>'+
+									'<th>%</th>'+
 									'<th>kgCO2</th>'+
 								'</tr>'+
 							'</thead>'+
 							'<tbody>'+
 								'<tr>'+
 									'<td>'+localized_string_period_day+'</td>'+
-									'<td>---</td>'+
-									'<td>---</td>'+
+									'<td id="day-temp">---</td>'+
+									'<td id="day-humi">---</td>'+
 									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
 									'<td>'+localized_string_period_week+'</td>'+
-									'<td>---</td>'+
-									'<td>---</td>'+
+									'<td id="week-temp">---</td>'+
+									'<td id="week-humi">---</td>'+
 									'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
@@ -173,7 +224,7 @@ export default class UserHeatingView extends View {
 			});
 			
 			this.handleErrorMessages(this.FELID);
-			
+			this.updateLatestValues();
 			this.rendered = true;
 			
 		} else {

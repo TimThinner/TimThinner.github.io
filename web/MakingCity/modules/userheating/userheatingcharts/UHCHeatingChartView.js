@@ -57,6 +57,32 @@ export default class UHCHeatingChartView extends View {
 		});
 	}
 	
+	appendAverage() {
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_average = LM['translation'][sel]['USER_HEATING_CHART_AVERAGE'];
+		
+		const values = this.models['UserHeatingALLModel'].values;
+		if (Array.isArray(values) && values.length > 0) {
+			let sum_temp = 0;
+			let sum_humi = 0;
+			values.forEach(v => {
+				sum_temp += v.temperature;
+				sum_humi += v.humidity;
+			});
+			const ave_temp = sum_temp/values.length;
+			const ave_humi = sum_humi/values.length;
+			
+			const html = '<p>'+localized_string_average+': <span style="color:#f00">'+ave_temp.toFixed(1)+' °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff">'+ave_humi.toFixed(1)+' %</span></p>';
+			$('#uhc-heating-average').empty().append(html);
+		} else {
+			const html = '<p>'+localized_string_average+': <span style="color:#f00">- °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff"> - %</span></p>';
+			$('#uhc-heating-average').empty().append(html);
+		}
+	}
+	
+	
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
@@ -69,6 +95,7 @@ export default class UHCHeatingChartView extends View {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								s.data = self.models['UserHeatingALLModel'].values;
 							});
+							this.appendAverage();
 							
 						} else {
 							console.log('fetched ..... render UHCHeatingChartView()');
@@ -298,6 +325,8 @@ export default class UHCHeatingChartView extends View {
 			}*/
 			console.log('UWC HEATING RENDER CHART END =====================');
 		}); // end am4core.ready()
+		
+		this.appendAverage();
 	}
 	
 	
@@ -327,10 +356,7 @@ export default class UHCHeatingChartView extends View {
 					'</div>'+
 					*/
 					'<div id="uhc-heating-chart" class="medium-chart"></div>'+
-					
-					
-					//'<div id="uhc-heating-total"></div>'+
-					
+					'<div id="uhc-heating-average"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

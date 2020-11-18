@@ -73,7 +73,7 @@ class MasterController {
 					refToUser: options.id,
 					eventType: 'Logout'
 				}
-				lm.addToLog(data);
+				lm.addToLog(data, options.token);
 			}
 			
 		} else if (options.model==='UserModel' && options.method==='logout') {

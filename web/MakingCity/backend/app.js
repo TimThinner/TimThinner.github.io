@@ -12,6 +12,7 @@ const bindingsRoutes = require('./api/routes/bindings');
 const apartmentsRoutes = require('./api/routes/apartments');
 const logsRoutes = require('./api/routes/logs');
 const visitorcountRoutes = require('./api/routes/visitorcounts');
+const feedbackRoutes = require('./api/routes/feedbacks');
 
 mongoose.connect('mongodb://localhost:27017/makingcity', {
 	useNewUrlParser: true,
@@ -54,7 +55,7 @@ app.use('/bindings', bindingsRoutes);
 app.use('/apartments', apartmentsRoutes);
 app.use('/logs', logsRoutes);
 app.use('/visitorcounts', visitorcountRoutes);
-
+app.use('/feedbacks', feedbackRoutes);
 
 // If we reach this line we have to report an error.
 app.use((req,res,next)=>{

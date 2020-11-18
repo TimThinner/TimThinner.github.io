@@ -122,7 +122,7 @@ export default class UserModel extends Model {
 		// Before resetting (id, email, token, ...), we might want to do something...
 		// like logging "Logout" for current user.
 		// NOTE: NO setTimeout, we need this to happen now!
-		this.notifyAll({model:'UserModel',method:'before-logout',id:this.id});
+		this.notifyAll({model:'UserModel',method:'before-logout',id:this.id,token:this.token});
 		
 		this.reset();
 		this.store();

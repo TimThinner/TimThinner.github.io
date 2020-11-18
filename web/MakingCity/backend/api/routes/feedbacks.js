@@ -4,24 +4,26 @@ const mongoose = require('mongoose');
 
 const checkAuth = require('../middleware/check-auth');
 
-const Log = require('../models/log');
+const Feedback = require('../models/feedback');
 /*
-	Get all logs.
+	Get all feedback for current user.
 */
 router.get('/', checkAuth, (req,res,next)=>{
-	Log.find()
-		.select('_id userId eventType created')
-		.populate('userId')
+	
+	Feedback.find({_id:req.userData['userId']}) // Current User
+		.select('_id userId feedbackType created feedback')
+		//.populate('userId')
 		.exec()
 		.then(docs=>{
 			res.status(200).json({
 				count: docs.length,
-				logs: docs.map(doc=>{
+				feedbacks: docs.map(doc=>{
 					return {
 						_id: doc._id,
 						userId: doc.userId,
-						eventType: doc.eventType,
-						created: doc.created
+						feedbackType: doc.feedbackType,
+						created: doc.created,
+						feedback: doc.feedback
 					}
 				})
 			});
@@ -30,32 +32,32 @@ router.get('/', checkAuth, (req,res,next)=>{
 			res.status(500).json({error: err});
 		});
 });
-
 /*
 	PARAMETERS:
-	req.body.refToUser:
-	req.body.eventType: 'Logout'
-	
-	NOTE: 'Login' is now submitted directly from "users/login" route. No need to POST via this API.
+	req.body.refToUser
+	req.body.feedbackType
+	req.body.feedback
 */
 router.post("/", checkAuth, (req,res,next)=>{
 	
 	const refToUser = req.body.refToUser;
-	const et = req.body.eventType;
+	const fbType = req.body.feedbackType;
+	const fb = req.body.feedback;
 	
-	const logEntry = new Log({
+	const entry = new Feedback({
 		_id: new mongoose.Types.ObjectId(),
 		userId: refToUser,
-		eventType: et
+		feedbackType: fbType,
+		feedback: fb
 	});
-	logEntry
+	entry
 		.save()
 		.then(result=>{
-			const msg = et+' logged';
+			const msg = 'Feedback submitted OK';
 			res.status(200).json({message:msg});
 		})
 		.catch(err=>{
-			const msg = et+' NOT logged';
+			const msg = 'Feedback ERROR';
 			console.log(msg);
 			res.status(500).json({error:err});
 		});

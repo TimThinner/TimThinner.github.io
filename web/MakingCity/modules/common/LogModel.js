@@ -6,7 +6,7 @@ export default class LogModel extends Model {
 		super(options);
 	}
 	
-	addToLog(data) {
+	addToLog(data, token) {
 		const self = this;
 		if (this.MOCKUP) {
 			
@@ -14,7 +14,21 @@ export default class LogModel extends Model {
 			setTimeout(() => this.notifyAll({model:'LogModel',method:'addToLog',status:200,message:msg}), 100);
 			
 		} else {
-			let status = 500;
+			// Add authorizatoin headers to this call.
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+token;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myPost = {
+				method: 'POST',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const url = this.mongoBackend + '/logs/';
+			const myRequest = new Request(url, myPost);
+			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+			/*
 			const url = this.mongoBackend + '/logs/';
 			fetch(url, {
 				method: 'POST',
@@ -22,7 +36,8 @@ export default class LogModel extends Model {
 				headers:{
 					'Content-Type': 'application/json'
 				}
-			})
+			})*/
+			fetch(myRequest)
 			.then(function(response) {
 				status = response.status;
 				return response.json();

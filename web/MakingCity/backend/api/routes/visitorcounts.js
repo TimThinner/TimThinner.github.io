@@ -6,6 +6,27 @@ const Visitorcount = require('../models/visitorcount');
 
 router.get('/', (req,res,next)=>{
 	Visitorcount.find()
+		.select('_id created')
+		.exec()
+		.then(docs=>{
+			res.status(200).json({
+				count: docs.length,
+				list: docs.map(doc=>{
+					return {
+						_id: doc._id,
+						created: doc.created
+					}
+				})
+			});
+		})
+		.catch(err=>{
+			res.status(500).json({error: err});
+		});
+});
+
+/*
+router.get('/', (req,res,next)=>{
+	Visitorcount.find()
 		.select('_id count')
 		.exec()
 		.then(vc=>{
@@ -25,7 +46,27 @@ router.get('/', (req,res,next)=>{
 			res.status(500).json({error: err});
 		});
 });
+*/
 
+router.post("/", (req,res,next)=>{
+	
+	const vc = new Visitorcount({
+		_id: new mongoose.Types.ObjectId()
+	});
+	vc.save()
+		.then(result=>{
+			const msg = 'OK';
+			res.status(200).json({message:msg});
+		})
+		.catch(err=>{
+			if (typeof err.message !== 'undefined') {
+				console.log(err.message);
+			}
+			res.status(500).json({error:err});
+		});
+});
+
+/*
 router.post("/", (req,res,next)=>{
 	Visitorcount.find()
 		.select('_id count')
@@ -71,5 +112,6 @@ router.post("/", (req,res,next)=>{
 			res.status(500).json({error: err});
 		});
 });
+*/
 
 module.exports = router;

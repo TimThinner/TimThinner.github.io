@@ -13,15 +13,18 @@ Almost all backend API calls are verified with JSON Web Token (JWT) [4] to prote
 The JWT is created at server and sent to client during successful login. Client stores and uses it in following communication between client and server.
 
 At login the token is created. It is valid for 24 hours:
-    const token = jwt.sign(
-     {
-      email:user[0].email,
-      userId: user[0]._id
-     },
-     process.env.JWT_KEY,
-     {
-      expiresIn: "24h"
-     }
+
+
+const token = jwt.sign(
+  {
+    email:user[0].email,
+    userId: user[0]._id
+  },
+  process.env.JWT_KEY,
+  {
+    expiresIn: "24h"
+  }
+)
 
 
 References
@@ -34,6 +37,7 @@ References
 
 
 Middleware function "checkAuth" is called first to verify and decode the user data encoded into token.
+
 ----------------------------------|---------------------------|------------------------|-----------------------------------
   DESCRIPTION                     |  PARAMS                   |  SUCCESS               |  ERROR
 ----------------------------------|---------------------------|------------------------|-----------------------------------
@@ -101,6 +105,7 @@ startdate              Date
 enddate                Date
 
 Regcode routes:
+
 ---------------------------|---------------------------------|---------------------------|------------------------------------------|------------------------------------
   ROUTE                    |  DESCRIPTION                    |  PARAMS                   |  SUCCESS                                 |  ERROR
 ---------------------------|---------------------------------|---------------------------|------------------------------------------|------------------------------------
@@ -129,6 +134,7 @@ startdate              Date
 enddate                Date
 
 Readkey routes:
+
 ---------------------------|-----------------------------------|---------------------------|----------------------------------------|------------------------------------
   ROUTE                    |  DESCRIPTION                      |  PARAMS                   |  SUCCESS                               |  ERROR
 ---------------------------|-----------------------------------|---------------------------|----------------------------------------|------------------------------------
@@ -143,11 +149,17 @@ PUT '/readkeys/:readkeyId' | Update READKEY startdate and      | req.headers.aut
                            | Uses checkAuth middleware.        | req.body.startdate        |                                        |
                            | For ADMIN usage                   | req.body.enddate          |                                        |
 ---------------------------|-----------------------------------|---------------------------|----------------------------------------|------------------------------------
+
+
+
 NOTE that there is no API-call to create a READKEY. This is because READKEY is automatically created when the USER registers (at signup).
 The READKEY is the MongoDB ObjectId of the Readkey model (_id), 12-byte hexadecimal string, for example: "5f75d08b251f6e38b8a6a736".
 
 
+
+
 Bindings routes:
+
 ------------------------|-----------------------------------|---------------------------|-------------------------------------|------------------------------------
   ROUTE                 |  DESCRIPTION                      |  PARAMS                   |  SUCCESS                            |  ERROR
 ------------------------|-----------------------------------|---------------------------|-------------------------------------|------------------------------------
@@ -159,8 +171,9 @@ GET '/bindings'         | Get a list of all BINDINGS.       | req.headers.author
                         |       populate('readkey')         |                           |                                     |
                         | For SERVER usage                  |                           |                                     |
 ------------------------|-----------------------------------|---------------------------|-------------------------------------|------------------------------------
+
 NOTE: Return ONLY those bindings that have a readkey and apartmentId and have a valid readkey (now is between startdate and enddate).
-Here is an example of RESPONSE: {"bindings":[{"apartmentId":"123","readkey":"5f75d08b251f6e38b8a6a736"},{"apartmentId":"333ded","readkey":"5f8589ff1e6aae446ca9443a"}]}
+Here is an example of RESPONSE: { "bindings" : [ { "apartmentId" : "123", "readkey" : "5f75d08b251f6e38b8a6a736" }, { "apartmentId" : "333ded", "readkey" : "5f8589ff1e6aae446ca9443a" } ] }
 
 
 Following two routes ('/apartments' and '/feeds') just re-route the request URL adding Authorization into call.
@@ -187,6 +200,8 @@ POST '/feeds'         | Fetch data from S-Market.           | req.headers.author
                       | Make a HTTPS GET with given params. | req.body.url              |                                     | status 500 {error: err}
                       | Uses checkAuth middleware.          |                           |                                     | 
 ----------------------|-------------------------------------|---------------------------|-------------------------------------|------------------------------------
+
+
 NOTE: There are 3 different types of calls to S-Market data:
 1. GET backend + '/' + 'data/arina/iss/status'
   - Returns latest status (JSON) for all meterId's, it is an array of objects, for example:
@@ -240,7 +255,8 @@ In our case Models are Subjects, which call notify()-method on Views (or Control
 
 Scalable Vector Graphics (SVG) [5] is used extensively in 
 In the heart of Making City UI 
-MENU, User Page, PED page, S-Market, Sivakka 1, ... 
+MENU, User Page, PED page, S-Market, Sivakka 1,2,3 YIT 1 
+8 pages SVG
 
 Scalable Vector Graphics (SVG) [5] is an Extensible Markup Language (XML)-based vector image format for two-dimensional graphics with support for interactivity and animation. The SVG specification is an open standard developed by the World Wide Web Consortium (W3C) since 1999. 
 

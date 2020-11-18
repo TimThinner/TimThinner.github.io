@@ -37,6 +37,12 @@
 	font-size: 28px;
 	fill: #aaa;
 }
+.visitor-info {
+	opacity: 0.75;
+	font-family: "Arial, Helvetica, sans-serif";
+	font-size: 28px;
+	fill: #aaa;
+}
 </style>
 <defs>
 	<radialGradient id="grad" cx="50%" cy="50%" r="100%">
@@ -169,5 +175,10 @@ third  = #1fac78
 <rect x="278" y="308" width="84" height="84" style="stroke:#1fac78;stroke-width:2px;fill:none;" />
 <image id="project" class="active-district" x="280" y="310" width="80" height="80" xlink:href="MC.png" />
 <image x="380" y="315" width="104.92" height="70" xlink:href="640px-Flag_of_Europe.svg.png" />
+
+<svg x="-150" y="360" width="300px" height="32px">
+	<!--<rect x="1" y="1" width="298" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="visitors" class="visitor-info"></text>
+</svg>
 
 </svg>

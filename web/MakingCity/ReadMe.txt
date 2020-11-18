@@ -4,7 +4,7 @@ MasterController keeps track of ALL controllers and Models in the SYSTEM.
 It has two instance properties to do that:
 	this.controllers = {};
 	this.modelRepo = new ModelRepo();
-The ModelRepo is just a collection of (key, value) pairs, such that each possible key appears at most once in the collection.
+The ModelRepo is just a collection of (key, value) pairs, such that each key can appear only once in the collection.
 
 
 First the MasterController creates all controllers and adds them to its controllers hash, for example:
@@ -119,6 +119,8 @@ DALandscape.svg			"1800"	"900"		"0 0 1800 900"
 DASquare.svg			"1000"	"900"		"0 0 1000 900"
 DAPortrait.svg			"600"	"900"		"0 0 600 900"
 
+
+
 svg width="1000" height="900" 900 = x/100 * 1000 => x = 90000/1000 = 90
 svg width="1800" height="900" 900 = x/100 * 1800 => x = 90000/1800 = 50
 svg width="600" height="900"  900 = x/100 * 600 => x = 90000/600 = 150
@@ -129,6 +131,23 @@ https://developers.google.com/web/fundamentals/design-and-ux/input/touch
 How to Scale SVG 
 https://css-tricks.com/scale-svg/
 
+
+
+----------------------|-------|--------|--------------------
+SVG file              | width | height |  viewBox
+----------------------|-------|--------|--------------------
+menuLandscape.svg     | 1800  |   900  | -900 -500 1800 900
+menuSquare.svg        | 1000  |   900  | -500 -500 1000 900
+menuPortrait.svg      |  600  |   900  | -300 -500  600 900
+UserPageLandscape.svg | 1800  |   900  | -900 -500 1800 900
+UserPageSquare.svg    | 1000  |   900  | -500 -500 1000 900
+UserPagePortrait.svg  |  600  |   900  | -300 -500  600 900
+DLandscape.svg        | 1800  |   900  |    0    0 1800 900
+DSquare.svg           | 1000  |   900  |    0    0 1000 900
+DPortrait.svg         |  600  |   900  |    0    0  600 900
+DALandscape.svg       | 1800  |   900  |    0    0 1800 900
+DASquare.svg          | 1000  |   900  |    0    0 1000 900
+DAPortrait.svg        |  600  |   900  |    0    0  600 900
 
 
 

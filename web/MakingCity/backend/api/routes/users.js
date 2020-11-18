@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const checkAuth = require('../middleware/check-auth');
 
 const User = require('../models/user');
+const Log = require('../models/log');
 const Regcode = require('../models/regcode');
 const Readkey = require('../models/readkey');
 /*
@@ -301,12 +302,25 @@ router.post("/login", (req,res,next)=>{
 						}
 					)
 					const rkey = user[0].readkey ? user[0].readkey._id : undefined;
-					//const rkey_startdate = user[0].readkey ? user[0].readkey.startdate : undefined;
-					//const rkey_enddate = user[0].readkey ? user[0].readkey.enddate : undefined;
 					
 					const pem = user[0].price_energy_monthly ? user[0].price_energy_monthly : 0;
 					const peb = user[0].price_energy_basic ? user[0].price_energy_basic : 0;
 					const pet = user[0].price_energy_transfer ? user[0].price_energy_transfer : 0;
+					
+					// LOG this login.
+					const logEntry = new Log({
+						_id: new mongoose.Types.ObjectId(),
+						userId: user[0]._id, // Ref to User
+						eventType: 'Login'
+					});
+					logEntry
+						.save()
+						.then(result=>{
+							console.log('LOG Login saved!');
+						})
+						.catch(err=>{
+							console.log(['LOG Login err=',err]);
+						});
 					
 					return res.status(200).json({
 						message: 'Auth successful',
@@ -317,8 +331,6 @@ router.post("/login", (req,res,next)=>{
 						price_energy_monthly: pem,
 						price_energy_basic: peb,
 						price_energy_transfer: pet,
-						//readkeystartdate: rkey_startdate,
-						//readkeyenddate: rkey_enddate,
 						is_superuser: user[0].is_superuser
 					});
 				}

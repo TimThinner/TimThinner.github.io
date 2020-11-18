@@ -21,6 +21,11 @@ export default class MenuView extends View {
 		});
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
+		
+		this.VCM = this.controller.master.modelRepo.get('VisitorCountModel');
+		this.VCM.subscribe(this);
+		
+		
 		this.rendered = false;
 	}
 	
@@ -38,8 +43,20 @@ export default class MenuView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
+		this.VCM.unsubscribe(this);
+		
 		this.rendered = false;
 		$(this.el).empty();
+	}
+	
+	insertVisitorCount(count) {
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const LM = this.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
+			const localized_visit_count = LM['translation'][sel]['MENU_VISIT_COUNT'];
+			this.fillSVGTextElement(svgObject, 'visitors', localized_visit_count+': '+count);
+		}
 	}
 	
 	notify(options) {
@@ -47,6 +64,12 @@ export default class MenuView extends View {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				console.log("MenuView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
+			} else if (options.model==='VisitorCountModel' && options.method==='get') {
+				
+				if (options.status === 200) {
+					this.insertVisitorCount(options.count);
+				}
+				
 			}
 		}
 	}
@@ -354,7 +377,7 @@ export default class MenuView extends View {
 							lang_fi_bg.style.fill = '#fff'; // Set fill to #fff
 						}
 						LM.selected = 'fi';
-						//self.localizeSVGTexts();
+						self.localizeSVGTexts();
 					}
 				}, false);
 			}
@@ -372,7 +395,7 @@ export default class MenuView extends View {
 							lang_en_bg.style.fill = '#fff'; // Set fill to #fff
 						}
 						LM.selected = 'en';
-						//self.localizeSVGTexts();
+						self.localizeSVGTexts();
 					}
 				}, false);
 			}
@@ -459,6 +482,10 @@ These are filled with correct values in here:
 			}
 			const localized_version = LM['translation'][sel]['MENU_VERSION'];
 			this.fillSVGTextElement(svgObject, 'version', localized_version+mode);
+			
+			
+			// AND get count from database and trigger notify when ready.
+			this.controller.master.modelRepo.get('VisitorCountModel').get();
 		}
 	}
 	

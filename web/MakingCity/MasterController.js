@@ -1,6 +1,8 @@
 import ModelRepo from './modules/common/ModelRepo.js';
 import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import LanguageModel from './modules/common/LanguageModel.js';
+import LogModel from './modules/common/LogModel.js';
+import VisitorCountModel from './modules/common/VisitorCountModel.js';
 import UserModel from './modules/user/UserModel.js';
 
 import MenuController from './modules/menu/MenuController.js';
@@ -60,21 +62,32 @@ class MasterController {
 	*/
 	notify(options) {
 		//console.log(['MasterController NOTIFY: model=',options.model,' method=',options.method]);
-		if (options.model==='UserModel' && options.method==='logout') {
+		
+		
+		if (options.model==='UserModel' && options.method==='before-logout') {
+			//console.log('MasterController BEFORE-LOGOUT!');
+			// Log the LOGOUT
+			const lm = this.modelRepo.get('LogModel');
+			if (lm) {
+				const data = {
+					refToUser: options.id,
+					eventType: 'Logout'
+				}
+				lm.addToLog(data);
+			}
 			
-			console.log('MasterController LOGOUT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+		} else if (options.model==='UserModel' && options.method==='logout') {
 			
+			console.log('MasterController LOGOUT!');
 			const mm = this.modelRepo.get('MenuModel');
 			if (mm) {
 				mm.setSelected('menu');
 			}
-			
 			Object.keys(this.controllers).forEach(key => {
 				this.controllers[key].clean();
 			});
+			
 		} else if (options.model==='UserModel' && options.method==='login') {
-			
-			
 			
 			console.log('MasterController LOGIN !!!!');
 			
@@ -90,6 +103,17 @@ class MasterController {
 		
 		const LM = new LanguageModel();
 		this.modelRepo.add('LanguageModel',LM);
+		
+		const LOGM = new LogModel({name:'LogModel',src:''});
+		//LOGM.subscribe(this); // Now we will receive notifications from the LogModel.
+		this.modelRepo.add('LogModel',LOGM);
+		
+		// NOTE: Visit count is incremented when MasterController initializes.
+		const VCM = new VisitorCountModel({name:'VisitorCountModel',src:''});
+		//VCM.subscribe(this); // Now we will receive notifications from the VisitorCountModel.
+		this.modelRepo.add('VisitorCountModel',VCM);
+		VCM.inc();
+		
 		
 		const UM = new UserModel({name:'UserModel',src:'user'});
 		UM.subscribe(this); // Now we will receive notifications from the UserModel.

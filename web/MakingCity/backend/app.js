@@ -10,6 +10,8 @@ const regcodesRoutes = require('./api/routes/regcodes');
 const readkeysRoutes = require('./api/routes/readkeys');
 const bindingsRoutes = require('./api/routes/bindings');
 const apartmentsRoutes = require('./api/routes/apartments');
+const logsRoutes = require('./api/routes/logs');
+const visitorcountRoutes = require('./api/routes/visitorcounts');
 
 mongoose.connect('mongodb://localhost:27017/makingcity', {
 	useNewUrlParser: true,
@@ -50,6 +52,9 @@ app.use('/regcodes', regcodesRoutes);
 app.use('/readkeys', readkeysRoutes);
 app.use('/bindings', bindingsRoutes);
 app.use('/apartments', apartmentsRoutes);
+app.use('/logs', logsRoutes);
+app.use('/visitorcounts', visitorcountRoutes);
+
 
 // If we reach this line we have to report an error.
 app.use((req,res,next)=>{

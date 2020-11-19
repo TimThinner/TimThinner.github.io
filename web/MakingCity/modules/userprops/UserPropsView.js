@@ -95,6 +95,11 @@ export default class UserPropsView extends View {
 	}
 	
 	notify(options) {
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_price_saved_ok = LM['translation'][sel]['USER_ENERGY_PRICE_SAVED_OK'];
+		
 		if (this.controller.visible) {
 			if (options.model==='UserPropsModel' && options.method==='fetched') {
 				if (options.status === 200) {
@@ -124,8 +129,8 @@ export default class UserPropsView extends View {
 			} else if (options.model==='UserModel' && options.method==='updateEnergyPrices') {
 				if (options.status === 200) {
 					
-					// Show Toast: Saved OK!
-					//M.toast({displayLength:1000, html: 'Energy Prices SAVED OK!'});
+					// Show Toast: Energy Prices SAVED OK!
+					M.toast({displayLength:1000, html: localized_string_price_saved_ok});
 					
 					$('#energy-'+options.type+'-price-edit-placeholder').empty();
 					

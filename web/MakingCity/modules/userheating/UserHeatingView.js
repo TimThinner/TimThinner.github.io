@@ -11,7 +11,7 @@ export default class UserHeatingView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserHeatingWeekModel') {
+			if (key === 'UserHeatingWeekModel'||key==='FeedbackModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -96,19 +96,40 @@ export default class UserHeatingView extends View {
 		}
 	}
 	
+	resetAllSmileys() {
+		for (let i=1; i<6; i++) {
+			$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'.png');
+		}
+	}
+	
 	notify(options) {
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_feedback_ok = LM['translation'][sel]['USER_HEATING_FEEDBACK_OK'];
+		
 		if (this.controller.visible) {
-			if (options.model==='UserHeatingWeekModel') {
-				if (options.method==='fetched') {
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
-						if (options.status === 200) {
-							this.updateLatestValues();
-						}
-					} else {
-						this.render();
+			if (options.model==='UserHeatingWeekModel' && options.method==='fetched') {
+				if (this.rendered) {
+					$('#'+this.FELID).empty();
+					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
+					if (options.status === 200) {
+						this.updateLatestValues();
 					}
+				} else {
+					this.render();
+				}
+			} else if (options.model==='FeedbackModel' && options.method==='send') {
+				if (options.status === 200) {
+					// const msg = 'Feedback submitted OK';
+					// Show Toast: Saved OK!
+					M.toast({displayLength:1000, html: localized_string_feedback_ok});
+					
+					// Now let's clear the Feedback input!
+					
+					this.resetAllSmileys();
+					$('#submit-feedback').removeClass('teal lighten-1');
+					$('#submit-feedback').addClass('disabled');
 				}
 			}
 		}
@@ -128,6 +149,7 @@ export default class UserHeatingView extends View {
 			const localized_string_period_day = LM['translation'][sel]['USER_DATA_PERIOD_DAY']; //'24h'
 			const localized_string_period_week = LM['translation'][sel]['USER_DATA_PERIOD_WEEK']; //'Week'
 			const localized_string_period_month = LM['translation'][sel]['USER_DATA_PERIOD_MONTH']; // 'Month'
+			const localized_string_send_feedback = LM['translation'][sel]['USER_HEATING_SEND_FEEDBACK'];
 			
 			const html =
 				'<div class="row">'+
@@ -136,11 +158,19 @@ export default class UserHeatingView extends View {
 						'<p style="text-align:center;"><img src="./svg/userpage/radiator.svg" height="80"/></p>'+
 						'<p style="text-align:center;">'+localized_string_description+'</p>'+
 					'</div>'+
-					
 					'<div class="col s12 center">'+
-						'<p style="text-align:center;"><img src="./svg/userpage/SmileyHappy.svg" height="60"/></p>'+
+						//'<p style="text-align:center;"><img src="./svg/userpage/SmileyHappy.svg" height="60"/></p>'+
+						'<a href="javascript:void(0);" id="fb-smiley-1" class="feedback-smiley"><img src="./img/UX_F2F_faces-1.png" height="60"/></a>'+
+						'<a href="javascript:void(0);" id="fb-smiley-2" class="feedback-smiley"><img src="./img/UX_F2F_faces-2.png" height="60"/></a>'+
+						'<a href="javascript:void(0);" id="fb-smiley-3" class="feedback-smiley"><img src="./img/UX_F2F_faces-3.png" height="60"/></a>'+
+						'<a href="javascript:void(0);" id="fb-smiley-4" class="feedback-smiley"><img src="./img/UX_F2F_faces-4.png" height="60"/></a>'+
+						'<a href="javascript:void(0);" id="fb-smiley-5" class="feedback-smiley"><img src="./img/UX_F2F_faces-5.png" height="60"/></a>'+
 					'</div>'+
-					
+					'<div class="col s12 center" style="margin-top:16px;margin-bottom:16px;">'+
+						'<button class="btn waves-effect waves-light disabled" id="submit-feedback">'+localized_string_send_feedback+
+							//'<i class="material-icons">send</i>'+
+						'</button>'+
+					'</div>'+
 					'<div class="col s12" style="background-color:#fff">'+
 						'<table class="centered striped">'+
 							'<thead>'+
@@ -206,6 +236,28 @@ export default class UserHeatingView extends View {
 				()=>{this.menuModel.setSelected('USERELECTRICITY');}
 			);
 			
+			// Smileys act like radio buttons, only one can be selected at any one time.
+			// The last selection is shown. Can user just de-select?
+			for (let i=1; i<6; i++) {
+				$('#fb-smiley-'+i).on('click',function() {
+					// If this smiley was already "selected" => de-select it and disable submit-feedback -button.
+					const src = $('#fb-smiley-'+i+' > img').attr('src');
+					const ind = src.indexOf('-grey');
+					if (ind > 0) {
+						// User has de-selected Smiley.
+						self.resetAllSmileys();
+						$('#submit-feedback').removeClass('teal lighten-1');
+						$('#submit-feedback').addClass('disabled');
+					} else {
+						// New selection
+						self.resetAllSmileys();
+						$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'-grey.png');
+						$('#submit-feedback').removeClass('disabled');
+						$('#submit-feedback').addClass('teal lighten-1');
+					}
+				});
+			}
+			
 			$('#view-charts').on('click',function() {
 				//console.log('VIEW CHARTS!');
 				self.menuModel.setSelected('USERHEATINGCHARTS');
@@ -219,8 +271,39 @@ export default class UserHeatingView extends View {
 				self.menuModel.setSelected('USERHEATINGCOMPENSATE');
 			});
 			
+			
+			// 'UX_F2F_faces-1.png'
+			// 'UX_F2F_faces-1-grey.png'
+			
+			$('#submit-feedback').on('click',function() {
+				for (let i=1; i<6; i++) {
+					const src = $('#fb-smiley-'+i+' > img').attr('src');
+					const ind = src.indexOf('-grey');
+					if (ind > 0) {
+						// SELECTED (1...5)!
+						const selected = parseInt(src.slice(ind-1,ind),10);
+						// FeedbackModel send (data, token) 
+							//const refToUser = req.body.refToUser;
+							//const fbType = req.body.feedbackType;
+							//const fb = req.body.feedback;
+						const UM = self.controller.master.modelRepo.get('UserModel');
+						if (UM) {
+							
+							console.log(['Sending Feedback ',selected]);
+							const data = {
+								refToUser: UM.id, // UserModel id
+								feedbackType: 'Heating',
+								feedback: selected
+							}
+							self.models['FeedbackModel'].send(data, UM.token); // see notify for the response...
+						}
+					}
+				}
+			});
+			
 			$('#back').on('click',function() {
 				self.menuModel.setSelected('USERPAGE');
+				
 			});
 			
 			this.handleErrorMessages(this.FELID);

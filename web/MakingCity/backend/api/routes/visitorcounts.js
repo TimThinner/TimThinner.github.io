@@ -10,13 +10,13 @@ router.get('/', (req,res,next)=>{
 		.exec()
 		.then(docs=>{
 			res.status(200).json({
-				count: docs.length,
-				list: docs.map(doc=>{
+				count: docs.length
+				/*list: docs.map(doc=>{
 					return {
 						_id: doc._id,
 						created: doc.created
 					}
-				})
+				})*/
 			});
 		})
 		.catch(err=>{

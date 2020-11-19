@@ -59,12 +59,12 @@ export default class FeedbackModel extends Model {
 		}
 	}
 	
-	addFeedback(data, token) {
+	send(data, token) {
 		const self = this;
 		if (this.MOCKUP) {
 			
 			const msg = 'Feedback submitted OK';
-			setTimeout(() => this.notifyAll({model:'FeedbackModel',method:'addFeedback',status:200,message:msg}), 100);
+			setTimeout(() => this.notifyAll({model:'FeedbackModel',method:'send',status:200,message:msg}), 100);
 			
 		} else {
 			// Add authorizatoin headers to this call.
@@ -88,10 +88,10 @@ export default class FeedbackModel extends Model {
 				})
 				.then(function(myJson) {
 					const message = myJson.message;
-					self.notifyAll({model:'FeedbackModel',method:'addFeedback',status:status,message:message});
+					self.notifyAll({model:'FeedbackModel',method:'send',status:status,message:message});
 				})
 				.catch(function(error) {
-					self.notifyAll({model:'FeedbackModel',method:'addFeedback',status:status,message:error});
+					self.notifyAll({model:'FeedbackModel',method:'send',status:status,message:error});
 				});
 		}
 	}

@@ -145,10 +145,11 @@ export default class UserHeatingView extends View {
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			const localized_string_title = LM['translation'][sel]['USER_HEATING_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_HEATING_DESCRIPTION'];
-			const localized_string_period = LM['translation'][sel]['USER_DATA_PERIOD']; // 'Period'
-			const localized_string_period_day = LM['translation'][sel]['USER_DATA_PERIOD_DAY']; //'24h'
-			const localized_string_period_week = LM['translation'][sel]['USER_DATA_PERIOD_WEEK']; //'Week'
-			const localized_string_period_month = LM['translation'][sel]['USER_DATA_PERIOD_MONTH']; // 'Month'
+			const localized_string_period = LM['translation'][sel]['USER_DATA_PERIOD'];
+			const localized_string_period_day = LM['translation'][sel]['USER_DATA_PERIOD_DAY'];
+			const localized_string_period_week = LM['translation'][sel]['USER_DATA_PERIOD_WEEK'];
+			const localized_string_period_month = LM['translation'][sel]['USER_DATA_PERIOD_MONTH'];
+			const localized_string_feedback_prompt = LM['translation'][sel]['USER_HEATING_FEEDBACK_PROMPT'];
 			const localized_string_send_feedback = LM['translation'][sel]['USER_HEATING_SEND_FEEDBACK'];
 			
 			const html =
@@ -159,6 +160,7 @@ export default class UserHeatingView extends View {
 						'<p style="text-align:center;">'+localized_string_description+'</p>'+
 					'</div>'+
 					'<div class="col s12 center">'+
+						'<p style="text-align:center;">'+localized_string_feedback_prompt+'</p>'+
 						//'<p style="text-align:center;"><img src="./svg/userpage/SmileyHappy.svg" height="60"/></p>'+
 						'<a href="javascript:void(0);" id="fb-smiley-1" class="feedback-smiley"><img src="./img/UX_F2F_faces-1.png" height="60"/></a>'+
 						'<a href="javascript:void(0);" id="fb-smiley-2" class="feedback-smiley"><img src="./img/UX_F2F_faces-2.png" height="60"/></a>'+

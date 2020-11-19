@@ -150,10 +150,100 @@ PUT '/readkeys/:readkeyId' | Update READKEY startdate and      | req.headers.aut
                            | For ADMIN usage                   | req.body.enddate          |                                        |
 ---------------------------|-----------------------------------|---------------------------|----------------------------------------|------------------------------------
 
-
-
 NOTE that there is no API-call to create a READKEY. This is because READKEY is automatically created when the USER registers (at signup).
 The READKEY is the MongoDB ObjectId of the Readkey model (_id), 12-byte hexadecimal string, for example: "5f75d08b251f6e38b8a6a736".
+
+
+Feedback routes:
+
+------------------|-----------------------------------|---------------------------|-----------------------------------|-----------------------------------
+  ROUTE           |  DESCRIPTION                      |  PARAMS                   |  SUCCESS                          |  ERROR
+------------------|-----------------------------------|---------------------------|-----------------------------------|-----------------------------------
+GET '/feedbacks'  | Get a list of all FEEDBACKS for   | req.headers.authorization | status 200 {                      | status 401 {message:'Auth failed'}
+                  | current user.                     |                           |   count:...,                      | status 500 {error: err}
+                  | Uses checkAuth middleware.        |                           |   feedbacks:[...]                 |
+                  |   select('_id userId feedbackType |                           | }                                 |
+                  |     created feedback')            |                           |                                   |
+                  |                                   |                           |                                   |
+------------------|-----------------------------------|---------------------------|-----------------------------------|-----------------------------------
+POST '/feedbacks' | Create and save a new FEEDBACK.   | req.headers.authorization | status 200 {                      | status 401 {message:'Auth failed'}
+                  | Uses checkAuth middleware.        | req.body.refToUser        |   message:'Feedback submitted OK' | status 500 {error: err}
+                  |                                   | req.body.feedbackType     | }                                 |
+                  |                                   | req.body.feedback         |                                   |
+------------------|-----------------------------------|---------------------------|-----------------------------------|-----------------------------------
+
+
+
+Log routes:
+
+------------------|-----------------------------------|---------------------------|-----------------------------------|-----------------------------------
+  ROUTE           |  DESCRIPTION                      |  PARAMS                   |  SUCCESS                          |  ERROR
+------------------|-----------------------------------|---------------------------|-----------------------------------|-----------------------------------
+GET '/logs'       | Get a list of all LOGS.           | req.headers.authorization | status 200 {                      | status 401 {message:'Auth failed'}
+                  | Uses checkAuth middleware.        |                           |   count:...,                      | status 500 {error: err}
+                  |   select('_id userId eventType    |                           |   logs: [...]                     |
+                  |     created')                     |                           | }                                 |
+                  |       populate('userId')          |                           |                                   |
+                  | For ADMIN usage                   |                           |                                   |
+------------------|-----------------------------------|---------------------------|-----------------------------------|-----------------------------------
+POST '/logs'      | Create and save a new LOG.        | req.headers.authorization | status 200 {                      | status 401 {message:'Auth failed'}
+                  | Uses checkAuth middleware.        | req.body.refToUser        |   message:'Logout logged'         | status 500 {error: err}
+                  |                                   | req.body.eventType        | }                                 |
+------------------|-----------------------------------|---------------------------|-----------------------------------|-----------------------------------
+
+NOTE: 'Login' is now submitted directly from "users/login" route. No need to POST via this API.
+
+
+
+
+Visitorcount routes:
+
+----------------------|-------------------------------------|-----------------|------------------------------|-----------------------------
+  ROUTE               |  DESCRIPTION                        |  PARAMS         |  SUCCESS                     |  ERROR
+----------------------|-------------------------------------|-----------------|------------------------------|-----------------------------
+GET '/visitorcounts'  | Get a list of all visitorcounts.    |                 | status 200 {                 | status 500 {error: err}
+                      | Uses checkAuth middleware.          |                 |   count: count               |
+                      |   select('_id created')             |                 | }                            |
+                      |                                     |                 |                              |
+----------------------|-------------------------------------|-----------------|------------------------------|-----------------------------
+POST '/visitorcounts' | Create and save a new Visitorcount. |                 | status 200 {                 | status 500 {error: err}
+                      |                                     |                 |   message:'OK'               |
+                      |                                     |                 | }                            |
+----------------------|-------------------------------------|-----------------|------------------------------|-----------------------------
+
+
+
+
+
+
+router.get('/', (req,res,next)=>{
+	Visitorcount.find()
+		.select('_id created')
+		.exec()
+		.then(docs=>{
+			res.status(200).json({
+				count: docs.length
+
+
+
+
+
+router.post("/", (req,res,next)=>{
+	
+	const vc = new Visitorcount({
+		_id: new mongoose.Types.ObjectId()
+	});
+	vc.save()
+		.then(result=>{
+			const msg = 'OK';
+			res.status(200).json({message:msg});
+		})
+		.catch(err=>{
+			if (typeof err.message !== 'undefined') {
+				console.log(err.message);
+			}
+			res.status(500).json({error:err});
+		});
 
 
 

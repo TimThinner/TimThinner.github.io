@@ -215,39 +215,6 @@ POST '/visitorcounts' | Create and save a new Visitorcount. |                 | 
 
 
 
-
-router.get('/', (req,res,next)=>{
-	Visitorcount.find()
-		.select('_id created')
-		.exec()
-		.then(docs=>{
-			res.status(200).json({
-				count: docs.length
-
-
-
-
-
-router.post("/", (req,res,next)=>{
-	
-	const vc = new Visitorcount({
-		_id: new mongoose.Types.ObjectId()
-	});
-	vc.save()
-		.then(result=>{
-			const msg = 'OK';
-			res.status(200).json({message:msg});
-		})
-		.catch(err=>{
-			if (typeof err.message !== 'undefined') {
-				console.log(err.message);
-			}
-			res.status(500).json({error:err});
-		});
-
-
-
-
 Bindings routes:
 
 ------------------------|-----------------------------------|---------------------------|-------------------------------------|------------------------------------
@@ -422,30 +389,40 @@ References
 
 
 MAINPAGE
+
+
 - language selection (fi,en)
 - link to project page
+- visit count
 
-- The User Home Page
-  - User Properties
-    - Energy price
-  - User Apartment Electricity
-    - Consumption (kWh, €, kgCO2) for periods: 24h, Week, Month
-      - Charts         for 1 to 7 days OK
-      - Targets        TODO
-      - Compensate     TODO?
-  - User Apartment Water
-    - Consumption (HOT, COLD, €, kgCO2) for periods: 24h, Week, Month
-      - Charts         for 1 to 7 days OK
-      - Targets        TODO
-      - Compensate     TODO?
-  - User Apartment Heating
-    - Consumption (kWh, €, kgCO2) for periods: 24h, Week, Month
-      - Charts         for 1 to 7 days OK
-      - Targets        TODO
-      - Compensate     TODO?
+- The User
+  - Login form
+  - Signup form
+  
+    - The User Home Page
+      - User Properties
+        - Energy price
+      - User Electricity consumption (Average power and total energy for latest 24h)
+        - Consumption (kWh, €) for periods: 24h, Week, Month
+          - Charts         for 1 to 7 days
+          - Targets        TODO
+          - Compensate     TODO?
+      - User Water consumption (HOT and COLD total latest 24h)
+        - Consumption (HOT, COLD) for periods: 24h, Week, Month
+          - Charts         for 1 to 7 days
+          - Targets        TODO
+          - Compensate     TODO?
+      - User Apartment Heating (Temperature and humidity latest measurement)
+        - Temperature and humidity (one hour averages) for periods: 24h, Week, Month
+          - Charts         for 1 to 7 days
+          - Targets        TODO
+          - Compensate     TODO?
+
 - The Solar Page       TODO
-- The Grid Page        TODO
 - The Environment Page TODO
+- The Grid Page        TODO
+
+
 - PED AREA
   - S-Arina
       - Grid

@@ -58,9 +58,16 @@ export default class CalculatedHeating {
 		});
 	}
 	
+	/*
+		Add test for Target + Upper and Lower limits... now with predefined constant values...
+	*/
 	copyTo(v) {
 		Object.keys(this.heating).forEach(key => {
-			const e = {'time':this.heating[key]['time'],'temperature':this.heating[key]['temperature_average'],'humidity':this.heating[key]['humidity_average']};
+			const e = {
+				'time':this.heating[key]['time'],
+				'temperature':this.heating[key]['temperature_average'],
+				'humidity':this.heating[key]['humidity_average']
+			};
 			v.push(e);
 		});
 	}

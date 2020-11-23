@@ -95,10 +95,15 @@ export default class UserHeatingView extends View {
 			}
 		}
 	}
-	
-	resetAllSmileys() {
+	/*
+		Use class "selected" to reduce processing.
+	*/
+	resetSelectedSmiley() {
 		for (let i=1; i<6; i++) {
-			$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'.png');
+			if ($('#fb-smiley-'+i).hasClass('selected')) {
+				$('#fb-smiley-'+i).removeClass('selected');
+				$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'.png');
+			}
 		}
 	}
 	
@@ -126,8 +131,8 @@ export default class UserHeatingView extends View {
 					M.toast({displayLength:1000, html: localized_string_feedback_ok});
 					
 					// Now let's clear the Feedback input!
-					
-					this.resetAllSmileys();
+					this.resetSelectedSmiley();
+					//this.resetAllSmileys();
 					$('#submit-feedback').removeClass('teal lighten-1');
 					$('#submit-feedback').addClass('disabled');
 				}
@@ -243,16 +248,15 @@ export default class UserHeatingView extends View {
 			for (let i=1; i<6; i++) {
 				$('#fb-smiley-'+i).on('click',function() {
 					// If this smiley was already "selected" => de-select it and disable submit-feedback -button.
-					const src = $('#fb-smiley-'+i+' > img').attr('src');
-					const ind = src.indexOf('-grey');
-					if (ind > 0) {
-						// User has de-selected Smiley.
-						self.resetAllSmileys();
+					if ($('#fb-smiley-'+i).hasClass('selected')) {
+						$('#fb-smiley-'+i).removeClass('selected');
+						$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'.png');
 						$('#submit-feedback').removeClass('teal lighten-1');
 						$('#submit-feedback').addClass('disabled');
+						
 					} else {
-						// New selection
-						self.resetAllSmileys();
+						self.resetSelectedSmiley();
+						$('#fb-smiley-'+i).addClass('selected');
 						$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'-grey.png');
 						$('#submit-feedback').removeClass('disabled');
 						$('#submit-feedback').addClass('teal lighten-1');
@@ -279,18 +283,14 @@ export default class UserHeatingView extends View {
 			
 			$('#submit-feedback').on('click',function() {
 				for (let i=1; i<6; i++) {
-					const src = $('#fb-smiley-'+i+' > img').attr('src');
-					const ind = src.indexOf('-grey');
-					if (ind > 0) {
-						// SELECTED (1...5)!
-						const selected = parseInt(src.slice(ind-1,ind),10);
+					if ($('#fb-smiley-'+i).hasClass('selected')) {
+						const selected = i;
 						// FeedbackModel send (data, token) 
 							//const refToUser = req.body.refToUser;
 							//const fbType = req.body.feedbackType;
 							//const fb = req.body.feedback;
 						const UM = self.controller.master.modelRepo.get('UserModel');
 						if (UM) {
-							
 							console.log(['Sending Feedback ',selected]);
 							const data = {
 								refToUser: UM.id, // UserModel id

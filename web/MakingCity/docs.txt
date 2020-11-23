@@ -615,3 +615,27 @@ days         power       energy
 
 
 
+
+
+
+Tavoitearvot eri mittauksille
+
+Targets
+Electricity 
+  Electricity consumption   1h  24h  7d  1m
+  kWh                                   200
+  €                                      20
+Water consumption           1h  24h  7d  1m
+  HOT L                                 300
+  COLD L                                400
+Heating                     1h  24h  7d  1m
+  Temperature                            20
+  humidity                               33
+
+Lisäksi toleranssit sekä ylöspäin että alaspäin %-arvo tai absoluuttinen arvo.
+
+
+
+
+
+

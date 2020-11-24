@@ -195,7 +195,7 @@ export default class UserPropsView extends View {
 			monthly_frac: 0 // sents
 		};
 	*/
-	showEdit(type, postfix) {
+	showEdit(type) {
 		const self = this;
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
@@ -233,28 +233,28 @@ export default class UserPropsView extends View {
 		// Tenths, Hundredths
 		const html =
 			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-				'<div class="col s2 m1 offset-m3 price-change-button"><a href="javascript:void(0);" id="hundreds-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
-				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
-				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 offset-m3 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
 				'<div class="col s2 m1">&nbsp;</div>'+
-				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="tenths-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
-				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="hundredths-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tenths-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="hundredths-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
 			'</div>'+
 			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-				'<div class="col s2 m1 offset-m3 price-change-number" id="hundreds">'+hundreds+'</div>'+
-				'<div class="col s2 m1 price-change-number" id="tens">'+tens+'</div>'+
-				'<div class="col s2 m1 price-change-number" id="ones">'+ones+'</div>'+
-				'<div class="col s2 m1 price-change-number">,</div>'+
-				'<div class="col s2 m1 price-change-number" id="tenths">'+tenths+'</div>'+
-				'<div class="col s2 m1 price-change-number" id="hundredths">'+hundredths+'</div>'+
+				'<div class="col s2 m1 offset-m3 edit-item-change-number" id="hundreds">'+hundreds+'</div>'+
+				'<div class="col s2 m1 edit-item-change-number" id="tens">'+tens+'</div>'+
+				'<div class="col s2 m1 edit-item-change-number" id="ones">'+ones+'</div>'+
+				'<div class="col s2 m1 edit-item-change-number">,</div>'+
+				'<div class="col s2 m1 edit-item-change-number" id="tenths">'+tenths+'</div>'+
+				'<div class="col s2 m1 edit-item-change-number" id="hundredths">'+hundredths+'</div>'+
 			'</div>'+
 			'<div class="row" style="margin-top:0;">'+
-				'<div class="col s2 m1 offset-m3 price-change-button"><a href="javascript:void(0);" id="hundreds-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
-				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
-				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 offset-m3 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
 				'<div class="col s2 m1">&nbsp;</div>'+
-				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="tenths-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
-				'<div class="col s2 m1 price-change-button"><a href="javascript:void(0);" id="hundredths-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tenths-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="hundredths-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s2 center">'+
@@ -430,47 +430,41 @@ export default class UserPropsView extends View {
 						'<p>'+localized_string_energy_prices_description+'</p>'+
 					'</div>'+
 				'</div>'+
-				// THREE ITEMS:
-				// ToDo: Show values with "Edit"-button on side
-				// Edit ONE ITEM at a time.
-				//    Arrow-buttons appear in edit-view 
-				// Save button visible in edit-view ONLY.
-				// 
 				'<div class="row">'+
-					'<div class="col s12 center price-wrapper" id="energy-monthly-price-wrapper">'+
+					'<div class="col s12 center" id="energy-monthly-price-wrapper">'+
 						'<div class="col s12 center">'+
-							'<p class="price-field">'+
+							'<p class="edit-item-field">'+
 							'<a href="javascript:void(0);" id="energy-monthly-price-edit">'+
 							localized_string_energy_prices_monthly +
 							'<span id="energy-monthly-price-value"></span>,'+
 							'<span id="energy-monthly-price-fractions-value"></span>'+
-							'<span class="price-field-postfix"> '+localized_string_energy_prices_monthly_unit+'</span></a></p>'+
+							'<span class="edit-item-field-postfix"> '+localized_string_energy_prices_monthly_unit+'</span></a></p>'+
 						'</div>'+
 						'<div class="col s12 center" id="energy-monthly-price-edit-placeholder">'+
 						'</div>'+
 					'</div>'+
 					
-					'<div class="col s12 center price-wrapper" id="energy-basic-price-wrapper">'+
+					'<div class="col s12 center" id="energy-basic-price-wrapper">'+
 						'<div class="col s12 center">'+
-							'<p class="price-field">'+
+							'<p class="edit-item-field">'+
 							'<a href="javascript:void(0);" id="energy-basic-price-edit">'+
 							localized_string_energy_prices_energy +
 							'<span id="energy-basic-price-value"></span>,'+
 							'<span id="energy-basic-price-fractions-value"></span>'+
-							'<span class="price-field-postfix"> '+localized_string_energy_prices_energy_unit+'</span></a></p>'+
+							'<span class="edit-item-field-postfix"> '+localized_string_energy_prices_energy_unit+'</span></a></p>'+
 						'</div>'+
 						'<div class="col s12 center" id="energy-basic-price-edit-placeholder">'+
 						'</div>'+
 					'</div>'+
 					
-					'<div class="col s12 center price-wrapper" id="energy-transfer-price-wrapper">'+
+					'<div class="col s12 center" id="energy-transfer-price-wrapper">'+
 						'<div class="col s12 center">'+
-							'<p class="price-field">'+
+							'<p class="edit-item-field">'+
 							'<a href="javascript:void(0);" id="energy-transfer-price-edit">'+
 							localized_string_energy_prices_transfer +
 							'<span id="energy-transfer-price-value"></span>,'+
 							'<span id="energy-transfer-price-fractions-value"></span>'+
-							'<span class="price-field-postfix"> '+localized_string_energy_prices_transfer_unit+'</span></a></p>'+
+							'<span class="edit-item-field-postfix"> '+localized_string_energy_prices_transfer_unit+'</span></a></p>'+
 						'</div>'+
 						'<div class="col s12 center" id="energy-transfer-price-edit-placeholder">'+
 						'</div>'+

@@ -236,19 +236,19 @@ table.striped > tbody > tr > td {
 .price-wrapper {
 	border: 1px solid #ccc;
 }*/
-.price-field {
+.edit-item-field {
 	font-size:20px;
 	/*color: #26a69a;*/ /* #26a69a teal lighten-1 */
 }
-.price-field-postfix {
+.edit-item-field-postfix {
 	font-size:18px;
 	/*color: #26a69a;*/ /* #26a69a teal lighten-1 */
 }
-.price-change-number {
+.edit-item-change-number {
 	font-size:32px;
 	font-weight: bold;
 }
-.price-change-button a i {
+.edit-item-change-button a i {
 	border: 1px solid #ccc;
 	padding: 8px 8px;
 	text-align: center;

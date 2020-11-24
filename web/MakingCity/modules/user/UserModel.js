@@ -8,6 +8,10 @@ import Model from '../common/Model.js';
 		price_energy_monthly
 		price_energy_basic
 		price_energy_transfer
+		
+		
+		
+		
 		is_superuser
 */
 export default class UserModel extends Model {
@@ -18,9 +22,17 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
-		this.price_energy_monthly = 0;
-		this.price_energy_basic = 0;
+		this.price_energy_monthly  = 0;
+		this.price_energy_basic    = 0;
 		this.price_energy_transfer = 0;
+		
+		this.heating_target_temperature = 0;
+		this.heating_temperature_upper  = 0;
+		this.heating_temperature_lower  = 0;
+		this.heating_target_humidity    = 0;
+		this.heating_humidity_upper     = 0;
+		this.heating_humidity_lower     = 0;
+		
 		this.is_superuser = false;
 		this.localStorageLabel = 'MakingCityUserModel';
 	}
@@ -47,9 +59,15 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
-		this.price_energy_monthly = 0;
-		this.price_energy_basic = 0;
+		this.price_energy_monthly  = 0;
+		this.price_energy_basic    = 0;
 		this.price_energy_transfer = 0;
+		this.heating_target_temperature = 0;
+		this.heating_temperature_upper  = 0;
+		this.heating_temperature_lower  = 0;
+		this.heating_target_humidity    = 0;
+		this.heating_humidity_upper     = 0;
+		this.heating_humidity_lower     = 0;
 		this.is_superuser = false;
 	}
 	
@@ -61,9 +79,15 @@ export default class UserModel extends Model {
 			'email': this.email,
 			'token': this.token,
 			'readkey': this.readkey,
-			'price_energy_monthly': this.price_energy_monthly,
-			'price_energy_basic': this.price_energy_basic,
-			'price_energy_transfer': this.price_energy_transfer
+			'price_energy_monthly':  this.price_energy_monthly,
+			'price_energy_basic':    this.price_energy_basic,
+			'price_energy_transfer': this.price_energy_transfer,
+			'heating_target_temperature': this.heating_target_temperature,
+			'heating_temperature_upper':  this.heating_temperature_upper,
+			'heating_temperature_lower':  this.heating_temperature_lower,
+			'heating_target_humidity':    this.heating_target_humidity,
+			'heating_humidity_upper':     this.heating_humidity_upper,
+			'heating_humidity_lower':     this.heating_humidity_lower
 		};
 		
 		// EXCEPT HERE FOR TEST PURPOSES:
@@ -100,6 +124,14 @@ export default class UserModel extends Model {
 			if (typeof stat.price_energy_monthly !== 'undefined')  { this.price_energy_monthly = stat.price_energy_monthly; }
 			if (typeof stat.price_energy_basic !== 'undefined')    { this.price_energy_basic = stat.price_energy_basic; }
 			if (typeof stat.price_energy_transfer !== 'undefined') { this.price_energy_transfer = stat.price_energy_transfer; }
+			
+			if (typeof stat.heating_target_temperature !== 'undefined') { this.heating_target_temperature = stat.heating_target_temperature; }
+			if (typeof stat.heating_temperature_upper !== 'undefined')  { this.heating_temperature_upper = stat.heating_temperature_upper; }
+			if (typeof stat.heating_temperature_lower !== 'undefined')  { this.heating_temperature_lower = stat.heating_temperature_lower; }
+			
+			if (typeof stat.heating_target_humidity !== 'undefined') { this.heating_target_humidity = stat.heating_target_humidity; }
+			if (typeof stat.heating_humidity_upper !== 'undefined')  { this.heating_humidity_upper = stat.heating_humidity_upper; }
+			if (typeof stat.heating_humidity_lower !== 'undefined')  { this.heating_humidity_lower = stat.heating_humidity_lower; }
 			
 			//if (typeof stat.readkeystartdate !== 'undefined') { this.readkeystartdate = stat.readkeystartdate; }
 			//if (typeof stat.readkeyenddate !== 'undefined')   { this.readkeyenddate = stat.readkeyenddate; }
@@ -141,11 +173,18 @@ export default class UserModel extends Model {
 			this.email = data.email;
 			this.token = 'nodatabasetoken';
 			this.is_superuser = false;
-			// Set energy prices for some reasonable level:
-			this.price_energy_monthly = 10;
-			this.price_energy_basic = 4.5;
+			// Set energy prices to some reasonable level:
+			this.price_energy_monthly  = 10;
+			this.price_energy_basic    = 4.5;
 			this.price_energy_transfer = 3.5;
 			
+			// Set Heating targets and limits to some reasonable level:
+			this.heating_target_temperature = 22.0;
+			this.heating_temperature_upper  = 24.0;
+			this.heating_temperature_lower  = 20.0;
+			this.heating_target_humidity    = 40;
+			this.heating_humidity_upper     = 45;
+			this.heating_humidity_lower     = 35;
 			// logged in moment()
 			//const exp = moment().add(24,'hours');
 			//const exp = moment().add(2,'minutes');
@@ -194,6 +233,40 @@ export default class UserModel extends Model {
 					} else {
 						self.price_energy_transfer = 0;
 					}
+					
+					
+					if (typeof myJson.heating_target_temperature !== 'undefined') {
+						self.heating_target_temperature = myJson.heating_target_temperature;
+					} else {
+						self.heating_target_temperature = 0;
+					}
+					if (typeof myJson.heating_temperature_upper !== 'undefined') {
+						self.heating_temperature_upper = myJson.heating_temperature_upper;
+					} else {
+						self.heating_temperature_upper = 0;
+					}
+					if (typeof myJson.heating_temperature_lower !== 'undefined') {
+						self.heating_temperature_lower = myJson.heating_temperature_lower;
+					} else {
+						self.heating_temperature_lower = 0;
+					}
+					
+					if (typeof myJson.heating_target_humidity !== 'undefined') {
+						self.heating_target_humidity = myJson.heating_target_humidity;
+					} else {
+						self.heating_target_humidity = 0;
+					}
+					if (typeof myJson.heating_humidity_upper !== 'undefined') {
+						self.heating_humidity_upper = myJson.heating_humidity_upper;
+					} else {
+						self.heating_humidity_upper = 0;
+					}
+					if (typeof myJson.heating_humidity_lower !== 'undefined') {
+						self.heating_humidity_lower = myJson.heating_humidity_lower;
+					} else {
+						self.heating_humidity_lower = 0;
+					}
+					
 					//self.readkeystartdate = myJson.readkeystartdate;
 					//self.readkeyenddate = myJson.readkeyenddate;
 					
@@ -331,6 +404,81 @@ export default class UserModel extends Model {
 				})
 				.catch(function(error){
 					self.notifyAll({model:'UserModel', method:'updateEnergyPrices', status:status, message:error, type:type});
+				});
+		}
+	}
+	
+	updateHeatingTargets(id, data, authToken, type) {
+		const self = this;
+		
+		if (this.MOCKUP) {
+			
+			data.forEach(d => {
+				if (d.propName === 'heating_target_temperature') {
+					self.heating_target_temperature = d.value;
+				} else if (d.propName === 'heating_temperature_upper') {
+					self.heating_temperature_upper = d.value;
+				} else if (d.propName === 'heating_temperature_lower') {
+					self.heating_temperature_lower = d.value;
+				} else if (d.propName === 'heating_target_humidity') {
+					self.heating_target_humidity = d.value;
+				} else if (d.propName === 'heating_humidity_upper') {
+					self.heating_humidity_upper = d.value;
+				} else if (d.propName === 'heating_humidity_lower') {
+					self.heating_humidity_lower = d.value;
+				}
+			});
+			setTimeout(() => {
+				this.notifyAll({model:this.name, method:'updateHeatingTargets', status:200, message:'OK', type:type});
+			}, 200);
+			
+		} else {
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+authToken;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myPut = {
+				method: 'PUT',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(this.mongoBackend + '/users/'+id, myPut);
+			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+		
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					if (status === 200) {
+						/*const data = [
+							{propName:'heating_target_temperature', value:   },
+							{propName:'heating_temperature_upper',  value:   },
+							{propName:'heating_temperature_lower',  value:   },
+							...
+						];*/
+						data.forEach(d => {
+							if (d.propName === 'heating_target_temperature') {
+								self.heating_target_temperature = d.value;
+							} else if (d.propName === 'heating_temperature_upper') {
+								self.heating_temperature_upper = d.value;
+							} else if (d.propName === 'heating_temperature_lower') {
+								self.heating_temperature_lower = d.value;
+							} else if (d.propName === 'heating_target_humidity') {
+								self.heating_target_humidity = d.value;
+							} else if (d.propName === 'heating_humidity_upper') {
+								self.heating_humidity_upper = d.value;
+							} else if (d.propName === 'heating_humidity_lower') {
+								self.heating_humidity_lower = d.value;
+							}
+						});
+					}
+					self.notifyAll({model:self.name, method:'updateHeatingTargets', status:status, message:myJson.message, type:type});
+				})
+				.catch(function(error){
+					self.notifyAll({model:self.name, method:'updateHeatingTargets', status:status, message:error, type:type});
 				});
 		}
 	}

@@ -139,6 +139,20 @@ export default class UHCHeatingChartView extends View {
 		const localized_string_upper_limit = LM['translation'][sel]['USER_DATA_UPPER_LIMIT'].toUpperCase();
 		const localized_string_lower_limit = LM['translation'][sel]['USER_DATA_LOWER_LIMIT'].toUpperCase();
 		
+		
+		
+		// Fill the targets-object with values from UserModel.
+		const UM = this.controller.master.modelRepo.get('UserModel');
+		
+		const HTT = UM.heating_target_temperature;
+		const HTU = UM.heating_temperature_upper;
+		const HTL = UM.heating_temperature_lower;
+		
+		const HTH = UM.heating_target_humidity;
+		const HHU = UM.heating_humidity_upper;
+		const HHL = UM.heating_humidity_lower;
+		
+		
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
 			// Themes begin
@@ -262,40 +276,46 @@ export default class UHCHeatingChartView extends View {
 			
 			
 			// TARGETS AND UPPER AND LOWER LIMITS
+			//const HTT = UM.heating_target_temperature;
+			//const HTU = UM.heating_temperature_upper;
+			//const HTL = UM.heating_temperature_lower;
+			
+			
+			
 			var target = valueAxis.axisRanges.create();
-			target.value = 22;
+			target.value = HTT;
 			target.grid.stroke = am4core.color("#f88");
 			target.grid.strokeWidth = 1;
 			target.grid.strokeOpacity = 0.5;
 			//target.grid.above = true;
 			target.label.inside = true;
-			target.label.text = localized_string_target + ' ' + target.value;
+			target.label.text = localized_string_target + ' ' + target.value.toFixed(1);
 			target.label.fill = target.grid.stroke;
 			target.label.fillOpacity = target.grid.strokeOpacity;
 			//target.label.align = "right";
 			target.label.verticalCenter = "bottom";
 			
 			var range = valueAxis.axisRanges.create();
-			range.value = 26;
+			range.value = HTU;
 			range.grid.stroke = am4core.color("#f88");
 			range.grid.strokeWidth = 1;
 			range.grid.strokeOpacity = 0.5;
 			//range.grid.above = true;
 			range.label.inside = true;
-			range.label.text = localized_string_upper_limit + ' ' + range.value;
+			range.label.text = localized_string_upper_limit + ' ' + range.value.toFixed(1);
 			range.label.fill = range.grid.stroke;
 			range.label.fillOpacity = range.grid.strokeOpacity;
 			//range.label.align = "right";
 			range.label.verticalCenter = "bottom";
 			
 			var range2 = valueAxis.axisRanges.create();
-			range2.value = 18;
+			range2.value = HTL;
 			range2.grid.stroke = am4core.color("#f88");
 			range2.grid.strokeWidth = 1;
 			range2.grid.strokeOpacity = 0.5;
 			//range2.grid.above = true;
 			range2.label.inside = true;
-			range2.label.text = localized_string_lower_limit + ' ' + range2.value;
+			range2.label.text = localized_string_lower_limit + ' ' + range2.value.toFixed(1);
 			range2.label.fill = range2.grid.stroke;
 			range2.label.fillOpacity = range2.grid.strokeOpacity;
 			//range2.label.align = "right";
@@ -303,41 +323,43 @@ export default class UHCHeatingChartView extends View {
 			
 			
 			
+			//const HTH = UM.heating_target_humidity;
+			//const HHU = UM.heating_humidity_upper;
+			//const HHL = UM.heating_humidity_lower;
 			var target2 = valueAxis.axisRanges.create();
-			target2.value = 40;
+			target2.value = HTH;
 			target2.grid.stroke = am4core.color("#8ff");
 			target2.grid.strokeWidth = 1;
 			target2.grid.strokeOpacity = 0.5;
 			//target2.grid.above = true;
 			target2.label.inside = true;
-			target2.label.text = localized_string_target + ' ' + target2.value;
+			target2.label.text = localized_string_target + ' ' + target2.value.toFixed(0);
 			target2.label.fill = target2.grid.stroke;
 			target2.label.fillOpacity = target2.grid.strokeOpacity;
 			target2.label.align = "right";
 			target2.label.verticalCenter = "bottom";
 			
-			
 			var range3 = valueAxis.axisRanges.create();
-			range3.value = 45;
+			range3.value = HHU;
 			range3.grid.stroke = am4core.color("#8ff");
 			range3.grid.strokeWidth = 1;
 			range3.grid.strokeOpacity = 0.5;
 			//range3.grid.above = true;
 			range3.label.inside = true;
-			range3.label.text = localized_string_upper_limit + ' ' + range3.value;
+			range3.label.text = localized_string_upper_limit + ' ' + range3.value.toFixed(0);
 			range3.label.fill = range3.grid.stroke;
 			range3.label.fillOpacity = range3.grid.strokeOpacity;
 			range3.label.align = "right";
 			range3.label.verticalCenter = "bottom";
 			
 			var range4 = valueAxis.axisRanges.create();
-			range4.value = 35;
+			range4.value = HHL;
 			range4.grid.stroke = am4core.color("#8ff");
 			range4.grid.strokeWidth = 1;
 			range4.grid.strokeOpacity = 0.5;
 			//range4.grid.above = true;
 			range4.label.inside = true;
-			range4.label.text = localized_string_lower_limit + ' ' + range4.value;
+			range4.label.text = localized_string_lower_limit + ' ' + range4.value.toFixed(0);
 			range4.label.fill = range4.grid.stroke;
 			range4.label.fillOpacity = range4.grid.strokeOpacity;
 			range4.label.align = "right";

@@ -135,6 +135,9 @@ export default class UHCHeatingChartView extends View {
 		const localized_string_heating = LM['translation'][sel]['USER_PAGE_HEATING'];
 		const localized_string_temperature = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_TEMPERATURE'];
 		const localized_string_humidity = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_HUMIDITY'];
+		const localized_string_target = LM['translation'][sel]['USER_DATA_TARGET'].toUpperCase();
+		const localized_string_upper_limit = LM['translation'][sel]['USER_DATA_UPPER_LIMIT'].toUpperCase();
+		const localized_string_lower_limit = LM['translation'][sel]['USER_DATA_LOWER_LIMIT'].toUpperCase();
 		
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
@@ -256,9 +259,9 @@ export default class UHCHeatingChartView extends View {
 			series2.name = localized_string_humidity;
 			series2.yAxis = valueAxis;
 			
-			// UPPER AND LOWER LIMITS
 			
 			
+			// TARGETS AND UPPER AND LOWER LIMITS
 			var target = valueAxis.axisRanges.create();
 			target.value = 22;
 			target.grid.stroke = am4core.color("#f88");
@@ -266,7 +269,7 @@ export default class UHCHeatingChartView extends View {
 			target.grid.strokeOpacity = 0.5;
 			//target.grid.above = true;
 			target.label.inside = true;
-			target.label.text = "TARGET 22";
+			target.label.text = localized_string_target + ' ' + target.value;
 			target.label.fill = target.grid.stroke;
 			target.label.fillOpacity = target.grid.strokeOpacity;
 			//target.label.align = "right";
@@ -279,7 +282,7 @@ export default class UHCHeatingChartView extends View {
 			range.grid.strokeOpacity = 0.5;
 			//range.grid.above = true;
 			range.label.inside = true;
-			range.label.text = "UPPER LIMIT 26";
+			range.label.text = localized_string_upper_limit + ' ' + range.value;
 			range.label.fill = range.grid.stroke;
 			range.label.fillOpacity = range.grid.strokeOpacity;
 			//range.label.align = "right";
@@ -292,7 +295,7 @@ export default class UHCHeatingChartView extends View {
 			range2.grid.strokeOpacity = 0.5;
 			//range2.grid.above = true;
 			range2.label.inside = true;
-			range2.label.text = "LOWER LIMIT 18";
+			range2.label.text = localized_string_lower_limit + ' ' + range2.value;
 			range2.label.fill = range2.grid.stroke;
 			range2.label.fillOpacity = range2.grid.strokeOpacity;
 			//range2.label.align = "right";
@@ -307,7 +310,7 @@ export default class UHCHeatingChartView extends View {
 			target2.grid.strokeOpacity = 0.5;
 			//target2.grid.above = true;
 			target2.label.inside = true;
-			target2.label.text = "TARGET 40";
+			target2.label.text = localized_string_target + ' ' + target2.value;
 			target2.label.fill = target2.grid.stroke;
 			target2.label.fillOpacity = target2.grid.strokeOpacity;
 			target2.label.align = "right";
@@ -321,7 +324,7 @@ export default class UHCHeatingChartView extends View {
 			range3.grid.strokeOpacity = 0.5;
 			//range3.grid.above = true;
 			range3.label.inside = true;
-			range3.label.text = "UPPER LIMIT 45";
+			range3.label.text = localized_string_upper_limit + ' ' + range3.value;
 			range3.label.fill = range3.grid.stroke;
 			range3.label.fillOpacity = range3.grid.strokeOpacity;
 			range3.label.align = "right";
@@ -334,7 +337,7 @@ export default class UHCHeatingChartView extends View {
 			range4.grid.strokeOpacity = 0.5;
 			//range4.grid.above = true;
 			range4.label.inside = true;
-			range4.label.text = "LOWER LIMIT 35";
+			range4.label.text = localized_string_lower_limit + ' ' + range4.value;
 			range4.label.fill = range4.grid.stroke;
 			range4.label.fillOpacity = range4.grid.strokeOpacity;
 			range4.label.align = "right";

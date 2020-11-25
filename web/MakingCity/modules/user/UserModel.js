@@ -176,14 +176,14 @@ export default class UserModel extends Model {
 			// Set energy prices to some reasonable level:
 			this.price_energy_monthly  = 10;
 			this.price_energy_basic    = 4.5;
-			this.price_energy_transfer = 3.5;
+			this.price_energy_transfer = 4.5;
 			
 			// Set Heating targets and limits to some reasonable level:
-			this.heating_target_temperature = 22.0;
 			this.heating_temperature_upper  = 24.0;
+			this.heating_target_temperature = 22.0;
 			this.heating_temperature_lower  = 20.0;
-			this.heating_target_humidity    = 40;
 			this.heating_humidity_upper     = 45;
+			this.heating_target_humidity    = 40;
 			this.heating_humidity_lower     = 35;
 			// logged in moment()
 			//const exp = moment().add(24,'hours');

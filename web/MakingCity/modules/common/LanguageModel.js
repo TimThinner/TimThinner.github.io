@@ -38,7 +38,7 @@ export default class LanguageModel {
 				'USER_ENERGY_PRICES_MONTHLY_UNIT':'€/month',
 				'USER_ENERGY_PRICES_ENERGY':'Energy price: ',
 				'USER_ENERGY_PRICES_ENERGY_UNIT':'cnt/kWh',
-				'USER_ENERGY_PRICES_TRANSFER':'Transfer price: ',
+				'USER_ENERGY_PRICES_TRANSFER':'Network price: ',
 				'USER_ENERGY_PRICES_TRANSFER_UNIT':'cnt/kWh',
 				'USER_ENERGY_PRICE_SAVED_OK':'New price saved.',
 				'USER_DATA_PERIOD':'Period',

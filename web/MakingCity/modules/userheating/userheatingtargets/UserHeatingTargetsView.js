@@ -206,11 +206,15 @@ export default class UserHeatingTargetsView extends View {
 			
 			this.handleErrorMessages(this.FELID);
 			
+			//this.heating_temperature_upper  = 24.0;
+			//this.heating_target_temperature = 22.0;
+			//this.heating_temperature_lower  = 20.0;
 			const start_temperatures = [
 				this.targets.heating_temperature_lower,
 				this.targets.heating_target_temperature,
 				this.targets.heating_temperature_upper
 			];
+			
 			var temperature = document.getElementById('temperature-slider');
 			noUiSlider.create(temperature, {
 				range: {
@@ -241,6 +245,9 @@ export default class UserHeatingTargetsView extends View {
 				self.updateTemperature(values);
 			});
 			
+			//this.heating_humidity_upper     = 45;
+			//this.heating_target_humidity    = 40;
+			//this.heating_humidity_lower     = 35;
 			const start_humidities = [
 				this.targets.heating_humidity_lower,
 				this.targets.heating_target_humidity,
@@ -249,8 +256,8 @@ export default class UserHeatingTargetsView extends View {
 			var humidity = document.getElementById('humidity-slider');
 			noUiSlider.create(humidity, {
 				range: {
-					'min': 20,
-					'max': 60
+					'min': 30,
+					'max': 50
 				},
 				step: 1,
 				// Handles start at ...

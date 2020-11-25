@@ -292,3 +292,11 @@ table.striped > tbody > tr > td {
 	font-weight: 300;
 	color: #fff;
 }
+/* In UserHeatingTargetsView noUiSlider */
+#temperature-slider .noUi-connect {
+	background: #f00;
+}
+
+#humidity-slider .noUi-connect {
+	background: #0ff;
+}

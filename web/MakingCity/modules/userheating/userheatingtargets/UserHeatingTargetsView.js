@@ -24,36 +24,15 @@ export default class UserHeatingTargetsView extends View {
 		this.FELID = 'user-heating-view-failure';
 		
 		// Always fill the targets-object with values from UserModel.
-		/*
-		UM.temperature_target
-		UM.temperature_upper_limit
-		UM.temperature_lower_limit
-		UM.humidity_target
-		UM.humidity_upper_limit
-		UM.humidity_lower_limit
-		*/
 		this.targets = {
-			temp_upper: 24,
-			temp_upper_frac: 0,
-			temp: 22,
-			temp_frac: 0,
-			temp_lower: 20,
-			temp_lower_frac: 0,
-			humi_upper: 45,
-			humi_upper_frac: 0,
-			humi: 40,
-			humi_frac: 0,
-			humi_lower: 35,
-			humi_lower_frac: 0
+			heating_temperature_upper: 0,
+			heating_target_temperature: 0,
+			heating_temperature_lower: 0,
+			
+			heating_humidity_upper: 0,
+			heating_target_humidity: 0,
+			heating_humidity_lower: 0
 		};
-		this.types = [
-			'heating_temperature_upper',
-			'heating_target_temperature',
-			'heating_temperature_lower',
-			'heating_humidity_upper',
-			'heating_target_humidity',
-			'heating_humidity_lower'
-		];
 	}
 	
 	show() {
@@ -84,33 +63,13 @@ export default class UserHeatingTargetsView extends View {
 		// Fill the targets-object with values from UserModel.
 		const UM = this.userModel;
 		
-		const htt_integer_part = Math.floor(UM.heating_target_temperature);
-		const htt_fractions_part = Math.round((UM.heating_target_temperature-htt_integer_part)*100);
-		const htu_integer_part = Math.floor(UM.heating_temperature_upper);
-		const htu_fractions_part = Math.round((UM.heating_temperature_upper-htu_integer_part)*100);
-		const htl_integer_part = Math.floor(UM.heating_temperature_lower);
-		const htl_fractions_part = Math.round((UM.heating_temperature_lower-htl_integer_part)*100);
+		this.targets.heating_temperature_upper  = UM.heating_temperature_upper;
+		this.targets.heating_target_temperature = UM.heating_target_temperature;
+		this.targets.heating_temperature_lower  = UM.heating_temperature_lower;
 		
-		const hth_integer_part = Math.floor(UM.heating_target_humidity);
-		const hth_fractions_part = Math.round((UM.heating_target_humidity-hth_integer_part)*100);
-		const hhu_integer_part = Math.floor(UM.heating_humidity_upper);
-		const hhu_fractions_part = Math.round((UM.heating_humidity_upper-hhu_integer_part)*100);
-		const hhl_integer_part = Math.floor(UM.heating_humidity_lower);
-		const hhl_fractions_part = Math.round((UM.heating_humidity_lower-hhl_integer_part)*100);
-		
-		this.targets.temp            = htt_integer_part;
-		this.targets.temp_frac       = htt_fractions_part;
-		this.targets.temp_upper      = htu_integer_part;
-		this.targets.temp_upper_frac = htu_fractions_part;
-		this.targets.temp_lower      = htl_integer_part;
-		this.targets.temp_lower_frac = htl_fractions_part;
-		
-		this.targets.humi            = hth_integer_part;
-		this.targets.humi_frac       = hth_fractions_part;
-		this.targets.humi_upper      = hhu_integer_part;
-		this.targets.humi_upper_frac = hhu_fractions_part;
-		this.targets.humi_lower      = hhl_integer_part;
-		this.targets.humi_lower_frac = hhl_fractions_part;
+		this.targets.heating_humidity_upper  = UM.heating_humidity_upper;
+		this.targets.heating_target_humidity = UM.heating_target_humidity;
+		this.targets.heating_humidity_lower  = UM.heating_humidity_lower;
 	}
 	
 	notify(options) {
@@ -151,6 +110,34 @@ export default class UserHeatingTargetsView extends View {
 				}
 			}
 		}
+	}
+	
+	updateTemperature(values) {
+		const UM = this.userModel;
+		const id = UM.id;
+		const authToken = UM.token;
+		
+		// values = ["20.0°C", "22.0°C", "24.7°C"]
+		const data = [
+			{propName:'heating_temperature_lower', value:parseFloat(values[0])},
+			{propName:'heating_target_temperature', value:parseFloat(values[1])},
+			{propName:'heating_temperature_upper', value:parseFloat(values[2])}
+		];
+		UM.updateHeatingTargets(id, data, authToken);
+	}
+	
+	updateHumidity(values) {
+		const UM = this.userModel;
+		const id = UM.id;
+		const authToken = UM.token;
+		
+		// values = ['20.0%','30.0%','40.0%']
+		const data = [
+			{propName:'heating_humidity_lower', value:parseFloat(values[0])},
+			{propName:'heating_target_humidity', value:parseFloat(values[1])},
+			{propName:'heating_humidity_upper', value:parseFloat(values[2])}
+		];
+		UM.updateHeatingTargets(id, data, authToken);
 	}
 	
 	render() {
@@ -219,6 +206,11 @@ export default class UserHeatingTargetsView extends View {
 			
 			this.handleErrorMessages(this.FELID);
 			
+			const start_temperatures = [
+				this.targets.heating_temperature_lower,
+				this.targets.heating_target_temperature,
+				this.targets.heating_temperature_upper
+			];
 			var temperature = document.getElementById('temperature-slider');
 			noUiSlider.create(temperature, {
 				range: {
@@ -227,7 +219,7 @@ export default class UserHeatingTargetsView extends View {
 				},
 				step: 0.1,
 				// Handles start at ...
-				start: [20, 22, 24],
+				start: [start_temperatures[0], start_temperatures[1], start_temperatures[2]],
 				connect: [true, true, true, true],
 				// Put '0' at the bottom of the slider
 				direction: 'rtl',
@@ -243,8 +235,17 @@ export default class UserHeatingTargetsView extends View {
 			// Give the slider dimensions
 			temperature.style.height = '300px';
 			temperature.style.margin = '0 auto 30px';
+			temperature.noUiSlider.on('change', function (values) {
+				// values = ["20.0°C", "22.0°C", "24.7°C"]
+				console.log(['values=',values]);
+				self.updateTemperature(values);
+			});
 			
-			
+			const start_humidities = [
+				this.targets.heating_humidity_lower,
+				this.targets.heating_target_humidity,
+				this.targets.heating_humidity_upper
+			];
 			var humidity = document.getElementById('humidity-slider');
 			noUiSlider.create(humidity, {
 				range: {
@@ -253,7 +254,7 @@ export default class UserHeatingTargetsView extends View {
 				},
 				step: 1,
 				// Handles start at ...
-				start: [30, 40, 50],
+				start: [start_humidities[0], start_humidities[1], start_humidities[2]],
 				connect: [true, true, true, true],
 				// Put '0' at the bottom of the slider
 				direction: 'rtl',
@@ -269,6 +270,11 @@ export default class UserHeatingTargetsView extends View {
 			// Give the slider dimensions
 			humidity.style.height = '300px';
 			humidity.style.margin = '0 auto 30px';
+			humidity.noUiSlider.on('change', function (values) {
+				// values = ['20.0%','30.0%','40.0%']
+				console.log(['values=',values]);
+				self.updateHumidity(values);
+			});
 			
 			this.rendered = true;
 			

@@ -408,7 +408,7 @@ export default class UserModel extends Model {
 		}
 	}
 	
-	updateHeatingTargets(id, data, authToken, type) {
+	updateHeatingTargets(id, data, authToken) {
 		const self = this;
 		
 		if (this.MOCKUP) {
@@ -429,7 +429,7 @@ export default class UserModel extends Model {
 				}
 			});
 			setTimeout(() => {
-				this.notifyAll({model:this.name, method:'updateHeatingTargets', status:200, message:'OK', type:type});
+				this.notifyAll({model:this.name, method:'updateHeatingTargets', status:200, message:'OK'});
 			}, 200);
 			
 		} else {
@@ -475,10 +475,10 @@ export default class UserModel extends Model {
 							}
 						});
 					}
-					self.notifyAll({model:self.name, method:'updateHeatingTargets', status:status, message:myJson.message, type:type});
+					self.notifyAll({model:self.name, method:'updateHeatingTargets', status:status, message:myJson.message});
 				})
 				.catch(function(error){
-					self.notifyAll({model:self.name, method:'updateHeatingTargets', status:status, message:error, type:type});
+					self.notifyAll({model:self.name, method:'updateHeatingTargets', status:status, message:error});
 				});
 		}
 	}

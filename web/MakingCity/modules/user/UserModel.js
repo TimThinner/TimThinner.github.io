@@ -22,16 +22,31 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
+		/*
 		this.price_energy_monthly  = 0;
 		this.price_energy_basic    = 0;
 		this.price_energy_transfer = 0;
+		*/
+		// Set energy prices to some reasonable level:
+		this.price_energy_monthly  = 10;
+		this.price_energy_basic    = 4.5;
+		this.price_energy_transfer = 4.5;
 		
+		/*
 		this.heating_target_temperature = 0;
 		this.heating_temperature_upper  = 0;
 		this.heating_temperature_lower  = 0;
 		this.heating_target_humidity    = 0;
 		this.heating_humidity_upper     = 0;
 		this.heating_humidity_lower     = 0;
+		*/
+		// Set Heating targets and limits to some reasonable level:
+		this.heating_temperature_upper  = 24.0;
+		this.heating_target_temperature = 22.0;
+		this.heating_temperature_lower  = 20.0;
+		this.heating_humidity_upper     = 45;
+		this.heating_target_humidity    = 40;
+		this.heating_humidity_lower     = 35;
 		
 		this.is_superuser = false;
 		this.localStorageLabel = 'MakingCityUserModel';

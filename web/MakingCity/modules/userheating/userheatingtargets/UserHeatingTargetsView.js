@@ -154,14 +154,11 @@ export default class UserHeatingTargetsView extends View {
 			const localized_string_subtitle_2 = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_HUMIDITY'];
 			
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-			/*
-			const localized_string_target_temperature = LM['translation'][sel]['USER_HEATING_TARGET_TEMPERATURE'];
-			const localized_string_upper_temperature = LM['translation'][sel]['USER_HEATING_UPPER_TEMPERATURE'];
-			const localized_string_lower_temperature = LM['translation'][sel]['USER_HEATING_LOWER_TEMPERATURE'];
-			const localized_string_target_humidity = LM['translation'][sel]['USER_HEATING_TARGET_HUMIDITY'];
-			const localized_string_upper_humidity = LM['translation'][sel]['USER_HEATING_UPPER_HUMIDITY'];
-			const localized_string_lower_humidity = LM['translation'][sel]['USER_HEATING_LOWER_HUMIDITY'];
-			*/
+			
+			const localized_string_target = LM['translation'][sel]['USER_HEATING_TARGET'];
+			const localized_string_upper_limit = LM['translation'][sel]['USER_HEATING_UPPER_LIMIT'];
+			const localized_string_lower_limit = LM['translation'][sel]['USER_HEATING_LOWER_LIMIT'];
+			
 			const html =
 				'<div class="row">'+
 					'<div class="col s12 center">'+
@@ -170,11 +167,14 @@ export default class UserHeatingTargetsView extends View {
 					'</div>'+
 				'</div>'+
 				'<div class="row">'+
-					'<div class="col s6 center">'+
+					'<div class="col s2 center">'+
+						'<p>&nbsp;</p>'+
+					'</div>'+
+					'<div class="col s5 center">'+
 						'<h5>'+localized_string_subtitle_1+':</h5><p>&nbsp;</p>'+
 						'<div id="temperature-slider"></div>'+
 					'</div>'+
-					'<div class="col s6 center">'+
+					'<div class="col s5 center">'+
 						'<h5>'+localized_string_subtitle_2+':</h5><p>&nbsp;</p>'+
 						'<div id="humidity-slider"></div>'+
 					'</div>'+
@@ -230,11 +230,12 @@ export default class UserHeatingTargetsView extends View {
 				orientation: 'vertical',
 				// Move handle on tap, bars are draggable
 				behaviour: 'tap-drag',
-				tooltips: [true, true, true],
-				format: wNumb({
+				tooltips: [wNumb({decimals:1, suffix:'°C', prefix:localized_string_lower_limit}), wNumb({decimals:1, suffix:'°C',prefix:localized_string_target}), wNumb({decimals:1, suffix:'°C', prefix:localized_string_upper_limit})]
+				//tooltips: [true, true, true],
+				/*format: wNumb({
 					decimals: 1,
 					suffix: '°C'
-				})
+				})*/
 			});
 			// Give the slider dimensions
 			temperature.style.height = '300px';
@@ -268,11 +269,13 @@ export default class UserHeatingTargetsView extends View {
 				orientation: 'vertical',
 				// Move handle on tap, bars are draggable
 				behaviour: 'tap-drag',
-				tooltips: [true, true, true],
+				//tooltips: [true, true, true],
+				tooltips: [wNumb({decimals: 1, suffix: '%', prefix:localized_string_lower_limit}), wNumb({decimals: 1, suffix: '%',prefix:localized_string_target}), wNumb({decimals: 1, suffix: '%', prefix:localized_string_upper_limit})]
+				/*
 				format: wNumb({
 					decimals: 1,
 					suffix: '%'
-				})
+				})*/
 			});
 			// Give the slider dimensions
 			humidity.style.height = '300px';

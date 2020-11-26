@@ -9,13 +9,14 @@ export default class UserHeatingTargetsView extends View {
 	
 	constructor(controller) {
 		super(controller);
-		
+		/*
 		Object.keys(this.controller.models).forEach(key => {
 			if (key === 'UserHeatingNowModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
+		*/
 		this.userModel = this.controller.master.modelRepo.get('UserModel');
 		this.userModel.subscribe(this);
 		
@@ -47,9 +48,9 @@ export default class UserHeatingTargetsView extends View {
 	
 	remove() {
 		super.remove();
-		Object.keys(this.models).forEach(key => {
+		/*Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
-		});
+		});*/
 		this.userModel.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
@@ -79,33 +80,12 @@ export default class UserHeatingTargetsView extends View {
 		const localized_string_heating_target_saved = LM['translation'][sel]['USER_HEATING_TARGET_SAVED'];
 		
 		if (this.controller.visible) {
-			if (options.model==='UserHeatingNowModel' && options.method==='fetched') {
+			if (options.model==='UserModel' && options.method==='updateHeatingTargets') {
 				if (options.status === 200) {
-					console.log('UserHeatingTargetsView => UserHeatingNowModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateLatestValues();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
-				}
-			} else if (options.model==='UserModel' && options.method==='updateHeatingTargets') {
-				if (options.status === 200) {
+					
+					// Show Toast: SAVED!
+					M.toast({displayLength:1000, html: localized_string_heating_target_saved});
+					
 					this.fillTargetsFromUM();
 				}
 			}
@@ -118,12 +98,18 @@ export default class UserHeatingTargetsView extends View {
 		const authToken = UM.token;
 		
 		// values = ["20.0°C", "22.0°C", "24.7°C"]
-		const data = [
-			{propName:'heating_temperature_lower', value:parseFloat(values[0])},
-			{propName:'heating_target_temperature', value:parseFloat(values[1])},
-			{propName:'heating_temperature_upper', value:parseFloat(values[2])}
-		];
-		UM.updateHeatingTargets(id, data, authToken);
+		// if any value is really changed => update model.
+		const v0 = parseFloat(values[0]);
+		const v1 = parseFloat(values[1]);
+		const v2 = parseFloat(values[2]);
+		if (this.targets.heating_temperature_lower!==v0||this.targets.heating_target_temperature!== v1||this.targets.heating_temperature_upper!==v2) {
+			const data = [
+				{propName:'heating_temperature_lower', value:v0},
+				{propName:'heating_target_temperature', value:v1},
+				{propName:'heating_temperature_upper', value:v2}
+			];
+			UM.updateHeatingTargets(id, data, authToken);
+		}
 	}
 	
 	updateHumidity(values) {
@@ -132,12 +118,18 @@ export default class UserHeatingTargetsView extends View {
 		const authToken = UM.token;
 		
 		// values = ['20.0%','30.0%','40.0%']
-		const data = [
-			{propName:'heating_humidity_lower', value:parseFloat(values[0])},
-			{propName:'heating_target_humidity', value:parseFloat(values[1])},
-			{propName:'heating_humidity_upper', value:parseFloat(values[2])}
-		];
-		UM.updateHeatingTargets(id, data, authToken);
+		// if any value is really changed => update model.
+		const v0 = parseFloat(values[0]);
+		const v1 = parseFloat(values[1]);
+		const v2 = parseFloat(values[2]);
+		if (this.targets.heating_humidity_lower!==v0||this.targets.heating_target_humidity!== v1||this.targets.heating_humidity_upper!==v2) {
+			const data = [
+				{propName:'heating_humidity_lower', value:v0},
+				{propName:'heating_target_humidity', value:v1},
+				{propName:'heating_humidity_upper', value:v2}
+			];
+			UM.updateHeatingTargets(id, data, authToken);
+		}
 	}
 	
 	render() {

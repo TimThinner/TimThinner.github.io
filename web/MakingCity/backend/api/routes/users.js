@@ -23,6 +23,17 @@ const Readkey = require('../models/readkey');
 	created: { type: Date, default: Date.now },
 	regcode:  { type: mongoose.Schema.Types.ObjectId, ref:'Regcode'},
 	readkey:  { type: mongoose.Schema.Types.ObjectId, ref:'Readkey'},
+	
+	price_energy_monthly: {type:Number, default:10},
+	price_energy_basic: {type:Number, default:4.5},
+	price_energy_transfer: {type:Number, default:4.5},
+	heating_temperature_upper: {type:Number, default:24.0},
+	heating_target_temperature: {type:Number, default:22.0},
+	heating_temperature_lower: {type:Number, default:20.0},
+	heating_humidity_upper: {type:Number, default:45.0},
+	heating_target_humidity: {type:Number, default:40.0},
+	heating_humidity_lower: {type:Number, default:35.0},
+	
 	is_superuser: { type: Boolean, default: false }
 */
 
@@ -269,9 +280,13 @@ router.post("/signup", (req,res,next)=>{
 router.post("/login", (req,res,next)=>{
 	
 	const email_lc = req.body.email.toLowerCase();
-	
+	const selString = '_id email password created readkey'+
+		' price_energy_monthly price_energy_basic price_energy_transfer'+
+		' heating_temperature_upper heating_target_temperature heating_temperature_lower'+
+		' heating_humidity_upper heating_target_humidity heating_humidity_lower'+
+		' is_superuser';
 	User.find({email:email_lc})
-		.select('_id email password created readkey price_energy_monthly price_energy_basic price_energy_transfer is_superuser')
+		.select(selString)
 		.populate('readkey')
 		.exec()
 		.then(user=>{
@@ -303,9 +318,16 @@ router.post("/login", (req,res,next)=>{
 					)
 					const rkey = user[0].readkey ? user[0].readkey._id : undefined;
 					
-					const pem = user[0].price_energy_monthly ? user[0].price_energy_monthly : 0;
-					const peb = user[0].price_energy_basic ? user[0].price_energy_basic : 0;
-					const pet = user[0].price_energy_transfer ? user[0].price_energy_transfer : 0;
+					const pem = user[0].price_energy_monthly ? user[0].price_energy_monthly : 10;
+					const peb = user[0].price_energy_basic ? user[0].price_energy_basic : 4.5;
+					const pet = user[0].price_energy_transfer ? user[0].price_energy_transfer : 4.5;
+					
+					const htu = user[0].heating_temperature_upper ? user[0].heating_temperature_upper : 24.0;
+					const htt = user[0].heating_target_temperature ? user[0].heating_target_temperature : 22.0;
+					const htl = user[0].heating_temperature_lower ? user[0].heating_temperature_lower : 20.0;
+					const hhu = user[0].heating_humidity_upper ? user[0].heating_humidity_upper : 45.0;
+					const hth = user[0].heating_target_humidity ? user[0].heating_target_humidity : 40.0;
+					const hhl = user[0].heating_humidity_lower ? user[0].heating_humidity_lower : 35.0;
 					
 					// LOG this login.
 					const logEntry = new Log({
@@ -331,6 +353,12 @@ router.post("/login", (req,res,next)=>{
 						price_energy_monthly: pem,
 						price_energy_basic: peb,
 						price_energy_transfer: pet,
+						heating_temperature_upper: htu,
+						heating_target_temperature: htt,
+						heating_temperature_lower: htl,
+						heating_humidity_upper: hhu,
+						heating_target_humidity: hth,
+						heating_humidity_lower: hhl,
 						is_superuser: user[0].is_superuser
 					});
 				}
@@ -465,9 +493,15 @@ router.delete("/:userId", checkAuth, (req,res,next)=>{
 	Update a specified User information.
 	https://www.youtube.com/watch?v=WDrU305J1yw&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=6
 	
-	price_energy_monthly: {type:Number, default:0},
-	price_energy_basic: {type:Number, default:0},
-	price_energy_transfer: {type:Number, default:0},
+	price_energy_monthly: {type:Number, default:10},
+	price_energy_basic: {type:Number, default:4.5},
+	price_energy_transfer: {type:Number, default:4.5},
+	heating_temperature_upper: {type:Number, default:24.0},
+	heating_target_temperature: {type:Number, default:22.0},
+	heating_temperature_lower: {type:Number, default:20.0},
+	heating_humidity_upper: {type:Number, default:45.0},
+	heating_target_humidity: {type:Number, default:40.0},
+	heating_humidity_lower: {type:Number, default:35.0},
 	
 	For example:
 	const data = [
@@ -482,8 +516,8 @@ router.put('/:userId', checkAuth, (req,res,next)=>{
 	const updateOps = {};
 	let filled = false;
 	for (const ops of req.body) {
-		// Allow only "price_" changes!
-		if (ops.propName.indexOf('price_') === 0) {
+		// Allow only "price_" OR "heating_" changes!
+		if (ops.propName.indexOf('price_') === 0 || ops.propName.indexOf('heating_') === 0 ) {
 			updateOps[ops.propName] = ops.value;
 			filled = true;
 		}

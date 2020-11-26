@@ -67,7 +67,7 @@ export default class LanguageModel {
 				'USER_HEATING_TARGET':'Target: ',
 				'USER_HEATING_UPPER_LIMIT':'Upper limit: ',
 				'USER_HEATING_LOWER_LIMIT':'Lower limit: ',
-				'USER_HEATING_TARGET_SAVED':'New heating target/limit saved.',
+				'USER_HEATING_TARGET_SAVED':'New target/limit saved.',
 				'USER_WATER_TITLE':'Water',
 				'USER_WATER_DESCRIPTION':'Here you will find more information about your water consumption.',
 				'USER_WATER_CHART_TITLE':'Water consumption',

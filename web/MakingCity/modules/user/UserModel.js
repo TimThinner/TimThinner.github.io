@@ -236,50 +236,49 @@ export default class UserModel extends Model {
 					if (typeof myJson.price_energy_monthly !== 'undefined') {
 						self.price_energy_monthly = myJson.price_energy_monthly;
 					} else {
-						self.price_energy_monthly = 0;
+						self.price_energy_monthly = 10;
 					}
 					if (typeof myJson.price_energy_basic !== 'undefined') {
 						self.price_energy_basic = myJson.price_energy_basic;
 					} else {
-						self.price_energy_basic = 0;
+						self.price_energy_basic = 4.5;
 					}
 					if (typeof myJson.price_energy_transfer !== 'undefined') {
 						self.price_energy_transfer = myJson.price_energy_transfer;
 					} else {
-						self.price_energy_transfer = 0;
+						self.price_energy_transfer = 4.5;
 					}
 					
-					
-					if (typeof myJson.heating_target_temperature !== 'undefined') {
-						self.heating_target_temperature = myJson.heating_target_temperature;
-					} else {
-						self.heating_target_temperature = 0;
-					}
 					if (typeof myJson.heating_temperature_upper !== 'undefined') {
 						self.heating_temperature_upper = myJson.heating_temperature_upper;
 					} else {
-						self.heating_temperature_upper = 0;
+						self.heating_temperature_upper = 24.0;
+					}
+					if (typeof myJson.heating_target_temperature !== 'undefined') {
+						self.heating_target_temperature = myJson.heating_target_temperature;
+					} else {
+						self.heating_target_temperature = 22.0;
 					}
 					if (typeof myJson.heating_temperature_lower !== 'undefined') {
 						self.heating_temperature_lower = myJson.heating_temperature_lower;
 					} else {
-						self.heating_temperature_lower = 0;
+						self.heating_temperature_lower = 20.0;
 					}
 					
-					if (typeof myJson.heating_target_humidity !== 'undefined') {
-						self.heating_target_humidity = myJson.heating_target_humidity;
-					} else {
-						self.heating_target_humidity = 0;
-					}
 					if (typeof myJson.heating_humidity_upper !== 'undefined') {
 						self.heating_humidity_upper = myJson.heating_humidity_upper;
 					} else {
-						self.heating_humidity_upper = 0;
+						self.heating_humidity_upper = 45.0;
+					}
+					if (typeof myJson.heating_target_humidity !== 'undefined') {
+						self.heating_target_humidity = myJson.heating_target_humidity;
+					} else {
+						self.heating_target_humidity = 40.0;
 					}
 					if (typeof myJson.heating_humidity_lower !== 'undefined') {
 						self.heating_humidity_lower = myJson.heating_humidity_lower;
 					} else {
-						self.heating_humidity_lower = 0;
+						self.heating_humidity_lower = 35.0;
 					}
 					
 					//self.readkeystartdate = myJson.readkeystartdate;

@@ -48,6 +48,14 @@ export default class UserModel extends Model {
 		this.heating_target_humidity    = 40;
 		this.heating_humidity_lower     = 35;
 		
+		/* Water targets and limits per 24h */
+		this.water_hot_upper   = 100;
+		this.water_hot_target  = 50;
+		this.water_hot_lower   = 10;
+		this.water_cold_upper  = 200;
+		this.water_cold_target = 100;
+		this.water_cold_lower  = 20;
+		
 		this.is_superuser = false;
 		this.localStorageLabel = 'MakingCityUserModel';
 	}
@@ -493,6 +501,75 @@ export default class UserModel extends Model {
 				})
 				.catch(function(error){
 					self.notifyAll({model:self.name, method:'updateHeatingTargets', status:status, message:error});
+				});
+		}
+	}
+	
+	updateWaterTargets(id, data, authToken) {
+		const self = this;
+		
+		if (this.MOCKUP) {
+			
+			data.forEach(d => {
+				if (d.propName === 'water_hot_upper') {
+					self.water_hot_upper = d.value;
+				} else if (d.propName === 'water_hot_target') {
+					self.water_hot_target = d.value;
+				} else if (d.propName === 'water_hot_lower') {
+					self.water_hot_lower = d.value;
+				} else if (d.propName === 'water_cold_upper') {
+					self.water_cold_upper = d.value;
+				} else if (d.propName === 'water_cold_target') {
+					self.water_cold_target = d.value;
+				} else if (d.propName === 'water_cold_lower') {
+					self.water_cold_lower = d.value;
+				}
+			});
+			setTimeout(() => {
+				this.notifyAll({model:this.name, method:'updateWaterTargets', status:200, message:'OK'});
+			}, 200);
+			
+		} else {
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+authToken;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myPut = {
+				method: 'PUT',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(this.mongoBackend + '/users/'+id, myPut);
+			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+		
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					if (status === 200) {
+						data.forEach(d => {
+							if (d.propName === 'water_hot_upper') {
+								self.water_hot_upper = d.value;
+							} else if (d.propName === 'water_hot_target') {
+								self.water_hot_target = d.value;
+							} else if (d.propName === 'water_hot_lower') {
+								self.water_hot_lower = d.value;
+							} else if (d.propName === 'water_cold_upper') {
+								self.water_cold_upper = d.value;
+							} else if (d.propName === 'water_cold_target') {
+								self.water_cold_target = d.value;
+							} else if (d.propName === 'water_cold_lower') {
+								self.water_cold_lower = d.value;
+							}
+						});
+					}
+					self.notifyAll({model:self.name, method:'updateWaterTargets', status:status, message:myJson.message});
+				})
+				.catch(function(error){
+					self.notifyAll({model:self.name, method:'updateWaterTargets', status:status, message:error});
 				});
 		}
 	}

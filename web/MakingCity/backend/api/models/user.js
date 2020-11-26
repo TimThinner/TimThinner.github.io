@@ -26,6 +26,12 @@ const userSchema = mongoose.Schema({
 	heating_humidity_upper: {type:Number, default:45.0},
 	heating_target_humidity: {type:Number, default:40.0},
 	heating_humidity_lower: {type:Number, default:35.0},
+	water_hot_upper: {type:Number, default:100},
+	water_hot_target: {type:Number, default:50},
+	water_hot_lower: {type:Number, default:10},
+	water_cold_upper: {type:Number, default:200},
+	water_cold_target: {type:Number, default:100},
+	water_cold_lower: {type:Number, default:20},
 	is_superuser: { type: Boolean, default: false }
 });
 

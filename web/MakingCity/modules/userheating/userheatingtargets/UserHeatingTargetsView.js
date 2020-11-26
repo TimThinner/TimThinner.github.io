@@ -9,14 +9,7 @@ export default class UserHeatingTargetsView extends View {
 	
 	constructor(controller) {
 		super(controller);
-		/*
-		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserHeatingNowModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
-		});
-		*/
+		
 		this.userModel = this.controller.master.modelRepo.get('UserModel');
 		this.userModel.subscribe(this);
 		
@@ -48,16 +41,10 @@ export default class UserHeatingTargetsView extends View {
 	
 	remove() {
 		super.remove();
-		/*Object.keys(this.models).forEach(key => {
-			this.models[key].unsubscribe(this);
-		});*/
+		
 		this.userModel.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
-	}
-	
-	updateLatestValues() {
-		console.log('UPDATE UserHeatingTargets !!!!!!!');
 	}
 	
 	fillTargetsFromUM() {
@@ -74,17 +61,16 @@ export default class UserHeatingTargetsView extends View {
 	}
 	
 	notify(options) {
-		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_heating_target_saved = LM['translation'][sel]['USER_HEATING_TARGET_SAVED'];
+		const localized_string_target_saved = LM['translation'][sel]['USER_TARGET_SAVED'];
 		
 		if (this.controller.visible) {
 			if (options.model==='UserModel' && options.method==='updateHeatingTargets') {
 				if (options.status === 200) {
 					
 					// Show Toast: SAVED!
-					M.toast({displayLength:1000, html: localized_string_heating_target_saved});
+					M.toast({displayLength:1000, html: localized_string_target_saved});
 					
 					this.fillTargetsFromUM();
 				}
@@ -140,16 +126,16 @@ export default class UserHeatingTargetsView extends View {
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_title = LM['translation'][sel]['USER_HEATING_TARGETS_TITLE'];
-			const localized_string_description = LM['translation'][sel]['USER_HEATING_TARGET_BOTH_DESCRIPTION'];
+			const localized_string_description = LM['translation'][sel]['USER_HEATING_TARGETS_BOTH_DESCRIPTION'];
 			
 			const localized_string_subtitle_1 = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_TEMPERATURE'];
 			const localized_string_subtitle_2 = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_HUMIDITY'];
 			
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			
-			const localized_string_target = LM['translation'][sel]['USER_HEATING_TARGET'];
-			const localized_string_upper_limit = LM['translation'][sel]['USER_HEATING_UPPER_LIMIT'];
-			const localized_string_lower_limit = LM['translation'][sel]['USER_HEATING_LOWER_LIMIT'];
+			const localized_string_target = LM['translation'][sel]['USER_TARGET'];
+			const localized_string_upper_limit = LM['translation'][sel]['USER_UPPER_LIMIT'];
+			const localized_string_lower_limit = LM['translation'][sel]['USER_LOWER_LIMIT'];
 			
 			const html =
 				'<div class="row">'+

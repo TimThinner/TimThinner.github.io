@@ -284,6 +284,8 @@ router.post("/login", (req,res,next)=>{
 		' price_energy_monthly price_energy_basic price_energy_transfer'+
 		' heating_temperature_upper heating_target_temperature heating_temperature_lower'+
 		' heating_humidity_upper heating_target_humidity heating_humidity_lower'+
+		' water_hot_upper water_hot_target water_hot_lower'+
+		' water_cold_upper water_cold_target water_cold_lower'+
 		' is_superuser';
 	User.find({email:email_lc})
 		.select(selString)
@@ -329,6 +331,15 @@ router.post("/login", (req,res,next)=>{
 					const hth = user[0].heating_target_humidity ? user[0].heating_target_humidity : 40.0;
 					const hhl = user[0].heating_humidity_lower ? user[0].heating_humidity_lower : 35.0;
 					
+					const whu = user[0].water_hot_upper ? user[0].water_hot_upper : 100;
+					const wht = user[0].water_hot_target ? user[0].water_hot_target : 50;
+					const whl = user[0].water_hot_lower ? user[0].water_hot_lower : 10;
+					
+					const wcu = user[0].water_cold_upper ? user[0].water_cold_upper : 200;
+					const wct = user[0].water_cold_target ? user[0].water_cold_target : 100;
+					const wcl = user[0].water_cold_lower ? user[0].water_cold_lower : 20;
+					
+					
 					// LOG this login.
 					const logEntry = new Log({
 						_id: new mongoose.Types.ObjectId(),
@@ -359,6 +370,12 @@ router.post("/login", (req,res,next)=>{
 						heating_humidity_upper: hhu,
 						heating_target_humidity: hth,
 						heating_humidity_lower: hhl,
+						water_hot_upper: whu,
+						water_hot_target: wht,
+						water_hot_lower: whl,
+						water_cold_upper: wcu,
+						water_cold_target: wct,
+						water_cold_lower: wcl,
 						is_superuser: user[0].is_superuser
 					});
 				}
@@ -502,6 +519,12 @@ router.delete("/:userId", checkAuth, (req,res,next)=>{
 	heating_humidity_upper: {type:Number, default:45.0},
 	heating_target_humidity: {type:Number, default:40.0},
 	heating_humidity_lower: {type:Number, default:35.0},
+	water_hot_upper: {type:Number, default:100},
+	water_hot_target: {type:Number, default:50},
+	water_hot_lower: {type:Number, default:10},
+	water_cold_upper: {type:Number, default:200},
+	water_cold_target: {type:Number, default:100},
+	water_cold_lower: {type:Number, default:20},
 	
 	For example:
 	const data = [
@@ -517,7 +540,9 @@ router.put('/:userId', checkAuth, (req,res,next)=>{
 	let filled = false;
 	for (const ops of req.body) {
 		// Allow only "price_" OR "heating_" changes!
-		if (ops.propName.indexOf('price_') === 0 || ops.propName.indexOf('heating_') === 0 ) {
+		if (ops.propName.indexOf('price_') === 0 || 
+			ops.propName.indexOf('heating_') === 0 || 
+			ops.propName.indexOf('water_') === 0) {
 			updateOps[ops.propName] = ops.value;
 			filled = true;
 		}

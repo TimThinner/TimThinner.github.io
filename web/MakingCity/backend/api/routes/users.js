@@ -24,15 +24,21 @@ const Readkey = require('../models/readkey');
 	regcode:  { type: mongoose.Schema.Types.ObjectId, ref:'Regcode'},
 	readkey:  { type: mongoose.Schema.Types.ObjectId, ref:'Readkey'},
 	
-	price_energy_monthly: {type:Number, default:10},
-	price_energy_basic: {type:Number, default:4.5},
-	price_energy_transfer: {type:Number, default:4.5},
-	heating_temperature_upper: {type:Number, default:24.0},
-	heating_target_temperature: {type:Number, default:22.0},
-	heating_temperature_lower: {type:Number, default:20.0},
-	heating_humidity_upper: {type:Number, default:45.0},
-	heating_target_humidity: {type:Number, default:40.0},
-	heating_humidity_lower: {type:Number, default:35.0},
+	price_energy_monthly: {type:Number, default:0},
+	price_energy_basic: {type:Number, default:0},
+	price_energy_transfer: {type:Number, default:0},
+	heating_temperature_upper: {type:Number, default:0},
+	heating_target_temperature: {type:Number, default:0},
+	heating_temperature_lower: {type:Number, default:0},
+	heating_humidity_upper: {type:Number, default:0},
+	heating_target_humidity: {type:Number, default:0},
+	heating_humidity_lower: {type:Number, default:0},
+	water_hot_upper: {type:Number, default:0},
+	water_hot_target: {type:Number, default:0},
+	water_hot_lower: {type:Number, default:0},
+	water_cold_upper: {type:Number, default:0},
+	water_cold_target: {type:Number, default:0},
+	water_cold_lower: {type:Number, default:0},
 	
 	is_superuser: { type: Boolean, default: false }
 */
@@ -320,24 +326,24 @@ router.post("/login", (req,res,next)=>{
 					)
 					const rkey = user[0].readkey ? user[0].readkey._id : undefined;
 					
-					const pem = user[0].price_energy_monthly ? user[0].price_energy_monthly : 10;
-					const peb = user[0].price_energy_basic ? user[0].price_energy_basic : 4.5;
-					const pet = user[0].price_energy_transfer ? user[0].price_energy_transfer : 4.5;
+					const pem = user[0].price_energy_monthly ? user[0].price_energy_monthly : 0;
+					const peb = user[0].price_energy_basic ? user[0].price_energy_basic : 0;
+					const pet = user[0].price_energy_transfer ? user[0].price_energy_transfer : 0;
 					
-					const htu = user[0].heating_temperature_upper ? user[0].heating_temperature_upper : 24.0;
-					const htt = user[0].heating_target_temperature ? user[0].heating_target_temperature : 22.0;
-					const htl = user[0].heating_temperature_lower ? user[0].heating_temperature_lower : 20.0;
-					const hhu = user[0].heating_humidity_upper ? user[0].heating_humidity_upper : 45.0;
-					const hth = user[0].heating_target_humidity ? user[0].heating_target_humidity : 40.0;
-					const hhl = user[0].heating_humidity_lower ? user[0].heating_humidity_lower : 35.0;
+					const htu = user[0].heating_temperature_upper ? user[0].heating_temperature_upper : 0;
+					const htt = user[0].heating_target_temperature ? user[0].heating_target_temperature : 0;
+					const htl = user[0].heating_temperature_lower ? user[0].heating_temperature_lower : 0;
+					const hhu = user[0].heating_humidity_upper ? user[0].heating_humidity_upper : 0;
+					const hth = user[0].heating_target_humidity ? user[0].heating_target_humidity : 0;
+					const hhl = user[0].heating_humidity_lower ? user[0].heating_humidity_lower : 0;
 					
-					const whu = user[0].water_hot_upper ? user[0].water_hot_upper : 100;
-					const wht = user[0].water_hot_target ? user[0].water_hot_target : 50;
-					const whl = user[0].water_hot_lower ? user[0].water_hot_lower : 10;
+					const whu = user[0].water_hot_upper ? user[0].water_hot_upper : 0;
+					const wht = user[0].water_hot_target ? user[0].water_hot_target : 0;
+					const whl = user[0].water_hot_lower ? user[0].water_hot_lower : 0;
 					
-					const wcu = user[0].water_cold_upper ? user[0].water_cold_upper : 200;
-					const wct = user[0].water_cold_target ? user[0].water_cold_target : 100;
-					const wcl = user[0].water_cold_lower ? user[0].water_cold_lower : 20;
+					const wcu = user[0].water_cold_upper ? user[0].water_cold_upper : 0;
+					const wct = user[0].water_cold_target ? user[0].water_cold_target : 0;
+					const wcl = user[0].water_cold_lower ? user[0].water_cold_lower : 0;
 					
 					
 					// LOG this login.
@@ -510,21 +516,21 @@ router.delete("/:userId", checkAuth, (req,res,next)=>{
 	Update a specified User information.
 	https://www.youtube.com/watch?v=WDrU305J1yw&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=6
 	
-	price_energy_monthly: {type:Number, default:10},
-	price_energy_basic: {type:Number, default:4.5},
-	price_energy_transfer: {type:Number, default:4.5},
-	heating_temperature_upper: {type:Number, default:24.0},
-	heating_target_temperature: {type:Number, default:22.0},
-	heating_temperature_lower: {type:Number, default:20.0},
-	heating_humidity_upper: {type:Number, default:45.0},
-	heating_target_humidity: {type:Number, default:40.0},
-	heating_humidity_lower: {type:Number, default:35.0},
-	water_hot_upper: {type:Number, default:100},
-	water_hot_target: {type:Number, default:50},
-	water_hot_lower: {type:Number, default:10},
-	water_cold_upper: {type:Number, default:200},
-	water_cold_target: {type:Number, default:100},
-	water_cold_lower: {type:Number, default:20},
+	price_energy_monthly: {type:Number, default:0},
+	price_energy_basic: {type:Number, default:0},
+	price_energy_transfer: {type:Number, default:0},
+	heating_temperature_upper: {type:Number, default:0},
+	heating_target_temperature: {type:Number, default:0},
+	heating_temperature_lower: {type:Number, default:0},
+	heating_humidity_upper: {type:Number, default:0},
+	heating_target_humidity: {type:Number, default:0},
+	heating_humidity_lower: {type:Number, default:0},
+	water_hot_upper: {type:Number, default:0},
+	water_hot_target: {type:Number, default:0},
+	water_hot_lower: {type:Number, default:0},
+	water_cold_upper: {type:Number, default:0},
+	water_cold_target: {type:Number, default:0},
+	water_cold_lower: {type:Number, default:0},
 	
 	For example:
 	const data = [

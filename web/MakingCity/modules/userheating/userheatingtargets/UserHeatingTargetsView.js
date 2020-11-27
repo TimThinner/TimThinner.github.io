@@ -232,10 +232,11 @@ export default class UserHeatingTargetsView extends View {
 				this.targets.heating_target_humidity,
 				this.targets.heating_humidity_upper
 			];
+			
 			var humidity = document.getElementById('humidity-slider');
 			noUiSlider.create(humidity, {
 				range: {
-					'min': 30,
+					'min': 20,
 					'max': 50
 				},
 				step: 1,

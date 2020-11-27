@@ -22,39 +22,27 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
-		/*
-		this.price_energy_monthly  = 0;
-		this.price_energy_basic    = 0;
-		this.price_energy_transfer = 0;
-		*/
-		// Set energy prices to some reasonable level:
-		this.price_energy_monthly  = 10;
-		this.price_energy_basic    = 4.5;
-		this.price_energy_transfer = 4.5;
 		
-		/*
-		this.heating_target_temperature = 0;
-		this.heating_temperature_upper  = 0;
-		this.heating_temperature_lower  = 0;
-		this.heating_target_humidity    = 0;
-		this.heating_humidity_upper     = 0;
-		this.heating_humidity_lower     = 0;
-		*/
+		// this.DEFAULTS is defined in Configuration.js
+		this.price_energy_monthly  = this.DEFAULTS.price_energy_monthly;
+		this.price_energy_basic    = this.DEFAULTS.price_energy_basic;
+		this.price_energy_transfer = this.DEFAULTS.price_energy_transfer;
+		
 		// Set Heating targets and limits to some reasonable level:
-		this.heating_temperature_upper  = 24.0;
-		this.heating_target_temperature = 22.0;
-		this.heating_temperature_lower  = 20.0;
-		this.heating_humidity_upper     = 45;
-		this.heating_target_humidity    = 40;
-		this.heating_humidity_lower     = 35;
+		this.heating_temperature_upper  = this.DEFAULTS.heating_temperature_upper;
+		this.heating_target_temperature = this.DEFAULTS.heating_target_temperature;
+		this.heating_temperature_lower  = this.DEFAULTS.heating_temperature_lower;
+		this.heating_humidity_upper     = this.DEFAULTS.heating_humidity_upper;
+		this.heating_target_humidity    = this.DEFAULTS.heating_target_humidity;
+		this.heating_humidity_lower     = this.DEFAULTS.heating_humidity_lower;
 		
 		/* Water targets and limits per 24h */
-		this.water_hot_upper   = 100;
-		this.water_hot_target  = 50;
-		this.water_hot_lower   = 10;
-		this.water_cold_upper  = 200;
-		this.water_cold_target = 100;
-		this.water_cold_lower  = 20;
+		this.water_hot_upper   = this.DEFAULTS.water_hot_upper;
+		this.water_hot_target  = this.DEFAULTS.water_hot_target;
+		this.water_hot_lower   = this.DEFAULTS.water_hot_lower;
+		this.water_cold_upper  = this.DEFAULTS.water_cold_upper;
+		this.water_cold_target = this.DEFAULTS.water_cold_target;
+		this.water_cold_lower  = this.DEFAULTS.water_cold_lower;
 		
 		this.is_superuser = false;
 		this.localStorageLabel = 'MakingCityUserModel';
@@ -82,15 +70,28 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
-		this.price_energy_monthly  = 0;
-		this.price_energy_basic    = 0;
-		this.price_energy_transfer = 0;
-		this.heating_target_temperature = 0;
-		this.heating_temperature_upper  = 0;
-		this.heating_temperature_lower  = 0;
-		this.heating_target_humidity    = 0;
-		this.heating_humidity_upper     = 0;
-		this.heating_humidity_lower     = 0;
+		
+		// this.DEFAULTS is defined in Configuration.js
+		this.price_energy_monthly  = this.DEFAULTS.price_energy_monthly;
+		this.price_energy_basic    = this.DEFAULTS.price_energy_basic;
+		this.price_energy_transfer = this.DEFAULTS.price_energy_transfer;
+		
+		// Set Heating targets and limits to some reasonable level:
+		this.heating_temperature_upper  = this.DEFAULTS.heating_temperature_upper;
+		this.heating_target_temperature = this.DEFAULTS.heating_target_temperature;
+		this.heating_temperature_lower  = this.DEFAULTS.heating_temperature_lower;
+		this.heating_humidity_upper     = this.DEFAULTS.heating_humidity_upper;
+		this.heating_target_humidity    = this.DEFAULTS.heating_target_humidity;
+		this.heating_humidity_lower     = this.DEFAULTS.heating_humidity_lower;
+		
+		/* Water targets and limits per 24h */
+		this.water_hot_upper   = this.DEFAULTS.water_hot_upper;
+		this.water_hot_target  = this.DEFAULTS.water_hot_target;
+		this.water_hot_lower   = this.DEFAULTS.water_hot_lower;
+		this.water_cold_upper  = this.DEFAULTS.water_cold_upper;
+		this.water_cold_target = this.DEFAULTS.water_cold_target;
+		this.water_cold_lower  = this.DEFAULTS.water_cold_lower;
+		
 		this.is_superuser = false;
 	}
 	
@@ -110,7 +111,13 @@ export default class UserModel extends Model {
 			'heating_temperature_lower':  this.heating_temperature_lower,
 			'heating_target_humidity':    this.heating_target_humidity,
 			'heating_humidity_upper':     this.heating_humidity_upper,
-			'heating_humidity_lower':     this.heating_humidity_lower
+			'heating_humidity_lower':     this.heating_humidity_lower,
+			'water_hot_upper':   this.water_hot_upper,
+			'water_hot_target':  this.water_hot_target,
+			'water_hot_lower':   this.water_hot_lower,
+			'water_cold_upper':  this.water_cold_upper,
+			'water_cold_target': this.water_cold_target,
+			'water_cold_lower':  this.water_cold_lower
 		};
 		
 		// EXCEPT HERE FOR TEST PURPOSES:
@@ -151,10 +158,16 @@ export default class UserModel extends Model {
 			if (typeof stat.heating_target_temperature !== 'undefined') { this.heating_target_temperature = stat.heating_target_temperature; }
 			if (typeof stat.heating_temperature_upper !== 'undefined')  { this.heating_temperature_upper = stat.heating_temperature_upper; }
 			if (typeof stat.heating_temperature_lower !== 'undefined')  { this.heating_temperature_lower = stat.heating_temperature_lower; }
-			
 			if (typeof stat.heating_target_humidity !== 'undefined') { this.heating_target_humidity = stat.heating_target_humidity; }
 			if (typeof stat.heating_humidity_upper !== 'undefined')  { this.heating_humidity_upper = stat.heating_humidity_upper; }
 			if (typeof stat.heating_humidity_lower !== 'undefined')  { this.heating_humidity_lower = stat.heating_humidity_lower; }
+			
+			if (typeof stat.water_hot_upper !== 'undefined') { this.water_hot_upper = stat.water_hot_upper; }
+			if (typeof stat.water_hot_target !== 'undefined') { this.water_hot_target = stat.water_hot_target; }
+			if (typeof stat.water_hot_lower !== 'undefined') { this.water_hot_lower = stat.water_hot_lower; }
+			if (typeof stat.water_cold_upper !== 'undefined') { this.water_cold_upper = stat.water_cold_upper; }
+			if (typeof stat.water_cold_target !== 'undefined') { this.water_cold_target = stat.water_cold_target; }
+			if (typeof stat.water_cold_lower !== 'undefined') { this.water_cold_lower = stat.water_cold_lower; }
 			
 			//if (typeof stat.readkeystartdate !== 'undefined') { this.readkeystartdate = stat.readkeystartdate; }
 			//if (typeof stat.readkeyenddate !== 'undefined')   { this.readkeyenddate = stat.readkeyenddate; }
@@ -196,18 +209,28 @@ export default class UserModel extends Model {
 			this.email = data.email;
 			this.token = 'nodatabasetoken';
 			this.is_superuser = false;
-			// Set energy prices to some reasonable level:
-			this.price_energy_monthly  = 10;
-			this.price_energy_basic    = 4.5;
-			this.price_energy_transfer = 4.5;
+			
+			// this.DEFAULTS is defined in Configuration.js
+			this.price_energy_monthly  = this.DEFAULTS.price_energy_monthly;
+			this.price_energy_basic    = this.DEFAULTS.price_energy_basic;
+			this.price_energy_transfer = this.DEFAULTS.price_energy_transfer;
 			
 			// Set Heating targets and limits to some reasonable level:
-			this.heating_temperature_upper  = 24.0;
-			this.heating_target_temperature = 22.0;
-			this.heating_temperature_lower  = 20.0;
-			this.heating_humidity_upper     = 45;
-			this.heating_target_humidity    = 40;
-			this.heating_humidity_lower     = 35;
+			this.heating_temperature_upper  = this.DEFAULTS.heating_temperature_upper;
+			this.heating_target_temperature = this.DEFAULTS.heating_target_temperature;
+			this.heating_temperature_lower  = this.DEFAULTS.heating_temperature_lower;
+			this.heating_humidity_upper     = this.DEFAULTS.heating_humidity_upper;
+			this.heating_target_humidity    = this.DEFAULTS.heating_target_humidity;
+			this.heating_humidity_lower     = this.DEFAULTS.heating_humidity_lower;
+			
+			/* Water targets and limits per 24h */
+			this.water_hot_upper   = this.DEFAULTS.water_hot_upper;
+			this.water_hot_target  = this.DEFAULTS.water_hot_target;
+			this.water_hot_lower   = this.DEFAULTS.water_hot_lower;
+			this.water_cold_upper  = this.DEFAULTS.water_cold_upper;
+			this.water_cold_target = this.DEFAULTS.water_cold_target;
+			this.water_cold_lower  = this.DEFAULTS.water_cold_lower;
+			
 			// logged in moment()
 			//const exp = moment().add(24,'hours');
 			//const exp = moment().add(2,'minutes');
@@ -241,53 +264,45 @@ export default class UserModel extends Model {
 					self.is_superuser = myJson.is_superuser;
 					self.readkey = myJson.readkey;
 					
-					if (typeof myJson.price_energy_monthly !== 'undefined') {
-						self.price_energy_monthly = myJson.price_energy_monthly;
-					} else {
-						self.price_energy_monthly = 10;
-					}
-					if (typeof myJson.price_energy_basic !== 'undefined') {
-						self.price_energy_basic = myJson.price_energy_basic;
-					} else {
-						self.price_energy_basic = 4.5;
-					}
-					if (typeof myJson.price_energy_transfer !== 'undefined') {
-						self.price_energy_transfer = myJson.price_energy_transfer;
-					} else {
-						self.price_energy_transfer = 4.5;
-					}
+					// this.DEFAULTS is defined in Configuration.js
+					self.price_energy_monthly  = self.DEFAULTS.price_energy_monthly;
+					self.price_energy_basic    = self.DEFAULTS.price_energy_basic;
+					self.price_energy_transfer = self.DEFAULTS.price_energy_transfer;
 					
-					if (typeof myJson.heating_temperature_upper !== 'undefined') {
-						self.heating_temperature_upper = myJson.heating_temperature_upper;
-					} else {
-						self.heating_temperature_upper = 24.0;
-					}
-					if (typeof myJson.heating_target_temperature !== 'undefined') {
-						self.heating_target_temperature = myJson.heating_target_temperature;
-					} else {
-						self.heating_target_temperature = 22.0;
-					}
-					if (typeof myJson.heating_temperature_lower !== 'undefined') {
-						self.heating_temperature_lower = myJson.heating_temperature_lower;
-					} else {
-						self.heating_temperature_lower = 20.0;
-					}
+					// Set Heating targets and limits to some reasonable level:
+					self.heating_temperature_upper  = self.DEFAULTS.heating_temperature_upper;
+					self.heating_target_temperature = self.DEFAULTS.heating_target_temperature;
+					self.heating_temperature_lower  = self.DEFAULTS.heating_temperature_lower;
+					self.heating_humidity_upper     = self.DEFAULTS.heating_humidity_upper;
+					self.heating_target_humidity    = self.DEFAULTS.heating_target_humidity;
+					self.heating_humidity_lower     = self.DEFAULTS.heating_humidity_lower;
 					
-					if (typeof myJson.heating_humidity_upper !== 'undefined') {
-						self.heating_humidity_upper = myJson.heating_humidity_upper;
-					} else {
-						self.heating_humidity_upper = 45.0;
-					}
-					if (typeof myJson.heating_target_humidity !== 'undefined') {
-						self.heating_target_humidity = myJson.heating_target_humidity;
-					} else {
-						self.heating_target_humidity = 40.0;
-					}
-					if (typeof myJson.heating_humidity_lower !== 'undefined') {
-						self.heating_humidity_lower = myJson.heating_humidity_lower;
-					} else {
-						self.heating_humidity_lower = 35.0;
-					}
+					/* Water targets and limits per 24h */
+					self.water_hot_upper   = self.DEFAULTS.water_hot_upper;
+					self.water_hot_target  = self.DEFAULTS.water_hot_target;
+					self.water_hot_lower   = self.DEFAULTS.water_hot_lower;
+					self.water_cold_upper  = self.DEFAULTS.water_cold_upper;
+					self.water_cold_target = self.DEFAULTS.water_cold_target;
+					self.water_cold_lower  = self.DEFAULTS.water_cold_lower;
+					
+					if (typeof myJson.price_energy_monthly !== 'undefined') { self.price_energy_monthly = myJson.price_energy_monthly; }
+					if (typeof myJson.price_energy_basic !== 'undefined') { self.price_energy_basic = myJson.price_energy_basic; }
+					if (typeof myJson.price_energy_transfer !== 'undefined') { self.price_energy_transfer = myJson.price_energy_transfer; }
+					
+					if (typeof myJson.heating_temperature_upper !== 'undefined') { self.heating_temperature_upper = myJson.heating_temperature_upper; }
+					if (typeof myJson.heating_target_temperature !== 'undefined') { self.heating_target_temperature = myJson.heating_target_temperature; }
+					if (typeof myJson.heating_temperature_lower !== 'undefined') { self.heating_temperature_lower = myJson.heating_temperature_lower; }
+					
+					if (typeof myJson.heating_humidity_upper !== 'undefined') { self.heating_humidity_upper = myJson.heating_humidity_upper; }
+					if (typeof myJson.heating_target_humidity !== 'undefined') { self.heating_target_humidity = myJson.heating_target_humidity; }
+					if (typeof myJson.heating_humidity_lower !== 'undefined') { self.heating_humidity_lower = myJson.heating_humidity_lower; }
+					
+					if (typeof myJson.water_hot_upper !== 'undefined') { self.water_hot_upper = myJson.water_hot_upper; }
+ 					if (typeof myJson.water_hot_target !== 'undefined') { self.water_hot_target = myJson.water_hot_target; }
+ 					if (typeof myJson.water_hot_lower !== 'undefined') { self.water_hot_lower = myJson.water_hot_lower; }
+					if (typeof myJson.water_cold_upper !== 'undefined') { self.water_cold_upper = myJson.water_cold_upper; }
+					if (typeof myJson.water_cold_target !== 'undefined') { self.water_cold_target = myJson.water_cold_target; }
+					if (typeof myJson.water_cold_lower !== 'undefined') { self.water_cold_lower = myJson.water_cold_lower; }
 					
 					//self.readkeystartdate = myJson.readkeystartdate;
 					//self.readkeyenddate = myJson.readkeyenddate;

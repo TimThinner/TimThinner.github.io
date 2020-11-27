@@ -1,0 +1,151 @@
+
+Making modular web application with JavaScript (ES6)
+
+
+- What is the purpose of this application?
+- Homepage? Menu? Login/Logout for authenticated users?
+- Multiple views? Multiple models?
+- What is the navigation model?
+- What is the data (=models) update strategy?
+- User interaction?
+- Backend implementation (Models <=> REST-API <=> DATABASE)
+
+
+
+
+MasterController keeps all relevant data in two variables:
+
+	this.controllers = {};
+	this.modelRepo = new ModelRepo();
+
+
+MasterController creates at start-up time "generic" models and a controller for view which is visible at the beginning (for example "homepage" or "menu").
+MasterController can also create ALL controllers => (models, views) at init() but it has to make sure that all user specific data is cleaned from application memory 
+at logout process. When all models are created at init() we cannot of course fetch models which needs authentication. They can be initialized after LOGIN.
+
+
+
+
+init() {
+	console.log('MasterController init!');
+	
+	
+	const UM = new UserModel();
+	UM.subscribe(this); // Now we will receive notifications from the UserModel.
+	this.modelRepo.add('UserModel',UM);
+	UM.restore(); // Try to restore previous "session" stored into LocalStorage.
+	...
+	this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#menu', visible:true, menuitems:this.menuitems});
+	this.controllers['menu'].init();
+
+
+MasterController subscribes to model(s) and defines a notify()-method where it responds to events, for example:
+
+	notify(options) {
+		if (options.model==='UserModel' && options.method==='restored') {
+			if (options.status === 200) {
+			...
+
+
+
+
+ModelRepo
+	repo = {};
+	add(key, m)
+	get(key)
+	remove(key)
+	keys()
+	stringify()
+
+
+EventObserver
+	observers = [];
+	subscribe(fn)
+	unsubscribe(fn)
+	notifyAll(options)
+
+
+ResizeEventObserver extends EventObserver
+	resize_handler_set = false;
+	resizeTimeout = null;
+	width = $(window).width();
+	height = $(window).height();
+	resize()
+	resizeThrottler()
+	setResizeHandler()
+	unsetResizeHandler()
+	start()
+	stop()
+
+PeriodicPoller
+	master
+	timers = {};  // timers['foobar'] = {timer: undefined, interval: -1, models:['EModel']};
+	
+	remove() // clear timers 
+	hide() // clear timers 
+	getPollingInterval(name)
+	poller(name)
+	startPollers()
+	restartPollingInterval(name, interval)
+
+Model extends EventObserver
+	name
+	src
+	ready = false;
+	errorMessage = '';
+	fetching = false;
+	fetch(token) // an authentication token?  fetch url is constructed using src + other parameters
+
+
+Controller extends PeriodicPoller
+	name
+	master
+	el
+	visible
+	
+	models = {}; // "Own" models
+	view = undefined;
+	
+	remove()
+	hide()
+	show()
+	activate(tab)
+	notify(options) // When used with menuModel => all view changes are done by this
+	forceLogout()
+	init()
+
+	/*
+		Every Controller must subscribe for "MenuModel" notifications.
+		After that all view changes are driven by this code. Note that by using 
+		timeout we make all other "VIEWS" hidden before showing the selected one.
+	*/
+	notify(options) {
+		if (options.model==='MenuModel' && options.method==='selected') {
+			
+			if (this.name === options.selected) {
+				setTimeout(() => {
+					this.visible = true;
+					this.show();
+				}, 100);
+			} else {
+				this.visible = false;
+				this.hide();
+			}
+		}
+	}
+
+View
+	controller   // ref to my controller
+	el           // parent element to append HTML 
+	models = {}; // fill with models to subscribe (for notifications).
+					(These come from "owner" controller or from modelRepo).
+	
+	areModelsReady() // take all models into account?
+	modelsErrorMessages() // take all models into account?
+	forceLogout(vid) // show message and call controller forceLogout in 3 seconds
+	showSpinner(el)
+	
+	hide()
+	remove()
+	notify(options) // always check if associated controller is visible
+	render() // always check if associated controller is visible

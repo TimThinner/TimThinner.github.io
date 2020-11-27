@@ -118,6 +118,21 @@ export default class UWCWaterChartView extends View {
 		const localized_string_water = LM['translation'][sel]['USER_WATER_CHART_TITLE'];
 		const localized_string_hot = LM['translation'][sel]['USER_WATER_CHART_LEGEND_HOT'];
 		const localized_string_cold = LM['translation'][sel]['USER_WATER_CHART_LEGEND_COLD'];
+		const localized_string_target = LM['translation'][sel]['USER_DATA_TARGET'].toUpperCase();
+		const localized_string_upper_limit = LM['translation'][sel]['USER_DATA_UPPER_LIMIT'].toUpperCase();
+		const localized_string_lower_limit = LM['translation'][sel]['USER_DATA_LOWER_LIMIT'].toUpperCase();
+		
+		
+		// Fill the targets-object with values from UserModel.
+		const UM = this.controller.master.modelRepo.get('UserModel');
+		
+		const WHU = UM.water_hot_upper/24;
+		const WHT = UM.water_hot_target/24;
+		const WHL = UM.water_hot_lower/24;
+		
+		const WCU = UM.water_cold_upper/24;
+		const WCT = UM.water_cold_target/24;
+		const WCL = UM.water_cold_lower/24;
 		
 		const refreshId = this.el.slice(1);
 		am4core.ready(function() {
@@ -201,7 +216,7 @@ export default class UWCWaterChartView extends View {
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
 			series1.stroke = am4core.color("#f00");
-			series1.strokeWidth = 3;
+			series1.strokeWidth = 2;
 			series1.fill = series1.stroke;
 			series1.fillOpacity = 0;
 			
@@ -225,7 +240,7 @@ export default class UWCWaterChartView extends View {
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
 			series2.stroke = am4core.color("#0ff");
-			series2.strokeWidth = 3;
+			series2.strokeWidth = 2;
 			series2.fill = series2.stroke;
 			series2.fillOpacity = 0;
 			
@@ -238,6 +253,88 @@ export default class UWCWaterChartView extends View {
 			series2.dataFields.valueY = "cold";
 			series2.name = localized_string_cold;
 			series2.yAxis = valueAxis;
+			
+			
+			
+			// TARGETS AND UPPER AND LOWER LIMITS
+			var target = valueAxis.axisRanges.create();
+			target.value = WHT;
+			target.grid.stroke = am4core.color("#f88");
+			target.grid.strokeWidth = 1;
+			target.grid.strokeOpacity = 0.5;
+			//target.grid.above = true;
+			target.label.inside = true;
+			target.label.text = localized_string_target + ' ' + target.value.toFixed(0);
+			target.label.fill = target.grid.stroke;
+			target.label.fillOpacity = target.grid.strokeOpacity;
+			//target.label.align = "right";
+			target.label.verticalCenter = "bottom";
+			
+			var range = valueAxis.axisRanges.create();
+			range.value = WHU;
+			range.grid.stroke = am4core.color("#f88");
+			range.grid.strokeWidth = 1;
+			range.grid.strokeOpacity = 0.5;
+			//range.grid.above = true;
+			range.label.inside = true;
+			range.label.text = localized_string_upper_limit + ' ' + range.value.toFixed(0);
+			range.label.fill = range.grid.stroke;
+			range.label.fillOpacity = range.grid.strokeOpacity;
+			//range.label.align = "right";
+			range.label.verticalCenter = "bottom";
+			
+			var range2 = valueAxis.axisRanges.create();
+			range2.value = WHL;
+			range2.grid.stroke = am4core.color("#f88");
+			range2.grid.strokeWidth = 1;
+			range2.grid.strokeOpacity = 0.5;
+			//range2.grid.above = true;
+			range2.label.inside = true;
+			range2.label.text = localized_string_lower_limit + ' ' + range2.value.toFixed(0);
+			range2.label.fill = range2.grid.stroke;
+			range2.label.fillOpacity = range2.grid.strokeOpacity;
+			//range2.label.align = "right";
+			range2.label.verticalCenter = "top";
+			
+			var target2 = valueAxis.axisRanges.create();
+			target2.value = WCT;
+			target2.grid.stroke = am4core.color("#8ff");
+			target2.grid.strokeWidth = 1;
+			target2.grid.strokeOpacity = 0.5;
+			//target2.grid.above = true;
+			target2.label.inside = true;
+			target2.label.text = localized_string_target + ' ' + target2.value.toFixed(0);
+			target2.label.fill = target2.grid.stroke;
+			target2.label.fillOpacity = target2.grid.strokeOpacity;
+			target2.label.align = "right";
+			target2.label.verticalCenter = "bottom";
+			
+			var range3 = valueAxis.axisRanges.create();
+			range3.value = WCU;
+			range3.grid.stroke = am4core.color("#8ff");
+			range3.grid.strokeWidth = 1;
+			range3.grid.strokeOpacity = 0.5;
+			//range3.grid.above = true;
+			range3.label.inside = true;
+			range3.label.text = localized_string_upper_limit + ' ' + range3.value.toFixed(0);
+			range3.label.fill = range3.grid.stroke;
+			range3.label.fillOpacity = range3.grid.strokeOpacity;
+			range3.label.align = "right";
+			range3.label.verticalCenter = "bottom";
+			
+			var range4 = valueAxis.axisRanges.create();
+			range4.value = WCL;
+			range4.grid.stroke = am4core.color("#8ff");
+			range4.grid.strokeWidth = 1;
+			range4.grid.strokeOpacity = 0.5;
+			//range4.grid.above = true;
+			range4.label.inside = true;
+			range4.label.text = localized_string_lower_limit + ' ' + range4.value.toFixed(0);
+			range4.label.fill = range4.grid.stroke;
+			range4.label.fillOpacity = range4.grid.strokeOpacity;
+			range4.label.align = "right";
+			range4.label.verticalCenter = "top";
+			
 			
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;
@@ -337,7 +434,7 @@ export default class UWCWaterChartView extends View {
 						'</div>'+
 					'</div>'+
 					*/
-					'<div id="uwc-water-chart" class="medium-chart"></div>'+
+					'<div id="uwc-water-chart" class="large-chart"></div>'+
 					
 					
 					'<div id="uwc-water-total"></div>'+

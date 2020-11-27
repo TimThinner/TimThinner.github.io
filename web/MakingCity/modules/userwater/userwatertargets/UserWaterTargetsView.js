@@ -18,6 +18,14 @@ export default class UserWaterTargetsView extends View {
 		this.FELID = 'user-water-view-failure';
 		
 		// Always fill the targets-object with values from UserModel.
+		/*
+		this.water_hot_upper   = 400;
+		this.water_hot_target  = 300;
+		this.water_hot_lower   = 100;
+		this.water_cold_upper  = 500;
+		this.water_cold_target = 400;
+		this.water_cold_lower  = 200;
+		*/
 		this.targets = {
 			water_hot_upper: 0,
 			water_hot_target: 0,
@@ -190,11 +198,13 @@ export default class UserWaterTargetsView extends View {
 				this.targets.water_hot_upper
 			];
 			
+			const hot_range_max = this.targets.water_hot_upper + 100;
+			
 			var hots = document.getElementById('water-hot-slider');
 			noUiSlider.create(hots, {
 				range: {
 					'min': 0,
-					'max': 200
+					'max': hot_range_max
 				},
 				step: 0.1,
 				// Handles start at ...
@@ -225,11 +235,13 @@ export default class UserWaterTargetsView extends View {
 				this.targets.water_cold_target,
 				this.targets.water_cold_upper
 			];
+			const cold_range_max = this.targets.water_cold_upper + 100;
+			
 			var colds = document.getElementById('water-cold-slider');
 			noUiSlider.create(colds, {
 				range: {
 					'min': 0,
-					'max': 400
+					'max': cold_range_max
 				},
 				step: 1,
 				// Handles start at ...

@@ -42,6 +42,18 @@ export default class UserApartmentModel extends Model {
 		
 	IN ApartmentModel:
 	{"created_at": "2020-10-20T03:21:38","apartmentId":101,"averagePower":2040,"impulseLastCtr": 34,"​​​​​impulseTotalCtr": 585464,"​​​​​meterId": 1001,"​​​​​residentId": 1,"​​​​​totalEnergy": 585.464}
+	
+	
+	
+	Another case is when we need DAILY consumption data. This applies to electricity and water, where we need to fetch 
+	total consumptions at the beginnning and at the end of each day.
+	This also is different to those which go back 24 hours (or one week, or one month) from current time.
+	But we have the limit=1 here also, which makes this easier. And we should keep already fetched daily values in memory. They don't change.
+	This is a new "category", data is not needed to fetch periodically. Fetch ONCE case.
+	
+	
+	
+	
 	*/
 	constructor(options) {
 		

@@ -13,6 +13,8 @@ Making modular web application with JavaScript (ES6)
 
 
 
+
+
 MasterController keeps all relevant data in two variables:
 
 	this.controllers = {};
@@ -22,6 +24,69 @@ MasterController keeps all relevant data in two variables:
 MasterController creates at start-up time "generic" models and a controller for view which is visible at the beginning (for example "homepage" or "menu").
 MasterController can also create ALL controllers => (models, views) at init() but it has to make sure that all user specific data is cleaned from application memory 
 at logout process. When all models are created at init() we cannot of course fetch models which needs authentication. They can be initialized after LOGIN.
+
+1) BOOT 
+2) Create all models for anonymous UI
+3) Set listeners for events
+
+
+
+CONTROLLER has "master" (MasterController)
+CONTROLLER has an array of "own" models. They are created at controller init() and removed at remove():
+@XYZController:
+	remove() {
+		super.remove();
+		// We must remove all models that were created here at the initialize-method.
+		Object.keys(this.models).forEach(key => {
+			if (this.ownmodelnames.includes(key)) {
+				this.master.modelRepo.remove(key);
+			}
+		});
+		this.models = {};
+	}
+@Controller:
+	remove() {
+		super.remove();
+		Object.keys(this.models).forEach(key => {
+			this.models[key].unsubscribe(this);
+		});
+		if (this.view) {
+			this.view.remove();
+			this.view = undefined;
+		}
+	}
+	
+@PeriodicPoller:
+this.timers[UNIQUE_TIMER_NAME] = {timer: undefined, interval: 30000, models:[A_LIST_OF_MODELS]};
+A_LIST_OF_MODELS = usually same as this.ownmodelnames
+
+	remove() {
+		Object.keys(this.timers).forEach(key => {
+			if (this.timers[key].timer) {
+				clearTimeout(this.timers[key].timer);
+				this.timers[key].timer = undefined;
+			}
+		});
+	}
+
+
+IMPORTANT NOTE:
+
+The fact that models should be kept up-to-date regardless what user is viewing at UI makes my previous strategy insufficient.
+previously models were fetched ONLY when user actually opened views for some measurements. 
+Only then latest data was fetched and different calculations and values were processed. => ALARMS WERE NOT HANDLED IN REAL-TIME THE WAY THEY ARE SUPPOSED TO!
+This means we must have totally separate model-fetching process from viewing process. Make changes to all levels of class hierarchy to support separate processes.
+
+
+
+VIEW has its own list of models (a subset of what controller has) and it uses them to 
+a) check if they are all ready (see render()).
+b) subscribe to them to receive notifications (see notify()).
+
+
+
+
+
 
 
 
@@ -148,4 +213,4 @@ View
 	hide()
 	remove()
 	notify(options) // always check if associated controller is visible
-	render() // always check if associated controller is visible
+	render()

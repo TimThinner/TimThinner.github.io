@@ -97,29 +97,35 @@ class MasterController {
 	init() {
 		console.log('MasterController init!');
 		
+		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
 		this.modelRepo.add('ResizeEventObserver',REO);
 		REO.start(); // Start tracking resize events
 		
+		console.log('Create LanguageModel!');
 		const LM = new LanguageModel();
 		this.modelRepo.add('LanguageModel',LM);
 		
+		console.log('Create LogModel!');
 		const LOGM = new LogModel({name:'LogModel',src:''});
 		//LOGM.subscribe(this); // Now we will receive notifications from the LogModel.
 		this.modelRepo.add('LogModel',LOGM);
 		
+		console.log('Create VisitorCountModel!');
 		// NOTE: Visit count is incremented when MasterController initializes.
 		const VCM = new VisitorCountModel({name:'VisitorCountModel',src:''});
 		//VCM.subscribe(this); // Now we will receive notifications from the VisitorCountModel.
 		this.modelRepo.add('VisitorCountModel',VCM);
 		VCM.inc();
 		
-		
+		console.log('Create UserModel!');
 		const UM = new UserModel({name:'UserModel',src:'user'});
 		UM.subscribe(this); // Now we will receive notifications from the UserModel.
 		this.modelRepo.add('UserModel',UM);
 		UM.restore(); // Try to restore previous "session" stored into LocalStorage.
 		
+		
+		console.log('Create Controllers...');
 		// Menu controller MUST be first!
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
@@ -216,6 +222,7 @@ class MasterController {
 		this.controllers['DAI'] = new DistrictAIController({name:'DAI', master:this, el:'#content', visible:false});
 		this.controllers['DAI'].init();
 		
+		console.log('ALL Controllers are now created!');
 	}
 	
 	forceLogout() {

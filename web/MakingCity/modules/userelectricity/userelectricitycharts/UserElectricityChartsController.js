@@ -63,6 +63,7 @@ days         power       energy
 		this.master.modelRepo.add('UserElectricityALLModel',model);
 		this.models['UserElectricityALLModel'] = model;
 		
+		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
@@ -98,8 +99,11 @@ days         power       energy
 	init() {
 		this.initialize();
 		this.timers['UserElectricityChartsView'] = {timer: undefined, interval: 60000, models:['UserElectricityALLModel']};
+		
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
-		this.show(); // Try if this view can be shown right now!
+		
+		// Note: view.show() and startPollers() are called ONLY if controller is visible (at this point).
+		this.show();
 	}
 }

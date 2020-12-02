@@ -45,10 +45,7 @@ export default class Controller extends PeriodicPoller {
 	
 	show() {
 		if (this.visible && this.view) {
-			
-			
-			console.log('CONTROLLER SHOW');
-			
+			//console.log('CONTROLLER SHOW');
 			this.view.show();
 			// Start polling all timers for THIS CONTROLLER:
 			this.startPollers();

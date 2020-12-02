@@ -1,11 +1,13 @@
 import WrapperView from '../../common/WrapperView.js';
 import UWCWaterChartView from './UWCWaterChartView.js';
+import UWCWaterTSChartView from './UWCWaterTSChartView.js';
 export default class UWCWrapperView extends WrapperView {
 	
 	constructor(controller) {
 		super(controller);
 		// This is a wrapper for "subviews":
 		this.subviews.push(new UWCWaterChartView(this, '#subview-1'));
+		this.subviews.push(new UWCWaterTSChartView(this, '#subview-2'));
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 	}
 	
@@ -41,10 +43,10 @@ export default class UWCWrapperView extends WrapperView {
 				'<div class="col s12 center" id="subview-1">'+
 				'</div>'+
 			'</div>'+
-			//'<div class="row">'+
-			//	'<div class="col s12 center" id="subview-2">'+
-			//	'</div>'+
-			//'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center" id="subview-2">'+
+				'</div>'+
+			'</div>'+
 			'<div class="row">'+
 				'<div class="col s6 center">'+
 					'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
@@ -67,7 +69,7 @@ export default class UWCWrapperView extends WrapperView {
 		});
 		
 		this.showSpinner('#subview-1');
-		//this.showSpinner('#subview-2');
+		this.showSpinner('#subview-2');
 		
 		// Finally render all subviews.
 		//setTimeout(() => {

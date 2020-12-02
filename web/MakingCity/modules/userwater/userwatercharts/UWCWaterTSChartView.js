@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../../common/View.js';
-export default class UWCWaterChartView extends View {
+export default class UWCWaterTSChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -22,14 +22,14 @@ export default class UWCWaterChartView extends View {
 		
 		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserWaterALLModel') {
+			if (key==='UserWaterTSModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
 		this.chart = undefined;
 		this.rendered = false;
-		this.FELID = 'uwc-water-chart-view-failure';
+		this.FELID = 'uwc-water-ts-chart-view-failure';
 	}
 	
 	show() {
@@ -57,42 +57,23 @@ export default class UWCWaterChartView extends View {
 		});
 	}
 	
-	appendTotal() {
-		
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		const localized_string_hot = LM['translation'][sel]['USER_WATER_CHART_LEGEND_HOT'];
-		const localized_string_cold = LM['translation'][sel]['USER_WATER_CHART_LEGEND_COLD'];
-		
-		const minmax = this.models['UserWaterALLModel'].waterMinMax;
-		
-		const hot = minmax.hotmax - minmax.hotmin;
-		const cold = minmax.coldmax - minmax.coldmin;
-		
-		const html = '<p>TOTAL: <span style="color:#f00">'+localized_string_hot+': '+hot.toFixed(0)+' L</span><span style="color:#0ff">&nbsp;'+localized_string_cold+': '+cold.toFixed(0)+' L</span></p>';
-		$('#uwc-water-total').empty().append(html);
-	}
-	
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if (options.model==='UserWaterALLModel' && options.method==='fetched') {
+			if (options.model==='UserWaterTSModel' && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
+						console.log(['Notify: ',options.model,' fetched!']);
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
-							//console.log('fetched ..... UWCWaterChartView CHART UPDATED!');
+							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['UserWaterALLModel'].waterValues;
+								s.data = self.models['UserWaterTSModel'].waterValues;
 							});
-							this.appendTotal();
 							
 						} else {
-							console.log('fetched ..... render UWCWaterChartView()');
 							this.renderChart();
 						}
-						
-						
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
 						if (options.status === 401) {
@@ -106,12 +87,34 @@ export default class UWCWaterChartView extends View {
 						}
 					}
 				}
+			} else if (options.model==='UserWaterTSModel' && options.method==='fetched-all') {
+				this.render();
 			}
 		}
 	}
 	
 	renderChart() {
 		const self = this;
+		
+		/*
+		console.log('RENDER CHARTTTRRRRTTTT!');
+		Object.keys(this.models).forEach(key => {
+			
+			console.log(['key=',key]);
+			
+			const name = this.models[key].name;
+			
+			if (this.models[key].measurement.length > 0) {
+				const hot = this.models[key].measurement[0].hotTotal;
+				const cold = this.models[key].measurement[0].coldTotal;
+				const created = this.models[key].measurement[0].created;
+				console.log(['name=',name,' created=',created,' hotTotal=',hot,' coldTotal=',cold]);
+			}
+			
+		});
+		
+		*/
+		
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
@@ -124,18 +127,19 @@ export default class UWCWaterChartView extends View {
 		
 		
 		// Fill the targets-object with values from UserModel.
-		/*
 		const UM = this.controller.master.modelRepo.get('UserModel');
 		
-		const WHU = UM.water_hot_upper/24;
-		const WHT = UM.water_hot_target/24;
-		const WHL = UM.water_hot_lower/24;
+		const WHU = UM.water_hot_upper;
+		const WHT = UM.water_hot_target;
+		const WHL = UM.water_hot_lower;
 		
-		const WCU = UM.water_cold_upper/24;
-		const WCT = UM.water_cold_target/24;
-		const WCL = UM.water_cold_lower/24;
-		*/
+		const WCU = UM.water_cold_upper;
+		const WCT = UM.water_cold_target;
+		const WCL = UM.water_cold_lower;
+		
 		const refreshId = this.el.slice(1);
+		
+		
 		am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -144,10 +148,10 @@ export default class UWCWaterChartView extends View {
 			
 			am4core.options.autoSetClassName = true;
 			am4core.options.autoDispose = true;
-			console.log(['values=',self.models['UserWaterALLModel'].waterValues]);
+			console.log(['values=',self.models['UserWaterTSModel'].waterValues]);
 			
 			// Create chart
-			self.chart = am4core.create("uwc-water-chart", am4charts.XYChart);
+			self.chart = am4core.create("uwc-water-ts-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -208,55 +212,55 @@ export default class UWCWaterChartView extends View {
 			
 			//valueAxis.min = 0;
 			//valueAxis.max = 200;
-			//const series1 = self.chart.series.push(new am4charts.ColumnSeries());
+			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
 			//const series1 = self.chart.series.push(new am4charts.LineSeries());
-			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
+			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			series1.defaultState.transitionDuration = 0;
 			series1.tooltipText = "{valueY.value} L";
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
 			series1.stroke = am4core.color("#f00");
-			series1.strokeWidth = 2;
+			series1.strokeWidth = 1;
 			series1.fill = series1.stroke;
-			series1.fillOpacity = 0;
+			series1.fillOpacity = 0.2;
 			
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
 			
-			series1.data = self.models['UserWaterALLModel'].waterValues;
+			series1.data = self.models['UserWaterTSModel'].waterValues;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "hot";
 			series1.name = localized_string_hot;
 			series1.yAxis = valueAxis;
 			
 			
-			//const series2 = self.chart.series.push(new am4charts.ColumnSeries());
+			const series2 = self.chart.series.push(new am4charts.ColumnSeries());
 			//const series2 = self.chart.series.push(new am4charts.LineSeries());
-			const series2 = self.chart.series.push(new am4charts.StepLineSeries());
+			//const series2 = self.chart.series.push(new am4charts.StepLineSeries());
 			series2.defaultState.transitionDuration = 0;
 			series2.tooltipText = "{valueY.value} L";
 			
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
 			series2.stroke = am4core.color("#0ff");
-			series2.strokeWidth = 2;
+			series2.strokeWidth = 1;
 			series2.fill = series2.stroke;
-			series2.fillOpacity = 0;
+			series2.fillOpacity = 0.2;
 			
 			series2.tooltip.background.fill = am4core.color("#000");
 			series2.tooltip.background.strokeWidth = 1;
 			series2.tooltip.label.fill = series2.stroke;
 			
-			series2.data = self.models['UserWaterALLModel'].waterValues;
+			series2.data = self.models['UserWaterTSModel'].waterValues;
 			series2.dataFields.dateX = "time";
 			series2.dataFields.valueY = "cold";
 			series2.name = localized_string_cold;
 			series2.yAxis = valueAxis;
 			
 			
-			/*
+			
 			// TARGETS AND UPPER AND LOWER LIMITS
 			var target = valueAxis.axisRanges.create();
 			target.value = WHT;
@@ -336,8 +340,6 @@ export default class UWCWaterChartView extends View {
 			range4.label.align = "right";
 			range4.label.verticalCenter = "top";
 			
-			*/
-			
 			
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;
@@ -359,59 +361,11 @@ export default class UWCWaterChartView extends View {
 			self.chart.scrollbarX.marginBottom = 20;
 			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 			
-			
-			/**
- 			* Set up external controls
- 			*/
-			
-			// Date format to be used in input fields
-			/*
-			const inputFieldFormat = "yyyy-MM-dd HH:mm";
-			
-			dateAxis.events.on("selectionextremeschanged", function() {
-				updateFields();
-			});
-			
-			dateAxis.events.on("extremeschanged", updateFields);
-			
-			function updateFields() {
-				const minZoomed = dateAxis.minZoomed + am4core.time.getDuration(dateAxis.mainBaseInterval.timeUnit, dateAxis.mainBaseInterval.count) * 0.5;
-				document.getElementById(refreshId+"-fromfield").value = self.chart.dateFormatter.format(minZoomed, inputFieldFormat);
-				document.getElementById(refreshId+"-tofield").value = self.chart.dateFormatter.format(new Date(dateAxis.maxZoomed), inputFieldFormat);
-			}
-			
-			document.getElementById(refreshId+"-fromfield").addEventListener("keyup", updateZoom);
-			document.getElementById(refreshId+"-tofield").addEventListener("keyup", updateZoom);
-			
-			let zoomTimeout;
-			function updateZoom() {
-				if (zoomTimeout) {
-					clearTimeout(zoomTimeout);
-				}
-				zoomTimeout = setTimeout(function() {
-					const start = document.getElementById(refreshId+"-fromfield").value;
-					const end = document.getElementById(refreshId+"-tofield").value;
-					if ((start.length < inputFieldFormat.length) || (end.length < inputFieldFormat.length)) {
-						return;
-					}
-					const startDate = self.chart.dateFormatter.parse(start, inputFieldFormat);
-					const endDate = self.chart.dateFormatter.parse(end, inputFieldFormat);
-					
-					if (startDate && endDate) {
-						dateAxis.zoomToDates(startDate, endDate);
-					}
-				}, 500);
-				
-			}*/
-			console.log('UWC WATER RENDER CHART END =====================');
+			console.log('UWC WATER TS RENDER CHART END =====================');
 		}); // end am4core.ready()
 		
 		
-		this.appendTotal();
-		
 	}
-	
-	
 	
 	render() {
 		const self = this;
@@ -425,39 +379,18 @@ export default class UWCWaterChartView extends View {
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					/*
-					'<div style="width: 100%; overflow: hidden;">'+ // id="controls"
-						'<div class="input-field col s6">'+
-							'<input id="'+refreshId+'-fromfield" type="text" class="amcharts-input">'+
-							'<label for="'+refreshId+'-fromfield" class="active">From</label>'+
-						'</div>'+
-						'<div class="input-field col s6">'+
-							'<input id="'+refreshId+'-tofield" type="text" class="amcharts-input">'+
-							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
-						'</div>'+
-					'</div>'+
-					*/
-					'<div id="uwc-water-chart" class="large-chart"></div>'+
-					
-					
-					'<div id="uwc-water-total"></div>'+
-					
+					'<div id="uwc-water-ts-chart" class="large-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
-/*.energy-chart {
-	width: 100%;
-	height: 300px;
-	max-width: 100%;
-}*/
 		
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
-			console.log('UWCWaterChartView => render models READY!!!!');
+			console.log('UWCWaterTSChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
@@ -474,8 +407,8 @@ export default class UWCWaterChartView extends View {
 				this.renderChart();
 			}
 		} else {
-			console.log('UWCWaterChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#uwc-water-chart');
+			console.log('UWCWaterTSChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#uwc-water-ts-chart');
 		}
 	}
 }

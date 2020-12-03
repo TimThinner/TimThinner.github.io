@@ -44,6 +44,11 @@ export default class UserModel extends Model {
 		this.water_cold_target = this.DEFAULTS.water_cold_target;
 		this.water_cold_lower  = this.DEFAULTS.water_cold_lower;
 		
+		/* Electricity targets and limits per 24h */
+		this.energy_upper   = this.DEFAULTS.energy_upper;
+		this.energy_target  = this.DEFAULTS.energy_target;
+		this.energy_lower   = this.DEFAULTS.energy_lower;
+		
 		this.is_superuser = false;
 		this.localStorageLabel = 'MakingCityUserModel';
 	}
@@ -92,6 +97,11 @@ export default class UserModel extends Model {
 		this.water_cold_target = this.DEFAULTS.water_cold_target;
 		this.water_cold_lower  = this.DEFAULTS.water_cold_lower;
 		
+		/* Electricity targets and limits per 24h */
+		this.energy_upper   = this.DEFAULTS.energy_upper;
+		this.energy_target  = this.DEFAULTS.energy_target;
+		this.energy_lower   = this.DEFAULTS.energy_lower;
+		
 		this.is_superuser = false;
 	}
 	
@@ -117,7 +127,10 @@ export default class UserModel extends Model {
 			'water_hot_lower':   this.water_hot_lower,
 			'water_cold_upper':  this.water_cold_upper,
 			'water_cold_target': this.water_cold_target,
-			'water_cold_lower':  this.water_cold_lower
+			'water_cold_lower':  this.water_cold_lower,
+			'energy_upper':  this.energy_upper,
+			'energy_target': this.energy_target,
+			'energy_lower':  this.energy_lower
 		};
 		
 		// EXCEPT HERE FOR TEST PURPOSES:
@@ -168,6 +181,10 @@ export default class UserModel extends Model {
 			if (typeof stat.water_cold_upper !== 'undefined') { this.water_cold_upper = stat.water_cold_upper; }
 			if (typeof stat.water_cold_target !== 'undefined') { this.water_cold_target = stat.water_cold_target; }
 			if (typeof stat.water_cold_lower !== 'undefined') { this.water_cold_lower = stat.water_cold_lower; }
+			
+			if (typeof stat.energy_upper !== 'undefined') { this.energy_upper = stat.energy_upper; }
+			if (typeof stat.energy_target !== 'undefined') { this.energy_target = stat.energy_target; }
+			if (typeof stat.energy_lower !== 'undefined') { this.energy_lower = stat.energy_lower; }
 			
 			//if (typeof stat.readkeystartdate !== 'undefined') { this.readkeystartdate = stat.readkeystartdate; }
 			//if (typeof stat.readkeyenddate !== 'undefined')   { this.readkeyenddate = stat.readkeyenddate; }
@@ -231,6 +248,10 @@ export default class UserModel extends Model {
 			this.water_cold_target = this.DEFAULTS.water_cold_target;
 			this.water_cold_lower  = this.DEFAULTS.water_cold_lower;
 			
+			this.energy_upper   = this.DEFAULTS.energy_upper;
+			this.energy_target  = this.DEFAULTS.energy_target;
+			this.energy_lower   = this.DEFAULTS.energy_lower;
+			
 			// logged in moment()
 			//const exp = moment().add(24,'hours');
 			//const exp = moment().add(2,'minutes');
@@ -285,6 +306,11 @@ export default class UserModel extends Model {
 					self.water_cold_target = self.DEFAULTS.water_cold_target;
 					self.water_cold_lower  = self.DEFAULTS.water_cold_lower;
 					
+					self.energy_upper   = self.DEFAULTS.energy_upper;
+					self.energy_target  = self.DEFAULTS.energy_target;
+					self.energy_lower   = self.DEFAULTS.energy_lower;
+					
+					
 					if (typeof myJson.price_energy_monthly !== 'undefined') { self.price_energy_monthly = myJson.price_energy_monthly; }
 					if (typeof myJson.price_energy_basic !== 'undefined') { self.price_energy_basic = myJson.price_energy_basic; }
 					if (typeof myJson.price_energy_transfer !== 'undefined') { self.price_energy_transfer = myJson.price_energy_transfer; }
@@ -303,6 +329,11 @@ export default class UserModel extends Model {
 					if (typeof myJson.water_cold_upper !== 'undefined') { self.water_cold_upper = myJson.water_cold_upper; }
 					if (typeof myJson.water_cold_target !== 'undefined') { self.water_cold_target = myJson.water_cold_target; }
 					if (typeof myJson.water_cold_lower !== 'undefined') { self.water_cold_lower = myJson.water_cold_lower; }
+					
+					
+					if (typeof myJson.energy_upper !== 'undefined') { self.energy_upper = myJson.energy_upper; }
+					if (typeof myJson.energy_target !== 'undefined') { self.energy_target = myJson.energy_target; }
+					if (typeof myJson.energy_lower !== 'undefined') { self.energy_lower = myJson.energy_lower; }
 					
 					//self.readkeystartdate = myJson.readkeystartdate;
 					//self.readkeyenddate = myJson.readkeyenddate;
@@ -585,6 +616,63 @@ export default class UserModel extends Model {
 				})
 				.catch(function(error){
 					self.notifyAll({model:self.name, method:'updateWaterTargets', status:status, message:error});
+				});
+		}
+	}
+	
+	updateEnergyTargets(id, data, authToken) {
+		const self = this;
+		
+		if (this.MOCKUP) {
+			
+			data.forEach(d => {
+				if (d.propName === 'energy_upper') {
+					self.energy_upper = d.value;
+				} else if (d.propName === 'energy_target') {
+					self.energy_target = d.value;
+				} else if (d.propName === 'energy_lower') {
+					self.energy_lower = d.value;
+				}
+			});
+			setTimeout(() => {
+				this.notifyAll({model:this.name, method:'updateEnergyTargets', status:200, message:'OK'});
+			}, 200);
+			
+		} else {
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+authToken;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myPut = {
+				method: 'PUT',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(this.mongoBackend + '/users/'+id, myPut);
+			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+		
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					if (status === 200) {
+						data.forEach(d => {
+							if (d.propName === 'energy_upper') {
+								self.energy_upper = d.value;
+							} else if (d.propName === 'energy_target') {
+								self.energy_target = d.value;
+							} else if (d.propName === 'energy_lower') {
+								self.energy_lower = d.value;
+							}
+						});
+					}
+					self.notifyAll({model:self.name, method:'updateEnergyTargets', status:status, message:myJson.message});
+				})
+				.catch(function(error){
+					self.notifyAll({model:self.name, method:'updateEnergyTargets', status:status, message:error});
 				});
 		}
 	}

@@ -20,7 +20,10 @@ export default class Configuration {
 			'water_hot_lower'   : 100,
 			'water_cold_upper'  : 500,
 			'water_cold_target' : 400,
-			'water_cold_lower'  : 200
+			'water_cold_lower'  : 200,
+			'energy_upper'   : 60,
+			'energy_target'  : 40,
+			'energy_lower'   : 20
 		};
 	}
 }

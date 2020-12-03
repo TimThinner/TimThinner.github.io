@@ -58,6 +58,7 @@ export default class UserApartmentTimeSeriesModel extends Model {
 	
 	reset() {
 		this.values = [];
+		this.energyValues = [];
 		this.waterValues = [];
 	}
 	
@@ -73,19 +74,33 @@ coldTotal: 13732.4
 		this.waterValues = [];
 		this.values.forEach((v,i)=>{
 			if (i===0) {
-				//console.log('i===0');
 				previous = v;
 			} else {
-				//console.log(['v=',v]);
 				const time = new Date(previous.created_at);
 				const hot = previous.hotTotal - v.hotTotal;
 				const cold = previous.coldTotal - v.coldTotal;
-				
 				const e = {'time':time,'hot':hot,'cold':cold};
 				this.waterValues.push(e);
 				previous = v;
 			}
 		});
+	}
+	
+	updateEnergyValues() {
+		let previous = undefined;
+		this.energyValues = [];
+		this.values.forEach((v,i)=>{
+			if (i===0) {
+				previous = v;
+			} else {
+				const time = new Date(previous.created_at);
+				const ene = previous.totalEnergy - v.totalEnergy;
+				const e = {'time':time,'energy':ene};
+				this.energyValues.push(e);
+				previous = v;
+			}
+		});
+		
 	}
 	
 	setPeriod() {
@@ -142,7 +157,11 @@ coldTotal: 13732.4
 						self.measurement = myJson;
 						self.values.push(myJson[0]);
 						//console.log(['VALUES ARRAY HAS NOW ',self.values.length,' ITEMS! values=',self.values]);
-						self.updateWaterValues();
+						if (self.type==='water') {
+							self.updateWaterValues();
+						} else if (self.type==='energy') {
+							self.updateEnergyValues();
+						}
 					}
 					
 				} else {
@@ -249,7 +268,11 @@ coldTotal: 13732.4
 									self.measurement = myJson;
 									self.values.push(myJson[0]);
 									//console.log(['VALUES ARRAY HAS NOW ',self.values.length,' ITEMS! values=',self.values]);
-									self.updateWaterValues();
+									if (self.type==='water') {
+										self.updateWaterValues();
+									} else if (self.type==='energy') {
+										self.updateEnergyValues();
+									}
 								}
 								
 							} else {

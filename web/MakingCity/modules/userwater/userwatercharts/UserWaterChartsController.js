@@ -40,8 +40,8 @@ export default class UserWaterChartsController extends Controller {
 		super.notify(options); // To pass this (options.model==='MenuModel' && options.method==='selected')
 		if (options.model==='UserWaterTSModel' && options.method==='fetched') {
 			if (options.status === 200) {
-				console.log(['CONTROLLER Notify: ',options.model,' fetched!']);
-				console.log('CALL AGAIN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+				//console.log(['CONTROLLER Notify: ',options.model,' fetched!']);
+				//console.log('CALL AGAIN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 				this.poller('UserWaterTSView'); // Param is the name of the TIMER!
 			}
 		}
@@ -76,6 +76,6 @@ export default class UserWaterChartsController extends Controller {
 		this.initialize();
 		this.timers['UserWaterChartsView'] = {timer: undefined, interval: 60000, models:['UserWaterALLModel']};
 		this.timers['UserWaterTSView'] = {timer: undefined, interval: -1, models:['UserWaterTSModel']};
-		this.show(); // Try if this view can be shown right now!
+		//this.show(); // Try if this view can be shown right now!
 	}
 }

@@ -9,22 +9,25 @@ export default class UserElectricityTargetsController extends Controller {
 	
 	remove() {
 		super.remove();
+		this.models = {};
 	}
 	
-	
-	
-	init() {
-		this.models['UserElectricityNowModel'] = this.master.modelRepo.get('UserElectricityNowModel');
-		this.models['UserElectricityNowModel'].subscribe(this);
-		
-		//this.timers['UserElectricityView'] = {timer: undefined, interval: -1, models:['UserElectricityNowModel']};
-		
+	initialize() {
+		/*
+		NOTE: Every Controller must subscribe for "MenuModel" notifications.
+		After that all view changes are driven by code in BASE CLASS Controller notify(options)
+		*/
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
-		
 		this.view = new UserElectricityTargetsView(this);
-		// If view is shown immediately and poller is used, like in this case, 
-		// we can just call show() and let it start fetching... 
-		//this.show(); // Try if this view can be shown right now!
+	}
+	
+	clean() {
+		this.remove();
+		this.initialize();
+	}
+	
+	init() {
+		this.initialize();
 	}
 }

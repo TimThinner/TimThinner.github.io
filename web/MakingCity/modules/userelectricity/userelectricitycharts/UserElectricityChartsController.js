@@ -1,5 +1,6 @@
 import Controller from '../../common/Controller.js';
 import UserApartmentModel from '../../userpage/UserApartmentModel.js';
+import UserApartmentTimeSeriesModel from '../../userpage/UserApartmentTimeSeriesModel.js';
 import UECWrapperView from './UECWrapperView.js';
 
 export default class UserElectricityChartsController extends Controller {
@@ -12,7 +13,7 @@ export default class UserElectricityChartsController extends Controller {
 		super.remove();
 		// We must remove all models that were created here at the initialize-method.
 		Object.keys(this.models).forEach(key => {
-			if (key==='UserElectricityALLModel') {
+			if (key==='UserElectricityALLModel'||key==='UserElectricityTSModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -24,6 +25,26 @@ export default class UserElectricityChartsController extends Controller {
 		const timerName = 'UserElectricityChartsView';
 		this.restartPollingInterval(timerName);
 	}
+	
+	show() {
+		console.log('IN UserElectricityChartsController show() FIRST reset the MODEL.');
+		this.models['UserElectricityTSModel'].reset();
+		
+		console.log('THEN CALL SUPER show().');
+		super.show(); // To pass this (options.model==='MenuModel' && options.method==='selected')
+	}
+	
+	notify(options) {
+		super.notify(options); // To pass this (options.model==='MenuModel' && options.method==='selected')
+		if (options.model==='UserElectricityTSModel' && options.method==='fetched') {
+			if (options.status === 200) {
+				//console.log(['CONTROLLER Notify: ',options.model,' fetched!']);
+				//console.log('CALL AGAIN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+				this.poller('UserElectricityTSView'); // Param is the name of the TIMER!
+			}
+		}
+	}
+	
 	
 	initialize() {
 		
@@ -63,6 +84,10 @@ days         power       energy
 		this.master.modelRepo.add('UserElectricityALLModel',model);
 		this.models['UserElectricityALLModel'] = model;
 		
+		const m = new UserApartmentTimeSeriesModel({name:'UserElectricityTSModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,rounds:31}); // rounds 31 => 30 days
+		m.subscribe(this);
+		this.master.modelRepo.add('UserElectricityTSModel',m);
+		this.models['UserElectricityTSModel'] = m;
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
@@ -99,11 +124,8 @@ days         power       energy
 	init() {
 		this.initialize();
 		this.timers['UserElectricityChartsView'] = {timer: undefined, interval: 60000, models:['UserElectricityALLModel']};
-		
-		// If view is shown immediately and poller is used, like in this case, 
-		// we can just call show() and let it start fetching... 
-		
+		this.timers['UserElectricityTSView'] = {timer: undefined, interval: -1, models:['UserElectricityTSModel']};
 		// Note: view.show() and startPollers() are called ONLY if controller is visible (at this point).
-		this.show();
+		//this.show();
 	}
 }

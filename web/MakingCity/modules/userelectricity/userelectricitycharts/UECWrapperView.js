@@ -2,19 +2,15 @@
 import WrapperView from '../../common/WrapperView.js';
 //import UECPowerChartView from './UECPowerChartView.js';
 import UECEnergyChartView from './UECEnergyChartView.js';
+import UECEnergyTSChartView from './UECEnergyTSChartView.js';
 
 export default class UECWrapperView extends WrapperView {
 	
 	constructor(controller) {
 		super(controller);
-		
-		// This is a wrapper for two different "subviews":
-		//   - Chart which contains TOTAL POWER for current day
-		//   - Chart which contains TOTAL ENERGY for current day
-		//this.subviews.push(new UECPowerChartView(this, '#subview-1'));
-		//this.subviews.push(new UECEnergyChartView(this, '#subview-2'));
-		
+		// This is a wrapper for "subviews":
 		this.subviews.push(new UECEnergyChartView(this, '#subview-1'));
+		this.subviews.push(new UECEnergyTSChartView(this, '#subview-2'));
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 	}
 	
@@ -25,6 +21,7 @@ export default class UECWrapperView extends WrapperView {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE'];
+		const localized_string_title_30_days = LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE_30_DAYS'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_daw_sel_timerange = LM['translation'][sel]['DAW_SEL_TIMERANGE']; // Select timerange for database query:
 		
@@ -50,10 +47,15 @@ export default class UECWrapperView extends WrapperView {
 				'<div class="col s12 center" id="subview-1">'+
 				'</div>'+
 			'</div>'+
-			//'<div class="row">'+
-			//	'<div class="col s12 center" id="subview-2">'+
-			//	'</div>'+
-			//'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					'<h5 class="da-wrapper-title">'+localized_string_title_30_days+'</h5>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center" id="subview-2">'+
+				'</div>'+
+			'</div>'+
 			'<div class="row">'+
 				'<div class="col s6 center">'+
 					'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
@@ -76,7 +78,7 @@ export default class UECWrapperView extends WrapperView {
 		});
 		
 		this.showSpinner('#subview-1');
-		//this.showSpinner('#subview-2');
+		this.showSpinner('#subview-2');
 		
 		// Finally render all subviews.
 		//setTimeout(() => {

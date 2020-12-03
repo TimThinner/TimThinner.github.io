@@ -10,15 +10,18 @@ export default class UserElectricityTargetsView extends View {
 	constructor(controller) {
 		super(controller);
 		
-		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserElectricityNowModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
-		});
+		this.userModel = this.controller.master.modelRepo.get('UserModel');
+		this.userModel.subscribe(this);
+		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
 		this.FELID = 'user-electricity-view-failure';
+		
+		this.targets = {
+			energy_upper: 0,
+			energy_target: 0,
+			energy_lower: 0,
+		};
 	}
 	
 	show() {
@@ -33,45 +36,57 @@ export default class UserElectricityTargetsView extends View {
 	
 	remove() {
 		super.remove();
-		Object.keys(this.models).forEach(key => {
-			this.models[key].unsubscribe(this);
-		});
+		this.userModel.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
-	updateLatestValues() {
-		console.log('UPDATE UserElectricityTargets !!!!!!!');
+	fillTargetsFromUM() {
+		// Fill the targets-object with values from UserModel.
+		const UM = this.userModel;
+		
+		this.targets.energy_upper  = UM.energy_upper;
+		this.targets.energy_target = UM.energy_target;
+		this.targets.energy_lower  = UM.energy_lower;
+		
 	}
 	
 	notify(options) {
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_target_saved = LM['translation'][sel]['USER_TARGET_SAVED'];
+		
 		if (this.controller.visible) {
-			if (options.model==='UserElectricityNowModel' && options.method==='fetched') {
+			if (options.model==='UserModel' && options.method==='updateEnergyTargets') {
 				if (options.status === 200) {
-					console.log('UserElectricityTargetsView => UserElectricityNowModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateLatestValues();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
+					
+					// Show Toast: SAVED!
+					M.toast({displayLength:1000, html: localized_string_target_saved});
+					
+					this.fillTargetsFromUM();
 				}
 			}
+		}
+	}
+	
+	updateEnergy(values) {
+		const UM = this.userModel;
+		const id = UM.id;
+		const authToken = UM.token;
+		
+		// values = ["23kWh", "25kWh", "45kWh"]
+		// if any value is really changed => update model.
+		const v0 = parseFloat(values[0]);
+		const v1 = parseFloat(values[1]);
+		const v2 = parseFloat(values[2]);
+		
+		if (this.targets.energy_lower!==v0||this.targets.energy_target!== v1||this.targets.energy_upper!==v2) {
+			const data = [
+				{propName:'energy_lower', value:v0},
+				{propName:'energy_target', value:v1},
+				{propName:'energy_upper', value:v2}
+			];
+			UM.updateEnergyTargets(id, data, authToken);
 		}
 	}
 	
@@ -82,20 +97,28 @@ export default class UserElectricityTargetsView extends View {
 			
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
+			const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TARGETS_TITLE'];
+			const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_TARGETS_DESCRIPTION'];
+			
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
+			
+			const localized_string_target = LM['translation'][sel]['USER_TARGET'];
+			const localized_string_upper_limit = LM['translation'][sel]['USER_UPPER_LIMIT'];
+			const localized_string_lower_limit = LM['translation'][sel]['USER_LOWER_LIMIT'];
 			
 			const html =
 				'<div class="row">'+
-					'<div class="col s12">'+
-						'<h4 style="text-align:center;">Electricity Targets</h4>'+
-						'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
+					'<div class="col s12 center">'+
+						'<h4>'+localized_string_title+'</h4>'+
+						'<p>'+localized_string_description+'</p>'+
 					'</div>'+
-					'<div class="col s12 center" style="margin-top:32px;">'+
-						'<p>&nbsp;</p>'+
-						'<p>&nbsp;</p>'+
-						'<p>&nbsp;</p>'+
+				'</div>'+
+				'<div class="row">'+
+					'<div class="col s12 center">'+
+						'<div id="energy-slider"></div>'+
 					'</div>'+
+				'</div>'+
+				'<div class="row">'+
 					'<div class="col s12 center" style="margin-top:32px;">'+
 						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 							'<i class="material-icons left">arrow_back</i>'+
@@ -106,6 +129,10 @@ export default class UserElectricityTargetsView extends View {
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 				'</div>';
 			$(html).appendTo(this.el);
+			
+			// Fill the targets-object with values from UserModel.
+			this.fillTargetsFromUM();
+			
 			/*
 			this.startSwipeEventListeners(
 				()=>{this.menuModel.setSelected('USERELECTRICITY');},
@@ -117,6 +144,44 @@ export default class UserElectricityTargetsView extends View {
 			});
 			
 			this.handleErrorMessages(this.FELID);
+			
+			const start_energy = [
+				this.targets.energy_lower,
+				this.targets.energy_target,
+				this.targets.energy_upper
+			];
+			
+			const energy_range_max = this.targets.energy_upper + 20;
+			
+			var energys = document.getElementById('energy-slider');
+			noUiSlider.create(energys, {
+				range: {
+					'min': 0,
+					'max': energy_range_max
+				},
+				step: 0.1,
+				// Handles start at ...
+				start: [start_energy[0], start_energy[1], start_energy[2]],
+				connect: [true, true, true, true],
+				// Put '0' at the bottom of the slider
+				direction: 'rtl',
+				orientation: 'vertical',
+				// Move handle on tap, bars are draggable
+				behaviour: 'tap-drag',
+				tooltips: [wNumb({decimals:0, suffix:'kWh', prefix:localized_string_lower_limit}), wNumb({decimals:0, suffix:'kWh',prefix:localized_string_target}), wNumb({decimals:0, suffix:'kWh', prefix:localized_string_upper_limit})]
+				//tooltips: [true, true, true],
+				/*format: wNumb({
+					decimals: 1,
+					suffix: '°C'
+				})*/
+			});
+			// Give the slider dimensions
+			energys.style.height = '300px';
+			energys.style.margin = '0 auto 30px';
+			energys.noUiSlider.on('change', function (values) {
+				console.log(['values=',values]);
+				self.updateEnergy(values);
+			});
 			
 			this.rendered = true;
 			

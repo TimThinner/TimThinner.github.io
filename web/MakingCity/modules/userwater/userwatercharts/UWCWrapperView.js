@@ -18,6 +18,7 @@ export default class UWCWrapperView extends WrapperView {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_title = LM['translation'][sel]['USER_WATER_CHART_TITLE'];
+		const localized_string_title_30_days = LM['translation'][sel]['USER_WATER_CHART_TITLE_30_DAYS'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_daw_sel_timerange = LM['translation'][sel]['DAW_SEL_TIMERANGE']; // Select timerange for database query:
 		
@@ -41,6 +42,11 @@ export default class UWCWrapperView extends WrapperView {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center" id="subview-1">'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					'<h5 class="da-wrapper-title">'+localized_string_title_30_days+'</h5>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../../common/View.js';
-export default class UECEnergyChartView extends View {
+export default class UECEnergyTSChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -22,14 +22,14 @@ export default class UECEnergyChartView extends View {
 		
 		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserElectricityALLModel') {
+			if (key === 'UserElectricityTSModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
 		this.chart = undefined;
 		this.rendered = false;
-		this.FELID = 'uec-energy-chart-view-failure';
+		this.FELID = 'uec-energy-ts-chart-view-failure';
 	}
 	
 	show() {
@@ -57,25 +57,21 @@ export default class UECEnergyChartView extends View {
 		});
 	}
 	
-	appendTotal() {
-		const total = this.models['UserElectricityALLModel'].energyTotal;
-		const html = '<p>TOTAL: <span style="color:#0f0">'+total.toFixed(1)+' kWh</span></p>';
-		$('#uec-energy-total').empty().append(html);
-	}
-	
-	
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if (options.model==='UserElectricityALLModel' && options.method==='fetched') {
+			if (options.model==='UserElectricityTSModel' && options.method==='fetched') {
+				
+				
 				if (this.rendered===true) {
 					if (options.status === 200) {
+						//console.log(['Notify: ',options.model,' fetched!']);
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
+							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['UserElectricityALLModel'].energyValues;
+								s.data = self.models['UserElectricityTSModel'].energyValues;
 							});
-							this.appendTotal();
 							
 						} else {
 							this.renderChart();
@@ -93,6 +89,10 @@ export default class UECEnergyChartView extends View {
 						}
 					}
 				}
+				
+				
+			} else if (options.model==='UserElectricityTSModel' && options.method==='fetched-all') {
+				this.render();
 			}
 		}
 	}
@@ -103,8 +103,22 @@ export default class UECEnergyChartView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_energy = LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE'];
+		const localized_string_target = LM['translation'][sel]['USER_DATA_TARGET'].toUpperCase();
+		const localized_string_upper_limit = LM['translation'][sel]['USER_DATA_UPPER_LIMIT'].toUpperCase();
+		const localized_string_lower_limit = LM['translation'][sel]['USER_DATA_LOWER_LIMIT'].toUpperCase();
+		
+		
+		// Fill the targets-object with values from UserModel.
+		
+		const UM = this.controller.master.modelRepo.get('UserModel');
+		
+		const EU = UM.energy_upper;
+		const ET = UM.energy_target;
+		const EL = UM.energy_lower;
 		
 		const refreshId = this.el.slice(1);
+		
+		
 		am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -113,10 +127,10 @@ export default class UECEnergyChartView extends View {
 			
 			am4core.options.autoSetClassName = true;
 			am4core.options.autoDispose = true;
-			console.log(['values=',self.models['UserElectricityALLModel'].energyValues]);
+			console.log(['values=',self.models['UserElectricityTSModel'].energyValues]);
 			
 			// Create chart
-			self.chart = am4core.create("uec-energy-chart", am4charts.XYChart);
+			self.chart = am4core.create("uec-energy-ts-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -125,8 +139,8 @@ export default class UECEnergyChartView extends View {
 			
 			// uncomment this line if you want to change order of axes
 			//chart.bottomAxesContainer.reverseOrder = true;
-			
-			self.chart.numberFormatter.numberFormat = "#.##";
+			// Round all numbers to integer
+			self.chart.numberFormatter.numberFormat = "#.";
 			
 			const dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
 			
@@ -143,7 +157,7 @@ export default class UECEnergyChartView extends View {
 			// these two lines makes the axis to be initially zoomed-in
 			//dateAxis.start = 0.5;
 			dateAxis.keepSelection = true;
-			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
+			dateAxis.tooltipDateFormat = "dd.MM.yyyy"; // - HH:mm";
 			// Axis for 
 			//			this.influxModel.dealsBidsAppKey.forEach(item => {
 			//				this.sumBids += item.totalprice;
@@ -156,6 +170,12 @@ export default class UECEnergyChartView extends View {
 			valueAxis.tooltip.disabled = true;
 			
 			valueAxis.min = 0;
+			valueAxis.max = EU;
+			valueAxis.strictMinMax = true;
+			// Pad values by 10%
+			valueAxis.extraMin = 0.1;
+			valueAxis.extraMax = 0.1; 
+			
 			valueAxis.zIndex = 1;
 			valueAxis.marginTop = 0;
 			valueAxis.renderer.baseGrid.disabled = true;
@@ -180,14 +200,13 @@ export default class UECEnergyChartView extends View {
 			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
 			//const series1 = self.chart.series.push(new am4charts.LineSeries());
 			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
-			
 			series1.defaultState.transitionDuration = 0;
-			//series1.tooltipText = "{name}: {valueY.value} kWh";
 			series1.tooltipText = "{valueY.value} kWh";
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
 			series1.stroke = am4core.color("#0f0");
+			series1.strokeWidth = 1;
 			series1.fill = series1.stroke;
 			series1.fillOpacity = 0.2;
 			
@@ -195,16 +214,69 @@ export default class UECEnergyChartView extends View {
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
 			
-			series1.data = self.models['UserElectricityALLModel'].energyValues;
+			series1.data = self.models['UserElectricityTSModel'].energyValues;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "energy";
 			series1.name = "ENERGY";
 			series1.yAxis = valueAxis;
 			
+			
+			
+			
+			// TARGETS AND UPPER AND LOWER LIMITS
+			var target = valueAxis.axisRanges.create();
+			target.value = ET;
+			target.grid.stroke = am4core.color("#8f8");
+			target.grid.strokeWidth = 1;
+			target.grid.strokeOpacity = 0.5;
+			//target.grid.above = true;
+			target.label.inside = true;
+			target.label.text = localized_string_target + ' ' + target.value.toFixed(0);
+			target.label.fill = target.grid.stroke;
+			target.label.fillOpacity = target.grid.strokeOpacity;
+			//target.label.align = "right";
+			target.label.verticalCenter = "bottom";
+			
+			var range = valueAxis.axisRanges.create();
+			range.value = EU;
+			range.grid.stroke = am4core.color("#8f8");
+			range.grid.strokeWidth = 1;
+			range.grid.strokeOpacity = 0.5;
+			//range.grid.above = true;
+			range.label.inside = true;
+			range.label.text = localized_string_upper_limit + ' ' + range.value.toFixed(0);
+			range.label.fill = range.grid.stroke;
+			range.label.fillOpacity = range.grid.strokeOpacity;
+			//range.label.align = "right";
+			range.label.verticalCenter = "bottom";
+			
+			var range2 = valueAxis.axisRanges.create();
+			range2.value = EL;
+			range2.grid.stroke = am4core.color("#8f8");
+			range2.grid.strokeWidth = 1;
+			range2.grid.strokeOpacity = 0.5;
+			//range2.grid.above = true;
+			range2.label.inside = true;
+			range2.label.text = localized_string_lower_limit + ' ' + range2.value.toFixed(0);
+			range2.label.fill = range2.grid.stroke;
+			range2.label.fillOpacity = range2.grid.strokeOpacity;
+			//range2.label.align = "right";
+			range2.label.verticalCenter = "top";
+			
+			/*
+			self.chart.legend = new am4charts.Legend();
+			self.chart.legend.useDefaultMarker = true;
+			var marker = self.chart.legend.markers.template.children.getIndex(0);
+			marker.cornerRadius(12, 12, 12, 12);
+			marker.strokeWidth = 2;
+			marker.strokeOpacity = 1;
+			marker.stroke = am4core.color("#000");
+			*/
+			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
 			
-			console.log(['series1.data=',series1.data]);
+			//console.log(['series1.data=',series1.data]);
 			
 			// Scrollbar
 			//const scrollbarX = new am4charts.XYChartScrollbar();
@@ -213,87 +285,22 @@ export default class UECEnergyChartView extends View {
 			self.chart.scrollbarX.marginBottom = 20;
 			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 			
-			
-			/**
- 			* Set up external controls
- 			*/
-			
-			/*
-			// Date format to be used in input fields
-			const inputFieldFormat = "yyyy-MM-dd HH:mm";
-			
-			dateAxis.events.on("selectionextremeschanged", function() {
-				updateFields();
-			});
-			
-			dateAxis.events.on("extremeschanged", updateFields);
-			
-			function updateFields() {
-				const minZoomed = dateAxis.minZoomed + am4core.time.getDuration(dateAxis.mainBaseInterval.timeUnit, dateAxis.mainBaseInterval.count) * 0.5;
-				document.getElementById(refreshId+"-fromfield").value = self.chart.dateFormatter.format(minZoomed, inputFieldFormat);
-				document.getElementById(refreshId+"-tofield").value = self.chart.dateFormatter.format(new Date(dateAxis.maxZoomed), inputFieldFormat);
-			}
-			
-			document.getElementById(refreshId+"-fromfield").addEventListener("keyup", updateZoom);
-			document.getElementById(refreshId+"-tofield").addEventListener("keyup", updateZoom);
-			
-			let zoomTimeout;
-			function updateZoom() {
-				if (zoomTimeout) {
-					clearTimeout(zoomTimeout);
-				}
-				zoomTimeout = setTimeout(function() {
-					const start = document.getElementById(refreshId+"-fromfield").value;
-					const end = document.getElementById(refreshId+"-tofield").value;
-					if ((start.length < inputFieldFormat.length) || (end.length < inputFieldFormat.length)) {
-						return;
-					}
-					const startDate = self.chart.dateFormatter.parse(start, inputFieldFormat);
-					const endDate = self.chart.dateFormatter.parse(end, inputFieldFormat);
-					
-					if (startDate && endDate) {
-						dateAxis.zoomToDates(startDate, endDate);
-					}
-				}, 500);
-			}
-			*/
-			
-			console.log('UEC Energy RENDER CHART END =====================');
+			console.log('UEC ENERGY TS RENDER CHART END =====================');
 		}); // end am4core.ready()
 		
-		this.appendTotal();
+		
 	}
-	
-	
 	
 	render() {
 		const self = this;
 		$(this.el).empty();
 		
 		const refreshId = this.el.slice(1);
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		//const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					/*
-					'<div style="width: 100%; overflow: hidden;">'+ // id="controls"
-						'<div class="input-field col s6">'+
-							'<input id="'+refreshId+'-fromfield" type="text" class="amcharts-input">'+
-							'<label for="'+refreshId+'-fromfield" class="active">From</label>'+
-						'</div>'+
-						'<div class="input-field col s6">'+
-							'<input id="'+refreshId+'-tofield" type="text" class="amcharts-input">'+
-							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
-						'</div>'+
-					'</div>'+
-					*/
-					'<div id="uec-energy-chart" class="medium-chart"></div>'+
-					
-					'<div id="uec-energy-total"></div>'+
-					
+					'<div id="uec-energy-ts-chart" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -304,7 +311,7 @@ export default class UECEnergyChartView extends View {
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
-			console.log('UECEnergyChartView => render models READY!!!!');
+			console.log('UECEnergyTSChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
@@ -321,8 +328,8 @@ export default class UECEnergyChartView extends View {
 				this.renderChart();
 			}
 		} else {
-			console.log('UECEnergyChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#uec-energy-chart');
+			console.log('UECEnergyTSChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#uec-energy-ts-chart');
 		}
 	}
 }

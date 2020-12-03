@@ -49,7 +49,6 @@ export default class UserWaterTargetsView extends View {
 	
 	remove() {
 		super.remove();
-		
 		this.userModel.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();

@@ -61,9 +61,11 @@ export default class UWCWaterTSChartView extends View {
 		const self = this;
 		if (this.controller.visible) {
 			if (options.model==='UserWaterTSModel' && options.method==='fetched') {
+				
+				
 				if (this.rendered===true) {
 					if (options.status === 200) {
-						console.log(['Notify: ',options.model,' fetched!']);
+						//console.log(['Notify: ',options.model,' fetched!']);
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							
@@ -87,6 +89,8 @@ export default class UWCWaterTSChartView extends View {
 						}
 					}
 				}
+				
+				
 			} else if (options.model==='UserWaterTSModel' && options.method==='fetched-all') {
 				this.render();
 			}
@@ -191,6 +195,12 @@ export default class UWCWaterTSChartView extends View {
 			valueAxis.tooltip.disabled = true;
 			
 			valueAxis.min = 0;
+			valueAxis.max = WCU;
+			valueAxis.strictMinMax = true;
+			// Pad values by 10%
+			valueAxis.extraMin = 0.1;
+			valueAxis.extraMax = 0.1; 
+			
 			valueAxis.zIndex = 1;
 			valueAxis.marginTop = 0;
 			valueAxis.renderer.baseGrid.disabled = true;
@@ -209,6 +219,8 @@ export default class UWCWaterTSChartView extends View {
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
 				return text + " L";
 			});
+			
+			
 			
 			//valueAxis.min = 0;
 			//valueAxis.max = 200;
@@ -372,14 +384,11 @@ export default class UWCWaterTSChartView extends View {
 		$(this.el).empty();
 		
 		const refreshId = this.el.slice(1);
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		//const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					'<div id="uwc-water-ts-chart" class="large-chart"></div>'+
+					'<div id="uwc-water-ts-chart" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

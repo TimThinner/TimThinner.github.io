@@ -39,7 +39,9 @@ const Readkey = require('../models/readkey');
 	water_cold_upper: {type:Number, default:0},
 	water_cold_target: {type:Number, default:0},
 	water_cold_lower: {type:Number, default:0},
-	
+	energy_upper: {type:Number, default:0},
+	energy_target: {type:Number, default:0},
+	energy_lower: {type:Number, default:0},
 	is_superuser: { type: Boolean, default: false }
 */
 
@@ -292,6 +294,7 @@ router.post("/login", (req,res,next)=>{
 		' heating_humidity_upper heating_target_humidity heating_humidity_lower'+
 		' water_hot_upper water_hot_target water_hot_lower'+
 		' water_cold_upper water_cold_target water_cold_lower'+
+		' energy_upper energy_target energy_lower'+
 		' is_superuser';
 	User.find({email:email_lc})
 		.select(selString)
@@ -345,6 +348,9 @@ router.post("/login", (req,res,next)=>{
 					const wct = user[0].water_cold_target ? user[0].water_cold_target : 0;
 					const wcl = user[0].water_cold_lower ? user[0].water_cold_lower : 0;
 					
+					const eu = user[0].energy_upper ? user[0].energy_upper : 0;
+					const et = user[0].energy_target ? user[0].energy_target : 0;
+					const el = user[0].energy_lower ? user[0].energy_lower : 0;
 					
 					// LOG this login.
 					const logEntry = new Log({
@@ -382,6 +388,9 @@ router.post("/login", (req,res,next)=>{
 						water_cold_upper: wcu,
 						water_cold_target: wct,
 						water_cold_lower: wcl,
+						energy_upper: eu,
+						energy_target: et,
+						energy_lower: el,
 						is_superuser: user[0].is_superuser
 					});
 				}
@@ -531,6 +540,9 @@ router.delete("/:userId", checkAuth, (req,res,next)=>{
 	water_cold_upper: {type:Number, default:0},
 	water_cold_target: {type:Number, default:0},
 	water_cold_lower: {type:Number, default:0},
+	energy_upper: {type:Number, default:0},
+	energy_target: {type:Number, default:0},
+	energy_lower: {type:Number, default:0},
 	
 	For example:
 	const data = [
@@ -548,7 +560,8 @@ router.put('/:userId', checkAuth, (req,res,next)=>{
 		// Allow only "price_" OR "heating_" changes!
 		if (ops.propName.indexOf('price_') === 0 || 
 			ops.propName.indexOf('heating_') === 0 || 
-			ops.propName.indexOf('water_') === 0) {
+			ops.propName.indexOf('water_') === 0 || 
+			ops.propName.indexOf('energy_') === 0) {
 			updateOps[ops.propName] = ops.value;
 			filled = true;
 		}

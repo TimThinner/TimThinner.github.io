@@ -32,6 +32,9 @@ const userSchema = mongoose.Schema({
 	water_cold_upper: {type:Number, default:0},
 	water_cold_target: {type:Number, default:0},
 	water_cold_lower: {type:Number, default:0},
+	energy_upper: {type:Number, default:0},
+	energy_target: {type:Number, default:0},
+	energy_lower: {type:Number, default:0},
 	is_superuser: { type: Boolean, default: false }
 });
 

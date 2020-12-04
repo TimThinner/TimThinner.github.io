@@ -72,7 +72,7 @@ export default class UWCWaterTSChartView extends View {
 						//console.log(['Notify: ',options.model,' fetched!']);
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
+							//am4core.iter.each(this.chart.series.iterator(), function (s) {
 								/*if (s.name === localized_string_hot) {
 									console.log('NOTIFY HOT');
 									s.columns.template.dx++;
@@ -80,8 +80,12 @@ export default class UWCWaterTSChartView extends View {
 									console.log('NOTIFY COLD');
 									s.columns.template.dx--;
 								}*/
-								s.data = self.models['UserWaterTSModel'].waterValues;
-							});
+								
+								
+								//s.data = self.models['UserWaterTSModel'].waterValues;
+								
+								
+							//});
 							// This placeholder is defined in UECWrapperView.
 							const len = self.models['UserWaterTSModel'].waterValues.length;
 							$('#time-series-title').empty().append(localized_string_title+' '+len+' '+localized_string_x_days);

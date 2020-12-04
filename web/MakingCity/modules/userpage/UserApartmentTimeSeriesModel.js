@@ -185,8 +185,8 @@ coldTotal: 13732.4
 							self.updateEnergyValues();
 						}
 					}
-					self.fetching = false;
-					self.ready = true;
+					//self.fetching = false;
+					//self.ready = true;
 					self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 				} else {
 					if (myJson === 'No data!') {
@@ -307,8 +307,8 @@ coldTotal: 13732.4
 										self.updateEnergyValues();
 									}
 								}
-								self.fetching = false;
-								self.ready = true;
+								//self.fetching = false;
+								//self.ready = true;
 								self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 							} else {
 								if (myJson === 'No data!') {

@@ -72,9 +72,9 @@ export default class UECEnergyTSChartView extends View {
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['UserElectricityTSModel'].energyValues;
-							});
+							//am4core.iter.each(this.chart.series.iterator(), function (s) {
+								//s.data = self.models['UserElectricityTSModel'].energyValues;
+							//});
 							
 							// This placeholder is defined in UECWrapperView.
 							const len = self.models['UserElectricityTSModel'].energyValues.length;

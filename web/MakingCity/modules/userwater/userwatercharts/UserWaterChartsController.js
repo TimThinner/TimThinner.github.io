@@ -42,7 +42,10 @@ export default class UserWaterChartsController extends Controller {
 			if (options.status === 200) {
 				//console.log(['CONTROLLER Notify: ',options.model,' fetched!']);
 				//console.log('CALL AGAIN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+				// IN SLOW MOTION:
+				//setTimeout(() => {
 				this.poller('UserWaterTSView'); // Param is the name of the TIMER!
+				//}, 1000);
 			}
 		}
 	}

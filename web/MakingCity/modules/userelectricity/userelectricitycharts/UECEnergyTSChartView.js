@@ -280,11 +280,12 @@ export default class UECEnergyTSChartView extends View {
 			
 			// Scrollbar
 			//const scrollbarX = new am4charts.XYChartScrollbar();
+			/*
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series1);
 			self.chart.scrollbarX.marginBottom = 20;
 			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-			
+			*/
 			console.log('UEC ENERGY TS RENDER CHART END =====================');
 		}); // end am4core.ready()
 		

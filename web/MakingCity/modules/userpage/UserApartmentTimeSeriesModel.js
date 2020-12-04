@@ -138,12 +138,34 @@ coldTotal: 13732.4
 		const start_date = this.period.start;
 		const end_date = this.period.end;
 		
+		
+		//end_date=", "2020-12-04T00:00" 
+		//end_date=", "2020-12-03T00:00"
+		// ...
+		//
+		//console.log(['fetch_d: start_date=',start_date,' end_date=',end_date]);
+		
 		let url = this.backend + '/' + this.src + '?apiKey='+fakeKey+'&type='+this.type;
 		if (this.limit > 0) {
 			url += '&limit='+this.limit;
 		}
 		url += '&start='+start_date+'&end='+end_date;
 		
+		// TEST with values... 
+		/*
+		if (end_date==="2020-12-04T00:00" || 
+			end_date==="2020-12-03T00:00" ||
+			end_date==="2020-12-02T00:00" ||
+			end_date==="2020-12-01T00:00" ||
+			end_date==="2020-11-30T00:00" ||
+			end_date==="2020-11-29T00:00" ||
+			end_date==="2020-11-28T00:00" ||
+			end_date==="2020-11-27T00:00" ||
+			end_date==="2020-11-26T00:00" ||
+			end_date==="2020-11-25T00:00" ||
+			end_date==="2020-11-24T00:00"){
+		
+		*/
 		fetch(url)
 			.then(function(response) {
 				self.status = response.status;
@@ -152,46 +174,67 @@ coldTotal: 13732.4
 			.then(function(myJson) {
 				let message = 'OK';
 				if (Array.isArray(myJson)) {
-					
 					if (myJson.length === 1) {
 						self.measurement = myJson;
 						self.values.push(myJson[0]);
 						//console.log(['VALUES ARRAY HAS NOW ',self.values.length,' ITEMS! values=',self.values]);
 						if (self.type==='water') {
 							self.updateWaterValues();
+							//console.log(['self.waterValues=',self.waterValues]);
 						} else if (self.type==='energy') {
 							self.updateEnergyValues();
 						}
 					}
-					
+					self.fetching = false;
+					self.ready = true;
+					self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 				} else {
 					if (myJson === 'No data!') {
-						self.status = 404;
-						message = self.name+': '+myJson;
-						self.errorMessage = message;
+						message = 'OK'; // This will eventually happen and it's OK!
+						self.status = 200; // self.status = 404;
+						//message = self.name+': '+myJson;
+						//self.errorMessage = message;
 						self.measurement = [];
+						self.fetching = false;
+						self.ready = true;
+						self.notifyAll({model:self.name, method:'fetched-all', status:self.status, message:message});
+						
 					} else if (typeof self.measurement.message !== 'undefined') {
 						message = self.measurement.message;
 						self.errorMessage = message;
 						self.measurement = [];
+						self.fetching = false;
+						self.ready = true;
+						self.notifyAll({model:self.name, method:'fetched-all', status:self.status, message:message});
+						
 					} else {
 						self.measurement = [];
+						self.fetching = false;
+						self.ready = true;
+						self.notifyAll({model:self.name, method:'fetched-all', status:self.status, message:'Unknown state!'});
 					}
 				}
-				console.log(['self.measurement=',self.measurement]);
-				console.log([self.name+' fetch status=',self.status]);
-				//self.fetching = false;
-				//self.ready = true;
-				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 			})
 			.catch(error => {
-				console.log([self.name+' fetch error=',error]);
-				//self.fetching = false;
-				//self.ready = true;
+				//console.log([self.name+' fetch error=',error]);
+				self.fetching = false;
+				self.ready = true;
 				const message = self.name+': '+error;
 				self.errorMessage = message;
 				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 			});
+		/*
+		} else {
+			
+			const myJson = 'No data!';
+			self.status = 200;
+			self.measurement = [];
+			self.fetching = false;
+			self.ready = true;
+			//self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
+			self.notifyAll({model:self.name, method:'fetched-all', status:200, message:'OK'});
+		}
+		*/
 	}
 	
 	fetch(token, readkey) {
@@ -206,24 +249,15 @@ coldTotal: 13732.4
 		if (this.rounds < this.numberOfRounds) {
 			this.setPeriod();
 			this.rounds++;
-			
-			
-			
 		} else {
 			this.rounds=0;
-			console.log('STOP!');
-			
-			
+			//console.log('STOP!');
 			this.fetching = false;
 			this.ready = true;
 			this.notifyAll({model:this.name, method:'fetched-all', status:200, message:'OK'});
 			return;
 		}
-		
-		console.log(['FETCH FROM:',this.period.start,' TO:',this.period.end]);
-		
-		
-		
+		//console.log(['FETCH FROM:',this.period.start,' TO:',this.period.end]);
 		this.status = 500; // error: 500
 		this.errorMessage = '';
 		this.fetching = true;
@@ -263,7 +297,6 @@ coldTotal: 13732.4
 						.then(function(myJson) {
 							let message = 'OK';
 							if (Array.isArray(myJson)) {
-								
 								if (myJson.length === 1) {
 									self.measurement = myJson;
 									self.values.push(myJson[0]);
@@ -274,31 +307,39 @@ coldTotal: 13732.4
 										self.updateEnergyValues();
 									}
 								}
-								
+								self.fetching = false;
+								self.ready = true;
+								self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 							} else {
 								if (myJson === 'No data!') {
-									self.status = 404;
-									message = self.name+': '+myJson;
-									self.errorMessage = message;
+									message = 'OK'; // This will eventually happen and it's OK!
+									self.status = 200; // self.status = 404;
+									//message = self.name+': '+myJson;
+									//self.errorMessage = message;
 									self.measurement = [];
+									self.fetching = false;
+									self.ready = true;
+									self.notifyAll({model:self.name, method:'fetched-all', status:self.status, message:message});
 								} else if (typeof self.measurement.message !== 'undefined') {
 									message = self.measurement.message;
 									self.errorMessage = message;
 									self.measurement = [];
+									self.fetching = false;
+									self.ready = true;
+									self.notifyAll({model:self.name, method:'fetched-all', status:self.status, message:message});
+									
 								} else {
 									self.measurement = [];
+									self.fetching = false;
+									self.ready = true;
+									self.notifyAll({model:self.name, method:'fetched-all', status:self.status, message:'Unknown state!'});
 								}
 							}
-							console.log(['self.measurement=',self.measurement]);
-							console.log([self.name+' fetch status=',self.status]);
-							//self.fetching = false;
-							//self.ready = true;
-							self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 						})
 						.catch(error => {
 							console.log([self.name+' fetch error=',error]);
-							//self.fetching = false;
-							//self.ready = true;
+							self.fetching = false;
+							self.ready = true;
 							const message = self.name+': '+error;
 							self.errorMessage = message;
 							self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
@@ -311,8 +352,8 @@ coldTotal: 13732.4
 			} else {
 				// No token? Authentication failed (401).
 				self.status = 401;
-				//self.fetching = false;
-				//self.ready = true;
+				self.fetching = false;
+				self.ready = true;
 				const message = self.name+': Auth failed';
 				self.errorMessage = message;
 				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});

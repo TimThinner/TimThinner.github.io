@@ -59,10 +59,14 @@ export default class UWCWaterTSChartView extends View {
 	
 	notify(options) {
 		const self = this;
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_hot = LM['translation'][sel]['USER_WATER_CHART_LEGEND_HOT'];
+		
+		
 		if (this.controller.visible) {
 			if (options.model==='UserWaterTSModel' && options.method==='fetched') {
-				
-				
 				if (this.rendered===true) {
 					if (options.status === 200) {
 						//console.log(['Notify: ',options.model,' fetched!']);
@@ -70,7 +74,15 @@ export default class UWCWaterTSChartView extends View {
 						if (typeof this.chart !== 'undefined') {
 							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								/*if (s.name === localized_string_hot) {
+									console.log('NOTIFY HOT');
+									s.columns.template.dx++;
+								} else {
+									console.log('NOTIFY COLD');
+									s.columns.template.dx--;
+								}*/
 								s.data = self.models['UserWaterTSModel'].waterValues;
+								
 							});
 							
 						} else {
@@ -89,8 +101,6 @@ export default class UWCWaterTSChartView extends View {
 						}
 					}
 				}
-				
-				
 			} else if (options.model==='UserWaterTSModel' && options.method==='fetched-all') {
 				this.render();
 			}
@@ -144,6 +154,10 @@ export default class UWCWaterTSChartView extends View {
 		const refreshId = this.el.slice(1);
 		
 		
+		//const vallen = self.models['UserWaterTSModel'].waterValues.length;
+		//console.log(['vallen=',vallen]);
+		
+		
 		am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -182,7 +196,7 @@ export default class UWCWaterTSChartView extends View {
 			// these two lines makes the axis to be initially zoomed-in
 			//dateAxis.start = 0.5;
 			dateAxis.keepSelection = true;
-			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
+			dateAxis.tooltipDateFormat = "dd.MM.yyyy";// - HH:mm";
 			// Axis for 
 			//			this.influxModel.dealsBidsAppKey.forEach(item => {
 			//				this.sumBids += item.totalprice;
@@ -220,10 +234,6 @@ export default class UWCWaterTSChartView extends View {
 				return text + " L";
 			});
 			
-			
-			
-			//valueAxis.min = 0;
-			//valueAxis.max = 200;
 			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
 			//const series1 = self.chart.series.push(new am4charts.LineSeries());
 			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
@@ -233,9 +243,9 @@ export default class UWCWaterTSChartView extends View {
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
 			series1.stroke = am4core.color("#f00");
-			series1.strokeWidth = 1;
+			series1.strokeWidth = 2;
 			series1.fill = series1.stroke;
-			series1.fillOpacity = 0.2;
+			series1.fillOpacity = 0.5;
 			
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
@@ -244,8 +254,12 @@ export default class UWCWaterTSChartView extends View {
 			series1.data = self.models['UserWaterTSModel'].waterValues;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "hot";
-			series1.name = localized_string_hot;
+			series1.name = localized_string_hot; // 'HOOT'; 
 			series1.yAxis = valueAxis;
+			
+			series1.columns.template.width = am4core.percent(50);
+			series1.clustered = false;
+			series1.columns.template.dx = -5;
 			
 			
 			const series2 = self.chart.series.push(new am4charts.ColumnSeries());
@@ -257,9 +271,9 @@ export default class UWCWaterTSChartView extends View {
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
 			series2.stroke = am4core.color("#0ff");
-			series2.strokeWidth = 1;
+			series2.strokeWidth = 2;
 			series2.fill = series2.stroke;
-			series2.fillOpacity = 0.2;
+			series2.fillOpacity = 0.25;
 			
 			series2.tooltip.background.fill = am4core.color("#000");
 			series2.tooltip.background.strokeWidth = 1;
@@ -268,10 +282,13 @@ export default class UWCWaterTSChartView extends View {
 			series2.data = self.models['UserWaterTSModel'].waterValues;
 			series2.dataFields.dateX = "time";
 			series2.dataFields.valueY = "cold";
-			series2.name = localized_string_cold;
+			series2.name = localized_string_cold; // 'COOLD';
 			series2.yAxis = valueAxis;
 			
-			
+			series2.columns.template.width = am4core.percent(50);
+			series2.clustered = false;
+			series2.columns.template.dx = 5;
+			//series2.columns.template.align = "left";
 			
 			// TARGETS AND UPPER AND LOWER LIMITS
 			var target = valueAxis.axisRanges.create();
@@ -368,10 +385,12 @@ export default class UWCWaterTSChartView extends View {
 			
 			// Scrollbar
 			//const scrollbarX = new am4charts.XYChartScrollbar();
+			/*
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series1);
 			self.chart.scrollbarX.marginBottom = 20;
 			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
+			*/
 			
 			console.log('UWC WATER TS RENDER CHART END =====================');
 		}); // end am4core.ready()

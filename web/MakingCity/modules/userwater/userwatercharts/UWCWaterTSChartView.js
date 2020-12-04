@@ -62,8 +62,8 @@ export default class UWCWaterTSChartView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_hot = LM['translation'][sel]['USER_WATER_CHART_LEGEND_HOT'];
-		
+		const localized_string_title = LM['translation'][sel]['USER_WATER_CHART_TITLE'];
+		const localized_string_x_days = LM['translation'][sel]['USER_CHART_X_DAYS'];
 		
 		if (this.controller.visible) {
 			if (options.model==='UserWaterTSModel' && options.method==='fetched') {
@@ -72,7 +72,6 @@ export default class UWCWaterTSChartView extends View {
 						//console.log(['Notify: ',options.model,' fetched!']);
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
-							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								/*if (s.name === localized_string_hot) {
 									console.log('NOTIFY HOT');
@@ -82,8 +81,10 @@ export default class UWCWaterTSChartView extends View {
 									s.columns.template.dx--;
 								}*/
 								s.data = self.models['UserWaterTSModel'].waterValues;
-								
 							});
+							// This placeholder is defined in UECWrapperView.
+							const len = self.models['UserWaterTSModel'].waterValues.length;
+							$('#time-series-title').empty().append(localized_string_title+' '+len+' '+localized_string_x_days);
 							
 						} else {
 							this.renderChart();
@@ -102,6 +103,7 @@ export default class UWCWaterTSChartView extends View {
 					}
 				}
 			} else if (options.model==='UserWaterTSModel' && options.method==='fetched-all') {
+				$("#time-series-progress-info").empty();
 				this.render();
 			}
 		}

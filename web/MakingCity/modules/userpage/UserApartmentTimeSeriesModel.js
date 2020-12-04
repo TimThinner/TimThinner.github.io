@@ -153,7 +153,7 @@ coldTotal: 13732.4
 		
 		// TEST with values... 
 		/*
-		if (end_date==="2020-12-04T00:00" || 
+		if (end_date==="2020-12-04T00:00" ||
 			end_date==="2020-12-03T00:00" ||
 			end_date==="2020-12-02T00:00" ||
 			end_date==="2020-12-01T00:00" ||
@@ -164,8 +164,8 @@ coldTotal: 13732.4
 			end_date==="2020-11-26T00:00" ||
 			end_date==="2020-11-25T00:00" ||
 			end_date==="2020-11-24T00:00"){
-		
 		*/
+		
 		fetch(url)
 			.then(function(response) {
 				self.status = response.status;

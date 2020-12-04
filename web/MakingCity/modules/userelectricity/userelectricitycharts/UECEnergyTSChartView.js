@@ -59,10 +59,13 @@ export default class UECEnergyTSChartView extends View {
 	
 	notify(options) {
 		const self = this;
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE'];
+		const localized_string_x_days = LM['translation'][sel]['USER_CHART_X_DAYS'];
+		
 		if (this.controller.visible) {
 			if (options.model==='UserElectricityTSModel' && options.method==='fetched') {
-				
-				
 				if (this.rendered===true) {
 					if (options.status === 200) {
 						//console.log(['Notify: ',options.model,' fetched!']);
@@ -72,6 +75,10 @@ export default class UECEnergyTSChartView extends View {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								s.data = self.models['UserElectricityTSModel'].energyValues;
 							});
+							
+							// This placeholder is defined in UECWrapperView.
+							const len = self.models['UserElectricityTSModel'].energyValues.length;
+							$('#time-series-title').empty().append(localized_string_title+' '+len+' '+localized_string_x_days);
 							
 						} else {
 							this.renderChart();
@@ -92,6 +99,7 @@ export default class UECEnergyTSChartView extends View {
 				
 				
 			} else if (options.model==='UserElectricityTSModel' && options.method==='fetched-all') {
+				$("#time-series-progress-info").empty();
 				this.render();
 			}
 		}

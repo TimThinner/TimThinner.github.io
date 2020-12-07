@@ -123,7 +123,7 @@ export default class UECEnergyChartView extends View {
 			// the following line makes value axes to be arranged vertically.
 			self.chart.leftAxesContainer.layout = "vertical";
 			
-			self.chart.zoomOutButton.disabled = true;
+			//self.chart.zoomOutButton.disabled = true;
 			
 			// uncomment this line if you want to change order of axes
 			//chart.bottomAxesContainer.reverseOrder = true;

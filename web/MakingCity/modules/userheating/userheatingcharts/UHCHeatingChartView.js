@@ -207,9 +207,9 @@ export default class UHCHeatingChartView extends View {
 			valueAxis.min = 0;
 			valueAxis.max = HHU;
 			valueAxis.strictMinMax = true;
-			// Pad values by 10%
-			valueAxis.extraMin = 0.1;
-			valueAxis.extraMax = 0.1; 
+			// Pad values by 20%
+			valueAxis.extraMin = 0.2;
+			valueAxis.extraMax = 0.2;
 			
 			valueAxis.zIndex = 1;
 			valueAxis.marginTop = 0;

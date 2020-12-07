@@ -182,7 +182,7 @@ export default class UWCWaterTSChartView extends View {
 			// the following line makes value axes to be arranged vertically.
 			self.chart.leftAxesContainer.layout = "vertical";
 			
-			self.chart.zoomOutButton.disabled = true;
+			//self.chart.zoomOutButton.disabled = true;
 			
 			// uncomment this line if you want to change order of axes
 			//chart.bottomAxesContainer.reverseOrder = true;
@@ -219,9 +219,9 @@ export default class UWCWaterTSChartView extends View {
 			valueAxis.min = 0;
 			valueAxis.max = WCU;
 			valueAxis.strictMinMax = true;
-			// Pad values by 10%
-			valueAxis.extraMin = 0.1;
-			valueAxis.extraMax = 0.1; 
+			// Pad values by 20%
+			valueAxis.extraMin = 0.2;
+			valueAxis.extraMax = 0.2;
 			
 			valueAxis.zIndex = 1;
 			valueAxis.marginTop = 0;

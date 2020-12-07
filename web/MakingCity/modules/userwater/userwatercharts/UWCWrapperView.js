@@ -59,7 +59,7 @@ export default class UWCWrapperView extends WrapperView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		this.setTimerangeHandlers();
+		this.setTimerangeHandlers(['UserWaterALLModel']);
 		/*
 		this.startSwipeEventListeners(
 			()=>{this.menuModel.setSelected('USERWATER');},

@@ -33,8 +33,9 @@ export default class WrapperView extends View {
 	
 	/*
 		Timerange is set with buttons.
+		New param is an array of models 
 	*/
-	setTimerangeHandlers() {
+	setTimerangeHandlers(models) {
 		const self = this;
 		
 		$('#'+this.selected).addClass("selected");
@@ -44,7 +45,7 @@ export default class WrapperView extends View {
 			self.resetButtonClass();
 			// Controller has all needed models + menumodel, which we ignore here.
 			Object.keys(self.controller.models).forEach(key => {
-				if (key !== 'MenuModel') {
+				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=1 for model.name=',model.name]);
 					model.timerange = 1;
@@ -57,7 +58,7 @@ export default class WrapperView extends View {
 			self.selected = "b2d";
 			self.resetButtonClass();
 			Object.keys(self.controller.models).forEach(key => {
-				if (key !== 'MenuModel') {
+				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=2 for model.name=',model.name]);
 					model.timerange = 2;
@@ -70,7 +71,7 @@ export default class WrapperView extends View {
 			self.selected = "b3d";
 			self.resetButtonClass();
 			Object.keys(self.controller.models).forEach(key => {
-				if (key !== 'MenuModel') {
+				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=3 for model.name=',model.name]);
 					model.timerange = 3;
@@ -83,7 +84,7 @@ export default class WrapperView extends View {
 			self.selected = "b4d";
 			self.resetButtonClass();
 			Object.keys(self.controller.models).forEach(key => {
-				if (key !== 'MenuModel') {
+				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=4 for model.name=',model.name]);
 					model.timerange = 4;
@@ -96,7 +97,7 @@ export default class WrapperView extends View {
 			self.selected = "b5d";
 			self.resetButtonClass();
 			Object.keys(self.controller.models).forEach(key => {
-				if (key !== 'MenuModel') {
+				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=5 for model.name=',model.name]);
 					model.timerange = 5;
@@ -109,7 +110,7 @@ export default class WrapperView extends View {
 			self.selected = "b6d";
 			self.resetButtonClass();
 			Object.keys(self.controller.models).forEach(key => {
-				if (key !== 'MenuModel') {
+				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=6 for model.name=',model.name]);
 					model.timerange = 6;
@@ -122,7 +123,7 @@ export default class WrapperView extends View {
 			self.selected = "b7d";
 			self.resetButtonClass();
 			Object.keys(self.controller.models).forEach(key => {
-				if (key !== 'MenuModel') {
+				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=7 for model.name=',model.name]);
 					model.timerange = 7;

@@ -62,7 +62,7 @@ export default class UECWrapperView extends WrapperView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		this.setTimerangeHandlers();
+		this.setTimerangeHandlers(['UserElectricityALLModel']);
 		/*
 		this.startSwipeEventListeners(
 			()=>{this.menuModel.setSelected('USERELECTRICITY');},

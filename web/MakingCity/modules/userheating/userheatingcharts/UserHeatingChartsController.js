@@ -34,6 +34,9 @@ export default class UserHeatingChartsController extends Controller {
 		this.master.modelRepo.add('UserHeatingALLModel',model);
 		this.models['UserHeatingALLModel'] = model;
 		
+		this.models['UserHeatingMonthModel'] = this.master.modelRepo.get('UserHeatingMonthModel');
+		this.models['UserHeatingMonthModel'].subscribe(this);
+		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
@@ -48,7 +51,7 @@ export default class UserHeatingChartsController extends Controller {
 	
 	init() {
 		this.initialize();
-		this.timers['UserHeatingChartsView'] = {timer: undefined, interval: 60000, models:['UserHeatingALLModel']};
+		this.timers['UserHeatingChartsView'] = {timer: undefined, interval: 60000, models:['UserHeatingALLModel','UserHeatingMonthModel']};
 		this.show(); // Try if this view can be shown right now!
 	}
 }

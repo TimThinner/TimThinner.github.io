@@ -72,7 +72,7 @@ export default class DistrictACWrapperView extends WrapperView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		this.setTimerangeHandlers();
+		this.setTimerangeHandlers(['Light102Model','Light103Model','Light104Model','Light110Model']);
 		
 		// Assign back-button handler.
 		$('#back').on('click',function() {

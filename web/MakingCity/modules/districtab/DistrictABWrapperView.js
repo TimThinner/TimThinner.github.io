@@ -68,7 +68,7 @@ export default class DistrictABWrapperView extends WrapperView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		this.setTimerangeHandlers();
+		this.setTimerangeHandlers(['SolarModel']);
 		
 		// Assign back-button handler.
 		$('#back').on('click',function() {

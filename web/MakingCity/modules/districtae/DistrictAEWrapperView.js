@@ -70,7 +70,7 @@ export default class DistrictAEWrapperView extends WrapperView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		this.setTimerangeHandlers();
+		this.setTimerangeHandlers(['HPAC101Model','HPAC105Model']);
 		
 		// Assign back-button handler.
 		$('#back').on('click',function() {

@@ -68,7 +68,7 @@ export default class DistrictAIWrapperView extends WrapperView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		this.setTimerangeHandlers();
+	this.setTimerangeHandlers(['GeothermalModel']);
 		
 		// Assign back-button handler.
 		$('#back').on('click',function() {

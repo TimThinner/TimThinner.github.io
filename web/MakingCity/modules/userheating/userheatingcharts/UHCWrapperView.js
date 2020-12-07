@@ -1,11 +1,13 @@
 import WrapperView from '../../common/WrapperView.js';
 import UHCHeatingChartView from './UHCHeatingChartView.js';
+import UHCHeating30DayChartView from './UHCHeating30DayChartView.js';
 export default class UHCWrapperView extends WrapperView {
 	
 	constructor(controller) {
 		super(controller);
 		// This is a wrapper for "subviews":
 		this.subviews.push(new UHCHeatingChartView(this, '#subview-1'));
+		this.subviews.push(new UHCHeating30DayChartView(this, '#subview-2'));
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 	}
 	
@@ -18,6 +20,7 @@ export default class UHCWrapperView extends WrapperView {
 		const localized_string_title = LM['translation'][sel]['USER_HEATING_CHART_TITLE'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_daw_sel_timerange = LM['translation'][sel]['DAW_SEL_TIMERANGE']; // Select timerange for database query:
+		const localized_string_x_days_info = LM['translation'][sel]['USER_CHART_X_DAYS_INFO'];
 		
 		const html = 
 			'<div class="row">'+
@@ -40,11 +43,13 @@ export default class UHCWrapperView extends WrapperView {
 			'<div class="row">'+
 				'<div class="col s12 center" id="subview-1">'+
 				'</div>'+
+				'<div class="col s12 center" style="margin-top:-16px;">'+
+					'<h5 class="da-wrapper-title" id="time-series-title"></h5>'+
+					'<p id="time-series-progress-info">'+localized_string_x_days_info+'</p>'+
+				'</div>'+
+				'<div class="col s12 center" id="subview-2">'+
+				'</div>'+
 			'</div>'+
-			//'<div class="row">'+
-			//	'<div class="col s12 center" id="subview-2">'+
-			//	'</div>'+
-			//'</div>'+
 			'<div class="row">'+
 				'<div class="col s6 center">'+
 					'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
@@ -54,7 +59,7 @@ export default class UHCWrapperView extends WrapperView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		this.setTimerangeHandlers();
+		this.setTimerangeHandlers(['UserHeatingALLModel']);
 		/*
 		this.startSwipeEventListeners(
 			()=>{this.menuModel.setSelected('USERWATER');},
@@ -67,7 +72,7 @@ export default class UHCWrapperView extends WrapperView {
 		});
 		
 		this.showSpinner('#subview-1');
-		//this.showSpinner('#subview-2');
+		this.showSpinner('#subview-2');
 		
 		// Finally render all subviews.
 		//setTimeout(() => {

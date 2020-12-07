@@ -91,6 +91,32 @@ class MasterController {
 			
 			console.log('MasterController LOGIN !!!!');
 			
+			const allModels = this.modelRepo.keys();
+			console.log(['allModels=',allModels]);
+			
+			// The models, which should be checked periodically for possible 
+			// alarms are:
+			
+			/*
+			"UserWaterNowModel"				
+			"UserElectricityNowModel"		
+			"UserHeatingNowModel"			
+			
+			"UserWaterDayModel"				
+			"UserElectricityDayModel"		
+			
+			
+			"UserElectricityWeekModel"		
+			"UserElectricityMonthModel"		
+​​			"UserHeatingWeekModel"			from now-7days to now (hourly averages)
+​​			"UserWaterWeekModel"			
+​​			"UserWaterMonthModel"			
+			"UserWaterALLModel"				HOUR from now to now-1 (user selects 1-7)
+			"UserWaterTSModel"				DAY
+			"UserHeatingALLModel"			HOUR from now to now-1 (user selects 1-7)
+​​			"UserElectricityALLModel"		HOUR from now to now-1 (user selects 1-7)
+​​			"UserElectricityTSModel"		DAY
+​​			*/
 		}
 	}
 	

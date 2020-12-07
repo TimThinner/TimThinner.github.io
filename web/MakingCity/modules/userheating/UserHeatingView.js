@@ -11,7 +11,7 @@ export default class UserHeatingView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserHeatingWeekModel'||key==='FeedbackModel') {
+			if (key === 'UserHeatingMonthModel'||key==='FeedbackModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -43,9 +43,9 @@ export default class UserHeatingView extends View {
 	
 	updateLatestValues() {
 		console.log('UPDATE UserHeating !!!!!!!');
-		const heat_week = this.controller.master.modelRepo.get('UserHeatingWeekModel');
-		if (heat_week) {
-			const values = heat_week.values;
+		const heat_month = this.controller.master.modelRepo.get('UserHeatingMonthModel');
+		if (heat_month) {
+			const values = heat_month.values;
 			if (Array.isArray(values) && values.length > 0) {
 				
 				
@@ -54,19 +54,33 @@ export default class UserHeatingView extends View {
 				//		temperature: 20.12833333333333, 
 				//		humidity: 30.536666666666683 
 				//	}
-				// Calculate averages for last 24 hours and also fron last 168 hours.
+				// Calculate averages for last 30 days, last 7 days and finally last 24 hours.
 				// toFixed(1)
+				console.log(['values=',values]);
+				
+				let sum_month_temp = 0;
+				let sum_month_humi = 0;
+				
+				values.forEach(v => {
+					sum_month_temp += v.temperature;
+					sum_month_humi += v.humidity;
+				});
+				const ave_month_temp = sum_month_temp/values.length;
+				const ave_month_humi = sum_month_humi/values.length;
+				$('#month-temp').empty().append(ave_month_temp.toFixed(1));
+				$('#month-humi').empty().append(ave_month_humi.toFixed(1));
+				
+				
+				const values_week = values.slice(-168); // extracts the last 168 elements (7x24) in the sequence.
 				let sum_week_temp = 0;
 				let sum_week_humi = 0;
 				
-				//console.log(['values=',values]);
-				
-				values.forEach(v => {
+				values_week.forEach(v => {
 					sum_week_temp += v.temperature;
 					sum_week_humi += v.humidity;
 				});
-				const ave_week_temp = sum_week_temp/values.length;
-				const ave_week_humi = sum_week_humi/values.length;
+				const ave_week_temp = sum_week_temp/values_week.length;
+				const ave_week_humi = sum_week_humi/values_week.length;
 				$('#week-temp').empty().append(ave_week_temp.toFixed(1));
 				$('#week-humi').empty().append(ave_week_humi.toFixed(1));
 				
@@ -114,7 +128,7 @@ export default class UserHeatingView extends View {
 		const localized_string_feedback_ok = LM['translation'][sel]['USER_HEATING_FEEDBACK_OK'];
 		
 		if (this.controller.visible) {
-			if (options.model==='UserHeatingWeekModel' && options.method==='fetched') {
+			if (options.model==='UserHeatingMonthModel' && options.method==='fetched') {
 				if (this.rendered) {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
@@ -203,8 +217,8 @@ export default class UserHeatingView extends View {
 								'</tr>'+
 								'<tr>'+
 									'<td>'+localized_string_period_month+'</td>'+
-									'<td>---</td>'+
-									'<td>---</td>'+
+									'<td id="month-temp">---</td>'+
+									'<td id="month-humi">---</td>'+
 									'<td>---</td>'+
 								'</tr>'+
 							'</tbody>'+

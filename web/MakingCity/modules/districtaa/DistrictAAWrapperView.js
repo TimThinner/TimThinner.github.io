@@ -68,7 +68,7 @@ export default class DistrictAAWrapperView extends WrapperView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		this.setTimerangeHandlers();
+		this.setTimerangeHandlers(['TotalModel']);
 		
 		// Assign back-button handler.
 		$('#back').on('click',function() {

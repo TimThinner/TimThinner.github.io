@@ -194,7 +194,8 @@ export default class UserModel extends Model {
 		}
 		
 		if (this.isLoggedIn()) {
-			// No need to do anything.
+			// Let the masterController know that user is logged in.
+			setTimeout(() => this.notifyAll({model:'UserModel',method:'login',status:200,message:'Login OK'}), 100);
 		} else {
 			this.reset();
 			this.store();

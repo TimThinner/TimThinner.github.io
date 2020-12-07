@@ -205,6 +205,12 @@ export default class UHCHeatingChartView extends View {
 			valueAxis.tooltip.disabled = true;
 			
 			valueAxis.min = 0;
+			valueAxis.max = HHU;
+			valueAxis.strictMinMax = true;
+			// Pad values by 10%
+			valueAxis.extraMin = 0.1;
+			valueAxis.extraMax = 0.1; 
+			
 			valueAxis.zIndex = 1;
 			valueAxis.marginTop = 0;
 			valueAxis.renderer.baseGrid.disabled = true;
@@ -224,8 +230,6 @@ export default class UHCHeatingChartView extends View {
 				return text; // + " L";
 			});
 			
-			//valueAxis.min = 0;
-			//valueAxis.max = 200;
 			//const series1 = self.chart.series.push(new am4charts.ColumnSeries());
 			const series1 = self.chart.series.push(new am4charts.LineSeries());
 			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());

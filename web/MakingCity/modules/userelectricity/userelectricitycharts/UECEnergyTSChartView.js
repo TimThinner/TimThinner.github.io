@@ -29,7 +29,8 @@ export default class UECEnergyTSChartView extends View {
 		});
 		this.chart = undefined;
 		this.rendered = false;
-		this.FELID = 'uec-energy-ts-chart-view-failure';
+		this.CHARTID = 'uec-energy-ts-chart';
+		this.FELID = this.CHARTID + '-view-failure';
 	}
 	
 	show() {
@@ -57,6 +58,17 @@ export default class UECEnergyTSChartView extends View {
 		});
 	}
 	
+	appendTotal() {
+		let total = 0;
+		if (this.models['UserElectricityTSModel'].energyValues.length > 0) {
+			this.models['UserElectricityTSModel'].energyValues.forEach(e=>{
+				total += e.energy;
+			});
+		}
+		const html = '<p>TOTAL: <span style="color:#0f0">'+total.toFixed(1)+' kWh</span></p>';
+		$('#'+this.CHARTID+'-total').empty().append(html);
+	}
+	
 	notify(options) {
 		const self = this;
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
@@ -75,6 +87,7 @@ export default class UECEnergyTSChartView extends View {
 							//am4core.iter.each(this.chart.series.iterator(), function (s) {
 								//s.data = self.models['UserElectricityTSModel'].energyValues;
 							//});
+							this.appendTotal();
 							
 							// This placeholder is defined in UECWrapperView.
 							const len = self.models['UserElectricityTSModel'].energyValues.length;
@@ -99,7 +112,7 @@ export default class UECEnergyTSChartView extends View {
 				
 				
 			} else if (options.model==='UserElectricityTSModel' && options.method==='fetched-all') {
-				$("#time-series-progress-info").empty();
+				//$("#time-series-progress-info").empty();
 				this.render();
 			}
 		}
@@ -138,7 +151,7 @@ export default class UECEnergyTSChartView extends View {
 			console.log(['values=',self.models['UserElectricityTSModel'].energyValues]);
 			
 			// Create chart
-			self.chart = am4core.create("uec-energy-ts-chart", am4charts.XYChart);
+			self.chart = am4core.create(self.CHARTID, am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -297,6 +310,7 @@ export default class UECEnergyTSChartView extends View {
 			console.log('UEC ENERGY TS RENDER CHART END =====================');
 		}); // end am4core.ready()
 		
+		this.appendTotal();
 		
 	}
 	
@@ -309,7 +323,8 @@ export default class UECEnergyTSChartView extends View {
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					'<div id="uec-energy-ts-chart" class="medium-chart"></div>'+
+					'<div id="'+this.CHARTID+'" class="medium-chart"></div>'+
+					'<div id="'+this.CHARTID+'-total"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -338,7 +353,7 @@ export default class UECEnergyTSChartView extends View {
 			}
 		} else {
 			console.log('UECEnergyTSChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#uec-energy-ts-chart');
+			this.showSpinner('#'+this.CHARTID);
 		}
 	}
 }

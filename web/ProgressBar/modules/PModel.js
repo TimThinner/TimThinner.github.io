@@ -14,6 +14,8 @@ export default class PModel extends EventObserver {
 		this.alldays = 0;
 		this.nowdays = 0;
 		this.nowdate = moment();//'2020-10-28');//.format('YYYY-MM-DD');
+		this.start_date = moment('1961-11-17');
+		this.end_date = moment('2026-08-17');
 	}
 	
 	reset() {
@@ -60,12 +62,16 @@ Result: 21,915 days
 		this.errorMessage = '';
 		this.fetching = true;
 		
-		let start_date = moment('1960-10-28');
-		let end_date = moment('2025-04-28');
+		//let start_date = moment('1960-10-28');
+		//let end_date = moment('2025-04-28');
+		
+		//let start_date = moment('1961-11-17');
+		//let end_date = moment('2026-08-17');
+		
 		//this.nowdate = moment(); //'2020-10-28');//.format('YYYY-MM-DD');
 		
-		this.alldays = end_date.diff(start_date, 'days');
-		this.nowdays = this.nowdate.diff(start_date, 'days');
+		this.alldays = this.end_date.diff(this.start_date, 'days');
+		this.nowdays = this.nowdate.diff(this.start_date, 'days');
 		//this.percentage = this.todayLived*100/this.bigDifference;
 		//this.value = this.percentage*645/100; // 645 => 100%
 		

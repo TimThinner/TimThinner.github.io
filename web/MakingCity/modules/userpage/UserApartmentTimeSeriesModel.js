@@ -123,50 +123,10 @@ coldTotal: 13732.4
 			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
 		}
 	}
-	/*
-		fetch_d
-		Calls directly from src using backend (NOT mongoBackend).
-	*/
-	fetch_d() {
+	
+	doTheFetch(req) {
 		const self = this;
-		
-		// this.src = 'data/sivakka/apartments/feeds.json'   
-		//      must append: ?apiKey=12E6F2B1236A&type=type&limit=limit&start=2020-10-12T09:00&end=2020-10-12T10:00'
-		// Use FAKE key now: '12E6F2B1236A'
-		const fakeKey = '12E6F2B1236A';
-		
-		const start_date = this.period.start;
-		const end_date = this.period.end;
-		
-		
-		//end_date=", "2020-12-04T00:00" 
-		//end_date=", "2020-12-03T00:00"
-		// ...
-		//
-		//console.log(['fetch_d: start_date=',start_date,' end_date=',end_date]);
-		
-		let url = this.backend + '/' + this.src + '?apiKey='+fakeKey+'&type='+this.type;
-		if (this.limit > 0) {
-			url += '&limit='+this.limit;
-		}
-		url += '&start='+start_date+'&end='+end_date;
-		
-		// TEST with values... 
-		/*
-		if (end_date==="2020-12-04T00:00" ||
-			end_date==="2020-12-03T00:00" ||
-			end_date==="2020-12-02T00:00" ||
-			end_date==="2020-12-01T00:00" ||
-			end_date==="2020-11-30T00:00" ||
-			end_date==="2020-11-29T00:00" ||
-			end_date==="2020-11-28T00:00" ||
-			end_date==="2020-11-27T00:00" ||
-			end_date==="2020-11-26T00:00" ||
-			end_date==="2020-11-25T00:00" ||
-			end_date==="2020-11-24T00:00"){
-		*/
-		
-		fetch(url)
+		fetch(req)
 			.then(function(response) {
 				self.status = response.status;
 				return response.json();
@@ -180,7 +140,6 @@ coldTotal: 13732.4
 						//console.log(['VALUES ARRAY HAS NOW ',self.values.length,' ITEMS! values=',self.values]);
 						if (self.type==='water') {
 							self.updateWaterValues();
-							//console.log(['self.waterValues=',self.waterValues]);
 						} else if (self.type==='energy') {
 							self.updateEnergyValues();
 						}
@@ -198,7 +157,6 @@ coldTotal: 13732.4
 						self.fetching = false;
 						self.ready = true;
 						self.notifyAll({model:self.name, method:'fetched-all', status:self.status, message:message});
-						
 					} else if (typeof self.measurement.message !== 'undefined') {
 						message = self.measurement.message;
 						self.errorMessage = message;
@@ -216,29 +174,62 @@ coldTotal: 13732.4
 				}
 			})
 			.catch(error => {
-				//console.log([self.name+' fetch error=',error]);
+				console.log([self.name+' fetch error=',error]);
 				self.fetching = false;
 				self.ready = true;
 				const message = self.name+': '+error;
 				self.errorMessage = message;
 				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 			});
+	}
+	
+	/*
+		fetch_d
+		Calls directly from src using backend (NOT mongoBackend).
+	*/
+	fetch_d() {
+		// this.src = 'data/sivakka/apartments/feeds.json'   
+		//      must append: ?apiKey=12E6F2B1236A&type=type&limit=limit&start=2020-10-12T09:00&end=2020-10-12T10:00'
+		// Use FAKE key now: '12E6F2B1236A'
+		const fakeKey = '12E6F2B1236A';
+		
+		const start_date = this.period.start;
+		const end_date = this.period.end;
+		
+		//end_date=", "2020-12-04T00:00" 
+		//end_date=", "2020-12-03T00:00"
+		// ...
+		//
+		//console.log(['fetch_d: start_date=',start_date,' end_date=',end_date]);
+		
+		let url = this.backend + '/' + this.src + '?apiKey='+fakeKey+'&type='+this.type;
+		if (this.limit > 0) {
+			url += '&limit='+this.limit;
+		}
+		url += '&start='+start_date+'&end='+end_date;
+		// TEST with values... 
+		/*
+		if (end_date==="2020-12-10T00:00" ||
+			end_date==="2020-12-09T00:00" ||
+			end_date==="2020-12-08T00:00" ||
+			end_date==="2020-12-07T00:00" ||
+			end_date==="2020-12-06T00:00") {
+		*/
+		this.doTheFetch(url);
 		/*
 		} else {
-			
 			const myJson = 'No data!';
-			self.status = 200;
-			self.measurement = [];
-			self.fetching = false;
-			self.ready = true;
+			this.status = 200;
+			this.measurement = [];
+			this.fetching = false;
+			this.ready = true;
 			//self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
-			self.notifyAll({model:self.name, method:'fetched-all', status:200, message:'OK'});
+			this.notifyAll({model:this.name, method:'fetched-all', status:200, message:'OK'});
 		}
 		*/
 	}
 	
 	fetch(token, readkey) {
-		const self = this;
 		/*
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
@@ -260,8 +251,8 @@ coldTotal: 13732.4
 		//console.log(['FETCH FROM:',this.period.start,' TO:',this.period.end]);
 		this.status = 500; // error: 500
 		this.errorMessage = '';
-		this.fetching = true;
-		this.ready = false;
+		//this.fetching = true;
+		//this.ready = false;
 		
 		if (this.MOCKUP) {
 			this.fetch_d();
@@ -278,72 +269,17 @@ coldTotal: 13732.4
 				if (typeof readkey !== 'undefined') {
 					// Normal user has a readkey, which was created when user registered into the system. 
 					const url = this.mongoBackend + '/apartments/feeds/';
-					
 					// this.src = 'data/sivakka/apartments/feeds.json' 
 					const body_url = this.backend + '/' + this.src;
 					const data = {url:body_url, readkey:readkey, type: this.type, limit:this.limit, start: start_date, end: end_date };
-					
 					const myPost = {
 						method: 'POST',
 						headers: myHeaders,
 						body: JSON.stringify(data)
 					};
 					const myRequest = new Request(url, myPost);
-					fetch(myRequest)
-						.then(function(response) {
-							self.status = response.status;
-							return response.json();
-						})
-						.then(function(myJson) {
-							let message = 'OK';
-							if (Array.isArray(myJson)) {
-								if (myJson.length === 1) {
-									self.measurement = myJson;
-									self.values.push(myJson[0]);
-									//console.log(['VALUES ARRAY HAS NOW ',self.values.length,' ITEMS! values=',self.values]);
-									if (self.type==='water') {
-										self.updateWaterValues();
-									} else if (self.type==='energy') {
-										self.updateEnergyValues();
-									}
-								}
-								//self.fetching = false;
-								//self.ready = true;
-								self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
-							} else {
-								if (myJson === 'No data!') {
-									message = 'OK'; // This will eventually happen and it's OK!
-									self.status = 200; // self.status = 404;
-									//message = self.name+': '+myJson;
-									//self.errorMessage = message;
-									self.measurement = [];
-									self.fetching = false;
-									self.ready = true;
-									self.notifyAll({model:self.name, method:'fetched-all', status:self.status, message:message});
-								} else if (typeof self.measurement.message !== 'undefined') {
-									message = self.measurement.message;
-									self.errorMessage = message;
-									self.measurement = [];
-									self.fetching = false;
-									self.ready = true;
-									self.notifyAll({model:self.name, method:'fetched-all', status:self.status, message:message});
-									
-								} else {
-									self.measurement = [];
-									self.fetching = false;
-									self.ready = true;
-									self.notifyAll({model:self.name, method:'fetched-all', status:self.status, message:'Unknown state!'});
-								}
-							}
-						})
-						.catch(error => {
-							console.log([self.name+' fetch error=',error]);
-							self.fetching = false;
-							self.ready = true;
-							const message = self.name+': '+error;
-							self.errorMessage = message;
-							self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
-						});
+					this.doTheFetch(myRequest);
+					
 				} else {
 					// Abnormal user (admin) => no readkey. Use direct url for testing purposes.
 					this.fetch_d();
@@ -351,12 +287,12 @@ coldTotal: 13732.4
 				
 			} else {
 				// No token? Authentication failed (401).
-				self.status = 401;
-				self.fetching = false;
-				self.ready = true;
-				const message = self.name+': Auth failed';
-				self.errorMessage = message;
-				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
+				this.status = 401;
+				this.fetching = false;
+				this.ready = true;
+				const message = this.name+': Auth failed';
+				this.errorMessage = message;
+				this.notifyAll({model:this.name, method:'fetched', status:this.status, message:message});
 			}
 		}
 	}

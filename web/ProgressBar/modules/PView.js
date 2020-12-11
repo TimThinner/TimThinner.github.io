@@ -47,6 +47,10 @@ export default class PView extends View {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
+			
+			const start_date = this.models['PModel'].start_date.format('DD.MM.YYYY');
+			const end_date = this.models['PModel'].end_date.format('DD.MM.YYYY');
+			
 			const alldays = this.models['PModel'].alldays;
 			const nowdays = this.models['PModel'].nowdays;
 			const today = this.models['PModel'].nowdate.format('DD.MM.YYYY');
@@ -151,6 +155,28 @@ export default class PView extends View {
 				svgPE4.setAttributeNS(null,'opacity',0.5);
 				dgroup.appendChild(svgPE4);
 				
+			}
+			
+			
+			//start_date
+			//end_date
+			// id=date-of-birth
+			// id=date-of-retirement
+			const dobElem = svgObject.getElementById('date-of-birth');
+			if (dobElem) {
+				while (dobElem.firstChild) {
+					dobElem.removeChild(dobElem.firstChild);
+				}
+				const txtnode = document.createTextNode(start_date);
+				dobElem.appendChild(txtnode);
+			}
+			const dorElem = svgObject.getElementById('date-of-retirement');
+			if (dorElem) {
+				while (dorElem.firstChild) {
+					dorElem.removeChild(dorElem.firstChild);
+				}
+				const txtnode = document.createTextNode(end_date);
+				dorElem.appendChild(txtnode);
 			}
 		}
 	}

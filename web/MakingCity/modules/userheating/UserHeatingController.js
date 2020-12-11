@@ -55,7 +55,11 @@ export default class UserHeatingController extends Controller {
 	
 	init() {
 		this.initialize();
-		this.timers['UserHeatingView'] = {timer: undefined, interval: 60000, models:['UserHeatingMonthModel','FeedbackModel']};
+		
+		// Note: UserHeatingMonthModel is now scheduled to be fetched once every 60 seconds in 
+		// BackgroundPeriodicPoller (See: MasterController.js), so we don't need to fetch it here!
+		
+		this.timers['UserHeatingView'] = {timer: undefined, interval: 60000, models:['FeedbackModel']};
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		this.show(); // Try if this view can be shown right now!

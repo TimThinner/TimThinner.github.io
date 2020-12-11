@@ -25,15 +25,15 @@ export default class UserElectricityChartsController extends Controller {
 		const timerName = 'UserElectricityChartsView';
 		this.restartPollingInterval(timerName);
 	}
-	
+	/*
 	show() {
-		console.log('IN UserElectricityChartsController show() FIRST reset the MODEL.');
-		this.models['UserElectricityTSModel'].reset();
+		//console.log('IN UserElectricityChartsController show() FIRST reset the MODEL.');
+		//this.models['UserElectricityTSModel'].reset();
 		
 		console.log('THEN CALL SUPER show().');
 		super.show(); // To pass this (options.model==='MenuModel' && options.method==='selected')
-	}
-	
+	}*/
+	/*
 	notify(options) {
 		super.notify(options); // To pass this (options.model==='MenuModel' && options.method==='selected')
 		if (options.model==='UserElectricityTSModel' && options.method==='fetched') {
@@ -43,7 +43,7 @@ export default class UserElectricityChartsController extends Controller {
 				this.poller('UserElectricityTSView'); // Param is the name of the TIMER!
 			}
 		}
-	}
+	}*/
 	
 	
 	initialize() {
@@ -124,7 +124,10 @@ days         power       energy
 	init() {
 		this.initialize();
 		this.timers['UserElectricityChartsView'] = {timer: undefined, interval: 60000, models:['UserElectricityALLModel']};
-		this.timers['UserElectricityTSView'] = {timer: undefined, interval: -1, models:['UserElectricityTSModel']};
+		
+		// Note: UserElectricityTSModel is now scheduled to be fetched once every 60 seconds in 
+		// BackgroundPeriodicPoller (See: MasterController.js), so we don't need to fetch it here!
+		//this.timers['UserElectricityTSView'] = {timer: undefined, interval: -1, models:['UserElectricityTSModel']};
 		// Note: view.show() and startPollers() are called ONLY if controller is visible (at this point).
 		//this.show();
 	}

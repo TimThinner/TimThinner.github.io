@@ -44,13 +44,13 @@
 <!-- Date of birth -->
 <svg x="-260" y="-140" width="150px" height="24px">
 	<!--<rect x="1" y="1" width="148" height="22" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
-	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">28.10.1960</text>
+	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="date-of-birth"></text>
 </svg>
 <!-- Date of retirement -->
 <path d="M190,-120 L300,-120 L345,-80" style="stroke:#080;stroke-width:1;fill:none;opacity:0.5;" />
 <svg x="170" y="-140" width="150px" height="24px">
 	<!--<rect x="1" y="1" width="148" height="22" stroke="#fff" stroke-width="1" opacity="0.5" fill="#ff0" />-->
-	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">28.04.2025</text>
+	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#aaa" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="date-of-retirement"></text>
 </svg>
 </g>
 

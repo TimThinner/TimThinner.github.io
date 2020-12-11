@@ -57,6 +57,30 @@ export default class UHCHeating30DayChartView extends View {
 		});
 	}
 	
+	appendAverage() {
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_average = LM['translation'][sel]['USER_HEATING_CHART_AVERAGE'];
+		
+		const values = this.models['UserHeatingMonthModel'].values;
+		if (Array.isArray(values) && values.length > 0) {
+			let sum_temp = 0;
+			let sum_humi = 0;
+			values.forEach(v => {
+				sum_temp += v.temperature;
+				sum_humi += v.humidity;
+			});
+			const ave_temp = sum_temp/values.length;
+			const ave_humi = sum_humi/values.length;
+			
+			const html = '<p>'+localized_string_average+': <span style="color:#f00">'+ave_temp.toFixed(1)+' °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff">'+ave_humi.toFixed(1)+' %</span></p>';
+			$('#uhc-heating-30-day-chart-average').empty().append(html);
+		} else {
+			const html = '<p>'+localized_string_average+': <span style="color:#f00">- °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff"> - %</span></p>';
+			$('#uhc-heating-30-day-chart-average').empty().append(html);
+		}
+	}
 	
 	notify(options) {
 		const self = this;
@@ -78,7 +102,10 @@ export default class UHCHeating30DayChartView extends View {
 							});
 							
 							// These placeholders are defined in UHCWrapperView.
-							$("#time-series-progress-info").empty();
+							//$("#time-series-progress-info").empty();
+							
+							this.appendAverage();
+							
 							const len = self.models['UserHeatingMonthModel'].values.length/24;
 							$('#time-series-title').empty().append(localized_string_title+' '+len+' '+localized_string_x_days);
 							
@@ -437,9 +464,9 @@ export default class UHCHeating30DayChartView extends View {
 			}*/
 			console.log('UWC HEATING 30 DAY RENDER CHART END =====================');
 		}); // end am4core.ready()
+		
+		this.appendAverage();
 	}
-	
-	
 	
 	render() {
 		const self = this;
@@ -466,7 +493,7 @@ export default class UHCHeating30DayChartView extends View {
 					'</div>'+
 					*/
 					'<div id="uhc-heating-30-day-chart" class="large-chart"></div>'+
-					//'<div id="uhc-heating-average"></div>'+
+					'<div id="uhc-heating-30-day-chart-average"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

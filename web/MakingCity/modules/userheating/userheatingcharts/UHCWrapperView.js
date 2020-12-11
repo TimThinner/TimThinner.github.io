@@ -20,7 +20,7 @@ export default class UHCWrapperView extends WrapperView {
 		const localized_string_title = LM['translation'][sel]['USER_HEATING_CHART_TITLE'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_daw_sel_timerange = LM['translation'][sel]['DAW_SEL_TIMERANGE']; // Select timerange for database query:
-		const localized_string_x_days_info = LM['translation'][sel]['USER_CHART_X_DAYS_INFO'];
+		const localized_string_x_days = LM['translation'][sel]['USER_CHART_X_DAYS'];
 		
 		const html = 
 			'<div class="row">'+
@@ -45,7 +45,6 @@ export default class UHCWrapperView extends WrapperView {
 				'</div>'+
 				'<div class="col s12 center" style="margin-top:-16px;">'+
 					'<h5 class="da-wrapper-title" id="time-series-title"></h5>'+
-					'<p id="time-series-progress-info">'+localized_string_x_days_info+'</p>'+
 				'</div>'+
 				'<div class="col s12 center" id="subview-2">'+
 				'</div>'+
@@ -58,6 +57,12 @@ export default class UHCWrapperView extends WrapperView {
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
+		
+		const UHMM = this.controller.master.modelRepo.get('UserHeatingMonthModel');
+		if (UHMM) {
+			const len = UHMM.values.length/24;
+			$('#time-series-title').empty().append(localized_string_title+' '+len+' '+localized_string_x_days);
+		}
 		
 		this.setTimerangeHandlers(['UserHeatingALLModel']);
 		/*

@@ -128,6 +128,7 @@ export default class UserHeatingView extends View {
 		const localized_string_feedback_ok = LM['translation'][sel]['USER_HEATING_FEEDBACK_OK'];
 		
 		if (this.controller.visible) {
+			
 			if (options.model==='UserHeatingMonthModel' && options.method==='fetched') {
 				if (this.rendered) {
 					$('#'+this.FELID).empty();
@@ -138,6 +139,17 @@ export default class UserHeatingView extends View {
 				} else {
 					this.render();
 				}
+			} else if (options.model==='FeedbackModel' && options.method==='fetched') {
+				if (this.rendered) {
+					$('#'+this.FELID).empty();
+					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
+					if (options.status === 200) {
+						
+					}
+				} else {
+					this.render();
+				}
+				
 			} else if (options.model==='FeedbackModel' && options.method==='send') {
 				if (options.status === 200) {
 					// const msg = 'Feedback submitted OK';

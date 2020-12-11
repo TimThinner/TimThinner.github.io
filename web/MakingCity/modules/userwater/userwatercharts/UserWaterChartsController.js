@@ -26,16 +26,16 @@ export default class UserWaterChartsController extends Controller {
 		this.restartPollingInterval(timerName);
 	}
 	
-	
+	/*
 	show() {
-		console.log('IN UserWaterChartsController show() FIRST reset the MODEL.');
-		this.models['UserWaterTSModel'].reset();
+		//console.log('IN UserWaterChartsController show() FIRST reset the MODEL.');
+		//this.models['UserWaterTSModel'].reset();
 		
 		console.log('THEN CALL SUPER show().');
 		super.show(); // To pass this (options.model==='MenuModel' && options.method==='selected')
-	}
+	}*/
 	
-	
+	/*
 	notify(options) {
 		super.notify(options); // To pass this (options.model==='MenuModel' && options.method==='selected')
 		if (options.model==='UserWaterTSModel' && options.method==='fetched') {
@@ -48,7 +48,7 @@ export default class UserWaterChartsController extends Controller {
 				//}, 1000);
 			}
 		}
-	}
+	}*/
 	
 	initialize() {
 		const allTR = {ends:{value:10,unit:'seconds'},starts:{value:1,unit:'days'}};
@@ -78,7 +78,11 @@ export default class UserWaterChartsController extends Controller {
 	init() {
 		this.initialize();
 		this.timers['UserWaterChartsView'] = {timer: undefined, interval: 60000, models:['UserWaterALLModel']};
-		this.timers['UserWaterTSView'] = {timer: undefined, interval: -1, models:['UserWaterTSModel']};
+		
+		// Note: UserWaterTSModel is now scheduled to be fetched once every 60 seconds in 
+		// BackgroundPeriodicPoller (See: MasterController.js), so we don't need to fetch it here!
+		
+		//this.timers['UserWaterTSView'] = {timer: undefined, interval: -1, models:['UserWaterTSModel']};
 		//this.show(); // Try if this view can be shown right now!
 	}
 }

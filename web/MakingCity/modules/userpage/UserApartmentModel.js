@@ -250,7 +250,7 @@ export default class UserApartmentModel extends Model {
 			// type = sensor (Temperature and Humidity)
 			self.values = []; // Start with fresh empty data.
 			const newson = this.removeHeatingDuplicates(myJson);
-			console.log(['newson=',newson]);
+			console.log(['SENSOR (Temperature and Humidity) newson=',newson]);
 			
 			/*
 				humidity: 37.7
@@ -279,27 +279,9 @@ export default class UserApartmentModel extends Model {
 		}
 	}
 	
-	/*
-		fetch_d
-		Calls directly from src using backend (NOT mongoBackend).
-	*/
-	fetch_d() {
+	doTheFetch(req) {
 		const self = this;
-		
-		// this.src = 'data/sivakka/apartments/feeds.json'   
-		//      must append: ?apiKey=12E6F2B1236A&type=type&limit=limit&start=2020-10-12T09:00&end=2020-10-12T10:00'
-		// Use FAKE key now: '12E6F2B1236A'
-		const fakeKey = '12E6F2B1236A';
-		const start_date = this.period.start;
-		const end_date = this.period.end;
-		
-		let url = this.backend + '/' + this.src + '?apiKey='+fakeKey+'&type='+this.type;
-		if (this.limit > 0) {
-			url += '&limit='+this.limit;
-		}
-		url += '&start='+start_date+'&end='+end_date;
-		
-		fetch(url)
+		fetch(req)
 			.then(function(response) {
 				self.status = response.status;
 				return response.json();
@@ -345,8 +327,30 @@ export default class UserApartmentModel extends Model {
 			});
 	}
 	
-	fetch(token, readkey) {
+	
+	/*
+		fetch_d
+		Calls directly from src using backend (NOT mongoBackend).
+	*/
+	fetch_d() {
 		const self = this;
+		
+		// this.src = 'data/sivakka/apartments/feeds.json'   
+		//      must append: ?apiKey=12E6F2B1236A&type=type&limit=limit&start=2020-10-12T09:00&end=2020-10-12T10:00'
+		// Use FAKE key now: '12E6F2B1236A'
+		const fakeKey = '12E6F2B1236A';
+		const start_date = this.period.start;
+		const end_date = this.period.end;
+		
+		let url = this.backend + '/' + this.src + '?apiKey='+fakeKey+'&type='+this.type;
+		if (this.limit > 0) {
+			url += '&limit='+this.limit;
+		}
+		url += '&start='+start_date+'&end='+end_date;
+		this.doTheFetch(url);
+	}
+	
+	fetch(token, readkey) {
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
@@ -384,50 +388,8 @@ export default class UserApartmentModel extends Model {
 						body: JSON.stringify(data)
 					};
 					const myRequest = new Request(url, myPost);
-					fetch(myRequest)
-						.then(function(response) {
-							self.status = response.status;
-							return response.json();
-						})
-						.then(function(myJson) {
-							let message = 'OK';
-							if (Array.isArray(myJson)) {
-								
-								if (myJson.length === 1) {
-									self.measurement = myJson;
-								} else {
-									console.log(['Before process() myJson=',myJson]);
-									self.process(myJson);
-								}
-								
-							} else {
-								if (myJson === 'No data!') {
-									self.status = 404;
-									message = self.name+': '+myJson;
-									self.errorMessage = message;
-									self.measurement = [];
-								} else if (typeof self.measurement.message !== 'undefined') {
-									message = self.measurement.message;
-									self.errorMessage = message;
-									self.measurement = [];
-								} else {
-									self.measurement = [];
-								}
-							}
-							//console.log(['self.measurement=',self.measurement]);
-							//console.log([self.name+' fetch status=',self.status]);
-							self.fetching = false;
-							self.ready = true;
-							self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
-						})
-						.catch(error => {
-							console.log([self.name+' fetch error=',error]);
-							self.fetching = false;
-							self.ready = true;
-							const message = self.name+': '+error;
-							self.errorMessage = message;
-							self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
-						});
+					this.doTheFetch(myRequest);
+					
 				} else {
 					// Abnormal user (admin) => no readkey. Use direct url for testing purposes.
 					this.fetch_d();
@@ -435,12 +397,12 @@ export default class UserApartmentModel extends Model {
 				
 			} else {
 				// No token? Authentication failed (401).
-				self.status = 401;
-				self.fetching = false;
-				self.ready = true;
-				const message = self.name+': Auth failed';
-				self.errorMessage = message;
-				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
+				this.status = 401;
+				this.fetching = false;
+				this.ready = true;
+				const message = this.name+': Auth failed';
+				this.errorMessage = message;
+				this.notifyAll({model:this.name, method:'fetched', status:this.status, message:message});
 			}
 		}
 	}

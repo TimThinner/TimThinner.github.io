@@ -51,7 +51,7 @@ export default class UserHeatingChartsController extends Controller {
 	
 	init() {
 		this.initialize();
-		this.timers['UserHeatingChartsView'] = {timer: undefined, interval: 60000, models:['UserHeatingALLModel','UserHeatingMonthModel']};
+		this.timers['UserHeatingChartsView'] = {timer: undefined, interval: 60000, models:['UserHeatingALLModel']}; //'UserHeatingMonthModel']};
 		this.show(); // Try if this view can be shown right now!
 	}
 }

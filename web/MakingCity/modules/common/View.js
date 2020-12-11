@@ -43,8 +43,9 @@ export default class View {
 		let retval = true;
 		Object.keys(this.models).forEach(key => {
 			if (this.models[key].ready===true) {
-				
+				console.log(['areModelsReady key=',key,' is READY!']);
 			} else {
+				console.log(['areModelsReady key=',key,' is NOT READY!']);
 				retval = false;
 			}
 		});

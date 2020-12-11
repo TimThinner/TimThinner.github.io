@@ -49,11 +49,15 @@ import DistrictAFController from './modules/districtaf/DistrictAFController.js';
 import DistrictAGController from './modules/districtag/DistrictAGController.js';
 import DistrictAIController from './modules/districtai/DistrictAIController.js';
 
+import BackgroundPeriodicPoller from './modules/common/BackgroundPeriodicPoller.js';
+
+
 class MasterController {
 	
 	constructor() {
 		this.controllers = {};
 		this.modelRepo = new ModelRepo();
+		this.BACKGROUNDPOLLER = undefined;
 	}
 	/*
 	restore() {
@@ -79,6 +83,12 @@ class MasterController {
 		} else if (options.model==='UserModel' && options.method==='logout') {
 			
 			console.log('MasterController LOGOUT!');
+			
+			if (typeof this.BACKGROUNDPOLLER !== 'undefined') {
+				this.BACKGROUNDPOLLER.stop();
+				this.BACKGROUNDPOLLER = undefined;
+			}
+			
 			const mm = this.modelRepo.get('MenuModel');
 			if (mm) {
 				mm.setSelected('menu');
@@ -92,31 +102,26 @@ class MasterController {
 			console.log('MasterController LOGIN !!!!');
 			
 			const allModels = this.modelRepo.keys();
-			console.log(['allModels=',allModels]);
+			//console.log(['allModels=',allModels]);
 			
-			// The models, which should be checked periodically for possible 
-			// alarms are:
-			
-			/*
-			"UserWaterNowModel"				
-			"UserElectricityNowModel"		
-			"UserHeatingNowModel"			
-			
-			"UserWaterDayModel"				
-			"UserElectricityDayModel"		
-			
-			
-			"UserElectricityWeekModel"		
-			"UserElectricityMonthModel"		
-​​			"UserHeatingWeekModel"			from now-7days to now (hourly averages)
-​​			"UserWaterWeekModel"			
-​​			"UserWaterMonthModel"			
-			"UserWaterALLModel"				HOUR from now to now-1 (user selects 1-7)
-			"UserWaterTSModel"				DAY
-			"UserHeatingALLModel"			HOUR from now to now-1 (user selects 1-7)
-​​			"UserElectricityALLModel"		HOUR from now to now-1 (user selects 1-7)
-​​			"UserElectricityTSModel"		DAY
-​​			*/
+			/* 
+			The models, which should be checked periodically for possible alarms are:
+			"UserHeatingMonthModel"			Hourly values for 30 days         is a UserApartmentModel
+​​			"UserWaterTSModel"				Daily consumption for 30 days     is a UserApartmentTimeSeriesModel
+			"UserElectricityTSModel"		Daily consumption for 30 days     is a UserApartmentTimeSeriesModel
+​​			
+			All traditional polling happens ONLY when Controller is visible!
+			This is BACKGROUND polling. Should start immediately at login and stop when user logs out.
+			*/
+			let backgroundModels = [];
+			allModels.forEach(name=>{
+				if (name==='UserHeatingMonthModel'||name==='UserElectricityTSModel'||name==='UserWaterTSModel') {
+					backgroundModels.push(name);
+				}
+			});
+			//const backgroundModels = ['UserHeatingMonthModel','UserElectricityTSModel','UserWaterTSModel'];
+			this.BACKGROUNDPOLLER = new BackgroundPeriodicPoller({master:this, models:backgroundModels});
+			this.BACKGROUNDPOLLER.start();
 		}
 	}
 	

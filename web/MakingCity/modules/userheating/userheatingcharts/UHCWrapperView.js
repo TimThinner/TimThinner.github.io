@@ -61,7 +61,7 @@ export default class UHCWrapperView extends WrapperView {
 		const UHMM = this.controller.master.modelRepo.get('UserHeatingMonthModel');
 		if (UHMM) {
 			const len = UHMM.values.length/24;
-			$('#time-series-title').empty().append(localized_string_title+' '+len+' '+localized_string_x_days);
+			$('#time-series-title').empty().append(localized_string_title+' '+len.toFixed(0)+' '+localized_string_x_days);
 		}
 		
 		this.setTimerangeHandlers(['UserHeatingALLModel']);

@@ -58,9 +58,6 @@ export default class CalculatedHeating {
 		});
 	}
 	
-	/*
-		Add test for Target + Upper and Lower limits... now with predefined constant values...
-	*/
 	copyTo(v) {
 		Object.keys(this.heating).forEach(key => {
 			const e = {

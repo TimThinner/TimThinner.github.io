@@ -329,28 +329,28 @@ router.post("/login", (req,res,next)=>{
 					)
 					const rkey = user[0].readkey ? user[0].readkey._id : undefined;
 					
-					const pem = user[0].price_energy_monthly ? user[0].price_energy_monthly : 0;
-					const peb = user[0].price_energy_basic ? user[0].price_energy_basic : 0;
-					const pet = user[0].price_energy_transfer ? user[0].price_energy_transfer : 0;
+					const pem = user[0].price_energy_monthly ? user[0].price_energy_monthly : undefined;
+					const peb = user[0].price_energy_basic ? user[0].price_energy_basic : undefined;
+					const pet = user[0].price_energy_transfer ? user[0].price_energy_transfer : undefined;
 					
-					const htu = user[0].heating_temperature_upper ? user[0].heating_temperature_upper : 0;
-					const htt = user[0].heating_target_temperature ? user[0].heating_target_temperature : 0;
-					const htl = user[0].heating_temperature_lower ? user[0].heating_temperature_lower : 0;
-					const hhu = user[0].heating_humidity_upper ? user[0].heating_humidity_upper : 0;
-					const hth = user[0].heating_target_humidity ? user[0].heating_target_humidity : 0;
-					const hhl = user[0].heating_humidity_lower ? user[0].heating_humidity_lower : 0;
+					const htu = user[0].heating_temperature_upper ? user[0].heating_temperature_upper : undefined;
+					const htt = user[0].heating_target_temperature ? user[0].heating_target_temperature : undefined;
+					const htl = user[0].heating_temperature_lower ? user[0].heating_temperature_lower : undefined;
+					const hhu = user[0].heating_humidity_upper ? user[0].heating_humidity_upper : undefined;
+					const hth = user[0].heating_target_humidity ? user[0].heating_target_humidity : undefined;
+					const hhl = user[0].heating_humidity_lower ? user[0].heating_humidity_lower : undefined;
 					
-					const whu = user[0].water_hot_upper ? user[0].water_hot_upper : 0;
-					const wht = user[0].water_hot_target ? user[0].water_hot_target : 0;
-					const whl = user[0].water_hot_lower ? user[0].water_hot_lower : 0;
+					const whu = user[0].water_hot_upper ? user[0].water_hot_upper : undefined;
+					const wht = user[0].water_hot_target ? user[0].water_hot_target : undefined;
+					const whl = user[0].water_hot_lower ? user[0].water_hot_lower : undefined;
 					
-					const wcu = user[0].water_cold_upper ? user[0].water_cold_upper : 0;
-					const wct = user[0].water_cold_target ? user[0].water_cold_target : 0;
-					const wcl = user[0].water_cold_lower ? user[0].water_cold_lower : 0;
+					const wcu = user[0].water_cold_upper ? user[0].water_cold_upper : undefined;
+					const wct = user[0].water_cold_target ? user[0].water_cold_target : undefined;
+					const wcl = user[0].water_cold_lower ? user[0].water_cold_lower : undefined;
 					
-					const eu = user[0].energy_upper ? user[0].energy_upper : 0;
-					const et = user[0].energy_target ? user[0].energy_target : 0;
-					const el = user[0].energy_lower ? user[0].energy_lower : 0;
+					const eu = user[0].energy_upper ? user[0].energy_upper : undefined;
+					const et = user[0].energy_target ? user[0].energy_target : undefined;
+					const el = user[0].energy_lower ? user[0].energy_lower : undefined;
 					
 					// LOG this login.
 					const logEntry = new Log({

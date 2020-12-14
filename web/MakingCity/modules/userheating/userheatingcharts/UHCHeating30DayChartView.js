@@ -107,7 +107,7 @@ export default class UHCHeating30DayChartView extends View {
 							this.appendAverage();
 							
 							const len = self.models['UserHeatingMonthModel'].values.length/24;
-							$('#time-series-title').empty().append(localized_string_title+' '+len+' '+localized_string_x_days);
+							$('#time-series-title').empty().append(localized_string_title+' '+len.toFixed(0)+' '+localized_string_x_days);
 							
 						} else {
 							console.log('fetched ..... render UHCHeating30DayChartView');

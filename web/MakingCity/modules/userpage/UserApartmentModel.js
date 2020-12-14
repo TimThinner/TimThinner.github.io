@@ -86,6 +86,7 @@ export default class UserApartmentModel extends Model {
 		this.measurement = [];
 		this.period = {start: undefined, end: undefined};
 		this.values = [];
+		//this.test_values = [];
 		this.energyValues = [];
 		this.energyTotal = 0;
 		this.waterValues = [];
@@ -238,27 +239,24 @@ export default class UserApartmentModel extends Model {
 			
 			//mycw.printWater();
 			mycw.copyTo(self.waterValues);
-			
 			// Then sort array based according to time, oldest entry first.
 			self.waterValues.sort(function(a,b){
 				var bb = moment(b.time);
 				var aa = moment(a.time);
 				return aa - bb;
 			});
-			//console.log(['Sorted WaterValues=',self.waterValues]);
+			
 		} else {
 			// type = sensor (Temperature and Humidity)
 			self.values = []; // Start with fresh empty data.
 			const newson = this.removeHeatingDuplicates(myJson);
 			console.log(['SENSOR (Temperature and Humidity) newson=',newson]);
-			
 			/*
 				humidity: 37.7
 				meterId: 201​​​​
 				residentId: 1
 				temperature: 22.8
 			*/
-			
 			const mych = new CalculatedHeating();
 			mych.resetHours(this.timerange*24);
 			
@@ -268,14 +266,26 @@ export default class UserApartmentModel extends Model {
 				//const p = new ApaFeed(v);
 				//self.values.push(p);
 			});
-			mych.calculateAverage(); 
+			mych.calculateAverage();
+			//mych.copyTo(self.test_values);
 			mych.copyTo(self.values);
 			// Then sort array based according to time, oldest entry first.
+			//self.test_values.sort(function(a,b){
 			self.values.sort(function(a,b){
 				var bb = moment(b.time);
 				var aa = moment(a.time);
 				return aa - bb;
 			});
+			
+			// NOW we copy ONLY selected set.
+			/*let count = self.test_values.length;
+			let foo = 24;
+			self.test_values.forEach(m => {
+				if (count <= foo) {
+					self.values.push(m);
+				}
+				count--;
+			});*/
 		}
 	}
 	
@@ -326,7 +336,6 @@ export default class UserApartmentModel extends Model {
 				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
 			});
 	}
-	
 	
 	/*
 		fetch_d

@@ -42,12 +42,11 @@ export default class UserHeatingView extends View {
 	
 	
 	updateLatestValues() {
-		console.log('UPDATE UserHeating !!!!!!!');
+		//console.log('UPDATE UserHeating !!!!!!!');
 		const heat_month = this.controller.master.modelRepo.get('UserHeatingMonthModel');
 		if (heat_month) {
 			const values = heat_month.values;
-			if (Array.isArray(values) && values.length > 0) {
-				
+			if (Array.isArray(values)) { // && values.length > 0) {
 				
 				// 168 values, like this:
 				// {	time: Date Sun Nov 08 2020 08:00:00 GMT+0200 (Eastern European Standard Time), 
@@ -58,54 +57,68 @@ export default class UserHeatingView extends View {
 				// toFixed(1)
 				console.log(['values=',values]);
 				
-				let sum_month_temp = 0;
-				let sum_month_humi = 0;
+				// To show month average, how many days should be already measured? (7x24 = 168)
+				if (values.length >= 672) { // More than 4 weeks? (28x24 = 672)
+					
+					let sum_month_temp = 0;
+					let sum_month_humi = 0;
+					values.forEach(v => {
+						sum_month_temp += v.temperature;
+						sum_month_humi += v.humidity;
+					});
+					const ave_month_temp = sum_month_temp/values.length;
+					const ave_month_humi = sum_month_humi/values.length;
+					$('#month-temp').empty().append(ave_month_temp.toFixed(1));
+					$('#month-humi').empty().append(ave_month_humi.toFixed(1));
+					
+				} else {
+					$('#month-temp').empty().append('---');
+					$('#month-humi').empty().append('---');
+				}
 				
-				values.forEach(v => {
-					sum_month_temp += v.temperature;
-					sum_month_humi += v.humidity;
-				});
-				const ave_month_temp = sum_month_temp/values.length;
-				const ave_month_humi = sum_month_humi/values.length;
-				$('#month-temp').empty().append(ave_month_temp.toFixed(1));
-				$('#month-humi').empty().append(ave_month_humi.toFixed(1));
+				if (values.length >= 168) { // More than one week?
+					
+					const values_week = values.slice(-168); // extracts the last 168 elements (7x24) in the sequence.
+					let sum_week_temp = 0;
+					let sum_week_humi = 0;
+					values_week.forEach(v => {
+						sum_week_temp += v.temperature;
+						sum_week_humi += v.humidity;
+					});
+					const ave_week_temp = sum_week_temp/values_week.length;
+					const ave_week_humi = sum_week_humi/values_week.length;
+					$('#week-temp').empty().append(ave_week_temp.toFixed(1));
+					$('#week-humi').empty().append(ave_week_humi.toFixed(1));
+				} else {
+					$('#week-temp').empty().append('---');
+					$('#week-humi').empty().append('---');
+				}
 				
-				
-				const values_week = values.slice(-168); // extracts the last 168 elements (7x24) in the sequence.
-				let sum_week_temp = 0;
-				let sum_week_humi = 0;
-				
-				values_week.forEach(v => {
-					sum_week_temp += v.temperature;
-					sum_week_humi += v.humidity;
-				});
-				const ave_week_temp = sum_week_temp/values_week.length;
-				const ave_week_humi = sum_week_humi/values_week.length;
-				$('#week-temp').empty().append(ave_week_temp.toFixed(1));
-				$('#week-humi').empty().append(ave_week_humi.toFixed(1));
-				
-				
-				const val24h = values.slice(-24); // extracts the last 24 elements in the sequence.
-				
-				let sum_24h_temp = 0;
-				let sum_24h_humi = 0;
-				val24h.forEach(v => {
-					sum_24h_temp += v.temperature;
-					sum_24h_humi += v.humidity;
-				});
-				const ave_24h_temp = sum_24h_temp/val24h.length;
-				const ave_24h_humi = sum_24h_humi/val24h.length;
-				$('#day-temp').empty().append(ave_24h_temp.toFixed(1));
-				$('#day-humi').empty().append(ave_24h_humi.toFixed(1));
-				
-				
-				
+				if (values.length >= 24) { // More than one day?
+					
+					const val24h = values.slice(-24); // extracts the last 24 elements in the sequence.
+					let sum_24h_temp = 0;
+					let sum_24h_humi = 0;
+					val24h.forEach(v => {
+						sum_24h_temp += v.temperature;
+						sum_24h_humi += v.humidity;
+					});
+					const ave_24h_temp = sum_24h_temp/val24h.length;
+					const ave_24h_humi = sum_24h_humi/val24h.length;
+					$('#day-temp').empty().append(ave_24h_temp.toFixed(1));
+					$('#day-humi').empty().append(ave_24h_humi.toFixed(1));
+				} else {
+					$('#day-temp').empty().append('---');
+					$('#day-humi').empty().append('---');
+				}
 				
 			} else {
 				$('#day-temp').empty().append('---');
 				$('#day-humi').empty().append('---');
 				$('#week-temp').empty().append('---');
 				$('#week-humi').empty().append('---');
+				$('#month-temp').empty().append('---');
+				$('#month-humi').empty().append('---');
 			}
 		}
 	}

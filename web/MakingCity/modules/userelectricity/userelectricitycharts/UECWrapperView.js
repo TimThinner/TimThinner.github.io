@@ -68,11 +68,11 @@ export default class UECWrapperView extends WrapperView {
 		}
 		
 		this.setTimerangeHandlers(['UserElectricityALLModel']);
-		/*
-		this.startSwipeEventListeners(
-			()=>{this.menuModel.setSelected('USERELECTRICITY');},
-			()=>{this.menuModel.setSelected('USERELECTRICITYTARGETS');}
-		);*/
+		
+		//this.startSwipeEventListeners(
+		//	()=>{this.menuModel.setSelected('USERELECTRICITY');},
+		//	()=>{this.menuModel.setSelected('USERELECTRICITYTARGETS');}
+		//);
 		
 		// Assign back-button handler.
 		$('#back').on('click',function() {

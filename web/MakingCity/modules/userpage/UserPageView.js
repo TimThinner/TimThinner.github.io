@@ -305,6 +305,22 @@ export default class UserPageView extends View {
 				WB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 				WB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			}
+			
+			const HomeButton = svgObject.getElementById('home-button');
+			if (HomeButton) {
+				HomeButton.addEventListener("click", function(){
+					
+					self.menuModel.setSelected('USERALARM');
+					
+				}, false);
+				HomeButton.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+				HomeButton.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			}
+			
+			
+			// <image x="-120" y="-120" width="240" height="240" xlink:href="Home.svg" id="home-button" class="active-button" style="transform: translateY(0px) scale(1.0);" />
+			
+			
 			/*
 			const HCT = svgObject.getElementById('TheHomeColorTest');
 			if (HCT) {

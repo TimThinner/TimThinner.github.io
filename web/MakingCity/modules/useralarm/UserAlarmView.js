@@ -3,22 +3,22 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/supe
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
-import View from '../../common/View.js';
+import View from '../common/View.js';
 
-export default class UserHeatingCompensateView extends View {
+export default class UserAlarmView extends View {
 	
 	constructor(controller) {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserHeatingNowModel') {
+			if (key === 'UserAlarmModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
 		});
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
-		this.FELID = 'user-heating-view-failure';
+		this.FELID = 'user-alarm-view-failure';
 	}
 	
 	show() {
@@ -41,35 +41,20 @@ export default class UserHeatingCompensateView extends View {
 	}
 	
 	updateLatestValues() {
-		console.log('UPDATE UserHeatingCompensate !!!!!!!');
+		
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='UserHeatingNowModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					console.log('UserHeatingCompensateView => UserHeatingNowModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
+			if (options.model==='UserAlarmModel' && options.method==='fetched') {
+				if (this.rendered) {
+					$('#'+this.FELID).empty();
+					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
+					if (options.status === 200) {
 						this.updateLatestValues();
-					} else {
-						this.render();
 					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
+				} else {
+					this.render();
 				}
 			}
 		}
@@ -83,20 +68,19 @@ export default class UserHeatingCompensateView extends View {
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+			const localized_string_title = LM['translation'][sel]['USER_ALARM_TITLE'];
+			const localized_string_description = LM['translation'][sel]['USER_ALARM_DESCRIPTION'];
 			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 			
 			const html =
 				'<div class="row">'+
 					'<div class="col s12">'+
-						'<h4 style="text-align:center;">Heating Compensate</h4>'+
+						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
+						//'<p style="text-align:center;"><img src="./svg/userpage/water.svg" height="80"/></p>'+
+						'<p style="text-align:center;">'+localized_string_description+'</p>'+
 						'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'</div>'+
-					'<div class="col s12 center" style="margin-top:32px;">'+
-						'<p>&nbsp;</p>'+
-						'<p>&nbsp;</p>'+
-						'<p>&nbsp;</p>'+
-					'</div>'+
-					'<div class="col s12 center" style="margin-top:32px;">'+
+					'<div class="col s12 center" style="margin-top:16px;">'+
 						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 							'<i class="material-icons left">arrow_back</i>'+
 						'</button>'+
@@ -108,20 +92,20 @@ export default class UserHeatingCompensateView extends View {
 			$(html).appendTo(this.el);
 			
 			//this.startSwipeEventListeners(
-			//	()=>{this.menuModel.setSelected('USERHEATING');},
-			//	()=>{this.menuModel.setSelected('USERHEATINGCHARTS');}
+			//	()=>{this.menuModel.setSelected('USERPAGE');},
+			//	()=>{this.menuModel.setSelected('USERHEATING');}
 			//);
 			
 			$('#back').on('click',function() {
-				self.menuModel.setSelected('USERHEATING');
+				self.menuModel.setSelected('USERPAGE');
 			});
 			
 			this.handleErrorMessages(this.FELID);
-			
+			this.updateLatestValues();
 			this.rendered = true;
 			
 		} else {
-			console.log('UserHeatingCompensateView => render Model IS NOT READY!!!!');
+			console.log('UserAlarmView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

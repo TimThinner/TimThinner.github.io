@@ -172,12 +172,11 @@ export default class UserHeatingTargetsView extends View {
 			// Fill the targets-object with values from UserModel.
 			this.fillTargetsFromUM();
 			
-			/*
-			this.startSwipeEventListeners(
-				()=>{this.menuModel.setSelected('USERHEATING');},
-				()=>{this.menuModel.setSelected('USERHEATINGCOMPENSATE');}
-			);
-			*/
+			//this.startSwipeEventListeners(
+			//	()=>{this.menuModel.setSelected('USERHEATING');},
+			//	()=>{this.menuModel.setSelected('USERHEATINGCOMPENSATE');}
+			//);
+			
 			$('#back').on('click',function() {
 				self.menuModel.setSelected('USERHEATING');
 			});

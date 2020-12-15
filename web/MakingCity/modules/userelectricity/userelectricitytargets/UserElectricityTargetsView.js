@@ -133,12 +133,11 @@ export default class UserElectricityTargetsView extends View {
 			// Fill the targets-object with values from UserModel.
 			this.fillTargetsFromUM();
 			
-			/*
-			this.startSwipeEventListeners(
-				()=>{this.menuModel.setSelected('USERELECTRICITY');},
-				()=>{this.menuModel.setSelected('USERELECTRICITYCOMPENSATE');}
-			);
-			*/
+			//this.startSwipeEventListeners(
+			//	()=>{this.menuModel.setSelected('USERELECTRICITY');},
+			//	()=>{this.menuModel.setSelected('USERELECTRICITYCOMPENSATE');}
+			//);
+			
 			$('#back').on('click',function() {
 				self.menuModel.setSelected('USERELECTRICITY');
 			});

@@ -106,12 +106,12 @@ export default class UserElectricityCompensateView extends View {
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 				'</div>';
 			$(html).appendTo(this.el);
-			/*
-			this.startSwipeEventListeners(
-				()=>{this.menuModel.setSelected('USERELECTRICITY');},
-				()=>{this.menuModel.setSelected('USERELECTRICITYCHARTS');}
-			);
-			*/
+			
+			//this.startSwipeEventListeners(
+			//	()=>{this.menuModel.setSelected('USERELECTRICITY');},
+			//	()=>{this.menuModel.setSelected('USERELECTRICITYCHARTS');}
+			//);
+			
 			$('#back').on('click',function() {
 				self.menuModel.setSelected('USERELECTRICITY');
 			});

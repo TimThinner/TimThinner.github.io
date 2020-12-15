@@ -37,6 +37,12 @@
 	font-size: 24px;
 	fill: #666;
 }
+.alarm-text {
+	opacity: 1;
+	font-family: "Arial, Helvetica, sans-serif";
+	font-size: 24px;
+	fill: #fff;
+}
 </style>
 <defs>
 	<radialGradient id="grad" cx="50%" cy="50%" r="100%">
@@ -69,9 +75,16 @@
 </svg>
 <image id="TheHomeColorTest" x="-100" y="-100" width="200" height="200" xlink:href="Home.svg" />
 -->
+<!-- Big circle around all items -->
 <circle cx="0" cy="0" r="300" stroke-width="1" stroke="#ccc" fill="none" />
-
-<image x="-100" y="-100" width="200" height="200" xlink:href="Home.svg" />
+<!-- Red circle for the alarms -->
+<circle cx="0" cy="0" r="18" stroke-width="1" stroke="#000" fill="#f00" />
+<svg x="-20" y="-10" width="40px" height="24px">
+	<!--<rect x="0" y="0" width="40" height="24" stroke="#fff" stroke-width="1" opacity="0.3" fill="#009688" />-->
+	<text class="alarm-text" id="alarm-count" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">1</text>
+</svg>
+<!-- Home in the center -->
+<image x="-100" y="-100" width="200" height="200" xlink:href="Home.svg" id="home-button" class="active-button" style="transform: translateY(0px) scale(1.0);" />
 
 <svg x="-160" y="-190" width="320px" height="30px">
 	<!--<rect x="1" y="1" width="318" height="28" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->

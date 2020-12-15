@@ -179,11 +179,10 @@ export default class UserWaterTargetsView extends View {
 			// Fill the targets-object with values from UserModel.
 			this.fillTargetsFromUM();
 			
-			/*
-			this.startSwipeEventListeners(
-				()=>{this.menuModel.setSelected('USERWATER');},
-				()=>{this.menuModel.setSelected('USERWATERCOMPENSATE');}
-			);*/
+			//this.startSwipeEventListeners(
+			//	()=>{this.menuModel.setSelected('USERWATER');},
+			//	()=>{this.menuModel.setSelected('USERWATERCOMPENSATE');}
+			//);
 			
 			$('#back').on('click',function() {
 				self.menuModel.setSelected('USERWATER');

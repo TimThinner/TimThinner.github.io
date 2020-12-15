@@ -10,14 +10,19 @@ third  = #1fac78
 <!-- The House, roof: -->
 <path d="M-100,-35 L0,-100 L100,-35" style="stroke:#1fac78;stroke-width:8;fill:none;opacity:1.0;stroke-linecap:round;" />
 <!-- The house, Chimney: -->
+<!--
 <path d="M-75,-50 L-75,-100 L-40,-100 L-40,-75 L-75,-50" style="stroke:#1fac78;stroke-width:6;fill:#73d3ae;opacity:0.95;" />
+-->
 <!-- The house, wall paint: -->
+<!--
 <path d="M-75,100 L-75,-50 L0,-100 L75,-50 L75,100 L-75,100 Z" style="stroke:#73d3ae;stroke-width:1;fill:#73d3ae;opacity:0.25;" />
-
+-->
 <!-- The House, window and door: -->
+<!--
 <path d="M-60,0 L-35,0 L-35,25 L-60,25 L-60,0 Z" style="stroke:#1fac78;stroke-width:4;fill:#fff;opacity:0.75;" />
 <path d="M-35,0 L-10,0 L-10,25 L-35,25 L-35,0 Z" style="stroke:#1fac78;stroke-width:4;fill:#fff;opacity:0.75;" />
 <path d="M-60,25 L-35,25 L-35,50 L-60,50 L-60,25 Z" style="stroke:#1fac78;stroke-width:4;fill:#fff;opacity:0.75;" />
 <path d="M-35,25 L-10,25 L-10,50 L-35,50 L-35,25 Z" style="stroke:#1fac78;stroke-width:4;fill:#fff;opacity:0.75;" />
 <path d="M10,96 L10,0 L60,0 L60,96 L10,96 Z" style="stroke:#1fac78;stroke-width:4;fill:#fff;opacity:0.75;" />
+-->
 </svg>

@@ -14,6 +14,7 @@ import UserPropsController from './modules/userprops/UserPropsController.js';
 import UserElectricityController from './modules/userelectricity/UserElectricityController.js';
 import UserHeatingController from './modules/userheating/UserHeatingController.js';
 import UserWaterController from './modules/userwater/UserWaterController.js';
+import UserAlarmController from './modules/useralarm/UserAlarmController.js';
 
 import UserWaterChartsController from './modules/userwater/userwatercharts/UserWaterChartsController.js';
 import UserWaterTargetsController from './modules/userwater/userwatertargets/UserWaterTargetsController.js';
@@ -177,6 +178,8 @@ class MasterController {
 		this.controllers['USERHEATING'].init();
 		this.controllers['USERWATER'] = new UserWaterController({name:'USERWATER', master:this, el:'#content', visible:false});
 		this.controllers['USERWATER'].init();
+		this.controllers['USERALARM'] = new UserAlarmController({name:'USERALARM', master:this, el:'#content', visible:false});
+		this.controllers['USERALARM'].init();
 		
 		this.controllers['USERWATERCHARTS'] = new UserWaterChartsController({name:'USERWATERCHARTS', master:this, el:'#content', visible:false});
 		this.controllers['USERWATERCHARTS'].init();

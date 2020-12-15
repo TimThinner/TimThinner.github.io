@@ -65,11 +65,11 @@ export default class UHCWrapperView extends WrapperView {
 		}
 		
 		this.setTimerangeHandlers(['UserHeatingALLModel']);
-		/*
-		this.startSwipeEventListeners(
-			()=>{this.menuModel.setSelected('USERWATER');},
-			()=>{this.menuModel.setSelected('USERWATERTARGETS');}
-		);*/
+		
+		//this.startSwipeEventListeners(
+		//	()=>{this.menuModel.setSelected('USERWATER');},
+		//	()=>{this.menuModel.setSelected('USERWATERTARGETS');}
+		//);
 		
 		// Assign back-button handler.
 		$('#back').on('click',function() {

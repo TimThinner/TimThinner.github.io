@@ -65,11 +65,11 @@ export default class UWCWrapperView extends WrapperView {
 		}
 		
 		this.setTimerangeHandlers(['UserWaterALLModel']);
-		/*
-		this.startSwipeEventListeners(
-			()=>{this.menuModel.setSelected('USERWATER');},
-			()=>{this.menuModel.setSelected('USERWATERTARGETS');}
-		);*/
+		
+		//this.startSwipeEventListeners(
+		//	()=>{this.menuModel.setSelected('USERWATER');},
+		//	()=>{this.menuModel.setSelected('USERWATERTARGETS');}
+		//);
 		
 		// Assign back-button handler.
 		$('#back').on('click',function() {

@@ -536,11 +536,11 @@ export default class UserPropsView extends View {
 					self.menuModel.setSelected('READKEYS');
 				});
 			}
-			/*
-			this.startSwipeEventListeners(
-				()=>{this.menuModel.setSelected('USERPAGE');},
-				()=>{this.menuModel.setSelected('USERWATER');}
-			);*/
+			
+			//this.startSwipeEventListeners(
+			//	()=>{this.menuModel.setSelected('USERPAGE');},
+			//	()=>{this.menuModel.setSelected('USERWATER');}
+			//);
 			
 			$('#back').on('click',function() {
 				self.menuModel.setSelected('USERPAGE');

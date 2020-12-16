@@ -15,8 +15,7 @@ import UserElectricityController from './modules/userelectricity/UserElectricity
 import UserHeatingController from './modules/userheating/UserHeatingController.js';
 import UserWaterController from './modules/userwater/UserWaterController.js';
 import UserAlarmController from './modules/useralarm/UserAlarmController.js';
-import UserAlarmCreateController from './modules/useralarm/UserAlarmCreateController.js';
-
+//import UserAlarmCreateController from './modules/useralarm/UserAlarmCreateController.js';
 
 import UserWaterChartsController from './modules/userwater/userwatercharts/UserWaterChartsController.js';
 import UserWaterTargetsController from './modules/userwater/userwatertargets/UserWaterTargetsController.js';
@@ -127,6 +126,12 @@ class MasterController {
 			this.BACKGROUNDPOLLER.start();
 		}
 	}
+	/*
+	restartBackgroundPoller() {
+		if (typeof this.BACKGROUNDPOLLER !== 'undefined') {
+			this.BACKGROUNDPOLLER.restart();
+		}
+	}*/
 	
 	init() {
 		console.log('MasterController init!');
@@ -183,10 +188,8 @@ class MasterController {
 		this.controllers['USERALARM'] = new UserAlarmController({name:'USERALARM', master:this, el:'#content', visible:false});
 		this.controllers['USERALARM'].init();
 		// Test the user alarms!
-		this.controllers['USERALARMCREATE'] = new UserAlarmCreateController({name:'USERALARMCREATE', master:this, el:'#content', visible:false});
-		this.controllers['USERALARMCREATE'].init();
-		
-		
+		//this.controllers['USERALARMCREATE'] = new UserAlarmCreateController({name:'USERALARMCREATE', master:this, el:'#content', visible:false});
+		//this.controllers['USERALARMCREATE'].init();
 		
 		
 		this.controllers['USERWATERCHARTS'] = new UserWaterChartsController({name:'USERWATERCHARTS', master:this, el:'#content', visible:false});

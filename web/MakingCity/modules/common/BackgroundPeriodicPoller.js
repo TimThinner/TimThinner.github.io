@@ -14,16 +14,6 @@ export default class BackgroundPeriodicPoller {
 		this.counter=0;
 	}
 	
-	stop() {
-		console.log('STOP BackgroundPollers');
-		Object.keys(this.timers).forEach(key => {
-			if (this.timers[key].timer) {
-				clearTimeout(this.timers[key].timer);
-				this.timers[key].timer = undefined;
-			}
-		});
-	}
-	
 	fetchModel(modelName) {
 		// Feed the UserModel auth-token into fetch call.
 		// We also need to know whether REST-API call will be using token or not?
@@ -57,10 +47,19 @@ export default class BackgroundPeriodicPoller {
 					this.counter++;
 					//console.log(['CONTROLLER Notify: ',options.model,' fetched!']);
 					//console.log(['CALL AGAIN!!!!!!!!!!!!!!!!! count=',this.counter]);
-					
 					this.fetchModel(options.model);
 				}
+			} else if (options.method==='fetched-all') {
+				if (options.status === 200) {
+					console.log(options.model+' FOR ONE MONTH IS NOW READY TO BE CHECKED FOR ALARMS!');
+				}
 			}
+		} else if (options.model==='UserHeatingMonthModel' && options.method==='fetched') {
+			if (options.status === 200) {
+				console.log(options.model+' FOR ONE MONTH IS NOW READY TO BE CHECKED FOR ALARMS!');
+			}
+		} else if (options.model==='UserHeatingMonthModel' && options.method==='fetched') {
+		
 		}
 	}
 	
@@ -86,6 +85,11 @@ export default class BackgroundPeriodicPoller {
 		}
 	}
 	
+	// Note: start and stop should be managed without calling constructor again, so timers 
+	// this.timers[name+'Poller'] = {timer:undefined, interval:this.interval, models:[name]};
+	// are still around, but contain 
+	//
+	
 	start() {
 		console.log('START BackgroundPollers');
 		Object.keys(this.timers).forEach(key => {
@@ -99,4 +103,34 @@ export default class BackgroundPeriodicPoller {
 			this.poller(key);
 		});
 	}
+	
+	stop() {
+		console.log('STOP BackgroundPollers');
+		Object.keys(this.timers).forEach(key => {
+			//this.timers[key].models.forEach(name=>{
+			//	console.log(['unsubscribe ',name]);
+			//	const m = this.master.modelRepo.get(name);
+			//	m.unsubscribe(this);
+			//});
+			if (this.timers[key].timer) {
+				clearTimeout(this.timers[key].timer);
+				this.timers[key].timer = undefined;
+			}
+		});
+	}
+	/*
+		Note: restart should not be called frequently for small adjustement of for example one TARGET LIMIT!
+		It makes unnecessary net traffic if used like that. Better to call it after "OK" when leaving the TARGET setting dialog.
+		
+		Todo: Do not restart pollers BUT just go through checking step.
+		POLLING and CHECKING should anyway be separate tasks!!!
+		
+	*/
+	/*
+	restart() {
+		console.log('RESTART BackgroundPollers');
+		this.stop();
+		this.start();
+	}
+	*/
 }

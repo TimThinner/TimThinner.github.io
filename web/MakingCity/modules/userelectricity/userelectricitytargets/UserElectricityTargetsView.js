@@ -139,6 +139,10 @@ export default class UserElectricityTargetsView extends View {
 			//);
 			
 			$('#back').on('click',function() {
+				//
+				// Maybe check somehow if limits have been changed!
+				//
+				//self.controller.master.restartBackgroundPoller();
 				self.menuModel.setSelected('USERELECTRICITY');
 			});
 			

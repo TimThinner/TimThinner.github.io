@@ -71,13 +71,6 @@ export default class UserAlarmModel extends Model {
 		}
 	}
 	
-	/*
-	data:
-		refToUser: req.body.refToUser
-		alarmType: req.body.alarmType
-		alarmTimestamp: req.body.alarmTimestamp
-		severity: req.body.severity
-	*/
 	addOne(data, token) {
 		const self = this;
 		
@@ -145,6 +138,42 @@ export default class UserAlarmModel extends Model {
 				})
 				.catch(function(error){
 					self.notifyAll({model:self.name, method:'updateOne', status:status, message:error});
+				});
+		}
+	}
+	
+	deleteOne(id, authToken) {
+		const self = this;
+		
+		if (this.MOCKUP) {
+			setTimeout(() => {
+				this.notifyAll({model:this.name, method:'deleteOne', status:200, message:'Alarm deleted'});
+			}, 200);
+		} else {
+			// remove one alarm from the database.
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+token;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myRemove = {
+				method: 'DELETE',
+				headers: myHeaders
+			};
+			
+			const myRequest = new Request(this.mongoBackend + '/alarms/'+id, myRemove);
+			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, Alarm NOT found 404, error: 500)
+			
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					self.notifyAll({model:self.name, method:'deleteOne', status:status, message:myJson.message, id:id});
+				})
+				.catch(function(error){
+					self.notifyAll({model:self.name, method:'deleteOne', status:status, message:error, id:id});
 				});
 		}
 	}

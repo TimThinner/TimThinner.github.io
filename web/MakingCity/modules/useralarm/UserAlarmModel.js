@@ -1,66 +1,151 @@
 import Model from '../common/Model.js';
 /*
-
-*/
-export default class UserAlarmModel extends Model {
-	constructor(options) {
-		super(options);
-	}
 	
-	/* Model:
+	
+	Model has following properties  + it extends EventObserver
+	constructor(options) {
+		super();
 		this.name = options.name;
 		this.src = options.src;
 		this.ready = false;
 		this.errorMessage = '';
 		this.fetching = false;
-	*/
+	}
+	fetch() {
+		console.log('DUMMY FETCH!');
+		this.ready = true;
+	}
+*/
+export default class UserAlarmModel extends Model {
+	constructor(options) {
+		super(options);
+		this.alarms = [];
+	}
 	
 	fetch(token) {
 		const self = this;
 		if (this.fetching) {
-			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
+			console.log(this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
 		}
-		//const debug_time_start = moment().valueOf();
-		let status = 500; // error: 500
-		this.errorMessage = '';
-		this.fetching = true;
+		if (this.MOCKUP) {
+			this.errorMessage = '';
+			this.fetching = true;
+			
+			setTimeout(() => {
+				this.alarms = [];
+				this.fetching = false;
+				this.ready = true;
+				this.notifyAll({model:this.name, method:'fetched', status:200, message:'OK'});
+			}, 200);
+			
+		} else {
+			this.errorMessage = '';
+			this.fetching = true;
+			
+			let status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+token;
+			myHeaders.append("Authorization", authorizationToken);
+			
+			const url = this.mongoBackend + '/alarms';
+			fetch(url, {headers: myHeaders})
+				.then(function(response) {
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson) {
+					console.log(['myJson=',myJson]);
+					self.alarms = myJson.alarms;
+					console.log(['self.alarms=',self.alarms]);
+					self.fetching = false;
+					self.ready = true;
+					self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+				})
+				.catch(error => {
+					self.fetching = false;
+					self.ready = true;
+					self.errorMessage = error;
+					self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
+				});
+		}
+	}
+	
+	/*
+	data:
+		refToUser: req.body.refToUser
+		alarmType: req.body.alarmType
+		alarmTimestamp: req.body.alarmTimestamp
+		severity: req.body.severity
+	*/
+	addOne(data, token) {
+		const self = this;
 		
-		let start_date = moment().format('YYYY-MM-DD');
-		let end_date = moment().format('YYYY-MM-DD');
+		if (this.MOCKUP) {
+			setTimeout(() => {
+				this.notifyAll({model:this.name, method:'addOne', status:201, message:'OK'});
+			}, 200);
+		} else {
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+token;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myPost = {
+				method: 'POST',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(this.mongoBackend + '/alarms', myPost);
+			let status = 500; // RESPONSE (OK: 201, Auth Failed: 401, error: 500)
+			
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					self.notifyAll({model:self.name, method:'addOne', status:status, message:myJson.message});
+				})
+				.catch(function(error){
+					self.notifyAll({model:self.name, method:'addOne', status:status, message:error});
+				});
+		}
+	}
+	
+	updateOne(id, data, token) {
+		const self = this;
 		
-		// append start and end date
-		const url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
-		
-		status = 200; // OK
-		setTimeout(() => {
-			this.fetching = false;
-			this.ready = true;
-			console.log('MODEL '+this.name+' FETCHED!');
-			this.notifyAll({model:this.name, method:'fetched', status:status, message:'OK'});
-		}, 200);
-		/*
-		fetch(url)
-			.then(function(response) {
-				status = response.status;
-				return response.json();
-			})
-			.then(function(myJson) {
-				self.values = []; // Start with fresh empty data.
-				self.energyValues = [];
-				
-				self.process(myJson);
-				
-				self.fetching = false;
-				self.ready = true;
-				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
-			})
-			.catch(error => {
-				self.fetching = false;
-				self.ready = true;
-				self.errorMessage = error;
-				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
-			});
-		*/
+		if (this.MOCKUP) {
+			setTimeout(() => {
+				this.notifyAll({model:this.name, method:'updateOne', status:200, message:'OK'});
+			}, 200);
+		} else {
+			
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+token;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myPut = {
+				method: 'PUT',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(this.mongoBackend + '/alarms/'+id, myPut);
+			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+			
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					self.notifyAll({model:self.name, method:'updateOne', status:status, message:myJson.message});
+				})
+				.catch(function(error){
+					self.notifyAll({model:self.name, method:'updateOne', status:status, message:error});
+				});
+		}
 	}
 }

@@ -21,3 +21,82 @@
 
 What if some attributes are not defined?
 
+
+
+
+When user has logged in BackgroundPeriodicPoller starts fetch process (10 minute interval) for following three models:
+The models, which should be checked periodically for possible alarms are:
+	
+	"UserHeatingMonthModel"			Hourly values for 30 days         is a UserApartmentModel
+​​	"UserWaterTSModel"				Daily consumption for 30 days     is a UserApartmentTimeSeriesModel
+	"UserElectricityTSModel"		Daily consumption for 30 days     is a UserApartmentTimeSeriesModel
+​​	
+
+We have target values for heating, electricity consumption and water consumption:
+
+========================
+Heating:
+========================
+Temperature Upper Limit:
+Temperature Target: 
+Temperature Lower Limit:
+Humidity Upper Limit:
+Humidity Target: 
+Humidity Lower Limit:
+
+========================
+Electricity consumption:
+========================
+Energy Upper Limit:
+Energy Target: 
+Energy Lower Limit:
+
+========================
+Water consumption:
+========================
+Hot Water Upper Limit:
+Hot Water Target: 
+Hot Water Lower Limit:
+Cold Water Upper Limit:
+Cold Water Target: 
+Cold Water Lower Limit:
+
+
+Every time we have fetched values for 30 days, we should check them against these targets.
+If value (daily or hourly) exceeds upper limit => ALARM with timestamp and value must be set.
+NOTE that user can change limits anytime, and if that happens we should make the alarms-testing immediately.
+
+
+ALARM
+	_id: mongoose.Schema.Types.ObjectId,
+	userId: { type: mongoose.Schema.Types.ObjectId, ref:'User' },
+	alarmType: { type:String },
+	alarmTimestamp: { type: Date },
+	created: { type: Date, default: Date.now },
+	severity: { type:Number }, // Green=0, Yellow=1, Red=2 
+	acknowledged: { type: Boolean, default: false }, // 
+	
+
+
+
+Alarms are created automatically by software. 
+What if user changes limits => those alarms that were set? 
+If not anymore above or below limits, should we remove them from database?
+
+
+
+
+
+User can acknowledge alarm => does not show up again in listing.
+We can identify if one specific alarm is already set (alarmType, alarmTimestamp), do not set "doubles".
+
+
+
+> db.alarms.find()
+{ "_id" : ObjectId("5fda087fd08c54471c31c516"), "acknowledged" : false, "userId" : ObjectId("5f75d08b251f6e38b8a6a737"), "alarmType" : "Temperature Upper Limit", "alarmTimestamp" : ISODate("2020-12-12T10:00:00Z"), "severity" : 3, "created" : ISODate("2020-12-16T13:15:43.598Z"), "__v" : 0 }
+> db.users.find();
+{ "_id" : ObjectId("5f75cff0251f6e38b8a6a733"), "is_superuser" : true, "email" : "timo.kinnunen@vtt.fi", "password" : "$2b$10$JNL3Y1FMjlSARX10uGfnV.5pFBP/FNYxuBgbdjjeoJrqTScDWTXRu", "created" : ISODate("2020-10-01T12:47:44.259Z"), "__v" : 0, "price_energy_basic" : 4.5, "price_energy_monthly" : 10, "price_energy_transfer" : 2.5, "heating_target_temperature" : 22.8, "heating_temperature_lower" : 20.9, "heating_temperature_upper" : 25, "heating_humidity_lower" : 35, "heating_humidity_upper" : 45, "heating_target_humidity" : 40, "water_hot_lower" : 34.1, "water_hot_target" : 67.3, "water_hot_upper" : 106.9, "water_cold_lower" : 49, "water_cold_target" : 74, "water_cold_upper" : 91, "energy_lower" : 9.3, "energy_target" : 13, "energy_upper" : 17.1 }
+{ "_id" : ObjectId("5f75d010251f6e38b8a6a734"), "is_superuser" : false, "email" : "sivakka@vtt.fi", "password" : "$2b$10$3aiwOD.wV4SVXYXnGLqELu03gQDK9cd4iKTcBwM7a1a1mSGUygyOK", "created" : ISODate("2020-10-01T12:48:16.411Z"), "__v" : 0 }
+{ "_id" : ObjectId("5f75d08b251f6e38b8a6a737"), "is_superuser" : false, "email" : "snoopy@vtt.fi", "password" : "$2b$10$6E08IkNLb9iNp3WHTRKEbuyIJyzcWm7yoaOyD2AT0R/2lJrcdneLW", "regcode" : ObjectId("5f75d04e251f6e38b8a6a735"), "readkey" : ObjectId("5f75d08b251f6e38b8a6a736"), "created" : ISODate("2020-10-01T12:50:19.865Z"), "__v" : 0, "price_energy_basic" : 53.1, "price_energy_monthly" : 13.1, "price_energy_transfer" : 46.18, "heating_humidity_lower" : 35, "heating_humidity_upper" : 46, "heating_target_humidity" : 40, "heating_target_temperature" : 22.2, "heating_temperature_lower" : 20, "heating_temperature_upper" : 24.5 }
+{ "_id" : ObjectId("5f8589ff1e6aae446ca9443b"), "is_superuser" : false, "email" : "charlie@vtt.fi", "password" : "$2b$10$0W57OW4wicVXHhRxkkuTw.luujGCu.1w.H5hJevmbZfGgFyyMagyW", "regcode" : ObjectId("5f8589b51e6aae446ca94439"), "readkey" : ObjectId("5f8589ff1e6aae446ca9443a"), "created" : ISODate("2020-10-13T11:05:35.426Z"), "__v" : 0, "price_energy_basic" : 21.21, "price_energy_monthly" : 6, "price_energy_transfer" : 4.44, "water_cold_lower" : 29, "water_cold_target" : 73, "water_cold_upper" : 116 }
+

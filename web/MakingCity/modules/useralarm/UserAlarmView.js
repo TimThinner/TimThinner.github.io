@@ -86,6 +86,12 @@ export default class UserAlarmView extends View {
 						'</button>'+
 					'</div>'+
 				'</div>'+
+				//'<div class="row">'+
+				//	'<div class="col s12 center" style="margin-top:16px;">'+
+				//		'<button class="btn waves-effect waves-light" id="create-alarm">Create new Alarm'+
+				//		'</button>'+
+				//	'</div>'+
+				'</div>'+
 				'<div class="row">'+
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 				'</div>';
@@ -95,6 +101,10 @@ export default class UserAlarmView extends View {
 			//	()=>{this.menuModel.setSelected('USERPAGE');},
 			//	()=>{this.menuModel.setSelected('USERHEATING');}
 			//);
+			
+			//$('#create-alarm').on('click',function() {
+				//self.menuModel.setSelected('USERALARMCREATE');
+			//});
 			
 			$('#back').on('click',function() {
 				self.menuModel.setSelected('USERPAGE');

@@ -31,12 +31,6 @@
 	font-size: 32px;
 	fill: #000;
 }
-.subtitle-text {
-	opacity: 0.75;
-	font-family: "Arial, Helvetica, sans-serif";
-	font-size: 24px;
-	fill: #666;
-}
 .alarm-text {
 	opacity: 1;
 	font-family: "Arial, Helvetica, sans-serif";
@@ -56,11 +50,18 @@
 <text x="-200" y="-382" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="78px" fill="#444">Making City</text>
 <path class="grid-head" d="M-300 -438 H-194" />
 <path class="grid-head" d="M48 -380 H300" />
-
+<!--
+.subtitle-text {
+	opacity: 0.75;
+	font-family: "Arial, Helvetica, sans-serif";
+	font-size: 24px;
+	fill: #666;
+}
 <svg x="80" y="-360" width="220px" height="28px">
-	<!--<rect x="1" y="1" width="218" height="26" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+	<rect x="1" y="1" width="218" height="26" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
 	<text class="subtitle-text" id="user-page-subtitle" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
+-->
 <!--
 <text x="100" y="-345" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#444">Your Home Page</text>
 -->

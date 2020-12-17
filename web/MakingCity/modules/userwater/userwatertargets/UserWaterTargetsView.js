@@ -185,6 +185,7 @@ export default class UserWaterTargetsView extends View {
 			//);
 			
 			$('#back').on('click',function() {
+				self.controller.master.checkAlarms('UserWaterTSModel');
 				self.menuModel.setSelected('USERWATER');
 			});
 			

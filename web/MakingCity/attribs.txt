@@ -37,30 +37,30 @@ We have target values for heating, electricity consumption and water consumption
 ========================
 Heating:
 ========================
-Temperature Upper Limit:
-Temperature Target: 
-Temperature Lower Limit:
-Humidity Upper Limit:
-Humidity Target: 
-Humidity Lower Limit:
+
+Heating Temperature Upper Limit
+Heating Temperature Target
+Heating Temperature Lower Limit
+Heating Humidity Upper Limit
+Heating Humidity Target
+Heating Humidity Lower Limit
 
 ========================
 Electricity consumption:
 ========================
-Energy Upper Limit:
-Energy Target: 
-Energy Lower Limit:
+Energy Upper Limit
+Energy Target
+Energy Lower Limit
 
 ========================
 Water consumption:
 ========================
-Hot Water Upper Limit:
-Hot Water Target: 
-Hot Water Lower Limit:
-Cold Water Upper Limit:
-Cold Water Target: 
-Cold Water Lower Limit:
-
+Water Hot Upper Limit
+Water Hot Target
+Water Hot Lower Limit
+Water Cold Upper Limit
+Water Cold Target
+Water Cold Lower Limit
 
 Every time we have fetched values for 30 days, we should check them against these targets.
 If value (daily or hourly) exceeds upper limit => ALARM with timestamp and value must be set.

@@ -27,11 +27,147 @@ export default class BackgroundPeriodicPoller {
 		//
 		const readkey = um ? um.readkey : undefined;
 		if (typeof token !== 'undefined') {
-			console.log(['BackgroundPoller fetchModel name=',modelName,' token=',token,' readkey=',readkey]);
+			//console.log(['BackgroundPoller fetchModel name=',modelName,' token=',token,' readkey=',readkey]);
 			const m = this.master.modelRepo.get(modelName);
 			if (m) {
 				m.fetch(token, readkey);
 			}
+		}
+	}
+	
+	checkAlarms(modelName) {
+		if (modelName === 'UserHeatingMonthModel') {
+			
+			console.log('CHECK HEATING 30 DAYS LIMITS');
+			
+			const m = this.master.modelRepo.get(modelName); // Measurement values
+			const uam = this.master.modelRepo.get('UserAlarmModel'); // Alarms 
+			const UM = this.master.modelRepo.get('UserModel'); // Limits for temperature and humidity
+			
+			if (m && uam && UM) {
+				
+				// Clear all Alarms where alarmType starts with "Heating".
+				uam.clear('Heating');
+				
+				const TU = UM.heating_temperature_upper;
+				// UM.heating_target_temperature
+				const TL = UM.heating_temperature_lower;
+				const HU = UM.heating_humidity_upper;
+				//UM.heating_target_humidity
+				const HL = UM.heating_humidity_lower;
+				if (Array.isArray(m.values)) {
+					//console.log('============================= max 720 values ============================');
+					m.values.forEach((v,i)=>{
+						const data = {
+							refToUser: UM.id,
+							alarmTimestamp: moment(v.time).format('YYYY-MM-DDTHH:mm'),
+							severity: 3
+						};
+						//console.log(['i=',i,' time=',v.time,' temperature=',v.temperature,' humidity=',v.humidity]);
+						if (v.temperature > TU) {
+							data.alarmType = 'Heating Temperature Upper Limit';
+							uam.addOne(data, UM.token);
+						}
+						if (v.temperature < TL) {
+							data.alarmType = 'Heating Temperature Lower Limit';
+							uam.addOne(data, UM.token);
+						}
+						if (v.humidity > HU) {
+							data.alarmType = 'Heating Humidity Upper Limit';
+							uam.addOne(data, UM.token);
+						}
+						if (v.humidity < HL) {
+							data.alarmType = 'Heating Humidity Lower Limit';
+							uam.addOne(data, UM.token);
+						}
+					});
+				}
+			}
+			
+		} else if (modelName === 'UserWaterTSModel') {
+			
+			console.log('CHECK WATER 30 DAYS LIMITS');
+			
+			const m = this.master.modelRepo.get(modelName); // Measurement values
+			const uam = this.master.modelRepo.get('UserAlarmModel'); // Alarms 
+			const UM = this.master.modelRepo.get('UserModel'); // Limits for temperature and humidity
+			
+			if (m && uam && UM) {
+				
+				// Clear all Alarms where alarmType starts with "Water".
+				uam.clear('Water');
+				
+				/* Water targets and limits per 24h */
+				const WHU = UM.water_hot_upper;
+				//this.water_hot_target  = this.DEFAULTS.water_hot_target;
+				const WHL = UM.water_hot_lower;
+				const WCU = UM.water_cold_upper;
+				//this.water_cold_target = this.DEFAULTS.water_cold_target;
+				const WCL = UM.water_cold_lower;
+				
+				//console.log('============================ max 30 values ==================================');
+				m.waterValues.forEach((v,i)=>{
+					const data = {
+						refToUser: UM.id,
+						alarmTimestamp: moment(v.time).format('YYYY-MM-DDTHH:mm'),
+						severity: 3
+					};
+					//console.log(['i=',i,' time=',v.time,' hot=',v.hot,' cold=',v.cold]);
+					if (v.hot > WHU) {
+						data.alarmType = 'Water Hot Upper Limit';
+						uam.addOne(data, UM.token);
+					}
+					if (v.hot < WHL) {
+						data.alarmType = 'Water Hot Lower Limit';
+						uam.addOne(data, UM.token);
+					}
+					if (v.cold > WCU) {
+						data.alarmType = 'Water Cold Upper Limit';
+						uam.addOne(data, UM.token);
+					}
+					if (v.cold < WCL) {
+						data.alarmType = 'Water Cold Lower Limit';
+						uam.addOne(data, UM.token);
+					}
+				});
+			}
+			
+		} else if (modelName === 'UserElectricityTSModel') {
+			
+			console.log('CHECK ELECTRICITY 30 DAYS LIMITS');
+			
+			const m = this.master.modelRepo.get(modelName); // Measurement values
+			const uam = this.master.modelRepo.get('UserAlarmModel'); // Alarms 
+			const UM = this.master.modelRepo.get('UserModel'); // Limits for temperature and humidity
+			
+			if (m && uam && UM) {
+				// Clear all Alarms where alarmType starts with "Energy".
+				uam.clear('Energy');
+				
+				/* Electricity targets and limits per 24h */
+				const EU = UM.energy_upper;
+				// this.energy_target  = this.DEFAULTS.energy_target;
+				const EL = UM.energy_lower;
+				
+				//console.log('============================== max 30 values ================================');
+				m.energyValues.forEach((v,i)=>{
+					const data = {
+						refToUser: UM.id,
+						alarmTimestamp: moment(v.time).format('YYYY-MM-DDTHH:mm'),
+						severity: 3
+					};
+					//console.log(['i=',i,' time=',v.time,' energy=',v.energy]);
+					if (v.energy > EU) {
+						data.alarmType = 'Energy Upper Limit';
+						uam.addOne(data, UM.token);
+					}
+					if (v.energy < EL) {
+						data.alarmType = 'Energy Lower Limit';
+						uam.addOne(data, UM.token);
+					}
+				});
+			}
+			
 		}
 	}
 	
@@ -52,14 +188,14 @@ export default class BackgroundPeriodicPoller {
 			} else if (options.method==='fetched-all') {
 				if (options.status === 200) {
 					console.log(options.model+' FOR ONE MONTH IS NOW READY TO BE CHECKED FOR ALARMS!');
+					this.checkAlarms(options.model);
 				}
 			}
 		} else if (options.model==='UserHeatingMonthModel' && options.method==='fetched') {
 			if (options.status === 200) {
 				console.log(options.model+' FOR ONE MONTH IS NOW READY TO BE CHECKED FOR ALARMS!');
+				this.checkAlarms(options.model);
 			}
-		} else if (options.model==='UserHeatingMonthModel' && options.method==='fetched') {
-		
 		}
 	}
 	
@@ -85,16 +221,11 @@ export default class BackgroundPeriodicPoller {
 		}
 	}
 	
-	// Note: start and stop should be managed without calling constructor again, so timers 
-	// this.timers[name+'Poller'] = {timer:undefined, interval:this.interval, models:[name]};
-	// are still around, but contain 
-	//
-	
 	start() {
 		console.log('START BackgroundPollers');
 		Object.keys(this.timers).forEach(key => {
 			this.counter=0;
-			// RESET the model.
+			// RESET all models.
 			this.timers[key].models.forEach(name => {
 				const m = this.master.modelRepo.get(name);
 				if (m) { m.reset(); }
@@ -107,30 +238,10 @@ export default class BackgroundPeriodicPoller {
 	stop() {
 		console.log('STOP BackgroundPollers');
 		Object.keys(this.timers).forEach(key => {
-			//this.timers[key].models.forEach(name=>{
-			//	console.log(['unsubscribe ',name]);
-			//	const m = this.master.modelRepo.get(name);
-			//	m.unsubscribe(this);
-			//});
 			if (this.timers[key].timer) {
 				clearTimeout(this.timers[key].timer);
 				this.timers[key].timer = undefined;
 			}
 		});
 	}
-	/*
-		Note: restart should not be called frequently for small adjustement of for example one TARGET LIMIT!
-		It makes unnecessary net traffic if used like that. Better to call it after "OK" when leaving the TARGET setting dialog.
-		
-		Todo: Do not restart pollers BUT just go through checking step.
-		POLLING and CHECKING should anyway be separate tasks!!!
-		
-	*/
-	/*
-	restart() {
-		console.log('RESTART BackgroundPollers');
-		this.stop();
-		this.start();
-	}
-	*/
 }

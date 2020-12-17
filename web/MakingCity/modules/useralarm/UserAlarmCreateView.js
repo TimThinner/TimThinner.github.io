@@ -107,7 +107,7 @@ export default class UserAlarmCreateView extends View {
 			const authToken = UM.token;
 			const data = {
 				refToUser: UM.id,
-				alarmType: 'Temperature Upper Limit',
+				alarmType: 'Heating Temperature Upper Limit',
 				alarmTimestamp: '2020-12-12T12:00',
 				severity: 3
 			};

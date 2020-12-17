@@ -178,6 +178,7 @@ export default class UserHeatingTargetsView extends View {
 			//);
 			
 			$('#back').on('click',function() {
+				self.controller.master.checkAlarms('UserHeatingMonthModel');
 				self.menuModel.setSelected('USERHEATING');
 			});
 			

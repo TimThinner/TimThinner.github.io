@@ -60,7 +60,15 @@ class MasterController {
 		this.controllers = {};
 		this.modelRepo = new ModelRepo();
 		this.BACKGROUNDPOLLER = undefined;
+		
 	}
+	
+	checkAlarms(modelName) {
+		if (typeof this.BACKGROUNDPOLLER !== 'undefined') {
+			this.BACKGROUNDPOLLER.checkAlarms(modelName);
+		}
+	}
+	
 	/*
 	restore() {
 		console.log('MasterController restore!');
@@ -121,17 +129,10 @@ class MasterController {
 					backgroundModels.push(name);
 				}
 			});
-			//const backgroundModels = ['UserHeatingMonthModel','UserElectricityTSModel','UserWaterTSModel'];
 			this.BACKGROUNDPOLLER = new BackgroundPeriodicPoller({master:this, models:backgroundModels});
 			this.BACKGROUNDPOLLER.start();
 		}
 	}
-	/*
-	restartBackgroundPoller() {
-		if (typeof this.BACKGROUNDPOLLER !== 'undefined') {
-			this.BACKGROUNDPOLLER.restart();
-		}
-	}*/
 	
 	init() {
 		console.log('MasterController init!');
@@ -175,6 +176,15 @@ class MasterController {
 		this.controllers['usersignup'] = new UserSignupController({name:'usersignup', master:this, el:'#content', visible:false});
 		this.controllers['usersignup'].init();
 		
+		
+		// Introduce Alarms BEFORE USERPAGE, so that we can "listen" for UserAlarmModel in UserPage.
+		this.controllers['USERALARM'] = new UserAlarmController({name:'USERALARM', master:this, el:'#content', visible:false});
+		this.controllers['USERALARM'].init();
+		// Test the user alarms!
+		//this.controllers['USERALARMCREATE'] = new UserAlarmCreateController({name:'USERALARMCREATE', master:this, el:'#content', visible:false});
+		//this.controllers['USERALARMCREATE'].init();
+		
+		
 		this.controllers['USERPAGE'] = new UserPageController({name:'USERPAGE', master:this, el:'#content', visible:false});
 		this.controllers['USERPAGE'].init();
 		this.controllers['USERPROPS'] = new UserPropsController({name:'USERPROPS', master:this, el:'#content', visible:false});
@@ -185,11 +195,6 @@ class MasterController {
 		this.controllers['USERHEATING'].init();
 		this.controllers['USERWATER'] = new UserWaterController({name:'USERWATER', master:this, el:'#content', visible:false});
 		this.controllers['USERWATER'].init();
-		this.controllers['USERALARM'] = new UserAlarmController({name:'USERALARM', master:this, el:'#content', visible:false});
-		this.controllers['USERALARM'].init();
-		// Test the user alarms!
-		//this.controllers['USERALARMCREATE'] = new UserAlarmCreateController({name:'USERALARMCREATE', master:this, el:'#content', visible:false});
-		//this.controllers['USERALARMCREATE'].init();
 		
 		
 		this.controllers['USERWATERCHARTS'] = new UserWaterChartsController({name:'USERWATERCHARTS', master:this, el:'#content', visible:false});

@@ -5,18 +5,18 @@ const mongoose = require('mongoose');
 	
 	Possible values for alarmType are:
 		
-		"Temperature Upper Limit"
-		"Temperature Lower Limit"
-		"Humidity Upper Limit"
-		"Humidity Lower Limit"
+		"Heating Temperature Upper Limit"
+		"Heating Temperature Lower Limit"
+		"Heating Humidity Upper Limit"
+		"Heating Humidity Lower Limit"
 		
 		"Energy Upper Limit"
 		"Energy Lower Limit"
 		
-		"Hot Water Upper Limit"
-		"Hot Water Lower Limit"
-		"Cold Water Upper Limit"
-		"Cold Water Lower Limit"
+		"Water Hot Upper Limit"
+		"Water Hot Lower Limit"
+		"Water Cold Upper Limit"
+		"Water Cold Lower Limit"
 		
 		
 	Severity (0=least severe,1,2=most severe) is calculated using simple percentage values:

@@ -139,10 +139,8 @@ export default class UserElectricityTargetsView extends View {
 			//);
 			
 			$('#back').on('click',function() {
-				//
-				// Maybe check somehow if limits have been changed!
-				//
-				//self.controller.master.restartBackgroundPoller();
+				// If limits are changed, we must perform Alarm checking immediately.
+				self.controller.master.checkAlarms('UserElectricityTSModel');
 				self.menuModel.setSelected('USERELECTRICITY');
 			});
 			

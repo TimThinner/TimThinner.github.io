@@ -36,6 +36,7 @@
 	font-family: "Arial, Helvetica, sans-serif";
 	font-size: 24px;
 	fill: #fff;
+	font-weight: bold;
 }
 </style>
 <defs>
@@ -87,12 +88,35 @@
 
 <!-- Big circle around all items -->
 <circle cx="0" cy="0" r="350" stroke-width="1" stroke="#ccc" fill="none" />
-<!-- Red circle for the alarms -->
-<circle cx="0" cy="0" r="18" stroke-width="1" stroke="#000" fill="#f00" />
+
+
+
+<!-- Red circle for the alarms (total) -->
+<circle cx="0" cy="0" r="30" stroke-width="1" stroke="#a00" fill="#f00" />
 <svg x="-20" y="-10" width="40px" height="24px">
 	<!--<rect x="0" y="0" width="40" height="24" stroke="#fff" stroke-width="1" opacity="0.3" fill="#009688" />-->
-	<text class="alarm-text" id="alarm-count" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">1</text>
+	<text class="alarm-text" id="alarm-count" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
+
+<!-- Orange circle for the alarms (electricity) -->
+<circle cx="-180" cy="-50" r="20" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="-200" y="-60" width="40px" height="24px">
+	<!--<rect x="0" y="0" width="40" height="24" stroke="#fff" stroke-width="1" opacity="0.3" fill="#009688" />-->
+	<text class="alarm-text" id="alarm-count-electricity" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+<!-- Orange circle for the alarms (water) -->
+<circle cx="180" cy="-50" r="20" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="160" y="-60" width="40px" height="24px">
+	<!--<rect x="0" y="0" width="40" height="24" stroke="#fff" stroke-width="1" opacity="0.3" fill="#009688" />-->
+	<text class="alarm-text" id="alarm-count-water" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+<!-- Orange circle for the alarms (heating) -->
+<circle cx="0" cy="160" r="20" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="-20" y="150" width="40px" height="24px">
+	<!--<rect x="0" y="0" width="40" height="24" stroke="#fff" stroke-width="1" opacity="0.3" fill="#009688" />-->
+	<text class="alarm-text" id="alarm-count-heating" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+
 <!-- Home in the center -->
 <image x="-120" y="-120" width="240" height="240" xlink:href="Home.svg" id="home-button" class="active-button" style="transform: translateY(0px) scale(1.0);" />
 
@@ -123,11 +147,11 @@
 <image x="-30" y="270" width="60" height="60" xlink:href="SmileyHappy.svg" />
 -->
 
-<svg x="-100" y="250" width="200px" height="32px">
+<svg x="-100" y="270" width="200px" height="32px">
 	<!--<rect x="1" y="1" width="198" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 	<text class="medium-text" id="user-temperature" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
-<svg x="-100" y="280" width="200px" height="32px">
+<svg x="-100" y="300" width="200px" height="32px">
 	<!--<rect x="1" y="1" width="198" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 	<text class="small-text" id="user-humidity" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
@@ -158,7 +182,7 @@
 </circle>
 
 <!-- The Heating X:-50; Y:240-37.5 = 202.5 -->
-<image x="-50" y="165" width="100" height="75" xlink:href="radiator.svg" />
+<image x="-50" y="185" width="100" height="75" xlink:href="radiator.svg" />
 <circle class="active-button" id="heating-button" cx="0" cy="0" r="100" style="stroke:#0a0;stroke-width:5px;fill:#fff;opacity:0.25;transform: translateY(240px) scale(1.0);">
 	<animate attributeName="r" begin="0s" dur="3s" repeatCount="indefinite" values="100;110;100" />
 </circle>

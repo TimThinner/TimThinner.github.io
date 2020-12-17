@@ -60,6 +60,14 @@ export default class UserPageController extends Controller {
 		this.models['UserElectricityDayModel'] = model_EleDay;
 		
 		
+		
+		// NEW: Add UserAlarmModel to Controller models so that we can listen it also in the UserPageView.
+		
+		this.models['UserAlarmModel'] = this.master.modelRepo.get('UserAlarmModel');
+		this.models['UserAlarmModel'].subscribe(this);
+		
+		
+		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		

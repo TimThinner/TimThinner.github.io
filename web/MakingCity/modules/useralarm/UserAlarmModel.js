@@ -22,6 +22,16 @@ export default class UserAlarmModel extends Model {
 		this.alarms = [];
 	}
 	
+	clear(prefix) {
+		let new_alarms = [];
+		this.alarms.forEach(a=>{
+			if (a.alarmType.indexOf(prefix)===-1) {
+				new_alarms.push(a);
+			}
+		});
+		this.alarms = new_alarms;
+	}
+	
 	fetch(token) {
 		const self = this;
 		if (this.fetching) {
@@ -33,7 +43,7 @@ export default class UserAlarmModel extends Model {
 			this.fetching = true;
 			
 			setTimeout(() => {
-				this.alarms = [];
+				//this.alarms = [];
 				this.fetching = false;
 				this.ready = true;
 				this.notifyAll({model:this.name, method:'fetched', status:200, message:'OK'});
@@ -70,11 +80,35 @@ export default class UserAlarmModel extends Model {
 				});
 		}
 	}
-	
+	/*
+		"Heating Temperature Upper Limit"
+		"Heating Temperature Lower Limit"
+		"Heating Humidity Upper Limit"
+		"Heating Humidity Lower Limit"
+		
+		"Energy Upper Limit"
+		"Energy Lower Limit"
+		
+		"Water Hot Upper Limit"
+		"Water Hot Lower Limit"
+		"Water Cold Upper Limit"
+		"Water Cold Lower Limit"
+		
+		const data = {
+			refToUser: UM.id,
+			alarmType: 'Heating Temperature Upper Limit',
+			alarmTimestamp: '2020-12-12T12:00',
+			severity: 3
+		};
+		self.models['UserAlarmModel'].addOne(data, authToken);
+	*/
 	addOne(data, token) {
 		const self = this;
 		
 		if (this.MOCKUP) {
+			
+			this.alarms.push(data); // For testing!
+			
 			setTimeout(() => {
 				this.notifyAll({model:this.name, method:'addOne', status:201, message:'OK'});
 			}, 200);

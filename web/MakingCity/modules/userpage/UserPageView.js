@@ -44,6 +44,31 @@ export default class UserPageView extends View {
 	}
 	
 	
+	updateAlarmCount() {
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const m = this.controller.master.modelRepo.get('UserAlarmModel');
+			if (m) {
+				let ae = 0;
+				let aw = 0;
+				let ah = 0;
+				m.alarms.forEach(a=>{
+					if (a.alarmType.indexOf('Heating')===0) {
+						ah++;
+					} else if (a.alarmType.indexOf('Water')===0) {
+						aw++;
+					} else {
+						ae++;
+					}
+				});
+				this.fillSVGTextElement(svgObject, 'alarm-count', m.alarms.length);
+				this.fillSVGTextElement(svgObject, 'alarm-count-heating', ah);
+				this.fillSVGTextElement(svgObject, 'alarm-count-water', aw);
+				this.fillSVGTextElement(svgObject, 'alarm-count-electricity', ae);
+			}
+		}
+	}
+	
 	updateLatestValues() {
 		/*
 		#user-electricity-power
@@ -182,15 +207,22 @@ export default class UserPageView extends View {
 						this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
 						if (options.status === 200) {
 							this.updateLatestValues();
+							this.updateAlarmCount();
 						}
 					} else {
 						this.render();
 					}
 				}
 			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				
 				console.log("UserPageView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
+				
+			} else if (options.model==='UserAlarmModel' && options.method==='addOne') {
+				
+				this.updateAlarmCount();
 			}
+			
 		}
 	}
 	
@@ -422,6 +454,7 @@ export default class UserPageView extends View {
 				self.addSVGEventHandlers();
 				self.localizeSVGTexts();
 				self.updateLatestValues();
+				self.updateAlarmCount();
 			});
 			
 			this.handleErrorMessages(this.FELID);

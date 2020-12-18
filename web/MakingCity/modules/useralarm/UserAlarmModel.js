@@ -41,7 +41,7 @@ export default class UserAlarmModel extends Model {
 		if (this.MOCKUP) {
 			this.errorMessage = '';
 			this.fetching = true;
-			
+			console.log('FETCHING OLD ALARMS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&%&%&%&%!');
 			setTimeout(() => {
 				//this.alarms = [];
 				this.fetching = false;
@@ -108,10 +108,10 @@ export default class UserAlarmModel extends Model {
 		if (this.MOCKUP) {
 			
 			this.alarms.push(data); // For testing!
-			
 			setTimeout(() => {
 				this.notifyAll({model:this.name, method:'addOne', status:201, message:'OK'});
 			}, 200);
+			
 		} else {
 			const myHeaders = new Headers();
 			const authorizationToken = 'Bearer '+token;

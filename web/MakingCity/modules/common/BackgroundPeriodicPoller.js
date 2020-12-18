@@ -156,7 +156,6 @@ export default class BackgroundPeriodicPoller {
 						alarmTimestamp: moment(v.time).format('YYYY-MM-DDTHH:mm'),
 						severity: 3
 					};
-					//console.log(['i=',i,' time=',v.time,' energy=',v.energy]);
 					if (v.energy > EU) {
 						data.alarmType = 'Energy Upper Limit';
 						uam.addOne(data, UM.token);

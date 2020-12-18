@@ -111,6 +111,15 @@ class MasterController {
 			
 			console.log('MasterController LOGIN !!!!');
 			
+			
+			// Fill in the "old" alarms from database immediately at login.
+			const UM = this.modelRepo.get('UserModel');
+			const UAM = this.modelRepo.get('UserAlarmModel');
+			if (UM && UAM) {
+				UAM.fetch(UM.token);
+			}
+			
+			
 			const allModels = this.modelRepo.keys();
 			//console.log(['allModels=',allModels]);
 			

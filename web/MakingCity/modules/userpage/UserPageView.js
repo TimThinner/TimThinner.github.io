@@ -11,7 +11,10 @@ export default class UserPageView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key==='UserWaterNowModel'||key==='UserHeatingNowModel'||key==='UserElectricityNowModel'||key==='UserWaterDayModel'||key==='UserElectricityDayModel') {
+			if (key==='UserWaterNowModel'||key==='UserHeatingNowModel'||key==='UserElectricityNowModel'||
+				key==='UserWaterDayModel'||key==='UserElectricityDayModel'||
+				key==='UserAlarmModel') {
+				
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -219,10 +222,16 @@ export default class UserPageView extends View {
 				this.render();
 				
 			} else if (options.model==='UserAlarmModel' && options.method==='addOne') {
-				
-				this.updateAlarmCount();
+				if (this.rendered) {
+					$('#'+this.FELID).empty();
+					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
+					if (options.status === 201) {
+						this.updateAlarmCount();
+					}
+				} else {
+					this.render();
+				}
 			}
-			
 		}
 	}
 	

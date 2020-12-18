@@ -34,9 +34,7 @@
 .alarm-text {
 	opacity: 1;
 	font-family: "Arial, Helvetica, sans-serif";
-	font-size: 24px;
 	fill: #fff;
-	font-weight: bold;
 }
 </style>
 <defs>
@@ -79,32 +77,36 @@
 -->
 <!-- Big circle around all items -->
 <circle cx="0" cy="0" r="300" stroke-width="1" stroke="#ccc" fill="none" />
+
+<!-- All Four Alarm-counts are placed inside red circles added in JavaScript (UserPageView.js) -->
+<!-- There are alarms separately for 3 types of measurements: Electricity, Water and Heating. -->
+<!-- The Fourth circle contains TOTAL sum from those 3 types -->
+<!-- The point in doing this in JS is that circles are NOT inserted if there are NO Alarms for -->
+<!-- specific measurement category. -->
+<g id="alarms-placeholder-total"></g>
+<g id="alarms-placeholder-electricity"></g>
+<g id="alarms-placeholder-water"></g>
+<g id="alarms-placeholder-heating"></g>
+
 <!-- Red circle for the alarms -->
+<!--
 <circle cx="0" cy="0" r="30" stroke-width="1" stroke="#a00" fill="#f00" />
 <svg x="-20" y="-10" width="40px" height="24px">
-	<!--<rect x="0" y="0" width="40" height="24" stroke="#fff" stroke-width="1" opacity="0.3" fill="#009688" />-->
 	<text class="alarm-text" id="alarm-count" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
-
-<!-- Orange circle for the alarms (electricity) -->
 <circle cx="-150" cy="-50" r="20" stroke-width="1" stroke="#a00" fill="#f00" />
 <svg x="-170" y="-60" width="40px" height="24px">
-	<!--<rect x="0" y="0" width="40" height="24" stroke="#fff" stroke-width="1" opacity="0.3" fill="#009688" />-->
 	<text class="alarm-text" id="alarm-count-electricity" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
-<!-- Orange circle for the alarms (water) -->
 <circle cx="150" cy="-50" r="20" stroke-width="1" stroke="#a00" fill="#f00" />
 <svg x="130" y="-60" width="40px" height="24px">
-	<!--<rect x="0" y="0" width="40" height="24" stroke="#fff" stroke-width="1" opacity="0.3" fill="#009688" />-->
 	<text class="alarm-text" id="alarm-count-water" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
-<!-- Orange circle for the alarms (heating) -->
 <circle cx="0" cy="130" r="20" stroke-width="1" stroke="#a00" fill="#f00" />
 <svg x="-20" y="120" width="40px" height="24px">
-	<!--<rect x="0" y="0" width="40" height="24" stroke="#fff" stroke-width="1" opacity="0.3" fill="#009688" />-->
 	<text class="alarm-text" id="alarm-count-heating" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
-
+-->
 
 <!-- Home in the center -->
 <image x="-100" y="-100" width="200" height="200" xlink:href="Home.svg" id="home-button" class="active-button" style="transform: translateY(0px) scale(1.0);" />

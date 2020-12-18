@@ -46,15 +46,58 @@ export default class UserPageView extends View {
 		$(this.el).empty();
 	}
 	
+	generateAlarmCircle(svgObject, placeholder, cx, cy, r) {
+		const ph = svgObject.getElementById(placeholder);
+		
+		const uc = document.createElementNS('http://www.w3.org/2000/svg', "circle");
+		uc.setAttributeNS(null, 'cx', cx);
+		uc.setAttributeNS(null, 'cy', cy);
+		uc.setAttributeNS(null, 'r', r);
+		uc.setAttributeNS(null, 'shape-rendering', 'auto');
+		uc.setAttributeNS(null, 'fill', '#f00');
+		uc.setAttributeNS(null, 'stroke', '#a00');
+		//uc.style.fill = '#f00';
+		//uc.style.stroke = '#a00';
+		
+		ph.appendChild(uc);
+	}
+	
+	generateAlarmText(svgObject, placeholder, x, y, w, h, val) {
+		const ph = svgObject.getElementById(placeholder);
+		
+		const svg = document.createElementNS('http://www.w3.org/2000/svg', "svg");
+		svg.setAttributeNS(null, 'x', x);
+		svg.setAttributeNS(null, 'y', y);
+		svg.setAttributeNS(null, 'width', w);
+		svg.setAttributeNS(null, 'height', h);
+		
+		const txt = document.createElementNS('http://www.w3.org/2000/svg', "text");
+		txt.setAttributeNS(null, 'x', '50%');
+		txt.setAttributeNS(null, 'y', '50%');
+		txt.setAttributeNS(null, 'font-size', h);
+		txt.setAttributeNS(null, 'dominant-baseline', 'middle');
+		txt.setAttributeNS(null, 'text-anchor', 'middle');
+		txt.setAttributeNS(null, 'class', 'alarm-text');
+		
+		const textNode = document.createTextNode(val);
+		txt.appendChild(textNode);
+		
+		svg.appendChild(txt);
+		ph.appendChild(svg);
+	}
 	
 	updateAlarmCount() {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
+			
+			let ae = 0;
+			let aw = 0;
+			let ah = 0;
+			let total = 0;
+			
 			const m = this.controller.master.modelRepo.get('UserAlarmModel');
 			if (m) {
-				let ae = 0;
-				let aw = 0;
-				let ah = 0;
+				total = m.alarms.length;
 				m.alarms.forEach(a=>{
 					if (a.alarmType.indexOf('Heating')===0) {
 						ah++;
@@ -64,13 +107,243 @@ export default class UserPageView extends View {
 						ae++;
 					}
 				});
-				this.fillSVGTextElement(svgObject, 'alarm-count', m.alarms.length);
-				this.fillSVGTextElement(svgObject, 'alarm-count-heating', ah);
-				this.fillSVGTextElement(svgObject, 'alarm-count-water', aw);
-				this.fillSVGTextElement(svgObject, 'alarm-count-electricity', ae);
+			}
+/*
+<g id="alarms-placeholder-total"></g>
+<g id="alarms-placeholder-electricity"></g>
+<g id="alarms-placeholder-water"></g>
+<g id="alarms-placeholder-heating"></g>
+*/
+			const placeholder_total = 'alarms-placeholder-total';
+			const placeholder_electricity = 'alarms-placeholder-electricity';
+			const placeholder_water = 'alarms-placeholder-water';
+			const placeholder_heating = 'alarms-placeholder-heating';
+			
+			const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
+			if (mode === 'LANDSCAPE') {
+/*
+LANDSCAPE:
+<!-- Red circle for the alarms (total) -->
+<circle cx="0" cy="0" r="32" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="-27" y="-16" width="54px" height="32px">
+	<text class="alarm-text" id="alarm-count" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				if (total > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_total, 0, 0, 32);
+					this.generateAlarmText(svgObject, placeholder_total, -27, -14, '54px', '32px', total);
+				} else {
+					const ph = svgObject.getElementById(placeholder_total);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
+/*
+<!-- Orange circle for the alarms (electricity) -->
+<circle cx="-180" cy="-50" r="24" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="-200" y="-60" width="40px" height="24px">
+	<text class="alarm-text" id="alarm-count-electricity" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				// Electricity
+				if (ae > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_electricity, -180, -50, 24);
+					this.generateAlarmText(svgObject, placeholder_electricity, -200, -60, '40px', '24px', ae);
+				} else {
+					const ph = svgObject.getElementById(placeholder_electricity);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
+/*
+<!-- Orange circle for the alarms (water) -->
+<circle cx="180" cy="-50" r="24" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="160" y="-60" width="40px" height="24px">
+	<text class="alarm-text" id="alarm-count-water" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				// Water
+				if (aw > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_water, 180, -50, 24);
+					this.generateAlarmText(svgObject, placeholder_water, 160, -60, '40px', '24px', aw);
+				} else {
+					const ph = svgObject.getElementById(placeholder_water);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
+/*
+<!-- Orange circle for the alarms (heating) -->
+<circle cx="0" cy="160" r="24" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="-20" y="150" width="40px" height="24px">
+	<text class="alarm-text" id="alarm-count-heating" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				// Heating
+				if (ah > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_heating, 0, 160, 24);
+					this.generateAlarmText(svgObject, placeholder_heating, -20, 150, '40px', '24px', ah);
+				} else {
+					const ph = svgObject.getElementById(placeholder_heating);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
+				
+				
+				
+				
+				
+			} else if (mode === 'PORTRAIT') {
+/*
+PORTRAIT:
+<!-- Red circle for the alarms -->
+<circle cx="0" cy="0" r="32" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="-27" y="-16" width="54px" height="32px">
+	<text class="alarm-text" id="alarm-count" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				if (total > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_total, 0, 0, 32);
+					this.generateAlarmText(svgObject, placeholder_total, -27, -14, '54px', '32px', total);
+				} else {
+					const ph = svgObject.getElementById(placeholder_total);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
+/*
+<!-- Orange circle for the alarms (electricity) -->
+<circle cx="-150" cy="-50" r="24" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="-170" y="-60" width="40px" height="24px">
+	<text class="alarm-text" id="alarm-count-electricity" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				// Electricity
+				if (ae > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_electricity, -150, -50, 24);
+					this.generateAlarmText(svgObject, placeholder_electricity, -170, -60, '40px', '24px', ae);
+				} else {
+					const ph = svgObject.getElementById(placeholder_electricity);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
+/*
+<!-- Orange circle for the alarms (water) -->
+<circle cx="150" cy="-50" r="24" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="130" y="-60" width="40px" height="24px">
+	<text class="alarm-text" id="alarm-count-water" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				// Water
+				if (aw > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_water, 150, -50, 24);
+					this.generateAlarmText(svgObject, placeholder_water, 130, -60, '40px', '24px', aw);
+				} else {
+					const ph = svgObject.getElementById(placeholder_water);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
+				
+/*
+<!-- Orange circle for the alarms (heating) -->
+<circle cx="0" cy="130" r="24" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="-20" y="120" width="40px" height="24px">
+	<text class="alarm-text" id="alarm-count-heating" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				// Heating
+				if (ah > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_heating, 0, 130, 24);
+					this.generateAlarmText(svgObject, placeholder_heating, -20, 120, '40px', '24px', ah);
+				} else {
+					const ph = svgObject.getElementById(placeholder_heating);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
+				
+				
+				
+			} else { // Square
+/*
+SQUARE:
+<!-- Red circle for the alarms -->
+<circle cx="0" cy="0" r="32" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="-27" y="-16" width="54px" height="32px">
+	<text class="alarm-text" id="alarm-count" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				if (total > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_total, 0, 0, 32);
+					this.generateAlarmText(svgObject, placeholder_total, -27, -14, '54px', '32px', total);
+				} else {
+					const ph = svgObject.getElementById(placeholder_total);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
+/*
+<!-- Orange circle for the alarms (electricity) -->
+<circle cx="-180" cy="-50" r="24" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="-200" y="-60" width="40px" height="24px">
+	<text class="alarm-text" id="alarm-count-electricity" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				// Electricity
+				if (ae > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_electricity, -180, -50, 24);
+					this.generateAlarmText(svgObject, placeholder_electricity, -200, -60, '40px', '24px', ae);
+				} else {
+					const ph = svgObject.getElementById(placeholder_electricity);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
+				
+/*
+<!-- Orange circle for the alarms (water) -->
+<circle cx="180" cy="-50" r="24" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="160" y="-60" width="40px" height="24px">
+	<text class="alarm-text" id="alarm-count-water" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				if (aw > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_water, 180, -50, 24);
+					this.generateAlarmText(svgObject, placeholder_water, 160, -60, '40px', '24px', aw);
+				} else {
+					const ph = svgObject.getElementById(placeholder_water);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
+/*
+<!-- Orange circle for the alarms (heating) -->
+<circle cx="0" cy="160" r="24" stroke-width="1" stroke="#a00" fill="#f00" />
+<svg x="-20" y="150" width="40px" height="24px">
+	<text class="alarm-text" id="alarm-count-heating" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+</svg>
+*/
+				if (ah > 0) {
+					this.generateAlarmCircle(svgObject, placeholder_heating, 0, 160, 24);
+					this.generateAlarmText(svgObject, placeholder_heating, -20, 150, '40px', '24px', ah);
+				} else {
+					const ph = svgObject.getElementById(placeholder_heating);
+					while (ph.firstChild) {
+						ph.removeChild(ph.firstChild);
+					}
+				}
 			}
 		}
 	}
+	/*
+	this.fillSVGTextElement(svgObject, 'alarm-count', m.alarms.length);
+	this.fillSVGTextElement(svgObject, 'alarm-count-heating', ah);
+	this.fillSVGTextElement(svgObject, 'alarm-count-water', aw);
+	this.fillSVGTextElement(svgObject, 'alarm-count-electricity', ae);
+	*/
 	
 	updateLatestValues() {
 		/*
@@ -220,6 +493,7 @@ export default class UserPageView extends View {
 				
 				console.log("UserPageView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
+				this.updateAlarmCount();
 				
 			} else if (options.model==='UserAlarmModel' && options.method==='addOne') {
 				if (this.rendered) {

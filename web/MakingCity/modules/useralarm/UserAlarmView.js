@@ -40,8 +40,8 @@ export default class UserAlarmView extends View {
 		$(this.el).empty();
 	}
 	
-	updateLatestValues() {
-		
+	updateLatestValues(param) {
+		console.log('UPDATE LATEST VALUES '+param);
 	}
 	
 	notify(options) {
@@ -51,7 +51,17 @@ export default class UserAlarmView extends View {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
 					if (options.status === 200) {
-						this.updateLatestValues();
+						this.updateLatestValues('ALARM MODEL FETCHED');
+					}
+				} else {
+					this.render();
+				}
+			} else if (options.model==='UserAlarmModel' && options.method==='addOne') {
+				if (this.rendered) {
+					$('#'+this.FELID).empty();
+					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
+					if (options.status === 200) {
+						this.updateLatestValues('ALARM MODEL ADDED');
 					}
 				} else {
 					this.render();
@@ -111,7 +121,7 @@ export default class UserAlarmView extends View {
 			});
 			
 			this.handleErrorMessages(this.FELID);
-			this.updateLatestValues();
+			this.updateLatestValues('RENDER ALARM MODEL READY');
 			this.rendered = true;
 			
 		} else {

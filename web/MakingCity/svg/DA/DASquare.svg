@@ -136,38 +136,47 @@
 	<image x="830" y="740" width="140" height="140" xlink:href="heating.svg" />
 	
 	<!-- Dynamically inserted POWER CONSUMPTION VALUES: -->
-	<text id="grid-power" x="250" y="370" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#f00">78.9 kW</text>
-	<text id="solar-power" x="430" y="320" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#0a0">1.0 kW</text>
-	<text id="geothermal-power" x="690" y="315" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#0a0">1.5 kW</text>
+	<text id="grid-power" x="250" y="370" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#f00"></text>
+	<text id="solar-power" x="430" y="320" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#0a0"></text>
+	<text id="geothermal-power" x="690" y="315" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#0a0"></text>
 	
 	<svg x="90" y="550" width="120px" height="40px">
 		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="lights-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">12.7 kW</text>
+		<text id="lights-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	<svg x="220" y="730" width="120px" height="40px">
 		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="kitchen-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">0.1 kW</text>
+		<text id="kitchen-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	<svg x="350" y="550" width="120px" height="40px">
 		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="ventilation-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">8.3 kW</text>
+		<text id="ventilation-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	<svg x="480" y="730" width="120px" height="40px">
 		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="other-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">0.2 kW</text>
+		<text id="other-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	<svg x="610" y="550" width="120px" height="40px">
 		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="cooler-equipments-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">0.0 kW</text>
+		<text id="cooler-equipments-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	<svg x="480" y="345" width="120px" height="40px">
 		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="cooler-machines-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">40.3 kW</text>
+		<text id="cooler-machines-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
-	<svg x="860" y="680" width="120px" height="40px">
+	<svg x="840" y="730" width="120px" height="40px">
 		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="heating-devices-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">9.9 kW</text>
+		<text id="heating-devices-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
+	<svg x="710" y="345" width="160px" height="40px">
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text id="district-heating-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	<svg x="680" y="730" width="160px" height="40px">
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text id="cooling-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	
 	
 	<svg x="40" y="440" width="240px" height="40px">
 		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->

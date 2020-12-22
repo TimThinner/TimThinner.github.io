@@ -10,7 +10,7 @@ export default class DistrictAView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'StatusModel') {
+			if (key === 'StatusModel'||key==='StatusJetitek983Model'||key==='StatusJetitek1012Model') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -123,6 +123,24 @@ meterId
 111								VSS lighting
 115		Geothermal energy	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
 	*/
+	updateLatestJetitekValue(modelName) {
+		let power = 0;
+		// [{"created_at":"2020-12-22T14:31:01","pointValue":132.9,"pointId":1012,"inserted":null}]
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			this.models[modelName].values.forEach(v => {
+				if (v.pointValue) {
+					power = v.pointValue;
+				}
+			});
+			if (modelName === 'StatusJetitek983Model') {
+				this.updateOne(svgObject, 'district-heating-power', power);
+			} else {
+				this.updateOne(svgObject, 'cooling-power', power);
+			}
+		}
+	}
+	
 	updateLatestValues() {
 		//console.log("UPDATE!");
 		let solar_power = 0;
@@ -163,7 +181,7 @@ meterId
 					}
 				}
 			});
-			console.log(['total_power=',total_power,' solar_power=',solar_power,' geothermal_power=',geothermal_power]);
+			//console.log(['total_power=',total_power,' solar_power=',solar_power,' geothermal_power=',geothermal_power]);
 			// {"meterId":114,"meterName":"SPK_sahko_paamittaus","meterType":1,"dateTime":"2020-02-05 08:13:05","energy":444978.4,"avPower":77.143,"timeDiff":70,"energyDiff":1.5},
 			this.updateOne(svgObject, 'grid-power', total_power);
 			this.updateOne(svgObject, 'solar-power', solar_power);
@@ -186,6 +204,30 @@ meterId
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.updateLatestValues();
+					} else {
+						this.render();
+					}
+				} else { // Error in fetching.
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							this.forceLogout(this.FELID);
+							
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#'+this.FELID);
+						}
+					} else {
+						this.render();
+					}
+				}
+			} else if ((options.model==='StatusJetitek983Model'||options.model==='StatusJetitek1012Model') && options.method==='fetched') {
+				if (options.status === 200) {
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						this.updateLatestJetitekValue(options.model);
 					} else {
 						this.render();
 					}
@@ -329,7 +371,8 @@ meterId
 			const targetAM = svgObject.getElementById('target-a-m');
 			targetAM.addEventListener("click", function(){
 				
-				console.log('Cooling');
+				//console.log('Cooling');
+				self.menuModel.setSelected('DAG');
 				
 			}, false);
 			targetAM.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -356,7 +399,8 @@ meterId
 			const targetAP = svgObject.getElementById('target-a-p');
 			targetAP.addEventListener("click", function(){
 				
-				console.log('District Heating Network');
+				//console.log('District Heating Network');
+				self.menuModel.setSelected('DAG');
 				
 			}, false);
 			targetAP.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -449,11 +493,12 @@ meterId
 			
 			// AND WAIT for SVG object to fully load, before assigning event handlers!
 			const svgObj = document.getElementById("svg-object");
-			svgObj.addEventListener('load', function(){
-				
+			svgObj.addEventListener('load', function() {
 				self.addSVGEventHandlers();
 				self.localizeSVGTexts();
 				self.updateLatestValues();
+				self.updateLatestJetitekValue('StatusJetitek983Model');
+				self.updateLatestJetitekValue('StatusJetitek1012Model');
 			});
 			
 			this.handleErrorMessages(this.FELID);
@@ -461,7 +506,7 @@ meterId
 			this.rendered = true;
 			
 		} else {
-			console.log('DistrictAView => render StatusModel IS NOT READY!!!!');
+			console.log('DistrictAView => render Models NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

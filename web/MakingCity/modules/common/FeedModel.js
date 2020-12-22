@@ -100,8 +100,17 @@ export default class FeedModel extends Model {
 		//console.log(['myce.energy=',myce.energy]);
 		$.each(newson, function(i,v){
 			// set cumulative energy for each hour.
-			myce.addEnergy(v);
-			const p = new Feed(v);
+			
+			let tv = v;
+			if (typeof v.pointId !== 'undefined') {
+				tv.meterId = v.pointId;
+			} 
+			if (typeof v.pointValue !== 'undefined') {
+				tv.averagePower = v.pointValue;
+			}
+			myce.addEnergy(tv);
+			
+			const p = new Feed(tv);
 			self.values.push(p);
 		});
 		//console.log(['HUU myce.energy=',myce.energy]);

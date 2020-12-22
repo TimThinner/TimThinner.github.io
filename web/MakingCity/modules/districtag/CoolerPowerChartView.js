@@ -4,6 +4,12 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/supe
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 
+Cooler113Model
+Cooler112Model
+Cooler117Model
+CoolerKLPowerModel
+CoolerCoolingPowerModel
+
 */
 import View from '../common/View.js';
 export default class CoolerPowerChartView extends View {
@@ -22,7 +28,7 @@ export default class CoolerPowerChartView extends View {
 		
 		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'Cooler113Model' || key === 'Cooler112Model' || key === 'Cooler117Model') {
+			if (key === 'Cooler113Model' || key === 'Cooler112Model' || key === 'Cooler117Model' || key === 'CoolerKLPowerModel' || key === 'CoolerCoolingPowerModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -63,7 +69,11 @@ export default class CoolerPowerChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if ((options.model==='Cooler113Model'||options.model==='Cooler112Model'||options.model==='Cooler117Model') && options.method==='fetched') {
+			if ((options.model==='Cooler113Model'||
+				options.model==='Cooler112Model'||
+				options.model==='Cooler117Model'||
+				options.model==='CoolerKLPowerModel'||
+				options.model==='CoolerCoolingPowerModel') && options.method==='fetched') {
 				if (this.rendered) {
 					if (options.status === 200) {
 						
@@ -78,8 +88,12 @@ export default class CoolerPowerChartView extends View {
 									s.data = self.models['Cooler113Model'].values;
 								} else if (s.name === 'Cooler equipments') {
 									s.data = self.models['Cooler112Model'].values;
-								} else {
+								} else if (s.name === 'Heating') {
 									s.data = self.models['Cooler117Model'].values;
+								} else if (s.name === 'District Heating') {
+									s.data = self.models['CoolerKLPowerModel'].values;
+								} else { // Cooling
+									s.data = self.models['CoolerCoolingPowerModel'].values;
 								}
 							});
 							
@@ -241,6 +255,47 @@ export default class CoolerPowerChartView extends View {
 			series3.dataFields.valueY = "averagePower";
 			series3.name = "Heating";
 			series3.yAxis = valueAxis;
+			
+			
+			// CoolerKLPowerModel District Heating Network
+			const series4 = self.chart.series.push(new am4charts.StepLineSeries());
+			series4.defaultState.transitionDuration = 0;
+			series4.tooltipText = "{valueY.value} kW";
+			//series4.tooltipText = "{name}: {valueY.value} kW";
+			//series4.tooltipText = localized_string_power + ": {valueY.value} kW";
+			series4.tooltip.getFillFromObject = false;
+			series4.tooltip.getStrokeFromObject = true;
+			series4.stroke = am4core.color("#f0f");
+			series4.fill = series4.stroke;
+			//series4.fillOpacity = 0.4;
+			series4.tooltip.background.fill = am4core.color("#000");
+			series4.tooltip.background.strokeWidth = 1;
+			series4.tooltip.label.fill = series4.stroke;
+			series4.data = self.models['CoolerKLPowerModel'].values;
+			series4.dataFields.dateX = "time";
+			series4.dataFields.valueY = "averagePower";
+			series4.name = "District Heating";
+			series4.yAxis = valueAxis;
+			
+			// CoolerCoolingPowerModel Cooling
+			const series5 = self.chart.series.push(new am4charts.StepLineSeries());
+			series5.defaultState.transitionDuration = 0;
+			series5.tooltipText = "{valueY.value} kW";
+			//series5.tooltipText = "{name}: {valueY.value} kW";
+			//series5.tooltipText = localized_string_power + ": {valueY.value} kW";
+			series5.tooltip.getFillFromObject = false;
+			series5.tooltip.getStrokeFromObject = true;
+			series5.stroke = am4core.color("#88f");
+			series5.fill = series5.stroke;
+			//series5.fillOpacity = 0.4;
+			series5.tooltip.background.fill = am4core.color("#000");
+			series5.tooltip.background.strokeWidth = 1;
+			series5.tooltip.label.fill = series5.stroke;
+			series5.data = self.models['CoolerCoolingPowerModel'].values;
+			series5.dataFields.dateX = "time";
+			series5.dataFields.valueY = "averagePower";
+			series5.name = "Cooling";
+			series5.yAxis = valueAxis;
 			
 			
 			self.chart.legend = new am4charts.Legend();

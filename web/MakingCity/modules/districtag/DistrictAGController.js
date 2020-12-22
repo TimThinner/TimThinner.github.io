@@ -1,6 +1,6 @@
 import Controller from '../common/Controller.js';
 
-import { Cooler113Model, Cooler112Model, Cooler117Model } from  './CoolerModels.js';
+import { Cooler113Model, Cooler112Model, Cooler117Model, CoolerKLPowerModel, CoolerCoolingPowerModel } from  './CoolerModels.js';
 
 import DistrictAGWrapperView from './DistrictAGWrapperView.js';
 /*
@@ -8,6 +8,14 @@ import DistrictAGWrapperView from './DistrictAGWrapperView.js';
 								2 coloured values in same chart:
 113								Refrigerating machines
 112								Refrigerating equipments
+
+
+22.12.2020 New measurements 
+
+VAK1_KL_POWER_FM, pointId=983, https://makingcity.vtt.fi/data/arina/jetitek/feeds.json?pointId=983&start=2020-12-22&end=2020-12-22&limit=10
+VVAK1_CG_UNIT_CAP.Z_MT_COOLING_POWER_NET, pointId=1012, https://makingcity.vtt.fi/data/arina/jetitek/feeds.json?pointId=1012&start=2020-12-22&end=2020-12-22&limit=10
+
+
 */
 export default class DistrictAGController extends Controller {
 	
@@ -23,7 +31,7 @@ export default class DistrictAGController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key === 'Cooler113Model' || key === 'Cooler112Model' || key === 'Cooler117Model') {
+			if (key === 'Cooler113Model' || key === 'Cooler112Model' || key === 'Cooler117Model' || 'CoolerKLPowerModel'||'CoolerCoolingPowerModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
@@ -50,11 +58,23 @@ export default class DistrictAGController extends Controller {
 		this.master.modelRepo.add('Cooler117Model',model_117);
 		this.models['Cooler117Model'] = model_117;
 		
+		const model_KL_power = new CoolerKLPowerModel({name:'CoolerKLPowerModel',src:'data/arina/jetitek/feeds.json?pointId=983'});
+		model_KL_power.subscribe(this);
+		this.master.modelRepo.add('CoolerKLPowerModel',model_KL_power);
+		this.models['CoolerKLPowerModel'] = model_KL_power;
+		
+		const model_Cooling_Power = new CoolerCoolingPowerModel({name:'CoolerCoolingPowerModel',src:'data/arina/jetitek/feeds.json?pointId=1012'});
+		model_Cooling_Power.subscribe(this);
+		this.master.modelRepo.add('CoolerCoolingPowerModel',model_Cooling_Power);
+		this.models['CoolerCoolingPowerModel'] = model_Cooling_Power;
+		
+		
+		
 		/*
 		setTimeout(() => { model_113.fetch(); }, 1500);
 		setTimeout(() => { model_112.fetch(); }, 1600);
 		*/
-		this.timers['CoolerChartView'] = {timer: undefined, interval: 30000, models:['Cooler113Model','Cooler112Model','Cooler117Model']};
+		this.timers['CoolerChartView'] = {timer: undefined, interval: 30000, models:['Cooler113Model','Cooler112Model','Cooler117Model','CoolerKLPowerModel','CoolerCoolingPowerModel']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

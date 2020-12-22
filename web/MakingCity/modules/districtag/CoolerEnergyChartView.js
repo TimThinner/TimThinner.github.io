@@ -22,7 +22,7 @@ export default class CoolerEnergyChartView extends View {
 		
 		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'Cooler113Model' || key === 'Cooler112Model' || key === 'Cooler117Model') {
+			if (key === 'Cooler113Model' || key === 'Cooler112Model' || key === 'Cooler117Model' || key === 'CoolerKLPowerModel' || key === 'CoolerCoolingPowerModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -60,7 +60,11 @@ export default class CoolerEnergyChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if ((options.model==='Cooler113Model'||options.model==='Cooler112Model'||options.model==='Cooler117Model') && options.method==='fetched') {
+			if ((options.model==='Cooler113Model'||
+				options.model==='Cooler112Model'||
+				options.model==='Cooler117Model'||
+				options.model==='CoolerKLPowerModel'||
+				options.model==='CoolerCoolingPowerModel') && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
 						$('#cooler-energy-chart-view-failure').empty();
@@ -74,8 +78,12 @@ export default class CoolerEnergyChartView extends View {
 									s.data = self.models['Cooler113Model'].energyValues;
 								} else if (s.name === 'Cooler equipments') {
 									s.data = self.models['Cooler112Model'].energyValues;
-								} else {
+								} else if (s.name === 'Heating') {
 									s.data = self.models['Cooler117Model'].energyValues;
+								} else if (s.name === 'District Heating') {
+									s.data = self.models['CoolerKLPowerModel'].energyValues;
+								} else { // Cooling
+									s.data = self.models['CoolerCoolingPowerModel'].energyValues;
 								}
 							});
 							
@@ -226,6 +234,47 @@ export default class CoolerEnergyChartView extends View {
 			series3.dataFields.valueY = "energy";
 			series3.name = "Heating";
 			series3.yAxis = valueAxis;
+			
+			// CoolerKLPowerModel District Heating Network
+			const series4 = self.chart.series.push(new am4charts.ColumnSeries());
+			series4.defaultState.transitionDuration = 0;
+			series4.tooltipText = "{valueY.value} kWh";
+			//series4.tooltipText = "{name}: {valueY.value} kWh";
+			//series4.tooltipText = localized_string_energy + ": {valueY.value} kWh";
+			series4.tooltip.getFillFromObject = false;
+			series4.tooltip.getStrokeFromObject = true;
+			series4.stroke = am4core.color("#f0f");
+			series4.fill = series4.stroke;
+			series4.fillOpacity = 0.5;
+			series4.tooltip.background.fill = am4core.color("#000");
+			series4.tooltip.background.strokeWidth = 1;
+			series4.tooltip.label.fill = series4.stroke;
+			series4.data = self.models['CoolerKLPowerModel'].energyValues;
+			series4.dataFields.dateX = "time";
+			series4.dataFields.valueY = "energy";
+			series4.name = "District Heating";
+			series4.yAxis = valueAxis;
+			
+			// CoolerCoolingPowerModel Cooling
+			const series5 = self.chart.series.push(new am4charts.ColumnSeries());
+			series5.defaultState.transitionDuration = 0;
+			series5.tooltipText = "{valueY.value} kWh";
+			//series5.tooltipText = "{name}: {valueY.value} kWh";
+			//series5.tooltipText = localized_string_energy + ": {valueY.value} kWh";
+			series5.tooltip.getFillFromObject = false;
+			series5.tooltip.getStrokeFromObject = true;
+			series5.stroke = am4core.color("#88f");
+			series5.fill = series5.stroke;
+			series5.fillOpacity = 0.5;
+			series5.tooltip.background.fill = am4core.color("#000");
+			series5.tooltip.background.strokeWidth = 1;
+			series5.tooltip.label.fill = series5.stroke;
+			series5.data = self.models['CoolerCoolingPowerModel'].energyValues;
+			series5.dataFields.dateX = "time";
+			series5.dataFields.valueY = "energy";
+			series5.name = "Cooling";
+			series5.yAxis = valueAxis;
+			
 			
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;

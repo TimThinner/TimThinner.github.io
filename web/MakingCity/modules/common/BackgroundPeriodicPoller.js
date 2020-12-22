@@ -11,7 +11,6 @@ export default class BackgroundPeriodicPoller {
 			const m = this.master.modelRepo.get(name);
 			m.subscribe(this); // Now we will receive notifications from all models.
 		});
-		this.counter=0;
 	}
 	
 	fetchModel(modelName) {
@@ -179,9 +178,6 @@ export default class BackgroundPeriodicPoller {
 		if (options.model==='UserWaterTSModel' || options.model==='UserElectricityTSModel') {
 			if (options.method==='fetched') {
 				if (options.status === 200) {
-					this.counter++;
-					//console.log(['CONTROLLER Notify: ',options.model,' fetched!']);
-					//console.log(['CALL AGAIN!!!!!!!!!!!!!!!!! count=',this.counter]);
 					this.fetchModel(options.model);
 				}
 			} else if (options.method==='fetched-all') {
@@ -206,8 +202,8 @@ export default class BackgroundPeriodicPoller {
 					this.fetchModel(name);
 				});
 				this.timers[key].timer = setTimeout(()=>{
-					this.counter=0;
-					// RESET the model.
+					
+					// RESET all models.
 					this.timers[key].models.forEach(name => {
 						const m = this.master.modelRepo.get(name);
 						if (m) { m.reset(); }
@@ -223,7 +219,7 @@ export default class BackgroundPeriodicPoller {
 	start() {
 		console.log('START BackgroundPollers');
 		Object.keys(this.timers).forEach(key => {
-			this.counter=0;
+			
 			// RESET all models.
 			this.timers[key].models.forEach(name => {
 				const m = this.master.modelRepo.get(name);

@@ -1,3 +1,6 @@
+/*
+	Basic definitions.
+*/
 html, body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
@@ -5,26 +8,31 @@ html, body {
 	background-color: #555;
 }
 /*
-@media screen and (min-width: 601px) {
+@media screen and (min-width: 993px) {
 	html, body {
-		font-size: 16px;
+		font-size: 18px;
 	}
-}*/
-/* Materialize CSS */
+}
+*/
+/* Materialize CSS 
+Screen Sizes:
+				Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+				<= 600px 			> 600px				> 992px					> 1200px
+Class Prefix 		.s 				.m 						.l 					.xl
+Container Width 	90% 			85% 					70% 				70%
+Number of Columns 	12 				12 						12 					12
+*/
 .container {
 	background-color: #555;
 	margin: 0 auto;
-	/*max-width: 1280px;*/
 	max-width: 1600px;
-	width: 98%; /* 90%; */
-	/*padding: 0 1rem 1rem 1rem;*/
+	width: 100%;
 }
 @media only screen and (min-width: 993px) {
 	.container {
-		width: 96%;/*width: 90%;*/ /*70%;*/
+		width: 98%;
 	}
 }
-
 /* Menu styles: */
 .nav h1 {
 	margin: 0 0 0 64px;
@@ -53,7 +61,6 @@ html, body {
 .nav .hamburger:focus { 
 	outline: none; 
 }
-
 .nav .auth-button {
 	position: absolute;
 	right: 16px;
@@ -72,7 +79,6 @@ html, body {
 .nav .auth-button:focus { 
 	outline: none; 
 }
-
 /* Hamburger Icon (or close icon 'X') */
 .nav a.hamburger i {
 	/*font-size: 24px;*/
@@ -82,8 +88,6 @@ html, body {
 .nav a.auth-button i {
 	margin-top: 7px;
 }
-
-
 /* We don't want to use UL LI default styles: */
 .nav ul, .nav li {
 	list-style: none;
@@ -105,7 +109,7 @@ html, body {
 .nav ul.open {
 	max-height: 30em;
 }
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 601px) {
 	.nav ul {
 		overflow: auto;
 		max-height: inherit;
@@ -115,8 +119,18 @@ html, body {
 		overflow: hidden;
 	}
 }
+/*
+Some percentages when 1% margin is used:
+3 columns: (100 - 2)/3 = 32.66667
+4 columns: (100 - 3)/4 = 24.25
+5 columns: (100 - 4)/5 = 19.2
+6 columns: (100 - 5)/6 = 15.83333
+7 columns: (100 - 6)/7 = 13.42857
+8 columns: (100 - 7)/8 = 11.625
+and use fixed break-point (601px) for switch between displayed items and hamburger:
+*/
 .menu-navigation .menu-wrapper {
-	margin-right: 1%; /*2%;*/ /* or maybe use 1.6 % ? */
+	margin-right: 1%;
 	float: left;
 	width: 100%;
 }
@@ -140,11 +154,7 @@ html, body {
 	color: #00f;
 	font-weight: bold;
 }
-/* Six columns: (100 - 5)/6 = 15.833 */
-/* Seven columns: (100 - 6)/7 = 13.42857 */
-
-
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 601px) {
 	.menu-navigation .menu-wrapper {
 		width: 15.8333%;
 	}
@@ -158,7 +168,6 @@ html, body {
 .material-icons {
 	vertical-align: bottom;
 }
-
 .content {
 	padding: 16px;
 	margin: 0;
@@ -171,7 +180,6 @@ html, body {
 .content h3 {
 	margin: 16px 16px 0 16px;
 }
-
 .error-message {
 	border: 1px solid #f88;
 	background-color: #fcc;
@@ -185,103 +193,4 @@ html, body {
 	color: #0a0;
 	padding: 16px;
 	text-align: center;
-}
-
-
-/* D3 elements in InfluxView */
-rect {
-	fill: steelblue;
-}
-/*circle {
-	fill: steelblue;
-	opacity: 0.5;
-	stroke: #fff;
-}*/
-text {
-	/*font-size: 1.5em;*/
-	font-family: sans-serif;
-	fill: #eee;
-}
-
-.tick text {
-	font-size: 1em;
-	fill: #fff; /*#8e8883;*/
-}
-.tick line {
-	stroke: #8e8883; /*#c0c0bb;*/
-}
-.axis-label {
-	font-size: 2em;
-	fill: #8e8883;
-}
-.title {
-	font-size: 2.4em;
-	fill: #8e8883;
-	text-anchor: middle;
-}
-.line-path {
-	stroke: #f00; /* in area case not needed */
-	fill: none; /* in area case fill is not none */
-	stroke-width: 3;
-	stroke-linejoin: round;
-}
-.area-line-path {
-	fill: #ff0;
-	opacity: 0.5;
-}
-.fruit-label {
-	fill: #fff;
-	font-family: sans-serif;
-	text-anchor: middle;
-}
-/*
-.world-path {
-	fill: #ff0;
-	stroke: #000;
-	stroke-opacity: 0.25;
-}*/
-.country {
-	fill: #ff0;
-	stroke: #000;
-	stroke-width: 0.1px;
-}
-.country:hover {
-	fill: #f00;
-}
-.sphere {
-	fill: #55c;
-}
-
-.choropleth-country {
-	stroke: #000;
-	stroke-width: 0.1px;
-}
-/*.choropleth-country:hover {
-	fill: #f00;
-	opacity: 0.5;
-}*/
-
-.choro-legend-tick {
-	cursor: pointer;
-}
-
-.fed-path {
-	fill: none;
-	stroke: #57bdc3;
-}
-.fed-labels {
-	/*font-size: 12px;*/
-	text-shadow:
-	-1px -1px 3px black,
-	-1px  1px 3px black,
-	 1px -1px 3px black,
-	 1px  1px 3px black;
-	 pointer-events: none; /* When you hover over text cursor does not change */
-}
-
-.legend-label {
-	fill: #fff;
-	font-family: sans-serif;
-	font-size: 1em;
-	/*text-anchor: middle;*/
 }

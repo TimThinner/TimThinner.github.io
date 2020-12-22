@@ -23,3 +23,15 @@ export class Cooler117Model extends FeedModel {
 		super(options);
 	}
 }
+export class CoolerKLPowerModel extends FeedModel {
+	
+	constructor(options) {
+		super(options);
+	}
+}
+export class CoolerCoolingPowerModel extends FeedModel {
+	
+	constructor(options) {
+		super(options);
+	}
+}

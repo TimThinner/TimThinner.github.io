@@ -1,0 +1,288 @@
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	background-color: rgba(120,50,0,0.1);
+}
+@media screen and (min-width: 601px) {
+	html, body {
+		font-size: 18px;
+	}
+}
+.hero {
+	background: url("./img/hero2.jpg") no-repeat center center;
+	background-size: cover;
+	height: 50vh; /* Leave 50% space at the bottom to FOOTER. */
+	/*border-top: 1px solid #eee;*/
+}
+.container {
+	margin: 0 auto;
+	max-width: 1600px;
+	width: 100%;
+	background-color: rgba(255,255,255,0.5);
+}
+/* subtitles bold: */
+h4 {
+	font-weight: bold;
+}
+/*
+#root {
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	background-color: rgba(255,255,255,0.5);
+}
+*/
+#top {
+	padding: 1em;
+	background-color: rgba(0,0,0,0.07);
+	border-radius: 0 0 2rem 2rem;
+	/*border: 1px solid #840;*/
+}
+
+/*THE BASELINE */
+.episodes {
+	/*background-color: rgba(0,255,255,0.1);*/
+}
+.episodes .episode-wrapper {
+	margin-right: 1%;
+	float: left;
+	width: 100%;
+	padding-top: 0.25em;
+	padding-bottom: 0.25em;
+}
+.episode-item {
+	background-color: #fff;
+	border: 1px solid #eee;
+	border-radius: 0.5em;
+	padding: 0;
+	cursor: pointer;
+	color: #333;
+	box-shadow: 2px 2px 4px #808080;
+	text-align: center;
+}
+/*.episode-item :active*/
+.episode-item:hover {
+	background-color: #eee;
+	color: #00f;
+	border: 1px solid #ccc;
+	font-weight: bold;
+}
+
+/* TWO COLUMNS */
+@media screen and (min-width: 20.0625em) and (max-width: 40em) {
+	.episodes .episode-wrapper {
+		width: 49.5%; /* (100-1)/2 = 49.5 */
+	}
+	/* selects every even number cells. */
+	.episodes .episode-wrapper:nth-child( 2n ) { 
+		margin-right: 0;
+	} 
+	/* Select every third cell, but starting from ONE not zero */
+	.episodes .episode-wrapper:nth-child( 2n+1 ) { 
+		clear:left;
+	}
+}
+
+/* THREE COLUMNS / NTH-CHILD(3N) AND NTH-CHILD(3N+1) */
+@media screen and (min-width: 40.0625em) and (max-width: 55em) {
+	.episodes .episode-wrapper {
+		width: 32.66667%; /* (100-2)/3 = 32.66667 */
+	}
+	/* Select every third cell */
+	.episodes .episode-wrapper:nth-child( 3n ) { 
+		margin-right: 0;
+	}
+	/* Select every third cell, but starting from ONE not zero */
+	.episodes .episode-wrapper:nth-child( 3n+1 ) { 
+		clear:left;
+	}
+}
+/* FOUR COLUMNS / NTH-CHILD(4N) AND NTH-CHILD(4N+1) */
+@media screen and (min-width: 55.0625em) and (max-width: 70em) {
+	.episodes .episode-wrapper {
+		width: 24.25%; /* (100 - 3)/4 = 24.25 */
+	}
+	.episodes .episode-wrapper:nth-child( 4n ) {
+		margin-right: 0;
+	}
+	.episodes .episode-wrapper:nth-child( 4n+1 ) {
+		clear:left;
+	}
+}
+
+/* FIVE COLUMNS / NTH-CHILD(5N) AND NTH-CHILD(5N+1) */
+@media screen and (min-width: 70.0625em) and (max-width: 85em) {
+	.episodes .episode-wrapper {
+		width: 19.2%; /* (100 - 4)/5 = 19.2 */
+	}
+	.episodes .episode-wrapper:nth-child( 5n ) { 
+		margin-right: 0;
+	}
+	.episodes .episode-wrapper:nth-child( 5n+1 ) { 
+		clear: left;
+	}
+}
+/*SIX COLUMNS / NTH-CHILD(6N) AND NTH-CHILD(6N+1)*/
+@media screen and (min-width: 85.0625em) {
+	.episodes .episode-wrapper {
+		width: 15.83333%; /* (100 - 5)/6 = 15.83333 */
+	}
+	.episodes .episode-wrapper:nth-child( 6n ) { 
+		margin-right: 0;
+	}
+	.episodes .episode-wrapper:nth-child( 6n+1 ) { 
+		clear: left;
+	}
+}
+
+
+
+
+.pictures {
+	/*background-color: rgba(0,0,0,0.5);*/
+}
+.pictures .picture-wrapper {
+	margin-right: 2%; /* or maybe use 1.6 % ? */
+	float: left;
+	width: 100%;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+.picture-item {
+	border: 1px solid #444;
+	/*background-color: rgba(0,0,0,0.5);
+	border-radius: 0.5em;
+	padding: 0.5em 1em 0 1em;
+	cursor: pointer;*/
+}
+
+/* TWO COLUMNS */
+@media screen and (min-width: 20.0625em) and (max-width: 40em) {
+	.pictures .picture-wrapper {
+		width: 49%; /* (100-2)/2 = 49 */
+	}
+	/* selects every even number cells. */
+	.pictures .picture-wrapper:nth-child( 2n ) { 
+		margin-right: 0;
+	} 
+	/* Select every third cell, but starting from ONE not zero */
+	.pictures .picture-wrapper:nth-child( 2n+1 ) { 
+		clear:left;
+	}
+}
+
+/* THREE COLUMNS / NTH-CHILD(3N) AND NTH-CHILD(3N+1) */
+@media screen and (min-width: 40.0625em) and (max-width: 55em) {
+	.pictures .picture-wrapper {
+		width: 32%; /* (100-4)/3 = 32 */
+	}
+	/* Select every third cell */
+	.pictures .picture-wrapper:nth-child( 3n ) { 
+		margin-right: 0;
+	}
+	/* Select every third cell, but starting from ONE not zero */
+	.pictures .picture-wrapper:nth-child( 3n+1 ) { 
+		clear:left;
+	}
+}
+/* FOUR COLUMNS / NTH-CHILD(4N) AND NTH-CHILD(4N+1) */
+@media screen and (min-width: 55.0625em) and (max-width: 70em) {
+	.pictures .picture-wrapper {
+		width: 23.5%; /* (100 - 6)/4 = 23.5 */
+	}
+	.pictures .picture-wrapper:nth-child( 4n ) {
+		margin-right: 0;
+	}
+	.pictures .picture-wrapper:nth-child( 4n+1 ) {
+		clear:left;
+	}
+}
+
+/* FIVE COLUMNS / NTH-CHILD(5N) AND NTH-CHILD(5N+1) (100 - 8)/5 = */
+@media screen and (min-width: 70.0625em) and (max-width: 85em) {
+	.pictures .picture-wrapper {
+		width: 18.4%; 
+	}
+	.pictures .picture-wrapper:nth-child( 5n ) { 
+		margin-right: 0;
+	}
+	.pictures .picture-wrapper:nth-child( 5n+1 ) { 
+		clear: left;
+	}
+}
+/*SIX COLUMNS / NTH-CHILD(6N) AND NTH-CHILD(6N+1) (100 - 10)/6 = 15 */
+@media screen and (min-width: 85.0625em) {
+	.pictures .picture-wrapper {
+		width: 15%;
+	}
+	.pictures .picture-wrapper:nth-child( 6n ) { 
+		margin-right: 0;
+	}
+	.pictures .picture-wrapper:nth-child( 6n+1 ) { 
+		clear: left;
+	}
+}
+/* Fixed TO-TOP-button. */
+.to-top-button {
+	display: none; /* Hidden by default */
+	position: fixed; /* Fixed/sticky position */
+	bottom: 20px; /* Place the button at the bottom of the page */
+	right: 20px; /* Place the button 30px from the right */
+	z-index: 99; /* Make sure it does not overlap */
+	border: 1px solid #ccc;
+	outline: none; /* Remove outline */
+	background-color: rgb(255,255,255,0.25); /*#eee;*/
+	color: #aaa;
+	cursor: pointer; /* Add a mouse pointer on hover */
+	padding: 10px; /* Some padding */
+	border-radius: 50%;
+	font-size: 32px; /* Increase font size */
+}
+.to-top-button:hover { 
+	background-color: rgb(255,255,255,0.75); /*#fff;*/
+	color: #29b6f6;
+	border: 1px solid #bbb;
+}
+/*
+.to-top-button {
+	float: right;
+	padding: 0.11em 0.3em 0.11em 0.3em;
+	margin-top: 0;
+	background-color: #fff;
+	color: #333;
+	box-shadow: 2px 2px 4px #808080;
+	border: 1px solid #eee;
+	border-radius: 0.3em;
+}*/
+/*.to-top-button:active*/
+/*.to-top-button:hover { 
+	background-color: #eee;
+	color: #00f;
+	border: 1px solid #ccc;
+}*/
+.material-icons {
+	vertical-align: middle;
+}
+#map {
+	height: 400px;
+	width: 100%;
+	border: 1px solid #ccc;
+}
+#footer {
+	padding: 1em;
+	background-color: #333;
+	color: #eee;
+	text-align: center;
+}
+.history-schema {
+	border: 1px solid #444;
+}
+.caption {
+	font-style: italic;
+	color: #888;
+}
+.tahkovaara-button {
+	padding: 1em 2em 1em 2em; 
+	box-shadow: 2px 2px 4px #808080;
+	border-radius: 0.5em;
+	text-shadow: 1px 1px 2px #555;
+}

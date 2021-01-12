@@ -84,7 +84,6 @@
 					</div>
 				</div>
 			</div>
-			
 			<div class="row" style="margin-top:2em;margin-bottom:1em">
 				<div class="col s12" id="location">
 					<h4>Yhteystiedot</h4>
@@ -100,7 +99,6 @@
 				</div>
 			</div>
 		</section>
-		
 		<!-- Root element of PhotoSwipe. Must have class pswp. -->
 		<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 			<!-- Background of PhotoSwipe. 
@@ -145,15 +143,12 @@
 				</div>
 			</div>
 		</div>
-		
 		<script
 			src="https://code.jquery.com/jquery-2.2.4.min.js"
 			integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
 			crossorigin="anonymous"></script>
-		
 		<!-- Compiled and minified JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-		
 		<!-- Add PhotoSwipe files: -->
 		<!-- Core JS file -->
 		<script src="./PhotoSwipe-master/dist/photoswipe.js"></script>
@@ -161,29 +156,9 @@
 		<script src="./PhotoSwipe-master/dist/photoswipe-ui-default.js"></script>
 		<!-- Custom JS -->
 		<script src="app.js"></script>
-		
-		
 		<!-- Map initialization -->
-		<script>
-			function initMap() {
-				var uluru = {lat: 63.2485, lng: 28.0513};
-				var map = new google.maps.Map(document.getElementById('map'), {
-					zoom: 13,
-					scrollwheel: false,
-					center: uluru
-				});
-				var marker = new google.maps.Marker({
-					position: uluru,
-					map: map
-				});
-				$("#map").on('click',function(){
-					map.setOptions({scrollwheel:true});
-				});
-			}
-		</script>
-		<script async defer
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQB6CJQ07nRfUR8aVf48uZyrZRqSpwBNM&callback=initMap">
-		</script>
+		<script src="map.js"></script>
+		<!-- Fixed to-top button -->
 		<script src="FixedToTopButton.js"></script>
 		<!--
 		<script>

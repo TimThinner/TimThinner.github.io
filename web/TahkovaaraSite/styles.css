@@ -337,3 +337,13 @@ Number of Columns		12					12					12					12
 		display: none !important;
 	}
 }
+.error-message {
+	border: 1px solid #f88;
+	background-color: #fee;
+	padding-left: 1rem;
+}
+.success-message {
+	border: 1px solid #8f8;
+	background-color: #efe;
+	padding-left: 1rem;
+}

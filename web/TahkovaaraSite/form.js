@@ -118,7 +118,9 @@
 			<div class="input-field col s12 m6" id="enddate-wrapper" style="margin-bottom:16px;"></div>
 		*/
 		
-		const select_markup = '<select class="browser-default" id="person-count"><option value="1" selected>1</option>'+
+		const select_markup = '<label>Valitse henkilömäärä</label>'+
+			'<select class="browser-default" id="person-count">'+
+			'<option value="1" selected>1</option>'+
 			'<option value="2">2</option>'+
 			'<option value="3">3</option>'+
 			'<option value="4">4</option>'+
@@ -126,7 +128,7 @@
 			'<option value="6">6</option>'+
 			'<option value="7">7</option>'+
 			'<option value="8">8</option>'+
-			'</select><label>Valitse henkilömäärä</label>';
+			'</select>';
 		
 		$('#startdate-wrapper').empty().append('<input id="startdate" type="text" class="datepicker"><label for="startdate">Tulopäivä:</label>');
 		$('#enddate-wrapper').empty().append('<input id="enddate" type="text" class="datepicker"><label for="enddate">Lähtöpäivä:</label>');

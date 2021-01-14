@@ -5,7 +5,8 @@
 	
 	let formStartDate = undefined;
 	let formEndDate = undefined;
-	let formPersonCount = 1;
+	let formPersonCountAdults = 1;
+	let formPersonCountChildren = 0;
 	let formHotTub = 'Ei';
 	
 	formReset = function() {
@@ -14,7 +15,8 @@
 		// Clear global variables.
 		formStartDate = undefined;
 		formEndDate = undefined;
-		formPersonCount = 1;
+		formPersonCountAdults = 1;
+		formPersonCountChildren = 0;
 		formHotTub = 'Ei';
 		// Remove the "Send" button.
 		$('#form-send-wrapper').empty();
@@ -22,7 +24,7 @@
 		$('#startdate').datepicker('destroy');
 		$('#enddate').datepicker('destroy');
 		// Destroy Select plugin:
-		$('select').formSelect('destroy');
+		//$('select').formSelect('destroy');
 	}
 	
 	formReportError = function(errors) {
@@ -87,7 +89,7 @@
 			// All good => we enable the "send" button.
 			const s_date = moment(formStartDate).format('dddd DD.MM.YYYY');
 			const e_date = moment(formEndDate).format('dddd DD.MM.YYYY');
-			const body = 'Tulo%3A%20'+s_date+'%0D%0ALähtö%3A%20'+e_date+'%0D%0AHenkilömäärä%3A%20'+formPersonCount+'%0D%0APalju%3A%20'+formHotTub+'%0D%0AJos haluat voit lisätä vielä vapaamuotoisen viestin tähän%3A%0D%0A%0D%0A%0D%0A';
+			const body = 'Tulo%3A%20'+s_date+'%0D%0ALähtö%3A%20'+e_date+'%0D%0AAikuisia%3A%20'+formPersonCountAdults+'%0D%0ALapsia%3A%20'+formPersonCountChildren+'%0D%0APalju%3A%20'+formHotTub+'%0D%0AJos haluat voit lisätä vielä vapaamuotoisen viestin tähän%3A%0D%0A%0D%0A%0D%0A';
 			// LF 	line feed 			%0A
 			// CR 	carriage return 	%0D
 			const mailto = '<a id="mailto" class="waves-effect waves-light btn" href="mailto:arto.kallio-kokko@intelcon.fi?subject=Tahkovaara&body=' + body + '">LÄHETÄ<i class="material-icons right">send</i></a>';
@@ -118,6 +120,23 @@
 			<div class="input-field col s12 m6" id="enddate-wrapper" style="margin-bottom:16px;"></div>
 		*/
 		
+		
+		
+		// Tulopvm		Lähtöpvm
+		//
+		//
+		// Henkilömäärä erikseen aikuiset lapset (alle 18v)
+		// Kylpypalju (Ei,Kyllä) jos kyllä montako vrk?
+		// Liinavaatteet (Ei,Kyllä), jos kyllä monta kpl?
+		// Loppusiivous (Ei,Kyllä)
+		// Lemmikki (Ei,Kyllä)
+		// Varaajan nimi, osoite, email, puh, syntymäaika.
+		
+		
+		
+		
+		
+		/*
 		const select_markup = '<label>Valitse henkilömäärä</label>'+
 			'<select class="browser-default" id="person-count">'+
 			'<option value="1" selected>1</option>'+
@@ -129,18 +148,81 @@
 			'<option value="7">7</option>'+
 			'<option value="8">8</option>'+
 			'</select>';
+		*/
+		const adults = 1;
+		const children = 0;
+		const select_markup =
+			'<div class="row" style="margin-bottom:0;">'+
+				'<div class="col s6 center" style="color:#888">Aikuisten lkm</div>'+
+				'<div class="col s6 center" style="color:#888">Lasten lkm (alle 18 vuotta)</div>'+
+			'</div>'+
+			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+				'<div class="col s2 center">&nbsp;</div>'+
+				'<div class="col s2 center edit-item-change-button"><a href="javascript:void(0);" id="adults-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 center">&nbsp;</div>'+
+				'<div class="col s2 center">&nbsp;</div>'+
+				'<div class="col s2 center edit-item-change-button"><a href="javascript:void(0);" id="children-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 center">&nbsp;</div>'+
+			'</div>'+
+			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+				'<div class="col s2 center edit-item-change-number">&nbsp;</div>'+
+				'<div class="col s2 center edit-item-change-number" style="text-align:center;" id="adults">'+adults+'</div>'+
+				'<div class="col s2 center edit-item-change-number">&nbsp;</div>'+
+				'<div class="col s2 center edit-item-change-number">&nbsp;</div>'+
+				'<div class="col s2 center edit-item-change-number" style="text-align:center;" id="children">'+children+'</div>'+
+				'<div class="col s2 center edit-item-change-number">&nbsp;</div>'+
+			'</div>'+
+			'<div class="row" style="margin-top:0;">'+
+				'<div class="col s2 center">&nbsp;</div>'+
+				'<div class="col s2 center edit-item-change-button"><a href="javascript:void(0);" id="adults-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 center">&nbsp;</div>'+
+				'<div class="col s2 center">&nbsp;</div>'+
+				'<div class="col s2 center edit-item-change-button"><a href="javascript:void(0);" id="children-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 center">&nbsp;</div>'+
+			'</div>';
 		
 		$('#startdate-wrapper').empty().append('<input id="startdate" type="text" class="datepicker"><label for="startdate">Tulopäivä:</label>');
 		$('#enddate-wrapper').empty().append('<input id="enddate" type="text" class="datepicker"><label for="enddate">Lähtöpäivä:</label>');
 		$('#person-count-wrapper').empty().append(select_markup);
 		$('#hottub-wrapper').empty().append('<p style="padding-left:1rem"><label><input type="checkbox" id="hottub" class="filled-in" /><span>Kylpypalju tunnelmavalaistuksella (lisähintaan)</span></label></p>');
 		
-		$('select').formSelect();
+		//$('select').formSelect();
 		
+		$('#adults-up').on('click',function() {
+			if (formPersonCountAdults < 8) {
+				formPersonCountAdults++;
+				$('#adults').empty().append(formPersonCountAdults);
+				formGenerateMailToLink();
+			}
+		});
+		$('#adults-down').on('click',function() {
+			if (formPersonCountAdults > 1) {
+				formPersonCountAdults--;
+				$('#adults').empty().append(formPersonCountAdults);
+				formGenerateMailToLink();
+			}
+		});
+		$('#children-up').on('click',function() {
+			if (formPersonCountChildren < 7) {
+				formPersonCountChildren++;
+				$('#children').empty().append(formPersonCountChildren);
+				formGenerateMailToLink();
+			}
+		});
+		$('#children-down').on('click',function() {
+			if (formPersonCountChildren > 0) {
+				formPersonCountChildren--;
+				$('#children').empty().append(formPersonCountChildren);
+				formGenerateMailToLink();
+			}
+		});
+		
+		
+		/*
 		$('#person-count').on('change',function() {
 			formPersonCount = $(this).val();
 			formGenerateMailToLink();
-		});
+		});*/
 		
 		$('#hottub').on('change', function () {
 			if ($(this).prop("checked")) {

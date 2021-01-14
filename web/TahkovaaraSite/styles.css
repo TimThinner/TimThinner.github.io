@@ -347,3 +347,14 @@ Number of Columns		12					12					12					12
 	background-color: #efe;
 	padding-left: 1rem;
 }
+
+/* Form person count */
+.edit-item-change-number {
+	font-size:32px;
+	font-weight: bold;
+}
+.edit-item-change-button a i {
+	border: 1px solid #ccc;
+	padding: 8px 8px;
+	text-align: center;
+}

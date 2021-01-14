@@ -118,7 +118,7 @@
 			<div class="input-field col s12 m6" id="enddate-wrapper" style="margin-bottom:16px;"></div>
 		*/
 		
-		const select_markup = '<select id="person-count"><option value="1" selected>1</option>'+
+		const select_markup = '<select class="browser-default" id="person-count"><option value="1" selected>1</option>'+
 			'<option value="2">2</option>'+
 			'<option value="3">3</option>'+
 			'<option value="4">4</option>'+

@@ -12,58 +12,61 @@
 		*/
 	}
 	
+	/*
+		Read amenities from file "amenities.json" and fill in the MARKUP tagged by 
+			#amenities-mobile, 
+			#amenities-tablet and 
+			#amenities-desktop
+	*/
 	fetch('varustus.json')
 		.then(function(response) {
 			status = response.status;
 			return response.json();
 		})
 		.then(function(myJson) {
-			
-			console.log(['amenities myJson=',myJson]);
-			
-			
-			/*
-			Read amenities from file "amenities.json" and fill in the MARKUP tagged by #amenities-mobile, #amenities-tablet and #amenities-desktop
-			
-			#amenities-mobile 1 COLUMN => 
-						<div class="col s12">
-							<ul>							32
-								<li>Lattialämmitys</li>
-								...
-							</ul>
-						</div>
-						
-			#amenities-tablet 2 COLUMNS =>
-							<div class="col s4">
-								<ul>						17
-									<li>Lattialämmitys</li>
-									<li>Jäähdytys</li>
-									...
-								</ul>
-							</div>
-							<div class="col s8">
-								<ul>						15
-									<li>Leivänpaahdin</li>
-									<li>Sähkövatkain</li>
-							...
-			#amenities-desktop 3 COLUMNS =>
-			
-							<div class="col s4">			12
-							<div class="col s4">			12
-							<div class="col s4">			8
-			
-			
-			*/
-			/*
-			if (typeof myJson.APIKEY !== 'undefined') {
-				let script = document.createElement('script');
-				script.src="https://maps.googleapis.com/maps/api/js?key=" + myJson.APIKEY + "&callback=initMap";
-				document.body.append(script); // (*)
-				console.log ('APIKEY OK');
-			} else {
-				console.log ('APIKEY NOT OK');
-				amenitiesreportError();
-			}*/
+			//console.log(['amenities myJson=',myJson]);
+			if (Array.isArray(myJson)) {
+				// #amenities-mobile: put all entries within one ul-list.
+				let html = '<div class="col s12"><ul>';
+				myJson.forEach(a=>{
+					html += '<li>'+a+'</li>';
+				});
+				html += '</ul></div>';
+				$(html).appendTo('#amenities-mobile');
+				
+				// #amenities-tablet: two ul-lists, first with 17 items and second with 15.
+				const a1 = myJson.slice(0, 17);
+				const a2 = myJson.slice(17);
+				html = '<div class="col s4"><ul>';
+				a1.forEach(a=>{
+					html += '<li>'+a+'</li>';
+				});
+				html += '</ul></div><div class="col s8"><ul>';
+				a2.forEach(a=>{
+					html += '<li>'+a+'</li>';
+				});
+				html += '</ul></div>';
+				$(html).appendTo('#amenities-tablet');
+				
+				// #amenities-desktop: three ul-lists, first with 12 items, second with 12 items and last with 8 items.
+				const b1 = myJson.slice(0, 12);
+				const b2 = myJson.slice(12, 24);
+				const b3 = myJson.slice(24);
+				html = '<div class="col s4"><ul>';
+				b1.forEach(a=>{
+					html += '<li>'+a+'</li>';
+				});
+				html += '</ul></div><div class="col s4"><ul>';
+				b2.forEach(a=>{
+					html += '<li>'+a+'</li>';
+				});
+				html += '</ul></div><div class="col s4"><ul>';
+				b3.forEach(a=>{
+					html += '<li>'+a+'</li>';
+				});
+				html += '</ul></div>';
+				$(html).appendTo('#amenities-desktop');
+			}
 		})
 		.catch(error => {
 			console.log (['error=',error]);

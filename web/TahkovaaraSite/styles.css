@@ -289,13 +289,13 @@ h4 {
 
 
 /* materialize.css defines list-style-type: none; Overwrite it here: */
-ul:not(.browser-default) {
+.amenity-list ul:not(.browser-default) {
   padding-left: 16px;
   list-style-type: disc;
   /*list-style-type: none;*/
 }
 
-ul:not(.browser-default) > li {
+.amenity-list ul:not(.browser-default) > li {
 	list-style-type: disc;
   /*list-style-type: none;*/
 }

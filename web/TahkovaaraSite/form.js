@@ -1,40 +1,61 @@
+/*
 
+*/
 (function($) {
 	
-	let TahkovaaraStartDate = undefined;
-	let TahkovaaraEndDate = undefined;
+	let formStartDate = undefined;
+	let formEndDate = undefined;
+	let formPersonCount = 1;
+	let formHotTub = 'Ei';
 	
-	TahkovaaraReportError = function(errors) {
+	formReset = function() {
+		$("#form-params").hide();
+		$("#form-link-wrapper").show();
+		// Clear global variables.
+		formStartDate = undefined;
+		formEndDate = undefined;
+		formPersonCount = 1;
+		formHotTub = 'Ei';
+		// Remove the "Send" button.
+		$('#form-send-wrapper').empty();
+		// Destroy Picker plugins:
+		$('#startdate').datepicker('destroy');
+		$('#enddate').datepicker('destroy');
+		// Destroy Select plugin:
+		$('select').formSelect('destroy');
+	}
+	
+	formReportError = function(errors) {
 		const message = errors.join('<br/>');
 		const html = '<div class="error-message"><p>'+message+'</p></div>';
 		$(html).appendTo('#form-error-wrapper');
 	}
 	
-	TahkovaaraValidate = function() {
+	formValidate = function() {
 		
 		const messages = [];
 		
 		// Check that all params are included and there are no conflicting data in query.
-		if (typeof TahkovaaraStartDate === 'undefined') {
+		if (typeof formStartDate === 'undefined') {
 			messages.push('Tulopäivä puuttuu!');
 		} else {
 			const today = moment().hours(0).minutes(0).seconds(0).milliseconds(0);
-			if (moment(TahkovaaraStartDate).isBefore(today)) {
-				messages.push('Tulopäivä on menneisyydessä!');
+			if (moment(formStartDate).isBefore(today)) {
+				messages.push('Tulopäivä ei saa olla menneisyydessä!');
 			}
 		}
 		
-		if (typeof TahkovaaraEndDate === 'undefined') {
+		if (typeof formEndDate === 'undefined') {
 			messages.push('Lähtöpäivä puuttuu!');
 		}
 		
-		if (typeof TahkovaaraStartDate !== 'undefined' && typeof TahkovaaraEndDate !== 'undefined') {
+		if (typeof formStartDate !== 'undefined' && typeof formEndDate !== 'undefined') {
 			
-			const s = moment(TahkovaaraStartDate).hours(0).minutes(0).seconds(0).milliseconds(0);
-			const e = moment(TahkovaaraEndDate).hours(0).minutes(0).seconds(0).milliseconds(0);
+			const s = moment(formStartDate).hours(0).minutes(0).seconds(0).milliseconds(0);
+			const e = moment(formEndDate).hours(0).minutes(0).seconds(0).milliseconds(0);
 			
 			if (e.isSameOrBefore(s)) {
-				messages.push('Lähtöpäivä on sama tai aikaisempi kuin tulopäivä!');
+				messages.push('Lähtöpäivän täytyy olla tulopäivän jälkeen!');
 			}
 		}
 		return messages;
@@ -49,38 +70,33 @@
 	*/
 	// hide => style="display:none"
 	// show => style="display:block"
-	TahkovaaraRegenerateMailToLink = function(id, date) {
-		if (typeof date !== 'undefined') {
-			if (id==='startdate') {
-				TahkovaaraStartDate = date
-			} else {
-				TahkovaaraEndDate = date;
-			}
-			// Clear previous errors if any.
-			$('#form-error-wrapper').empty();
+	formGenerateMailToLink = function() {
+		
+		// Clear previous errors if any.
+		$('#form-error-wrapper').empty();
+		// Check that all params are included and there are no conflicting data in query.
+		const messages = formValidate();
+		if (messages.length > 0) {
+			// Report all errors
+			formReportError(messages);
+			// Show disabled send-button.
+			const mailto = '<a class="waves-effect waves-light btn disabled" href="mailto:arto.kallio-kokko@intelcon.fi?subject=Tahkovaara">LÄHETÄ<i class="material-icons right">send</i></a>';
+			$('#form-send-wrapper').empty().append(mailto);
 			
-			// Check that all params are included and there are no conflicting data in query.
-			const messages = TahkovaaraValidate();
-			if (messages.length > 0) {
-				
-				// Report all errors
-				TahkovaaraReportError(messages);
-				// Show disabled send-button.
-				const mailto = '<a class="waves-effect waves-light btn disabled" href="mailto:arto.kallio-kokko@intelcon.fi?subject=Tahkovaara">LÄHETÄ<i class="material-icons right">send</i></a>';
-				$('#form-send-wrapper').empty().append(mailto);
-				
-			} else {
-				// All good => we enable the "send" button.
-				const p_count = 3;
-				const s_date = moment(TahkovaaraStartDate).format('dddd DD.MM.YYYY');
-				const e_date = moment(TahkovaaraEndDate).format('dddd DD.MM.YYYY');
-				const body = 'Tulo%3A%20'+s_date+'%0D%0ALähtö%3A%20'+e_date+'%0D%0AHenkilömäärä%3A%20'+p_count+'%0D%0AJos haluat voit lisätä vielä vapaamuotoisen viestin tähän%3A%0D%0A%0D%0A%0D%0A';
-				// LF 	line feed 			%0A
-				// CR 	carriage return 	%0D
-				
-				const mailto = '<a class="waves-effect waves-light btn" href="mailto:arto.kallio-kokko@intelcon.fi?subject=Tahkovaara&body=' + body + '">LÄHETÄ<i class="material-icons right">send</i></a>';
-				$('#form-send-wrapper').empty().append(mailto);
-			}
+		} else {
+			// All good => we enable the "send" button.
+			const s_date = moment(formStartDate).format('dddd DD.MM.YYYY');
+			const e_date = moment(formEndDate).format('dddd DD.MM.YYYY');
+			const body = 'Tulo%3A%20'+s_date+'%0D%0ALähtö%3A%20'+e_date+'%0D%0AHenkilömäärä%3A%20'+formPersonCount+'%0D%0APalju%3A%20'+formHotTub+'%0D%0AJos haluat voit lisätä vielä vapaamuotoisen viestin tähän%3A%0D%0A%0D%0A%0D%0A';
+			// LF 	line feed 			%0A
+			// CR 	carriage return 	%0D
+			const mailto = '<a id="mailto" class="waves-effect waves-light btn" href="mailto:arto.kallio-kokko@intelcon.fi?subject=Tahkovaara&body=' + body + '">LÄHETÄ<i class="material-icons right">send</i></a>';
+			$('#form-send-wrapper').empty().append(mailto);
+			$('#mailto').on('click',function() {
+				setTimeout(() => {
+					formReset();
+				}, 1000);
+			});
 		}
 	}
 	
@@ -90,16 +106,48 @@
 		$("#form-link-wrapper").hide();
 		$("#form-params").show();
 		
-		// Create datepickers to datepicker placeholders:
+		// Clear previous errors if any.
+		$('#form-error-wrapper').empty();
+		// Show disabled send-button.
+		const mailto = '<a class="waves-effect waves-light btn disabled" href="mailto:arto.kallio-kokko@intelcon.fi?subject=Tahkovaara">LÄHETÄ<i class="material-icons right">send</i></a>';
+		$('#form-send-wrapper').empty().append(mailto);
+		
 		/*
-			<div class="input-field col s6">
-				<input placeholder="Placeholder" id="first_name" type="text" class="validate">
-				<label for="first_name">First Name</label>
-			</div>
+			Create datepickers to datepicker placeholders:
+			<div class="input-field col s12 m6" id="startdate-wrapper" style="margin-bottom:16px;"></div>
+			<div class="input-field col s12 m6" id="enddate-wrapper" style="margin-bottom:16px;"></div>
 		*/
+		
+		const select_markup = '<select id="person-count"><option value="1" selected>1</option>'+
+			'<option value="2">2</option>'+
+			'<option value="3">3</option>'+
+			'<option value="4">4</option>'+
+			'<option value="5">5</option>'+
+			'<option value="6">6</option>'+
+			'<option value="7">7</option>'+
+			'<option value="8">8</option>'+
+			'</select><label>Valitse henkilömäärä</label>';
+		
 		$('#startdate-wrapper').empty().append('<input id="startdate" type="text" class="datepicker"><label for="startdate">Tulopäivä:</label>');
 		$('#enddate-wrapper').empty().append('<input id="enddate" type="text" class="datepicker"><label for="enddate">Lähtöpäivä:</label>');
+		$('#person-count-wrapper').empty().append(select_markup);
+		$('#hottub-wrapper').empty().append('<p style="padding-left:1rem"><label><input type="checkbox" id="hottub" class="filled-in" /><span>Kylpypalju tunnelmavalaistuksella (lisähintaan)</span></label></p>');
 		
+		$('select').formSelect();
+		
+		$('#person-count').on('change',function() {
+			formPersonCount = $(this).val();
+			formGenerateMailToLink();
+		});
+		
+		$('#hottub').on('change', function () {
+			if ($(this).prop("checked")) {
+				formHotTub = 'Kyllä';
+			} else {
+				formHotTub = 'Ei';
+			}
+			formGenerateMailToLink();
+		});
 		
 		// Initialize Picker plugins:
 		$('#startdate').datepicker({
@@ -118,8 +166,8 @@
 				//weekdaysAbbrev:['S','M','T','K','T','P','L']
 			},
 			onSelect: function(date){
-				console.log(['onSelect startdate=',date]);
-				TahkovaaraRegenerateMailToLink('startdate',date);
+				formStartDate = date;
+				formGenerateMailToLink();
 			}
 		});
 		
@@ -139,29 +187,20 @@
 				//weekdaysAbbrev:['S','M','T','K','T','P','L']
 			},
 			onOpen: function() {
-				if (typeof TahkovaaraStartDate !== 'undefined') {
-					const nextDate = moment(TahkovaaraStartDate).add(1, 'days').toDate();
+				if (typeof formStartDate !== 'undefined') {
+					const nextDate = moment(formStartDate).add(1, 'days').toDate();
 					$('#enddate').datepicker('setDate',nextDate);
 				}
 			},
 			onSelect: function(date){
-				console.log(['onSelect enddate=',date]);
-				TahkovaaraRegenerateMailToLink('enddate',date);
+				formEndDate = date;
+				formGenerateMailToLink();
 			}
 		});
 	});
 	
 	$('#form-cancel').on('click',function() {
-		$("#form-params").hide();
-		$("#form-link-wrapper").show();
-		// Clear global variables.
-		TahkovaaraStartDate = undefined;
-		TahkovaaraEndDate = undefined;
-		// Remove the "Send" button.
-		$('#form-send-wrapper').empty();
-		// Destroy Picker plugins:
-		$('#startdate').datepicker('destroy');
-		$('#enddate').datepicker('destroy');
+		formReset();
 	});
 	
 })(jQuery);

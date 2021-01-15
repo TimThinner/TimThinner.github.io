@@ -18,7 +18,7 @@
 			#amenities-tablet and 
 			#amenities-desktop
 	*/
-	fetch('varustus.json')
+	fetch('./json/varustus.json')
 		.then(function(response) {
 			status = response.status;
 			return response.json();

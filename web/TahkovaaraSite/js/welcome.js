@@ -18,7 +18,7 @@
 			#amenities-tablet and 
 			#amenities-desktop
 	*/
-	fetch('tervetuloa.json')
+	fetch('./json/tervetuloa.json')
 		.then(function(response) {
 			status = response.status;
 			return response.json();

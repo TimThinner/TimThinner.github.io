@@ -9,7 +9,7 @@ html, body {
 	}
 }
 .hero {
-	background: url("./img/hero2.jpg") no-repeat center center;
+	background: url("../img/hero2.jpg") no-repeat center center;
 	background-size: cover;
 	height: 50vh; /* Leave 50% space at the bottom to FOOTER. */
 	/*border-top: 1px solid #eee;*/
@@ -350,11 +350,11 @@ Number of Columns		12					12					12					12
 
 /* Form person count */
 .edit-item-change-number {
-	font-size:32px;
-	font-weight: bold;
+	font-size:42px;
+	/*font-weight: bold;*/
 }
 .edit-item-change-button a i {
 	border: 1px solid #ccc;
-	padding: 8px 8px;
+	padding: 2px 2px;
 	text-align: center;
 }

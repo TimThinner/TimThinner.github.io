@@ -1,7 +1,7 @@
 (function($) {
 	
-	amenitiesReportError = function() {
-		/*
+	amenitiesReportError = function(error) {
+		
 		let markup = '<p style="text-align:center;color:a00;font-weight:bold;">';
 		markup += 'NOTE: You must have APIKEY for Google Maps to work.<br/>';
 		markup += 'You must create a config.json file, where you define your APIKEY:<br/><br/>';
@@ -9,7 +9,6 @@
 		markup += 'and copy the file into your HTML root.<br/>';
 		markup += 'Then refresh the page and Google Maps should be visible.</p>';
 		$('#map').empty().append(markup);
-		*/
 	}
 	
 	/*
@@ -70,7 +69,7 @@
 		})
 		.catch(error => {
 			console.log (['error=',error]);
-			amenitiesReportError();
+			amenitiesReportError(error);
 		});
 	
 })(jQuery);

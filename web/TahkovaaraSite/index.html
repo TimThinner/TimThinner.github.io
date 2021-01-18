@@ -115,15 +115,15 @@
 									</div>
 									<div class="input-field col s12 m6" id="startdate-wrapper" style="margin-bottom:16px;"></div>
 									<div class="input-field col s12 m6" id="enddate-wrapper" style="margin-bottom:16px;"></div>
-									<div class="col s12" id="person-count-wrapper" style="margin-bottom:16px;"></div>
-									<div class="col s12" id="hottub-wrapper" style="margin-bottom:16px;"></div>
-									<div class="col s12" id="linen-wrapper" style="margin-bottom:16px;"></div>
-									<div class="col s12" id="cleaning-wrapper" style="margin-bottom:16px;"></div>
-									<div class="col s12" id="pet-wrapper" style="margin-bottom:16px;"></div>
+									<div class="col s12" id="person-count-wrapper" style="margin-bottom:0;"></div>
+									<div class="col s12" id="hottub-wrapper" style="margin-bottom:8px;"></div>
+									<div class="col s12" id="linen-wrapper" style="margin-bottom:0;"></div>
 									
-									<div class="col s12" id="name-wrapper" style="margin-bottom:16px;"></div>
-									<div class="col s12" id="address-wrapper" style="margin-bottom:16px;"></div>
-									<div class="col s12" id="telephone-wrapper" style="margin-bottom:16px;"></div>
+									<div class="col s12" id="cleaning-wrapper" style="margin-bottom:0;"></div>
+									<div class="col s12" id="pet-wrapper" style="margin-bottom:0;"></div>
+									<div class="col s12" id="name-wrapper" style="margin-bottom:0;"></div>
+									<div class="col s12" id="address-wrapper" style="margin-bottom:0;"></div>
+									<div class="col s12" id="telephone-wrapper" style="margin-bottom:0;"></div>
 									
 									<div class="col s12" id="form-error-wrapper" style="margin-bottom:16px;"></div>
 									<div class="col s6 center"><button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="form-cancel">Sulje</button></div>
@@ -149,13 +149,21 @@
 			<div class="row" style="margin-top:2em;margin-bottom:1em">
 				<div class="col s12" id="history">
 					<h4>Historia</h4>
+					<div class="custom-show-on-mobile custom-hide-on-tablet custom-hide-on-desktop">
+						<div class="row" style="margin-top:1em" id="history-mobile"></div>
+					</div>
+					<div class="custom-hide-on-mobile custom-show-on-tablet custom-hide-on-desktop">
+						<div class="row" style="margin-top:1em" id="history-tablet"></div>
+					</div>
+					<div class="custom-hide-on-mobile custom-hide-on-tablet custom-show-on-desktop">
+						<div class="row" style="margin-top:1em" id="history-desktop"></div>
+					</div>
 				</div>
 			</div>
 			
 			<div class="row" style="margin-top:2em;margin-bottom:0;">
 				<div class="col s12" id="footer">
 					<p>Copyright &copy; 2021&nbsp;&nbsp;<a href="http://www.intelcon.fi/" target="_blank">INTELCON</a></p>
-					
 				</div>
 			</div>
 		</section>
@@ -220,13 +228,16 @@
 		<script src="./PhotoSwipe-master/dist/photoswipe.js"></script>
 		<!-- UI JS file -->
 		<script src="./PhotoSwipe-master/dist/photoswipe-ui-default.js"></script>
+		
+		<!-- Read welcome text from file "tervetuloa.json" and fill in the MARKUP tagged by #welcome-mobile, #welcome-tablet and #welcome-desktop -->
+		<script src="./js/welcome.js"></script>
+		<!-- Read amenities from file "varustus.json" and fill in the MARKUP tagged by #amenities-mobile, #amenities-tablet and #amenities-desktop -->
+		<script src="./js/amenities.js"></script>
+		<!-- Read history from file "historia.json" and fill in the MARKUP tagged by #history-mobile, #history-tablet and #history-desktop -->
+		<script src="./js/history.js"></script>
+		
 		<!-- PhotoSwipe Gallery initialization -->
 		<script src="./js/photogallery.js"></script>
-		
-		<!-- Read welcome text from file "welcome.json" and fill in the MARKUP tagged by #welcome-mobile, #welcome-tablet and #welcome-desktop -->
-		<script src="./js/welcome.js"></script>
-		<!-- Read amenities from file "amenities.json" and fill in the MARKUP tagged by #amenities-mobile, #amenities-tablet and #amenities-desktop -->
-		<script src="./js/amenities.js"></script>
 		
 		<!-- Map initialization -->
 		<!--

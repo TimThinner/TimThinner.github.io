@@ -34,8 +34,7 @@
 				html += '</div>';
 				$(html).appendTo('#welcome-mobile');
 				
-				// #welcome-tablet: two divs, both with 3 paragraphs.
-				// #welcome-desktop: two divs, both with 3 paragraphs.
+				// #welcome-tablet: two cols, both with 3 paragraphs.
 				const a1 = myJson.slice(0, 3);
 				const a2 = myJson.slice(3);
 				html = '<div class="col s6">';
@@ -50,10 +49,10 @@
 				$(html).appendTo('#welcome-tablet');
 				
 				
-				// #welcome-desktop: 
-				const b1 = myJson.slice(0, 2);
-				const b2 = myJson.slice(2, 4);
-				const b3 = myJson.slice(4);
+				// #welcome-desktop: three cols, each with 2 paragraphs.
+				const b1 = myJson.slice(0, 2); // 0, 1
+				const b2 = myJson.slice(2, 4); // 2, 3
+				const b3 = myJson.slice(4);    // 4, 5
 				html = '<div class="col s4">';
 				b1.forEach(a=>{
 					html += '<p>'+a+'</p>';

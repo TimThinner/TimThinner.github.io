@@ -50,8 +50,6 @@
 		// Destroy Picker plugins:
 		$('#startdate').datepicker('destroy');
 		$('#enddate').datepicker('destroy');
-		
-		
 	}
 	
 	formReportError = function(errors) {
@@ -204,39 +202,6 @@
 		// Lemmikki (Ei,Kyllä)
 		// Varaajan nimi, osoite, email, puh, syntymäaika.
 		
-		
-		
-		/*const person_count_markup =
-			'<div class="row" style="margin-bottom:0;">'+
-				'<div class="col s6 center" style="color:#888">Aikuisten lkm</div>'+
-				'<div class="col s6 center" style="color:#888">Lasten lkm (alle 18 vuotta)</div>'+
-			'</div>'+
-			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-				'<div class="col s2 center">&nbsp;</div>'+
-				'<div class="col s2 center edit-item-change-button"><a href="javascript:void(0);" id="adults-up"><i class="small material-icons">add</i></a></div>'+
-				'<div class="col s2 center">&nbsp;</div>'+
-				'<div class="col s2 center">&nbsp;</div>'+
-				'<div class="col s2 center edit-item-change-button"><a href="javascript:void(0);" id="children-up"><i class="small material-icons">add</i></a></div>'+
-				'<div class="col s2 center">&nbsp;</div>'+
-			'</div>'+
-			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-				'<div class="col s2 center edit-item-change-number">&nbsp;</div>'+
-				'<div class="col s2 center edit-item-change-number" style="text-align:center;" id="adults">'+adults+'</div>'+
-				'<div class="col s2 center edit-item-change-number">&nbsp;</div>'+
-				'<div class="col s2 center edit-item-change-number">&nbsp;</div>'+
-				'<div class="col s2 center edit-item-change-number" style="text-align:center;" id="children">'+children+'</div>'+
-				'<div class="col s2 center edit-item-change-number">&nbsp;</div>'+
-			'</div>'+
-			'<div class="row" style="margin-top:0;">'+
-				'<div class="col s2 center">&nbsp;</div>'+
-				'<div class="col s2 center edit-item-change-button"><a href="javascript:void(0);" id="adults-down"><i class="small material-icons">remove</i></a></div>'+
-				'<div class="col s2 center">&nbsp;</div>'+
-				'<div class="col s2 center">&nbsp;</div>'+
-				'<div class="col s2 center edit-item-change-button"><a href="javascript:void(0);" id="children-down"><i class="small material-icons">remove</i></a></div>'+
-				'<div class="col s2 center">&nbsp;</div>'+
-			'</div>';*/
-			
-			
 		const person_count_markup =
 			
 			'<div class="row" style="margin-bottom:0;">'+
@@ -265,7 +230,7 @@
 				'</div>'+
 				'<div class="col s6 center">'+
 					'<div class="row" style="margin-top:24px;margin-bottom:0;">'+
-						'<div class="col s4 center" style="color:#888";>Lapsia:</div>'+
+						'<div class="col s4 center" style="color:#888";>Lapsia (alle 18&nbsp;v):</div>'+
 						'<div class="col s8 center">'+ 
 							'<div class="row" style="margin-top:-20px;margin-bottom:0;">'+
 								
@@ -365,11 +330,10 @@
 			'</div>';
 		$('#linen-wrapper').empty().append(linen_markup);
 		
-		
 		const cleaning_markup =
 			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s6">'+
-					'<div class="row" style="margin-top:24px;margin-bottom:0;">'+
+					'<div class="row" style="margin-top:16px;margin-bottom:0;">'+
 						'<p style="padding-left:1rem"><label><input type="checkbox" id="cleaning" class="filled-in" /><span>Loppusiivous</span></label></p>'+
 					'</div>'+
 				'</div>'+
@@ -379,7 +343,7 @@
 		const pet_markup =
 			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s6">'+
-					'<div class="row" style="margin-top:24px;margin-bottom:0;">'+
+					'<div class="row" style="margin-top:16px;margin-bottom:0;">'+
 						'<p style="padding-left:1rem"><label><input type="checkbox" id="pets" class="filled-in" /><span>Lemmikki</span></label></p>'+
 					'</div>'+
 				'</div>'+
@@ -425,6 +389,16 @@
 			if (formPersonCountAdults < 8) {
 				formPersonCountAdults++;
 				$('#adults').empty().append(formPersonCountAdults);
+				// New: when person count is modified => if LINEN is included => automatically modify the LINEN count.
+				if (formLinen === 'Yes') {
+					const total = formPersonCountAdults + formPersonCountChildren;
+					if (total > 8) {
+						formLinenCount = 8;
+					} else {
+						formLinenCount = total;
+					}
+					$('#linen-count').empty().append(formLinenCount);
+				}
 				formGenerateMailToLink();
 			}
 		});
@@ -432,6 +406,16 @@
 			if (formPersonCountAdults > 1) {
 				formPersonCountAdults--;
 				$('#adults').empty().append(formPersonCountAdults);
+				// New: when person count is modified => if LINEN is included => automatically modify the LINEN count.
+				if (formLinen === 'Yes') {
+					const total = formPersonCountAdults + formPersonCountChildren;
+					if (total > 8) {
+						formLinenCount = 8;
+					} else {
+						formLinenCount = total;
+					}
+					$('#linen-count').empty().append(formLinenCount);
+				}
 				formGenerateMailToLink();
 			}
 		});
@@ -439,6 +423,16 @@
 			if (formPersonCountChildren < 7) {
 				formPersonCountChildren++;
 				$('#children').empty().append(formPersonCountChildren);
+				// New: when person count is modified => if LINEN is included => automatically modify the LINEN count.
+				if (formLinen === 'Yes') {
+					const total = formPersonCountAdults + formPersonCountChildren;
+					if (total > 8) {
+						formLinenCount = 8;
+					} else {
+						formLinenCount = total;
+					}
+					$('#linen-count').empty().append(formLinenCount);
+				}
 				formGenerateMailToLink();
 			}
 		});
@@ -446,6 +440,16 @@
 			if (formPersonCountChildren > 0) {
 				formPersonCountChildren--;
 				$('#children').empty().append(formPersonCountChildren);
+				// New: when person count is modified => if LINEN is included => automatically modify the LINEN count.
+				if (formLinen === 'Yes') {
+					const total = formPersonCountAdults + formPersonCountChildren;
+					if (total > 8) {
+						formLinenCount = 8;
+					} else {
+						formLinenCount = total;
+					}
+					$('#linen-count').empty().append(formLinenCount);
+				}
 				formGenerateMailToLink();
 			}
 		});
@@ -486,7 +490,7 @@
 		$('#linen').on('change', function () {
 			if ($(this).prop("checked")) {
 				formLinen = 'Yes';
-				formLinenCount = 1;
+				formLinenCount = formPersonCountAdults + formPersonCountChildren;
 				$('#linen-count').empty().append(formLinenCount);
 				// If 'yes' => ask how many linens are needed.
 				$('#linen-count-wrapper').show();
@@ -515,8 +519,6 @@
 				formGenerateMailToLink();
 			}
 		});
-		
-		
 		
 		
 		$('#cleaning').on('change', function () {

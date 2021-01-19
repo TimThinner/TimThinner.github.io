@@ -83,11 +83,36 @@
 					</div>
 				</div>
 			</div>
-			
-			
+			<!--
+						<section class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+							<div class="row" style="margin-top:1em">
+								<div class="large-12 columns pictures">
+									<div class="picture-wrapper">
+										<figure class="picture-item" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+			-->
 			<div class="row" style="margin-top:2em;margin-bottom:1em">
 				<div class="col s12" id="gallery">
 					<h4>Kuvagalleria</h4>
+					<section class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+						<div class="row" style="margin-top:1em">
+							<div class="col s12 pictures">
+								<div class="picture-wrapper">
+									<figure class="picture-item" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+										<a href="./img/DSC00908.jpg" itemprop="contentUrl" data-size="2728x1816" data-index="0">
+											<img src="./img/DSC00908-tn.jpg" itemprop="thumbnail" alt="Image description" />
+										</a>
+									</figure>
+								</div>
+								<div class="picture-wrapper">
+									<figure class="picture-item" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+										<a href="./img/DSC00835.jpg" itemprop="contentUrl" data-size="2728x1816" data-index="1">
+											<img src="./img/DSC00835-tn.jpg" itemprop="thumbnail" alt="Image description" />
+										</a>
+									</figure>
+								</div>
+							</div>
+						</div>
+					</section>
 				</div>
 			</div>
 			
@@ -236,8 +261,8 @@
 		<!-- Read history from file "historia.json" and fill in the MARKUP tagged by #history-mobile, #history-tablet and #history-desktop -->
 		<script src="./js/history.js"></script>
 		
-		<!-- PhotoSwipe Gallery initialization -->
-		<script src="./js/photogallery.js"></script>
+		<!-- PhotoSwipe Gallery initialization NOTE: Now done in history.js -->
+		<!-- <script src="./js/photogallery.js"></script> -->
 		
 		<!-- Map initialization -->
 		<!--

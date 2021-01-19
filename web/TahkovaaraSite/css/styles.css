@@ -134,12 +134,34 @@ h4 {
 	}
 }
 
-
-
-
-.pictures {
-	/*background-color: rgba(0,0,0,0.5);*/
+/* This comes from foundation.css:  */
+img {
+	display: inline-block;
+	vertical-align: middle;
+	max-width: 100%;
+	height: auto;
+	-ms-interpolation-mode: bicubic;
 }
+/*
+In materialize.css responsive-img is defined like this:
+img.responsive-img,
+video.responsive-video {
+  max-width: 100%;
+  height: auto;
+}
+*/
+
+/*
+Overwrite materialize.css figure margins:
+*/
+figure {
+	margin: 0;
+}
+/*
+.pictures {
+	background-color: rgba(0,0,0,0.5);
+}
+*/
 .pictures .picture-wrapper {
 	margin-right: 1%;
 	float: left;

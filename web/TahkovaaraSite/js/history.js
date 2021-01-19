@@ -2,22 +2,72 @@
 	
 	historyReportError = function(error) {
 		let markup = '<p style="text-align:center;color:a00;font-weight:bold;">';
-		if (typeof error.message !== '') {
+		if (typeof error.message !== 'undefined') {
 			markup += error.message;
 		} else {
-			
+			markup += 'Error without message has occurred.';
 		}
 		markup += '</p>';
 		$('#history').empty().append(markup);
 	}
-	/*
+	
+	initPhotoGallery = function() {
+		
+		console.log('initPhotoGallery');
+		
+		var $pswp = $('.pswp')[0];
+		var image = [];
+		
+		$('.my-gallery').each( function() {
+			var $pic = $(this),
+			getItems = function() {
+				var items = [];
+				$pic.find('a').each(function() {
+					var $href   = $(this).attr('href'),
+						$size   = $(this).data('size').split('x'),
+						$width  = $size[0],
+						$height = $size[1],
+						$index  = $(this).data('index'),
+						$figcaption = $(this).siblings('figcaption');
+					var item = {
+						src : $href,
+						w   : $width,
+						h   : $height,
+						index : $index,
+						title : $figcaption.text()
+					}
+					items.push(item);
+				});
+				return items;
+			}
+			var items = getItems();
+			console.log(['items=',items]);
+			$.each(items, function(index, value) {
+				image[index]     = new Image();
+				image[index].src = value['src'];
+			});
+			$pic.on('click', 'figure', function(event) {
+				event.preventDefault();
+				//var $index = $(this).index();
+				var $index = $(this).find('a').data('index');
+				var options = {
+					index: $index,
+					bgOpacity: 0.8,
+					showHideOpacity: true
+				}
+				var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+				lightBox.init();
+			});
+		});
+	}
+	
 	generateOriginalDrawingMarkup = function() {
 		const markup = '<section class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">'+
 				'<div class="row" style="margin-top:1em">'+
-					'<div class="large-12 columns">'+
-						'<figure class="history-schema" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">'+
+					'<div class="col s12">'+
+						'<figure style="border: 1px solid #444;" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">'+
 							'<a href="./img/history.png" itemprop="contentUrl" data-size="1970x944" data-index="0">'+
-								'<img src="./img/history-tn.png" itemprop="thumbnail" alt="Image description" />'+
+								'<img src="./img/history-tn.jpg" itemprop="thumbnail" alt="Image description" />'+
 							'</a>'+
 						'</figure>'+
 					'</div>'+
@@ -26,9 +76,9 @@
 			'<p class="caption">Nokia Oy:n edustussaunan alkuperäiset piirustukset</p>';
 		return markup;
 	}
-	*/
+	
 	/*
-		Read amenities from file "historia.json" and fill in the MARKUP tagged by 
+		Read history from file "historia.json" and fill in the MARKUP tagged by 
 			#history-mobile, 
 			#history-tablet and 
 			#history-desktop
@@ -46,8 +96,7 @@
 				myJson.forEach((a,i)=>{
 					if (i===0) {
 						html += '<p>'+a+'</p>';
-						html += '<img class="responsive-img materialboxed" width="1970" src="./img/history.png" style="border: 1px solid #444;">';
-						html += '<p style="font-style:italic;color:#888;">Nokia Oy:n edustussaunan alkuperäiset piirustukset</p>';
+						html += generateOriginalDrawingMarkup();
 					} else {
 						html += '<p>'+a+'</p>';
 					}
@@ -62,8 +111,7 @@
 				a1.forEach((a,i)=>{
 					if (i===0) {
 						html += '<p>'+a+'</p>';
-						html += '<img class="responsive-img materialboxed" width="1970" src="./img/history.png" style="border: 1px solid #444;">';
-						html += '<p style="font-style:italic;color:#888;">Nokia Oy:n edustussaunan alkuperäiset piirustukset</p>';
+						html += generateOriginalDrawingMarkup();
 					} else {
 						html += '<p>'+a+'</p>';
 					}
@@ -83,8 +131,7 @@
 				b1.forEach((a,i)=>{
 					if (i===0) {
 						html += '<p>'+a+'</p>';
-						html += '<img class="responsive-img materialboxed" width="1970" src="./img/history.png" style="border: 1px solid #444;">';
-						html += '<p style="font-style:italic;color:#888;">Nokia Oy:n edustussaunan alkuperäiset piirustukset</p>';
+						html += generateOriginalDrawingMarkup();
 					} else {
 						html += '<p>'+a+'</p>';
 					}
@@ -100,7 +147,10 @@
 				html += '</div>';
 				$(html).appendTo('#history-desktop');
 				
-				$('.materialboxed').materialbox();
+				initPhotoGallery();
+				
+			} else {
+				historyReportError({message:'Error: historia.json content is NOT an Array.'});
 			}
 		})
 		.catch(error => {

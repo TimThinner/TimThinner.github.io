@@ -12,9 +12,6 @@
 	}
 	
 	initPhotoGallery = function() {
-		
-		console.log('initPhotoGallery');
-		
 		var $pswp = $('.pswp')[0];
 		var image = [];
 		
@@ -41,7 +38,6 @@
 				return items;
 			}
 			var items = getItems();
-			console.log(['items=',items]);
 			$.each(items, function(index, value) {
 				image[index]     = new Image();
 				image[index].src = value['src'];

@@ -136,7 +136,7 @@
 			// Report all errors
 			formReportError(messages);
 			// Show disabled send-button.
-			const mailto = '<a class="waves-effect waves-light btn disabled" href="mailto:arto.kallio-kokko@intelcon.fi?subject=Tahkovaara">LÄHETÄ<i class="material-icons right">send</i></a>';
+			const mailto = '<a class="waves-effect waves-light btn disabled" href="mailto:tahkovaara@intelcon.fi?subject=Tahkovaara">LÄHETÄ<i class="material-icons right">send</i></a>';
 			$('#form-send-wrapper').empty().append(mailto);
 			
 		} else {
@@ -169,7 +169,8 @@
 			'%0D%0AJos haluat voit lisätä vielä vapaamuotoisen viestin tähän%3A%0D%0A%0D%0A%0D%0A';
 			// LF 	line feed 			%0A
 			// CR 	carriage return 	%0D
-			const mailto = '<a id="mailto" class="waves-effect waves-light btn" href="mailto:arto.kallio-kokko@intelcon.fi?subject=Tahkovaara&body=' + body + '">LÄHETÄ<i class="material-icons right">send</i></a>';
+			
+			const mailto = '<a id="mailto" class="waves-effect waves-light btn" href="mailto:tahkovaara@intelcon.fi?subject=Tahkovaara&body=' + body + '">LÄHETÄ<i class="material-icons right">send</i></a>';
 			$('#form-send-wrapper').empty().append(mailto);
 			$('#mailto').on('click',function() {
 				//setTimeout(() => {
@@ -188,7 +189,7 @@
 		// Clear previous errors if any.
 		$('#form-error-wrapper').empty();
 		// Show disabled send-button.
-		const mailto = '<a class="waves-effect waves-light btn disabled" href="mailto:arto.kallio-kokko@intelcon.fi?subject=Tahkovaara">LÄHETÄ<i class="material-icons right">send</i></a>';
+		const mailto = '<a class="waves-effect waves-light btn disabled" href="mailto:tahkovaara@intelcon.fi?subject=Tahkovaara">LÄHETÄ<i class="material-icons right">send</i></a>';
 		$('#form-send-wrapper').empty().append(mailto);
 		
 		

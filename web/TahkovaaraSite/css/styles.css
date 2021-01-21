@@ -9,7 +9,7 @@ html, body {
 	}
 }
 .hero {
-	background: url("../img/hero2.jpg") no-repeat center center;
+	background: url("../img/hero.jpg") no-repeat center center;
 	background-size: cover;
 	height: 50vh; /* Leave 50% space at the bottom to FOOTER. */
 	/*border-top: 1px solid #eee;*/

@@ -35,7 +35,7 @@
 				
 				// #welcome-tablet: two cols, both with 3 paragraphs.
 				const a1 = myJson.slice(0, 3); // 0,1,2
-				const a2 = myJson.slice(3);    // 3,4,5
+				const a2 = myJson.slice(3);    // 3,4,5,6
 				html = '<div class="col s6">';
 				a1.forEach(a=>{
 					html += '<p>'+a+'</p>';
@@ -50,7 +50,7 @@
 				// #welcome-desktop: three cols, each with 2 paragraphs.
 				const b1 = myJson.slice(0, 2); // 0, 1
 				const b2 = myJson.slice(2, 4); // 2, 3
-				const b3 = myJson.slice(4);    // 4, 5
+				const b3 = myJson.slice(4);    // 4, 5, 6
 				html = '<div class="col s4">';
 				b1.forEach(a=>{
 					html += '<p>'+a+'</p>';

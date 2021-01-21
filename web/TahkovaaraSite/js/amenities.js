@@ -33,9 +33,9 @@
 				html += '</ul></div>';
 				$(html).appendTo('#amenities-mobile');
 				
-				// #amenities-tablet: two ul-lists, first with 17 items and second with 15.
-				const a1 = myJson.slice(0, 17); // 0 - 16
-				const a2 = myJson.slice(17);    // 17 - 
+				// #amenities-tablet: two ul-lists, first with 19 items and second with 14.
+				const a1 = myJson.slice(0, 19); // 0 - 18
+				const a2 = myJson.slice(19);    // 19 - 32
 				html = '<div class="col s4"><ul>';
 				a1.forEach(a=>{
 					html += '<li>'+a+'</li>';
@@ -47,10 +47,10 @@
 				html += '</ul></div>';
 				$(html).appendTo('#amenities-tablet');
 				
-				// #amenities-desktop: three ul-lists, first with 12 items, second with 12 items and last with 8 items.
-				const b1 = myJson.slice(0, 12);  // 0 - 11
-				const b2 = myJson.slice(12, 24); // 12 - 23
-				const b3 = myJson.slice(24);     // 24 -
+				// #amenities-desktop: three ul-lists, first with 15 items, second with 12 items and last with 6 items.
+				const b1 = myJson.slice(0, 15);  // 0 - 14
+				const b2 = myJson.slice(15, 27); // 15 - 26
+				const b3 = myJson.slice(27);     // 27 -
 				html = '<div class="col s4"><ul>';
 				b1.forEach(a=>{
 					html += '<li>'+a+'</li>';

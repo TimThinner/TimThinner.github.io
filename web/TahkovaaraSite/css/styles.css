@@ -50,6 +50,7 @@ h4 {
 	padding-bottom: 0.25em;
 }
 .episode-item {
+	font-size: 15px;
 	background-color: #fff;
 	border: 1px solid #eee;
 	border-radius: 0.5em;
@@ -66,40 +67,47 @@ h4 {
 	border: 1px solid #ccc;
 	font-weight: bold;
 }
-
-/* TWO COLUMNS */
-@media screen and (min-width: 20.0625em) and (max-width: 40em) {
+/*
+	TWO COLUMNS
+	(100-1)/2 = 49.5
+*/
+@media screen and (min-width: 20.0625em) and (max-width: 65em) {
 	.episodes .episode-wrapper {
-		width: 49.5%; /* (100-1)/2 = 49.5 */
+		width: 49.5%;
 	}
-	/* selects every even number cells. */
 	.episodes .episode-wrapper:nth-child( 2n ) { 
 		margin-right: 0;
 	} 
-	/* Select every third cell, but starting from ONE not zero */
 	.episodes .episode-wrapper:nth-child( 2n+1 ) { 
 		clear:left;
 	}
 }
-
-/* THREE COLUMNS / NTH-CHILD(3N) AND NTH-CHILD(3N+1) */
-@media screen and (min-width: 40.0625em) and (max-width: 55em) {
+/* 
+	THREE COLUMNS / NTH-CHILD(3N) AND NTH-CHILD(3N+1) 
+	(100-2)/3 = 32.66667
+*/
+/*@media screen and (min-width: 40.0625em) and (max-width: 55em) {
 	.episodes .episode-wrapper {
-		width: 32.66667%; /* (100-2)/3 = 32.66667 */
+		width: 32.66667%;
 	}
-	/* Select every third cell */
 	.episodes .episode-wrapper:nth-child( 3n ) { 
 		margin-right: 0;
 	}
-	/* Select every third cell, but starting from ONE not zero */
 	.episodes .episode-wrapper:nth-child( 3n+1 ) { 
 		clear:left;
 	}
-}
-/* FOUR COLUMNS / NTH-CHILD(4N) AND NTH-CHILD(4N+1) */
-@media screen and (min-width: 55.0625em) and (max-width: 70em) {
+}*/
+/* 
+	FOUR COLUMNS / NTH-CHILD(4N) AND NTH-CHILD(4N+1)
+	(100 - 3)/4 = 24.25
+*/
+/*@media screen and (min-width: 55.0625em) and (max-width: 70em) {*/
+@media screen and (min-width: 65.0625em) {
+	.episode-item {
+		font-size: 16px;
+	}
 	.episodes .episode-wrapper {
-		width: 24.25%; /* (100 - 3)/4 = 24.25 */
+		width: 24.25%;
 	}
 	.episodes .episode-wrapper:nth-child( 4n ) {
 		margin-right: 0;
@@ -108,11 +116,13 @@ h4 {
 		clear:left;
 	}
 }
-
-/* FIVE COLUMNS / NTH-CHILD(5N) AND NTH-CHILD(5N+1) */
-@media screen and (min-width: 70.0625em) and (max-width: 85em) {
+/*
+	FIVE COLUMNS / NTH-CHILD(5N) AND NTH-CHILD(5N+1) 
+	(100 - 4)/5 = 19.2
+*/
+/*@media screen and (min-width: 70.0625em) and (max-width: 80em) {
 	.episodes .episode-wrapper {
-		width: 19.2%; /* (100 - 4)/5 = 19.2 */
+		width: 19.2%;
 	}
 	.episodes .episode-wrapper:nth-child( 5n ) { 
 		margin-right: 0;
@@ -120,11 +130,14 @@ h4 {
 	.episodes .episode-wrapper:nth-child( 5n+1 ) { 
 		clear: left;
 	}
-}
-/*SIX COLUMNS / NTH-CHILD(6N) AND NTH-CHILD(6N+1)*/
-@media screen and (min-width: 85.0625em) {
+}*/
+/*
+	SIX COLUMNS / NTH-CHILD(6N) AND NTH-CHILD(6N+1)
+	(100 - 5)/6 = 15.83333 
+*/
+/*@media screen and (min-width: 80.0625em) and (max-width: 85em) {
 	.episodes .episode-wrapper {
-		width: 15.83333%; /* (100 - 5)/6 = 15.83333 */
+		width: 15.83333%;
 	}
 	.episodes .episode-wrapper:nth-child( 6n ) { 
 		margin-right: 0;
@@ -132,7 +145,42 @@ h4 {
 	.episodes .episode-wrapper:nth-child( 6n+1 ) { 
 		clear: left;
 	}
+}*/
+/*
+	SEVEN COLUMNS / NTH-CHILD(7N) AND NTH-CHILD(7N+1)
+	(100 - 6)/7 = 13.42857
+*/
+/*@media screen and (min-width: 85.0625em) and (max-width: 90em){
+	.episodes .episode-wrapper {
+		width: 13.42857%; 
+	}
+	.episodes .episode-wrapper:nth-child( 7n ) { 
+		margin-right: 0;
+	}
+	.episodes .episode-wrapper:nth-child( 7n+1 ) { 
+		clear: left;
+	}
+}*/
+/*
+	EIGHT COLUMNS / NTH-CHILD(8N) AND NTH-CHILD(8N+1)
+	(100 - 7)/8 = 11.625
+*/
+/*
+@media screen and (min-width: 100.0625em) {
+	.episodes .episode-wrapper {
+		width: 11.625%;
+	}
+	.episodes .episode-wrapper:nth-child( 8n ) { 
+		margin-right: 0;
+	}
+	.episodes .episode-wrapper:nth-child( 8n+1 ) { 
+		clear: left;
+	}
 }
+*/
+
+
+
 
 /* This comes from foundation.css:  */
 img {

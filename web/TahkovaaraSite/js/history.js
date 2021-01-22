@@ -56,35 +56,20 @@
 			});
 		});
 	}
-	/* history1.png and history2.png 1854 x 1322 */
-	generateOriginalDrawingMarkup1 = function() {
+	/* history1.png and history.png   */
+	generateOriginalDrawingMarkup = function() {
 		const markup = '<section class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">'+
 				'<div class="row" style="margin-top:1em">'+
 					'<div class="col s12">'+
 						'<figure style="border: 1px solid #444;" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">'+
-							'<a href="./img/history1.png" itemprop="contentUrl" data-size="1854x1322" data-index="0">'+
-								'<img src="./img/history1_tn.png" itemprop="thumbnail" alt="Image description" />'+
+							'<a href="./img/history.png" itemprop="contentUrl" data-size="1970x944" data-index="0">'+
+								'<img src="./img/history_tn.jpg" itemprop="thumbnail" alt="Image description" />'+
 							'</a>'+
 						'</figure>'+
 					'</div>'+
 				'</div>'+
-			'</section>';
-			//'<p class="caption">Nokia Oy:n edustussaunan alkuperäiset piirustukset</p>';
-		return markup;
-	}
-	generateOriginalDrawingMarkup2 = function() {
-		const markup = '<section class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">'+
-				'<div class="row" style="margin-top:1em">'+
-					'<div class="col s12">'+
-						'<figure style="border: 1px solid #444;" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">'+
-							'<a href="./img/history2.png" itemprop="contentUrl" data-size="1854x1322" data-index="0">'+
-								'<img src="./img/history2_tn.png" itemprop="thumbnail" alt="Image description" />'+
-							'</a>'+
-						'</figure>'+
-					'</div>'+
-				'</div>'+
-			'</section>';
-			//'<p class="caption">Nokia Oy:n edustussaunan alkuperäiset piirustukset</p>';
+			'</section>'+
+			'<p class="caption">Nokia Oy:n edustussaunan alkuperäiset piirustukset</p>';
 		return markup;
 	}
 	
@@ -107,50 +92,55 @@
 				myJson.forEach((a,i)=>{
 					if (i===0) {
 						html += '<p>'+a+'</p>';
-						html += generateOriginalDrawingMarkup1();
+						html += generateOriginalDrawingMarkup();
 					} else {
 						html += '<p>'+a+'</p>';
-						html += generateOriginalDrawingMarkup2();
 					}
 				});
 				html += '</div>';
 				$(html).appendTo('#history-mobile');
 				
-				// #history-tablet: two cols, left with 1 paragraphs, right 1 paragraphs.
-				const a1 = myJson.slice(0, 1); // 0
-				const a2 = myJson.slice(1);    // 1
+				// #history-tablet: two cols, left with 2 paragraphs, right 2 paragraphs.
+				const a1 = myJson.slice(0, 2); // 0,1
+				const a2 = myJson.slice(2);    // 2,3,4
 				html = '<div class="col s6">';
 				a1.forEach((a,i)=>{
-					
-					html += '<p>'+a+'</p>';
-					html += generateOriginalDrawingMarkup1();
-					
+					if (i===0) {
+						html += '<p>'+a+'</p>';
+						html += generateOriginalDrawingMarkup();
+					} else {
+						html += '<p>'+a+'</p>';
+					}
 				});
 				html += '</div><div class="col s6" style="border-left:1px solid #aaa">';
 				a2.forEach(a=>{
 					html += '<p>'+a+'</p>';
-					html += generateOriginalDrawingMarkup2();
 				});
 				html += '</div>';
 				$(html).appendTo('#history-tablet');
 				
 				// #history-desktop: two divs, left with 1 paragraphs, center 1 paragraphs, right picture.
 				const b1 = myJson.slice(0, 1); // 0
-				const b2 = myJson.slice(1); // 1
+				const b2 = myJson.slice(1, 3); // 1,2
+				const b3 = myJson.slice(3);    // 3,4
 				
 				html = '<div class="col s4">';
 				b1.forEach((a,i)=>{
-					
-					html += '<p>'+a+'</p>';
-					
+					if (i===0) {
+						html += '<p>'+a+'</p>';
+						html += generateOriginalDrawingMarkup();
+					} else {
+						html += '<p>'+a+'</p>';
+					}
 				});
 				html += '</div><div class="col s4" style="border-left:1px solid #aaa">';
 				b2.forEach(a=>{
 					html += '<p>'+a+'</p>';
 				});
 				html += '</div><div class="col s4" style="border-left:1px solid #aaa">';
-				html += generateOriginalDrawingMarkup1();
-				html += generateOriginalDrawingMarkup2();
+				b3.forEach(a=>{
+					html += '<p>'+a+'</p>';
+				});
 				html += '</div>';
 				$(html).appendTo('#history-desktop');
 				

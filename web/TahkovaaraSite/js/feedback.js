@@ -190,7 +190,7 @@ Teksti: Kiitos arvostelustasi, tarkistamme ja lisäämme sen sivustolle lähiaik
 					'<div class="row" style="margin-top:24px;margin-bottom:0;">'+
 						'<div class="col s12 center">'+ 
 							'<div class="row" style="margin-top:-20px;margin-bottom:0;">'+
-								'<div class="col s5 edit-item-change-number" id="visit-year" style="text-align:right;">'+feedbackVisitYear+'</div>'+
+								'<div class="col s5 edit-item-change-year" id="visit-year" style="text-align:right;">'+feedbackVisitYear+'</div>'+
 								'<div class="col s7">'+
 									'<div class="row" style="margin-top:-4px;margin-bottom:0;">'+
 										'<div class="col s12 edit-item-change-button"><a href="javascript:void(0);" id="visit-year-up"><i class="small material-icons">add</i></a>'+

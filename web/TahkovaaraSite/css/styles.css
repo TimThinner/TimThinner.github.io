@@ -50,7 +50,7 @@ h4 {
 	padding-bottom: 0.25em;
 }
 .episode-item {
-	font-size: 14px;
+	font-size: 13px;
 	background-color: #fff;
 	border: 1px solid #eee;
 	border-radius: 0.5em;
@@ -431,4 +431,7 @@ Number of Columns		12					12					12					12
 /* Form person count */
 .edit-item-change-month {
 	font-size:18px;
+}
+.edit-item-change-year {
+	font-size:32px;
 }

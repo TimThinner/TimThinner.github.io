@@ -1,33 +1,9 @@
 [
 	{
-	"message":"Tosi kiva, siisti ja toimiva mökki/huvila. Iso parvi älyttömän hyvä lapsille. Korkea olohuone toi luksuksen tuntua.",
-	"name":"Olli Koivusalo",
+	"message":"Poiminta vieraskirjasta asiakkaan luvalla: Vietimme täällä 10-vuotis hääpäiväviikonloppua kaksin, lapset jäivät mummolaan hoitoon. Pakkasta oli reippaasti, mutta se ei paljun ja saunan lämmössä haitannut. Aika kului mukavasti rinteessä, saunoessa ja kodassa – loimulohta tehtiin myös ensimmäistä kertaa ja hyvää tuli. Kiitos mökki-isännille hienoista puitteista, kyllä täällä kelpaa. Harvalla vuokramökillä on ollut näin siistiä ja hyvät varustelut maustelaatikosta alkaen. On hyvinkin mahdollista, että palaamme vielä koko perheen voimin. Kiitos!",
+	"name":"Elina ja Aki Kaarinasta",
 	"rating":5,
-	"time":"Helmikuu 2017"
-	},
-	{
-	"message":"Rauhallinen ympäristö, kiva mökki.",
-	"name":"Adres Idla",
-	"rating":4,
-	"time":"Helmikuu 2017"
-	},
-	{
-	"message":"Hyvin varusteltu, kiva mökki rauhallisella paikalla. Yläkerta kiva paikka vähän isommille lapsille. Palju iso plussa.",
-	"name":"Tuija Lehtonotko",
-	"rating":-1,
-	"time":"Huhtikuu 2017"
-	},
-	{
-	"message":"Todella hyvin varusteltu mökki, josta löytyi kaikki tarvittava! Iso terassi ja palju, joista iso plussa. Rauhallinen sijainta. Täydellinen mökki isommalle porukalle!",
-	"name":"Tanja Sutinen",
-	"rating":5,
-	"time":"Kesäkuu 2017"
-	},
-	{
-	"message":"Kohde vastasi kohteen kuvausta.",
-	"name":"Tanja Kotkanoja",
-	"rating":5,
-	"time":"Joulukuu 2018"
+	"time":"Tammikuu 2021"
 	},
 	{
 	"message":"Mökki oli upea ja hyvin omassa rauhassa. Odotukset oli päästä loimuttamaan kotaan lohta mutta kota valmistuu kesällä 2019 valmiiksi, tämä kyllä selvisi ilmoituksesta, ei vain huomattu heti. Paljua olisi ollut mukava kokeilla mutta hinta 150/ kerta tuntui kovalta. Viihdyimme oikein hyvin ja vietimme rentouttavan talviloman.",
@@ -36,9 +12,33 @@
 	"time":"Maaliskuu 2019"
 	},
 	{
-	"message":"Poiminta vieraskirjasta asiakkaan luvalla: Vietimme täällä 10-vuotis hääpäiväviikonloppua kaksin, lapset jäivät mummolaan hoitoon. Pakkasta oli reippaasti, mutta se ei paljun ja saunan lämmössä haitannut. Aika kului mukavasti rinteessä, saunoessa ja kodassa – loimulohta tehtiin myös ensimmäistä kertaa ja hyvää tuli. Kiitos mökki-isännille hienoista puitteista, kyllä täällä kelpaa. Harvalla vuokramökillä on ollut näin siistiä ja hyvät varustelut maustelaatikosta alkaen. On hyvinkin mahdollista, että palaamme vielä koko perheen voimin. Kiitos!",
-	"name":"Elina ja Aki Kaarinasta",
+	"message":"Kohde vastasi kohteen kuvausta.",
+	"name":"Tanja Kotkanoja",
 	"rating":5,
-	"time":"Tammikuu 2021"
+	"time":"Joulukuu 2018"
+	},
+	{
+	"message":"Todella hyvin varusteltu mökki, josta löytyi kaikki tarvittava! Iso terassi ja palju, joista iso plussa. Rauhallinen sijainta. Täydellinen mökki isommalle porukalle!",
+	"name":"Tanja Sutinen",
+	"rating":5,
+	"time":"Kesäkuu 2017"
+	},
+	{
+	"message":"Hyvin varusteltu, kiva mökki rauhallisella paikalla. Yläkerta kiva paikka vähän isommille lapsille. Palju iso plussa.",
+	"name":"Tuija Lehtonotko",
+	"rating":-1,
+	"time":"Huhtikuu 2017"
+	},
+	{
+	"message":"Rauhallinen ympäristö, kiva mökki.",
+	"name":"Adres Idla",
+	"rating":4,
+	"time":"Helmikuu 2017"
+	},
+	{
+	"message":"Tosi kiva, siisti ja toimiva mökki/huvila. Iso parvi älyttömän hyvä lapsille. Korkea olohuone toi luksuksen tuntua.",
+	"name":"Olli Koivusalo",
+	"rating":5,
+	"time":"Helmikuu 2017"
 	}
 ]

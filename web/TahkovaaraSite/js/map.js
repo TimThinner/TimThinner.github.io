@@ -1,6 +1,8 @@
 
 (function($) {
 	
+	/*
+	
 	initMap = function() {
 		var uluru = {lat: 63.2485, lng: 28.0513};
 		var map = new google.maps.Map(document.getElementById('map'), {
@@ -48,5 +50,17 @@
 			console.log (['error=',error]);
 			reportError();
 		});
+	*/
+	
+	var map = L.map('mapid').setView([63.2485, 28.0513], 13);
+	
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
+	
+	L.marker([63.2485, 28.0513]).addTo(map)
+		.bindPopup('<h6 style="text-align:center;">Tahkovaara</h6><img src="./img/hero.jpg" width="400"/>')
+		.openPopup();
+		
 	
 })(jQuery);

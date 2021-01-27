@@ -344,6 +344,11 @@ figure {
 	width: 100%;
 	border: 1px solid #ccc;
 }
+/* Leaflet map */
+#mapid {
+	height: 600px;
+	width: 100%;
+}
 #footer {
 	padding: 1em;
 	background-color: #333;

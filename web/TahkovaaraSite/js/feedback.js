@@ -206,7 +206,7 @@ Teksti: Kiitos arvostelustasi, tarkistamme ja lisäämme sen sivustolle lähiaik
 			'<div class="row">'+
 				'<div class="input-field col s12">'+
 					'<textarea id="public-feedback" class="materialize-textarea"></textarea>'+
-					'<label for="public-feedback">Viesti (julkaistaan sivustolla)</label>'+
+					'<label for="public-feedback">Viesti (julkaistaan sivustolla):</label>'+
 				'</div>'+
 			'</div>';
 		$('#feedback-text-wrapper').empty().append(textarea_markup);
@@ -216,7 +216,7 @@ Teksti: Kiitos arvostelustasi, tarkistamme ja lisäämme sen sivustolle lähiaik
 			'<div class="row">'+
 				'<div class="input-field col s12">'+
 					'<textarea id="private-feedback" class="materialize-textarea"></textarea>'+
-					'<label for="private-feedback">Yksityinen viesti, joka näkyy vain mökin omistajalle</label>'+
+					'<label for="private-feedback">Yksityinen viesti, joka näkyy vain mökin omistajalle:</label>'+
 				'</div>'+
 			'</div>';
 		$('#feedback-private-text-wrapper').empty().append(private_textarea_markup);
@@ -271,7 +271,7 @@ Teksti: Kiitos arvostelustasi, tarkistamme ja lisäämme sen sivustolle lähiaik
 			'<div class="row">'+
 				'<div class="input-field col s12">'+
 					'<input id="feedback-name" type="text">'+
-					'<label for="feedback-name">Nimi tai nimimerkki</label>'+
+					'<label for="feedback-name">Nimi tai nimimerkki:</label>'+
 				'</div>'+
 			'</div>';
 		$('#feedback-name-wrapper').empty().append(name_markup);
@@ -390,7 +390,7 @@ Teksti: Kiitos arvostelustasi, tarkistamme ja lisäämme sen sivustolle lähiaik
 					} else if (a.rating === 5) {
 						rating_text = star + star + star + star + star;
 					}
-					const html = '<div style="padding:12px;background-color:#444;color:#fff;border:1px solid #ccc;"><p>'+a.message+'<br/>'+a.name+' '+rating_text+'<br/>'+a.time+'</p></div>';
+					const html = '<div style="padding:12px;background-color:#333;color:#fff;border:1px solid #ccc;"><p>'+a.message+'<br/>'+a.name+' '+rating_text+'<br/>'+a.time+'</p></div>';
 					$(html).appendTo('#feedback-feed');
 				});
 				

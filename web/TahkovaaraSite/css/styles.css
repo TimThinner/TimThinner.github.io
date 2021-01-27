@@ -372,15 +372,23 @@ figure {
 
 /* materialize.css defines list-style-type: none; Overwrite it here: */
 .amenity-list ul:not(.browser-default) {
-  padding-left: 16px;
-  list-style-type: disc;
-  /*list-style-type: none;*/
+	padding-left: 16px;
+	list-style-type: disc;
+	/*list-style-type: none;*/
 }
-
 .amenity-list ul:not(.browser-default) > li {
 	list-style-type: disc;
-  /*list-style-type: none;*/
+	/*list-style-type: none;*/
 }
+
+.extra-service-list ul:not(.browser-default) {
+	padding-left: 16px;
+	list-style-type: disc;
+}
+.extra-service-list ul:not(.browser-default) > li {
+	list-style-type: disc;
+}
+
 /*
 Screen Sizes
 					Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices

@@ -58,8 +58,9 @@
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 	
+	// Note: image width is actually same as text width!
 	L.marker([63.2485, 28.0513]).addTo(map)
-		.bindPopup('<h6 style="text-align:center;">Tahkovaara</h6><img src="./img/hero.jpg" width="400"/>')
+		.bindPopup('<h6 style="text-align:center;">&nbsp;Tahkovaara&nbsp;&nbsp;</h6><img src="./img/hero.jpg" />')
 		.openPopup();
 		
 	

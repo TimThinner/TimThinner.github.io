@@ -1,5 +1,15 @@
 <html lang="en">
 	<head>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<!--
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-97619166-1"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-97619166-1');
+		</script>
+		-->
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -8,15 +18,12 @@
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Import Materialize Styles-->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-		
 		<!--Import Google Open Sans Font-->
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
-		
 		<!-- Leaflet CSS for the map view -->
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
 			integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 			crossorigin=""/>
-		
 		<!--Import My Styles-->
 		<link rel="stylesheet" href="./css/styles.css">
 		<!-- Add PhotoSwipe files: -->
@@ -35,9 +42,6 @@
 					<h1 style="margin-top:0;"><img src="./img/herotext_3.png" class="responsive-img" /></h1>
 				</div>
 			</div>
-			<!--
-				<p style="background-color:rgba(0,0,0,0.5);color:#ccc;text-align:right;font-style:italic;">Käy, niin tiedät miksi haluat tulla uudelleen!</p>
-			-->
 			<div class="row">
 				<div class="col s12 episodes">
 					<div class="episode-wrapper">
@@ -66,7 +70,6 @@
 					</div>
 				</div>
 			</div>
-			
 			<div class="row" style="margin-top:2em;margin-bottom:1em">
 				<div class="col s12" id="introduction">
 					<h4>Tervetuloa Tahkovaaraan!</h4>
@@ -81,7 +84,6 @@
 					</div>
 				</div>
 			</div>
-			
 			<div class="row" style="margin-top:2em;margin-bottom:1em">
 				<div class="col s12" id="amenities">
 					<h4>Tasokas Tahkovaara!</h4>
@@ -96,7 +98,6 @@
 					</div>
 				</div>
 			</div>
-			
 			<div class="row" style="margin-top:2em;margin-bottom:1em">
 				<div class="col s12" id="gallery">
 					<h4>Kuvagalleria</h4>
@@ -436,13 +437,11 @@
 									<div class="col s12" id="person-count-wrapper" style="margin-bottom:0;"></div>
 									<div class="col s12" id="hottub-wrapper" style="margin-bottom:8px;"></div>
 									<div class="col s12" id="linen-wrapper" style="margin-bottom:0;"></div>
-									
 									<div class="col s12" id="cleaning-wrapper" style="margin-bottom:0;"></div>
 									<div class="col s12" id="pet-wrapper" style="margin-bottom:0;"></div>
 									<div class="col s12" id="name-wrapper" style="margin-bottom:0;"></div>
 									<div class="col s12" id="address-wrapper" style="margin-bottom:0;"></div>
 									<div class="col s12" id="telephone-wrapper" style="margin-bottom:0;"></div>
-									
 									<div class="col s12" id="form-error-wrapper" style="margin-bottom:16px;"></div>
 									<div class="col s6 center"><button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="form-cancel">Sulje</button></div>
 									<div class="col s6 center" id="form-send-wrapper"></div>
@@ -452,7 +451,6 @@
 					</div>
 				</div>
 			</div>
-			
 			<div class="row" style="margin-top:2em;margin-bottom:1em">
 				<div class="col s12" id="instructions">
 					<h4>Varausehdot ja -ohjeet</h4>
@@ -465,7 +463,6 @@
 					<p><a href="./pdf/Koronaohje.pdf">Koronaohje</a></p>
 				</div>
 			</div>
-			
 			<div class="row" style="margin-top:2em;margin-bottom:1em">
 				<div class="col s12" id="location">
 					<h4>Yhteystiedot</h4>
@@ -479,14 +476,12 @@
 					</p>
 					<!--<div id="map"><p style="text-align:center;color:#888;">TÄHÄN TULEE KARTTA</p></div>-->
 					<!-- Use Leaflet map here (not Google maps) -->
-					
 				</div>
 				<div class="col s12" style="padding:0 20px;">
 					<div id="mapid" style="border:1px solid #333;">
 					</div>
 				</div>
 			</div>
-			
 			<div class="row" style="margin-top:2em;margin-bottom:1em">
 				<div class="col s12" id="history">
 					<h4>Historia</h4>
@@ -501,18 +496,15 @@
 					</div>
 				</div>
 			</div>
-			
 			<div class="row" style="margin-top:2em;margin-bottom:0;">
 				<div class="col s12" id="footer">
 					<p>Copyright &copy; 2021&nbsp;&nbsp;<a href="http://www.intelcon.fi/" target="_blank">INTELCON</a></p>
 				</div>
 			</div>
 		</section>
-		
 		<!-- Additonal SPECIAL markup -->
 		<!-- See: FixedToTopButton.js -->
 		<a href="#top" id="my-to-top-button" class="to-top-button"><i class="material-icons">arrow_upward</i></a>
-		
 		<!-- Root element of PhotoSwipe. Must have class pswp. See: photogallery.js -->
 		<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 			<!-- Background of PhotoSwipe. 
@@ -563,33 +555,26 @@
 			crossorigin="anonymous"></script>
 		<!-- Compiled and minified JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-		
 		<!-- Make sure you put this AFTER Leaflet's CSS -->
 		<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
 			integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
 			crossorigin=""></script>
-		
 		<script src="moment.js"></script>
 		<!-- Add PhotoSwipe files: -->
 		<!-- Core JS file -->
 		<script src="./PhotoSwipe-master/dist/photoswipe.js"></script>
 		<!-- UI JS file -->
 		<script src="./PhotoSwipe-master/dist/photoswipe-ui-default.js"></script>
-		
 		<!-- Read welcome text from file "tervetuloa.json" and fill in the MARKUP tagged by #welcome-mobile, #welcome-tablet and #welcome-desktop -->
 		<script src="./js/welcome.js"></script>
 		<!-- Read amenities from file "varustus.json" and fill in the MARKUP tagged by #amenities-mobile, #amenities-tablet and #amenities-desktop -->
 		<script src="./js/amenities.js"></script>
 		<!-- Read history from file "historia.json" and fill in the MARKUP tagged by #history-mobile, #history-tablet and #history-desktop -->
 		<script src="./js/history.js"></script>
-		
 		<!-- PhotoSwipe Gallery initialization NOTE: Now done in history.js -->
 		<!-- <script src="./js/photogallery.js"></script> -->
-		
 		<!-- Map initialization -->
-		
 		<script src="./js/map.js"></script>
-		
 		<!-- Fixed to-top button -->
 		<script src="./js/FixedToTopButton.js"></script>
 		<!-- Email Form for reservation -->

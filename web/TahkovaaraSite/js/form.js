@@ -22,6 +22,13 @@
 	let formTelephoneNumber = undefined;
 	let formBirthDate = undefined;
 	
+	let formNettiMokki = false;
+	let formMokkiHaku = false;
+	let formGoogle = false;
+	let formFriend = false;
+	let formSomethingElse = false;
+	let formSomethingElseText = '';
+	
 	formReset = function() {
 		$("#form-params").hide();
 		$("#form-link-wrapper").show();
@@ -44,6 +51,13 @@
 		formAddress = undefined;
 		formTelephoneNumber = undefined;
 		formBirthDate = undefined;
+		
+		formNettiMokki = false;
+		formMokkiHaku = false;
+		formGoogle = false;
+		formFriend = false;
+		formSomethingElse = false;
+		formSomethingElseText = '';
 		
 		// Remove the "Send" button.
 		$('#form-send-wrapper').empty();
@@ -154,6 +168,28 @@
 				LinenText = 'Kyllä ' + formLinenCount + ' kpl';
 			}
 			
+			let foundString = '';
+			if (formNettiMokki===true || formMokkiHaku===true || formGoogle===true || formFriend===true || formSomethingElse===true) {
+				foundString += '%0D%0ALöysin%20Tahkovaaran%3A%20';
+			}
+			if (formNettiMokki===true) {
+				foundString += 'Nettimökki ';
+			}
+			if (formMokkiHaku===true) {
+				foundString += 'Mökkihaku ';
+			}
+			if (formGoogle===true) {
+				foundString += 'Google ';
+			}
+			if (formFriend===true) {
+				foundString += 'Tuttavalta ';
+			}
+			if (formSomethingElse===true) {
+				foundString += 'Muualta: ';
+				formSomethingElseText = $('#info-something-else-text').val();
+				foundString += formSomethingElseText;
+			}
+			
 			const body = 'Tulo%3A%20'+s_date+'%0D%0ALähtö%3A%20'+e_date+
 			'%0D%0AAikuisia%3A%20'+formPersonCountAdults+
 			'%0D%0ALapsia%3A%20'+formPersonCountChildren+
@@ -165,7 +201,7 @@
 			'%0D%0ASukunimi%3A%20'+formLastName+
 			'%0D%0AOsoite%3A%20'+formAddress+
 			'%0D%0APuhelinnumero%3A%20'+formTelephoneNumber+
-			'%0D%0ASyntymäaika%3A%20'+formBirthDate+
+			'%0D%0ASyntymäaika%3A%20'+formBirthDate+foundString+
 			'%0D%0AJos haluat voit lisätä vielä vapaamuotoisen viestin tähän%3A%0D%0A%0D%0A%0D%0A';
 			// LF 	line feed 			%0A
 			// CR 	carriage return 	%0D
@@ -269,7 +305,7 @@
 			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s6">'+
 					'<div class="row" style="margin-top:24px;margin-bottom:0;">'+
-						'<p style="padding-left:1rem"><label><input type="checkbox" id="hottub" class="filled-in" /><span>Kylpypalju (lisähintaan)</span></label></p>'+
+						'<p style="padding-left:1rem"><label><input type="checkbox" id="hottub" class="filled-in" /><span>Kylpypalju</span></label></p>'+
 					'</div>'+
 				'</div>'+
 				'<div class="col s6 center" id="hottub-days-wrapper" style="display:none">'+
@@ -607,6 +643,83 @@
 				formGenerateMailToLink();
 			}
 		});
+		/*
+		Mistä löysit Tahkovaaran?
+		Valinnat:
+		Nettimökki
+		Mökkihaku
+		Google
+		Tuttavalta
+		Muualta -> mistä?
+		*/
+		const extra_info_markup =
+			'<div class="row" style="margin-bottom:0;">'+
+				'<div class="col s12">'+
+					'<div class="row" style="margin-top:16px;margin-bottom:0;">'+
+						'<p style="padding-left:1rem"><label><input type="checkbox" id="info-nettimokki" class="filled-in" /><span>Nettimökki</span></label></p>'+
+						'<p style="padding-left:1rem"><label><input type="checkbox" id="info-mokkihaku" class="filled-in" /><span>Mökkihaku</span></label></p>'+
+						'<p style="padding-left:1rem"><label><input type="checkbox" id="info-google" class="filled-in" /><span>Google</span></label></p>'+
+						'<p style="padding-left:1rem"><label><input type="checkbox" id="info-friend" class="filled-in" /><span>Tuttavalta</span></label></p>'+
+						'<p style="padding-left:1rem"><label><input type="checkbox" id="info-something-else" class="filled-in" /><span>Muualta</span></label></p>'+
+						'<p style="padding-left:1rem;display:none;" id="info-something-else-text-wrapper"><label for="info-something-else-text">Mistä?<input id="info-something-else-text" type="text"></label></p>'+
+					'</div>'+
+				'</div>'+
+			'</div>';
+		$('#extra-info-wrapper').empty().append(extra_info_markup);
+		
+		$('#info-nettimokki').on('change', function () {
+			if ($(this).prop("checked")) {
+				formNettiMokki = true;
+			} else {
+				formNettiMokki = false;
+			}
+			formGenerateMailToLink();
+		});
+		
+		$('#info-mokkihaku').on('change', function () {
+			if ($(this).prop("checked")) {
+				formMokkiHaku = true;
+			} else {
+				formMokkiHaku = false;
+			}
+			formGenerateMailToLink();
+		});
+		
+		$('#info-google').on('change', function () {
+			if ($(this).prop("checked")) {
+				formGoogle = true;
+			} else {
+				formGoogle = false;
+			}
+			formGenerateMailToLink();
+		});
+		
+		$('#info-friend').on('change', function () {
+			if ($(this).prop("checked")) {
+				formFriend = true;
+			} else {
+				formFriend = false;
+			}
+			formGenerateMailToLink();
+		});
+		
+		$('#info-something-else').on('change', function () {
+			if ($(this).prop("checked")) {
+				formSomethingElse = true;
+				$('#info-something-else-text-wrapper').show();
+				
+			} else {
+				formSomethingElse = false;
+				$('#info-something-else-text-wrapper').hide();
+			}
+			formGenerateMailToLink();
+		});
+		
+		$('#info-something-else-text').on('change', function(){
+			formGenerateMailToLink();
+		});
+		
+		
 	});
 	
 	$('#form-cancel').on('click',function() {

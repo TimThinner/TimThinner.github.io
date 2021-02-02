@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="520" height="400" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
+<style>
+.baseline {
+	stroke:#000;
+	stroke-width:10;
+	stroke-linecap:round;
+	stroke-linejoin:round;
+	fill:none;
+}
+.thinnestline {
+	stroke:#000;
+	stroke-width:5;
+	stroke-linecap:round;
+	stroke-linejoin:round;
+	fill:none;
+}
+.circle { 
+	stroke-width: 5;
+	stroke: #000;
+	fill: #fff;
+}
+</style>
+<path class="baseline" d="M100,390 L340,390 L320,390 L320,90 L210,90 L480,90 L480,110 L500,110 L500,20 L30,20 L30,110 L50,110 L50,90 L210,90" />
+<circle class="circle" cx="220" cy="90" r="40" />
+<circle class="circle" cx="220" cy="153.5" r="40" />
+<circle class="circle" cx="220" cy="217" r="40" />
+<circle class="circle" cx="220" cy="280.5" r="40" />
+<circle class="circle" cx="220" cy="344" r="40" />
+<path class="thinnestline" d="M120,390 L120,344 L180,344 L120,344 L120,276 L180,276 L120,276 L120,214 L180,214 L120,214 L120,152 L180,152 L120,152 L120,90 L170,90 L120,90" />
+</svg>

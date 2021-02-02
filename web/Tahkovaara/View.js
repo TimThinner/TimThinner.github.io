@@ -106,6 +106,9 @@ export default class View {
 				setTimeout(() => { 
 					$('#back-button-placeholder').empty().append('<a href="../index.html#SVGAnimation" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>');
 				}, 1000);
+				setTimeout(() => { 
+					$('#svg-file-placeholder').empty().append('Here is <a href="tv.svg" target="_blank">The SVG File.</a>');
+				}, 1000);
 				
 			}, 14000);
 			

@@ -177,7 +177,7 @@ export default class UserElectricityView extends View {
 						'<p style="text-align:center;"><img src="./svg/userpage/electricity.svg" height="80"/></p>'+
 						'<p style="text-align:center;">'+localized_string_description+'</p>'+
 					'</div>'+
-					'<div class="col s12" style="background-color:#fff">'+
+					'<div class="col s12" style="padding-bottom:16px;background-color:#fff">'+
 						'<table class="centered striped">'+
 							'<thead>'+
 								'<tr>'+

@@ -217,7 +217,7 @@ export default class UserHeatingView extends View {
 							//'<i class="material-icons">send</i>'+
 						'</button>'+
 					'</div>'+
-					'<div class="col s12" style="background-color:#fff">'+
+					'<div class="col s12" style="padding-bottom:16px;background-color:#fff">'+
 						'<table class="centered striped">'+
 							'<thead>'+
 								'<tr>'+

@@ -41,9 +41,15 @@ export default class UserAlarmModel extends Model {
 		if (this.MOCKUP) {
 			this.errorMessage = '';
 			this.fetching = true;
-			console.log('FETCHING OLD ALARMS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&%&%&%&%!');
 			setTimeout(() => {
 				//this.alarms = [];
+				/*
+				alarmTimestamp: "2021-01-25T23:00"
+​​​​				alarmType: "Heating Humidity Upper Limit"
+​​​​				refToUser: "nodatabaseid"
+				severity: 3
+				*/
+				console.log(['FETCHING OLD ALARMS this.alarms=',this.alarms]);
 				this.fetching = false;
 				this.ready = true;
 				this.notifyAll({model:this.name, method:'fetched', status:200, message:'OK'});

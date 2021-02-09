@@ -19,6 +19,8 @@
 	let formFirstName = undefined;
 	let formLastName = undefined;
 	let formAddress = undefined;
+	let formPostalcode = undefined;
+	let formCity = undefined;
 	let formTelephoneNumber = undefined;
 	let formBirthDate = undefined;
 	
@@ -49,6 +51,8 @@
 		formFirstName = undefined;
 		formLastName = undefined;
 		formAddress = undefined;
+		formPostalcode = undefined;
+		formCity = undefined;
 		formTelephoneNumber = undefined;
 		formBirthDate = undefined;
 		
@@ -109,6 +113,8 @@
 		formFirstName = $('#first-name').val();
 		formLastName = $('#last-name').val();
 		formAddress = $('#address').val();
+		formPostalcode = $('#postalcode').val();
+		formCity = $('#city').val();
 		formTelephoneNumber = $('#telephone-number').val();
 		formBirthDate = $('#birth-date').val();
 		
@@ -121,13 +127,18 @@
 		if (formAddress.length === 0) {
 			messages.push('Osoite puuttuu!');
 		}
+		if (formPostalcode.length === 0) {
+			messages.push('Postinumero puuttuu!');
+		}
+		if (formCity.length === 0) {
+			messages.push('Postitoimipaikka puuttuu!');
+		}
 		if (formTelephoneNumber.length === 0) {
 			messages.push('Puhelinnumero puuttuu!');
 		}
 		if (formBirthDate.length === 0) {
 			messages.push('Syntymäaika puuttuu!');
 		}
-		
 		return messages;
 	}
 	/*
@@ -200,12 +211,13 @@
 			'%0D%0AEtunimi%3A%20'+formFirstName+
 			'%0D%0ASukunimi%3A%20'+formLastName+
 			'%0D%0AOsoite%3A%20'+formAddress+
+			'%0D%0APostinumero%3A%20'+formPostalcode+
+			'%0D%0APostitoimipaikka%3A%20'+formCity+
 			'%0D%0APuhelinnumero%3A%20'+formTelephoneNumber+
 			'%0D%0ASyntymäaika%3A%20'+formBirthDate+foundString+
 			'%0D%0AJos haluat voit lisätä vielä vapaamuotoisen viestin tähän%3A%0D%0A%0D%0A%0D%0A';
 			// LF 	line feed 			%0A
 			// CR 	carriage return 	%0D
-			
 			const mailto = '<a id="mailto" class="waves-effect waves-light btn" href="mailto:tahkovaara@intelcon.fi?subject=Varaus&body=' + body + '">LÄHETÄ<i class="material-icons right">send</i></a>';
 			$('#form-send-wrapper').empty().append(mailto);
 			$('#mailto').on('click',function() {
@@ -408,6 +420,19 @@
 				'</div>'+
 			'</div>';
 		$('#address-wrapper').empty().append(address_markup);
+		
+		const postalcode_markup =
+			'<div class="row">'+
+				'<div class="input-field col s6">'+
+					'<input id="postalcode" type="text">'+
+					'<label for="postalcode">Postinumero</label>'+
+				'</div>'+
+				'<div class="input-field col s6">'+
+					'<input id="city" type="text">'+
+					'<label for="city">Postitoimipaikka</label>'+
+				'</div>'+
+			'</div>';
+		$('#postalcode-wrapper').empty().append(postalcode_markup);
 		
 		const tel_markup =
 			'<div class="row">'+

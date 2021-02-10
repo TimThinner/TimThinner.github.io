@@ -43,55 +43,61 @@ export default class UserAlarmView extends View {
 	/*
 		Different ALARM types (see BackgroundPeriodicPoller):
 		
-		'Heating Temperature Upper Limit'
-		'Heating Temperature Lower Limit'
-		'Heating Humidity Upper Limit'
-		'Heating Humidity Lower Limit'
+		'HeatingTemperatureUpperLimit'
+		'HeatingTemperatureLowerLimit'
+		'HeatingHumidityUpperLimit'
+		'HeatingHumidityLowerLimit'
 		
-		'Water Hot Upper Limit'
-		'Water Hot Lower Limit'
-		'Water Cold Upper Limit'
-		'Water Cold Lower Limit'
+		'WaterHotUpperLimit'
+		'WaterHotLowerLimit'
+		'WaterColdUpperLimit'
+		'WaterColdLowerLimit'
 		
-		'Energy Upper Limit'
-		'Energy Lower Limit'
+		'EnergyUpperLimit'
+		'EnergyLowerLimit'
 	*/
 	
 	updateLatestValues(param) {
+		const self = this;
 		console.log('UPDATE LATEST VALUES '+param);
 		/*
 			alarmTimestamp: "2021-01-25T23:00"
-​​​​			alarmType: "Heating Humidity Upper Limit"
+​​​​			alarmType: "HeatingHumidityUpperLimit"
 ​​​​			refToUser: "nodatabaseid"
 			severity: 3
 		*/
 		const totals = {
-			'Heating Temperature Upper Limit':0,
-			'Heating Temperature Lower Limit':0,
-			'Heating Humidity Upper Limit':0,
-			'Heating Humidity Lower Limit':0,
-			'Water Hot Upper Limit':0,
-			'Water Hot Lower Limit':0,
-			'Water Cold Upper Limit':0,
-			'Water Cold Lower Limit':0,
-			'Energy Upper Limit':0,
-			'Energy Lower Limit':0
-		};
-		
+			'HeatingTemperatureUpperLimit':0,
+			'HeatingTemperatureLowerLimit':0,
+			'HeatingHumidityUpperLimit':0,
+			'HeatingHumidityLowerLimit':0,
+			'WaterHotUpperLimit':0,
+			'WaterHotLowerLimit':0,
+			'WaterColdUpperLimit':0,
+			'WaterColdLowerLimit':0,
+			'EnergyUpperLimit':0,
+			'EnergyLowerLimit':0
+		}
+		// Go through all alarms to count totals for different types:
 		this.models['UserAlarmModel'].alarms.forEach(a => {
 			//console.log(['alarmTimestamp=',a.alarmTimestamp,' alarmType=',a.alarmType,' refToUser=',a.refToUser,' severity=',a.severity]);
 			totals[a.alarmType]++;
 		});
-		$('#heating-temperature-upper-limit').empty().append(totals['Heating Temperature Upper Limit']);
-		$('#heating-temperature-lower-limit').empty().append(totals['Heating Temperature Lower Limit']);
-		$('#heating-humidity-upper-limit').empty().append(totals['Heating Humidity Upper Limit']);
-		$('#heating-humidity-lower-limit').empty().append(totals['Heating Humidity Lower Limit']);
-		$('#water-hot-upper-limit').empty().append(totals['Water Hot Upper Limit']);
-		$('#water-hot-lower-limit').empty().append(totals['Water Hot Lower Limit']);
-		$('#water-cold-upper-limit').empty().append(totals['Water Cold Upper Limit']);
-		$('#water-cold-lower-limit').empty().append(totals['Water Cold Lower Limit']);
-		$('#energy-upper-limit').empty().append(totals['Energy Upper Limit']);
-		$('#energy-lower-limit').empty().append(totals['Energy Lower Limit']);
+		
+		$('#alarms-table').empty();
+		// If totals for some type is greater than zero, create count as a link to further detailed timechart of alarms.
+		Object.keys(totals).forEach(key => {
+			if (totals[key] > 0) {
+				$('#alarms-table').append('<tr><td>'+key+'</td><td>'+totals[key]+'</td><td ><a id="'+key+'-details" href="javascript:void(0);">VIEW DETAILS</a></td></tr>');
+				// If user clicks on "DETAILS"-link, set the "selected" and switch to USERALARMDETAILS-view.
+				$('#'+key+'-details').on('click',function() {
+					self.models['UserAlarmModel'].selected = key;
+					self.menuModel.setSelected('USERALARMDETAILS');
+				});
+			} else {
+				$('#alarms-table').append('<tr><td>'+key+'</td><td>'+totals[key]+'</td><td></td></tr>');
+			}
+		});
 	}
 	
 	notify(options) {
@@ -146,49 +152,10 @@ export default class UserAlarmView extends View {
 								'<tr>'+
 									'<th>Type</th>'+
 									'<th>Count</th>'+
+									'<th>Details</th>'+
 								'</tr>'+
 							'</thead>'+
-							'<tbody>'+
-								'<tr>'+
-									'<td>Heating Temperature Upper Limit</td>'+
-									'<td id="heating-temperature-upper-limit"></td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Heating Temperature Lower Limit</td>'+
-									'<td id="heating-temperature-lower-limit"></td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Heating Humidity Upper Limit</td>'+
-									'<td id="heating-humidity-upper-limit"></td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Heating Humidity Lower Limit</td>'+
-									'<td id="heating-humidity-lower-limit"></td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Water Hot Upper Limit</td>'+
-									'<td id="water-hot-upper-limit"></td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Water Hot Lower Limit</td>'+
-									'<td id="water-hot-lower-limit"></td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Water Cold Upper Limit</td>'+
-									'<td id="water-cold-upper-limit"></td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Water Cold Lower Limit</td>'+
-									'<td id="water-cold-lower-limit"></td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Energy Upper Limit</td>'+
-									'<td id="energy-upper-limit"></td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Energy Lower Limit</td>'+
-									'<td id="energy-lower-limit"></td>'+
-								'</tr>'+
+							'<tbody id="alarms-table">'+
 							'</tbody>'+
 						'</table>'+
 					'</div>'+
@@ -233,3 +200,48 @@ export default class UserAlarmView extends View {
 		}
 	}
 }
+
+
+
+		/*
+								'<tr>'+
+									'<td>Heating Temperature Upper Limit</td>'+
+									'<td id="heating-temperature-upper-limit"></td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Heating Temperature Lower Limit</td>'+
+									'<td id="heating-temperature-lower-limit"></td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Heating Humidity Upper Limit</td>'+
+									'<td id="heating-humidity-upper-limit"></td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Heating Humidity Lower Limit</td>'+
+									'<td id="heating-humidity-lower-limit"></td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Water Hot Upper Limit</td>'+
+									'<td id="water-hot-upper-limit"></td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Water Hot Lower Limit</td>'+
+									'<td id="water-hot-lower-limit"></td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Water Cold Upper Limit</td>'+
+									'<td id="water-cold-upper-limit"></td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Water Cold Lower Limit</td>'+
+									'<td id="water-cold-lower-limit"></td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Energy Upper Limit</td>'+
+									'<td id="energy-upper-limit"></td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Energy Lower Limit</td>'+
+									'<td id="energy-lower-limit"></td>'+
+								'</tr>'+
+		*/

@@ -20,6 +20,7 @@ export default class UserAlarmModel extends Model {
 	constructor(options) {
 		super(options);
 		this.alarms = [];
+		this.selected = undefined;
 	}
 	
 	clear(prefix) {
@@ -87,22 +88,22 @@ export default class UserAlarmModel extends Model {
 		}
 	}
 	/*
-		"Heating Temperature Upper Limit"
-		"Heating Temperature Lower Limit"
-		"Heating Humidity Upper Limit"
-		"Heating Humidity Lower Limit"
+		"HeatingTemperatureUpperLimit"
+		"HeatingTemperatureLowerLimit"
+		"HeatingHumidityUpperLimit"
+		"HeatingHumidityLowerLimit"
 		
-		"Energy Upper Limit"
-		"Energy Lower Limit"
+		"EnergyUpperLimit"
+		"EnergyLowerLimit"
 		
-		"Water Hot Upper Limit"
-		"Water Hot Lower Limit"
-		"Water Cold Upper Limit"
-		"Water Cold Lower Limit"
+		"WaterHotUpperLimit"
+		"WaterHotLowerLimit"
+		"WaterColdUpperLimit"
+		"WaterColdLowerLimit"
 		
 		const data = {
 			refToUser: UM.id,
-			alarmType: 'Heating Temperature Upper Limit',
+			alarmType: 'HeatingTemperatureUpperLimit',
 			alarmTimestamp: '2020-12-12T12:00',
 			severity: 3
 		};

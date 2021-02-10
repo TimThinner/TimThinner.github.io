@@ -15,7 +15,9 @@ import UserElectricityController from './modules/userelectricity/UserElectricity
 import UserHeatingController from './modules/userheating/UserHeatingController.js';
 import UserWaterController from './modules/userwater/UserWaterController.js';
 import UserAlarmController from './modules/useralarm/UserAlarmController.js';
+import UserAlarmDetailsController from './modules/useralarm/UserAlarmDetailsController.js';
 //import UserAlarmCreateController from './modules/useralarm/UserAlarmCreateController.js';
+
 
 import UserWaterChartsController from './modules/userwater/userwatercharts/UserWaterChartsController.js';
 import UserWaterTargetsController from './modules/userwater/userwatertargets/UserWaterTargetsController.js';
@@ -189,6 +191,8 @@ class MasterController {
 		// Introduce Alarms BEFORE USERPAGE, so that we can "listen" for UserAlarmModel in UserPage.
 		this.controllers['USERALARM'] = new UserAlarmController({name:'USERALARM', master:this, el:'#content', visible:false});
 		this.controllers['USERALARM'].init();
+		this.controllers['USERALARMDETAILS'] = new UserAlarmDetailsController({name:'USERALARMDETAILS', master:this, el:'#content', visible:false});
+		this.controllers['USERALARMDETAILS'].init();
 		// Test the user alarms!
 		//this.controllers['USERALARMCREATE'] = new UserAlarmCreateController({name:'USERALARMCREATE', master:this, el:'#content', visible:false});
 		//this.controllers['USERALARMCREATE'].init();

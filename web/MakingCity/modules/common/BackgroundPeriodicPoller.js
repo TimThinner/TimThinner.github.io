@@ -64,19 +64,19 @@ export default class BackgroundPeriodicPoller {
 						};
 						//console.log(['i=',i,' time=',v.time,' temperature=',v.temperature,' humidity=',v.humidity]);
 						if (v.temperature > TU) {
-							data.alarmType = 'Heating Temperature Upper Limit';
+							data.alarmType = 'HeatingTemperatureUpperLimit';
 							uam.addOne(data, UM.token);
 						}
 						if (v.temperature < TL) {
-							data.alarmType = 'Heating Temperature Lower Limit';
+							data.alarmType = 'HeatingTemperatureLowerLimit';
 							uam.addOne(data, UM.token);
 						}
 						if (v.humidity > HU) {
-							data.alarmType = 'Heating Humidity Upper Limit';
+							data.alarmType = 'HeatingHumidityUpperLimit';
 							uam.addOne(data, UM.token);
 						}
 						if (v.humidity < HL) {
-							data.alarmType = 'Heating Humidity Lower Limit';
+							data.alarmType = 'HeatingHumidityLowerLimit';
 							uam.addOne(data, UM.token);
 						}
 					});
@@ -113,19 +113,19 @@ export default class BackgroundPeriodicPoller {
 					};
 					//console.log(['i=',i,' time=',v.time,' hot=',v.hot,' cold=',v.cold]);
 					if (v.hot > WHU) {
-						data.alarmType = 'Water Hot Upper Limit';
+						data.alarmType = 'WaterHotUpperLimit';
 						uam.addOne(data, UM.token);
 					}
 					if (v.hot < WHL) {
-						data.alarmType = 'Water Hot Lower Limit';
+						data.alarmType = 'WaterHotLowerLimit';
 						uam.addOne(data, UM.token);
 					}
 					if (v.cold > WCU) {
-						data.alarmType = 'Water Cold Upper Limit';
+						data.alarmType = 'WaterColdUpperLimit';
 						uam.addOne(data, UM.token);
 					}
 					if (v.cold < WCL) {
-						data.alarmType = 'Water Cold Lower Limit';
+						data.alarmType = 'WaterColdLowerLimit';
 						uam.addOne(data, UM.token);
 					}
 				});
@@ -156,11 +156,11 @@ export default class BackgroundPeriodicPoller {
 						severity: 3
 					};
 					if (v.energy > EU) {
-						data.alarmType = 'Energy Upper Limit';
+						data.alarmType = 'EnergyUpperLimit';
 						uam.addOne(data, UM.token);
 					}
 					if (v.energy < EL) {
-						data.alarmType = 'Energy Lower Limit';
+						data.alarmType = 'EnergyLowerLimit';
 						uam.addOne(data, UM.token);
 					}
 				});

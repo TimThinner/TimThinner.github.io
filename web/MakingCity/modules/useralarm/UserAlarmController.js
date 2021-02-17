@@ -20,21 +20,12 @@ export default class UserAlarmController extends Controller {
 		});
 		this.models = {};
 	}
-	/*
-		NOTE:
-		- UserWaterNowModel and UserWaterDayModel are created at UserPageController
-		
-		EXTRA params for Models:
-			this.type = options.type;    'sensor', 'energy', 'water'
-			this.limit = options.limit;  1
-			this.range = options.range;
-	*/
+	
 	initialize() {
 		const model = new UserAlarmModel({name:'UserAlarmModel',src:''});
 		model.subscribe(this);
 		this.master.modelRepo.add('UserAlarmModel',model);
 		this.models['UserAlarmModel'] = model;
-		
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

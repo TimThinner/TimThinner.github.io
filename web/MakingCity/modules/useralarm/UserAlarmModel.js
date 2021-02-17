@@ -118,10 +118,24 @@ export default class UserAlarmModel extends Model {
 		
 		if (this.MOCKUP) {
 			
-			this.alarms.push(data); // For testing!
-			setTimeout(() => {
-				this.notifyAll({model:this.name, method:'addOne', status:201, message:'OK'});
-			}, 200);
+			// Check that this alarm is not already in array!
+			let found = false;
+			for (let a of this.alarms) {
+				if (a.refToUser === data.refToUser && 
+					a.alarmType === data.alarmType && 
+					a.alarmTimestamp === data.alarmTimestamp) {
+					found = true;
+					break;
+				}
+			}
+			if (found) {
+				console.log("HEY, ALARM IS ALREADY IN HERE!!!!!!!");
+			} else {
+				this.alarms.push(data); // For testing!
+				setTimeout(() => {
+					this.notifyAll({model:this.name, method:'addOne', status:201, message:'OK'});
+				}, 200);
+			}
 			
 		} else {
 			const myHeaders = new Headers();

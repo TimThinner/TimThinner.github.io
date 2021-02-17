@@ -62,37 +62,44 @@ export default class BackgroundPeriodicPoller {
 				if (Array.isArray(m.values)) {
 					//console.log('============================= max 720 values ============================');
 					m.values.forEach((v,i)=>{
-						const data = {
-							refToUser: UM.id,
-							alarmTimestamp: moment(v.time).format('YYYY-MM-DDTHH:mm'),
-							severity: 3
-						};
-						
-						
 						//console.log(['i=',i,' time=',v.time,' temperature=',v.temperature,' humidity=',v.humidity]);
 						if (v.temperature > TU) {
-							data.alarmType = 'HeatingTemperatureUpperLimit';
-							//console.log(['HeatingTemperatureUpperLimit count=',aaa,' temp=',v.temperature]);
+							const data = {
+								refToUser: UM.id,
+								alarmType: 'HeatingTemperatureUpperLimit',
+								alarmTimestamp: moment(v.time).format('YYYY-MM-DDTHH:mm'),
+								severity: 3
+							};
 							uam.addOne(data, UM.token);
 							aaa++;
 						}
 						if (v.temperature < TL) {
-							data.alarmType = 'HeatingTemperatureLowerLimit';
-							//console.log(['HeatingTemperatureLowerLimit count=',bbb,' temp=',v.temperature]);
+							const data = {
+								refToUser: UM.id,
+								alarmType: 'HeatingTemperatureLowerLimit',
+								alarmTimestamp: moment(v.time).format('YYYY-MM-DDTHH:mm'),
+								severity: 3
+							};
 							uam.addOne(data, UM.token);
 							bbb++;
 						}
 						if (v.humidity > HU) {
-							data.alarmType = 'HeatingHumidityUpperLimit';
-							
-							//console.log(['HeatingHumidityUpperLimit count=',ccc,' humi=',v.humidity]);
-							
+							const data = {
+								refToUser: UM.id,
+								alarmType: 'HeatingHumidityUpperLimit',
+								alarmTimestamp: moment(v.time).format('YYYY-MM-DDTHH:mm'),
+								severity: 3
+							};
 							uam.addOne(data, UM.token);
 							ccc++;
 						}
 						if (v.humidity < HL) {
-							data.alarmType = 'HeatingHumidityLowerLimit';
-							//console.log(['HeatingHumidityLowerLimit count=',ddd,' humi=',v.humidity]);
+							const data = {
+								refToUser: UM.id,
+								alarmType: 'HeatingHumidityLowerLimit',
+								alarmTimestamp: moment(v.time).format('YYYY-MM-DDTHH:mm'),
+								severity: 3
+							};
 							uam.addOne(data, UM.token);
 							ddd++;
 						}
@@ -103,6 +110,8 @@ export default class BackgroundPeriodicPoller {
 				console.log(['HeatingHumidityUpperLimit total=',ccc]);
 				console.log(['HeatingHumidityLowerLimit total=',ddd]);
 				console.log(['TU=',TU,' TL=',TL,' HU=',HU,' HL=',HL]);
+				
+				console.log(['AFTER BPP UserAlarmModel alarms=',uam.alarms]);
 			}
 			
 		} else if (modelName === 'UserWaterTSModel') {

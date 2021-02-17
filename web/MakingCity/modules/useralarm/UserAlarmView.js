@@ -93,6 +93,8 @@ export default class UserAlarmView extends View {
 		
 		//console.log(['tempc=',tempc,' humic=',humic]);
 		
+		console.log(['NOW AT VIEW alarms=',this.models['UserAlarmModel'].alarms]);
+		
 		
 		this.models['UserAlarmModel'].alarms.forEach(a => {
 			//console.log(['alarmTimestamp=',a.alarmTimestamp,' alarmType=',a.alarmType,' refToUser=',a.refToUser,' severity=',a.severity]);

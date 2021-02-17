@@ -59,7 +59,7 @@ export default class UserAlarmView extends View {
 	
 	updateLatestValues(param) {
 		const self = this;
-		console.log('UPDATE LATEST VALUES '+param);
+		//console.log('UPDATE LATEST VALUES '+param);
 		/*
 			alarmTimestamp: "2021-01-25T23:00"
 ​​​​			alarmType: "HeatingHumidityUpperLimit"
@@ -79,10 +79,28 @@ export default class UserAlarmView extends View {
 			'EnergyLowerLimit':0
 		}
 		// Go through all alarms to count totals for different types:
+		
+		/*
+		let tempc=0;
+		let humic=0;
+		this.models['UserAlarmModel'].alarms.forEach(a => {
+			if (a.alarmType==='HeatingTemperatureUpperLimit') {
+				tempc++;
+			} else if (a.alarmType==='HeatingHumidityUpperLimit') {
+				humic++;
+			}
+		});*/
+		
+		//console.log(['tempc=',tempc,' humic=',humic]);
+		
+		
 		this.models['UserAlarmModel'].alarms.forEach(a => {
 			//console.log(['alarmTimestamp=',a.alarmTimestamp,' alarmType=',a.alarmType,' refToUser=',a.refToUser,' severity=',a.severity]);
 			totals[a.alarmType]++;
 		});
+		
+		//console.log(['totals=',totals]);
+		
 		
 		$('#alarms-table').empty();
 		// If totals for some type is greater than zero, create count as a link to further detailed timechart of alarms.
@@ -116,7 +134,7 @@ export default class UserAlarmView extends View {
 				if (this.rendered) {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
-					if (options.status === 200) {
+					if (options.status === 201) {
 						this.updateLatestValues('ALARM MODEL ADDED');
 					}
 				} else {
@@ -136,15 +154,12 @@ export default class UserAlarmView extends View {
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			const localized_string_title = LM['translation'][sel]['USER_ALARM_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_ALARM_DESCRIPTION'];
-			//const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 			
 			const html =
 				'<div class="row">'+
 					'<div class="col s12">'+
 						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-						//'<p style="text-align:center;"><img src="./svg/userpage/water.svg" height="80"/></p>'+
 						'<p style="text-align:center;">'+localized_string_description+'</p>'+
-						//'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'</div>'+
 					'<div class="col s12" style="padding-bottom:16px;background-color:#fff">'+
 						'<table class="striped">'+

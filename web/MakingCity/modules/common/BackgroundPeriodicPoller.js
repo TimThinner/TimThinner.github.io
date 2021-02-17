@@ -54,6 +54,11 @@ export default class BackgroundPeriodicPoller {
 				const HU = UM.heating_humidity_upper;
 				//UM.heating_target_humidity
 				const HL = UM.heating_humidity_lower;
+				
+				let aaa=0;
+				let bbb=0;
+				let ccc=0;
+				let ddd=0;
 				if (Array.isArray(m.values)) {
 					//console.log('============================= max 720 values ============================');
 					m.values.forEach((v,i)=>{
@@ -62,25 +67,42 @@ export default class BackgroundPeriodicPoller {
 							alarmTimestamp: moment(v.time).format('YYYY-MM-DDTHH:mm'),
 							severity: 3
 						};
+						
+						
 						//console.log(['i=',i,' time=',v.time,' temperature=',v.temperature,' humidity=',v.humidity]);
 						if (v.temperature > TU) {
 							data.alarmType = 'HeatingTemperatureUpperLimit';
+							//console.log(['HeatingTemperatureUpperLimit count=',aaa,' temp=',v.temperature]);
 							uam.addOne(data, UM.token);
+							aaa++;
 						}
 						if (v.temperature < TL) {
 							data.alarmType = 'HeatingTemperatureLowerLimit';
+							//console.log(['HeatingTemperatureLowerLimit count=',bbb,' temp=',v.temperature]);
 							uam.addOne(data, UM.token);
+							bbb++;
 						}
 						if (v.humidity > HU) {
 							data.alarmType = 'HeatingHumidityUpperLimit';
+							
+							//console.log(['HeatingHumidityUpperLimit count=',ccc,' humi=',v.humidity]);
+							
 							uam.addOne(data, UM.token);
+							ccc++;
 						}
 						if (v.humidity < HL) {
 							data.alarmType = 'HeatingHumidityLowerLimit';
+							//console.log(['HeatingHumidityLowerLimit count=',ddd,' humi=',v.humidity]);
 							uam.addOne(data, UM.token);
+							ddd++;
 						}
 					});
 				}
+				console.log(['HeatingTemperatureUpperLimit total=',aaa]);
+				console.log(['HeatingTemperatureLowerLimit total=',bbb]);
+				console.log(['HeatingHumidityUpperLimit total=',ccc]);
+				console.log(['HeatingHumidityLowerLimit total=',ddd]);
+				console.log(['TU=',TU,' TL=',TL,' HU=',HU,' HL=',HL]);
 			}
 			
 		} else if (modelName === 'UserWaterTSModel') {

@@ -30,7 +30,7 @@ export default class UserHeatingController extends Controller {
 			type:'sensor',
 			limit:0,
 			range:mTR,
-			timerange: 30  // NOTE: This is always 30 days here!
+			timerange: 30  // NOTE: This is always 30 days here! TEST: 3 days! 4320 values!
 		});
 		model_HeatingMonth.subscribe(this);
 		this.master.modelRepo.add('UserHeatingMonthModel',model_HeatingMonth);

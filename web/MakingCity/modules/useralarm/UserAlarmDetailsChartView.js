@@ -1,5 +1,5 @@
 import View from '../common/View.js';
-
+import CalculatedAlarms from '../common/CalculatedAlarms.js';
 /*
 		this.controller = controller;
 		this.el = controller.el;
@@ -68,10 +68,31 @@ export default class UserAlarmDetailsView extends View {
 		console.log('ALARM DETAILS RENDER CHART!!!!!!!!!!!!!!!!!!!!!!');
 		
 		
+		
+		
+		let myca = new CalculatedAlarms();
+		myca.resetAlarms(30);
+		
+		const alarm_sel = this.models['UserAlarmModel'].selected;
+		console.log(['alarm_sel=',alarm_sel]);
+		
+		this.models['UserAlarmModel'].alarms.forEach(a => {
+			//console.log(['alarmTimestamp=',a.alarmTimestamp,' alarmType=',a.alarmType,' refToUser=',a.refToUser,' severity=',a.severity]);
+			if (a.alarmType === alarm_sel) {
+				
+				//console.log(['alarmTimestamp=',a.alarmTimestamp,' alarmType=',a.alarmType,' refToUser=',a.refToUser,' severity=',a.severity]);
+				myca.addAlarm(a);
+			}
+		});
+		
+		const alarmarray = [];
+		myca.copyTo(alarmarray);
+		
+		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_energy = 'KESKEN...'; //LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE'];
-		
+		const localized_string_alarms = LM['translation'][sel]['USER_ALARM_CHART_TITLE'];
+		/*
 		const alarms = [];
 		const alarm_sel = this.models['UserAlarmModel'].selected;
 		this.models['UserAlarmModel'].alarms.forEach(a => {
@@ -80,6 +101,7 @@ export default class UserAlarmDetailsView extends View {
 				alarms.push(a);
 			}
 		});
+		*/
 		
 		
 		/*
@@ -155,7 +177,7 @@ export default class UserAlarmDetailsView extends View {
 			// these two lines makes the axis to be initially zoomed-in
 			//dateAxis.start = 0.5;
 			dateAxis.keepSelection = true;
-			dateAxis.tooltipDateFormat = "dd.MM.yyyy"; // - HH:mm";
+			dateAxis.tooltipDateFormat = "dd.MM.yyyy"; //-HH:mm";
 			// Axis for 
 			//			this.influxModel.dealsBidsAppKey.forEach(item => {
 			//				this.sumBids += item.totalprice;
@@ -168,7 +190,7 @@ export default class UserAlarmDetailsView extends View {
 			valueAxis.tooltip.disabled = true;
 			
 			valueAxis.min = 0;
-			valueAxis.max = 5;
+			//valueAxis.max = 5;
 			valueAxis.strictMinMax = true;
 			// Pad values by 20%
 			valueAxis.extraMin = 0.2;
@@ -188,9 +210,9 @@ export default class UserAlarmDetailsView extends View {
 			
 			valueAxis.renderer.maxLabelPosition = 0.95;
 			valueAxis.renderer.fontSize = "0.75em";
-			valueAxis.title.text = localized_string_energy;
+			valueAxis.title.text = localized_string_alarms;
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " FUB";
+				return text; //+ " FUB";
 			});
 			
 			//valueAxis.min = 0;
@@ -199,7 +221,7 @@ export default class UserAlarmDetailsView extends View {
 			//const series1 = self.chart.series.push(new am4charts.LineSeries());
 			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			series1.defaultState.transitionDuration = 0;
-			series1.tooltipText = "{valueY.value} FUB";
+			series1.tooltipText = "{valueY.value}";// FUB";
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
@@ -212,9 +234,9 @@ export default class UserAlarmDetailsView extends View {
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
 			
-			series1.data = alarms;
-			series1.dataFields.dateX = "alarmTimestamp";
-			series1.dataFields.valueY = "severity";
+			series1.data = alarmarray;
+			series1.dataFields.dateX = "time";
+			series1.dataFields.valueY = "count";
 			series1.name = "ALARMS";
 			series1.yAxis = valueAxis;
 			
@@ -226,12 +248,12 @@ export default class UserAlarmDetailsView extends View {
 			
 			// Scrollbar
 			//const scrollbarX = new am4charts.XYChartScrollbar();
-			/*
+			
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series1);
 			self.chart.scrollbarX.marginBottom = 20;
 			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-			*/
+			
 			console.log('ALARM DETAILS RENDER CHART END =====================');
 		}); // end am4core.ready()
 	}
@@ -269,7 +291,8 @@ export default class UserAlarmDetailsView extends View {
 			
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<p>'+this.models['UserAlarmModel'].selected+'  KESKEN.... Tähän tulee hälytysten lukumäärä per aikayksikkö koko kuukauden ajalta...</p>'+
+					'<h5>'+this.models['UserAlarmModel'].selected+'</h5>'+
+					'<p>Hälytysten päiväkohtainen lukumäärä kuukauden ajalta.</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

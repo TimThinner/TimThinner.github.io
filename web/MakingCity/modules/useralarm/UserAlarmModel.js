@@ -24,13 +24,17 @@ export default class UserAlarmModel extends Model {
 	}
 	
 	clear(prefix) {
+		/*
 		let new_alarms = [];
 		this.alarms.forEach(a=>{
 			if (a.alarmType.indexOf(prefix)===-1) {
 				new_alarms.push(a);
 			}
 		});
-		this.alarms = new_alarms;
+		*/
+		this.alarms = this.alarms.filter(a => a.alarmType.indexOf(prefix)===-1);
+		//const result = this.alarms.filter(a => a.alarmType.indexOf(prefix)===-1);
+		//this.alarms = result;
 	}
 	
 	fetch(token) {
@@ -46,7 +50,7 @@ export default class UserAlarmModel extends Model {
 				//this.alarms = [];
 				/*
 				alarmTimestamp: "2021-01-25T23:00"
-​​​​				alarmType: "Heating Humidity Upper Limit"
+​​​​				alarmType: "HeatingHumidityUpperLimit"
 ​​​​				refToUser: "nodatabaseid"
 				severity: 3
 				*/

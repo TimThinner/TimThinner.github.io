@@ -42,20 +42,49 @@ export default class DistrictAView extends View {
 		$(this.el).empty();
 	}
 	
+	flowCheck(svgObject, val, pipeName) {
+		if (val === 0) {
+			// If Energy Consumption equals zero => FREEZE the animation!
+			const pipeElement = svgObject.getElementById(pipeName);
+			//pipeElement.style.stroke='#ff0';
+			if (pipeElement.firstElementChild) {
+				// from = "40" set also to = "40", this freezes the "flow".
+				pipeElement.firstElementChild.setAttributeNS(null, 'to', '40');
+			}
+		} else {
+			// Normal flow, red stroke and from 40 to 0.
+			const pipeElement = svgObject.getElementById(pipeName);
+			//pipeElement.style.stroke='#f00';
+			if (pipeElement.firstElementChild) {
+				pipeElement.firstElementChild.setAttributeNS(null, 'to', '0');
+			}
+		}
+	}
 	/*
 		Geothermal part of "flow" is:
 		
 		LANDSCAPE:
-		Giving: <path id="geothermal-pipe" d="M 1300,300 L 1300,350 A 50,50 0 0,1 1250,400 L 1000,400"
-		Taking: <path id="geothermal-pipe" d="M 1000,400 L 1250,400 A 50,50 0 0,0 1300,350 L 1300,300"
+		Giving: <path id="geothermal-pipe" d="M 1400,300 L 1400,380"
+		Taking: <path id="geothermal-pipe" d="M 1400,380 L 1400,300"
+		
+		style="opacity:0.5;stroke:#f00;stroke-width:15px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 		
 		SQUARE:
-		Giving: <path id="geothermal-pipe" d="M 720,260 L 720,300 A 50,50 0 0,1 670,350 L 500,350"
-		Taking: <path id="geothermal-pipe" d="M 500,350 L 670,350 A 50,50 0 0,0 720,300 L 720,260"
+		Giving: <path id="geothermal-pipe" d="M 670,260 L 670,330"
+		Taking: <path id="geothermal-pipe" d="M 670,330 L 670,260"
+		
+		style="opacity:0.5;stroke:#f00;stroke-width:12px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 		
 		PORTRAIT:
-		Giving: <path id="geothermal-pipe" d="M 480,260 L 480,350 A 50,50 0 0,1 430,400 L 300,400"
-		Taking: <path id="geothermal-pipe" d="M 300,400 L 430,400 A 50,50 0 0,1 480,350 L 480,260"
+		Giving: <path id="geothermal-pipe" d="M 380,260 L 380,350"
+		Taking: <path id="geothermal-pipe" d="M 380,350 L 380,260"
+		
+		style="opacity:0.5;stroke:#f00;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+		
+		
 	*/
 	updateOne(svgObject, svgId, val) {
 		const textElement = svgObject.getElementById(svgId);
@@ -79,17 +108,55 @@ export default class DistrictAView extends View {
 				}
 			};
 			const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
-			if (val < 0) {
+			
+			if (val === 0) {
+				// Freeze the animation!
+				const pipeElement = svgObject.getElementById('geothermal-pipe');
+				if (pipeElement.firstElementChild) {
+					// from = "40" set also to = "40", this freezes the "flow".
+					pipeElement.firstElementChild.setAttributeNS(null, 'to', '40');
+				}
+				// Render power YELLOW color!
+				textElement.appendChild(document.createTextNode(Math.abs(val).toFixed(1) + " kW"));
+				textElement.setAttributeNS(null, 'fill', '#ff0');
+				
+			} else if (val < 0) {
+				const pipeElement = svgObject.getElementById('geothermal-pipe');
+				pipeElement.setAttributeNS(null, 'd', ps[mode]['take']);
+				// Remember to set flow back to normal.
+				if (pipeElement.firstElementChild) {
+					pipeElement.firstElementChild.setAttributeNS(null, 'to', '0');
+				}
 				textElement.appendChild(document.createTextNode(Math.abs(val).toFixed(1) + " kW"));
 				textElement.setAttributeNS(null, 'fill', '#f00');
-				const pathElement = svgObject.getElementById('geothermal-pipe');
-				pathElement.setAttributeNS(null, 'd', ps[mode]['take']);
-			} else {
+				
+			} else { // val > 0
+				const pipeElement = svgObject.getElementById('geothermal-pipe');
+				pipeElement.setAttributeNS(null, 'd', ps[mode]['give']);
+				// Remember to set flow back to normal.
+				if (pipeElement.firstElementChild) {
+					pipeElement.firstElementChild.setAttributeNS(null, 'to', '0');
+				}
 				textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
 				textElement.setAttributeNS(null, 'fill', '#0a0');
-				const pathElement = svgObject.getElementById('geothermal-pipe');
-				pathElement.setAttributeNS(null, 'd', ps[mode]['give']);
 			}
+			
+		} else if (svgId === 'district-heating-power') {
+			this.flowCheck(svgObject, val, 'district-heating-pipe');
+			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+			
+		} else if (svgId === 'solar-power') {
+			this.flowCheck(svgObject, val, 'solar-pipe');
+			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+			
+		} else if (svgId === 'kitchen-power') {
+			this.flowCheck(svgObject, val, 'kitchen-pipe');
+			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+			
+		} else if (svgId === 'other-power') {
+			this.flowCheck(svgObject, val, 'others-pipe');
+			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+			
 		} else {
 			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
 		}

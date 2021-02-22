@@ -51,30 +51,30 @@
 <path class="grid-head" d="M0 43 H94" />
 <path class="grid-head" d="M350 100 H600" />
 <text x="360" y="134" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff">S-Market Kaukovainio</text>
-<!--
-<svg x="10" y="30" width="580px" height="100px">
-	<rect x="1" y="1" width="598" height="98" stroke="#fff" stroke-width="1" opacity="0.1" fill="#009688" />
-	<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52px" fill="#fff">S-Market Kaukovainio</text>
-</svg>
--->
-<!-- M 300,500 L 342,500 L 342,760 
-M 260,500 L 426,500 L 426,580
--->
 <g>
 	<path id="p1" d="M 130,400 L 330,400 
-	M 240,260 L 240,520 
+	M 240,400 L 240,520 
 	M 240,520 L 140,520 A 50,50 0 0,0 90,570 L 90,580 
-	M 164,520 L 164,760 
 	M 240,520 L 240,580 
-	M 312,520 L 312,760 
 	M 240,520 L 350,520 A 50,50 0 0,1 400,570 L 400,580"
 	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
 		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 	</path>
-	<!--<path id="geothermal-pipe" d="M 480,260 L 480,350 A 50,50 0 0,1 430,400 L 300,400" 
+	
+	<path id="solar-pipe" d="M 240,260 L 240,400" 
 	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
 		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
-	</path>-->
+	</path>
+	
+	<path id="kitchen-pipe" d="M 164,520 L 164,760" 
+	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	
+	<path id="others-pipe" d="M 312,520 L 312,760" 
+	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
 	
 	<path id="geothermal-pipe" d="M 380,260 L 380,350" 
 	style="opacity:0.5;stroke:#f00;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
@@ -92,9 +92,8 @@ M 260,500 L 426,500 L 426,580
 		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 	</path>
 	
-	
 	<!-- From Compressor to District Heating Network -->
-	<path d="M 430,400 L 480,400" 
+	<path id="district-heating-pipe" d="M 430,400 L 480,400" 
 	style="opacity:0.5;stroke:#f00;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
 		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 	</path>
@@ -140,8 +139,6 @@ M 260,500 L 426,500 L 426,580
 		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text id="cooling-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
-	
-	
 	
 	<!--<text id="lights-power" x="40" y="570" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>
 	<text id="kitchen-power" x="124" y="750" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a"></text>

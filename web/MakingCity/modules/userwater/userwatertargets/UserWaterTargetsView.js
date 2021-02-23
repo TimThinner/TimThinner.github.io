@@ -67,6 +67,47 @@ export default class UserWaterTargetsView extends View {
 		this.targets.water_cold_lower  = UM.water_cold_lower;
 	}
 	
+	
+	
+	/*
+		"WaterHotUpperLimit"
+		"WaterHotLowerLimit"
+		"WaterColdUpperLimit"
+		"WaterColdLowerLimit"
+		
+		const data = {
+			refToUser: UM.id,
+			alarmType: 'WaterHotUpperLimit',
+			alarmTimestamp: '2020-12-12T12:00',
+			severity: 3
+		};
+	*/
+	
+	updateAlarmCount() {
+		const m = this.controller.master.modelRepo.get('UserAlarmModel');
+		let WHUL = 0;
+		let WHLL = 0;
+		let WCUL = 0;
+		let WCLL = 0;
+		m.alarms.forEach(a => {
+			if (a.alarmType==='WaterHotUpperLimit') {
+				WHUL++;
+			} else if (a.alarmType==='WaterHotLowerLimit') {
+				WHLL++;
+				
+			} else if (a.alarmType==='WaterColdUpperLimit') {
+				WCUL++;
+				
+			} else if (a.alarmType==='WaterColdLowerLimit') {
+				WCLL++;
+			}
+		});
+		$('#WHUL-count').empty().append(WHUL);
+		$('#WHLL-count').empty().append(WHLL);
+		$('#WCUL-count').empty().append(WCUL);
+		$('#WCLL-count').empty().append(WCLL);
+	}
+	
 	notify(options) {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
@@ -80,6 +121,8 @@ export default class UserWaterTargetsView extends View {
 					M.toast({displayLength:1000, html: localized_string_target_saved});
 					
 					this.fillTargetsFromUM();
+					this.controller.master.checkAlarms('UserWaterTSModel');
+					this.updateAlarmCount();
 				}
 			}
 		}
@@ -134,6 +177,7 @@ export default class UserWaterTargetsView extends View {
 			const sel = LM.selected;
 			const localized_string_title = LM['translation'][sel]['USER_WATER_TARGETS_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_WATER_TARGETS_BOTH_DESCRIPTION'];
+			const localized_string_alarm_count_description = LM['translation'][sel]['USER_TARGETS_ALARM_COUNT_DESCRIPTION'];
 			
 			const localized_string_subtitle_1 = LM['translation'][sel]['USER_WATER_CHART_LEGEND_HOT'];
 			const localized_string_subtitle_2 = LM['translation'][sel]['USER_WATER_CHART_LEGEND_COLD'];
@@ -148,7 +192,7 @@ export default class UserWaterTargetsView extends View {
 				'<div class="row">'+
 					'<div class="col s12 center">'+
 						'<h4>'+localized_string_title+'</h4>'+
-						'<p>'+localized_string_description+'</p>'+
+						'<p>'+localized_string_description+' <span class="alarm-count-description">'+localized_string_alarm_count_description+'</span></p>'+
 					'</div>'+
 				'</div>'+
 				'<div class="row">'+
@@ -156,12 +200,16 @@ export default class UserWaterTargetsView extends View {
 						'<p>&nbsp;</p>'+
 					'</div>'+
 					'<div class="col s5 center">'+
-						'<h5>'+localized_string_subtitle_1+':</h5><p>&nbsp;</p>'+
+						'<h5>'+localized_string_subtitle_1+':</h5>'+
+						'<p class="alarm-count" id="WHUL-count"></p>'+
 						'<div id="water-hot-slider"></div>'+
+						'<p class="alarm-count" id="WHLL-count"></p>'+
 					'</div>'+
 					'<div class="col s5 center">'+
-						'<h5>'+localized_string_subtitle_2+':</h5><p>&nbsp;</p>'+
+						'<h5>'+localized_string_subtitle_2+':</h5>'+
+						'<p class="alarm-count" id="WCUL-count"></p>'+
 						'<div id="water-cold-slider"></div>'+
+						'<p class="alarm-count" id="WCLL-count"></p>'+
 					'</div>'+
 				'</div>'+
 				'<div class="row">'+
@@ -186,7 +234,13 @@ export default class UserWaterTargetsView extends View {
 			
 			$('#back').on('click',function() {
 				self.controller.master.checkAlarms('UserWaterTSModel');
-				self.menuModel.setSelected('USERWATER');
+				
+				if (typeof self.controller.returnAddress !== 'undefined') {
+					self.menuModel.setSelected(self.controller.returnAddress); // 'USERALARM'
+					self.controller.returnAddress = undefined; // Now the return address is back to default.
+				} else {
+					self.menuModel.setSelected('USERWATER');
+				}
 			});
 			
 			this.handleErrorMessages(this.FELID);
@@ -223,7 +277,7 @@ export default class UserWaterTargetsView extends View {
 			});
 			// Give the slider dimensions
 			hots.style.height = '300px';
-			hots.style.margin = '0 auto 30px';
+			hots.style.margin = '30px auto';
 			hots.noUiSlider.on('change', function (values) {
 				console.log(['values=',values]);
 				self.updateHotWater(values);
@@ -261,13 +315,14 @@ export default class UserWaterTargetsView extends View {
 			});
 			// Give the slider dimensions
 			colds.style.height = '300px';
-			colds.style.margin = '0 auto 30px';
+			colds.style.margin = '30px auto';
 			colds.noUiSlider.on('change', function (values) {
 				// values = ['20.0%','30.0%','40.0%']
 				console.log(['values=',values]);
 				self.updateColdWater(values);
 			});
 			
+			this.updateAlarmCount();
 			this.rendered = true;
 			
 		} else {

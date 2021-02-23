@@ -265,34 +265,29 @@ export default class UserAlarmDetailsView extends View {
 		const UM = this.controller.master.modelRepo.get('UserModel')
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
+		const localized_string_description = LM['translation'][sel]['USER_ALARM_DETAILS_DESCRIPTION'];
 		
-		const localized_string_title = 'Alarm Details';
-		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+		const localized_name = {
+			'HeatingTemperatureUpperLimit':LM['translation'][sel]['USER_ALARM_VIEW_HEATING_TEMPERATURE_UPPER_LIMIT'],
+			'HeatingTemperatureLowerLimit':LM['translation'][sel]['USER_ALARM_VIEW_HEATING_TEMPERATURE_LOWER_LIMIT'],
+			'HeatingHumidityUpperLimit':LM['translation'][sel]['USER_ALARM_VIEW_HEATING_HUMIDITY_UPPER_LIMIT'],
+			'HeatingHumidityLowerLimit':LM['translation'][sel]['USER_ALARM_VIEW_HEATING_HUMIDITY_LOWER_LIMIT'],
+			'WaterHotUpperLimit':LM['translation'][sel]['USER_ALARM_VIEW_WATER_HOT_UPPER_LIMIT'],
+			'WaterHotLowerLimit':LM['translation'][sel]['USER_ALARM_VIEW_WATER_HOT_LOWER_LIMIT'],
+			'WaterColdUpperLimit':LM['translation'][sel]['USER_ALARM_VIEW_WATER_COLD_UPPER_LIMIT'],
+			'WaterColdLowerLimit':LM['translation'][sel]['USER_ALARM_VIEW_WATER_COLD_LOWER_LIMIT'],
+			'EnergyUpperLimit':LM['translation'][sel]['USER_ALARM_VIEW_ENERGY_UPPER_LIMIT'],
+			'EnergyLowerLimit':LM['translation'][sel]['USER_ALARM_VIEW_ENERGY_LOWER_LIMIT']
+		}
+		
+		
+		const sel_alarm = this.models['UserAlarmModel'].selected;
 		
 		const html = 
-		/*
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h4>'+localized_string_title+'</h4>'+
-					'<p>Details for selected AlarmType</p>'+
-					'<p>'+this.models['UserAlarmModel'].selected+'</p>'+
-				'</div>'+
-				'<div class="col s12 center" id="failed"></div>'+
-				'<div class="col s12 center" id="success"></div>'+
-			'</div>'+
-			'<div class="row">'+
-				'<div class="col s12 center" style="margin-top:16px;">'+
-					'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-						'<i class="material-icons left">arrow_back</i>'+
-					'</button>'+
-				'</div>'+
-			'</div>';
-			*/
-			
-			'<div class="row">'+
-				'<div class="col s12 center">'+
-					'<h5>'+this.models['UserAlarmModel'].selected+'</h5>'+
-					'<p>Hälytysten päiväkohtainen lukumäärä kuukauden ajalta.</p>'+
+					'<h4 class="da-wrapper-title">'+localized_name[sel_alarm]+'</h4>'+
+					'<p>'+localized_string_description+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -328,7 +323,5 @@ export default class UserAlarmDetailsView extends View {
 			console.log('UserAlarmDetailsView => render models ARE NOT READY!!!!');
 			this.showSpinner('#'+this.CHARTID);
 		}
-		
-		
 	}
 }

@@ -60,6 +60,53 @@ export default class UserHeatingTargetsView extends View {
 		this.targets.heating_humidity_lower  = UM.heating_humidity_lower;
 	}
 	
+	/*
+		"HeatingTemperatureUpperLimit"
+		"HeatingTemperatureLowerLimit"
+		"HeatingHumidityUpperLimit"
+		"HeatingHumidityLowerLimit"
+		
+		"EnergyUpperLimit"
+		"EnergyLowerLimit"
+		
+		"WaterHotUpperLimit"
+		"WaterHotLowerLimit"
+		"WaterColdUpperLimit"
+		"WaterColdLowerLimit"
+		
+		const data = {
+			refToUser: UM.id,
+			alarmType: 'HeatingTemperatureUpperLimit',
+			alarmTimestamp: '2020-12-12T12:00',
+			severity: 3
+		};
+	*/
+	
+	updateAlarmCount() {
+		const m = this.controller.master.modelRepo.get('UserAlarmModel');
+		let HTUL = 0;
+		let HTLL = 0;
+		let HHUL = 0;
+		let HHLL = 0;
+		m.alarms.forEach(a => {
+			if (a.alarmType==='HeatingTemperatureUpperLimit') {
+				HTUL++;
+			} else if (a.alarmType==='HeatingTemperatureLowerLimit') {
+				HTLL++;
+				
+			} else if (a.alarmType==='HeatingHumidityUpperLimit') {
+				HHUL++;
+				
+			} else if (a.alarmType==='HeatingHumidityLowerLimit') {
+				HHLL++;
+			}
+		});
+		$('#HTUL-count').empty().append(HTUL);
+		$('#HTLL-count').empty().append(HTLL);
+		$('#HHUL-count').empty().append(HHUL);
+		$('#HHLL-count').empty().append(HHLL);
+	}
+	
 	notify(options) {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
@@ -73,6 +120,8 @@ export default class UserHeatingTargetsView extends View {
 					M.toast({displayLength:1000, html: localized_string_target_saved});
 					
 					this.fillTargetsFromUM();
+					this.controller.master.checkAlarms('UserHeatingMonthModel');
+					this.updateAlarmCount();
 				}
 			}
 		}
@@ -127,6 +176,7 @@ export default class UserHeatingTargetsView extends View {
 			const sel = LM.selected;
 			const localized_string_title = LM['translation'][sel]['USER_HEATING_TARGETS_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_HEATING_TARGETS_BOTH_DESCRIPTION'];
+			const localized_string_alarm_count_description = LM['translation'][sel]['USER_TARGETS_ALARM_COUNT_DESCRIPTION'];
 			
 			const localized_string_subtitle_1 = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_TEMPERATURE'];
 			const localized_string_subtitle_2 = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_HUMIDITY'];
@@ -141,7 +191,7 @@ export default class UserHeatingTargetsView extends View {
 				'<div class="row">'+
 					'<div class="col s12 center">'+
 						'<h4>'+localized_string_title+'</h4>'+
-						'<p>'+localized_string_description+'</p>'+
+						'<p>'+localized_string_description+' <span class="alarm-count-description">'+localized_string_alarm_count_description+'</span></p>'+
 					'</div>'+
 				'</div>'+
 				'<div class="row">'+
@@ -149,12 +199,16 @@ export default class UserHeatingTargetsView extends View {
 						'<p>&nbsp;</p>'+
 					'</div>'+
 					'<div class="col s5 center">'+
-						'<h5>'+localized_string_subtitle_1+':</h5><p>&nbsp;</p>'+
+						'<h5>'+localized_string_subtitle_1+':</h5>'+
+						'<p class="alarm-count" id="HTUL-count"></p>'+
 						'<div id="temperature-slider"></div>'+
+						'<p class="alarm-count" id="HTLL-count"></p>'+
 					'</div>'+
 					'<div class="col s5 center">'+
-						'<h5>'+localized_string_subtitle_2+':</h5><p>&nbsp;</p>'+
+						'<h5>'+localized_string_subtitle_2+':</h5>'+
+						'<p class="alarm-count" id="HHUL-count"></p>'+
 						'<div id="humidity-slider"></div>'+
+						'<p class="alarm-count" id="HHLL-count"></p>'+
 					'</div>'+
 				'</div>'+
 				'<div class="row">'+
@@ -178,8 +232,15 @@ export default class UserHeatingTargetsView extends View {
 			//);
 			
 			$('#back').on('click',function() {
+				
 				self.controller.master.checkAlarms('UserHeatingMonthModel');
-				self.menuModel.setSelected('USERHEATING');
+				
+				if (typeof self.controller.returnAddress !== 'undefined') {
+					self.menuModel.setSelected(self.controller.returnAddress); // 'USERALARM'
+					self.controller.returnAddress = undefined; // Now the return address is back to default.
+				} else {
+					self.menuModel.setSelected('USERHEATING');
+				}
 			});
 			
 			this.handleErrorMessages(this.FELID);
@@ -217,7 +278,7 @@ export default class UserHeatingTargetsView extends View {
 			});
 			// Give the slider dimensions
 			temperature.style.height = '300px';
-			temperature.style.margin = '0 auto 30px';
+			temperature.style.margin = '30px auto';
 			temperature.noUiSlider.on('change', function (values) {
 				// values = ["20.0°C", "22.0°C", "24.7°C"]
 				console.log(['values=',values]);
@@ -249,7 +310,11 @@ export default class UserHeatingTargetsView extends View {
 				// Move handle on tap, bars are draggable
 				behaviour: 'tap-drag',
 				//tooltips: [true, true, true],
-				tooltips: [wNumb({decimals: 1, suffix: '%', prefix:localized_string_lower_limit}), wNumb({decimals: 1, suffix: '%',prefix:localized_string_target}), wNumb({decimals: 1, suffix: '%', prefix:localized_string_upper_limit})]
+				tooltips: [
+					wNumb({decimals: 1, suffix: '%', prefix:localized_string_lower_limit}),
+					wNumb({decimals: 1, suffix: '%',prefix:localized_string_target}),
+					wNumb({decimals: 1, suffix: '%', prefix:localized_string_upper_limit})
+				]
 				/*
 				format: wNumb({
 					decimals: 1,
@@ -258,13 +323,15 @@ export default class UserHeatingTargetsView extends View {
 			});
 			// Give the slider dimensions
 			humidity.style.height = '300px';
-			humidity.style.margin = '0 auto 30px';
+			humidity.style.margin = '30px auto';
 			humidity.noUiSlider.on('change', function (values) {
 				// values = ['20.0%','30.0%','40.0%']
 				console.log(['values=',values]);
 				self.updateHumidity(values);
 			});
 			
+			
+			this.updateAlarmCount();
 			this.rendered = true;
 			
 		} else {

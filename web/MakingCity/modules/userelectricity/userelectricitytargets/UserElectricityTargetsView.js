@@ -51,6 +51,33 @@ export default class UserElectricityTargetsView extends View {
 		
 	}
 	
+	
+	/*
+		"EnergyUpperLimit"
+		"EnergyLowerLimit"
+		const data = {
+			refToUser: UM.id,
+			alarmType: 'EnergyUpperLimit',
+			alarmTimestamp: '2020-12-12T12:00',
+			severity: 3
+		};
+	*/
+	
+	updateAlarmCount() {
+		const m = this.controller.master.modelRepo.get('UserAlarmModel');
+		let EUL = 0;
+		let ELL = 0;
+		m.alarms.forEach(a => {
+			if (a.alarmType==='EnergyUpperLimit') {
+				EUL++;
+			} else if (a.alarmType==='EnergyLowerLimit') {
+				ELL++;
+			}
+		});
+		$('#EUL-count').empty().append(EUL);
+		$('#ELL-count').empty().append(ELL);
+	}
+	
 	notify(options) {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
@@ -64,6 +91,8 @@ export default class UserElectricityTargetsView extends View {
 					M.toast({displayLength:1000, html: localized_string_target_saved});
 					
 					this.fillTargetsFromUM();
+					this.controller.master.checkAlarms('UserElectricityTSModel');
+					this.updateAlarmCount();
 				}
 			}
 		}
@@ -99,6 +128,7 @@ export default class UserElectricityTargetsView extends View {
 			const sel = LM.selected;
 			const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TARGETS_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_TARGETS_DESCRIPTION'];
+			const localized_string_alarm_count_description = LM['translation'][sel]['USER_TARGETS_ALARM_COUNT_DESCRIPTION'];
 			
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			
@@ -110,12 +140,14 @@ export default class UserElectricityTargetsView extends View {
 				'<div class="row">'+
 					'<div class="col s12 center">'+
 						'<h4>'+localized_string_title+'</h4>'+
-						'<p>'+localized_string_description+'</p>'+
+						'<p>'+localized_string_description+' <span class="alarm-count-description">'+localized_string_alarm_count_description+'</span></p>'+
 					'</div>'+
 				'</div>'+
 				'<div class="row">'+
 					'<div class="col s12 center">'+
+						'<p class="alarm-count" id="EUL-count"></p>'+
 						'<div id="energy-slider"></div>'+
+						'<p class="alarm-count" id="ELL-count"></p>'+
 					'</div>'+
 				'</div>'+
 				'<div class="row">'+
@@ -141,7 +173,13 @@ export default class UserElectricityTargetsView extends View {
 			$('#back').on('click',function() {
 				// If limits are changed, we must perform Alarm checking immediately.
 				self.controller.master.checkAlarms('UserElectricityTSModel');
-				self.menuModel.setSelected('USERELECTRICITY');
+				
+				if (typeof self.controller.returnAddress !== 'undefined') {
+					self.menuModel.setSelected(self.controller.returnAddress); // 'USERALARM'
+					self.controller.returnAddress = undefined; // Now the return address is back to default.
+				} else {
+					self.menuModel.setSelected('USERELECTRICITY');
+				}
 			});
 			
 			this.handleErrorMessages(this.FELID);
@@ -178,12 +216,13 @@ export default class UserElectricityTargetsView extends View {
 			});
 			// Give the slider dimensions
 			energys.style.height = '300px';
-			energys.style.margin = '0 auto 30px';
+			energys.style.margin = '30px auto';
 			energys.noUiSlider.on('change', function (values) {
 				console.log(['values=',values]);
 				self.updateEnergy(values);
 			});
 			
+			this.updateAlarmCount();
 			this.rendered = true;
 			
 		} else {

@@ -23,6 +23,8 @@ export default class Controller extends PeriodicPoller {
 		
 		this.models = {};
 		this.view   = undefined;
+		// Allow navigation from different views to one view and then back.
+		this.returnAddress = undefined;
 	}
 	
 	remove() {

@@ -15,15 +15,17 @@ export default class UserAlarmDetailsWrapperView extends WrapperView {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_title = 'DETAILS';//LM['translation'][sel]['USER_HEATING_CHART_TITLE'];
+		//const localized_string_title = 'DETAILS';//LM['translation'][sel]['USER_HEATING_CHART_TITLE'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		
 		const html = 
+			/*
 			'<div class="row">'+
 				'<div class="col s12 center">'+
 					'<h3 class="da-wrapper-title">'+localized_string_title+'</h3>'+
 				'</div>'+
 			'</div>'+
+			*/
 			'<div class="row">'+
 				'<div class="col s12 center" id="subview-1">'+
 				'</div>'+
@@ -36,14 +38,6 @@ export default class UserAlarmDetailsWrapperView extends WrapperView {
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
-		/*
-		const UHMM = this.controller.master.modelRepo.get('UserHeatingMonthModel');
-		if (UHMM) {
-			const len = UHMM.values.length/24;
-			$('#time-series-title').empty().append(localized_string_title+' '+len.toFixed(0)+' '+localized_string_x_days);
-		}*/
-		
-		//this.setTimerangeHandlers(['UserHeatingALLModel']);
 		
 		//this.startSwipeEventListeners(
 		//	()=>{this.menuModel.setSelected('USERWATER');},
@@ -51,10 +45,6 @@ export default class UserAlarmDetailsWrapperView extends WrapperView {
 		//);
 		
 		// Assign back-button handler.
-		$('#back').on('click',function() {
-			
-		});
-		
 		$("#back").on('click', function() {
 			self.menuModel.setSelected('USERALARM');
 		});

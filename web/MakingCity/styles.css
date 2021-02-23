@@ -208,6 +208,18 @@ img.logout {
 .view-button:hover {
 	background-color: #fff;
 }
+.table-button {
+	height: 42px;
+	background-color: #eee;
+	border: 1px solid #ccc;
+	cursor: pointer;
+	border-radius: 12px;
+	box-shadow: 2px 2px 3px #aaa;
+}
+.table-button:hover {
+	background-color: #fff;
+}
+
 .important-note {
 	text-align: center;
 	background-color: #ff0;
@@ -304,4 +316,11 @@ table.striped > tbody > tr > td {
 }
 #water-cold-slider .noUi-connect {
 	background: #0ff;
+}
+.alarm-count {
+	font-size: 20px;
+	color: #a00;
+}
+.alarm-count-description {
+	color: #a00;
 }

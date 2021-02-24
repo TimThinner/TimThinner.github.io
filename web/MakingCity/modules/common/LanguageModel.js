@@ -246,7 +246,7 @@ export default class LanguageModel {
 				'DAP_TITLE_B':'lämpö-',
 				'DAP_TITLE_C':'verkko',
 				'DAHB_TITLE':'Kylmälaitteet',
-				'DAHC_TITLE':'Kylmäkoneet',
+				'DAHC_TITLE':'Jäähdytys',
 				'DAHD_TITLE':'Lämmitys',
 				'DAI_TITLE':'Maalämpö',
 				'DAA_POWER':'Teho',

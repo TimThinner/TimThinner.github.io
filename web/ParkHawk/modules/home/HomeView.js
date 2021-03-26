@@ -48,7 +48,7 @@ export default class HomeView {
 			html += '<p><a href="javascript:void(0);" id="'+key+'"><img src="'+this.appDataModel.targets[key].logo+'" height="120" /></a></p>';
 		});
 		html += '</div></div>';
-		html += '<div class="row"><div class="col s12 center"><p>&nbsp;</p><p style="color:#aaa">Copyright &copy; 2020 VTT</p></div></div>';
+		html += '<div class="row"><div class="col s12 center"><p>&nbsp;</p><p style="color:#aaa">Copyright &copy; 2021 VTT</p></div></div>';
 		$(html).appendTo(this.el);
 		
 		// Initialize state and click handlers.

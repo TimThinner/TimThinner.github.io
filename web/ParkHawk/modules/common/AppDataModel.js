@@ -12,7 +12,7 @@ export default class AppDataModel extends EventObserver {
 			'timetables':{logo:'access_time'},
 			'info':{logo:'info'}
 		};
-		this.activeTab = 'home'; // 'map', 'camera', 'timetables', 'info'
+		this.activeTab = 'map'; // 'map', 'camera', 'timetables', 'info'
 		this.targets = {'Nuuksio':{
 			logo: './img/401px-Nuuksion_kp.png',
 			zoom: 11,
@@ -110,7 +110,7 @@ export default class AppDataModel extends EventObserver {
 		const itemID = 'ParkhawkAppData';
 		
 		// By default FIRST item is selected!
-		this.activeTab = 'home';
+		this.activeTab = 'map';
 		// By default Nuuksio is selected!
 		this.activeTarget = 'Nuuksio';
 		

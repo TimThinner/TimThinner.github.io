@@ -3,8 +3,6 @@ import CalculatedEnergy from '../common/CalculatedEnergy.js';
 import CalculatedWater from '../common/CalculatedWater.js';
 import CalculatedHeating from '../common/CalculatedHeating.js';
 
-//import fetchWTO from '../common/fetchWithTimeout.js';
-
 export class ApaFeed {
 	constructor(obj) {
 		this.time = new Date(obj.created_at); // "2020-02-10T00:01:06"
@@ -298,9 +296,6 @@ export default class UserApartmentModel extends Model {
 	doTheFetch(url) {
 		const self = this;
 		
-		
-		// call as usual or with timeout as 3rd argument
-		//fetchWTO(url, options, 20000)// throw after max 20 seconds timeout error
 		fetch(url)
 			.then(function(response) {
 				self.status = response.status;

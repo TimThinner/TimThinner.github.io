@@ -30,6 +30,7 @@ export default class AppDataModel extends EventObserver {
 				priorityStops: ['Hakjärventie','Haltia','Haukkalammentie','Kattila','Siikaniemi','Veikkola']
 			},
 			cameras: [
+				/*
 				{
 					name: 'Haukkalampi 1',
 					loc: 'Haukkalampi',
@@ -37,6 +38,7 @@ export default class AppDataModel extends EventObserver {
 					lat: 60.31002,
 					lon: 24.51705
 				},
+				*/
 				{
 					name: 'Haukkalampi 2',
 					loc: 'Haukkalampi',

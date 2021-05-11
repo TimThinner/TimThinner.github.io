@@ -14,7 +14,7 @@ export default class MenuView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'MenuModel') {
+			if (key === 'MenuModel' || key === 'FingridPowerSystemStateModel') {
 				this.models[key] = this.controller.models[key];
 				this.models[key].subscribe(this);
 			}
@@ -59,17 +59,68 @@ export default class MenuView extends View {
 		}
 	}
 	
+	/*
+		{
+			"value": 1,
+			"start_time": "2021-05-11T11:10:00+0000",
+			"end_time": "2021-05-11T11:10:00+0000"
+		
+		1 = green
+		2 = yellow
+		3 = red
+		4 = black
+		5 = blue
+	*/
+	getFingridPowerSystemStateColor() {
+		let color = '#fff';
+		Object.keys(this.models).forEach(key => {
+			if (key === 'FingridPowerSystemStateModel') {
+				const value = this.models[key].value;
+				if (typeof value !== 'undefined') {
+					if (value === 1) {
+						color = '#0f0';
+					} else if (value === 2) {
+						color = '#ff0';
+					} else if (value === 3) {
+						color = '#f00';
+					} else if (value === 4) {
+						color = '#000';
+					} else if (value === 5) {
+						color = '#00f';
+					}
+				}
+			}
+		});
+		return color;
+	}
+	
+	insertGridSystemState() {
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const elem = svgObject.getElementById('FingridPowerSystemState');
+			if (elem) {
+				elem.style.fill = this.getFingridPowerSystemStateColor();
+			}
+		}
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				
 				console.log("MenuView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
+				
 			} else if (options.model==='VisitorCountModel' && options.method==='get') {
 				
 				if (options.status === 200) {
 					this.insertVisitorCount(options.count);
 				}
 				
+			} else if (options.model==='FingridPowerSystemStateModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					this.insertGridSystemState();
+				}
 			}
 		}
 	}
@@ -279,6 +330,20 @@ export default class MenuView extends View {
 				
 				const ph = svgObject.getElementById('before-buttons-placeholder');
 				ph.appendChild(path);
+				
+				// Draw the state of the Grid indicator:
+				// Circle with color
+				const uc = document.createElementNS('http://www.w3.org/2000/svg', "circle");
+				uc.setAttributeNS(null, 'id', 'FingridPowerSystemState');
+				uc.setAttributeNS(null, 'cx', 0);
+				uc.setAttributeNS(null, 'cy', 5);
+				uc.setAttributeNS(null, 'r', 16);
+				uc.setAttributeNS(null, 'stroke', '#333');
+				uc.setAttributeNS(null, 'stroke-width', '2');
+				//uc.style.fill = '#fff'; // This will overwrite the fill: none; definition in CSS active-menu-button-path
+				uc.style.fill = this.getFingridPowerSystemStateColor();
+				uc.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				ph.appendChild(uc);
 				
 				UB.addEventListener("click", function(){
 					

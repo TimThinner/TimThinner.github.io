@@ -1,6 +1,6 @@
 import Controller from '../common/Controller.js';
 import MenuModel from  './MenuModel.js';
-import FingridPowerSystemStateModel from  './FingridPowerSystemStateModel.js';
+import { FingridPowerSystemStateModel } from  '../fingrid/FingridModels.js';
 import MenuView from './MenuView.js';
 
 export default class MenuController extends Controller {
@@ -9,13 +9,16 @@ export default class MenuController extends Controller {
 		super(options);
 	}
 	
+	
+	
+	
 	init() {
 		const model = new MenuModel({name:'MenuModel',src:'menu'});
 		model.subscribe(this);
 		this.master.modelRepo.add('MenuModel',model);
 		this.models['MenuModel'] = model;
 		
-		const m = new FingridPowerSystemStateModel({name:'FingridPowerSystemStateModel',src:''});
+		const m = new FingridPowerSystemStateModel({name:'FingridPowerSystemStateModel',src:'https://api.fingrid.fi/v1/variable/209/event/json'});
 		m.subscribe(this);
 		this.master.modelRepo.add('FingridPowerSystemStateModel',m);
 		this.models['FingridPowerSystemStateModel'] = m;

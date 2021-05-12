@@ -1,12 +1,6 @@
 import View from '../common/View.js';
 /*
-	
-	
-	
-	
 	<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">THE MAKING-CITY PROJECT</a>
-	
-	
 */
 export default class MenuView extends View {
 	

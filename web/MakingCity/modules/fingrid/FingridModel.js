@@ -1,11 +1,22 @@
 
 import Model from '../common/Model.js';
 
-export default class FingridPowerSystemStateModel extends Model {
+export default class FingridModel extends Model {
 	
 	constructor(options) {
 		super(options);
-		this.value = 1;//undefined;
+		 /*
+			Model has:
+				this.name = options.name;
+				this.src = options.src;
+				this.ready = false;
+				this.errorMessage = '';
+				this.status = 500;
+				this.fetching = false;
+		*/
+		this.value = undefined;
+		this.start_time = undefined;
+		this.end_time = undefined;
 	}
 	/*
 	API-key must be inserted to the http-request header x-api-key, not into the URL-address. 
@@ -21,9 +32,11 @@ export default class FingridPowerSystemStateModel extends Model {
 		const self = this;
 		let status = 500; // error: 500
 		this.errorMessage = '';
-		this.fetching = true;
 		
-		
+		if (this.fetching) {
+			console.log(this.name+' FETCHING ALREADY IN PROCESS!');
+			return;
+		}
 		/*
 		{
 			"value": 1,
@@ -36,14 +49,13 @@ export default class FingridPowerSystemStateModel extends Model {
 		4 = black
 		5 = blue
 		*/
-		status = 200;
+		/*status = 200;
 		setTimeout(()=>{
 			console.log('FETCH FINGRID!');
 			self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
-		},1000);
-		
-		/*
-		const url = 'https://api.fingrid.fi/v1/variable/209/event/json';
+		},1000);*/
+		this.fetching = true;
+		const url = this.src;
 		console.log (['fetch url=',url]);
 		const API_KEY = "nHXHn1v1f157sG4VYAuy92ZypWGtNYf37KSCxl7B";
 		
@@ -59,6 +71,8 @@ export default class FingridPowerSystemStateModel extends Model {
 			.then(function(myJson) {
 				console.log(['myJson=',myJson]);
 				self.value = myJson.value;
+				self.start_time = myJson.start_time;
+				self.end_time = myJson.end_time;
 				
 				self.fetching = false;
 				self.ready = true;
@@ -70,9 +84,5 @@ export default class FingridPowerSystemStateModel extends Model {
 				self.errorMessage = error;
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
 			});
-		*/
 	}
 }
-
-
-

@@ -29,12 +29,12 @@ export default class UserAlarmDetailsView extends View {
 	}
 	
 	show() {
-		console.log('ALARM DETAILS SHOW CALLED!!!!!!!!!!!!!!');
+		//console.log('ALARM DETAILS SHOW CALLED!!!!!!!!!!!!!!');
 		this.render();
 	}
 	
 	hide() {
-		console.log('ALARM DETAILS HIDE CALLED!!!!!!!!!!!!!!');
+		//console.log('ALARM DETAILS HIDE CALLED!!!!!!!!!!!!!!');
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -45,7 +45,7 @@ export default class UserAlarmDetailsView extends View {
 	}
 	
 	remove() {
-		console.log('ALARM DETAILS REMOVE CALLED!!!!!!!!!!!!!!');
+		//console.log('ALARM DETAILS REMOVE CALLED!!!!!!!!!!!!!!');
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -59,17 +59,13 @@ export default class UserAlarmDetailsView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			console.log('ALARM DETAILS NOTIFY CALLED!!!!!!!!!!!!!!');
+			//console.log('ALARM DETAILS NOTIFY CALLED!!!!!!!!!!!!!!');
 		}
 	}
 	
 	renderChart() {
 		const self = this;
-		console.log('ALARM DETAILS RENDER CHART!!!!!!!!!!!!!!!!!!!!!!');
-		
-		
-		
-		
+		//console.log('ALARM DETAILS RENDER CHART!!!!!!!!!!!!!!!!!!!!!!');
 		let myca = new CalculatedAlarms();
 		myca.resetAlarms(30);
 		

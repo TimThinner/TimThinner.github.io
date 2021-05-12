@@ -5,7 +5,7 @@ export default class FingridPowerSystemStateModel extends Model {
 	
 	constructor(options) {
 		super(options);
-		this.value = undefined;
+		this.value = 1;//undefined;
 	}
 	/*
 	API-key must be inserted to the http-request header x-api-key, not into the URL-address. 
@@ -23,7 +23,7 @@ export default class FingridPowerSystemStateModel extends Model {
 		this.errorMessage = '';
 		this.fetching = true;
 		
-		const url = 'https://api.fingrid.fi/v1/variable/209/event/json';
+		
 		/*
 		{
 			"value": 1,
@@ -36,6 +36,14 @@ export default class FingridPowerSystemStateModel extends Model {
 		4 = black
 		5 = blue
 		*/
+		status = 200;
+		setTimeout(()=>{
+			console.log('FETCH FINGRID!');
+			self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+		},1000);
+		
+		/*
+		const url = 'https://api.fingrid.fi/v1/variable/209/event/json';
 		console.log (['fetch url=',url]);
 		const API_KEY = "nHXHn1v1f157sG4VYAuy92ZypWGtNYf37KSCxl7B";
 		
@@ -62,6 +70,7 @@ export default class FingridPowerSystemStateModel extends Model {
 				self.errorMessage = error;
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
 			});
+		*/
 	}
 }
 

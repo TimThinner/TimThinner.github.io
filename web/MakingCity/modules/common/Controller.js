@@ -39,6 +39,7 @@ export default class Controller extends PeriodicPoller {
 	}
 	
 	hide() {
+		console.log(['HIDE CONTROLLER ',this.name]);
 		super.hide();
 		if (this.view) {
 			this.view.hide();

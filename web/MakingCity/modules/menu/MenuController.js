@@ -20,7 +20,7 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('FingridPowerSystemStateModel',m);
 		this.models['FingridPowerSystemStateModel'] = m;
 		
-		
+		// 180000
 		this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel']}; // once per 3 minutes.
 		
 		this.view = new MenuView(this);

@@ -17,6 +17,30 @@ export default class GridPageView extends View {
 		});
 		this.rendered = false;
 		this.FELID = 'grid-page-view-failure';
+		
+		this.chart = undefined; // We have a chart!
+		
+		this.table_labels = {
+			'FingridPowerSystemStateModel':{'label':'Power system state','shortname':'Power State'},
+			'FingridElectricityProductionFinlandModel':{'label':'Electricity production in Finland','shortname':'Electricity Production'},
+			'FingridElectricityConsumptionFinlandModel':{'label':'Electricity consumption in Finland','shortname':'Electricity Consumption'},
+			'FingridNuclearPowerProductionFinlandModel':{'label':'Nuclear power production','shortname':'Nuclear'},
+			'FingridHydroPowerProductionFinlandModel':{'label':'Hydro power production','shortname':'Hydro'},
+			'FingridWindPowerProductionFinlandModel':{'label':'Wind power production','shortname':'Wind'},
+			//'FingridCondensingPowerProductionFinlandModel':{'label':'Condensing power production','shortname':'AA'},
+			'FingridOtherPowerProductionFinlandModel':{'label':'Other production','shortname':'Other'},
+			'FingridIndustrialCogenerationProductionFinlandModel':{'label':'Industrial cogeneration','shortname':'Cogeneration'},
+			'FingridCogenerationDHProductionFinlandModel':{'label':'Cogeneration of district heating','shortname':'Cogeneration DH'},
+			'FingridSolarPowerFinlandModel':{'label':'Solar power forecast','shortname':'Solar forecast'},
+			'FingridTransmissionFinlandCentralSwedenModel':{'label':'Transmission between Finland and Central Sweden','shortname':'Fin Central Swe'},
+			'FingridTransmissionFinlandEstoniaModel':{'label':'Transmission between Finland and Estonia','shortname':'Fin Estonia'},
+			'FingridTransmissionFinlandNorthernSwedenModel':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
+			'FingridTransmissionFinlandRussiaModel':{'label':'Transmission between Finland and Russia','shortname':'Fin Rus'},
+			'FingridTransmissionFinlandNorwayModel':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
+		}
+		/*
+		Other production inc. estimated small-scale production and reserve power plants
+		*/
 	}
 	
 	show() {
@@ -24,11 +48,19 @@ export default class GridPageView extends View {
 	}
 	
 	hide() {
+		if (typeof this.chart !== 'undefined') {
+			this.chart.dispose();
+			this.chart = undefined;
+		}
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		if (typeof this.chart !== 'undefined') {
+			this.chart.dispose();
+			this.chart = undefined;
+		}
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -54,10 +86,10 @@ export default class GridPageView extends View {
 		return color;
 	}
 	
-	createTrafficLight(value) {
+	createTrafficLight(mname, value) {
 		// Draw the state of the Grid indicator:
 		// Circle with color
-		const svg = document.querySelector("#fingrid-power-system-state-value-svg");
+		const svg = document.querySelector('#'+mname+'-value-svg');
 		const uc = document.createElementNS('http://www.w3.org/2000/svg', "circle");
 		uc.setAttributeNS(null, 'cx', 0);
 		uc.setAttributeNS(null, 'cy', 0);
@@ -70,38 +102,99 @@ export default class GridPageView extends View {
 		svg.appendChild(uc);
 	}
 	
-	updateFingridPowerSystemState() {
-		const value = this.models['FingridPowerSystemStateModel'].value;
-		const start_time = this.models['FingridPowerSystemStateModel'].start_time;
+	updateTable(mname) {
 		
-		this.createTrafficLight(value);
+		//console.log(['updateTable mname=',mname]);
 		
-		$('#fingrid-power-system-state-timestamp').empty().append(start_time);
+		const value = this.models[mname].value;
+		 // Use Moment.js to automatically change Zulu-timestamp to local time.
+		const start_time = moment(this.models[mname].start_time);
+		const local_start_time = start_time.format('DD.MM.YYYY HH:mm');
+		
+		if (mname === 'FingridSolarPowerFinlandModel') {
+			
+			
+		} else if (mname === 'FingridPowerSystemStateModel') {
+			this.createTrafficLight(mname, value);
+			$('#'+mname+'-timestamp').empty().append(local_start_time);
+		} else {
+			$('#'+mname+'-value').empty().append(value);
+			$('#'+mname+'-timestamp').empty().append(local_start_time);
+		}
 	}
 	
-	updateElectricityProductionInFinland() {
-		const value = this.models['FingridElectricityProductionFinlandModel'].value;
-		const start_time = this.models['FingridElectricityProductionFinlandModel'].start_time;
-		$('#fingrid-ele-prod-fin-value').empty().append(value);
-		$('#fingrid-ele-prod-fin-timestamp').empty().append(start_time);
-	}
 	
-	updateElectricityConsumptionInFinland() {
-		const value = this.models['FingridElectricityConsumptionFinlandModel'].value;
-		const start_time = this.models['FingridElectricityConsumptionFinlandModel'].start_time;
-		$('#fingrid-ele-cons-fin-value').empty().append(value);
-		$('#fingrid-ele-cons-fin-timestamp').empty().append(start_time);
-	}
 	
-	updateNuclearPowerProductionInFinland() {
-		const value = this.models['FingridNuclearPowerProductionFinlandModel'].value;
-		const start_time = this.models['FingridNuclearPowerProductionFinlandModel'].start_time;
-		$('#fingrid-nuclear-power-production-value').empty().append(value);
-		$('#fingrid-nuclear-power-production-timestamp').empty().append(start_time);
+	renderChart() {
+		const self = this;
+		am4core.ready(function() {
+			
+			// Themes begin
+			am4core.useTheme(am4themes_dark);
+			//am4core.useTheme(am4themes_animated);
+			// Themes end
+			
+			am4core.options.autoSetClassName = true;
+			am4core.options.autoDispose = true;
+			
+			//am4core.options.autoSetClassName = true;
+			// Create chart
+			self.chart = am4core.create("fingrid-chart", am4charts.XYChart);
+			self.chart.padding(30, 15, 30, 15);
+			//self.chart.colors.step = 3;
+			
+			self.chart.numberFormatter.numberFormat = "#.##";
+			
+			
+			// Create chart instance
+			self.chart.data = [];
+			
+			Object.keys(self.table_labels).forEach(key => {
+				if (key === 'FingridPowerSystemStateModel' || key === 'FingridSolarPowerFinlandModel') {
+					
+				} else {
+					self.chart.data.push({
+						"name": key,
+						"shortname": self.table_labels[key].shortname,
+						"value":self.models[key].value
+					});
+				}
+			});
+			
+			// Create axes
+			var categoryAxis = self.chart.xAxes.push(new am4charts.CategoryAxis());
+			categoryAxis.dataFields.category = "shortname";
+			categoryAxis.renderer.grid.template.location = 0;
+			categoryAxis.renderer.minGridDistance = 30;
+			
+			categoryAxis.renderer.labels.template.adapter.add("dy", function(dy, target) {
+				if (target.dataItem && target.dataItem.index & 2 == 2) {
+					return dy + 25;
+				}
+				return dy;
+			});
+			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
+			
+			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
+				return text + " MW";
+			});
+			
+			// Create series
+			var series = self.chart.series.push(new am4charts.ColumnSeries());
+			series.dataFields.valueY = "value";
+			series.dataFields.categoryX = "shortname";
+			series.name = "Values";
+			series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
+			series.columns.template.fillOpacity = .8;
+			
+			var columnTemplate = series.columns.template;
+			columnTemplate.strokeWidth = 2;
+			columnTemplate.strokeOpacity = 1;
+		}); // end am4core.ready()
 	}
 	
 	createTable(fid) {
-		const html = '<table class="striped">'+
+		let html = '<table class="striped">'+
 			'<thead>'+
 				'<tr>'+
 					'<th>Data</th>'+
@@ -109,62 +202,64 @@ export default class GridPageView extends View {
 					'<th>Timestamp</th>'+
 				'</tr>'+
 			'</thead>'+
-			'<tbody>'+
-				'<tr>'+
-					'<td>Power system state</td>'+
-					'<td id="fingrid-power-system-state-value">'+
-						'<svg id="fingrid-power-system-state-value-svg" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="-15 -15 30 30">'+
+			'<tbody>';
+		
+		Object.keys(this.table_labels).forEach(key => {
+			
+			if (key === 'FingridSolarPowerFinlandModel') {
+				
+			}
+			else if (key === 'FingridPowerSystemStateModel') {
+				html += '<tr>'+
+					'<td>'+this.table_labels[key].label+'</td>'+
+					'<td id="'+key+'-value">'+
+						'<svg id="'+key+'-value-svg" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="-15 -15 30 30">'+
 							'<circle cx="0" cy="0" r="12" fill="#fff" />'+
 						'</svg>'+
 					'</td>'+
-					'<td id="fingrid-power-system-state-timestamp"></td>'+
-				'</tr>'+
-				'<tr>'+
-					'<td>Electricity production in Finland</td>'+
-					'<td id="fingrid-ele-prod-fin-value"></td>'+
-					'<td id="fingrid-ele-prod-fin-timestamp"></td>'+
-				'</tr>'+
-				'<tr>'+
-					'<td>Electricity consumption in Finland</td>'+
-					'<td id="fingrid-ele-cons-fin-value"></td>'+
-					'<td id="fingrid-ele-cons-fin-timestamp"></td>'+
-				'</tr>'+
-				'<tr>'+
-					'<td>Nuclear power production</td>'+
-					'<td id="fingrid-nuclear-power-production-value"></td>'+
-					'<td id="fingrid-nuclear-power-production-timestamp"></td>'+
-				'</tr>'+
-			'</tbody>'+
-		'</table>';
+					'<td id="'+key+'-timestamp"></td>'+
+				'</tr>';
+			} else {
+				html += '<tr>'+
+					'<td>'+this.table_labels[key].label+'</td>'+
+					'<td id="'+key+'-value"></td>'+
+					'<td id="'+key+'-timestamp"></td>'+
+				'</tr>';
+			}
+		});
+		html += '</tbody></table>';
 		$(html).appendTo(fid);
-		
-		
-		/*
-		
-		Hydro power production
-		Power system state
-		Wind power production
-		Condensing power production
-		Other production inc. estimated small-scale production and reserve power plants
-		Industrial cogeneration
-		Cogeneration of district heating
-		Solar power
-		Transmission between Finland and Central Sweden
-		Transmission between Finland and Estonia
-		Transmission between Finland and Northern Sweden
-		Transmission between Finland and Russia
-		Transmission between Finland and Norway
-		*/
 	}
 	
 	notify(options) {
+		
+		const key_array = Object.keys(this.table_labels);
+		
 		if (this.controller.visible) {
-			if (options.model==='FingridPowerSystemStateModel' && options.method==='fetched') {
+			
+			if (key_array.includes(options.model) && options.method==='fetched') {
+				
 				if (options.status === 200) {
-					console.log('GridPageView => FingridPowerSystemStateModel fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
-						this.updateFingridPowerSystemState();
+						
+						this.updateTable(options.model);
+						
+						if (typeof this.chart !== 'undefined') {
+							// SEE: https://www.amcharts.com/docs/v4/concepts/data/
+							// Manipulating existing data points
+							const name = options.model;
+							this.chart.data.forEach(d=>{
+								if (d.name === name) {
+									d.value = this.models[name].value;
+								}
+							});
+							this.chart.invalidateRawData();
+							
+						} else {
+							this.renderChart();
+						}
+						
 					} else {
 						this.render();
 					}
@@ -184,82 +279,7 @@ export default class GridPageView extends View {
 						this.render();
 					}
 				}
-			} else if (options.model==='FingridElectricityProductionFinlandModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					console.log('GridPageView => FingridElectricityProductionFinlandModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateElectricityProductionInFinland();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
-				}
-			} else if (options.model==='FingridElectricityConsumptionFinlandModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					console.log('GridPageView => FingridElectricityConsumptionFinlandModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateElectricityConsumptionInFinland();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
-				}
-			} else if (options.model==='FingridNuclearPowerProductionFinlandModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					console.log('GridPageView => FingridNuclearPowerProductionFinlandModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateNuclearPowerProductionInFinland();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
-				}
-			}
+			} 
 		}
 	}
 	
@@ -281,10 +301,16 @@ export default class GridPageView extends View {
 					//'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'<p style="text-align:center;">'+localized_string_description+'</p>'+
 				'</div>'+
-				'<div class="col s12" id="spinner-wrapper">'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 chart-wrapper dark-theme">'+
+					'<div id="fingrid-chart" class="medium-chart"></div>'+
 				'</div>'+
-				'<div class="col s12" id="table-wrapper" style="margin-bottom:32px;">'+
-				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12" id="table-wrapper"></div>'+
+			'</div>'+
+			'<div class="row">'+
 				'<div class="col s12 center">'+
 					'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 						'<i class="material-icons left">arrow_back</i>'+
@@ -304,17 +330,13 @@ export default class GridPageView extends View {
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
-			
 			this.handleErrorMessages(this.FELID);
-			
-			this.updateFingridPowerSystemState();
-			this.updateElectricityProductionInFinland();
-			this.updateElectricityConsumptionInFinland();
-			this.updateNuclearPowerProductionInFinland();
-		} //else {
-		//	console.log('GridPageView => render models are NOT READY!!!!');
-			// this.el = '#content'
-			//this.showSpinner('#spinner-wrapper');
-		//}
+			Object.keys(this.models).forEach(key => {
+				if (key !== 'MenuModel') {
+					this.updateTable(key);
+				}
+			});
+			this.renderChart();
+		}
 	}
 }

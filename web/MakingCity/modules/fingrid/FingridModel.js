@@ -15,6 +15,7 @@ export default class FingridModel extends Model {
 				this.fetching = false;
 		*/
 		this.value = undefined;
+		this.values = [];
 		this.start_time = undefined;
 		this.end_time = undefined;
 	}
@@ -37,25 +38,44 @@ export default class FingridModel extends Model {
 			console.log(this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
 		}
-		/*
-		{
-			"value": 1,
-			"start_time": "2021-05-11T11:10:00+0000",
-			"end_time": "2021-05-11T11:10:00+0000"
-		
-		1 = green
-		2 = yellow
-		3 = red
-		4 = black
-		5 = blue
-		*/
 		/*status = 200;
 		setTimeout(()=>{
 			console.log('FETCH FINGRID!');
 			self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
 		},1000);*/
 		this.fetching = true;
-		const url = this.src;
+		let url = this.src;
+		
+		if (url.endsWith('?')) {
+			// Round to next full hour.
+			let now = moment();
+			now.add(30, 'minutes').startOf('hour');
+			
+			let future = moment();
+			future.add(30, 'minutes').startOf('hour').add(24, 'hours');
+			
+			// https://api.fingrid.fi/v1/variable/248/events/json?
+			//
+			//start_time=2021-05-14T15%3A00%3A00Z&end_time=2021-05-16T15%3A00%3A00Z
+			url += 'start_time=';
+			
+			let nows = now.toISOString();
+			// remove from the end '.000Z' and add 'Z'
+			let nowz = nows.substring(0, nows.length-5);
+			nowz += 'Z';
+			url += nowz;
+			
+			url += '&end_time=';
+			let futures = future.toISOString();
+			// remove from the end '.000Z' and add 'Z'
+			let futurez = futures.substring(0, futures.length-5);
+			futurez += 'Z';
+			url += futurez;
+			/*
+			"fetch url=", "https://api.fingrid.fi/v1/variable/248/events/json?start_time=2021-05-14T13:00:00.000Z&end_time=2021-05-15T13:00:00.000Z" ]
+			*/
+		}
+		
 		console.log (['fetch url=',url]);
 		const API_KEY = "nHXHn1v1f157sG4VYAuy92ZypWGtNYf37KSCxl7B";
 		
@@ -69,11 +89,14 @@ export default class FingridModel extends Model {
 				return response.json();
 			})
 			.then(function(myJson) {
-				console.log(['myJson=',myJson]);
-				self.value = myJson.value;
-				self.start_time = myJson.start_time;
-				self.end_time = myJson.end_time;
 				
+				if (Array.isArray(myJson)) {
+					self.values = myJson;
+				} else {
+					self.value = myJson.value;
+					self.start_time = myJson.start_time;
+					self.end_time = myJson.end_time;
+				}
 				self.fetching = false;
 				self.ready = true;
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});

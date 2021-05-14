@@ -77,11 +77,11 @@ Condensing power production
 Variable Id 189
 Data Period 3 min
 */
-export class FingridCondensingPowerProductionFinlandModel extends FingridModel {
+/*export class FingridCondensingPowerProductionFinlandModel extends FingridModel {
 	constructor(options) {
 		super(options);
 	}
-}
+}*/
 /*
 Other production inc. estimated small-scale production and reserve power plants
 Variable Id 205

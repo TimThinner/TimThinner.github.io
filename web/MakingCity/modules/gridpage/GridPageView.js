@@ -31,7 +31,7 @@ export default class GridPageView extends View {
 			'FingridOtherPowerProductionFinlandModel':{'label':'Other production','shortname':'Other'},
 			'FingridIndustrialCogenerationProductionFinlandModel':{'label':'Industrial cogeneration','shortname':'Cogeneration'},
 			'FingridCogenerationDHProductionFinlandModel':{'label':'Cogeneration of district heating','shortname':'Cogeneration DH'},
-			'FingridSolarPowerFinlandModel':{'label':'Solar power forecast','shortname':'Solar forecast'},
+			//'FingridSolarPowerFinlandModel':{'label':'Solar power forecast','shortname':'Solar forecast'},
 			'FingridTransmissionFinlandCentralSwedenModel':{'label':'Transmission between Finland and Central Sweden','shortname':'Fin Central Swe'},
 			'FingridTransmissionFinlandEstoniaModel':{'label':'Transmission between Finland and Estonia','shortname':'Fin Estonia'},
 			'FingridTransmissionFinlandNorthernSwedenModel':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
@@ -111,10 +111,10 @@ export default class GridPageView extends View {
 		const start_time = moment(this.models[mname].start_time);
 		const local_start_time = start_time.format('DD.MM.YYYY HH:mm');
 		
-		if (mname === 'FingridSolarPowerFinlandModel') {
+		//if (mname === 'FingridSolarPowerFinlandModel') {
 			
 			
-		} else if (mname === 'FingridPowerSystemStateModel') {
+		if (mname === 'FingridPowerSystemStateModel') {
 			this.createTrafficLight(mname, value);
 			$('#'+mname+'-timestamp').empty().append(local_start_time);
 		} else {
@@ -150,7 +150,7 @@ export default class GridPageView extends View {
 			self.chart.data = [];
 			
 			Object.keys(self.table_labels).forEach(key => {
-				if (key === 'FingridPowerSystemStateModel' || key === 'FingridSolarPowerFinlandModel') {
+				if (key === 'FingridPowerSystemStateModel') { // || key === 'FingridSolarPowerFinlandModel') {
 					
 				} else {
 					self.chart.data.push({
@@ -206,10 +206,10 @@ export default class GridPageView extends View {
 		
 		Object.keys(this.table_labels).forEach(key => {
 			
-			if (key === 'FingridSolarPowerFinlandModel') {
-				
-			}
-			else if (key === 'FingridPowerSystemStateModel') {
+			//if (key === 'FingridSolarPowerFinlandModel') {
+			//	
+			//}
+			if (key === 'FingridPowerSystemStateModel') {
 				html += '<tr>'+
 					'<td>'+this.table_labels[key].label+'</td>'+
 					'<td id="'+key+'-value">'+

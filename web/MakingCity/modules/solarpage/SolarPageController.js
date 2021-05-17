@@ -1,6 +1,6 @@
 import Controller from '../common/Controller.js';
-import SolarPageModel from  './SolarPageModel.js';
 import SolarPageView from './SolarPageView.js';
+import { FingridSolarPowerFinlandModel } from  '../fingrid/FingridModels.js';
 
 export default class SolarPageController extends Controller {
 	
@@ -16,7 +16,7 @@ export default class SolarPageController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key === 'SolarPageModel') {
+			if (key === 'FingridSolarPowerFinlandModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
@@ -24,15 +24,19 @@ export default class SolarPageController extends Controller {
 	}
 	
 	init() {
-		const model = new SolarPageModel({name:'SolarPageModel',src:'to-be-added-in-the-future'});
-		model.subscribe(this);
-		this.master.modelRepo.add('SolarPageModel',model);
-		this.models['SolarPageModel'] = model;
-		
-		this.timers['SolarPageChartView'] = {timer: undefined, interval: 60000, models:['SolarPageModel']};
+		/*
+		NOTE: In SOLAR FORECAST case we are giving here just a base src address, it will be appended with start_time and end_time, like this:
+		https://api.fingrid.fi/v1/variable/248/events/json?start_time=2021-05-14T15:00:00Z&end_time=2021-05-16T15:00:00Z
+		*/
+		const m = new FingridSolarPowerFinlandModel({name:'FingridSolarPowerFinlandModel',src:'https://api.fingrid.fi/v1/variable/248/events/json?'});
+		m.subscribe(this);
+		this.master.modelRepo.add('FingridSolarPowerFinlandModel',m);
+		this.models['FingridSolarPowerFinlandModel'] = m;
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
+		
+		this.timers['SolarPageChartView'] = {timer: undefined, interval: 3600000, models:['FingridSolarPowerFinlandModel']};
 		
 		this.view = new SolarPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

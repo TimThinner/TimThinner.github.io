@@ -51,8 +51,8 @@ export default class FingridModel extends Model {
 			let now = moment();
 			now.add(30, 'minutes').startOf('hour');
 			
-			let future = moment();
-			future.add(30, 'minutes').startOf('hour').add(24, 'hours');
+			let future = moment(); // 24 + 12 hours 
+			future.add(30, 'minutes').startOf('hour').add(36, 'hours');
 			
 			// https://api.fingrid.fi/v1/variable/248/events/json?
 			//

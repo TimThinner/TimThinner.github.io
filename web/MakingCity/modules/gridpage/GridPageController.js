@@ -10,7 +10,7 @@ import {
 /*7*/ FingridOtherPowerProductionFinlandModel,
 /*8*/ FingridIndustrialCogenerationProductionFinlandModel,
 /*9*/ FingridCogenerationDHProductionFinlandModel,
-/*10*/ FingridSolarPowerFinlandModel,
+/* FingridSolarPowerFinlandModel, */
 /*11*/ FingridTransmissionFinlandCentralSwedenModel,
 /*12*/ FingridTransmissionFinlandEstoniaModel,
 /*13*/ FingridTransmissionFinlandNorthernSwedenModel,
@@ -41,7 +41,7 @@ export default class GridPageController extends Controller {
 				key === 'FingridOtherPowerProductionFinlandModel' ||
 				key === 'FingridIndustrialCogenerationProductionFinlandModel' ||
 				key === 'FingridCogenerationDHProductionFinlandModel' ||
-				key === 'FingridSolarPowerFinlandModel' ||
+				//key === 'FingridSolarPowerFinlandModel' ||
 				key === 'FingridTransmissionFinlandCentralSwedenModel' ||
 				key === 'FingridTransmissionFinlandEstoniaModel' ||
 				key === 'FingridTransmissionFinlandNorthernSwedenModel' ||
@@ -104,10 +104,10 @@ export default class GridPageController extends Controller {
 		NOTE: In SOLAR FORECAST case we are giving here just a base src address, it will be appended with start_time and end_time, like this:
 		https://api.fingrid.fi/v1/variable/248/events/json?start_time=2021-05-14T15:00:00Z&end_time=2021-05-16T15:00:00Z
 		*/
-		const m10 = new FingridSolarPowerFinlandModel({name:'FingridSolarPowerFinlandModel',src:'https://api.fingrid.fi/v1/variable/248/events/json?'});
-		m10.subscribe(this);
-		this.master.modelRepo.add('FingridSolarPowerFinlandModel',m10);
-		this.models['FingridSolarPowerFinlandModel'] = m10;
+		//const m10 = new FingridSolarPowerFinlandModel({name:'FingridSolarPowerFinlandModel',src:'https://api.fingrid.fi/v1/variable/248/events/json?'});
+		//m10.subscribe(this);
+		//this.master.modelRepo.add('FingridSolarPowerFinlandModel',m10);
+		//this.models['FingridSolarPowerFinlandModel'] = m10;
 		
 		const m11 = new FingridTransmissionFinlandCentralSwedenModel({name:'FingridTransmissionFinlandCentralSwedenModel',src:'https://api.fingrid.fi/v1/variable/89/event/json'});
 		m11.subscribe(this);
@@ -159,10 +159,10 @@ export default class GridPageController extends Controller {
 				'FingridTransmissionFinlandRussiaModel',
 				'FingridTransmissionFinlandNorwayModel'
 			]};
-		this.timers['GridPageChartViewSolarForecast'] = {timer: undefined, interval: 3600000, 
-			models:[
-				'FingridSolarPowerFinlandModel'
-			]};
+		//this.timers['GridPageChartViewSolarForecast'] = {timer: undefined, interval: 3600000, 
+		//	models:[
+		//		'FingridSolarPowerFinlandModel'
+		//	]};
 			
 		this.view = new GridPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

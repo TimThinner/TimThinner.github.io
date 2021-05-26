@@ -1,6 +1,8 @@
 import Controller from '../common/Controller.js';
 import SolarPageView from './SolarPageView.js';
 import { FingridSolarPowerFinlandModel } from  '../fingrid/FingridModels.js';
+import obixModel from '../fingrid/obixModel.js';
+import EntsoeModel from '../ENTSOE/EntsoeModel.js';
 
 export default class SolarPageController extends Controller {
 	
@@ -16,11 +18,10 @@ export default class SolarPageController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key === 'FingridSolarPowerFinlandModel') {
+			if (key === 'FingridSolarPowerFinlandModel' || key === 'obixModel' || key === 'EntsoeModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
-		
 	}
 	
 	init() {
@@ -33,10 +34,22 @@ export default class SolarPageController extends Controller {
 		this.master.modelRepo.add('FingridSolarPowerFinlandModel',m);
 		this.models['FingridSolarPowerFinlandModel'] = m;
 		
+		// Testing!
+		const m2 = new obixModel({name:'obixModel',src:''});
+		m2.subscribe(this);
+		this.master.modelRepo.add('obixModel',m2);
+		this.models['obixModel'] = m2;
+		
+		const m3 = new EntsoeModel({name:'EntsoeModel',src:'https://transparency.entsoe.eu/api'});
+		m3.subscribe(this);
+		this.master.modelRepo.add('EntsoeModel',m3);
+		this.models['EntsoeModel'] = m3;
+		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.timers['SolarPageChartView'] = {timer: undefined, interval: 3600000, models:['FingridSolarPowerFinlandModel']};
+		// interval 3600 s = 1 hour
+		this.timers['SolarPageChartView'] = {timer: undefined, interval: 3600000, models:['FingridSolarPowerFinlandModel','obixModel','EntsoeModel']};
 		
 		this.view = new SolarPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

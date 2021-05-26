@@ -37,6 +37,7 @@ export class FingridNuclearPowerProductionFinlandModel extends FingridModel {
 /*
 Hydro power production
 Hydro power production in Finland based on the real-time measurements in Fingrid's operation control system. 
+Variable Id 191
 The data is updated every 3 minutes
 */
 export class FingridHydroPowerProductionFinlandModel extends FingridModel {

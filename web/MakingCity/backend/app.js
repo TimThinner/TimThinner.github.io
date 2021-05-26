@@ -14,6 +14,7 @@ const logsRoutes = require('./api/routes/logs');
 const visitorcountRoutes = require('./api/routes/visitorcounts');
 const feedbackRoutes = require('./api/routes/feedbacks');
 const alarmRoutes = require('./api/routes/alarms');
+const proxetteRoutes = require('./api/routes/proxette');
 
 mongoose.connect('mongodb://localhost:27017/makingcity', {
 	useNewUrlParser: true,
@@ -58,6 +59,7 @@ app.use('/logs', logsRoutes);
 app.use('/visitorcounts', visitorcountRoutes);
 app.use('/feedbacks', feedbackRoutes);
 app.use('/alarms', alarmRoutes);
+app.use('/proxette', proxetteRoutes);
 
 // If we reach this line we have to report an error.
 app.use((req,res,next)=>{

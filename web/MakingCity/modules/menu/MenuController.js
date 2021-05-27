@@ -1,6 +1,6 @@
 import Controller from '../common/Controller.js';
 import MenuModel from  './MenuModel.js';
-import { FingridPowerSystemStateModel } from  '../fingrid/FingridModels.js';
+import { FingridPowerSystemStateModel } from  '../energydata/FingridModels.js';
 import MenuView from './MenuView.js';
 
 export default class MenuController extends Controller {

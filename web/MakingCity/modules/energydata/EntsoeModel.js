@@ -135,16 +135,23 @@ export default class EntsoeModel extends Model {
 		const url = this.mongoBackend + '/proxette/entsoe';
 		const body_url = this.src; // URL will be appended in backend.
 		
-		
 		const body_period_start = moment().subtract(2, 'days').format('YYYYMMDD') + '2100'; // yyyyMMddHHmm
 		const body_period_end = moment().subtract(1, 'days').format('YYYYMMDD') + '2100';   // yyyyMMddHHmm
 		console.log(['body_period_start=',body_period_start,' body_period_end=',body_period_end]);
 		
-		
-		// &periodStart=201512312300&periodEnd=201612312300
-		
+		/*
+		switch country 
+		case 'Norway'			idomain = '10YNO-4--------9'
+		case 'Estonia'			idomain = '10Y1001A1001A39I'
+		case 'Finland'			idomain = '10YFI-1--------U'
+		case 'Sweden' % SE1		idomain = '10Y1001A1001A44P'
+		case 'Sweden' % SE3		idomain = '10Y1001A1001A46L'
+		case 'Russia'			idomain = '10Y1001A1001A49F'
+		*/
 		const data = {
 			url: body_url,
+			document_type: 'A65', // or 'A65'
+			domain: '10YFI-1--------U',
 			period_start: body_period_start, // '202105231000'
 			period_end: body_period_end      // '202105241000'
 		};
@@ -162,7 +169,35 @@ export default class EntsoeModel extends Model {
 			})
 			.then(function(myJson) {
 				let message = 'OK';
-				console.log(['myJson=',myJson]);
+				const resu = JSON.parse(myJson);
+				console.log(['resu=',resu]);
+				
+				if (typeof resu !== 'undefined' && typeof resu.GL_MarketDocument !== 'undefined') {
+					if (resu.GL_MarketDocument['TimeSeries'] !== 'undefined' && Array.isArray(resu.GL_MarketDocument['TimeSeries'])) {
+						resu.GL_MarketDocument['TimeSeries'].forEach(ts=> {
+							if (typeof ts.Period !== 'undefined' && Array.isArray(ts.Period)) {
+								ts.Period.forEach(p=> {
+									if (typeof p.Point !== 'undefined' && Array.isArray(p.Point)) {
+										p.Point.forEach(po=> {
+											let position;
+											let quantity;
+											if (typeof po.position !== 'undefined' && Array.isArray(po.position)) {
+												position = po.position[0];
+											}
+											if (typeof po.quantity !== 'undefined' && Array.isArray(po.quantity)) {
+												quantity = po.quantity[0];
+											}
+											console.log(['position=',position,' quantity=',quantity]);
+										});
+									}
+								});
+							}
+						});
+						
+					}
+				} else {
+					console.log('NO.');
+				}
 				
 				console.log([self.name+' fetch status=',self.status]);
 				self.fetching = false;

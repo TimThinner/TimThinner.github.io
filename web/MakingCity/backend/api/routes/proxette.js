@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const https = require('https');
+const http = require('http');
 //const checkAuth = require('../middleware/check-auth');
 const xml2js = require('xml2js');
 /*
@@ -70,16 +71,31 @@ router.post('/entsoe', (req,res,next)=>{
 	const fakeKey = '9f2496b9-6f5e-4396-a1af-263ffccd597a';
 	// 'https://transparency.entsoe.eu/api
 	let url = req.body.url + '?securityToken='+fakeKey;
-	// TODO: Add:
+	// req.body.url
+	// req.body.document_type
 	// req.body.domain
 	// req.body.period_start
 	// req.body.period_end
-	url += '&documentType=A65';
+	
+	// documentTypeGen = 'A75' ; % Actual generation per type 
+	// documentTypeLoad = 'A65' ; % System total load
+	
+	// documentType = 'A75' Actual generation per type	domainzone = 'In_Domain'
+	// documentType = 'A65' System total load			domainzone = ‘outBiddingZone_Domain’
+	
+	url += '&documentType=' + req.body.document_type; // A65 or A75
 	url += '&processType=A16';
-	url += '&outBiddingZone_Domain=10YFI-1--------U'; // Finland
+	
+	// '10YFI-1--------U'; // Finland
+	let domainzone;
+	if (req.body.document_type === 'A65') {
+		domainzone = '&outBiddingZone_Domain=' + req.body.domain;
+	} else {
+		domainzone = '&outBiddingZone_Domain=' + req.body.domain;
+	}
+	url += domainzone;
 	url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm
 	url += '&periodEnd=' + req.body.period_end;       // yyyyMMddHHmm
-	
 	//const auth = req.headers.authorization;
 	//const options = {
 		//headers: {
@@ -102,7 +118,7 @@ router.post('/entsoe', (req,res,next)=>{
 		if (statusCode !== 200) {
 			error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
 		} else if (!/^text\/xml/.test(contentType)) {
-			error = new Error('Invalid content-type.\n' + `Expected application/xml but received ${contentType}`);
+			error = new Error('Invalid content-type.\n' + `Expected text/xml but received ${contentType}`);
 		}
 		if (error) {
 			// Consume response data to free up memory
@@ -114,10 +130,6 @@ router.post('/entsoe', (req,res,next)=>{
 		res2.on('data', (chunk) => { rawData += chunk; });
 		res2.on('end', () => {
 			try {
- 				//const parsedData = JSON.parse(rawData);
-				//console.log(['parsedData=',parsedData]);
-				//res.status(200).json(parsedData);
-				// With XML parser
 				var parser = new xml2js.Parser(/* options */);
 				parser.parseStringPromise(rawData).then(function (result) {
 					//console.log(['result=',result]);
@@ -139,10 +151,6 @@ router.post('/entsoe', (req,res,next)=>{
 		res.status(500).json({error: e});
 	});
 });
-
-
-
-
 
 /*
 
@@ -189,7 +197,53 @@ RESPONSE:
     ]
   }
 ]
-
+*/
+router.post('/russia', (req,res,next)=>{
+	// req.body.url
+	// req.body.start_date
+	// req.body.end_date
+	let url = req.body.url + '&startDate=' + req.body.start_date + '&endDate=' + req.body.end_date;
+	console.log(['url=',url]);
+	const options = {
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	};
+	http.get(url, options, (res2) => {
+		const { statusCode } = res2;
+		const contentType = res2.headers['content-type'];
+		//console.log(['statusCode=',statusCode]);
+		//console.log(['contentType=',contentType]);
+		let error;
+		if (statusCode !== 200) {
+			error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
+		} else if (!/^application\/json/.test(contentType)) {
+			error = new Error('Invalid content-type.\n' + `Expected application/json but received ${contentType}`);
+		}
+		if (error) {
+			// Consume response data to free up memory
+			res2.resume();
+			return res.status(500).json({error: error});
+		}
+		res2.setEncoding('utf8');
+		let rawData = '';
+		res2.on('data', (chunk) => { rawData += chunk; });
+		res2.on('end', () => {
+			try {
+ 				const parsedData = JSON.parse(rawData);
+				//console.log(['parsedData=',parsedData]);
+				res.status(200).json(parsedData);
+			} catch(e) {
+				console.log(['error message=',e.message]);
+				res.status(500).json({error: e});
+			}
+		});
+	}).on('error', (e) => {
+		console.log(['error message=',e.message]);
+		res.status(500).json({error: e});
+	});
+});
+/*
 Sweden
 data are available from https://www.svk.se/om-kraftsystemet/kontrollrummet/
 No need for api key, web request is enough
@@ -234,12 +288,52 @@ data [] last item. {x = unix timestamp in ms, y = value)
     ]
   }
 ]
-
 */
-
-
+router.post('/sweden', (req,res,next)=>{
+	// req.body.url					https://www.svk.se/ControlRoom/GetProductionHistory/
+	// req.body.production_date		YYYY-MM-DD
+	let url = req.body.url + '?productionDate=' + req.body.production_date + '&countryCode=SE';
+	console.log(['url=',url]);
+	const options = {
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	};
+	https.get(url, options, (res2) => {
+		const { statusCode } = res2;
+		const contentType = res2.headers['content-type'];
+		//console.log(['statusCode=',statusCode]);
+		//console.log(['contentType=',contentType]);
+		let error;
+		if (statusCode !== 200) {
+			error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
+		} else if (!/^application\/json/.test(contentType)) {
+			error = new Error('Invalid content-type.\n' + `Expected application/json but received ${contentType}`);
+		}
+		if (error) {
+			// Consume response data to free up memory
+			res2.resume();
+			return res.status(500).json({error: error});
+		}
+		res2.setEncoding('utf8');
+		let rawData = '';
+		res2.on('data', (chunk) => { rawData += chunk; });
+		res2.on('end', () => {
+			try {
+ 				const parsedData = JSON.parse(rawData);
+				//console.log(['parsedData=',parsedData]);
+				res.status(200).json(parsedData);
+			} catch(e) {
+				console.log(['error message=',e.message]);
+				res.status(500).json({error: e});
+			}
+		});
+	}).on('error', (e) => {
+		console.log(['error message=',e.message]);
+		res.status(500).json({error: e});
+	});
+});
 /*
-
 //5.5.6. data parser
 documentType = dtype; // Actual generation per type 
 processType = ptype; // Realised 
@@ -274,11 +368,8 @@ idomain = '10Y1001A1001A46L';
 if ~isa(Powerout2, 'struct') && ~isa(Powerout1, 'struct') Powerout = 0; else if ~isa(Powerout1, 'struct')
 Powerout = Powerout2 ; elseif ~isa(Powerout2, 'struct') Powerout = Powerout1 ; else Powerout = Powerout1 ; listfield = fieldnames(Powerout2) ; for ifield = 1:length(listfield) if isfield(Powerout, listfield{ifield}) Powerout.(listfield{ifield}) = Powerout.(listfield{ifield}) + Powerout2.(listfield{ifield}) ; else Powerout.(listfield{ifield}) = Powerout2.(listfield{ifield}) ; end end end end PoweroutLoad = PoweroutLoad1 + PoweroutLoad2 ; 
 
-
 case 'Russia' idomain = '10Y1001A1001A49F'; 
 [Powerout, PoweroutLoad] = getdata(documentTypeGen, documentTypeLoad, processType, idomain, bid);
-
-
 */
 
 module.exports = router;

@@ -16,7 +16,7 @@ import {
 /*13*/ FingridTransmissionFinlandNorthernSwedenModel,
 /*14*/ FingridTransmissionFinlandRussiaModel,
 /*15*/ FingridTransmissionFinlandNorwayModel
-} from  '../fingrid/FingridModels.js';
+} from  '../energydata/FingridModels.js';
 
 export default class GridPageController extends Controller {
 	

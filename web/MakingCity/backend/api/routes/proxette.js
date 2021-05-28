@@ -73,6 +73,7 @@ router.post('/entsoe', (req,res,next)=>{
 	let url = req.body.url + '?securityToken='+fakeKey;
 	// req.body.url
 	// req.body.document_type
+	// req.body.psr_type
 	// req.body.domain
 	// req.body.period_start
 	// req.body.period_end
@@ -86,12 +87,15 @@ router.post('/entsoe', (req,res,next)=>{
 	url += '&documentType=' + req.body.document_type; // A65 or A75
 	url += '&processType=A16';
 	
+	if (req.body.document_type === 'A75') {
+		url += '&psrType=' + req.body.psr_type;
+	}
 	// '10YFI-1--------U'; // Finland
 	let domainzone;
 	if (req.body.document_type === 'A65') {
 		domainzone = '&outBiddingZone_Domain=' + req.body.domain;
 	} else {
-		domainzone = '&outBiddingZone_Domain=' + req.body.domain;
+		domainzone = '&in_Domain=' + req.body.domain;
 	}
 	url += domainzone;
 	url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm

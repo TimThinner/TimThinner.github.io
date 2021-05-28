@@ -140,18 +140,50 @@ export default class EntsoeModel extends Model {
 		console.log(['body_period_start=',body_period_start,' body_period_end=',body_period_end]);
 		
 		/*
-		switch country 
+		Fetching:
+		
+		Number of document types: 2 => 'A65', 'A75'
+		
+		Number of countries: 5 => 
 		case 'Norway'			idomain = '10YNO-4--------9'
 		case 'Estonia'			idomain = '10Y1001A1001A39I'
 		case 'Finland'			idomain = '10YFI-1--------U'
 		case 'Sweden' % SE1		idomain = '10Y1001A1001A44P'
 		case 'Sweden' % SE3		idomain = '10Y1001A1001A46L'
 		case 'Russia'			idomain = '10Y1001A1001A49F'
+		
+		Number of technologies: 20 => (psrType used only when document type = 'A75')
+		{'B01' 'Biomass'
+		'B02' 'Fossil Brown coal/Lignite'
+		'B03' 'Fossil Coal-derived gas'
+		'B04' 'Fossil Gas'
+		'B05' 'Fossil Hard coal'
+		'B06' 'Fossil Oil'
+		'B07' 'Fossil Oil shale'
+		'B08' 'Fossil Peat'
+		'B09' 'Geothermal'
+		'B10' 'Hydro Pumped Storage'
+		'B11' 'Hydro Run-of-river and poundage'
+		'B12' 'Hydro Water Reservoir'
+		'B13' 'Marine'
+		'B14' 'Nuclear'
+		'B15' 'Other renewable'
+		'B16' 'Solar'
+		'B17' 'Waste'
+		'B18' 'Wind Offshore'
+		'B19' 'Wind Onshore'
+		'B20' 'Other'} ;
 		*/
 		const data = {
 			url: body_url,
-			document_type: 'A65', // or 'A65'
-			domain: '10YFI-1--------U',
+			document_type: 'A65', //'A65'or 'A75'
+			psr_type: 'B01',
+			//domain: '10YFI-1--------U', // Finland
+			domain: '10Y1001A1001A39I', // Estonia
+			//domain: '10YNO-4--------9', // Norway
+			//domain: '10Y1001A1001A44P' // Sweden % SE1
+			//domain: '10Y1001A1001A46L' // Sweden % SE3
+			//domain: '10Y1001A1001A49F' // Russia
 			period_start: body_period_start, // '202105231000'
 			period_end: body_period_end      // '202105241000'
 		};
@@ -175,8 +207,22 @@ export default class EntsoeModel extends Model {
 				if (typeof resu !== 'undefined' && typeof resu.GL_MarketDocument !== 'undefined') {
 					if (resu.GL_MarketDocument['TimeSeries'] !== 'undefined' && Array.isArray(resu.GL_MarketDocument['TimeSeries'])) {
 						resu.GL_MarketDocument['TimeSeries'].forEach(ts=> {
+							
+							if (typeof ts.MktPSRType !== 'undefined' && Array.isArray(ts.MktPSRType)) {
+								ts.MktPSRType.forEach(t=>{
+									if (typeof t.psrType !== 'undefined') {
+										console.log(['t.psrType=',t.psrType[0]]);
+									}
+								});
+							}
+							
 							if (typeof ts.Period !== 'undefined' && Array.isArray(ts.Period)) {
 								ts.Period.forEach(p=> {
+									
+									if (typeof p.resolution !== 'undefined' && Array.isArray(p.resolution)) {
+										console.log(['resolution=',p.resolution[0]]);
+									}
+									
 									if (typeof p.Point !== 'undefined' && Array.isArray(p.Point)) {
 										p.Point.forEach(po=> {
 											let position;

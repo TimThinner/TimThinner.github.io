@@ -1,8 +1,6 @@
-
 import Model from '../common/Model.js';
 
 /*
-
 date time format = ‘yyyyMMddHHmm'
 documentType = 'A75' → Actual generation per type → domainzone = 'In_Domain'
 documentType = 'A65' → System total load → domainzone = ‘outBiddingZone_Domain’
@@ -35,8 +33,37 @@ In the output of the query, the following technology can be retrieved:
 'B19' 'Wind Onshore'
 'B20' 'Other'} ;
 
+Results could be object with keys like this:
+{
+	'A75': {
+		'Norway': {
+			'B01': [  {"position":"18","quantity":"945"}, ... ]
+			...
+			'B20': [  ]
+		},
+		'Estonia': {
+			'B01': [  ],
+			...
+			'B20': [  ]
+		},
+		'Finland': {
+			
+		},
+		'SwedenSE1': {
+			
+		},
+		'SwedenSE3': {
+			
+		},
+		'Russia': {
+			
+		}
+	},
+	'A65': {
+		
+	}
+}
 */
-
 export default class EntsoeModel extends Model {
 	
 	constructor(options) {
@@ -50,10 +77,32 @@ export default class EntsoeModel extends Model {
 				this.status = 500;
 				this.fetching = false;
 		*/
-		//this.value = undefined;
-		//this.values = [];
-		//this.start_time = undefined;
-		//this.end_time = undefined;
+		this.document_type = options.document_type; //'A65'or 'A75'
+		this.psr_type = options.psr_type;
+		switch (options.area_name) {
+			case 'NorwayNO4': 
+				this.domain = '10YNO-4--------9';
+				break;
+			case 'Estonia':
+				this.domain = '10Y1001A1001A39I';
+				break;
+			case 'Finland':
+				this.domain = '10YFI-1--------U';
+				break;
+			case 'SwedenSE1':
+				this.domain = '10Y1001A1001A44P';
+				break;
+			case 'SwedenSE3':
+				this.domain = '10Y1001A1001A46L';
+				break;
+			case 'Russia':
+				this.domain = '10Y1001A1001A49F';
+				break;
+			default:
+				this.domain = undefined;
+				break;
+		}
+		this.points = [];
 	}
 	/*
 	fetch() {
@@ -142,18 +191,26 @@ export default class EntsoeModel extends Model {
 		/*
 		Fetching:
 		
-		Number of document types: 2 => 'A65', 'A75'
+		Number of document types: 2 => 
+			'A65'		System total load
+			'A75'		Actual generation per type
 		
-		Number of countries: 5 => 
-		case 'Norway'			idomain = '10YNO-4--------9'
-		case 'Estonia'			idomain = '10Y1001A1001A39I'
-		case 'Finland'			idomain = '10YFI-1--------U'
-		case 'Sweden' % SE1		idomain = '10Y1001A1001A44P'
-		case 'Sweden' % SE3		idomain = '10Y1001A1001A46L'
-		case 'Russia'			idomain = '10Y1001A1001A49F'
+		A.10. Areas
+		BZ—Bidding Zone
+		BZA—Bidding Zone Aggregation
+		CA—Control Area
+		MBA—Market Balance Area
+		
+		Number of areas: 5 => 
+		case 'NorwayNO4'		idomain = '10YNO-4--------9'		NO4 BZ / MBA
+		case 'Estonia'			idomain = '10Y1001A1001A39I'		Estonia, Elering BZ / CA / MBA
+		case 'Finland'			idomain = '10YFI-1--------U'		Finland, Fingrid BZ / CA / MBA
+		case 'SwedenSE1'		idomain = '10Y1001A1001A44P'		SE1 BZ / MBA
+		case 'SwedenSE3'		idomain = '10Y1001A1001A46L'		SE3 BZ / MBA
+		case 'Russia'			idomain = '10Y1001A1001A49F'		Russia BZ / CA / MBA
 		
 		Number of technologies: 20 => (psrType used only when document type = 'A75')
-		{'B01' 'Biomass'
+		'B01' 'Biomass'
 		'B02' 'Fossil Brown coal/Lignite'
 		'B03' 'Fossil Coal-derived gas'
 		'B04' 'Fossil Gas'
@@ -172,18 +229,13 @@ export default class EntsoeModel extends Model {
 		'B17' 'Waste'
 		'B18' 'Wind Offshore'
 		'B19' 'Wind Onshore'
-		'B20' 'Other'} ;
+		'B20' 'Other'
 		*/
 		const data = {
 			url: body_url,
-			document_type: 'A65', //'A65'or 'A75'
-			psr_type: 'B01',
-			//domain: '10YFI-1--------U', // Finland
-			domain: '10Y1001A1001A39I', // Estonia
-			//domain: '10YNO-4--------9', // Norway
-			//domain: '10Y1001A1001A44P' // Sweden % SE1
-			//domain: '10Y1001A1001A46L' // Sweden % SE3
-			//domain: '10Y1001A1001A49F' // Russia
+			document_type: this.document_type, //'A65'or 'A75'
+			psr_type: this.psr_type,
+			domain:  this.domain,
 			period_start: body_period_start, // '202105231000'
 			period_end: body_period_end      // '202105241000'
 		};
@@ -203,7 +255,6 @@ export default class EntsoeModel extends Model {
 				let message = 'OK';
 				const resu = JSON.parse(myJson);
 				console.log(['resu=',resu]);
-				
 				if (typeof resu !== 'undefined' && typeof resu.GL_MarketDocument !== 'undefined') {
 					if (resu.GL_MarketDocument['TimeSeries'] !== 'undefined' && Array.isArray(resu.GL_MarketDocument['TimeSeries'])) {
 						resu.GL_MarketDocument['TimeSeries'].forEach(ts=> {
@@ -241,10 +292,7 @@ export default class EntsoeModel extends Model {
 						});
 						
 					}
-				} else {
-					console.log('NO.');
 				}
-				
 				console.log([self.name+' fetch status=',self.status]);
 				self.fetching = false;
 				self.ready = true;

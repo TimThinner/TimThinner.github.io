@@ -36,7 +36,7 @@ export default class RussiaModel extends Model {
 		
 		const url = this.mongoBackend + '/proxette/russia';
 		const body_url = this.src; // URL will be appended in backend.
-		const body_start_date = moment().subtract(2, 'days').format('YYYY.MM.DD'); // 'yyyy.MM.dd'
+		const body_start_date = moment().subtract(1, 'days').format('YYYY.MM.DD'); // 'yyyy.MM.dd'
 		const body_end_date = moment().subtract(1, 'days').format('YYYY.MM.DD'); // 'yyyy.MM.dd'
 		
 		const data = {

@@ -147,7 +147,7 @@ export default class SolarPageView extends View {
 							// [{"value":207.483000,"start_time":"2021-05-17T08:00:00+0000","end_time":"2021-05-17T09:00:00+0000"},...]
 							//console.log(['values=',values]);
 							this.chart.data = newdata;
-							console.log('invalidateRawData');
+							//console.log('invalidateRawData');
 							this.chart.invalidateRawData();
 						} else {
 							console.log('RENDER CHART!');

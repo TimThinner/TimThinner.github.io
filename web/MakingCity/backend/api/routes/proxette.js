@@ -5,14 +5,39 @@ const https = require('https');
 const http = require('http');
 //const checkAuth = require('../middleware/check-auth');
 const xml2js = require('xml2js');
+
+
+const Prox = require('../models/prox');
+/*
+
+const proxSchema = mongoose.Schema({
+	_id: mongoose.Schema.Types.ObjectId,
+	url: String,
+	response: String,
+	expiration: Number, // expiration time in seconds
+	updated: Date
+});
+
+If Prox with url is found and not expired, then use response form database.
+This caching is important, because:
+
+ENTSOE NOTE:
+Maximum of 400 requests are accepted per user per minute.
+Count of requests is performed based on per IP address and per security token.
+Reaching of 400 query/minute limit through an unique IP address or security token will result in a temporary ban of 10 minutes.
+When a user reaches the limit, requests coming from the user will be redirected to the different port 81 (8443) 
+which returns "HTTP Status 429 - TOO MANY REQUESTS" with message text  "Max allowed requests per minute from each unique IP is max up to 400 only".
+
+https://transparency.entsoe.eu/content/static_content/Static%20content/web%20api/Guide.html#_query_via_web_browser
+
+*/
+
 /*
 curl -u user:pass -s -H "Content-Type: application/xml" -d "<obj is=\"obix:HistoryFilter\" xmlns=\"http://obix.org/ns/schema/1.0\"> name=\"limit\" val=\"3\" /><abstime name=\"start\" val=\"2021-05-03T09:51:15.062Z\"/><abstime name=\"end\" null=\"true\"/></obj>" https://ba.vtt.fi/TestServlet/testHistory/query/
 ​
 problem with request: Hostname/IP does not match certificate's altnames: IP: 130.188.4.49 is not in the cert's list:
 
 problem with request: Hostname/IP does not match certificate's altnames
-*/
-/*
 */
 //router.post('/obix', checkAuth, (req,res,next)=>{
 router.post('/obix', (req,res,next)=>{
@@ -65,51 +90,7 @@ router.post('/obix', (req,res,next)=>{
 	req2.end();
 });
 
-router.post('/entsoe', (req,res,next)=>{
-	// OK.
-	// Use FAKE key now:
-	const fakeKey = '9f2496b9-6f5e-4396-a1af-263ffccd597a';
-	// 'https://transparency.entsoe.eu/api
-	let url = req.body.url + '?securityToken='+fakeKey;
-	// req.body.url
-	// req.body.document_type
-	// req.body.psr_type
-	// req.body.domain
-	// req.body.period_start
-	// req.body.period_end
-	
-	// documentTypeGen = 'A75' ; % Actual generation per type 
-	// documentTypeLoad = 'A65' ; % System total load
-	
-	// documentType = 'A75' Actual generation per type	domainzone = 'In_Domain'
-	// documentType = 'A65' System total load			domainzone = ‘outBiddingZone_Domain’
-	
-	url += '&documentType=' + req.body.document_type; // A65 or A75
-	url += '&processType=A16';
-	
-	if (req.body.document_type === 'A75') {
-		url += '&psrType=' + req.body.psr_type;
-	}
-	// '10YFI-1--------U'; // Finland
-	let domainzone;
-	if (req.body.document_type === 'A65') {
-		domainzone = '&outBiddingZone_Domain=' + req.body.domain;
-	} else {
-		domainzone = '&in_Domain=' + req.body.domain;
-	}
-	url += domainzone;
-	url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm
-	url += '&periodEnd=' + req.body.period_end;       // yyyyMMddHHmm
-	//const auth = req.headers.authorization;
-	//const options = {
-		//headers: {
-			//'Content-Type': 'application/xml',
-			//'Authorization': auth
-		//}
-	//};
-	
-	console.log(['url=',url]);
-	
+const Entsoe_Fetch_and_Save = (url, expiration, res) => {
 	//https.get(url, options, (res2) => {
 	https.get(url, (res2) => {
 		const { statusCode } = res2;
@@ -134,12 +115,30 @@ router.post('/entsoe', (req,res,next)=>{
 		res2.on('data', (chunk) => { rawData += chunk; });
 		res2.on('end', () => {
 			try {
-				var parser = new xml2js.Parser(/* options */);
+				var parser = new xml2js.Parser();
 				parser.parseStringPromise(rawData).then(function (result) {
 					//console.log(['result=',result]);
 					var json = JSON.stringify(result);
 					//console.log(['json=',json]);
-					res.status(200).json(json);
+					
+					// and SAVE the FRESH copy of response
+					const now = new Date();
+					const prox = new Prox({
+						_id: new mongoose.Types.ObjectId(),
+						url: url,
+						response: json,
+						expiration: expiration,
+						updated: now
+					});
+					prox
+						.save()
+						.then(result=>{
+							res.status(200).json(json);
+						})
+						.catch(err=>{
+							console.log(['err=',err]);
+							res.status(500).json({error:err});
+						})
 				})
 				.catch(function (err) {
 					// Failed
@@ -154,6 +153,148 @@ router.post('/entsoe', (req,res,next)=>{
 		console.log(['error message=',e.message]);
 		res.status(500).json({error: e});
 	});
+};
+
+
+const Entsoe_Fetch_and_Update = (id, url, res) => {
+	//https.get(url, options, (res2) => {
+	https.get(url, (res2) => {
+		const { statusCode } = res2;
+		const contentType = res2.headers['content-type'];
+		
+		//console.log(['statusCode=',statusCode]);
+		//console.log(['contentType=',contentType]);
+		
+		let error;
+		if (statusCode !== 200) {
+			error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
+		} else if (!/^text\/xml/.test(contentType)) {
+			error = new Error('Invalid content-type.\n' + `Expected text/xml but received ${contentType}`);
+		}
+		if (error) {
+			// Consume response data to free up memory
+			res2.resume();
+			return res.status(500).json({error: error});
+		}
+		res2.setEncoding('utf8');
+		let rawData = '';
+		res2.on('data', (chunk) => { rawData += chunk; });
+		res2.on('end', () => {
+			try {
+				var parser = new xml2js.Parser();
+				parser.parseStringPromise(rawData).then(function (result) {
+					//console.log(['result=',result]);
+					var json = JSON.stringify(result);
+					//console.log(['json=',json]);
+					const now = new Date();
+					const updateOps = {
+						'response': json,
+						'updated': now
+					};
+					// and UPDATE the FRESH copy of response
+					Prox.updateOne({_id:id}, {$set: updateOps })
+						.exec() // to get a Promise
+						.then(result=>{
+							res.status(200).json(json);
+						})
+						.catch(err=>{
+							let msg = 'Error in Prox.updateOne()';
+							if (typeof err.message !== 'undefined') {
+								msg += ' err.message='+err.message;
+							}
+							res.status(500).json({message: msg});
+						});
+				})
+				.catch(function (err) {
+					// Failed
+					res.status(500).json({error:err});
+				});
+			} catch(e) {
+				console.log(['error message=',e.message]);
+				res.status(500).json({error: e});
+			}
+		});
+	}).on('error', (e) => {
+		console.log(['error message=',e.message]);
+		res.status(500).json({error: e});
+	});
+};
+
+router.post('/entsoe', (req,res,next)=>{
+	// OK.
+	// Use FAKE key now:
+	const fakeKey = '9f2496b9-6f5e-4396-a1af-263ffccd597a';
+	// 'https://transparency.entsoe.eu/api
+	let url = req.body.url + '?securityToken='+fakeKey;
+	// req.body.url
+	// req.body.document_type
+	// req.body.psr_type
+	// req.body.domain
+	// req.body.period_start
+	// req.body.period_end
+	// req.body.expiration_in_seconds  We are using a cache now!
+	
+	// documentTypeGen = 'A75' ; % Actual generation per type 
+	// documentTypeLoad = 'A65' ; % System total load
+	
+	// documentType = 'A75' Actual generation per type	domainzone = 'In_Domain'
+	// documentType = 'A65' System total load			domainzone = ‘outBiddingZone_Domain’
+	
+	url += '&documentType=' + req.body.document_type; // A65 or A75
+	url += '&processType=A16';
+	
+	if (req.body.document_type === 'A75') {
+		url += '&psrType=' + req.body.psr_type;
+	}
+	// '10YFI-1--------U'; // Finland
+	let domainzone;
+	if (req.body.document_type === 'A65') {
+		domainzone = '&outBiddingZone_Domain=' + req.body.domain;
+	} else {
+		domainzone = '&in_Domain=' + req.body.domain;
+	}
+	url += domainzone;
+	url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm
+	url += '&periodEnd=' + req.body.period_end;       // yyyyMMddHHmm
+	
+	console.log(['url=',url]);
+	
+	const expiration = req.body.expiration_in_seconds;
+	
+	// First check if this url is already in database.
+	Prox.find({url:url})
+		.exec()
+		.then(prox=>{
+			if (prox.length >= 1) {
+				// FOUND! Check if it is expired.
+				//console.log('Found exp=',prox[0].expiration]);
+				//console.log('updated=',prox[0].updated.toISOString()]);
+				
+				console.log('Found');
+				const upd = prox[0].updated; // Date object
+				const exp_ms = prox[0].expiration*1000; // expiration time in milliseconds
+				const now = new Date();
+				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
+				console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
+				if (elapsed < exp_ms) {
+					// Use CACHED version of RESPONSE
+					console.log('NOT expired => USE Cached response!');
+					res.status(200).json(prox[0].response);
+				} else {
+					console.log('Expired => FETCH a FRESH copy!');
+					// FETCH a FRESH copy from SOURCE
+					Entsoe_Fetch_and_Update(prox[0]._id, url, res);
+				}
+			} else {
+				// Not cached yet => FETCH a FRESH copy from SOURCE
+				console.log('Not cached yet => FETCH a FRESH copy!');
+				Entsoe_Fetch_and_Save(url, expiration, res);
+			}
+		})
+		.catch(err=>{
+			console.log(['err=',err]);
+			res.status(500).json({error:err});
+		});
 });
 
 /*

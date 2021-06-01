@@ -22,21 +22,19 @@ export default class GridPageView extends View {
 		
 		this.table_labels = {
 			'FingridPowerSystemStateModel':{'label':'Power system state','shortname':'Power State'},
-			'FingridElectricityProductionFinlandModel':{'label':'Electricity production in Finland','shortname':'Electricity Production'},
-			'FingridElectricityConsumptionFinlandModel':{'label':'Electricity consumption in Finland','shortname':'Electricity Consumption'},
-			'FingridNuclearPowerProductionFinlandModel':{'label':'Nuclear power production','shortname':'Nuclear'},
-			'FingridHydroPowerProductionFinlandModel':{'label':'Hydro power production','shortname':'Hydro'},
-			'FingridWindPowerProductionFinlandModel':{'label':'Wind power production','shortname':'Wind'},
-			//'FingridCondensingPowerProductionFinlandModel':{'label':'Condensing power production','shortname':'AA'},
-			'FingridOtherPowerProductionFinlandModel':{'label':'Other production','shortname':'Other'},
-			'FingridIndustrialCogenerationProductionFinlandModel':{'label':'Industrial cogeneration','shortname':'Cogeneration'},
-			'FingridCogenerationDHProductionFinlandModel':{'label':'Cogeneration of district heating','shortname':'Cogeneration DH'},
-			//'FingridSolarPowerFinlandModel':{'label':'Solar power forecast','shortname':'Solar forecast'},
-			'FingridTransmissionFinlandCentralSwedenModel':{'label':'Transmission between Finland and Central Sweden','shortname':'Fin Central Swe'},
-			'FingridTransmissionFinlandEstoniaModel':{'label':'Transmission between Finland and Estonia','shortname':'Fin Estonia'},
-			'FingridTransmissionFinlandNorthernSwedenModel':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
-			'FingridTransmissionFinlandRussiaModel':{'label':'Transmission between Finland and Russia','shortname':'Fin Rus'},
-			'FingridTransmissionFinlandNorwayModel':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
+			'Fingrid192Model':{'label':'Electricity production in Finland','shortname':'Electricity Production'},
+			'Fingrid193Model':{'label':'Electricity consumption in Finland','shortname':'Electricity Consumption'},
+			'Fingrid188Model':{'label':'Nuclear power production','shortname':'Nuclear'},
+			'Fingrid191Model':{'label':'Hydro power production','shortname':'Hydro'},
+			'Fingrid181Model':{'label':'Wind power production','shortname':'Wind'},
+			'Fingrid205Model':{'label':'Other production','shortname':'Other'},
+			'Fingrid202Model':{'label':'Industrial cogeneration','shortname':'Cogeneration'},
+			'Fingrid201Model':{'label':'Cogeneration of district heating','shortname':'Cogeneration DH'},
+			'Fingrid89Model':{'label':'Transmission between Finland and Central Sweden','shortname':'Fin Central Swe'},
+			'Fingrid180Model':{'label':'Transmission between Finland and Estonia','shortname':'Fin Estonia'},
+			'Fingrid87Model':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
+			'Fingrid195Model':{'label':'Transmission between Finland and Russia','shortname':'Fin Rus'},
+			'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
 		}
 		/*
 		Other production inc. estimated small-scale production and reserve power plants
@@ -103,17 +101,11 @@ export default class GridPageView extends View {
 	}
 	
 	updateTable(mname) {
-		
-		//console.log(['updateTable mname=',mname]);
-		
 		const value = this.models[mname].value;
-		 // Use Moment.js to automatically change Zulu-timestamp to local time.
+		// Use Moment.js to automatically change Zulu-timestamp to local time.
 		const start_time = moment(this.models[mname].start_time);
 		const local_start_time = start_time.format('DD.MM.YYYY HH:mm');
 		
-		//if (mname === 'FingridSolarPowerFinlandModel') {
-			
-			
 		if (mname === 'FingridPowerSystemStateModel') {
 			this.createTrafficLight(mname, value);
 			$('#'+mname+'-timestamp').empty().append(local_start_time);
@@ -122,8 +114,6 @@ export default class GridPageView extends View {
 			$('#'+mname+'-timestamp').empty().append(local_start_time);
 		}
 	}
-	
-	
 	
 	renderChart() {
 		const self = this;
@@ -150,7 +140,7 @@ export default class GridPageView extends View {
 			self.chart.data = [];
 			
 			Object.keys(self.table_labels).forEach(key => {
-				if (key === 'FingridPowerSystemStateModel') { // || key === 'FingridSolarPowerFinlandModel') {
+				if (key === 'FingridPowerSystemStateModel') {
 					
 				} else {
 					self.chart.data.push({

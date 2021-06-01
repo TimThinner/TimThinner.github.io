@@ -237,7 +237,8 @@ export default class EntsoeModel extends Model {
 			psr_type: this.psr_type,
 			domain:  this.domain,
 			period_start: body_period_start, // '202105231000'
-			period_end: body_period_end      // '202105241000'
+			period_end: body_period_end,     // '202105241000'
+			expiration_in_seconds: 180 // 3 minutes
 		};
 		const myPost = {
 			method: 'POST',

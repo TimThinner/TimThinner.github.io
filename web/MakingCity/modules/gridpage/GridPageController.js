@@ -1,26 +1,6 @@
 import Controller from '../common/Controller.js';
 import GridPageView from './GridPageView.js';
 /*
-import { 
-FingridElectricityProductionFinlandModel,
-FingridElectricityConsumptionFinlandModel,
-FingridNuclearPowerProductionFinlandModel,
-FingridHydroPowerProductionFinlandModel,
-FingridWindPowerProductionFinlandModel,
-FingridCondensingPowerProductionFinlandModel,
-FingridOtherPowerProductionFinlandModel,
-FingridIndustrialCogenerationProductionFinlandModel,
-FingridCogenerationDHProductionFinlandModel,
-FingridSolarPowerFinlandModel,
-FingridTransmissionFinlandCentralSwedenModel,
-FingridTransmissionFinlandEstoniaModel,
-FingridTransmissionFinlandNorthernSwedenModel,
-FingridTransmissionFinlandRussiaModel,
-FingridTransmissionFinlandNorwayModel
-} from  '../energydata/FingridModels.js';
-*/
-
-/*
 Electricity production in Finland
 This data retrieves the electricity production from all powerplants.
 Variable Id 192
@@ -102,6 +82,7 @@ export default class GridPageController extends Controller {
 	
 	constructor(options) {
 		super(options);
+		this.variable_ids = ['192','193','188','191','181','205','202','201','89','180','87','195','187'];
 	}
 	
 	remove() {
@@ -112,107 +93,26 @@ export default class GridPageController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key === 'FingridElectricityProductionFinlandModel' ||
-				key === 'FingridElectricityConsumptionFinlandModel' ||
-				key === 'FingridNuclearPowerProductionFinlandModel' ||
-				key === 'FingridHydroPowerProductionFinlandModel' ||
-				key === 'FingridWindPowerProductionFinlandModel' ||
-				key === 'FingridOtherPowerProductionFinlandModel' ||
-				key === 'FingridIndustrialCogenerationProductionFinlandModel' ||
-				key === 'FingridCogenerationDHProductionFinlandModel' ||
-				key === 'FingridTransmissionFinlandCentralSwedenModel' ||
-				key === 'FingridTransmissionFinlandEstoniaModel' ||
-				key === 'FingridTransmissionFinlandNorthernSwedenModel' ||
-				key === 'FingridTransmissionFinlandRussiaModel' ||
-				key === 'FingridTransmissionFinlandNorwayModel') {
-				
+			if (key === 'Fingrid192Model' || key === 'Fingrid193Model' ||
+				key === 'Fingrid188Model' || key === 'Fingrid191Model' ||
+				key === 'Fingrid181Model' || key === 'Fingrid205Model' ||
+				key === 'Fingrid202Model' || key === 'Fingrid201Model' ||
+				key === 'Fingrid89Model' || key === 'Fingrid180Model' ||
+				key === 'Fingrid87Model' || key === 'Fingrid195Model' ||
+				key === 'Fingrid187Model') {
 				this.master.modelRepo.remove(key);
 			}
 		});
 	}
 	
 	init() {
-		const m = new FingridModel({name:'FingridElectricityProductionFinlandModel',src:'https://api.fingrid.fi/v1/variable/192/event/json'});
-		m.subscribe(this);
-		this.master.modelRepo.add('FingridElectricityProductionFinlandModel',m);
-		this.models['FingridElectricityProductionFinlandModel'] = m;
-		
-		const m2 = new FingridModel({name:'FingridElectricityConsumptionFinlandModel',src:'https://api.fingrid.fi/v1/variable/193/event/json'});
-		m2.subscribe(this);
-		this.master.modelRepo.add('FingridElectricityConsumptionFinlandModel',m2);
-		this.models['FingridElectricityConsumptionFinlandModel'] = m2;
-		
-		const m3 = new FingridModel({name:'FingridNuclearPowerProductionFinlandModel',src:'https://api.fingrid.fi/v1/variable/188/event/json'});
-		m3.subscribe(this);
-		this.master.modelRepo.add('FingridNuclearPowerProductionFinlandModel',m3);
-		this.models['FingridNuclearPowerProductionFinlandModel'] = m3;
-		
-		const m4 = new FingridModel({name:'FingridHydroPowerProductionFinlandModel',src:'https://api.fingrid.fi/v1/variable/191/event/json'});
-		m4.subscribe(this);
-		this.master.modelRepo.add('FingridHydroPowerProductionFinlandModel',m4);
-		this.models['FingridHydroPowerProductionFinlandModel'] = m4;
-		
-		const m5 = new FingridModel({name:'FingridWindPowerProductionFinlandModel',src:'https://api.fingrid.fi/v1/variable/181/event/json'});
-		m5.subscribe(this);
-		this.master.modelRepo.add('FingridWindPowerProductionFinlandModel',m5);
-		this.models['FingridWindPowerProductionFinlandModel'] = m5;
-		/*
-		const m6 = new FingridCondensingPowerProductionFinlandModel({name:'FingridCondensingPowerProductionFinlandModel',src:'https://api.fingrid.fi/v1/variable/189/event/json'});
-		m6.subscribe(this);
-		this.master.modelRepo.add('FingridCondensingPowerProductionFinlandModel',m6);
-		this.models['FingridCondensingPowerProductionFinlandModel'] = m6;
-		*/
-		const m7 = new FingridModel({name:'FingridOtherPowerProductionFinlandModel',src:'https://api.fingrid.fi/v1/variable/205/event/json'});
-		m7.subscribe(this);
-		this.master.modelRepo.add('FingridOtherPowerProductionFinlandModel',m7);
-		this.models['FingridOtherPowerProductionFinlandModel'] = m7;
-		
-		const m8 = new FingridModel({name:'FingridIndustrialCogenerationProductionFinlandModel',src:'https://api.fingrid.fi/v1/variable/202/event/json'});
-		m8.subscribe(this);
-		this.master.modelRepo.add('FingridIndustrialCogenerationProductionFinlandModel',m8);
-		this.models['FingridIndustrialCogenerationProductionFinlandModel'] = m8;
-		
-		const m9 = new FingridModel({name:'FingridCogenerationDHProductionFinlandModel',src:'https://api.fingrid.fi/v1/variable/201/event/json'});
-		m9.subscribe(this);
-		this.master.modelRepo.add('FingridCogenerationDHProductionFinlandModel',m9);
-		this.models['FingridCogenerationDHProductionFinlandModel'] = m9;
-		
-		/*
-		NOTE: In SOLAR FORECAST case we are giving here just a base src address, it will be appended with start_time and end_time, like this:
-		https://api.fingrid.fi/v1/variable/248/events/json?start_time=2021-05-14T15:00:00Z&end_time=2021-05-16T15:00:00Z
-		*/
-		//const m10 = new FingridSolarPowerFinlandModel({name:'FingridSolarPowerFinlandModel',src:'https://api.fingrid.fi/v1/variable/248/events/json?'});
-		//m10.subscribe(this);
-		//this.master.modelRepo.add('FingridSolarPowerFinlandModel',m10);
-		//this.models['FingridSolarPowerFinlandModel'] = m10;
-		
-		const m11 = new FingridModel({name:'FingridTransmissionFinlandCentralSwedenModel',src:'https://api.fingrid.fi/v1/variable/89/event/json'});
-		m11.subscribe(this);
-		this.master.modelRepo.add('FingridTransmissionFinlandCentralSwedenModel',m11);
-		this.models['FingridTransmissionFinlandCentralSwedenModel'] = m11;
-		
-		const m12 = new FingridModel({name:'FingridTransmissionFinlandEstoniaModel',src:'https://api.fingrid.fi/v1/variable/180/event/json'});
-		m12.subscribe(this);
-		this.master.modelRepo.add('FingridTransmissionFinlandEstoniaModel',m12);
-		this.models['FingridTransmissionFinlandEstoniaModel'] = m12;
-		
-		const m13 = new FingridModel({name:'FingridTransmissionFinlandNorthernSwedenModel',src:'https://api.fingrid.fi/v1/variable/87/event/json'});
-		m13.subscribe(this);
-		this.master.modelRepo.add('FingridTransmissionFinlandNorthernSwedenModel',m13);
-		this.models['FingridTransmissionFinlandNorthernSwedenModel'] = m13;
-		
-		const m14 = new FingridModel({name:'FingridTransmissionFinlandRussiaModel',src:'https://api.fingrid.fi/v1/variable/195/event/json'});
-		m14.subscribe(this);
-		this.master.modelRepo.add('FingridTransmissionFinlandRussiaModel',m14);
-		this.models['FingridTransmissionFinlandRussiaModel'] = m14;
-		
-		const m15 = new FingridModel({name:'FingridTransmissionFinlandNorwayModel',src:'https://api.fingrid.fi/v1/variable/187/event/json'});
-		m15.subscribe(this);
-		this.master.modelRepo.add('FingridTransmissionFinlandNorwayModel',m15);
-		this.models['FingridTransmissionFinlandNorwayModel'] = m15;
-		
-		
-		
+		this.variable_ids.forEach(id=> {
+			const model_name = 'Fingrid'+id+'Model';
+			const m = new FingridModel({name:model_name,src:'https://api.fingrid.fi/v1/variable/'+id+'/event/json'});
+			m.subscribe(this);
+			this.master.modelRepo.add(model_name,m);
+			this.models[model_name] = m;
+		});
 		
 		this.models['FingridPowerSystemStateModel'] = this.master.modelRepo.get('FingridPowerSystemStateModel');
 		this.models['FingridPowerSystemStateModel'].subscribe(this);
@@ -223,19 +123,19 @@ export default class GridPageController extends Controller {
 		this.timers['GridPageChartView'] = {timer: undefined, interval: 180000, // 3 minute interval
 			models:[ /* 14 models */
 				'FingridPowerSystemStateModel',
-				'FingridElectricityProductionFinlandModel',
-				'FingridElectricityConsumptionFinlandModel',
-				'FingridNuclearPowerProductionFinlandModel',
-				'FingridHydroPowerProductionFinlandModel',
-				'FingridWindPowerProductionFinlandModel',
-				'FingridOtherPowerProductionFinlandModel',
-				'FingridIndustrialCogenerationProductionFinlandModel',
-				'FingridCogenerationDHProductionFinlandModel',
-				'FingridTransmissionFinlandCentralSwedenModel',
-				'FingridTransmissionFinlandEstoniaModel',
-				'FingridTransmissionFinlandNorthernSwedenModel',
-				'FingridTransmissionFinlandRussiaModel',
-				'FingridTransmissionFinlandNorwayModel'
+				'Fingrid192Model',
+				'Fingrid193Model',
+				'Fingrid188Model',
+				'Fingrid191Model',
+				'Fingrid181Model',
+				'Fingrid205Model',
+				'Fingrid202Model',
+				'Fingrid201Model',
+				'Fingrid89Model',
+				'Fingrid180Model',
+				'Fingrid87Model',
+				'Fingrid195Model',
+				'Fingrid187Model'
 			]};
 		this.view = new GridPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

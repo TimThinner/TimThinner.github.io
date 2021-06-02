@@ -7,10 +7,10 @@ const http = require('http');
 const xml2js = require('xml2js');
 
 
-const Prox = require('../models/prox');
+const Proxe = require('../models/proxe');
 /*
 
-const proxSchema = mongoose.Schema({
+const proxeSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
 	url: String,
 	response: String,
@@ -18,7 +18,7 @@ const proxSchema = mongoose.Schema({
 	updated: Date
 });
 
-If Prox with url is found and not expired, then use response form database.
+If Proxe with url is found and not expired, then use response form database.
 This caching is important, because:
 
 ENTSOE NOTE:
@@ -29,6 +29,22 @@ When a user reaches the limit, requests coming from the user will be redirected 
 which returns "HTTP Status 429 - TOO MANY REQUESTS" with message text  "Max allowed requests per minute from each unique IP is max up to 400 only".
 
 https://transparency.entsoe.eu/content/static_content/Static%20content/web%20api/Guide.html#_query_via_web_browser
+
+
+
+
+
+
+
+Fingrid API: 
+you can make 10 000 requests in 24h period with one API-key. 
+Please contact the administrator if you need to make more requests.
+
+15 per page view 
+
+100 x 20 x 15 = 30 000
+
+
 
 */
 
@@ -90,6 +106,11 @@ router.post('/obix', (req,res,next)=>{
 	req2.end();
 });
 
+
+
+
+
+
 const Entsoe_Fetch_and_Save = (url, expiration, res) => {
 	//https.get(url, options, (res2) => {
 	https.get(url, (res2) => {
@@ -123,14 +144,14 @@ const Entsoe_Fetch_and_Save = (url, expiration, res) => {
 					
 					// and SAVE the FRESH copy of response
 					const now = new Date();
-					const prox = new Prox({
+					const proxe = new Proxe({
 						_id: new mongoose.Types.ObjectId(),
 						url: url,
 						response: json,
 						expiration: expiration,
 						updated: now
 					});
-					prox
+					proxe
 						.save()
 						.then(result=>{
 							res.status(200).json(json);
@@ -192,13 +213,13 @@ const Entsoe_Fetch_and_Update = (id, url, res) => {
 						'updated': now
 					};
 					// and UPDATE the FRESH copy of response
-					Prox.updateOne({_id:id}, {$set: updateOps })
+					Proxe.updateOne({_id:id}, {$set: updateOps })
 						.exec() // to get a Promise
 						.then(result=>{
 							res.status(200).json(json);
 						})
 						.catch(err=>{
-							let msg = 'Error in Prox.updateOne()';
+							let msg = 'Error in Proxe.updateOne()';
 							if (typeof err.message !== 'undefined') {
 								msg += ' err.message='+err.message;
 							}
@@ -220,6 +241,85 @@ const Entsoe_Fetch_and_Update = (id, url, res) => {
 	});
 };
 
+/*
+	Clean the Proxe... 
+*/
+const Proxe_Clean = (url) => {
+	Proxe.find()
+		.exec()
+		.then(docs=>{
+			
+			console.log(['Proxe has ',docs.length, 'items.']);
+			
+			docs.forEach(doc => {
+				// When doc is so old, that it can be removed from database?
+				// Can it be regarded as obsolete, if it is more than 1 hour old?
+				// 1 hour = 60 x 60 = 3600 seconds = 3 600 000 ms
+				// 
+				// DO NOT PROCESS this one:
+				if (doc.url === url) {
+					// Exclude this URL.
+					//console.log(['doc _id=',doc._id,' EXCLUDED']);
+				} else {
+					const upd = doc.updated; // Date object
+					const exp_ms = 2*3600*1000; // Cleaning time in milliseconds (2 hours).
+					const now = new Date();
+					const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
+					if (elapsed > exp_ms) {
+						// remove this entry from the database.
+						Proxe.deleteOne({_id:doc.id})
+							.exec()
+							.then(result => {
+								//res.status(200).json({message: 'Response deleted'});
+								console.log('Proxe removed');
+							})
+							.catch(err => {
+								console.log(err);
+								//res.status(500).json({error:err});
+							});
+					} else {
+						//console.log(['doc _id=',doc._id,' OK']);
+					}
+				}
+			});
+		})
+		.catch(err=>{
+			console.log(err);
+			//res.status(500).json({error:err});
+		});
+};
+
+/*
+	Proxe:
+	
+		_id: mongoose.Schema.Types.ObjectId,
+		url: String,
+		response: String,
+		expiration: Number, // expiration time in seconds
+		updated: Date
+	
+	1. Data from URL is requested
+	2. If URL is already in the Proxe =>
+		
+		if response is expired =>
+			
+			fetch URL
+			update Proxe (response, updated)
+			return response
+			
+		else
+			return response
+		
+	3. If URL is NOT in the Proxe => 
+			fetch URL
+			save response 
+			return response 
+	
+	How to clean the Proxe database?
+	Old entries should be removed, when they are no longer needed.
+	
+	
+*/
 router.post('/entsoe', (req,res,next)=>{
 	// OK.
 	// Use FAKE key now:
@@ -233,9 +333,6 @@ router.post('/entsoe', (req,res,next)=>{
 	// req.body.period_start
 	// req.body.period_end
 	// req.body.expiration_in_seconds  We are using a cache now!
-	
-	// documentTypeGen = 'A75' ; % Actual generation per type 
-	// documentTypeLoad = 'A65' ; % System total load
 	
 	// documentType = 'A75' Actual generation per type	domainzone = 'In_Domain'
 	// documentType = 'A65' System total load			domainzone = ‘outBiddingZone_Domain’
@@ -257,37 +354,41 @@ router.post('/entsoe', (req,res,next)=>{
 	url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm
 	url += '&periodEnd=' + req.body.period_end;       // yyyyMMddHHmm
 	
-	console.log(['url=',url]);
+	//console.log(['url=',url]);
 	
 	const expiration = req.body.expiration_in_seconds;
 	
+	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
+	
 	// First check if this url is already in database.
-	Prox.find({url:url})
+	Proxe.find({url:url})
 		.exec()
-		.then(prox=>{
-			if (prox.length >= 1) {
+		.then(proxe=>{
+			if (proxe.length >= 1) {
 				// FOUND! Check if it is expired.
-				//console.log('Found exp=',prox[0].expiration]);
-				//console.log('updated=',prox[0].updated.toISOString()]);
+				//console.log('Found exp=',proxe[0].expiration]);
+				//console.log('updated=',proxe[0].updated.toISOString()]);
 				
-				console.log('Found');
-				const upd = prox[0].updated; // Date object
-				const exp_ms = prox[0].expiration*1000; // expiration time in milliseconds
+				//console.log('Found');
+				console.log('');
+				
+				const upd = proxe[0].updated; // Date object
+				const exp_ms = proxe[0].expiration*1000; // expiration time in milliseconds
 				const now = new Date();
 				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
 				console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
 				if (elapsed < exp_ms) {
 					// Use CACHED version of RESPONSE
 					console.log('NOT expired => USE Cached response!');
-					res.status(200).json(prox[0].response);
+					res.status(200).json(proxe[0].response);
 				} else {
 					console.log('Expired => FETCH a FRESH copy!');
 					// FETCH a FRESH copy from SOURCE
-					Entsoe_Fetch_and_Update(prox[0]._id, url, res);
+					Entsoe_Fetch_and_Update(proxe[0]._id, url, res);
 				}
 			} else {
 				// Not cached yet => FETCH a FRESH copy from SOURCE
-				console.log('Not cached yet => FETCH a FRESH copy!');
+				console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
 				Entsoe_Fetch_and_Save(url, expiration, res);
 			}
 		})
@@ -348,7 +449,7 @@ router.post('/russia', (req,res,next)=>{
 	// req.body.start_date
 	// req.body.end_date
 	let url = req.body.url + '&startDate=' + req.body.start_date + '&endDate=' + req.body.end_date;
-	console.log(['url=',url]);
+	//console.log(['url=',url]);
 	const options = {
 		headers: {
 			'Content-Type': 'application/json'
@@ -438,7 +539,7 @@ router.post('/sweden', (req,res,next)=>{
 	// req.body.url					https://www.svk.se/ControlRoom/GetProductionHistory/
 	// req.body.production_date		YYYY-MM-DD
 	let url = req.body.url + '?productionDate=' + req.body.production_date + '&countryCode=SE';
-	console.log(['url=',url]);
+	//console.log(['url=',url]);
 	const options = {
 		headers: {
 			'Content-Type': 'application/json'

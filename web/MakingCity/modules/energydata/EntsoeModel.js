@@ -181,7 +181,7 @@ export default class EntsoeModel extends Model {
 		myHeaders.append("Authorization", authorizationToken);
 		myHeaders.append("Content-Type", "application/json");
 		
-		const url = this.mongoBackend + '/proxette/entsoe';
+		const url = this.mongoBackend + '/proxes/entsoe';
 		const body_url = this.src; // URL will be appended in backend.
 		
 		const body_period_start = moment().subtract(2, 'days').format('YYYYMMDD') + '2100'; // yyyyMMddHHmm
@@ -238,7 +238,7 @@ export default class EntsoeModel extends Model {
 			domain:  this.domain,
 			period_start: body_period_start, // '202105231000'
 			period_end: body_period_end,     // '202105241000'
-			expiration_in_seconds: 180 // 3 minutes
+			expiration_in_seconds: 1800 // 30 minutes
 		};
 		const myPost = {
 			method: 'POST',

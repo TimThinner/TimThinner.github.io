@@ -34,7 +34,7 @@ export default class SwedenModel extends Model {
 		myHeaders.append("Authorization", authorizationToken);
 		myHeaders.append("Content-Type", "application/json");
 		
-		const url = this.mongoBackend + '/proxette/sweden';
+		const url = this.mongoBackend + '/proxes/sweden';
 		const body_url = this.src;
 		const body_production_date = moment().subtract(1, 'days').format('YYYY-MM-DD');
 		

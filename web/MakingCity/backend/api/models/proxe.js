@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const proxSchema = mongoose.Schema({
+const proxeSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
 	url: String,
 	response: String,
@@ -7,4 +7,4 @@ const proxSchema = mongoose.Schema({
 	updated: Date
 });
 
-module.exports = mongoose.model('Prox', proxSchema);
+module.exports = mongoose.model('Proxe', proxeSchema);

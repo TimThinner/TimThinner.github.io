@@ -11,12 +11,11 @@ export default class EnvironmentPageView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'EnvironmentPageModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			// Subscribe to all models from Controller:
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
+			
 		});
-		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
 		this.FELID = 'environment-page-view-failure';
 	}
@@ -44,6 +43,7 @@ export default class EnvironmentPageView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
+			/*
 			if (options.model==='EnvironmentPageModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					console.log('EnvironmentPageView => EnvironmentPageModel fetched!');
@@ -70,51 +70,48 @@ export default class EnvironmentPageView extends View {
 					}
 				}
 			}
+			*/
 		}
 	}
 	
 	render() {
 		const self = this;
 		$(this.el).empty();
-		if (this.areModelsReady()) {
-			
-			const LM = this.controller.master.modelRepo.get('LanguageModel');
-			const sel = LM.selected;
-			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-			const localized_string_title = LM['translation'][sel]['ENVIRONMENT_PAGE_TITLE'];
-			const localized_string_description = LM['translation'][sel]['ENVIRONMENT_PAGE_DESCRIPTION'];
-			const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
-			
-			const html =
-				'<div class="row">'+
-					'<div class="col s12">'+
-						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-						'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
-						'<p style="text-align:center;">'+localized_string_description+'</p>'+
-					'</div>'+
-					'<div class="col s12 center">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-							'<i class="material-icons left">arrow_back</i>'+
-						'</button>'+
-					'</div>'+
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+		const localized_string_title = LM['translation'][sel]['ENVIRONMENT_PAGE_TITLE'];
+		const localized_string_description = LM['translation'][sel]['ENVIRONMENT_PAGE_DESCRIPTION'];
+		const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
+		
+		const html =
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
+					'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
+					'<p style="text-align:center;">'+localized_string_description+'</p>'+
 				'</div>'+
-				'<div class="row">'+
-					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-				'</div>';
-			$(html).appendTo(this.el);
-			
-			$('#back').on('click',function() {
-				self.menuModel.setSelected('menu');
-			});
-			
+				'<div class="col s12 center">'+
+					'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+						'<i class="material-icons left">arrow_back</i>'+
+					'</button>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+			'</div>';
+		$(html).appendTo(this.el);
+		
+		$('#back').on('click',function() {
+			self.models['MenuModel'].setSelected('menu');
+		});
+		
+		this.rendered = true;
+		
+		if (this.areModelsReady()) {
 			this.handleErrorMessages(this.FELID);
-			
-			this.rendered = true;
-			
-		} else {
-			console.log('EnvironmentPageView => render Model IS NOT READY!!!!');
-			// this.el = '#content'
-			this.showSpinner(this.el);
+			//this.renderChart();
 		}
 	}
 }

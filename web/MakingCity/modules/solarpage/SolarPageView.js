@@ -11,7 +11,7 @@ export default class SolarPageView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			// Subscribe to all models from Controller:	
+			// Subscribe to all models from Controller:
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});

@@ -1,5 +1,7 @@
 {
 	"env":{
-		"JWT_KEY":"secret"
+		"JWT_KEY":"secret",
+		"FINGRID_API_KEY": "nHXHn1v1f157sG4VYAuy92ZypWGtNYf37KSCxl7B",
+		"ENTSOE_API_KEY": "9f2496b9-6f5e-4396-a1af-263ffccd597a"
 	}
 }

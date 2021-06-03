@@ -44,7 +44,8 @@ export default class SwedenModel extends Model {
 		
 		const data = {
 			url: body_url,
-			production_date: body_production_date
+			production_date: body_production_date,
+			expiration_in_seconds: 180
 		};
 		const myPost = {
 			method: 'POST',

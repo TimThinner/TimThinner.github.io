@@ -42,7 +42,8 @@ export default class RussiaModel extends Model {
 		const data = {
 			url: body_url,
 			start_date: body_start_date,
-			end_date: body_end_date
+			end_date: body_end_date,
+			expiration_in_seconds: 180
 		};
 		const myPost = {
 			method: 'POST',

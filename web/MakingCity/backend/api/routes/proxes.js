@@ -6,7 +6,6 @@ const http = require('http');
 //const checkAuth = require('../middleware/check-auth');
 const xml2js = require('xml2js');
 
-
 const Proxe = require('../models/proxe');
 /*
 
@@ -32,7 +31,9 @@ https://transparency.entsoe.eu/content/static_content/Static%20content/web%20api
 
 
 
+https://hackmd.io/@a-4-1_VUTmKvMu5NlGrXFA/rymQ23M5O#Emissions-data
 
+http://www.bcdcenergia.fi/energiasaa/
 
 
 
@@ -40,89 +41,270 @@ Fingrid API:
 you can make 10 000 requests in 24h period with one API-key. 
 Please contact the administrator if you need to make more requests.
 
+10 000 / 24 h = 417 / h
+
+
+
 15 per page view 
 
 100 x 20 x 15 = 30 000
 
+POST '/fingrid' uses https.get(url, options ... response is JSON
+POST '/russia' uses http.get(url, options, ...  response is JSON
+POST '/sweden' uses https.get(url, options, ... response is JSON
+POST '/entsoe' uses https.get(url, ...          response is XML
 
+protocol: 'http' or 'https'
+response: 'xml' or 'json', if json => const options = {headers: {'Content-Type': 'application/json'}};
 
-*/
-
-/*
-curl -u user:pass -s -H "Content-Type: application/xml" -d "<obj is=\"obix:HistoryFilter\" xmlns=\"http://obix.org/ns/schema/1.0\"> name=\"limit\" val=\"3\" /><abstime name=\"start\" val=\"2021-05-03T09:51:15.062Z\"/><abstime name=\"end\" null=\"true\"/></obj>" https://ba.vtt.fi/TestServlet/testHistory/query/
-​
-problem with request: Hostname/IP does not match certificate's altnames: IP: 130.188.4.49 is not in the cert's list:
-
-problem with request: Hostname/IP does not match certificate's altnames
-*/
-//router.post('/obix', checkAuth, (req,res,next)=>{
-router.post('/obix', (req,res,next)=>{
+Fingrid case has 
+	const myHeaders = new Headers();
+	myHeaders.append("Accept", "application/json");
+	myHeaders.append("x-api-key", API_KEY);
 	
-	const body = req.body.xml;
-	const auth = req.body.auth;
-	const type = req.body.type;
+	fetch(url, {headers: myHeaders})
 	
-	//const url = 'https://ba.vtt.fi/TestServlet/testHistory/query/';
+	
 	const options = {
-		host: '130.188.4.49', //'http://ba.vtt.fi',
-		port: 443,
-		path: '/TestServlet/testHistory/query/',
-		method: 'POST',
-		rejectUnauthorized: false, // SEE: https://levelup.gitconnected.com/how-to-resolve-certificate-errors-in-nodejs-app-involving-ssl-calls-781ce48daded
 		headers: {
-			"Content-Type": type,
-			"Authorization": auth
+			'Content-Type': 'application/json',
+			'x-api-key' : 'nHXHn1v1f157sG4VYAuy92ZypWGtNYf37KSCxl7B'
 		}
 	};
-	const req2 = https.request(options, (res2) => {
-		//console.log(`STATUS: ${res2.statusCode}`);
-		//console.log(`HEADERS: ${JSON.stringify(res2.headers)}`);
-		res2.setEncoding('utf8');
+	https.get(url, options, (res2) => {
+		...
+	
+*/
+const Proxe_Save = (po, res) => {
+	const url = po.url;
+	const json = po.json;
+	const expiration = po.expiration;
+	
+	const now = new Date();
+	const proxe = new Proxe({
+		_id: new mongoose.Types.ObjectId(),
+		url: url,
+		response: json,
+		expiration: expiration,
+		updated: now
+	});
+	proxe
+		.save()
+		.then(result=>{
+			res.status(200).json(json);
+		})
+		.catch(err=>{
+			console.log(['err=',err]);
+			res.status(500).json({error:err});
+		})
+};
+
+const Proxe_Update = (po, res) => {
+	const id = po.id;
+	const json = po.json;
+	//console.log(['json=',json]);
+	const now = new Date();
+	const updateOps = {
+		'response': json,
+		'updated': now
+	};
+	// and UPDATE the FRESH copy of response
+	Proxe.updateOne({_id:id}, {$set: updateOps})
+		.exec() // to get a Promise
+		.then(result=>{
+			res.status(200).json(json);
+		})
+		.catch(err=>{
+			let msg = 'Error in Proxe.updateOne()';
+			if (typeof err.message !== 'undefined') {
+				msg += ' err.message='+err.message;
+			}
+			res.status(500).json({message: msg});
+		});
+};
+
+/*
+	When testing response contentType search for 'application/json' or 'text/xml'
+*/
+const Proxe_HTTP_Fetch = (po, res) => {
+	/*
+	po.url
+	po.expiration
+	po.options			// 
+	po.response_type	// 'json' or 'xml'
+	
+	OR
+	
+	po.url
+	po.id
+	po.options			// 
+	po.response_type	// 'json' or 'xml'
+	*/
+	http.get(po.url, po.options, (res2) => {
+		const { statusCode } = res2;
+		const contentType = res2.headers['content-type'];
 		
+		let ctype = 'application/json';
+		if (po.response_type === 'xml') {
+			 ctype = 'text/xml';
+		}
+		let error;
+		if (statusCode !== 200) {
+			error = new Error('Request Failed. Status Code: ' + statusCode);
+		} else if (contentType.indexOf(ctype) === -1) {
+			error = new Error('Invalid content-type. Expected ' + ctype + ' but received '+contentType);
+		}
+		if (error) {
+			// Consume response data to free up memory
+			res2.resume();
+			return res.status(500).json({error: error});
+		}
+		res2.setEncoding('utf8');
 		let rawData = '';
 		res2.on('data', (chunk) => { rawData += chunk; });
 		res2.on('end', () => {
 			try {
-				var parser = new xml2js.Parser(/* options */);
-				parser.parseStringPromise(rawData).then(function (result) {
-					var json = JSON.stringify(result);
-					res.status(200).json(json);
-				})
-				.catch(function (err) {
-					// Failed
-					res.status(500).json({error:err});
-				});
+				if (ctype === 'application/json') {
+					// rawData is a JSON string.
+					//const parsedData = JSON.parse(rawData);
+					if (typeof po.id !== 'undefined') {
+						// Update
+						Proxe_Update({id:po.id, json:rawData}, res);
+					} else {
+						// Save
+						Proxe_Save({url:po.url, json:rawData, expiration:po.expiration}, res);
+					}
+				} else if (ctype === 'text/xml') {
+					const parser = new xml2js.Parser();
+					parser.parseStringPromise(rawData).then(function (result) {
+						//console.log(['result=',result]);
+						const json = JSON.stringify(result);
+						//console.log(['json=',json]);
+						if (typeof po.id !== 'undefined') {
+							// Update
+							Proxe_Update({id:po.id, json:json}, res);
+						} else {
+							// Save
+							Proxe_Save({url:po.url, json:json, expiration:po.expiration}, res);
+						}
+					});
+				} else {
+					error = new Error('content-type. Expected ' + ctype + ' but received '+contentType);
+				}
 			} catch(e) {
 				console.log(['error message=',e.message]);
 				res.status(500).json({error: e});
 			}
 		});
+	}).on('error', (e) => {
+		console.log(['error message=',e.message]);
+		res.status(500).json({error: e});
 	});
-	req2.on('error', (e) => {
-		console.error(`problem with request: ${e.message}`);
+};
+
+
+const Proxe_HTTPS_Fetch = (po, res) => {
+	/*
+	po.url
+	po.expiration
+	po.options			// 
+	po.response_type	// 'json' or 'xml'
+	
+	OR
+	
+	po.url
+	po.id
+	po.options			// 
+	po.response_type	// 'json' or 'xml'
+	*/
+	https.get(po.url, po.options, (res2) => {
+		const { statusCode } = res2;
+		const contentType = res2.headers['content-type'];
+		
+		let ctype = 'application/json';
+		if (po.response_type === 'xml') {
+			 ctype = 'text/xml';
+		}
+		let error;
+		if (statusCode !== 200) {
+			error = new Error('Request Failed. Status Code: ' + statusCode);
+		} else if (contentType.indexOf(ctype) === -1) {
+			error = new Error('Invalid content-type. Expected ' + ctype + ' but received '+contentType);
+		}
+		if (error) {
+			// Consume response data to free up memory
+			res2.resume();
+			return res.status(500).json({error: error});
+		}
+		res2.setEncoding('utf8');
+		let rawData = '';
+		res2.on('data', (chunk) => { rawData += chunk; });
+		res2.on('end', () => {
+			try {
+				if (ctype === 'application/json') {
+					// rawData is a JSON string.
+					//const parsedData = JSON.parse(rawData);
+					if (typeof po.id !== 'undefined') {
+						// Update
+						Proxe_Update({id:po.id, json:rawData}, res);
+					} else {
+						// Save
+						Proxe_Save({url:po.url, json:rawData, expiration:po.expiration}, res);
+					}
+				} else if (ctype === 'text/xml') {
+					const parser = new xml2js.Parser();
+					parser.parseStringPromise(rawData).then(function (result) {
+						//console.log(['result=',result]);
+						const json = JSON.stringify(result);
+						//console.log(['json=',json]);
+						if (typeof po.id !== 'undefined') {
+							// Update
+							Proxe_Update({id:po.id, json:json}, res);
+						} else {
+							// Save
+							Proxe_Save({url:po.url, json:json, expiration:po.expiration}, res);
+						}
+					});
+				} else {
+					error = new Error('content-type. Expected ' + ctype + ' but received '+contentType);
+				}
+			} catch(e) {
+				console.log(['error message=',e.message]);
+				res.status(500).json({error: e});
+			}
+		});
+	}).on('error', (e) => {
+		console.log(['error message=',e.message]);
+		res.status(500).json({error: e});
 	});
-	// Write data to request body
-	req2.write(body);
-	req2.end();
-});
+};
 
 
 
 
 
 
-const Entsoe_Fetch_and_Save = (url, expiration, res) => {
+
+
+
+
+/*
+const Proxe_Fetch_and_Save = (url, expiration, res) => {
 	//https.get(url, options, (res2) => {
 	https.get(url, (res2) => {
 		const { statusCode } = res2;
 		const contentType = res2.headers['content-type'];
 		
-		//console.log(['statusCode=',statusCode]);
-		//console.log(['contentType=',contentType]);
+		console.log(['ENTSOE statusCode=',statusCode]);
+		console.log(['ENTSOE contentType=',contentType]);
+		// NOTE: ENTSOE content-type is always "text/xml".
 		
 		let error;
 		if (statusCode !== 200) {
 			error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
+			
+			
+			
 		} else if (!/^text\/xml/.test(contentType)) {
 			error = new Error('Invalid content-type.\n' + `Expected text/xml but received ${contentType}`);
 		}
@@ -176,15 +358,18 @@ const Entsoe_Fetch_and_Save = (url, expiration, res) => {
 	});
 };
 
+*/
 
-const Entsoe_Fetch_and_Update = (id, url, res) => {
+/*
+const Proxe_Fetch_and_Update = (id, url, res) => {
 	//https.get(url, options, (res2) => {
 	https.get(url, (res2) => {
 		const { statusCode } = res2;
 		const contentType = res2.headers['content-type'];
 		
-		//console.log(['statusCode=',statusCode]);
-		//console.log(['contentType=',contentType]);
+		console.log(['ENTSOE statusCode=',statusCode]);
+		console.log(['ENTSOE contentType=',contentType]);
+		// NOTE: ENTSOE content-type is always "text/xml".
 		
 		let error;
 		if (statusCode !== 200) {
@@ -240,29 +425,22 @@ const Entsoe_Fetch_and_Update = (id, url, res) => {
 		res.status(500).json({error: e});
 	});
 };
-
+*/
 /*
-	Clean the Proxe... 
+	Clean ALL Proxe entries which has not been updated in 3 hours.
 */
 const Proxe_Clean = (url) => {
 	Proxe.find()
 		.exec()
 		.then(docs=>{
-			
-			console.log(['Proxe has ',docs.length, 'items.']);
-			
+			console.log(['Proxe has now ',docs.length,' entries.']);
 			docs.forEach(doc => {
-				// When doc is so old, that it can be removed from database?
-				// Can it be regarded as obsolete, if it is more than 1 hour old?
-				// 1 hour = 60 x 60 = 3600 seconds = 3 600 000 ms
-				// 
-				// DO NOT PROCESS this one:
+				// DO NOT PROCESS the one given as parameter.
 				if (doc.url === url) {
 					// Exclude this URL.
-					//console.log(['doc _id=',doc._id,' EXCLUDED']);
 				} else {
 					const upd = doc.updated; // Date object
-					const exp_ms = 2*3600*1000; // Cleaning time in milliseconds (2 hours).
+					const exp_ms = 3*3600*1000; // Cleaning time in milliseconds (3 hours).
 					const now = new Date();
 					const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
 					if (elapsed > exp_ms) {
@@ -270,28 +448,22 @@ const Proxe_Clean = (url) => {
 						Proxe.deleteOne({_id:doc.id})
 							.exec()
 							.then(result => {
-								//res.status(200).json({message: 'Response deleted'});
-								console.log('Proxe removed');
+								console.log('Proxe Entry Removed.');
 							})
 							.catch(err => {
 								console.log(err);
-								//res.status(500).json({error:err});
 							});
-					} else {
-						//console.log(['doc _id=',doc._id,' OK']);
 					}
 				}
 			});
 		})
 		.catch(err=>{
 			console.log(err);
-			//res.status(500).json({error:err});
 		});
 };
 
 /*
 	Proxe:
-	
 		_id: mongoose.Schema.Types.ObjectId,
 		url: String,
 		response: String,
@@ -315,17 +487,26 @@ const Proxe_Clean = (url) => {
 			save response 
 			return response 
 	
-	How to clean the Proxe database?
-	Old entries should be removed, when they are no longer needed.
-	
-	
+	Cleaning: old entries should be removed, when they are no longer needed.
 */
+/*
+router.post('/fingrid', (req,res,next)=>{
+	
+	const options = {
+		headers: {
+			'Content-Type': 'application/json',
+			'x-api-key': process.env.FINGRID_API_KEY
+		}
+	};
+	https.get(url, options, (res2) => {
+	
+	
+});
+*/
+
 router.post('/entsoe', (req,res,next)=>{
-	// OK.
-	// Use FAKE key now:
-	const fakeKey = '9f2496b9-6f5e-4396-a1af-263ffccd597a';
 	// 'https://transparency.entsoe.eu/api
-	let url = req.body.url + '?securityToken='+fakeKey;
+	let url = req.body.url + '?securityToken=' + process.env.ENTSOE_API_KEY;
 	// req.body.url
 	// req.body.document_type
 	// req.body.psr_type
@@ -343,7 +524,6 @@ router.post('/entsoe', (req,res,next)=>{
 	if (req.body.document_type === 'A75') {
 		url += '&psrType=' + req.body.psr_type;
 	}
-	// '10YFI-1--------U'; // Finland
 	let domainzone;
 	if (req.body.document_type === 'A65') {
 		domainzone = '&outBiddingZone_Domain=' + req.body.domain;
@@ -353,9 +533,7 @@ router.post('/entsoe', (req,res,next)=>{
 	url += domainzone;
 	url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm
 	url += '&periodEnd=' + req.body.period_end;       // yyyyMMddHHmm
-	
 	//console.log(['url=',url]);
-	
 	const expiration = req.body.expiration_in_seconds;
 	
 	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
@@ -366,30 +544,24 @@ router.post('/entsoe', (req,res,next)=>{
 		.then(proxe=>{
 			if (proxe.length >= 1) {
 				// FOUND! Check if it is expired.
-				//console.log('Found exp=',proxe[0].expiration]);
-				//console.log('updated=',proxe[0].updated.toISOString()]);
-				
-				//console.log('Found');
-				console.log('');
-				
 				const upd = proxe[0].updated; // Date object
 				const exp_ms = proxe[0].expiration*1000; // expiration time in milliseconds
 				const now = new Date();
 				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
-				console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
+				//console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
 				if (elapsed < exp_ms) {
 					// Use CACHED version of RESPONSE
 					console.log('NOT expired => USE Cached response!');
 					res.status(200).json(proxe[0].response);
 				} else {
 					console.log('Expired => FETCH a FRESH copy!');
-					// FETCH a FRESH copy from SOURCE
-					Entsoe_Fetch_and_Update(proxe[0]._id, url, res);
+					// FETCH a FRESH copy from SOURCE and Update existing Proxe Entry
+					Proxe_HTTPS_Fetch({url:url, id:proxe[0]._id, options:{}, response_type:'xml'}, res);
 				}
 			} else {
-				// Not cached yet => FETCH a FRESH copy from SOURCE
+				// Not cached yet => FETCH a FRESH copy from SOURCE and SAVE it as a new Entry.
 				console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
-				Entsoe_Fetch_and_Save(url, expiration, res);
+				Proxe_HTTPS_Fetch({url:url, expiration:expiration, options:{}, response_type:'xml'}, res);
 			}
 		})
 		.catch(err=>{
@@ -448,6 +620,7 @@ router.post('/russia', (req,res,next)=>{
 	// req.body.url
 	// req.body.start_date
 	// req.body.end_date
+	// req.body.expiration_in_seconds;
 	let url = req.body.url + '&startDate=' + req.body.start_date + '&endDate=' + req.body.end_date;
 	//console.log(['url=',url]);
 	const options = {
@@ -455,11 +628,58 @@ router.post('/russia', (req,res,next)=>{
 			'Content-Type': 'application/json'
 		}
 	};
+	const expiration = req.body.expiration_in_seconds;
+	
+	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
+	
+	// First check if this url is already in database.
+	Proxe.find({url:url})
+		.exec()
+		.then(proxe=>{
+			if (proxe.length >= 1) {
+				// FOUND! Check if it is expired.
+				const upd = proxe[0].updated; // Date object
+				const exp_ms = proxe[0].expiration*1000; // expiration time in milliseconds
+				const now = new Date();
+				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
+				//console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
+				if (elapsed < exp_ms) {
+					// Use CACHED version of RESPONSE
+					console.log('NOT expired => USE Cached response!');
+					res.status(200).json(proxe[0].response);
+				} else {
+					console.log('Expired => FETCH a FRESH copy!');
+					// FETCH a FRESH copy from SOURCE and Update existing Proxe Entry
+					Proxe_HTTP_Fetch({url:url, id:proxe[0]._id, options:options, response_type:'json'}, res);
+				}
+			} else {
+				// Not cached yet => FETCH a FRESH copy from SOURCE and SAVE it as a new Entry.
+				console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
+				Proxe_HTTP_Fetch({url:url, expiration:expiration, options:options, response_type:'json'}, res);
+			}
+		})
+		.catch(err=>{
+			console.log(['err=',err]);
+			res.status(500).json({error:err});
+		});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
 	http.get(url, options, (res2) => {
 		const { statusCode } = res2;
 		const contentType = res2.headers['content-type'];
-		//console.log(['statusCode=',statusCode]);
-		//console.log(['contentType=',contentType]);
+		
+		console.log(['RUSSIA statusCode=',statusCode]);
+		console.log(['RUSSIA contentType=',contentType]);
+		
 		let error;
 		if (statusCode !== 200) {
 			error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
@@ -488,6 +708,11 @@ router.post('/russia', (req,res,next)=>{
 		console.log(['error message=',e.message]);
 		res.status(500).json({error: e});
 	});
+	*/
+	
+	
+	
+	
 });
 /*
 Sweden
@@ -545,11 +770,53 @@ router.post('/sweden', (req,res,next)=>{
 			'Content-Type': 'application/json'
 		}
 	};
+	
+	const expiration = req.body.expiration_in_seconds;
+	
+	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
+	
+	// First check if this url is already in database.
+	Proxe.find({url:url})
+		.exec()
+		.then(proxe=>{
+			if (proxe.length >= 1) {
+				// FOUND! Check if it is expired.
+				const upd = proxe[0].updated; // Date object
+				const exp_ms = proxe[0].expiration*1000; // expiration time in milliseconds
+				const now = new Date();
+				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
+				//console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
+				if (elapsed < exp_ms) {
+					// Use CACHED version of RESPONSE
+					console.log('NOT expired => USE Cached response!');
+					res.status(200).json(proxe[0].response);
+				} else {
+					console.log('Expired => FETCH a FRESH copy!');
+					// FETCH a FRESH copy from SOURCE and Update existing Proxe Entry
+					Proxe_HTTPS_Fetch({url:url, id:proxe[0]._id, options:options, response_type:'json'}, res);
+				}
+			} else {
+				// Not cached yet => FETCH a FRESH copy from SOURCE and SAVE it as a new Entry.
+				console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
+				Proxe_HTTPS_Fetch({url:url, expiration:expiration, options:options, response_type:'json'}, res);
+			}
+		})
+		.catch(err=>{
+			console.log(['err=',err]);
+			res.status(500).json({error:err});
+		});
+	
+	
+	
+	
+	/*
 	https.get(url, options, (res2) => {
 		const { statusCode } = res2;
 		const contentType = res2.headers['content-type'];
-		//console.log(['statusCode=',statusCode]);
-		//console.log(['contentType=',contentType]);
+		
+		//console.log(['SWEDEN statusCode=',statusCode]);
+		//console.log(['SWEDEN contentType=',contentType]);
+		
 		let error;
 		if (statusCode !== 200) {
 			error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
@@ -578,7 +845,64 @@ router.post('/sweden', (req,res,next)=>{
 		console.log(['error message=',e.message]);
 		res.status(500).json({error: e});
 	});
+	*/
 });
+
+
+
+router.post('/fingrid', (req,res,next)=>{
+	// req.body.url
+	// req.body.expiration_in_seconds
+	
+	const url = req.body.url;
+	//console.log(['url=',url]);
+	const options = {
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			'x-api-key': process.env.FINGRID_API_KEY
+		}
+	};
+	
+	const expiration = req.body.expiration_in_seconds;
+	
+	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
+	
+	// First check if this url is already in database.
+	Proxe.find({url:url})
+		.exec()
+		.then(proxe=>{
+			if (proxe.length >= 1) {
+				// FOUND! Check if it is expired.
+				const upd = proxe[0].updated; // Date object
+				const exp_ms = proxe[0].expiration*1000; // expiration time in milliseconds
+				const now = new Date();
+				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
+				//console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
+				if (elapsed < exp_ms) {
+					// Use CACHED version of RESPONSE
+					console.log('NOT expired => USE Cached response!');
+					res.status(200).json(proxe[0].response);
+				} else {
+					console.log('Expired => FETCH a FRESH copy!');
+					// FETCH a FRESH copy from SOURCE and Update existing Proxe Entry
+					Proxe_HTTPS_Fetch({url:url, id:proxe[0]._id, options:options, response_type:'json'}, res);
+				}
+			} else {
+				// Not cached yet => FETCH a FRESH copy from SOURCE and SAVE it as a new Entry.
+				console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
+				Proxe_HTTPS_Fetch({url:url, expiration:expiration, options:options, response_type:'json'}, res);
+			}
+		})
+		.catch(err=>{
+			console.log(['err=',err]);
+			res.status(500).json({error:err});
+		});
+});
+
+
+
+
 /*
 //5.5.6. data parser
 documentType = dtype; // Actual generation per type 

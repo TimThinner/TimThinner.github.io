@@ -29,7 +29,7 @@ export default class FingridModel extends Model {
 	once per 3 minutes => 20 x 24 = 480 requests only for FingridPowerSystemStateModel.
 	
 	*/
-	fetch() {
+	fetch(token) {
 		const self = this;
 		let status = 500; // error: 500
 		this.errorMessage = '';
@@ -44,9 +44,11 @@ export default class FingridModel extends Model {
 			self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
 		},1000);*/
 		this.fetching = true;
-		let url = this.src;
 		
-		if (url.endsWith('?')) {
+		const url = this.mongoBackend + '/proxes/fingrid';
+		let body_url = this.src;
+		
+		if (body_url.endsWith('?')) {
 			// Round to next full hour.
 			let now = moment();
 			now.add(30, 'minutes').startOf('hour');
@@ -57,45 +59,52 @@ export default class FingridModel extends Model {
 			// https://api.fingrid.fi/v1/variable/248/events/json?
 			//
 			//start_time=2021-05-14T15%3A00%3A00Z&end_time=2021-05-16T15%3A00%3A00Z
-			url += 'start_time=';
+			body_url += 'start_time=';
 			
 			let nows = now.toISOString();
 			// remove from the end '.000Z' and add 'Z'
 			let nowz = nows.substring(0, nows.length-5);
 			nowz += 'Z';
-			url += nowz;
+			body_url += nowz;
 			
-			url += '&end_time=';
+			body_url += '&end_time=';
 			let futures = future.toISOString();
 			// remove from the end '.000Z' and add 'Z'
 			let futurez = futures.substring(0, futures.length-5);
 			futurez += 'Z';
-			url += futurez;
+			body_url += futurez;
 			/*
-			"fetch url=", "https://api.fingrid.fi/v1/variable/248/events/json?start_time=2021-05-14T13:00:00.000Z&end_time=2021-05-15T13:00:00.000Z" ]
+			"fetch body_url=", "https://api.fingrid.fi/v1/variable/248/events/json?start_time=2021-05-14T13:00:00.000Z&end_time=2021-05-15T13:00:00.000Z" ]
 			*/
 		}
 		
-		console.log (['fetch url=',url]);
-		const API_KEY = "nHXHn1v1f157sG4VYAuy92ZypWGtNYf37KSCxl7B";
-		
 		const myHeaders = new Headers();
-		myHeaders.append("Accept", "application/json");
-		myHeaders.append("x-api-key", API_KEY);
+		myHeaders.append("Content-Type", "application/json");
+		const data = {
+			url: body_url,
+			expiration_in_seconds: 180
+		};
+		const myPost = {
+			method: 'POST',
+			headers: myHeaders,
+			body: JSON.stringify(data)
+		};
+		const myRequest = new Request(url, myPost);
 		
-		fetch(url, {headers: myHeaders})
+		fetch(myRequest)
+		//fetch(url, {headers: myHeaders})
 			.then(function(response) {
 				status = response.status;
 				return response.json();
 			})
 			.then(function(myJson) {
-				
-				if (Array.isArray(myJson)) {
-					self.values = myJson;
+				const resu = JSON.parse(myJson);
+				if (Array.isArray(resu)) {
+					self.values = resu;
 				} else {
-					self.value = myJson.value;
-					self.start_time = myJson.start_time;
-					self.end_time = myJson.end_time;
+					self.value = resu.value;
+					self.start_time = resu.start_time;
+					self.end_time = resu.end_time;
 				}
 				self.fetching = false;
 				self.ready = true;

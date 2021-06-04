@@ -89,11 +89,14 @@ export default class MenuView extends View {
 	}
 	
 	insertGridSystemState() {
-		const svgObject = document.getElementById('svg-object').contentDocument;
-		if (svgObject) {
-			const elem = svgObject.getElementById('FingridPowerSystemState');
-			if (elem) {
-				elem.style.fill = this.getFingridPowerSystemStateColor();
+		const svg_element = document.getElementById('svg-object');
+		if (svg_element) {
+			const svgObject = svg_element.contentDocument;
+			if (svgObject) {
+				const elem = svgObject.getElementById('FingridPowerSystemState');
+				if (elem) {
+					elem.style.fill = this.getFingridPowerSystemStateColor();
+				}
 			}
 		}
 	}

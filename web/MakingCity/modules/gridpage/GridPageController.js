@@ -82,7 +82,7 @@ export default class GridPageController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		this.variable_ids = ['192','193','188','191','181','205','202','201','89','180','87','195','187'];
+		this.variable_ids = ['192','193','188','191','181','205','202','201','89','180','87','195','187']; // 13
 	}
 	
 	remove() {

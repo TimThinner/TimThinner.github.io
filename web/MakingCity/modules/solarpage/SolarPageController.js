@@ -40,7 +40,7 @@ export default class SolarPageController extends Controller {
 		
 		// interval 3600 s = 1 hour
 		const model_names = ['FingridSolarPowerFinlandModel'];
-		this.timers['SolarPageChartView'] = {timer: undefined, interval: 3600000, models:model_names}; // interval 1 hour
+		this.timers['SolarPageChartView'] = {timer: undefined, interval: 180000, models:model_names}; // interval 3 minutes
 		
 		this.view = new SolarPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

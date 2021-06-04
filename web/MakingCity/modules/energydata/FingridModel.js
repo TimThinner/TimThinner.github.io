@@ -101,10 +101,12 @@ export default class FingridModel extends Model {
 				const resu = JSON.parse(myJson);
 				if (Array.isArray(resu)) {
 					self.values = resu;
+					console.log(['self.values=',self.values]);
 				} else {
 					self.value = resu.value;
 					self.start_time = resu.start_time;
 					self.end_time = resu.end_time;
+					console.log(['self.value=',self.value,'self.start_time=',self.start_time,'self.end_time=',self.end_time]);
 				}
 				self.fetching = false;
 				self.ready = true;

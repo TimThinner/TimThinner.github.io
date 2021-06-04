@@ -184,8 +184,9 @@ export default class EntsoeModel extends Model {
 		const url = this.mongoBackend + '/proxes/entsoe';
 		const body_url = this.src; // URL will be appended in backend.
 		
-		const body_period_start = moment().subtract(2, 'days').format('YYYYMMDD') + '2100'; // yyyyMMddHHmm
-		const body_period_end = moment().subtract(1, 'days').format('YYYYMMDD') + '2100';   // yyyyMMddHHmm
+		// NOTE: Times are given always in UTC time!!!
+		const body_period_start = moment.utc().subtract(2, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
+		const body_period_end = moment.utc().format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
 		console.log(['body_period_start=',body_period_start,' body_period_end=',body_period_end]);
 		
 		/*
@@ -238,7 +239,7 @@ export default class EntsoeModel extends Model {
 			domain:  this.domain,
 			period_start: body_period_start, // '202105231000'
 			period_end: body_period_end,     // '202105241000'
-			expiration_in_seconds: 1800 // 30 minutes
+			expiration_in_seconds: 180 // 3 minutes
 		};
 		const myPost = {
 			method: 'POST',
@@ -274,7 +275,11 @@ export default class EntsoeModel extends Model {
 									if (typeof p.resolution !== 'undefined' && Array.isArray(p.resolution)) {
 										console.log(['resolution=',p.resolution[0]]);
 									}
-									
+									if (typeof p.timeInterval !== 'undefined' && Array.isArray(p.timeInterval)) {
+										p.timeInterval.forEach(ti=> {
+										console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
+										});
+									}
 									if (typeof p.Point !== 'undefined' && Array.isArray(p.Point)) {
 										p.Point.forEach(po=> {
 											let position;

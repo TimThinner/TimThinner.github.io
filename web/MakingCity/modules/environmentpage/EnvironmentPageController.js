@@ -143,7 +143,7 @@ export default class EnvironmentPageController extends Controller {
 		this.sources.forEach(src=> {
 			model_names.push('Entsoe'+src.type+src.area_name+src.psr_type+'Model');
 		});
-		this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 3600000, models:model_names}; // interval 1 hour
+		this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 180000, models:model_names}; // interval 1 hour
 		
 		this.view = new EnvironmentPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

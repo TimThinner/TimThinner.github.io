@@ -36,8 +36,8 @@ export default class SwedenModel extends Model {
 		
 		const url = this.mongoBackend + '/proxes/sweden';
 		const body_url = this.src;
-		const body_production_date = moment().subtract(1, 'days').format('YYYY-MM-DD');
-		
+		//const body_production_date = moment().subtract(1, 'days').format('YYYY-MM-DD');
+		const body_production_date = moment().format('YYYY-MM-DD');
 		// req.body.url					https://www.svk.se/ControlRoom/GetProductionHistory/
 		// req.body.production_date		YYYY-MM-DD
 		//let url = req.body.url + '?productionDate=' + req.body.production_date + '&countryCode=SE';
@@ -61,7 +61,7 @@ export default class SwedenModel extends Model {
 			})
 			.then(function(myJson) {
 				let message = 'OK';
-				console.log(['myJson=',myJson]);
+				//console.log(['myJson=',myJson]);
 /*
 [
   {
@@ -80,20 +80,24 @@ export default class SwedenModel extends Model {
   }
 ]
 */
-				if (typeof myJson !== 'undefined' && Array.isArray(myJson)) {
-					myJson.forEach(r=>{
-						// 7 x 1422 elements => print to console only the first and last item from each "batch".
+				
+				const json = JSON.parse(myJson);
+				if (typeof json !== 'undefined' && Array.isArray(json)) {
+					json.forEach(r=>{
+						// 7 x 1422 elements => print to console only the latest 3 items from each "batch".
 						if (typeof r.data !== 'undefined' && Array.isArray(r.data)) {
-							const last_index = r.data.length-1;
-							console.log(['last_index=',last_index]);
-							
-							
-							r.data.forEach((i,ind)=>{
+							const latest = r.data.slice(-3);
+							latest.forEach(i=>{
 								// i.x = Unix timestamp
 								// i.y = Value
-								if (ind === 0 || ind === last_index) {
-									console.log(['time=',moment(i.x).format(),' value=',i.y]);
-								}
+								
+								// RESOLUTION is ONE MINUTE: 
+								// "time=", "2021-06-04T15:59:00+03:00", " value=", 845
+								// "time=", "2021-06-04T16:00:00+03:00", " value=", 845
+								// "time=", "2021-06-04T16:01:00+03:00", " value=", 845
+								
+								
+								console.log(['time=',moment(i.x).format(),' value=',i.y]);
 							});
 						}
 					});

@@ -36,8 +36,11 @@ export default class RussiaModel extends Model {
 		
 		const url = this.mongoBackend + '/proxes/russia';
 		const body_url = this.src; // URL will be appended in backend.
-		const body_start_date = moment().subtract(1, 'days').format('YYYY.MM.DD'); // 'yyyy.MM.dd'
-		const body_end_date = moment().subtract(1, 'days').format('YYYY.MM.DD'); // 'yyyy.MM.dd'
+		//const body_start_date = moment().subtract(1, 'days').format('YYYY.MM.DD'); // 'yyyy.MM.dd'
+		//const body_end_date = moment().subtract(1, 'days').format('YYYY.MM.DD'); // 'yyyy.MM.dd'
+		
+		const body_start_date = moment().format('YYYY.MM.DD'); // 'yyyy.MM.dd'
+		const body_end_date = moment().format('YYYY.MM.DD'); // 'yyyy.MM.dd'
 		
 		const data = {
 			url: body_url,
@@ -59,7 +62,8 @@ export default class RussiaModel extends Model {
 			})
 			.then(function(myJson) {
 				let message = 'OK';
-				console.log(['myJson=',myJson]);
+				//console.log(['myJson=',myJson]);
+				
 /*
 RESPONSE:
 [
@@ -90,8 +94,9 @@ RESPONSE:
   }
 ]
 */
-				if (typeof myJson !== 'undefined' && Array.isArray(myJson)) {
-					myJson.forEach(r=>{
+				const json = JSON.parse(myJson);
+				if (typeof json !== 'undefined' && Array.isArray(json)) {
+					json.forEach(r=>{
 						if (typeof r.m_Item2 !== 'undefined' && Array.isArray(r.m_Item2)) {
 							r.m_Item2.forEach(i=>{
 								console.log(['INTERVAL=',i.INTERVAL,' M_DATE=',i.M_DATE,' P_AES=',i.P_AES,' P_GES=',i.P_GES,' P_TES=',i.P_TES,' P_BS=',i.P_BS,' P_REN=',i.P_REN]);

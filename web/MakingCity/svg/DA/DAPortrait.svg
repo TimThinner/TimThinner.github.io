@@ -51,6 +51,7 @@
 <path class="grid-head" d="M0 43 H94" />
 <path class="grid-head" d="M350 100 H600" />
 <text x="360" y="134" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff">S-Market Kaukovainio</text>
+
 <g>
 	<path id="p1" d="M 130,400 L 330,400 
 	M 240,400 L 240,520 

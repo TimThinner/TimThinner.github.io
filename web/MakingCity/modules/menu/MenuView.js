@@ -463,15 +463,16 @@ export default class MenuView extends View {
 			}
 			
 			const pLink = svgObject.getElementById('project');
-			pLink.addEventListener("click", function(){
-				// '<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">'+
-				//self.models['MenuModel'].setSelected('D');
-				//console.log('Open PROJECT page in new TAB!');
-				window.open('http://makingcity.eu/', '_blank');
-				//var win = window.open('http://makingcity.eu/', '_blank');
-				//win.focus();
-				
-			}, false);
+			if (pLink) {
+				pLink.addEventListener("click", function(){
+					// '<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">'+
+					//self.models['MenuModel'].setSelected('D');
+					//console.log('Open PROJECT page in new TAB!');
+					window.open('http://makingcity.eu/', '_blank');
+					//var win = window.open('http://makingcity.eu/', '_blank');
+					//win.focus();
+				}, false);
+			}
 			
 			const mcd = svgObject.getElementById('district');
 			mcd.addEventListener("click", function(){

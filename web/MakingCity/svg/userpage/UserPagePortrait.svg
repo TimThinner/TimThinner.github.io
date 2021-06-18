@@ -49,6 +49,7 @@
 <text x="-200" y="-382" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="78px" fill="#444">Making City</text>
 <path class="grid-head" d="M-300 -438 H-194" />
 <path class="grid-head" d="M48 -380 H300" />
+
 <!--
 .subtitle-text {
 	opacity: 0.75;

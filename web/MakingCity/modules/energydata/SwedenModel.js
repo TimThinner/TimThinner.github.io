@@ -14,7 +14,7 @@ export default class SwedenModel extends Model {
 				this.fetching = false;
 		*/
 		//this.value = undefined;
-		//this.values = [];
+		this.values = [];
 		//this.start_time = undefined;
 		//this.end_time = undefined;
 	}
@@ -79,25 +79,44 @@ export default class SwedenModel extends Model {
     ]
   }
 ]
+'production', ...
+'nuclear', ...
+'thermal', ...
+'unknown', ...
+'wind', ...
+'hydro', ...
+'consumption'
 */
-				
+				self.values = [];
 				const json = JSON.parse(myJson);
 				if (typeof json !== 'undefined' && Array.isArray(json)) {
 					json.forEach(r=>{
 						// 7 x 1422 elements => print to console only the latest 3 items from each "batch".
+						let tech = 'NOT DEFINED';
+						if (typeof r.name !== 'undefined') {
+							if (r.name=== 1) { tech = 'production'; }
+							else if (r.name=== 2) { tech = 'nuclear'; }
+							else if (r.name=== 3) { tech = 'thermal'; }
+							else if (r.name=== 4) { tech = 'unknown'; }
+							else if (r.name=== 5) { tech = 'wind'; }
+							else if (r.name=== 6) { tech = 'hydro'; }
+							else if (r.name=== 7) { tech = 'consumption'; }
+						}
 						if (typeof r.data !== 'undefined' && Array.isArray(r.data)) {
-							const latest = r.data.slice(-3);
+							const latest = r.data.slice(-1);
 							latest.forEach(i=>{
 								// i.x = Unix timestamp
 								// i.y = Value
-								
+								self.values.push({
+									'technology': tech,
+									'time': moment(i.x).format(),
+									'value': i.y
+								});
 								// RESOLUTION is ONE MINUTE: 
 								// "time=", "2021-06-04T15:59:00+03:00", " value=", 845
 								// "time=", "2021-06-04T16:00:00+03:00", " value=", 845
 								// "time=", "2021-06-04T16:01:00+03:00", " value=", 845
-								
-								
-								console.log(['time=',moment(i.x).format(),' value=',i.y]);
+								//console.log(['time=',moment(i.x).format(),' value=',i.y]);
 							});
 						}
 					});

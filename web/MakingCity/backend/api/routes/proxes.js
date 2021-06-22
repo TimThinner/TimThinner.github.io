@@ -126,7 +126,7 @@ const Proxe_Update = (po, res) => {
 			if (typeof err.message !== 'undefined') {
 				msg += ' err.message='+err.message;
 			}
-			res.status(500).json({message: msg});
+			res.status(500).json({error: msg});
 		});
 };
 
@@ -200,6 +200,7 @@ const Proxe_HTTP_Fetch = (po, res) => {
 				}
 			} catch(e) {
 				console.log(['error message=',e.message]);
+				console.log(['rawData=',rawData]);
 				res.status(500).json({error: e});
 			}
 		});
@@ -222,6 +223,10 @@ const Proxe_HTTPS_Fetch = (po, res) => {
 	po.id
 	po.options			// 
 	po.response_type	// 'json' or 'xml'
+	
+	
+	EntsoeA65NorwayNO4Model
+	
 	*/
 	https.get(po.url, po.options, (res2) => {
 		const { statusCode } = res2;
@@ -276,6 +281,7 @@ const Proxe_HTTPS_Fetch = (po, res) => {
 				}
 			} catch(e) {
 				console.log(['error message=',e.message]);
+				console.log(['rawData=',rawData]);
 				res.status(500).json({error: e});
 			}
 		});

@@ -35,7 +35,7 @@ export default class GridPageView extends View {
 			'Fingrid87Model':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
 			'Fingrid195Model':{'label':'Transmission between Finland and Russia','shortname':'Fin Rus'},
 			'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
-		}
+		};
 		/*
 		Other production inc. estimated small-scale production and reserve power plants
 		*/

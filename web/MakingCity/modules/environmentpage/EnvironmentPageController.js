@@ -45,8 +45,33 @@ export default class EnvironmentPageController extends Controller {
 			'B19' 'Wind Onshore'
 			'B20' 'Other'
 		*/
+		
+		
+		/*
+		EntsoeA65NorwayNO4Model: SyntaxError: JSON.parse: unexpected character at line 1 column 2 of the JSON data
+		
+		
+		https://transparency.entsoe.eu/api?securityToken=9f2496b9-6f5e-4396-a1af-263ffccd597a&documentType=A65&processType=A16&outBiddingZone_Domain=10YNO-4--------9&periodStart=202106210700&periodEnd=202106210900
+		
+		<Acknowledgement_MarketDocument>
+			<mRID>14812aa9-2a1b-4</mRID>
+			<createdDateTime>2021-06-21T09:17:42Z</createdDateTime>
+			<sender_MarketParticipant.mRID codingScheme="A01">10X1001A1001A450</sender_MarketParticipant.mRID>
+			<sender_MarketParticipant.marketRole.type>A32</sender_MarketParticipant.marketRole.type>
+			<receiver_MarketParticipant.mRID codingScheme="A01">10X1001A1001A450</receiver_MarketParticipant.mRID>
+			<receiver_MarketParticipant.marketRole.type>A39</receiver_MarketParticipant.marketRole.type>
+			<received_MarketDocument.createdDateTime>2021-06-21T09:17:42Z</received_MarketDocument.createdDateTime>
+			<Reason>
+				<code>999</code>
+				<text>
+					No matching data found for Data item Actual Total Load [6.1.A] (10YNO-4--------9) and interval 2021-06-21T07:00:00.000Z/2021-06-21T09:00:00.000Z.
+				</text>
+			</Reason>
+		</Acknowledgement_MarketDocument>
+		*/
 		this.sources = [
 			{ type: 'A65', area_name: 'NorwayNO4', psr_type:''},
+			
 			{ type: 'A65', area_name: 'Estonia', psr_type:''},
 			{ type: 'A65', area_name: 'Finland', psr_type:''},
 			{ type: 'A65', area_name: 'SwedenSE1', psr_type:''},
@@ -133,6 +158,7 @@ export default class EnvironmentPageController extends Controller {
 		m5.subscribe(this);
 		this.master.modelRepo.add('SwedenModel',m5);
 		this.models['SwedenModel'] = m5;
+		
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

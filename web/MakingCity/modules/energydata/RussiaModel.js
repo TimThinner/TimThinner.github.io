@@ -14,7 +14,7 @@ export default class RussiaModel extends Model {
 				this.fetching = false;
 		*/
 		//this.value = undefined;
-		//this.values = [];
+		this.values = [];
 		//this.start_time = undefined;
 		//this.end_time = undefined;
 	}
@@ -93,13 +93,27 @@ RESPONSE:
     ]
   }
 ]
+where 
+P_AES is nuclear power, 
+P_REN is solar, 
+P_BS is some stock (mainly pulp and paper factories), 
+P_TES are CHP units, and 
+P_GES are hydropower stations.
 */
+				self.values = [];
 				const json = JSON.parse(myJson);
 				if (typeof json !== 'undefined' && Array.isArray(json)) {
 					json.forEach(r=>{
 						if (typeof r.m_Item2 !== 'undefined' && Array.isArray(r.m_Item2)) {
 							r.m_Item2.forEach(i=>{
-								console.log(['INTERVAL=',i.INTERVAL,' M_DATE=',i.M_DATE,' P_AES=',i.P_AES,' P_GES=',i.P_GES,' P_TES=',i.P_TES,' P_BS=',i.P_BS,' P_REN=',i.P_REN]);
+								self.values.push({
+									'nuclear': i.P_AES,
+									'solar': i.P_REN,
+									'stock': i.P_BS,
+									'chp': i.P_TES,
+									'hydropower': i.P_GES
+								});
+								//console.log(['INTERVAL=',i.INTERVAL,' M_DATE=',i.M_DATE,' P_AES=',i.P_AES,' P_GES=',i.P_GES,' P_TES=',i.P_TES,' P_BS=',i.P_BS,' P_REN=',i.P_REN]);
 							});
 						}
 					});

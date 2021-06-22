@@ -102,7 +102,37 @@ export default class EntsoeModel extends Model {
 				this.domain = undefined;
 				break;
 		}
-		this.points = [];
+		
+		/*
+		<Period>
+			<timeInterval>
+				<start>2015-12-31T23:00Z</start>
+				<end>2016-01-01T23:00Z</end>
+			</timeInterval>
+			<resolution>PT60M</resolution>
+			<Point>
+				<position>1</position>
+				<quantity>6363</quantity>
+			</Point>
+			<Point>
+				<position>2</position>
+				<quantity>6288</quantity>
+			</Point>
+			<Point>
+				<position>3</position>
+				<quantity>6182</quantity>
+			</Point>
+			<Point>
+				<position>4</position>
+				<quantity>6100</quantity>
+			</Point>
+		*/
+		
+		// Response is a TimeSeries, where we have Period
+		this.timeseries = [];
+		this.created = undefined;
+		
+		
 	}
 	/*
 	fetch() {
@@ -166,6 +196,76 @@ export default class EntsoeModel extends Model {
 			});
 	}*/
 	
+	parse(resu) {
+		if (typeof resu.Acknowledgement_MarketDocument !== 'undefined') {
+			if (resu.Acknowledgement_MarketDocument['Reason'] && Array.isArray(resu.Acknowledgement_MarketDocument['Reason'])) {
+				resu.Acknowledgement_MarketDocument['Reason'].forEach(reason=> {
+					//message += reason.text;
+					console.log(['NOTE!!! reason=',reason]);
+				});
+			}
+		} else if (typeof resu.GL_MarketDocument !== 'undefined') {
+			
+			// NOTE: Many of these XML-to-JSON-elements are wrapped in Arrays, even when there actually is only one item!
+			if (resu.GL_MarketDocument['createdDateTime'] !== 'undefined' && Array.isArray(resu.GL_MarketDocument['createdDateTime'])) {
+				
+				const cDT = resu.GL_MarketDocument['createdDateTime'].forEach(crea=> {
+					this.created = crea;
+				});
+				
+			}
+			if (resu.GL_MarketDocument['TimeSeries'] !== 'undefined' && Array.isArray(resu.GL_MarketDocument['TimeSeries'])) {
+				resu.GL_MarketDocument['TimeSeries'].forEach(ts=> {
+					
+					if (typeof ts.MktPSRType !== 'undefined' && Array.isArray(ts.MktPSRType)) {
+						ts.MktPSRType.forEach(t=>{
+							if (typeof t.psrType !== 'undefined') {
+								console.log(['t.psrType=',t.psrType[0]]);
+							}
+						});
+					}
+					if (typeof ts.Period !== 'undefined' && Array.isArray(ts.Period)) {
+						ts.Period.forEach(p=> {
+							
+							let myp = {};
+							
+							if (typeof p.resolution !== 'undefined' && Array.isArray(p.resolution)) {
+								console.log(['resolution=',p.resolution[0]]);
+								myp['resolution'] = p.resolution[0];
+							}
+							if (typeof p.timeInterval !== 'undefined' && Array.isArray(p.timeInterval)) {
+								p.timeInterval.forEach(ti=> {
+									console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
+									myp['timeInterval'] = {'start':ti.start[0],'end':ti.end[0]};
+								});
+							}
+							if (typeof p.Point !== 'undefined' && Array.isArray(p.Point)) {
+								myp['Point'] = [];
+								
+								p.Point.forEach(po=> {
+									let position;
+									let quantity;
+									if (typeof po.position !== 'undefined' && Array.isArray(po.position)) {
+										position = po.position[0];
+										
+									}
+									if (typeof po.quantity !== 'undefined' && Array.isArray(po.quantity)) {
+										quantity = po.quantity[0];
+									}
+									
+									myp['Point'].push({'position':position,'quantity':quantity});
+									console.log(['position=',position,' quantity=',quantity]);
+								});
+							}
+							
+							this.timeseries.push(myp);
+						});
+					}
+				});
+			}
+		}
+	}
+	
 	fetch(token) {
 		const self = this;
 		if (this.fetching) {
@@ -187,7 +287,37 @@ export default class EntsoeModel extends Model {
 		// NOTE: Times are given always in UTC time!!!
 		const body_period_start = moment.utc().subtract(2, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
 		const body_period_end = moment.utc().format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
-		console.log(['body_period_start=',body_period_start,' body_period_end=',body_period_end]);
+		//console.log(['body_period_start=',body_period_start,' body_period_end=',body_period_end]);
+		
+		//EntsoeA65NorwayNO4Model: SyntaxError: JSON.parse: unexpected character at line 1 column 2 of the JSON data
+		
+		/*
+		<Acknowledgement_MarketDocument>
+			<mRID>14812aa9-2a1b-4</mRID>
+			<createdDateTime>2021-06-21T09:17:42Z</createdDateTime>
+			<sender_MarketParticipant.mRID codingScheme="A01">10X1001A1001A450</sender_MarketParticipant.mRID>
+			<sender_MarketParticipant.marketRole.type>A32</sender_MarketParticipant.marketRole.type>
+			<receiver_MarketParticipant.mRID codingScheme="A01">10X1001A1001A450</receiver_MarketParticipant.mRID>
+			<receiver_MarketParticipant.marketRole.type>A39</receiver_MarketParticipant.marketRole.type>
+			<received_MarketDocument.createdDateTime>2021-06-21T09:17:42Z</received_MarketDocument.createdDateTime>
+			<Reason>
+				<code>999</code>
+				<text>
+					No matching data found for Data item Actual Total Load [6.1.A] (10YNO-4--------9) and interval 2021-06-21T07:00:00.000Z/2021-06-21T09:00:00.000Z.
+				</text>
+			</Reason>
+		</Acknowledgement_MarketDocument>
+		*/
+		
+		
+		/*
+		let body_period_start = moment.utc().subtract(2, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
+		let body_period_end = moment.utc().format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
+		
+		if (this.name === 'EntsoeA65NorwayNO4Model') {
+			body_period_start = moment.utc().add(2, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
+			body_period_end = moment.utc().add(4, 'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
+		}*/
 		
 		/*
 		Fetching:
@@ -255,48 +385,17 @@ export default class EntsoeModel extends Model {
 			})
 			.then(function(myJson) {
 				let message = 'OK';
-				const resu = JSON.parse(myJson);
-				console.log(['resu=',resu]);
-				if (typeof resu !== 'undefined' && typeof resu.GL_MarketDocument !== 'undefined') {
-					if (resu.GL_MarketDocument['TimeSeries'] !== 'undefined' && Array.isArray(resu.GL_MarketDocument['TimeSeries'])) {
-						resu.GL_MarketDocument['TimeSeries'].forEach(ts=> {
-							
-							if (typeof ts.MktPSRType !== 'undefined' && Array.isArray(ts.MktPSRType)) {
-								ts.MktPSRType.forEach(t=>{
-									if (typeof t.psrType !== 'undefined') {
-										console.log(['t.psrType=',t.psrType[0]]);
-									}
-								});
-							}
-							
-							if (typeof ts.Period !== 'undefined' && Array.isArray(ts.Period)) {
-								ts.Period.forEach(p=> {
-									
-									if (typeof p.resolution !== 'undefined' && Array.isArray(p.resolution)) {
-										console.log(['resolution=',p.resolution[0]]);
-									}
-									if (typeof p.timeInterval !== 'undefined' && Array.isArray(p.timeInterval)) {
-										p.timeInterval.forEach(ti=> {
-										console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
-										});
-									}
-									if (typeof p.Point !== 'undefined' && Array.isArray(p.Point)) {
-										p.Point.forEach(po=> {
-											let position;
-											let quantity;
-											if (typeof po.position !== 'undefined' && Array.isArray(po.position)) {
-												position = po.position[0];
-											}
-											if (typeof po.quantity !== 'undefined' && Array.isArray(po.quantity)) {
-												quantity = po.quantity[0];
-											}
-											console.log(['position=',position,' quantity=',quantity]);
-										});
-									}
-								});
-							}
-						});
-						
+				console.log(['myJson=',myJson]);
+				if (typeof myJson.error !== 'undefined') {
+					// We can ignore this error... usually it means that asked data is not available right now.
+					// But it can be available next time we call this function.
+					console.log(['myJson.error=',myJson.error]);
+					self.status = 200; // Don't show the RED "OK" message (status was 500, so force it to 200).
+				} else {
+					const resu = JSON.parse(myJson);
+					console.log(['resu=',resu]);
+					if (typeof resu !== 'undefined') {
+						self.parse(resu);
 					}
 				}
 				console.log([self.name+' fetch status=',self.status]);

@@ -132,7 +132,6 @@ SwedenModel (7)
 	
 	updateSweden() {
 		const values = this.models['SwedenModel'].values;
-		console.log(['??!!!!!!!!!!!!!!!updateSweden values=',values]);
 		/*
 		self.values.push({
 				'technology': tech,
@@ -151,8 +150,14 @@ SwedenModel (7)
 	}
 	
 	updateRussia() {
-		const values = this.models['RussiaModel'].values;
-		console.log(['??!!!!!!!!!!!!!!!updateRussia values=',values]);
+		
+						//self.averages['nuclear'] = SUM_P_AES/count;
+						//self.averages['solar'] = SUM_P_REN/count;
+						//self.averages['stock'] = SUM_P_BS/count;
+						//self.averages['chp'] = SUM_P_TES/count;
+						//self.averages['hydropower'] = SUM_P_GES/count;
+		
+		const aves = this.models['RussiaModel'].averages;
 		/*
 			self.values.push({
 				'nuclear': i.P_AES,
@@ -164,12 +169,8 @@ SwedenModel (7)
 		*/
 		//console.log(['updateRussia values=',values]);
 		let html = '';
-		values.forEach(v=>{
-			html += '<p>nuclear: ' + v.nuclear + 
-				' solar: ' + v.solar + 
-				' stock: '+ v.stock + 
-				' chp: '+ v.chp + 
-				' hydropower: ' + v.hydropower + '</p>';
+		Object.keys(aves).forEach(key => {
+			html += '<p>' + key + ': ' + aves[key] + '</p>';
 		});
 		$('#russia-wrapper').empty().append(html);
 	}

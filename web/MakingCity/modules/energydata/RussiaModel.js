@@ -15,6 +15,7 @@ export default class RussiaModel extends Model {
 		*/
 		//this.value = undefined;
 		this.values = [];
+		this.averages = {};
 		//this.start_time = undefined;
 		//this.end_time = undefined;
 	}
@@ -101,11 +102,26 @@ P_TES are CHP units, and
 P_GES are hydropower stations.
 */
 				self.values = [];
+				self.averages = {};
+				
 				const json = JSON.parse(myJson);
 				if (typeof json !== 'undefined' && Array.isArray(json)) {
+					// Calculate average from all values:
+					let SUM_P_AES = 0;
+					let SUM_P_REN = 0;
+					let SUM_P_BS = 0;
+					let SUM_P_TES = 0;
+					let SUM_P_GES = 0;
+					let count = 0;
 					json.forEach(r=>{
 						if (typeof r.m_Item2 !== 'undefined' && Array.isArray(r.m_Item2)) {
 							r.m_Item2.forEach(i=>{
+								SUM_P_AES += i.P_AES;
+								SUM_P_REN += i.P_REN;
+								SUM_P_BS += i.P_BS;
+								SUM_P_TES += i.P_TES;
+								SUM_P_GES += i.P_GES;
+								count++;
 								self.values.push({
 									'nuclear': i.P_AES,
 									'solar': i.P_REN,
@@ -113,10 +129,16 @@ P_GES are hydropower stations.
 									'chp': i.P_TES,
 									'hydropower': i.P_GES
 								});
-								//console.log(['INTERVAL=',i.INTERVAL,' M_DATE=',i.M_DATE,' P_AES=',i.P_AES,' P_GES=',i.P_GES,' P_TES=',i.P_TES,' P_BS=',i.P_BS,' P_REN=',i.P_REN]);
 							});
 						}
 					});
+					if (count > 0) {
+						self.averages['nuclear'] = SUM_P_AES/count;
+						self.averages['solar'] = SUM_P_REN/count;
+						self.averages['stock'] = SUM_P_BS/count;
+						self.averages['chp'] = SUM_P_TES/count;
+						self.averages['hydropower'] = SUM_P_GES/count;
+					}
 				}
 				console.log([self.name+' fetch status=',self.status]);
 				self.fetching = false;

@@ -100,6 +100,27 @@ export default class GridPageView extends View {
 		svg.appendChild(uc);
 	}
 	
+	addSeries(m) {
+		var series = this.chart.series.push(new am4charts.ColumnSeries());
+		series.columns.template.width = am4core.percent(50);
+		series.columns.template.tooltipText = "{name}: {valueY.formatNumber('#.')}MW";
+		series.name = this.table_labels[m].shortname;
+		
+		series.dataFields.categoryX = "category";
+		series.dataFields.valueY = m;
+		//series.dataFields.valueYShow = "totalPercent";
+		series.dataItems.template.locations.categoryX = 0.5;
+		series.stacked = true;
+		series.tooltip.pointerOrientation = "vertical";
+		
+		var bullet = series.bullets.push(new am4charts.LabelBullet());
+		bullet.interactionsEnabled = false;
+		//bullet.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
+		bullet.label.text = "{valueY.formatNumber('#.')}";
+		bullet.label.fill = am4core.color("#ffffff");
+		bullet.locationY = 0.5;
+	}
+	
 	renderChart() {
 		const self = this;
 		am4core.ready(function() {
@@ -118,38 +139,42 @@ export default class GridPageView extends View {
 			
 			// SEE: https://www.amcharts.com/demos/100-stacked-column-chart/
 			
-			self.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+			//self.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+			
+			/*
+			'Fingrid192Model':{'label':'Electricity production in Finland','shortname':'Electricity Production'},
+			'Fingrid193Model':{'label':'Electricity consumption in Finland','shortname':'Electricity Consumption'},
+			'Fingrid188Model':{'label':'Nuclear power production','shortname':'Nuclear'},
+			'Fingrid191Model':{'label':'Hydro power production','shortname':'Hydro'},
+			'Fingrid181Model':{'label':'Wind power production','shortname':'Wind'},
+			'Fingrid205Model':{'label':'Other production','shortname':'Other'},
+			'Fingrid202Model':{'label':'Industrial cogeneration','shortname':'Cogeneration'},
+			'Fingrid201Model':{'label':'Cogeneration of district heating','shortname':'Cogeneration DH'},
+			'Fingrid89Model':{'label':'Transmission between Finland and Central Sweden','shortname':'Fin Central Swe'},
+			'Fingrid180Model':{'label':'Transmission between Finland and Estonia','shortname':'Fin Estonia'},
+			'Fingrid87Model':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
+			'Fingrid195Model':{'label':'Transmission between Finland and Russia','shortname':'Fin Rus'},
+			'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
+			*/
+			
+			
+			// ToDo: Calculate import/export amounts at notify() and put sums into charts!
+			
 			self.chart.data = [
 				{
-				category: "Production",
-				value1: 6625.7
-				//value2: 5
-				//value3: 0,
-				//value4: 0
+					'category': 'Prod',
+					'none': 0
 				},
 				{
-				category: "Production + import",
-				//value1: 6625.7,
-				//value2: 5
-				value3: 2722.8,
-				value4: 2126.5
+					'category': 'Prod+imp',
+					'none': 0
 				},
 				{
-				category: "Consumption",
-				//value1: 0,
-				value2: 8817
-				//value3: ,
-				//value4: 0
-				},
-				{
-				category: "Consumption + export",
-				//value1: 0,
-				value2: 8817
-				//value3: ,
-				//value4: 0
+					'category': 'Cons+exp',
+					'none': 0
 				}
 			];
-			self.chart.colors.step = 2;
+			//self.chart.colors.step = 2;
 			self.chart.padding(30, 30, 10, 30);
 			self.chart.legend = new am4charts.Legend();
 			var categoryAxis = self.chart.xAxes.push(new am4charts.CategoryAxis());
@@ -158,85 +183,67 @@ export default class GridPageView extends View {
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.min = 0;
-			valueAxis.max = 9000;
-			valueAxis.strictMinMax = true;
+			//valueAxis.max = 2000;
+			//valueAxis.strictMinMax = true;
+			valueAxis.extraMax = 0.1;
 			valueAxis.calculateTotals = true;
 			valueAxis.renderer.minWidth = 50;
 			
-			var series1 = self.chart.series.push(new am4charts.ColumnSeries());
-			series1.columns.template.width = am4core.percent(50);
-			series1.columns.template.tooltipText = "{name}: {valueY.formatNumber('#.')}MW";
-			series1.name = "Total";
-			series1.dataFields.categoryX = "category";
-			series1.dataFields.valueY = "value1";
-			//series1.dataFields.valueYShow = "totalPercent";
-			series1.dataItems.template.locations.categoryX = 0.5;
-			series1.stacked = true;
-			series1.tooltip.pointerOrientation = "vertical";
+			// SEE: https://sashamaps.net/docs/resources/20-colors/
 			
-			var bullet1 = series1.bullets.push(new am4charts.LabelBullet());
-			bullet1.interactionsEnabled = false;
-			//bullet1.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
-			bullet1.label.text = "{valueY.formatNumber('#.')}";
-			bullet1.label.fill = am4core.color("#ffffff");
-			bullet1.locationY = 0.5;
+			const colors = [
+				'#911eb4', // Purple Production 
+				'#f58231', // Orange Consumption
+				
+				// Prod components:
+				'#4363d8', // Blue 
+				'#42d4f4', // Cyan
+				'#000075', // Navy 
+				'#f032e6', // Magenta
+				'#dcbeff', // Lavender
+				'#469990', // Teal
+				
+				// Transfer colors (5)
+				'#9a6324', // Brown
+				'#3cb44b', // Green
+				'#cce119', // Yellow
+				'#808000', // Olive
+				'#aaffc3', // Mint
+			];
+			var am4colors = [];
+			colors.forEach(function(hex) {
+				am4colors.push(am4core.color(hex)); 
+			});
+			self.chart.colors.list = am4colors;
 			
-			var series2 = self.chart.series.push(new am4charts.ColumnSeries());
-			series2.columns.template.width = am4core.percent(50);
-			//series2.columns.template.tooltipText = "{name}: {valueY.totalPercent.formatNumber('#.00')}%";
-			series2.columns.template.tooltipText = "{name}: {valueY.formatNumber('#.')}MW";
-			series2.name = "Consumption";
-			series2.dataFields.categoryX = "category";
-			series2.dataFields.valueY = "value2";
-			//series2.dataFields.valueYShow = "totalPercent";
-			series2.dataItems.template.locations.categoryX = 0.5;
-			series2.stacked = true;
-			series2.tooltip.pointerOrientation = "vertical";
+			Object.keys(self.table_labels).forEach(key => {
+				if (key !== 'FingridPowerSystemStateModel') {
+					self.addSeries(key);
+				}
+			});
 			
-			var bullet2 = series2.bullets.push(new am4charts.LabelBullet());
-			bullet2.interactionsEnabled = false;
-			//bullet2.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
-			bullet2.label.text = "{valueY.formatNumber('#.')}";
-			bullet2.locationY = 0.5;
-			bullet2.label.fill = am4core.color("#ffffff");
+			// Create series for total
+			var totalSeries = self.chart.series.push(new am4charts.ColumnSeries());
+			totalSeries.dataFields.valueY = "none";
+			totalSeries.dataFields.categoryX = "category";
+			totalSeries.stacked = true;
+			totalSeries.hiddenInLegend = true;
+			totalSeries.columns.template.strokeOpacity = 0;
+			
+			var totalBullet = totalSeries.bullets.push(new am4charts.LabelBullet());
+			totalBullet.dy = -20;
+			totalBullet.label.text = "{valueY.total.formatNumber('#.')}";
+			//totalBullet.label.text = "{valueY.total}";
+			totalBullet.label.hideOversized = false;
+			totalBullet.label.fontSize = 18;
+			
+			totalBullet.label.background.fill = totalSeries.stroke;
+			totalBullet.label.background.fillOpacity = 0.2;
+			totalBullet.label.padding(5, 10, 5, 10);
 			
 			
-			var series3 = self.chart.series.push(new am4charts.ColumnSeries());
-			series3.columns.template.width = am4core.percent(50);
-			series3.columns.template.tooltipText = "{name}: {valueY.formatNumber('#.')}MW";
-			series3.name = "Nuclear";
-			series3.dataFields.categoryX = "category";
-			series3.dataFields.valueY = "value3";
-			//series3.dataFields.valueYShow = "totalPercent";
-			series3.dataItems.template.locations.categoryX = 0.5;
-			series3.stacked = true;
-			series3.tooltip.pointerOrientation = "vertical";
 			
-			var bullet3 = series3.bullets.push(new am4charts.LabelBullet());
-			bullet3.interactionsEnabled = false;
-			//bullet3.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
-			bullet3.label.text = "{valueY.formatNumber('#.')}";
-			bullet3.locationY = 0.5;
-			bullet3.label.fill = am4core.color("#ffffff");
 			
-			var series4 = self.chart.series.push(new am4charts.ColumnSeries());
-			series4.columns.template.width = am4core.percent(50);
-			series4.columns.template.tooltipText = "{name}: {valueY.formatNumber('#.')}MW";
-			series4.name = "Hydro";
-			series4.dataFields.categoryX = "category";
-			series4.dataFields.valueY = "value4";
-			//series4.dataFields.valueYShow = "totalPercent";
-			series4.dataItems.template.locations.categoryX = 0.5;
-			series4.stacked = true;
-			series4.tooltip.pointerOrientation = "vertical";
-			
-			var bullet4 = series4.bullets.push(new am4charts.LabelBullet());
-			bullet4.interactionsEnabled = false;
-			//bullet4.label.text = "{valueY.totalPercent.formatNumber('#.00')}%";
-			bullet4.label.text = "{valueY.formatNumber('#.')}";
-			bullet4.locationY = 0.5;
-			bullet4.label.fill = am4core.color("#ffffff");
-			//self.chart.scrollbarX = new am4core.Scrollbar();
 		}); // end am4core.ready()
 	}
 	
@@ -255,75 +262,6 @@ export default class GridPageView extends View {
 		}
 	}
 	
-	/*
-	renderChart() {
-		const self = this;
-		am4core.ready(function() {
-			
-			// Themes begin
-			am4core.useTheme(am4themes_dark);
-			//am4core.useTheme(am4themes_animated);
-			// Themes end
-			
-			am4core.options.autoSetClassName = true;
-			am4core.options.autoDispose = true;
-			
-			//am4core.options.autoSetClassName = true;
-			// Create chart
-			self.chart = am4core.create("fingrid-chart", am4charts.XYChart);
-			self.chart.padding(30, 15, 30, 15);
-			//self.chart.colors.step = 3;
-			
-			self.chart.numberFormatter.numberFormat = "#.##";
-			
-			
-			// Create chart instance
-			self.chart.data = [];
-			
-			Object.keys(self.table_labels).forEach(key => {
-				if (key === 'FingridPowerSystemStateModel') {
-					
-				} else {
-					self.chart.data.push({
-						"name": key,
-						"shortname": self.table_labels[key].shortname,
-						"value":self.models[key].value
-					});
-				}
-			});
-			
-			// Create axes
-			var categoryAxis = self.chart.xAxes.push(new am4charts.CategoryAxis());
-			categoryAxis.dataFields.category = "shortname";
-			categoryAxis.renderer.grid.template.location = 0;
-			categoryAxis.renderer.minGridDistance = 30;
-			
-			categoryAxis.renderer.labels.template.adapter.add("dy", function(dy, target) {
-				if (target.dataItem && target.dataItem.index & 2 == 2) {
-					return dy + 25;
-				}
-				return dy;
-			});
-			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
-			
-			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " MW";
-			});
-			
-			// Create series
-			var series = self.chart.series.push(new am4charts.ColumnSeries());
-			series.dataFields.valueY = "value";
-			series.dataFields.categoryX = "shortname";
-			series.name = "Values";
-			series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
-			series.columns.template.fillOpacity = .8;
-			
-			var columnTemplate = series.columns.template;
-			columnTemplate.strokeWidth = 2;
-			columnTemplate.strokeOpacity = 1;
-		}); // end am4core.ready()
-	}
-	*/
 	createTable(fid) {
 		let html = '<table class="striped">'+
 			'<thead>'+
@@ -362,34 +300,158 @@ export default class GridPageView extends View {
 		$(html).appendTo(fid);
 	}
 	
-	notify(options) {
+	/*
+		Transmission can be either in to the country (import) or out of the country (export).
+		The sign is negative in case of import and positive for export.
+		Therefore data is dynamically generated everytime there is a new measurement.
 		
-		const key_array = Object.keys(this.table_labels);
 		
-		if (this.controller.visible) {
+		FIRST GROUP ('category': 'Prod'):
+		'Fingrid188Model':{'label':'Nuclear power production','shortname':'Nuclear'},
+		'Fingrid191Model':{'label':'Hydro power production','shortname':'Hydro'},
+		'Fingrid181Model':{'label':'Wind power production','shortname':'Wind'},
+		'Fingrid205Model':{'label':'Other production','shortname':'Other'},
+		'Fingrid202Model':{'label':'Industrial cogeneration','shortname':'Cogeneration'},
+		'Fingrid201Model':{'label':'Cogeneration of district heating','shortname':'Cogeneration DH'},
+		
+		+ Any of the following where sign is negative:
+		
+		'Fingrid89Model':{'label':'Transmission between Finland and Central Sweden','shortname':'Fin Central Swe'},
+		'Fingrid180Model':{'label':'Transmission between Finland and Estonia','shortname':'Fin Estonia'},
+		'Fingrid87Model':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
+		'Fingrid195Model':{'label':'Transmission between Finland and Russia','shortname':'Fin Rus'},
+		'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
+		
+		
+		SECOND GROUP ('category': 'Prod+imp'):
+		'Fingrid192Model':{'label':'Electricity production in Finland','shortname':'Electricity Production'},
+		
+		
+		THIRD GROUP ('category': 'Cons+exp'):
+		'Fingrid193Model':{'label':'Electricity consumption in Finland','shortname':'Electricity Consumption'},
+		
+		+ Any of the following where sign is positive:
+		
+		'Fingrid89Model':{'label':'Transmission between Finland and Central Sweden','shortname':'Fin Central Swe'},
+		'Fingrid180Model':{'label':'Transmission between Finland and Estonia','shortname':'Fin Estonia'},
+		'Fingrid87Model':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
+		'Fingrid195Model':{'label':'Transmission between Finland and Russia','shortname':'Fin Rus'},
+		'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
+	*/
+	
+	
+	
+	updateChart(model_name) {
+		// 'category': 'Prod':
+		//'Fingrid188Model':{'label':'Nuclear power production','shortname':'Nuclear'},
+		//'Fingrid191Model':{'label':'Hydro power production','shortname':'Hydro'},
+		//'Fingrid181Model':{'label':'Wind power production','shortname':'Wind'},
+		//'Fingrid205Model':{'label':'Other production','shortname':'Other'},
+		//'Fingrid202Model':{'label':'Industrial cogeneration','shortname':'Cogeneration'},
+		//'Fingrid201Model':{'label':'Cogeneration of district heating','shortname':'Cogeneration DH'},
+		if (model_name === 'Fingrid188Model' ||
+			model_name === 'Fingrid191Model' ||
+			model_name === 'Fingrid181Model' ||
+			model_name === 'Fingrid205Model' ||
+			model_name === 'Fingrid202Model' ||
+			model_name === 'Fingrid201Model') {
+			if (typeof this.chart !== 'undefined') {
+				this.chart.data.forEach(d=>{
+					if (this.models[model_name].value == 0) {
+						
+						// Not included.
+						delete d[model_name];
+						
+					} else if (this.models[model_name].value > 0) {
+						if (d.category === 'Prod') {
+							d[model_name] = this.models[model_name].value;
+						}
+					}
+				});
+				this.chart.invalidateRawData();
+			}
+		// category': 'Prod+imp':
+		//'Fingrid192Model':{'label':'Electricity production in Finland','shortname':'Electricity Production'},
+		} else if (model_name === 'Fingrid192Model') {
 			
+			if (typeof this.chart !== 'undefined') {
+				this.chart.data.forEach(d=>{
+					if (this.models[model_name].value == 0) {
+						
+						// Not included.
+						delete d[model_name];
+						
+					} else if (this.models[model_name].value > 0) {
+						if (d.category === 'Prod+imp') {
+							d[model_name] = this.models[model_name].value;
+						}
+					}
+				});
+				this.chart.invalidateRawData();
+			}
+		// category': 'Cons+exp':
+		//'Fingrid193Model':{'label':'Electricity consumption in Finland','shortname':'Electricity Consumption'},
+		} else if (model_name === 'Fingrid193Model') {
+			if (typeof this.chart !== 'undefined') {
+				this.chart.data.forEach(d=>{
+					if (this.models[model_name].value == 0) {
+						
+						// Not included.
+						delete d[model_name];
+						
+					} else if (this.models[model_name].value > 0) {
+						if (d.category === 'Cons+exp') {
+							d[model_name] = this.models[model_name].value;
+						}
+					}
+				});
+				this.chart.invalidateRawData();
+			}
+		//'Fingrid89Model':{'label':'Transmission between Finland and Central Sweden','shortname':'Fin Central Swe'},
+		//'Fingrid180Model':{'label':'Transmission between Finland and Estonia','shortname':'Fin Estonia'},
+		//'Fingrid87Model':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
+		//'Fingrid195Model':{'label':'Transmission between Finland and Russia','shortname':'Fin Rus'},
+		//'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
+		} else if (model_name === 'Fingrid89Model' || 
+					model_name === 'Fingrid180Model' || 
+					model_name === 'Fingrid87Model' || 
+					model_name === 'Fingrid195Model' || 
+					model_name === 'Fingrid187Model') {
+			if (typeof this.chart !== 'undefined') {
+				// SEE: https://www.amcharts.com/docs/v4/concepts/data/
+				// Manipulating existing data points
+				this.chart.data.forEach(d=>{
+					if (this.models[model_name].value == 0) {
+						
+						// Not included.
+						delete d[model_name];
+						
+					} else if (this.models[model_name].value < 0) {
+						if (d.category === 'Prod+imp') {
+							d[model_name] = -this.models[model_name].value;
+						}
+						
+					} else {
+						if (d.category === 'Cons+exp') {
+							d[model_name] = this.models[model_name].value;
+						}
+					}
+				});
+				this.chart.invalidateRawData();
+			}
+		}
+	}
+	
+	notify(options) {
+		const key_array = Object.keys(this.table_labels);
+		if (this.controller.visible) {
 			if (key_array.includes(options.model) && options.method==='fetched') {
-				
 				if (options.status === 200) {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						
 						this.updateTable(options.model);
-						
-						if (typeof this.chart !== 'undefined') {
-							// SEE: https://www.amcharts.com/docs/v4/concepts/data/
-							// Manipulating existing data points
-							const name = options.model;
-							this.chart.data.forEach(d=>{
-								if (d.name === name) {
-									d.value = this.models[name].value;
-								}
-							});
-							this.chart.invalidateRawData();
-							
-						} else {
-							this.renderChart();
-						}
+						this.updateChart(options.model);
 						
 					} else {
 						this.render();
@@ -435,7 +497,7 @@ export default class GridPageView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					'<div id="fingrid-chart" class="medium-chart"></div>'+
+					'<div id="fingrid-chart" class="extra-large-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -458,6 +520,7 @@ export default class GridPageView extends View {
 		});
 		
 		this.createTable('#table-wrapper');
+		this.renderChart();
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {

@@ -2,6 +2,12 @@
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
+
+
+Use node csv-parser at backend:
+https://www.npmjs.com/package/csv-parser
+
+
 */
 import View from '../common/View.js';
 
@@ -150,13 +156,11 @@ SwedenModel (7)
 	}
 	
 	updateRussia() {
-		
-						//self.averages['nuclear'] = SUM_P_AES/count;
-						//self.averages['solar'] = SUM_P_REN/count;
-						//self.averages['stock'] = SUM_P_BS/count;
-						//self.averages['chp'] = SUM_P_TES/count;
-						//self.averages['hydropower'] = SUM_P_GES/count;
-		
+		//self.averages['nuclear'] = SUM_P_AES/count;
+		//self.averages['solar'] = SUM_P_REN/count;
+		//self.averages['stock'] = SUM_P_BS/count;
+		//self.averages['chp'] = SUM_P_TES/count;
+		//self.averages['hydropower'] = SUM_P_GES/count;
 		const aves = this.models['RussiaModel'].averages;
 		/*
 			self.values.push({
@@ -173,6 +177,40 @@ SwedenModel (7)
 			html += '<p>' + key + ': ' + aves[key] + '</p>';
 		});
 		$('#russia-wrapper').empty().append(html);
+	}
+	
+	//Object { "\ufeffTechnology;Country;Global warming;Stratospheric ozone depletion;Ionizing radiation;Ozone formation": 
+	//"other_biogas;NO;345.37598;0.00129608;7.379338814;0.651773879;0.08656705;0.660963345;9.008573734;0.402944846;0.084247227;138.3859614;36.46999029;10.67224709;0.106596896;4.925282142;44.29541411;0.455656374;32.9793508;3.52948134" }
+	updateEF() {
+		const values = this.models['EFModel'].values;
+		console.log(['values LENGTH = ',values.length]);
+		values.forEach(v=>{
+			/*
+			v is an object with key value pair.
+			Key is always the same: "\ufeffTechnology;Country;Global warming;Stratospheric ozone depletion;Ionizing radiation;Ozone formation": 
+			and value contains one row from CSV file:
+			"other_biogas;NO;345.37598;0.00129608;7.379338814;0.651773879;0.08656705;0.660963345;9.008573734;0.402944846;0.084247227;138.3859614;36.46999029;10.67224709;0.106596896;4.925282142;44.29541411;0.455656374;32.9793508;3.52948134" }
+			
+			We need only 3 first values from "value":
+				biomass;EE;50.75278775;
+				coal;EE;1285.968615;
+				coal_chp;EE;1285.968615;
+				...
+			*/
+			Object.keys(v).forEach(key => {
+				const arr = v[key].split(';');
+				if (typeof arr !== 'undefined' && Array.isArray(arr)) {
+					console.log(['0=',arr[0],' 1=',arr[1],' 2=',arr[2]]);
+				}
+			});
+		});
+		
+		/*
+		ToDo: 
+		Collect EFs for different technologies and countries.
+		Use it in calculations.
+		...
+		*/
 	}
 	
 	notify(options) {
@@ -244,6 +282,33 @@ SwedenModel (7)
 					
 				} else { // Error in fetching.
 					console.log(['ERROR IN FETCHING RUSSIA MODEL=',options.model]);
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							this.forceLogout(this.FELID);
+							
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#'+this.FELID);
+						}
+					} else {
+						this.render();
+					}
+				}
+			} else if (options.model==='EFModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						this.updateEF();
+						
+					} else {
+						this.render();
+					}
+					
+				} else { // Error in fetching.
+					console.log(['ERROR IN FETCHING EF MODEL=',options.model]);
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						if (options.status === 401) {

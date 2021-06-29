@@ -22,23 +22,27 @@ export default class GridPageView extends View {
 		
 		this.table_labels = {
 			'FingridPowerSystemStateModel':{'label':'Power system state','shortname':'Power State'},
-			'Fingrid192Model':{'label':'Electricity production in Finland','shortname':'Electricity Production'},
-			'Fingrid193Model':{'label':'Electricity consumption in Finland','shortname':'Electricity Consumption'},
+			'Fingrid192Model':{'label':'Electricity production in Finland','shortname':'Production'},
+			'Fingrid193Model':{'label':'Electricity consumption in Finland','shortname':'Consumption'},
 			'Fingrid188Model':{'label':'Nuclear power production','shortname':'Nuclear'},
 			'Fingrid191Model':{'label':'Hydro power production','shortname':'Hydro'},
 			'Fingrid181Model':{'label':'Wind power production','shortname':'Wind'},
 			'Fingrid205Model':{'label':'Other production','shortname':'Other'},
-			'Fingrid202Model':{'label':'Industrial cogeneration','shortname':'Cogeneration'},
-			'Fingrid201Model':{'label':'Cogeneration of district heating','shortname':'Cogeneration DH'},
-			'Fingrid89Model':{'label':'Transmission between Finland and Central Sweden','shortname':'Fin Central Swe'},
-			'Fingrid180Model':{'label':'Transmission between Finland and Estonia','shortname':'Fin Estonia'},
-			'Fingrid87Model':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
-			'Fingrid195Model':{'label':'Transmission between Finland and Russia','shortname':'Fin Rus'},
-			'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
+			'Fingrid202Model':{'label':'Industrial co-generation','shortname':'Co-gen'},
+			'Fingrid201Model':{'label':'Co-generation of district heating','shortname':'Co-gen DH'},
+			'Fingrid89Model':{'label':'Transmission between Finland and Central Sweden','shortname':'Central Swe'},
+			'Fingrid180Model':{'label':'Transmission between Finland and Estonia','shortname':'Estonia'},
+			'Fingrid87Model':{'label':'Transmission between Finland and Northern Sweden','shortname':'Northern Swe'},
+			'Fingrid195Model':{'label':'Transmission between Finland and Russia','shortname':'Russia'},
+			'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Norway'}
 		};
 		/*
 		Other production inc. estimated small-scale production and reserve power plants
 		*/
+		
+		this.category_Production = 'Prod';
+		this.category_Production_and_Import = 'Prod+import';
+		this.category_Consumption_and_Export = 'Cons+export';
 	}
 	
 	show() {
@@ -148,8 +152,8 @@ export default class GridPageView extends View {
 			'Fingrid191Model':{'label':'Hydro power production','shortname':'Hydro'},
 			'Fingrid181Model':{'label':'Wind power production','shortname':'Wind'},
 			'Fingrid205Model':{'label':'Other production','shortname':'Other'},
-			'Fingrid202Model':{'label':'Industrial cogeneration','shortname':'Cogeneration'},
-			'Fingrid201Model':{'label':'Cogeneration of district heating','shortname':'Cogeneration DH'},
+			'Fingrid202Model':{'label':'Industrial co-generation','shortname':'Co-generation'},
+			'Fingrid201Model':{'label':'Co-generation of district heating','shortname':'Co-generation DH'},
 			'Fingrid89Model':{'label':'Transmission between Finland and Central Sweden','shortname':'Fin Central Swe'},
 			'Fingrid180Model':{'label':'Transmission between Finland and Estonia','shortname':'Fin Estonia'},
 			'Fingrid87Model':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
@@ -157,20 +161,18 @@ export default class GridPageView extends View {
 			'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
 			*/
 			
-			
 			// ToDo: Calculate import/export amounts at notify() and put sums into charts!
-			
 			self.chart.data = [
 				{
-					'category': 'Prod',
+					'category': self.category_Production,
 					'none': 0
 				},
 				{
-					'category': 'Prod+imp',
+					'category': self.category_Production_and_Import,
 					'none': 0
 				},
 				{
-					'category': 'Cons+exp',
+					'category': self.category_Consumption_and_Export,
 					'none': 0
 				}
 			];
@@ -209,6 +211,7 @@ export default class GridPageView extends View {
 				'#cce119', // Yellow
 				'#808000', // Olive
 				'#aaffc3', // Mint
+				'#333333'  // Dark grey for the Total "series"
 			];
 			var am4colors = [];
 			colors.forEach(function(hex) {
@@ -240,10 +243,6 @@ export default class GridPageView extends View {
 			totalBullet.label.background.fill = totalSeries.stroke;
 			totalBullet.label.background.fillOpacity = 0.2;
 			totalBullet.label.padding(5, 10, 5, 10);
-			
-			
-			
-			
 		}); // end am4core.ready()
 	}
 	
@@ -311,8 +310,12 @@ export default class GridPageView extends View {
 		'Fingrid191Model':{'label':'Hydro power production','shortname':'Hydro'},
 		'Fingrid181Model':{'label':'Wind power production','shortname':'Wind'},
 		'Fingrid205Model':{'label':'Other production','shortname':'Other'},
-		'Fingrid202Model':{'label':'Industrial cogeneration','shortname':'Cogeneration'},
-		'Fingrid201Model':{'label':'Cogeneration of district heating','shortname':'Cogeneration DH'},
+		'Fingrid202Model':{'label':'Industrial co-generation','shortname':'Co-generation'},
+		'Fingrid201Model':{'label':'Co-generation of district heating','shortname':'Co-generation DH'},
+		
+		
+		SECOND GROUP ('category': 'Prod+import'):
+		'Fingrid192Model':{'label':'Electricity production in Finland','shortname':'Electricity Production'},
 		
 		+ Any of the following where sign is negative:
 		
@@ -322,12 +325,7 @@ export default class GridPageView extends View {
 		'Fingrid195Model':{'label':'Transmission between Finland and Russia','shortname':'Fin Rus'},
 		'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
 		
-		
-		SECOND GROUP ('category': 'Prod+imp'):
-		'Fingrid192Model':{'label':'Electricity production in Finland','shortname':'Electricity Production'},
-		
-		
-		THIRD GROUP ('category': 'Cons+exp'):
+		THIRD GROUP ('category': 'Cons+export'):
 		'Fingrid193Model':{'label':'Electricity consumption in Finland','shortname':'Electricity Consumption'},
 		
 		+ Any of the following where sign is positive:
@@ -347,8 +345,8 @@ export default class GridPageView extends View {
 		//'Fingrid191Model':{'label':'Hydro power production','shortname':'Hydro'},
 		//'Fingrid181Model':{'label':'Wind power production','shortname':'Wind'},
 		//'Fingrid205Model':{'label':'Other production','shortname':'Other'},
-		//'Fingrid202Model':{'label':'Industrial cogeneration','shortname':'Cogeneration'},
-		//'Fingrid201Model':{'label':'Cogeneration of district heating','shortname':'Cogeneration DH'},
+		//'Fingrid202Model':{'label':'Industrial co-generation','shortname':'Co-generation'},
+		//'Fingrid201Model':{'label':'Co-generation of district heating','shortname':'Co-generation DH'},
 		if (model_name === 'Fingrid188Model' ||
 			model_name === 'Fingrid191Model' ||
 			model_name === 'Fingrid181Model' ||
@@ -363,14 +361,14 @@ export default class GridPageView extends View {
 						delete d[model_name];
 						
 					} else if (this.models[model_name].value > 0) {
-						if (d.category === 'Prod') {
+						if (d.category === this.category_Production) {
 							d[model_name] = this.models[model_name].value;
 						}
 					}
 				});
 				this.chart.invalidateRawData();
 			}
-		// category': 'Prod+imp':
+		// category': 'Prod+import':
 		//'Fingrid192Model':{'label':'Electricity production in Finland','shortname':'Electricity Production'},
 		} else if (model_name === 'Fingrid192Model') {
 			
@@ -382,14 +380,14 @@ export default class GridPageView extends View {
 						delete d[model_name];
 						
 					} else if (this.models[model_name].value > 0) {
-						if (d.category === 'Prod+imp') {
+						if (d.category === this.category_Production_and_Import) {
 							d[model_name] = this.models[model_name].value;
 						}
 					}
 				});
 				this.chart.invalidateRawData();
 			}
-		// category': 'Cons+exp':
+		// category': 'Cons+export':
 		//'Fingrid193Model':{'label':'Electricity consumption in Finland','shortname':'Electricity Consumption'},
 		} else if (model_name === 'Fingrid193Model') {
 			if (typeof this.chart !== 'undefined') {
@@ -400,7 +398,7 @@ export default class GridPageView extends View {
 						delete d[model_name];
 						
 					} else if (this.models[model_name].value > 0) {
-						if (d.category === 'Cons+exp') {
+						if (d.category === this.category_Consumption_and_Export) {
 							d[model_name] = this.models[model_name].value;
 						}
 					}
@@ -427,12 +425,12 @@ export default class GridPageView extends View {
 						delete d[model_name];
 						
 					} else if (this.models[model_name].value < 0) {
-						if (d.category === 'Prod+imp') {
+						if (d.category === this.category_Production_and_Import) {
 							d[model_name] = -this.models[model_name].value;
 						}
 						
 					} else {
-						if (d.category === 'Cons+exp') {
+						if (d.category === this.category_Consumption_and_Export) {
 							d[model_name] = this.models[model_name].value;
 						}
 					}

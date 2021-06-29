@@ -4,6 +4,7 @@ import EnvironmentPageView from './EnvironmentPageView.js';
 import EntsoeModel from '../energydata/EntsoeModel.js';
 import RussiaModel from '../energydata/RussiaModel.js';
 import SwedenModel from '../energydata/SwedenModel.js';
+import EFModel from './EFModel.js';
 
 export default class EnvironmentPageController extends Controller {
 	
@@ -160,12 +161,18 @@ export default class EnvironmentPageController extends Controller {
 		this.models['SwedenModel'] = m5;
 		
 		
+		const m6 = new EFModel({name:'EFModel',src:''});
+		m6.subscribe(this);
+		this.master.modelRepo.add('EFModel',m6);
+		this.models['EFModel'] = m6;
+		
+		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
 		// interval 3600 s = 1 hour
 		
-		const model_names = ['RussiaModel','SwedenModel']; /*'obixModel',*/
+		const model_names = ['RussiaModel','SwedenModel','EFModel']; /*'obixModel',*/
 		this.sources.forEach(src=> {
 			model_names.push('Entsoe'+src.type+src.area_name+src.psr_type+'Model');
 		});

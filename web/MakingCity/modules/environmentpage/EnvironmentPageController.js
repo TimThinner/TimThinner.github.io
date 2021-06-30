@@ -4,7 +4,9 @@ import EnvironmentPageView from './EnvironmentPageView.js';
 import EntsoeModel from '../energydata/EntsoeModel.js';
 import RussiaModel from '../energydata/RussiaModel.js';
 import SwedenModel from '../energydata/SwedenModel.js';
-import EFModel from './EFModel.js';
+import FinlandPowerPlantsModel from './FinlandPowerPlantsModel.js';
+import EmissionsSummaryModel from './EmissionsSummaryModel.js';
+import ElectricitymapEmissionsModel from './ElectricitymapEmissionsModel.js';
 
 export default class EnvironmentPageController extends Controller {
 	
@@ -161,10 +163,23 @@ export default class EnvironmentPageController extends Controller {
 		this.models['SwedenModel'] = m5;
 		
 		
-		const m6 = new EFModel({name:'EFModel',src:''});
-		m6.subscribe(this);
-		this.master.modelRepo.add('EFModel',m6);
-		this.models['EFModel'] = m6;
+		
+		
+		const FINPPM = new FinlandPowerPlantsModel({name:'FinlandPowerPlantsModel',src:''});
+		FINPPM.subscribe(this);
+		this.master.modelRepo.add('FinlandPowerPlantsModel',FINPPM);
+		this.models['FinlandPowerPlantsModel'] = FINPPM;
+		
+		const ESM = new EmissionsSummaryModel({name:'EmissionsSummaryModel',src:''});
+		ESM.subscribe(this);
+		this.master.modelRepo.add('EmissionsSummaryModel',ESM);
+		this.models['EmissionsSummaryModel'] = ESM;
+		
+		const EMEM = new ElectricitymapEmissionsModel({name:'ElectricitymapEmissionsModel',src:''});
+		EMEM.subscribe(this);
+		this.master.modelRepo.add('ElectricitymapEmissionsModel',EMEM);
+		this.models['ElectricitymapEmissionsModel'] = EMEM;
+		
 		
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
@@ -172,7 +187,7 @@ export default class EnvironmentPageController extends Controller {
 		
 		// interval 3600 s = 1 hour
 		
-		const model_names = ['RussiaModel','SwedenModel','EFModel']; /*'obixModel',*/
+		const model_names = ['RussiaModel','SwedenModel','FinlandPowerPlantsModel','EmissionsSummaryModel','ElectricitymapEmissionsModel']; /*'obixModel',*/
 		this.sources.forEach(src=> {
 			model_names.push('Entsoe'+src.type+src.area_name+src.psr_type+'Model');
 		});

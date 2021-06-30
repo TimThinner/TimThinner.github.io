@@ -1,6 +1,6 @@
 import Model from '../common/Model.js';
 
-export default class EFModel extends Model {
+export default class ElectricitymapEmissionsModel extends Model {
 	
 	constructor(options) {
 		super(options);
@@ -30,7 +30,7 @@ export default class EFModel extends Model {
 		let status = 500; // error: 500
 		this.errorMessage = '';
 		this.fetching = true;
-		const url = this.mongoBackend + '/csvs/Emissions_Summary.csv';
+		const url = this.mongoBackend + '/csvs/electricitymap_Emissions.csv';
 		
 		console.log (['fetch url=',url]);
 		fetch(url)

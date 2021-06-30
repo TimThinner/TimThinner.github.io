@@ -60,7 +60,8 @@ export default class EnvironmentPageView extends View {
 			'EntsoeA75NorwayNO4B12Model':{'label':'Norway NO4 Hydro Water Reservoir','shortname':''},
 			'EntsoeA75NorwayNO4B15Model':{'label':'Norway NO4 Other renewable','shortname':''},
 			'EntsoeA75NorwayNO4B19Model':{'label':'Norway NO4 Wind Onshore','shortname':''}
-			/*
+		};
+/*
 RussiaModel (5)
 P_AES		nuclear power
 P_REN		solar
@@ -75,11 +76,17 @@ SwedenModel (7)
 4: unknown
 5: wind
 6: hydro
-7: consumption*/
-			
-			//'RussiaModel':{'label':'','shortname':''},
-			//'SwedenModel':{'label':'','shortname':''}
-		};
+7: consumption
+*/
+//'RussiaModel':{'label':'','shortname':''},
+//'SwedenModel':{'label':'','shortname':''}
+		
+		
+		// The emission factor [unit/MWh] is taken from the Emissions_Summary.csv which compiles data for EcoInvent, characterised with the ReCiPe 2016 midpoint I method.
+		this.emission_factors = [];
+		this.elemap_factors = [];
+		this.finpower = [];
+		
 		this.rendered = false;
 		this.FELID = 'environment-page-view-failure';
 	}
@@ -178,12 +185,166 @@ SwedenModel (7)
 		});
 		$('#russia-wrapper').empty().append(html);
 	}
+/*
+
+
+3 categories: 
+	District heating
+	Industry CHP
+	separate powerplant
+6 fuels:
+	peat
+	biomass
+	gas
+	others
+	coal
+	oil
+
+MAPPING:
+{
+'peat' 'Peat'
+'biomass' 'Industrial wood residues'
+'gas' 'Natural gas'
+'others' 'Other by-products and wastes used as fuel'
+'biomass' 'Forest fuelwood'
+'biomass' 'Black liquor and concentrated liquors'
+'coal' 'Hard coal and anthracite'
+'biomass' 'By-products from wood processing industry'
+'oil' 'Heavy distillates'
+'others' 'Exothermic heat from industry'
+'oil' 'Light distillates'
+'others' 'Biogas'
+'oil' 'Medium heavy distillates'
+'oil' 'Heavy distillates'
+'coal' 'Blast furnace gas'
+}
+
+0: "Kaukopää"
+​​​​1: "Stora Enso Oyj"
+​​​​2: "1039050-8"
+​​​​3: "Imatran tehtaat"
+​​​​4: "Imatra"
+​​​​5: 55800
+​​​​6: "Kaukopää"
+​​​​7: "Industry CHP"
+​​​​8: 0
+​​​​9: 0
+​​​​10: 0
+​​​​11: 134
+​​​​12: 105
+​​​​13: 0
+​​​​14: 0
+​​​​15: 0
+​​​​16: 0
+​​​​17: 134
+​​​​18: 105
+​​​​19: 0
+​​​​20: "Black liquor and concentrated liquors"
+​​​​21: "Industrial wood residues"
+​​​​22: "Natural gas"
+​​​​*/
+	updateFinlandPowerPlants() {
+		
+		// values is an array of arrays.
+		// 441 arrays (powerplants) with 23 properties each.
+		// we read and store properties at index 0, 7 and 18
+		this.finpower = [];
+		// NOTE: SKIP ROWS 1 and 2, they contain HEADER data.
+		const values = this.models['FinlandPowerPlantsModel'].values.slice(2);
+		
+		console.log('================================================================');
+		console.log(['values=',values]);
+		console.log('================================================================');
+		
+		// index 0 is name, index 7 is type, index 17 is Maximum total MW and index 18 is Hour total MW.
+		// index 20 is the Main Fuel.
+		const fuels = ['peat','biomass','gas','others','coal','oil'];
+		
+		//let f_hash = {};
+		
+		values.forEach(v=>{
+			let fuel = '';
+			const f = v[20];
+			if (f) {
+				/*
+				if (typeof f_hash[f] === 'undefined') {
+					f_hash[f] = f;
+				}
+				*/
+				if (f === 'Peat') { fuel = 'peat'; }
+				else if (f === 'Industrial wood residues') { fuel = 'biomass'; }
+				else if (f === 'Natural gas') { fuel = 'gas'; }
+				else if (f === 'Other by-products and wastes used as fuel') { fuel = 'others' }
+				else if (f === 'Forest fuelwood') { fuel = 'biomass'; }
+				else if (f === 'Black liquor and concentrated liquors') { fuel = 'biomass'; }
+				else if (f === 'Hard coal and anthracite') { fuel = 'coal'; }
+				else if (f === 'By-products from wood processing industry') { fuel = 'biomass'; }
+				else if (f === 'Heavy distillates') { fuel = 'oil'; }
+				else if (f === 'Exothermic heat from industry') { fuel = 'others'; }
+				else if (f === 'Light distillates') { fuel = 'oil'; }
+				else if (f === 'Biogas') { fuel = 'others'; }
+				else if (f === 'Medium heavy distillates') { fuel = 'oil'; }
+				else if (f === 'Blast furnace gas') { fuel = 'coal'; }
+				// 14 so far.
+				// My additions from Excel:
+				else if (f === 'Other non-specified energy sources') { fuel = 'others'; }
+				else if (f === 'Mixed fuels') { fuel = 'others'; }
+				else if (f === 'Gasified waste') { fuel = 'others'; }
+				//else if (f === 'Nuclear energy') { fuel = 'uranium'; }
+				/*
+				"Peat"
+				"Mixed fuels"
+				"Heavy distillates"
+				"Natural gas"
+				"Industrial wood residues"
+				"Biogas"
+				"Black liquor and concentrated liquors"
+				"Medium heavy distillates"
+				"Hard coal and anthracite"
+				"Forest fuelwood"
+				"Exothermic heat from industry"
+				"Light distillates" ]
+				"Other by-products and wastes used as fuel" ]
+				"Blast furnace gas" ]
+				"Nuclear energy" ]
+				"Gasified waste" ]
+				"By-products from wood processing industry" ]
+				"Other non-specified energy sources" ]
+				*/
+			}
+			this.finpower.push({'name':v[0],'type':v[7],'energy':v[18],'fuel':fuel});
+		});
+		/*
+		const koos = Object.keys(f_hash);
+		console.log(['koos LENGTH=',koos.length]);
+		koos.forEach(k=>{
+			console.log(['k=',k]);
+		});*/
+		
+		let html = '';
+		this.finpower.forEach(f => {
+			html += '<p>Name=' + f.name + ' Type=' + f.type + ' Energy=' + f.energy + ' Fuel='+f.fuel+'</p>';
+		});
+		$('#finpower-wrapper').empty().append(html);
+	}
 	
-	//Object { "\ufeffTechnology;Country;Global warming;Stratospheric ozone depletion;Ionizing radiation;Ozone formation": 
-	//"other_biogas;NO;345.37598;0.00129608;7.379338814;0.651773879;0.08656705;0.660963345;9.008573734;0.402944846;0.084247227;138.3859614;36.46999029;10.67224709;0.106596896;4.925282142;44.29541411;0.455656374;32.9793508;3.52948134" }
-	updateEF() {
-		const values = this.models['EFModel'].values;
-		console.log(['values LENGTH = ',values.length]);
+	/*
+	5.1.3. Load Emissions data
+	Emissions from EcoInvent are gathered and stored in a .csv file associated to this file Emissions_Summary.csv. 
+	The data are gathered from EcoInvent 3.6 and characterised with the ReCiPe 2016 method. 
+	All categories are reported therefore, it is possible to choose from any of the 18 categories 
+	EmissionsCategory = 'GlobalWarming' ;
+	Emissions = load_emissions ; [IndCHP, DHCHP, Sep, Windpower] = extract2stat ;
+	
+	Object { 
+		"\ufeffTechnology;Country;Global warming;Stratospheric ozone depletion;Ionizing radiation;Ozone formation": 
+		"other_biogas;NO;345.37598;0.00129608;7.379338814;0.651773879;0.08656705;0.660963345;9.008573734;0.402944846;0.084247227;138.3859614;36.46999029;10.67224709;0.106596896;4.925282142;44.29541411;0.455656374;32.9793508;3.52948134"
+	}
+	*/
+	updateEmissionsSummary() {
+		const values = this.models['EmissionsSummaryModel'].values;
+		//console.log(['values LENGTH = ',values.length]);
+		this.emission_factors = [];
 		values.forEach(v=>{
 			/*
 			v is an object with key value pair.
@@ -191,7 +352,7 @@ SwedenModel (7)
 			and value contains one row from CSV file:
 			"other_biogas;NO;345.37598;0.00129608;7.379338814;0.651773879;0.08656705;0.660963345;9.008573734;0.402944846;0.084247227;138.3859614;36.46999029;10.67224709;0.106596896;4.925282142;44.29541411;0.455656374;32.9793508;3.52948134" }
 			
-			We need only 3 first values from "value":
+			We need only 3 first values from "value" (Technology;Country;Global warming;)
 				biomass;EE;50.75278775;
 				coal;EE;1285.968615;
 				coal_chp;EE;1285.968615;
@@ -200,17 +361,42 @@ SwedenModel (7)
 			Object.keys(v).forEach(key => {
 				const arr = v[key].split(';');
 				if (typeof arr !== 'undefined' && Array.isArray(arr)) {
-					console.log(['0=',arr[0],' 1=',arr[1],' 2=',arr[2]]);
+					//console.log(['0=',arr[0],' 1=',arr[1],' 2=',arr[2]]);
+					this.emission_factors.push({'technology':arr[0],'country':arr[1],'factor':arr[2]});
 				}
 			});
 		});
-		
-		/*
-		ToDo: 
-		Collect EFs for different technologies and countries.
-		Use it in calculations.
-		...
-		*/
+		let html = '';
+		this.emission_factors.forEach(f => {
+			html += '<p>Technology=' + f.technology + ' Country=' + f.country + ' Factor=' + f.factor + '</p>';
+		});
+		$('#factor-wrapper').empty().append(html);
+	}
+	
+	updateElemapEmissions() {
+		const values = this.models['ElectricitymapEmissionsModel'].values;
+		this.elemap_factors = [];
+		values.forEach(v=>{
+			//0: Object { "\ufeffTechnology": "biomass", Country: "EE", "Global warming": "230" }
+			let t='';
+			let c='';
+			let f='';
+			Object.keys(v).forEach(key => {
+				if (key.indexOf('Technology') >= 0) {
+					t = v[key];
+				} else if (key.indexOf('Country') >= 0) {
+					c = v[key];
+				} else if (key.indexOf('Global') >= 0) {
+					f = v[key];
+				}
+			});
+			this.elemap_factors.push({'technology':t,'country':c,'factor':f});
+		});
+		let html = '';
+		this.elemap_factors.forEach(f => {
+			html += '<p>Technology=' + f.technology + ' Country=' + f.country + ' Factor=' + f.factor + '</p>';
+		});
+		$('#elemap-wrapper').empty().append(html);
 	}
 	
 	notify(options) {
@@ -297,18 +483,72 @@ SwedenModel (7)
 						this.render();
 					}
 				}
-			} else if (options.model==='EFModel' && options.method==='fetched') {
+			} else if (options.model==='EmissionsSummaryModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
-						this.updateEF();
+						this.updateEmissionsSummary();
 						
 					} else {
 						this.render();
 					}
 					
 				} else { // Error in fetching.
-					console.log(['ERROR IN FETCHING EF MODEL=',options.model]);
+					console.log(['ERROR IN FETCHING ',options.model]);
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							this.forceLogout(this.FELID);
+							
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#'+this.FELID);
+						}
+					} else {
+						this.render();
+					}
+				}
+			} else if (options.model==='ElectricitymapEmissionsModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						this.updateElemapEmissions();
+						
+					} else {
+						this.render();
+					}
+					
+				} else { // Error in fetching.
+					console.log(['ERROR IN FETCHING ',options.model]);
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							this.forceLogout(this.FELID);
+							
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#'+this.FELID);
+						}
+					} else {
+						this.render();
+					}
+				}
+			} else if (options.model==='FinlandPowerPlantsModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						this.updateFinlandPowerPlants();
+						
+					} else {
+						this.render();
+					}
+					
+				} else { // Error in fetching.
+					console.log(['ERROR IN FETCHING ',options.model]);
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						if (options.status === 401) {
@@ -356,6 +596,15 @@ SwedenModel (7)
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12" id="russia-wrapper"></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12" id="factor-wrapper"></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12" id="elemap-wrapper"></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12" id="finpower-wrapper"></div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+

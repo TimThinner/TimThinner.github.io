@@ -85,7 +85,22 @@ SwedenModel (7)
 		// The emission factor [unit/MWh] is taken from the Emissions_Summary.csv which compiles data for EcoInvent, characterised with the ReCiPe 2016 midpoint I method.
 		this.emission_factors = [];
 		this.elemap_factors = [];
-		this.finpower = [];
+		this.finpower = {
+			"District heating CHP":[],
+			"Industry CHP":[],
+			"Separate electricity production":[],
+			"Nuclear energy":[],
+			"Hydro power":[],
+			"Wind power":[],
+			"Solar":[]
+		};
+		this.CHP_DH = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.CHP_Ind = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.SEP = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.NUCLEAR = 0;
+		this.HYDRO = 0;
+		this.WIND = 0;
+		this.SOLAR = 0;
 		
 		this.rendered = false;
 		this.FELID = 'environment-page-view-failure';
@@ -124,7 +139,8 @@ SwedenModel (7)
 	}
 	
 	createTable(fid) {
-		let html = '<table class="striped">'+
+		let html = '<h3>ENTSOE</h3>'+
+		'<table class="striped">'+
 			'<thead>'+
 				'<tr>'+
 					'<th>Name</th>'+
@@ -152,7 +168,7 @@ SwedenModel (7)
 				'value': i.y
 		});
 		*/
-		let html = '';
+		let html = '<h3>Sweden</h3>';
 		values.forEach(v=>{
 			html += '<p>technology: ' + v.technology + 
 				' time: ' + v.time + 
@@ -179,7 +195,7 @@ SwedenModel (7)
 			});
 		*/
 		//console.log(['updateRussia values=',values]);
-		let html = '';
+		let html = '<h3>Russia</h3>';
 		Object.keys(aves).forEach(key => {
 			html += '<p>' + key + ': ' + aves[key] + '</p>';
 		});
@@ -248,7 +264,23 @@ MAPPING:
 		// values is an array of arrays.
 		// 441 arrays (powerplants) with 23 properties each.
 		// we read and store properties at index 0, 7 and 18
-		this.finpower = [];
+		this.finpower = {
+			"District heating CHP":[],
+			"Industry CHP":[],
+			"Separate electricity production":[],
+			"Nuclear energy":[],
+			"Hydro power":[],
+			"Wind power":[],
+			"Solar":[]
+		};
+		this.CHP_DH = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.CHP_Ind = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.SEP = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.NUCLEAR = 0;
+		this.HYDRO = 0;
+		this.WIND = 0;
+		this.SOLAR = 0;
+		
 		// NOTE: SKIP ROWS 1 and 2, they contain HEADER data.
 		const values = this.models['FinlandPowerPlantsModel'].values.slice(2);
 		
@@ -258,73 +290,196 @@ MAPPING:
 		
 		// index 0 is name, index 7 is type, index 17 is Maximum total MW and index 18 is Hour total MW.
 		// index 20 is the Main Fuel.
-		const fuels = ['peat','biomass','gas','others','coal','oil'];
-		
-		//let f_hash = {};
+		//let type_hash = {};
 		
 		values.forEach(v=>{
 			let fuel = '';
-			const f = v[20];
-			if (f) {
+			const name = v[0]; // Name
+			const type = v[7]; // Type
+			let energy = v[18]; // Hour total MW
+			if (energy == 0) {
+				// if Hour total MW is zero => try Maximum total MW
+				energy = v[17];
+			}
+			const mf = v[20]; // Main fuel
+			/*
+			if (typeof type_hash[type] === 'undefined') {
+				type_hash[type] = type;
+			}*/
+			/*
+			"Wind power"
+			"Hydro power"
+			"Nuclear energy"
+			"Solar"
+			*/
+			if (mf) { // IF main fuel is listed.
 				/*
-				if (typeof f_hash[f] === 'undefined') {
-					f_hash[f] = f;
-				}
+				All power plants are gathered in 3 categories:
+					"District heating CHP"
+					"Separate electricity production"
+					"Industry CHP"
 				*/
-				if (f === 'Peat') { fuel = 'peat'; }
-				else if (f === 'Industrial wood residues') { fuel = 'biomass'; }
-				else if (f === 'Natural gas') { fuel = 'gas'; }
-				else if (f === 'Other by-products and wastes used as fuel') { fuel = 'others' }
-				else if (f === 'Forest fuelwood') { fuel = 'biomass'; }
-				else if (f === 'Black liquor and concentrated liquors') { fuel = 'biomass'; }
-				else if (f === 'Hard coal and anthracite') { fuel = 'coal'; }
-				else if (f === 'By-products from wood processing industry') { fuel = 'biomass'; }
-				else if (f === 'Heavy distillates') { fuel = 'oil'; }
-				else if (f === 'Exothermic heat from industry') { fuel = 'others'; }
-				else if (f === 'Light distillates') { fuel = 'oil'; }
-				else if (f === 'Biogas') { fuel = 'others'; }
-				else if (f === 'Medium heavy distillates') { fuel = 'oil'; }
-				else if (f === 'Blast furnace gas') { fuel = 'coal'; }
+				if (mf === 'Peat') { fuel = 'peat'; }
+				else if (mf === 'Industrial wood residues') { fuel = 'biomass'; }
+				else if (mf === 'Natural gas') { fuel = 'gas'; }
+				else if (mf === 'Other by-products and wastes used as fuel') { fuel = 'others' }
+				else if (mf === 'Forest fuelwood') { fuel = 'biomass'; }
+				else if (mf === 'Black liquor and concentrated liquors') { fuel = 'biomass'; }
+				else if (mf === 'Hard coal and anthracite') { fuel = 'coal'; }
+				else if (mf === 'By-products from wood processing industry') { fuel = 'biomass'; }
+				else if (mf === 'Heavy distillates') { fuel = 'oil'; }
+				else if (mf === 'Exothermic heat from industry') { fuel = 'others'; }
+				else if (mf === 'Light distillates') { fuel = 'oil'; }
+				else if (mf === 'Biogas') { fuel = 'others'; }
+				else if (mf === 'Medium heavy distillates') { fuel = 'oil'; }
+				else if (mf === 'Blast furnace gas') { fuel = 'coal'; }
 				// 14 so far.
 				// My additions from Excel:
-				else if (f === 'Other non-specified energy sources') { fuel = 'others'; }
-				else if (f === 'Mixed fuels') { fuel = 'others'; }
-				else if (f === 'Gasified waste') { fuel = 'others'; }
-				//else if (f === 'Nuclear energy') { fuel = 'uranium'; }
-				/*
-				"Peat"
-				"Mixed fuels"
-				"Heavy distillates"
-				"Natural gas"
-				"Industrial wood residues"
-				"Biogas"
-				"Black liquor and concentrated liquors"
-				"Medium heavy distillates"
-				"Hard coal and anthracite"
-				"Forest fuelwood"
-				"Exothermic heat from industry"
-				"Light distillates" ]
-				"Other by-products and wastes used as fuel" ]
-				"Blast furnace gas" ]
-				"Nuclear energy" ]
-				"Gasified waste" ]
-				"By-products from wood processing industry" ]
-				"Other non-specified energy sources" ]
-				*/
+				else if (mf === 'Other non-specified energy sources') { fuel = 'others'; }
+				else if (mf === 'Mixed fuels') { fuel = 'others'; }
+				else if (mf === 'Gasified waste') { fuel = 'others'; }
+				else if (mf === 'Nuclear energy') { fuel = 'nuclear energy'; }
 			}
-			this.finpower.push({'name':v[0],'type':v[7],'energy':v[18],'fuel':fuel});
+			/*
+				"Peat"
+				"Industrial wood residues"
+				"Natural gas"
+				"Other by-products and wastes used as fuel"
+				"Forest fuelwood"
+				"Black liquor and concentrated liquors"
+				"Hard coal and anthracite"
+				"By-products from wood processing industry"
+				"Heavy distillates"
+				"Exothermic heat from industry"
+				"Light distillates"
+				"Biogas"
+				"Medium heavy distillates"
+				"Blast furnace gas"
+				
+				"Other non-specified energy sources"
+				"Mixed fuels"
+				"Gasified waste"
+				"Nuclear energy"
+			*/
+			/*
+			this.finpower = {
+				'District heating CHP':[],
+				'Industry CHP':[],
+				'Separate electricity production':[],
+				'Nuclear energy':[],
+				'Hydro power':[],
+				'Wind power':[],
+				'Solar':[]
+			};*/
+			this.finpower[type].push({'name':name,'energy':energy,'fuel':fuel});
 		});
 		/*
-		const koos = Object.keys(f_hash);
-		console.log(['koos LENGTH=',koos.length]);
-		koos.forEach(k=>{
-			console.log(['k=',k]);
+		const types = Object.keys(type_hash);
+		console.log('==========================================================');
+		console.log(['types LENGTH=',types.length]);
+		console.log('==========================================================');
+		types.forEach(t=>{
+			console.log(['t=',t]);
 		});*/
 		
-		let html = '';
-		this.finpower.forEach(f => {
-			html += '<p>Name=' + f.name + ' Type=' + f.type + ' Energy=' + f.energy + ' Fuel='+f.fuel+'</p>';
+		// Type clusters:
+		
+		const fuels = Object.keys(this.CHP_DH);
+		
+		this.finpower["District heating CHP"].forEach(v => {
+			if (fuels.includes(v.fuel)) {
+				this.CHP_DH[v.fuel] += v.energy;
+			}
 		});
+		this.finpower["Industry CHP"].forEach(v => {
+			if (fuels.includes(v.fuel)) {
+				this.CHP_Ind[v.fuel] += v.energy;
+			}
+		});
+		this.finpower["Separate electricity production"].forEach(v => {
+			if (fuels.includes(v.fuel)) {
+				this.SEP[v.fuel] += v.energy;
+			}
+		});
+		
+		this.finpower["Nuclear energy"].forEach(v => {
+			this.NUCLEAR += v.energy;
+		});
+		this.finpower["Hydro power"].forEach(v => {
+			this.HYDRO += v.energy;
+		});
+		this.finpower["Wind power"].forEach(v => {
+			this.WIND += v.energy;
+		});
+		this.finpower["Solar"].forEach(v => {
+			this.SOLAR += v.energy;
+		});
+		
+		let html = '';
+		html += '<h3>Energiaviraston voimalaitosrekisteri (Excel)</h3>';
+		html += '<h4>District heating CHP</h4>';
+		fuels.forEach(f=>{
+			html += '<p>fuel=' + f + ' Total=' + this.CHP_DH[f].toFixed(0) + 'MW</p>';
+		});
+		html += '<h4>Industry CHP</h4>';
+		fuels.forEach(f=>{
+			html += '<p>fuel=' + f + ' Total=' + this.CHP_Ind[f].toFixed(0) + 'MW</p>';
+		});
+		html += '<h4>Separate electricity production</h4>';
+		fuels.forEach(f=>{
+			html += '<p>fuel=' + f + ' Total=' + this.SEP[f].toFixed(0) + 'MW</p>';
+		});
+		
+		html += '<h4>Nuclear energy</h4>';
+		html += '<p>Total='+this.NUCLEAR.toFixed(0)+'MW</p>';
+		
+		html += '<h4>Hydro power</h4>';
+		html += '<p>Total='+this.HYDRO.toFixed(0)+'MW</p>';
+		
+		html += '<h4>Wind power</h4>';
+		html += '<p>Total='+this.WIND.toFixed(0)+'MW</p>';
+		
+		html += '<h4>Solar</h4>';
+		html += '<p>Total='+this.SOLAR.toFixed(0)+'MW</p>';
+		
+		
+		/*
+		let html = '';
+		html += '<h3>District heating CHP</h3>';
+		this.finpower["District heating CHP"].forEach(v => {
+			html += '<p>Name=' + v.name + ' Energy=' + v.energy + ' Fuel='+v.fuel+'</p>';
+		});
+		
+		html += '<h3>Industry CHP</h3>';
+		this.finpower["Industry CHP"].forEach(v => {
+			html += '<p>Name=' + v.name + ' Energy=' + v.energy + ' Fuel='+v.fuel+'</p>';
+		});
+		
+		html += '<h3>Separate electricity production</h3>';
+		this.finpower["Separate electricity production"].forEach(v => {
+			html += '<p>Name=' + v.name + ' Energy=' + v.energy + ' Fuel='+v.fuel+'</p>';
+		});
+		
+		html += '<h3>Wind power</h3>';
+		this.finpower["Wind power"].forEach(v => {
+			html += '<p>Name=' + v.name + ' Energy=' + v.energy + ' Fuel='+v.fuel+'</p>';
+		});
+		
+		html += '<h3>Hydro power</h3>';
+		this.finpower["Hydro power"].forEach(v => {
+			html += '<p>Name=' + v.name + ' Energy=' + v.energy + ' Fuel='+v.fuel+'</p>';
+		});
+		
+		html += '<h3>Solar</h3>';
+		this.finpower["Solar"].forEach(v => {
+			html += '<p>Name=' + v.name + ' Energy=' + v.energy + ' Fuel='+v.fuel+'</p>';
+		});
+			
+		html += '<h3>Nuclear energy</h3>';
+		this.finpower["Nuclear energy"].forEach(v => {
+			html += '<p>Name=' + v.name + ' Energy=' + v.energy + ' Fuel='+v.fuel+'</p>';
+		});
+		*/
 		$('#finpower-wrapper').empty().append(html);
 	}
 	
@@ -367,6 +522,7 @@ MAPPING:
 			});
 		});
 		let html = '';
+		html += '<h3>Emissions Summary (csv)</h3>';
 		this.emission_factors.forEach(f => {
 			html += '<p>Technology=' + f.technology + ' Country=' + f.country + ' Factor=' + f.factor + '</p>';
 		});
@@ -393,10 +549,56 @@ MAPPING:
 			this.elemap_factors.push({'technology':t,'country':c,'factor':f});
 		});
 		let html = '';
+		html += '<h3>Electricitymap Emissions (csv)</h3>';
 		this.elemap_factors.forEach(f => {
 			html += '<p>Technology=' + f.technology + ' Country=' + f.country + ' Factor=' + f.factor + '</p>';
 		});
 		$('#elemap-wrapper').empty().append(html);
+	}
+	
+	updateEmissionsCHP() {
+		const values = this.models['EmissionsCHPModel'].values;
+		console.log('========================================');
+		console.log(['EmissionsCHPModel values=',values]);
+		console.log('========================================');
+	}
+	
+	updateEmissionsSeparate() {
+		const values = this.models['EmissionsSeparateModel'].values;
+		console.log('========================================');
+		console.log(['EmissionsSeparateModel values=',values]);
+		console.log('========================================');
+	}
+	
+	updateEmissionsET() {
+		const values = this.models['EmissionsETModel'].values;
+		console.log('========================================');
+		console.log(['EmissionsETModel values=',values]);
+		console.log('========================================');
+	}
+	
+	updateEmissionsFingridCoeff() {
+		const values = this.models['EmissionsFingridCoeffModel'].values;
+		console.log('========================================');
+		console.log(['EmissionsFingridCoeffModel values=',values]);
+		console.log('========================================');
+	}
+	
+	notifyError(options) {
+		console.log(['ERROR IN FETCHING ',options.model]);
+		if (this.rendered) {
+			$('#'+this.FELID).empty();
+			if (options.status === 401) {
+				// This status code must be caught and wired to forceLogout() action.
+				// Force LOGOUT if Auth failed!
+				this.forceLogout(this.FELID);
+			} else {
+				const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+				$(html).appendTo('#'+this.FELID);
+			}
+		} else {
+			this.render();
+		}
 	}
 	
 	notify(options) {
@@ -411,23 +613,8 @@ MAPPING:
 					} else {
 						this.render();
 					}
-					
 				} else { // Error in fetching.
-					console.log(['ERROR IN FETCHING ENTSOE MODEL=',options.model]);
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
+					this.notifyError(options);
 				}
 			} else if (options.model==='SwedenModel' && options.method==='fetched') {
 				if (options.status === 200) {
@@ -438,23 +625,8 @@ MAPPING:
 					} else {
 						this.render();
 					}
-					
 				} else { // Error in fetching.
-					console.log(['ERROR IN FETCHING SWEDEN MODEL=',options.model]);
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
+					this.notifyError(options);
 				}
 			} else if (options.model==='RussiaModel' && options.method==='fetched') {
 				if (options.status === 200) {
@@ -465,23 +637,8 @@ MAPPING:
 					} else {
 						this.render();
 					}
-					
 				} else { // Error in fetching.
-					console.log(['ERROR IN FETCHING RUSSIA MODEL=',options.model]);
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
+					this.notifyError(options);
 				}
 			} else if (options.model==='EmissionsSummaryModel' && options.method==='fetched') {
 				if (options.status === 200) {
@@ -492,23 +649,8 @@ MAPPING:
 					} else {
 						this.render();
 					}
-					
 				} else { // Error in fetching.
-					console.log(['ERROR IN FETCHING ',options.model]);
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
+					this.notifyError(options);
 				}
 			} else if (options.model==='ElectricitymapEmissionsModel' && options.method==='fetched') {
 				if (options.status === 200) {
@@ -519,23 +661,8 @@ MAPPING:
 					} else {
 						this.render();
 					}
-					
 				} else { // Error in fetching.
-					console.log(['ERROR IN FETCHING ',options.model]);
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
+					this.notifyError(options);
 				}
 			} else if (options.model==='FinlandPowerPlantsModel' && options.method==='fetched') {
 				if (options.status === 200) {
@@ -546,23 +673,56 @@ MAPPING:
 					} else {
 						this.render();
 					}
-					
 				} else { // Error in fetching.
-					console.log(['ERROR IN FETCHING ',options.model]);
+					this.notifyError(options);
+				}
+			} else if (options.model==='EmissionsCHPModel' && options.method==='fetched') {
+				if (options.status === 200) {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
+						this.updateEmissionsCHP();
+						
 					} else {
 						this.render();
 					}
+				} else { // Error in fetching.
+					this.notifyError(options);
+				}
+			} else if (options.model==='EmissionsSeparateModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						this.updateEmissionsSeparate();
+						
+					} else {
+						this.render();
+					}
+				} else { // Error in fetching.
+					this.notifyError(options);
+				}
+			} else if (options.model==='EmissionsETModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						this.updateEmissionsET();
+						
+					} else {
+						this.render();
+					}
+				} else { // Error in fetching.
+					this.notifyError(options);
+				}
+			} else if (options.model==='EmissionsFingridCoeffModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						this.updateEmissionsFingridCoeff();
+						
+					} else {
+						this.render();
+					}
+				} else { // Error in fetching.
+					this.notifyError(options);
 				}
 			}
 		}

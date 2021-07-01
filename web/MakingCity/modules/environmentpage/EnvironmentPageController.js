@@ -7,6 +7,7 @@ import SwedenModel from '../energydata/SwedenModel.js';
 import FinlandPowerPlantsModel from './FinlandPowerPlantsModel.js';
 import EmissionsSummaryModel from './EmissionsSummaryModel.js';
 import ElectricitymapEmissionsModel from './ElectricitymapEmissionsModel.js';
+import { EmissionsCHPModel, EmissionsSeparateModel, EmissionsETModel, EmissionsFingridCoeffModel } from  './EmissionsMiscModels.js';
 
 export default class EnvironmentPageController extends Controller {
 	
@@ -74,7 +75,6 @@ export default class EnvironmentPageController extends Controller {
 		*/
 		this.sources = [
 			{ type: 'A65', area_name: 'NorwayNO4', psr_type:''},
-			
 			{ type: 'A65', area_name: 'Estonia', psr_type:''},
 			{ type: 'A65', area_name: 'Finland', psr_type:''},
 			{ type: 'A65', area_name: 'SwedenSE1', psr_type:''},
@@ -124,7 +124,11 @@ export default class EnvironmentPageController extends Controller {
 		// They are all created at the load and stay that way, so init() is called ONLY once.
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
-		const model_names = ['RussiaModel','SwedenModel']; /*'obixModel',*/
+		 /*'obixModel'*/
+		const model_names = ['RussiaModel','SwedenModel',
+			'FinlandPowerPlantsModel','EmissionsSummaryModel','ElectricitymapEmissionsModel',
+			'EmissionsCHPModel','EmissionsSeparateModel','EmissionsETModel','EmissionsFingridCoeffModel'];
+		
 		this.sources.forEach(src=> {
 			model_names.push('Entsoe'+src.type+src.area_name+src.psr_type+'Model');
 		});
@@ -163,8 +167,6 @@ export default class EnvironmentPageController extends Controller {
 		this.models['SwedenModel'] = m5;
 		
 		
-		
-		
 		const FINPPM = new FinlandPowerPlantsModel({name:'FinlandPowerPlantsModel',src:''});
 		FINPPM.subscribe(this);
 		this.master.modelRepo.add('FinlandPowerPlantsModel',FINPPM);
@@ -180,14 +182,96 @@ export default class EnvironmentPageController extends Controller {
 		this.master.modelRepo.add('ElectricitymapEmissionsModel',EMEM);
 		this.models['ElectricitymapEmissionsModel'] = EMEM;
 		
+		/*
+		Energiaviraston voimalaitosrekisteri.xlsx
+		Emissions_Summary.csv
+		electricitymap_Emissions.csv
 		
+		And 4 more:
+		
+		Fetch and process:
+			"chp.csv"
+			"separate.csv"
+			"Emissions_ET.csv"
+			"Fingrid_coeff.csv"
+		*/
+		
+		const eCHPm = new EmissionsCHPModel({name:'EmissionsCHPModel',src:''});
+		eCHPm.subscribe(this);
+		this.master.modelRepo.add('EmissionsCHPModel',eCHPm);
+		this.models['EmissionsCHPModel'] = eCHPm;
+		
+		const eSepm = new EmissionsSeparateModel({name:'EmissionsSeparateModel',src:''});
+		eSepm.subscribe(this);
+		this.master.modelRepo.add('EmissionsSeparateModel',eSepm);
+		this.models['EmissionsSeparateModel'] = eSepm;
+		
+		const eETm = new EmissionsETModel({name:'EmissionsETModel',src:''});
+		eETm.subscribe(this);
+		this.master.modelRepo.add('EmissionsETModel',eETm);
+		this.models['EmissionsETModel'] = eETm;
+		
+		const eFinCoeffm = new EmissionsFingridCoeffModel({name:'EmissionsFingridCoeffModel',src:''});
+		eFinCoeffm.subscribe(this);
+		this.master.modelRepo.add('EmissionsFingridCoeffModel',eFinCoeffm);
+		this.models['EmissionsFingridCoeffModel'] = eFinCoeffm;
+		
+		// Fingrid models are created at GridPageController (13 kpl) except 'FingridPowerSystemStateModel' which is created at MenuController.
+		//this.variable_ids = ['192','193','188','191','181','205','202','201','89','180','87','195','187']; // 13
+		
+		this.models['Fingrid192Model'] = this.master.modelRepo.get('Fingrid192Model');
+		this.models['Fingrid192Model'].subscribe(this);
+		this.models['Fingrid193Model'] = this.master.modelRepo.get('Fingrid193Model');
+		this.models['Fingrid193Model'].subscribe(this);
+		
+		this.models['Fingrid188Model'] = this.master.modelRepo.get('Fingrid188Model');
+		this.models['Fingrid188Model'].subscribe(this);
+		this.models['Fingrid191Model'] = this.master.modelRepo.get('Fingrid191Model');
+		this.models['Fingrid191Model'].subscribe(this);
+		
+		this.models['Fingrid181Model'] = this.master.modelRepo.get('Fingrid181Model');
+		this.models['Fingrid181Model'].subscribe(this);
+		this.models['Fingrid205Model'] = this.master.modelRepo.get('Fingrid205Model');
+		this.models['Fingrid205Model'].subscribe(this);
+		
+		this.models['Fingrid202Model'] = this.master.modelRepo.get('Fingrid202Model');
+		this.models['Fingrid202Model'].subscribe(this);
+		this.models['Fingrid201Model'] = this.master.modelRepo.get('Fingrid201Model');
+		this.models['Fingrid201Model'].subscribe(this);
+		
+		this.models['Fingrid89Model'] = this.master.modelRepo.get('Fingrid89Model');
+		this.models['Fingrid89Model'].subscribe(this);
+		this.models['Fingrid180Model'] = this.master.modelRepo.get('Fingrid180Model');
+		this.models['Fingrid180Model'].subscribe(this);
+		
+		this.models['Fingrid87Model'] = this.master.modelRepo.get('Fingrid87Model');
+		this.models['Fingrid87Model'].subscribe(this);
+		this.models['Fingrid195Model'] = this.master.modelRepo.get('Fingrid195Model');
+		this.models['Fingrid195Model'].subscribe(this);
+		this.models['Fingrid187Model'] = this.master.modelRepo.get('Fingrid187Model');
+		this.models['Fingrid187Model'].subscribe(this);
+		
+		this.models['FingridPowerSystemStateModel'] = this.master.modelRepo.get('FingridPowerSystemStateModel');
+		this.models['FingridPowerSystemStateModel'].subscribe(this);
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
 		// interval 3600 s = 1 hour
+		/*'obixModel',*/
+		const model_names = ['RussiaModel','SwedenModel',
+			'FinlandPowerPlantsModel','EmissionsSummaryModel','ElectricitymapEmissionsModel',
+			'EmissionsCHPModel','EmissionsSeparateModel','EmissionsETModel','EmissionsFingridCoeffModel',
+			'Fingrid192Model','Fingrid193Model',
+			'Fingrid188Model','Fingrid191Model',
+			'Fingrid181Model','Fingrid205Model',
+			'Fingrid202Model','Fingrid201Model',
+			'Fingrid89Model','Fingrid180Model',
+			'Fingrid87Model','Fingrid195Model',
+			'Fingrid187Model',
+			'FingridPowerSystemStateModel'
+		];
 		
-		const model_names = ['RussiaModel','SwedenModel','FinlandPowerPlantsModel','EmissionsSummaryModel','ElectricitymapEmissionsModel']; /*'obixModel',*/
 		this.sources.forEach(src=> {
 			model_names.push('Entsoe'+src.type+src.area_name+src.psr_type+'Model');
 		});

@@ -1,5 +1,17 @@
 import Model from '../common/Model.js';
-
+/*
+	Finland Power Plant data is read from Excel sheet.
+	
+	BACKEND ROUTE:
+	
+	router.get('/:filename',(req,res,next)=>{
+		const fn = './data/'+req.params.filename;
+		// File path.
+		readXlsxFile(fn, { sheet: 3 }).then((data) => {
+			res.status(200).json(data);
+		});
+	});
+*/
 export default class FinlandPowerPlantsModel extends Model {
 	
 	constructor(options) {
@@ -30,7 +42,7 @@ export default class FinlandPowerPlantsModel extends Model {
 		let status = 500; // error: 500
 		this.errorMessage = '';
 		this.fetching = true;
-		const url = this.mongoBackend + '/xlsxs/Energiaviraston_voimalaitosrekisteri.xlsx';
+		const url = this.mongoBackend + '/xlsxs/Energiaviraston voimalaitosrekisteri.xlsx';
 		
 		console.log (['fetch url=',url]);
 		fetch(url)

@@ -8,6 +8,22 @@ Use node csv-parser at backend:
 https://www.npmjs.com/package/csv-parser
 
 
+
+
+When all data is read into member variables, we can calculate 
+All power plants are gathered in 3 categories and detailed for 6 fuels. the equivalence table is as follow. The 3 categories of powerplant are: District heating, Industry CHP, separate powerplant.
+
+
+		this.POWER_CHP_DH = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.POWER_CHP_Ind = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.POWER_SEP = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+
+those 2 files contains the fuel quantity used by power plants. 6 fuels are accounted for: peat, biomass, gas (as natural gas), others, oil, coal.
+For each sample, the CHP_DH and CHP_Ind can be
+
+
+
+
 */
 import View from '../common/View.js';
 
@@ -82,9 +98,16 @@ SwedenModel (7)
 //'SwedenModel':{'label':'','shortname':''}
 		
 		
-		// The emission factor [unit/MWh] is taken from the Emissions_Summary.csv which compiles data for EcoInvent, characterised with the ReCiPe 2016 midpoint I method.
+		// The emission factor [unit/MWh] is taken from the 
+		// Emissions_Summary.csv which 
+		// compiles data for EcoInvent, characterised with the ReCiPe 2016 midpoint I method.
 		this.emission_factors = [];
+		
+		// electricitymap_Emissions.csv
 		this.elemap_factors = [];
+		
+		// Power production from Excel sheet:
+		// Energiaviraston voimalaitosrekisteri.xlsx
 		this.finpower = {
 			"District heating CHP":[],
 			"Industry CHP":[],
@@ -94,13 +117,22 @@ SwedenModel (7)
 			"Wind power":[],
 			"Solar":[]
 		};
-		this.CHP_DH = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
-		this.CHP_Ind = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
-		this.SEP = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
-		this.NUCLEAR = 0;
-		this.HYDRO = 0;
-		this.WIND = 0;
-		this.SOLAR = 0;
+		this.POWER_CHP_DH = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.POWER_CHP_Ind = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.POWER_SEP = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.NUCLEAR_TOTAL = 0;
+		this.HYDRO_TOTAL = 0;
+		this.WIND_TOTAL = 0;
+		this.SOLAR_TOTAL = 0;
+		
+		// Emissions_ET.csv
+		this.EMISSIONS_ET = {'coal':0,'oil':0,'gas':0,'peat':0,'other_biogas':0,'biomass':0,'coal_chp':0,'oil_chp':0,'gas_chp':0};
+		// chp.csv
+		this.EMISSIONS_CHP = {'total':0,'coal':0,'oil':0,'gas':0,'peat':0,'biomass':0,'others':0};
+		// separate.csv
+		this.EMISSIONS_SEP = {'total':0,'coal':0,'oil':0,'gas':0,'peat':0,'biomass':0,'others':0};
+		// Fingrid_coeff.csv
+		this.FINGRID_COEFF = {'Hydro':0,'Nuclear':0,'Wind':0,'Solar':0,'DH_CHP':0,'Ind_CHP':0,'Other':0,'Reserve':0};
 		
 		this.rendered = false;
 		this.FELID = 'environment-page-view-failure';
@@ -273,13 +305,14 @@ MAPPING:
 			"Wind power":[],
 			"Solar":[]
 		};
-		this.CHP_DH = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
-		this.CHP_Ind = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
-		this.SEP = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
-		this.NUCLEAR = 0;
-		this.HYDRO = 0;
-		this.WIND = 0;
-		this.SOLAR = 0;
+		this.POWER_CHP_DH = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.POWER_CHP_Ind = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		this.POWER_SEP = {'peat':0,'biomass':0,'gas':0,'others':0,'coal':0,'oil':0};
+		
+		this.NUCLEAR_TOTAL = 0;
+		this.HYDRO_TOTAL = 0;
+		this.WIND_TOTAL = 0;
+		this.SOLAR_TOTAL = 0;
 		
 		// NOTE: SKIP ROWS 1 and 2, they contain HEADER data.
 		const values = this.models['FinlandPowerPlantsModel'].values.slice(2);
@@ -384,63 +417,63 @@ MAPPING:
 		
 		// Type clusters:
 		
-		const fuels = Object.keys(this.CHP_DH);
+		const fuels = Object.keys(this.POWER_CHP_DH);
 		
 		this.finpower["District heating CHP"].forEach(v => {
 			if (fuels.includes(v.fuel)) {
-				this.CHP_DH[v.fuel] += v.energy;
+				this.POWER_CHP_DH[v.fuel] += v.energy;
 			}
 		});
 		this.finpower["Industry CHP"].forEach(v => {
 			if (fuels.includes(v.fuel)) {
-				this.CHP_Ind[v.fuel] += v.energy;
+				this.POWER_CHP_Ind[v.fuel] += v.energy;
 			}
 		});
 		this.finpower["Separate electricity production"].forEach(v => {
 			if (fuels.includes(v.fuel)) {
-				this.SEP[v.fuel] += v.energy;
+				this.POWER_SEP[v.fuel] += v.energy;
 			}
 		});
 		
 		this.finpower["Nuclear energy"].forEach(v => {
-			this.NUCLEAR += v.energy;
+			this.NUCLEAR_TOTAL += v.energy;
 		});
 		this.finpower["Hydro power"].forEach(v => {
-			this.HYDRO += v.energy;
+			this.HYDRO_TOTAL += v.energy;
 		});
 		this.finpower["Wind power"].forEach(v => {
-			this.WIND += v.energy;
+			this.WIND_TOTAL += v.energy;
 		});
 		this.finpower["Solar"].forEach(v => {
-			this.SOLAR += v.energy;
+			this.SOLAR_TOTAL += v.energy;
 		});
 		
 		let html = '';
 		html += '<h3>Energiaviraston voimalaitosrekisteri (Excel)</h3>';
 		html += '<h4>District heating CHP</h4>';
 		fuels.forEach(f=>{
-			html += '<p>fuel=' + f + ' Total=' + this.CHP_DH[f].toFixed(0) + 'MW</p>';
+			html += '<p>fuel=' + f + ' Total=' + this.POWER_CHP_DH[f].toFixed(0) + 'MW</p>';
 		});
 		html += '<h4>Industry CHP</h4>';
 		fuels.forEach(f=>{
-			html += '<p>fuel=' + f + ' Total=' + this.CHP_Ind[f].toFixed(0) + 'MW</p>';
+			html += '<p>fuel=' + f + ' Total=' + this.POWER_CHP_Ind[f].toFixed(0) + 'MW</p>';
 		});
 		html += '<h4>Separate electricity production</h4>';
 		fuels.forEach(f=>{
-			html += '<p>fuel=' + f + ' Total=' + this.SEP[f].toFixed(0) + 'MW</p>';
+			html += '<p>fuel=' + f + ' Total=' + this.POWER_SEP[f].toFixed(0) + 'MW</p>';
 		});
 		
 		html += '<h4>Nuclear energy</h4>';
-		html += '<p>Total='+this.NUCLEAR.toFixed(0)+'MW</p>';
+		html += '<p>Total='+this.NUCLEAR_TOTAL.toFixed(0)+'MW</p>';
 		
 		html += '<h4>Hydro power</h4>';
-		html += '<p>Total='+this.HYDRO.toFixed(0)+'MW</p>';
+		html += '<p>Total='+this.HYDRO_TOTAL.toFixed(0)+'MW</p>';
 		
 		html += '<h4>Wind power</h4>';
-		html += '<p>Total='+this.WIND.toFixed(0)+'MW</p>';
+		html += '<p>Total='+this.WIND_TOTAL.toFixed(0)+'MW</p>';
 		
 		html += '<h4>Solar</h4>';
-		html += '<p>Total='+this.SOLAR.toFixed(0)+'MW</p>';
+		html += '<p>Total='+this.SOLAR_TOTAL.toFixed(0)+'MW</p>';
 		
 		
 		/*
@@ -557,31 +590,160 @@ MAPPING:
 	}
 	
 	updateEmissionsCHP() {
+		
+		this.EMISSIONS_CHP = {'total':0,'coal':0,'oil':0,'gas':0,'peat':0,'biomass':0,'others':0};
+		
 		const values = this.models['EmissionsCHPModel'].values;
 		console.log('========================================');
 		console.log(['EmissionsCHPModel values=',values]);
 		console.log('========================================');
+		
+		// An array of 182 values, last one is the one we need:
+		const tail = values.slice(-1); // returns an array with only last item in it.
+		const lastitem = tail[0];
+		let year = '';
+		let month = '';
+		/*
+		biomass: "4624"​​​
+		coal: "1401"
+		gas: "3016"
+		oil: "75"
+		others: "283"
+		peat: "1218"
+		total: "10617"*/
+		
+		Object.keys(lastitem).forEach(k=>{
+			if (k.indexOf('Year') >= 0) {
+				year = lastitem[k];
+			} else if (k.indexOf('Month') >= 0) {
+				month = lastitem[k];
+			} else if (typeof this.EMISSIONS_CHP[k] !== 'undefined') {
+				this.EMISSIONS_CHP[k] = lastitem[k];
+			}
+		});
+		let html = '<h3>Emissions CHP Model</h3>';
+		html += '<h5>Year '+year+' Month '+month+'</h5>';
+		Object.keys(this.EMISSIONS_CHP).forEach( k=> {
+			html += '<p>'+k+': '+this.EMISSIONS_CHP[k]+'</p>';
+		});
+		$('#emissions-chp-wrapper').empty().append(html);
 	}
 	
 	updateEmissionsSeparate() {
+		
+		this.EMISSIONS_SEP = {'total':0,'coal':0,'oil':0,'gas':0,'peat':0,'biomass':0,'others':0};
+		
 		const values = this.models['EmissionsSeparateModel'].values;
 		console.log('========================================');
 		console.log(['EmissionsSeparateModel values=',values]);
 		console.log('========================================');
+		
+		// An array of 182 values, last one is the one we need:
+		const tail = values.slice(-1); // returns an array with only last item in it.
+		const lastitem = tail[0];
+		let year = '';
+		let month = '';
+		
+		Object.keys(lastitem).forEach(k=>{
+			//console.log(['k=',k]);
+			// k="\ufeffYear"
+			// k="Month"
+			if (k.indexOf('Year') >= 0) {
+				year = lastitem[k];
+			} else if (k.indexOf('Month') >= 0) {
+				month = lastitem[k];
+			} else if (typeof this.EMISSIONS_SEP[k] !== 'undefined') {
+				this.EMISSIONS_SEP[k] = lastitem[k];
+			}
+		});
+		
+		let html = '<h3>Emissions Separate Model</h3>';
+		html += '<h5>Year '+year+' Month '+month+'</h5>';
+		Object.keys(this.EMISSIONS_SEP).forEach( k=> {
+			html += '<p>'+k+': '+this.EMISSIONS_SEP[k]+'</p>';
+		});
+		$('#emissions-separate-wrapper').empty().append(html);
 	}
 	
 	updateEmissionsET() {
+		
+		this.EMISSIONS_ET = {'coal':0,'oil':0,'gas':0,'peat':0,'other_biogas':0,'biomass':0,'coal_chp':0,'oil_chp':0,'gas_chp':0};
+		/*
+		hydro_runof		0
+		nuclear_BWR		0
+		nuclear_PWR		0
+		waste			0
+		solar			0
+		windon			0
+		*/
 		const values = this.models['EmissionsETModel'].values;
 		console.log('========================================');
 		console.log(['EmissionsETModel values=',values]);
 		console.log('========================================');
+		
+		if (typeof values !== 'undefined' && Array.isArray(values)) {
+			values.forEach(v => {
+				let t='';
+				let c='';
+				let f='';
+				Object.keys(v).forEach(key => {
+					if (key.indexOf('Technology') >= 0) {
+						t = v[key];
+					} else if (key.indexOf('Country') >= 0) {
+						c = v[key];
+					} else if (key.indexOf('Global') >= 0) {
+						f = v[key];
+					}
+				});
+				if (typeof this.EMISSIONS_ET[t] !== 'undefined') {
+					this.EMISSIONS_ET[t] = f;
+				}
+			});
+		}
+		
+		let html = '<h3>Emissions ET Model</h3>';
+		Object.keys(this.EMISSIONS_ET).forEach(k=>{
+			html += '<p>'+k+': '+ this.EMISSIONS_ET[k]+'</p>';
+		});
+		$('#emissions-et-wrapper').empty().append(html);
 	}
 	
 	updateEmissionsFingridCoeff() {
+		
+		this.FINGRID_COEFF = {'Hydro':0,'Nuclear':0,'Wind':0,'Solar':0,'DH_CHP':0,'Ind_CHP':0,'Other':0,'Reserve':0};
+		
 		const values = this.models['EmissionsFingridCoeffModel'].values;
 		console.log('========================================');
 		console.log(['EmissionsFingridCoeffModel values=',values]);
 		console.log('========================================');
+/*
+DH_CHP: "340"
+​​​Ind_CHP: "180"
+​​​Nuclear: "0"
+​​​Other: "114"
+​​​Reserve: "814"
+​​​Solar: "0"
+​​​Wind: "0"
+​​​"\ufeffHydro": "0"
+*/
+		if (typeof values !== 'undefined' && Array.isArray(values)) {
+			values.forEach(v => {
+				Object.keys(v).forEach(k=>{
+					let kk = k;
+					if (k.indexOf('Hydro') >= 0) {
+						kk = 'Hydro';
+					}
+					if (typeof this.FINGRID_COEFF[kk] !== 'undefined') {
+						this.FINGRID_COEFF[kk] = v[k];
+					}
+				});
+			});
+		}
+		let html = '<h3>Emissions Fingrid Coeff Model</h3>';
+		Object.keys(this.FINGRID_COEFF).forEach(k=>{
+			html += '<p>'+k+': '+ this.FINGRID_COEFF[k]+'</p>';
+		});
+		$('#emissions-fingrid-coeff-wrapper').empty().append(html);
 	}
 	
 	notifyError(options) {
@@ -765,6 +927,18 @@ MAPPING:
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12" id="finpower-wrapper"></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12" id="emissions-chp-wrapper"></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12" id="emissions-separate-wrapper"></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12" id="emissions-et-wrapper"></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12" id="emissions-fingrid-coeff-wrapper"></div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+

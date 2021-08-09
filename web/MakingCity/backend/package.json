@@ -22,7 +22,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",
     "morgan": "^1.9.1",
-    "read-excel-file": "^5.2.4",
+    "read-excel-file": "^5.2.8",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {

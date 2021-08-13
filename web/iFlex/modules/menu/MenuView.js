@@ -47,6 +47,8 @@ export default class MenuView extends View {
 		const self = this;
 		const BORDER_COLOR = '#000';
 		const BORDER_COLOR_HOVER = '#0f0';
+		const BACKGROUND_COLOR = '#aaa';
+		const BACKGROUND_COLOR_HOVER = '#ccc';
 		
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
@@ -59,9 +61,11 @@ export default class MenuView extends View {
 			}, false);
 			targetA.addEventListener("mouseover", function(event){ 
 				svgObject.getElementById('target-a-border').style.stroke = BORDER_COLOR_HOVER;
+				svgObject.getElementById('target-a-border').style.fill = BACKGROUND_COLOR_HOVER;
 			}, false);
 			targetA.addEventListener("mouseout", function(event){ 
 				svgObject.getElementById('target-a-border').style.stroke = BORDER_COLOR;
+				svgObject.getElementById('target-a-border').style.fill = BACKGROUND_COLOR;
 			}, false);
 			
 			
@@ -74,9 +78,11 @@ export default class MenuView extends View {
 			}, false);
 			targetB.addEventListener("mouseover", function(event){ 
 				svgObject.getElementById('target-b-border').style.stroke = BORDER_COLOR_HOVER;
+				svgObject.getElementById('target-b-border').style.fill = BACKGROUND_COLOR_HOVER;
 			}, false);
 			targetB.addEventListener("mouseout", function(event){ 
 				svgObject.getElementById('target-b-border').style.stroke = BORDER_COLOR;
+				svgObject.getElementById('target-b-border').style.fill = BACKGROUND_COLOR;
 			}, false);
 			
 			
@@ -89,9 +95,11 @@ export default class MenuView extends View {
 			}, false);
 			targetC.addEventListener("mouseover", function(event){ 
 				svgObject.getElementById('target-c-border').style.stroke = BORDER_COLOR_HOVER;
+				svgObject.getElementById('target-c-border').style.fill = BACKGROUND_COLOR_HOVER;
 			}, false);
 			targetC.addEventListener("mouseout", function(event){ 
 				svgObject.getElementById('target-c-border').style.stroke = BORDER_COLOR;
+				svgObject.getElementById('target-c-border').style.fill = BACKGROUND_COLOR;
 			}, false);
 			
 			const targetD = svgObject.getElementById('target-d');
@@ -103,9 +111,11 @@ export default class MenuView extends View {
 			}, false);
 			targetD.addEventListener("mouseover", function(event){ 
 				svgObject.getElementById('target-d-border').style.stroke = BORDER_COLOR_HOVER;
+				svgObject.getElementById('target-d-border').style.fill = BACKGROUND_COLOR_HOVER;
 			}, false);
 			targetD.addEventListener("mouseout", function(event){ 
 				svgObject.getElementById('target-d-border').style.stroke = BORDER_COLOR;
+				svgObject.getElementById('target-d-border').style.fill = BACKGROUND_COLOR;
 			}, false);
 			
 			
@@ -118,9 +128,11 @@ export default class MenuView extends View {
 			}, false);
 			door.addEventListener("mouseover", function(event){ 
 				svgObject.getElementById('door-border').style.stroke = BORDER_COLOR_HOVER;
+				svgObject.getElementById('door-border').style.fill = BACKGROUND_COLOR_HOVER;
 			}, false);
 			door.addEventListener("mouseout", function(event){ 
 				svgObject.getElementById('door-border').style.stroke = BORDER_COLOR;
+				svgObject.getElementById('door-border').style.fill = BACKGROUND_COLOR;
 			}, false);
 			
 		}

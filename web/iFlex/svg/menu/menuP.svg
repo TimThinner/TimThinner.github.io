@@ -108,7 +108,7 @@ A 30 50 0 0 1 162.55 162.45
 		L575,150 L575,200 
 		L550,200 
 		L550,850 L600,850 L600,895 L0,895 Z" 
-		style="stroke:#1a488b;stroke-width:10px;fill:#555;" />
+		style="stroke:#1a488b;stroke-width:10px;fill:#888;" />
 	
 	<!-- Sky is black. -->
 	<path d="M0,850 L50,850 L50,200 L25,200 L25,150 

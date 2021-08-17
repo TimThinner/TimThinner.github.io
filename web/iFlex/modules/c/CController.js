@@ -1,16 +1,16 @@
 import Controller from '../common/Controller.js';
-import AModel from  './AModel.js';
-import AView from './AView.js';
+import CModel from  './CModel.js';
+import CView from './CView.js';
 
-export default class AController extends Controller {
+export default class CController extends Controller {
 	
 	constructor(options) {
 		super(options);
 	}
 	
 	init() {
-		const mname = 'AModel';
-		const model = new AModel({name:mname,src:''});
+		const mname = 'CModel';
+		const model = new CModel({name:mname,src:''});
 		model.subscribe(this);
 		this.master.modelRepo.add(mname,model);
 		this.models[mname] = model;
@@ -27,7 +27,7 @@ export default class AController extends Controller {
 		// 180000
 		//this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel']}; // once per 3 minutes.
 		
-		this.view = new AView(this);
+		this.view = new CView(this);
 		
 		// At init() there is ALWAYS only one controller with visible=true, this controller.
 		// and also the ResizeEventObserver is started at init() => this controller is shown 

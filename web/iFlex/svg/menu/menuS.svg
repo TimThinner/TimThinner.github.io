@@ -14,7 +14,7 @@ iFLEX Light green #78c51b (120, 197,  27)
 .grid {
 	stroke: #00f;
 	stroke-width: 1;
-	opacity: 0.25;
+	opacity: 0.2;
 }
 </style>
 <defs>
@@ -124,7 +124,7 @@ iFLEX Light green #78c51b (120, 197,  27)
 	<circle id="target-d-border" cx="0" cy="0" r="100" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
 	<circle cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
 	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
-	<!--<image x="-50" y="-37.5" width="100" height="75" xlink:href="leaf.svg" />-->
+	<image x="-50" y="-37.5" width="100" height="75" xlink:href="feedback.svg" />
 	<circle id="target-d" class="surface" x="0" y="0" r="100" />
 </g>
 
@@ -147,12 +147,14 @@ iFLEX Light green #78c51b (120, 197,  27)
 <path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="none" opacity="0.15" transform="translate(100,-100)" />
 
 <!-- User -->
-<g transform="translate(0,0)">
+<g id="user-button-wrapper" transform="translate(0,0)">
+	<!--
 	<circle id="target-e-border" cx="0" cy="0" r="100" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
 	<circle cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
 	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
 	<image x="-50" y="-37.5" width="100" height="75" xlink:href="user.svg" />
 	<circle id="target-e" class="surface" x="0" y="0" r="100" />
+	-->
 </g>
 
 </svg>

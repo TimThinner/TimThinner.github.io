@@ -41,11 +41,31 @@ export default class UserLoginView extends UserView {
 		var self = this;
 		$(this.el).empty();
 		
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		const localized_string_da_cancel = LM['translation'][sel]['DA_CANCEL'];
-		const localized_quick_login = LM['translation'][sel]['DA_QUICK_LOGIN'];
-		const localized_quick_login_message = LM['translation'][sel]['DA_QUICK_LOGIN_MESSAGE'];
+		
+		/*
+				'USER_LOGIN_TITLE':'Login',
+				'USER_EMAIL':'Email',
+				'USER_PASSWORD':'Password',
+				'USER_REGCODE':'Registration code',
+				'USER_LOGIN_BTN_TXT':'Login',
+				'USER_OPEN_SIGNUP_FORM':'Open signup form &raquo;',
+				'USER_SIGNUP_TITLE':'Signup',
+				'USER_SIGNUP_BTN_TXT':'Signup',
+				'COMING_SOON':'COMING SOON!',
+		
+				'DA_BACK':'BACK',
+				'DA_CANCEL':'CANCEL',
+				'DA_SAVE':'SAVE',
+				'DA_QUICK_LOGIN':'MOCKUP LOGIN',
+				'DA_QUICK_LOGIN_MESSAGE':'NOTE: This is a MOCKUP. You can use the login button below to login as "testuser@testdomain.com".',
+		*/
+		
+		
+		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		//const sel = LM.selected;
+		const localized_string_da_cancel = 'CANCEL'; //LM['translation'][sel]['DA_CANCEL'];
+		const localized_quick_login = 'MOCKUP LOGIN';//LM['translation'][sel]['DA_QUICK_LOGIN'];
+		const localized_quick_login_message = 'NOTE: This is a MOCKUP. You can use the login button below to login as "testuser@testdomain.com".';//LM['translation'][sel]['DA_QUICK_LOGIN_MESSAGE'];
 		
 		const USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		let mockup_button_markup = '';
@@ -60,11 +80,11 @@ export default class UserLoginView extends UserView {
 				'</div>'+
 			'</div>';
 		}
-		const localized_string_login_title = LM['translation'][sel]['USER_LOGIN_TITLE'];
-		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
-		const localized_string_user_password = LM['translation'][sel]['USER_PASSWORD'];
-		const localized_string_login_button_text = LM['translation'][sel]['USER_LOGIN_BTN_TXT'];
-		const localized_string_open_signup_form_link_text = LM['translation'][sel]['USER_OPEN_SIGNUP_FORM'];
+		const localized_string_login_title = 'Login';//LM['translation'][sel]['USER_LOGIN_TITLE'];
+		const localized_string_user_email = 'Email';//LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_user_password = 'Password';//LM['translation'][sel]['USER_PASSWORD'];
+		const localized_string_login_button_text = 'Login';//LM['translation'][sel]['USER_LOGIN_BTN_TXT'];
+		const localized_string_open_signup_form_link_text = 'Open signup form &raquo;';//LM['translation'][sel]['USER_OPEN_SIGNUP_FORM'];
 		
 		const html = 
 			'<div class="row">'+

@@ -1,15 +1,15 @@
 import View from '../common/View.js';
 
-export default class CView extends View {
+export default class UserFeedbackView extends View {
 	
 	constructor(controller) {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'CModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
+			
 		});
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
@@ -51,8 +51,8 @@ export default class CView extends View {
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h4>Building CO<sub>2</sub> emissions</h4>'+
-					'<p style="text-align:center;"><img src="./svg/leaf.svg" height="80"/></p>'+
+					'<h4>Apartment feedback</h4>'+
+					'<p style="text-align:center;"><img src="./svg/feedback.svg" height="80"/></p>'+
 '<p>Stinking bishop macaroni cheese boursin. Who moved my cheese macaroni cheese queso cheese and wine cheese and biscuits the big cheese airedale gouda. Cheesy grin fondue stilton roquefort danish fontina cheeseburger mascarpone paneer. The big cheese cheese slices squirty cheese hard cheese cottage cheese.</p>'+
 //'<p>Gouda cheese and biscuits cheesecake. Emmental taleggio cauliflower cheese cheesy grin mascarpone who moved my cheese parmesan croque monsieur. Cheese strings port-salut halloumi babybel mascarpone cheese and wine blue castello cheddar. Monterey jack cottage cheese monterey jack fromage cheese slices monterey jack blue castello cheddar. Queso.</p>'+
 //'<p>Cheese and biscuits pecorino cheesy grin. Ricotta cheese and wine pecorino fromage feta gouda cauliflower cheese parmesan. Cheddar caerphilly fondue camembert de normandie st. agur blue cheese st. agur blue cheese st. agur blue cheese ricotta. Cheese and biscuits cheese and wine monterey jack cottage cheese caerphilly stilton goat halloumi. Swiss.</p>'+
@@ -68,7 +68,7 @@ export default class CView extends View {
 		$(html).appendTo(this.el);
 		
 		$("#back").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('menu');
+			self.controller.models['MenuModel'].setSelected('USERPAGE');
 		});
 		
 		this.rendered = true;

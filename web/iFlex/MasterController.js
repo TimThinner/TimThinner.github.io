@@ -4,6 +4,14 @@ import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import UserModel from './modules/user/UserModel.js';
 
 import MenuController from './modules/menu/MenuController.js';
+import UserLoginController from './modules/user/UserLoginController.js';
+import UserSignupController from './modules/user/UserSignupController.js';
+import UserPageController from './modules/userpage/UserPageController.js';
+
+
+import UserHeatingController from './modules/userheating/UserHeatingController.js';
+import UserFeedbackController from './modules/userfeedback/UserFeedbackController.js';
+
 import AController from './modules/a/AController.js';
 import BController from './modules/b/BController.js';
 import CController from './modules/c/CController.js';
@@ -62,6 +70,18 @@ class MasterController {
 		// Menu controller MUST be first!
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
+		
+		this.controllers['userlogin'] = new UserLoginController({name:'userlogin', master:this, el:'#content', visible:false});
+		this.controllers['userlogin'].init();
+		this.controllers['usersignup'] = new UserSignupController({name:'usersignup', master:this, el:'#content', visible:false});
+		this.controllers['usersignup'].init();
+		
+		this.controllers['USERPAGE'] = new UserPageController({name:'USERPAGE', master:this, el:'#content', visible:false});
+		this.controllers['USERPAGE'].init();
+		this.controllers['USERHEATING'] = new UserHeatingController({name:'USERHEATING', master:this, el:'#content', visible:false});
+		this.controllers['USERHEATING'].init();
+		this.controllers['USERFEEDBACK'] = new UserFeedbackController({name:'USERFEEDBACK', master:this, el:'#content', visible:false});
+		this.controllers['USERFEEDBACK'].init();
 		
 		this.controllers['A'] = new AController({name:'A', master:this, el:'#content', visible:false});
 		this.controllers['A'].init();

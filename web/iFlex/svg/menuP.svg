@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="600" height="900" viewBox="-300 -450 600 900" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
+<!--
+iFLEX Dark blue   #1a488b ( 26,  72, 139)
+iFLEX Dark green  #008245 (  0, 130,  69)
+iFLEX Light green #78c51b (120, 197,  27)
+-->
+<style>
+.surface {
+	cursor: pointer;
+	fill: #000;
+	fill-opacity: 0;
+}
+.grid {
+	stroke: #00f;
+	stroke-width: 1;
+	opacity: 0.2;
+}
+</style>
+<defs>
+	<radialGradient id="grad" cx="50%" cy="50%" r="100%">
+		<stop offset="10%" style="stop-color:#fff; stop-opacity:1" />
+		<stop offset="50%" style="stop-color:#eee; stop-opacity:1" />
+		<stop offset="90%" style="stop-color:#ddd; stop-opacity:1" />
+	</radialGradient>
+	<linearGradient id="gradLinear" x1="0%" y1="0%" x2="0%" y2="100%" spreadMethod="pad"> <!-- gradientTransform="rotate(45)" -->
+		<stop offset="0%"  stop-color="#999" stop-opacity="1"/>
+		<stop offset="15%" stop-color="#ccc" stop-opacity="1"/>
+		<stop offset="20%" stop-color="#ccc" stop-opacity="1"/>
+		<stop offset="25%" stop-color="#ccc" stop-opacity="1"/>
+		<stop offset="100%" stop-color="#777" stop-opacity="1"/>
+	</linearGradient>
+</defs>
+
+<!-- Horizontal lines -->
+<path class="grid" d="M-300,-450 L300,-450 
+	M-300,-400 L300,-400 
+	M-300,-350 L300,-350 
+	M-300,-300 L300,-300 
+	M-300,-250 L300,-250 
+	M-300,-200 L300,-200 
+	M-300,-150 L300,-150 
+	M-300,-100 L300,-100 
+	M-300,-50 L300,-50 
+	M-300,0 L300,0 
+	M-300,50 L300,50 
+	M-300,100 L300,100 
+	M-300,150 L300,150 
+	M-300,200 L300,200 
+	M-300,250 L300,250 
+	M-300,300 L300,300 
+	M-300,350 L300,350 
+	M-300,400 L300,400 
+	M-300,450 L300,450" />
+
+<!-- Vertical lines -->
+<path class="grid" d="M-300,-450 L-300,450 
+	M-250,-450 L-250,450 
+	M-200,-450 L-200,450 
+	M-150,-450 L-150,450 
+	M-100,-450 L-100,450 
+	M-50,-450 L-50,450 
+	M0,-450 L0,450 
+	M50,-450 L50,450 
+	M100,-450 L100,450 
+	M150,-450 L150,450 
+	M200,-450 L200,450 
+	M250,-450 L250,450 
+	M300,-450 L300,450" />
+
+<!-- Big circle -->
+<circle cx="0" cy="0" r="220" stroke="#ccc" stroke-width="2" fill="none" />
+<circle cx="0" cy="0" r="210" stroke="#ccc" stroke-width="2" fill="none" />
+
+<!-- Line and dot from electricity to building -->
+<path d="M-200,-250 L-100,-150" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="none" />
+<circle cx="-100" cy="-150" r="5" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#1a488b" />
+<!-- Electricity -->
+<g transform="translate(-200,-250)">
+	<circle id="target-a-border" cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="80" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
+	<image x="-50" y="-37.5" width="100" height="75" xlink:href="electricity.svg" />
+	<circle id="target-a" class="surface" x="0" y="0" r="100" />
+</g>
+
+<!-- Line and dot from district heating to building -->
+<path d="M200,-250 L100,-150" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="none" />
+<circle cx="100" cy="-150" r="5" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#1a488b" />
+<!-- District heating -->
+<g transform="translate(200,-250)">
+	<circle id="target-b-border" cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="80" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
+	<image x="-50" y="-37.5" width="100" height="75" xlink:href="radiator.svg" />
+	<circle id="target-b" class="surface" x="0" y="0" r="100" />
+</g>
+
+<!-- Line and dot from CO2 to building -->
+<path d="M-200,250 L-100,150" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="none" />
+<circle cx="-100" cy="150" r="5" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#1a488b" />
+<!-- CO2 -->
+<g transform="translate(-200,250)">
+	<circle id="target-c-border" cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="80" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
+	<image x="-50" y="-37.5" width="100" height="75" xlink:href="leaf.svg" />
+	<circle id="target-c" class="surface" x="0" y="0" r="100" />
+</g>
+
+<!-- Line and dot from CO2 to building -->
+<path d="M200,250 L100,150" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="none" />
+<circle cx="100" cy="150" r="5" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#1a488b" />
+<!-- Feedback -->
+<g transform="translate(200,250)">
+	<circle id="target-d-border" cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="80" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
+	<image x="-50" y="-37.5" width="100" height="75" xlink:href="feedback.svg" />
+	<circle id="target-d" class="surface" x="0" y="0" r="100" />
+</g>
+
+<!-- Building -->
+<path d="M-100,150 L-100,-150 L0,-200 L100,-150 L100,150 Z" stroke="#1a488b" stroke-width="8" fill="#1a488b" fill-opacity="0.25" opacity="0.3" />
+
+<!-- Door -->
+<path d="M-25,150 L-25,75 L25,75 L25,150" stroke="#1a488b" stroke-width="8" fill="none" opacity="0.5" />
+
+<!-- Windows -->
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="4" fill="#fff" opacity="0.5" transform="translate(-65,100)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="4" fill="#fff" opacity="0.5" transform="translate(65,100)" />
+
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="4" fill="#fff" opacity="0.5" transform="translate(-65,0)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="4" fill="#fff" opacity="0.5" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="4" fill="#fff" opacity="0.5" transform="translate(65,0)" />
+
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="4" fill="#fff" opacity="0.5" transform="translate(-65,-100)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="4" fill="#fff" opacity="0.5" transform="translate(0,-100)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="4" fill="#fff" opacity="0.5" transform="translate(65,-100)" />
+
+<!-- User -->
+<g id="user-button-wrapper" transform="translate(0,0)">
+	<!--
+	<circle id="target-e-border" cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="80" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
+	<image x="-50" y="-37.5" width="100" height="75" xlink:href="user.svg" />
+	<circle id="target-e" class="surface" x="0" y="0" r="100" />
+	-->
+</g>
+
+</svg>

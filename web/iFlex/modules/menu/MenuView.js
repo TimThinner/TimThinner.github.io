@@ -237,6 +237,42 @@ export default class MenuView extends View {
 		head.style.transform = 'scale(0.25,0.25)';
 		UBW.appendChild(head);
 		
+		
+		// Smile
+		//<path d="M-40,-50 A50,50,0,0,0,40,-50" style="stroke:#008245;stroke-width:6;fill:none;opacity:1;" />
+		// eyes
+		//<circle cx="-30" cy="-80" r="7" style="stroke:#008245;stroke-width:3;fill:#008245;opacity:1;"/>
+		//<circle cx="30" cy="-80" r="7" style="stroke:#008245;stroke-width:3;fill:#008245;opacity:1;"/>
+		if (state === 'in') {
+			const d_smile = "M-40,-60 A50,50,0,0,0,40,-60";
+			const path_smile = document.createElementNS('http://www.w3.org/2000/svg', "path");
+			path_smile.setAttributeNS(null, 'd', d_smile);
+			path_smile.style.stroke = STROKE_COLOR_USER_PATH;
+			path_smile.style.strokeWidth = '10';
+			path_smile.style.fill = 'none';
+			path_smile.style.transform = 'scale(0.25,0.25)';
+			UBW.appendChild(path_smile);
+			
+			const leye = document.createElementNS('http://www.w3.org/2000/svg', "circle");
+			leye.setAttributeNS(null, 'cx', -30);
+			leye.setAttributeNS(null, 'cy', -100);
+			leye.setAttributeNS(null, 'r', 10);
+			leye.setAttributeNS(null, 'stroke', STROKE_COLOR_USER_HEAD);
+			leye.setAttributeNS(null, 'stroke-width', 3);
+			leye.setAttributeNS(null, 'fill', STROKE_COLOR_USER_HEAD);
+			leye.style.transform = 'scale(0.25,0.25)';
+			UBW.appendChild(leye);
+			const reye = document.createElementNS('http://www.w3.org/2000/svg', "circle");
+			reye.setAttributeNS(null, 'cx', 30);
+			reye.setAttributeNS(null, 'cy', -100);
+			reye.setAttributeNS(null, 'r', 10);
+			reye.setAttributeNS(null, 'stroke', STROKE_COLOR_USER_HEAD);
+			reye.setAttributeNS(null, 'stroke-width', 3);
+			reye.setAttributeNS(null, 'fill', STROKE_COLOR_USER_HEAD);
+			reye.style.transform = 'scale(0.25,0.25)';
+			UBW.appendChild(reye);
+		}
+		
 		//<circle id="target-e" class="surface" x="0" y="0" r="100" />
 		const uc4 = document.createElementNS('http://www.w3.org/2000/svg', "circle");
 		uc4.setAttributeNS(null, 'id', 'target-e');

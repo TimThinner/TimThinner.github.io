@@ -44,6 +44,18 @@ export default class UserPageView extends View {
 		}
 	}
 	
+	localizeSVGTexts() {
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+			if (USER_MODEL) {
+				const index = USER_MODEL.email.indexOf('@');
+				const email = USER_MODEL.email.slice(0,index);
+				this.fillSVGTextElement(svgObject, 'user-name', email);
+			}
+		}
+	}
+	
 	addSVGEventHandlers() {
 		const self = this;
 		
@@ -125,7 +137,7 @@ export default class UserPageView extends View {
 		$(this.el).empty();
 		if (this.areModelsReady()) {
 			
-			const USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+			//const USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 			const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
 			let radius = 100;
 			
@@ -164,7 +176,7 @@ export default class UserPageView extends View {
 				
 				//self.setLanguageSelection(LM.selected);
 				self.addSVGEventHandlers();
-				//self.localizeSVGTexts();
+				self.localizeSVGTexts();
 				
 				
 			});

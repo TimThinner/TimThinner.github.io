@@ -77,3 +77,7 @@ html, body {
 	background-color: #efe;
 	padding-left: 1rem;
 }
+/* in DView and UserFeedbackView */
+/*.feedback-smiley {
+	padding: 5px;
+}*/

@@ -69,8 +69,8 @@ iFLEX Light green #78c51b (120, 197,  27)
 	M300,-450 L300,450" />
 
 <!-- Big circle -->
-<circle cx="0" cy="0" r="220" stroke="#ccc" stroke-width="2" fill="none" />
-<circle cx="0" cy="0" r="210" stroke="#ccc" stroke-width="2" fill="none" />
+<!--<circle cx="0" cy="0" r="220" stroke="#ccc" stroke-width="2" fill="none" />
+<circle cx="0" cy="0" r="210" stroke="#ccc" stroke-width="2" fill="none" />-->
 
 <!-- Line and dot from electricity to building -->
 <path d="M-200,-250 L-100,-150" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="none" />

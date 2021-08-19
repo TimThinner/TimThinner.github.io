@@ -1,11 +1,23 @@
 import Controller from '../common/Controller.js';
 import DModel from  './DModel.js';
 import DView from './DView.js';
+import FeedbackModel from '../common/FeedbackModel.js';
 
 export default class DController extends Controller {
 	
 	constructor(options) {
 		super(options);
+	}
+	
+	remove() {
+		super.remove(); // NOTE: Controller super.remove() unsubscribes all this.models
+		Object.keys(this.models).forEach(key => {
+			if (key==='DModel'||key==='FeedbackModel') {
+				console.log(['remove ',key,' from the REPO']);
+				this.master.modelRepo.remove(key);
+			}
+		});
+		this.models = {};
 	}
 	
 	init() {
@@ -14,6 +26,11 @@ export default class DController extends Controller {
 		model.subscribe(this);
 		this.master.modelRepo.add(mname,model);
 		this.models[mname] = model;
+		
+		const model_Feedback = new FeedbackModel({name:'FeedbackModel',src:''});
+		model_Feedback.subscribe(this);
+		this.master.modelRepo.add('FeedbackModel',model_Feedback);
+		this.models['FeedbackModel'] = model_Feedback;
 		
 		// These two lines MUST BE in every Controller.
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

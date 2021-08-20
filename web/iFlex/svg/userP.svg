@@ -39,7 +39,9 @@ iFLEX Light green #78c51b (120, 197,  27)
 		<stop offset="100%" stop-color="#777" stop-opacity="1"/>
 	</linearGradient>
 </defs>
-
+<!--
+<rect x="-300" y="-450" width="600" height="900" stroke="#fff" stroke-width="1" opacity="0.2" fill="#78c51b" />
+-->
 <!-- Horizontal lines -->
 <path class="grid" d="M-300,-450 L300,-450 
 	M-300,-400 L300,-400 

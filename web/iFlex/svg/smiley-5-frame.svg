@@ -6,7 +6,7 @@
 		<stop offset="100%" style="stop-color:rgb(0,170,0);stop-opacity:1" />
 	</linearGradient>
 </defs>
-<rect x="-110" y="-110" width="220" height="220" fill="#fff" stroke-width="20" stroke="#000" />
+<rect x="-110" y="-110" width="220" height="220" fill="#fff" stroke-width="20" stroke="#008245" />
 <circle x="0" y="0" r="100" fill="url(#grad)" stroke-width="3" stroke="#000" />
 <circle cx="-40" cy="-30" r="10" style="stroke:#fff;stroke-width:4;fill:#fff;opacity:1;" />
 <circle cx="40" cy="-30" r="10" style="stroke:#fff;stroke-width:4;fill:#fff;opacity:1;" />

@@ -84,7 +84,7 @@ export default class DView extends View {
 				'<div class="col s12 center">'+
 					'<h4>Building feedback</h4>'+
 					'<p style="text-align:center;"><img src="./svg/feedback.svg" height="80"/></p>'+
-					'<p style="text-align:center;">Give feedback: how do you feel about the apartment temperature today? Select smiley and send feedback.</p>'+
+					'<p style="text-align:center;">How do you feel about the building temperature today? Select smiley and send feedback.</p>'+
 					'<a href="javascript:void(0);" id="fb-smiley-1" class="feedback-smiley"><img src="./svg/smiley-1.svg" height="50"/></a>'+
 					'<a href="javascript:void(0);" id="fb-smiley-2" class="feedback-smiley"><img src="./svg/smiley-2.svg" height="50"/></a>'+
 					'<a href="javascript:void(0);" id="fb-smiley-3" class="feedback-smiley"><img src="./svg/smiley-3.svg" height="50"/></a>'+
@@ -158,18 +158,13 @@ export default class DView extends View {
 						//const refToUser = req.body.refToUser;
 						//const fbType = req.body.feedbackType;
 						//const fb = req.body.feedback;
-					
 					// JUST SIMULATE NOW!!!!!
-					
-					
-					
-					
 					const UM = self.controller.master.modelRepo.get('UserModel');
 					if (UM) {
 						console.log(['Sending Feedback ',selected]);
 						const data = {
 							refToUser: UM.id, // UserModel id
-							feedbackType: 'Heating',
+							feedbackType: 'BuildingHeating',
 							feedback: selected
 						}
 						self.models['FeedbackModel'].send(data, UM.token); // see notify for the response...

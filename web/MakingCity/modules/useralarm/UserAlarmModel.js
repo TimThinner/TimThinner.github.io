@@ -15,6 +15,12 @@ import Model from '../common/Model.js';
 		console.log('DUMMY FETCH!');
 		this.ready = true;
 	}
+	
+	
+	NOTE: We DO NOT store alarms to database now!
+	We are using this module always as a MOCKUP module.
+	The system slows down too much if database is filled with alarms!
+	
 */
 export default class UserAlarmModel extends Model {
 	constructor(options) {
@@ -43,7 +49,8 @@ export default class UserAlarmModel extends Model {
 			console.log(this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
 		}
-		if (this.MOCKUP) {
+		
+		//if (this.MOCKUP) {
 			this.errorMessage = '';
 			this.fetching = true;
 			setTimeout(() => {
@@ -59,7 +66,7 @@ export default class UserAlarmModel extends Model {
 				this.ready = true;
 				this.notifyAll({model:this.name, method:'fetched', status:200, message:'OK'});
 			}, 200);
-			
+		/*
 		} else {
 			this.errorMessage = '';
 			this.fetching = true;
@@ -89,7 +96,7 @@ export default class UserAlarmModel extends Model {
 					self.errorMessage = error;
 					self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
 				});
-		}
+		}*/
 	}
 	/*
 		"HeatingTemperatureUpperLimit"
@@ -116,7 +123,7 @@ export default class UserAlarmModel extends Model {
 	addOne(data, token) {
 		const self = this;
 		
-		if (this.MOCKUP) {
+		//if (this.MOCKUP) {
 			
 			// Check that this alarm is not already in array!
 			let found = false;
@@ -136,7 +143,7 @@ export default class UserAlarmModel extends Model {
 					this.notifyAll({model:this.name, method:'addOne', status:201, message:'OK'});
 				}, 200);
 			}
-			
+		/*
 		} else {
 			const myHeaders = new Headers();
 			const authorizationToken = 'Bearer '+token;
@@ -162,16 +169,17 @@ export default class UserAlarmModel extends Model {
 				.catch(function(error){
 					self.notifyAll({model:self.name, method:'addOne', status:status, message:error});
 				});
-		}
+		}*/
 	}
 	
 	updateOne(id, data, token) {
 		const self = this;
 		
-		if (this.MOCKUP) {
+		//if (this.MOCKUP) {
 			setTimeout(() => {
 				this.notifyAll({model:this.name, method:'updateOne', status:200, message:'OK'});
 			}, 200);
+		/*
 		} else {
 			
 			const myHeaders = new Headers();
@@ -198,16 +206,17 @@ export default class UserAlarmModel extends Model {
 				.catch(function(error){
 					self.notifyAll({model:self.name, method:'updateOne', status:status, message:error});
 				});
-		}
+		}*/
 	}
 	
 	deleteOne(id, authToken) {
 		const self = this;
 		
-		if (this.MOCKUP) {
+		//if (this.MOCKUP) {
 			setTimeout(() => {
 				this.notifyAll({model:this.name, method:'deleteOne', status:200, message:'Alarm deleted'});
 			}, 200);
+		/*
 		} else {
 			// remove one alarm from the database.
 			const myHeaders = new Headers();
@@ -234,6 +243,6 @@ export default class UserAlarmModel extends Model {
 				.catch(function(error){
 					self.notifyAll({model:self.name, method:'deleteOne', status:status, message:error, id:id});
 				});
-		}
+		}*/
 	}
 }

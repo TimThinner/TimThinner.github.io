@@ -62,6 +62,12 @@ export default class UserPropsView extends View {
 	
 	updateLatestValues() {
 		console.log('UPDATE UserProps  !!!!!!!');
+		
+		let s = '';
+		this.models['UserPropsModel'].bindings.forEach(b=>{
+			s += 'apartmentId='+b.apartmentId+' readkey='+b.readkey+'<br/>';
+		});
+		$('#bindings-response-wrapper').empty().append(s);
 	}
 	
 	fillPriceFromUM() {
@@ -386,29 +392,41 @@ export default class UserPropsView extends View {
 			const localized_string_energy_prices_transfer_unit = LM['translation'][sel]['USER_ENERGY_PRICES_TRANSFER_UNIT'];
 			
 			let buttons_html = '';
+			let bindings_html = ''; // Just to debug what does the bindings REST-API call return. Only in superuser mode!
 			if (UM.is_superuser) {
 				buttons_html = 
-					'<div class="col s12 center">'+
-						'<p>Admin can view and edit RegCodes, view Users and associated ReadKeys.</p>'+
-					'</div>'+
-					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light" id="regcodes">RegCodes</button>'+
-					'</div>'+
-					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light" id="users">Users</button>'+
-					'</div>'+
-					'<div class="col s12 center" style="margin-top:32px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-							'<i class="material-icons left">arrow_back</i>'+
-						'</button>'+
+					'<div class="row">'+
+						'<div class="col s12 center">'+
+							'<p>Admin can view and edit RegCodes, view Users and associated ReadKeys.</p>'+
+						'</div>'+
+						'<div class="col s6 center">'+
+							'<button class="btn waves-effect waves-light" id="regcodes">RegCodes</button>'+
+						'</div>'+
+						'<div class="col s6 center">'+
+							'<button class="btn waves-effect waves-light" id="users">Users</button>'+
+						'</div>'+
+						'<div class="col s12 center" style="margin-top:32px;">'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+								'<i class="material-icons left">arrow_back</i>'+
+							'</button>'+
+						'</div>'+
 					'</div>';
-					
+				bindings_html = 
+					'<div class="row">'+
+						'<div class="col s12 center">'+
+							'<h5>Bindings</h5>'+
+							'<p id="bindings-response-wrapper"></p>'+
+						'</div>'+
+					'</div>';
+				
 			} else {
 				buttons_html = 
-					'<div class="col s12 center" style="margin-top:32px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-							'<i class="material-icons left">arrow_back</i>'+
-						'</button>'+
+					'<div class="row">'+
+						'<div class="col s12 center" style="margin-top:32px;">'+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+								'<i class="material-icons left">arrow_back</i>'+
+							'</button>'+
+						'</div>'+
 					'</div>';
 			}
 			// Ones, Tens, Hundreds
@@ -469,10 +487,7 @@ export default class UserPropsView extends View {
 						'<div class="col s12 center" id="energy-transfer-price-edit-placeholder">'+
 						'</div>'+
 					'</div>'+
-					
-				'</div>'+
-				'<div class="row">'+buttons_html+
-				'</div>'+
+				'</div>' + buttons_html + bindings_html +
 				'<div class="row">'+
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 				'</div>';
@@ -547,6 +562,7 @@ export default class UserPropsView extends View {
 			});
 			
 			this.handleErrorMessages(this.FELID);
+			this.updateLatestValues(); // Try if bindings array has already values
 			
 			this.rendered = true;
 			

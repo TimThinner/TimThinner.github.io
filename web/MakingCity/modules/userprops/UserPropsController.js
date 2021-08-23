@@ -43,6 +43,7 @@ export default class UserPropsController extends Controller {
 	
 	init() {
 		this.initialize();
-		this.timers['UserPropsView'] = {timer: undefined, interval: -1, models:['UserPropsModel']};
+		//this.timers['UserPropsView'] = {timer: undefined, interval: -1, models:['UserPropsModel']};
+		this.timers['UserPropsView'] = {timer: undefined, interval: 30000, models:['UserPropsModel']};
 	}
 }

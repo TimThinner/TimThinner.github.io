@@ -1,12 +1,6 @@
-
-import Model from '../common/Model.js';
-
-export default class UserHeatingModel extends Model {
-	
+import ObixModel from '../common/ObixModel.js';
+export default class UserHeatingModel extends ObixModel {
 	constructor(options) {
 		super(options);
-		this.ready = true; // Always true!
-		this.status = 200; // Always OK!
-		
 	}
 }

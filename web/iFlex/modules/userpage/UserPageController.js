@@ -111,6 +111,6 @@ export default class UserPageController extends Controller {
 		//this.timers['UserPageView'] = {timer: undefined, interval: 60000, models:['UserWaterNowModel','UserElectricityNowModel','UserHeatingNowModel','UserWaterDayModel','UserElectricityDayModel']};
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
-		this.show(); // Try if this view can be shown right now!
+		//this.show(); // Try if this view can be shown right now!
 	}
 }

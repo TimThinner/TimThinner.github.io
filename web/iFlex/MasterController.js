@@ -31,11 +31,11 @@ class MasterController {
 		
 		if (options.model==='UserModel' && options.method==='before-logout') {
 			
-			console.log('MasterController BEFORE LOGOUT!');
+			console.log('MasterController BEFORE USER LOGOUT!');
 			
 		} else if (options.model==='UserModel' && options.method==='logout') {
 			
-			console.log('MasterController LOGOUT!');
+			console.log('MasterController USER LOGOUT!');
 			
 			const mm = this.modelRepo.get('MenuModel');
 			if (mm) {
@@ -64,7 +64,6 @@ class MasterController {
 		UM.subscribe(this); // Now we will receive notifications from the UserModel.
 		this.modelRepo.add('UserModel',UM);
 		UM.restore(); // Try to restore previous "session" stored into LocalStorage.
-		
 		
 		console.log('Create Controllers...');
 		// Menu controller MUST be first!

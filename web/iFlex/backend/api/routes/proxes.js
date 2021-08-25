@@ -234,16 +234,16 @@ router.post('/obix', (req,res,next)=>{
 				//console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
 				if (elapsed < exp_ms) {
 					// Use CACHED version of RESPONSE
-					//console.log('NOT expired => USE Cached response!');
+					console.log('USE CACHED response!');
 					res.status(200).json(proxe[0].response);
 				} else {
-					//console.log('Expired => FETCH a FRESH copy!');
+					console.log('Expired => FETCH a FRESH copy!');
 					// FETCH a FRESH copy from SOURCE and Update existing Proxe Entry
 					Proxe_HTTPS_Fetch({type:type, auth:auth, body:body, url:url, id:proxe[0]._id}, res);
 				}
 			} else {
 				// Not cached yet => FETCH a FRESH copy from SOURCE and SAVE it as a new Entry.
-				//console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
+				console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
 				Proxe_HTTPS_Fetch({type:type, auth:auth, body:body, url:url, expiration:expiration}, res);
 			}
 		})

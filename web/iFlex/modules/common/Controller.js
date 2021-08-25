@@ -65,7 +65,7 @@ export default class Controller extends PeriodicPoller {
 	*/
 	
 	clean() {
-		//console.log(this.name + ' is now cleaned!');
+		console.log(this.name + ' DUMMY clean!');
 	}
 	
 	/*

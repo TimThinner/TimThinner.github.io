@@ -40,7 +40,7 @@ Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remot
 
 
 */
-export default class obixModel extends Model {
+export default class ObixModel extends Model {
 	
 	/* Model:
 		this.name = options.name;
@@ -52,6 +52,7 @@ export default class obixModel extends Model {
 	*/
 	constructor(options) {
 		super(options);
+		this.values = [];
 	}
 	
 	
@@ -187,8 +188,9 @@ export default class obixModel extends Model {
 		//const url = 'https://ba.vtt.fi/TestServlet/testHistory/query/';
 		
 		const url = this.mongoBackend + '/proxes/obix/';
-		
-		let start = moment().subtract(10, 'seconds').format();
+		// 5 s interval => 12 samples in 60 seconds.
+		// One hour (60*60 seconds) takes 60 * 12 samples = 720 samples
+		let start = moment().subtract(3600, 'seconds').format();
 		console.log(['start=',start]);
 		
 		 // Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://ba.vtt.fi/TestServlet/testHistory/query/. 
@@ -205,7 +207,7 @@ export default class obixModel extends Model {
 			type: 'application/xml',
 			auth: authorizationToken, 
 			xml: reqXML,
-			url: 'Whatever',
+			url: 'Hash-key-to-cache',
 			expiration_in_seconds: 60
 		};
 		const myPost = {
@@ -218,6 +220,7 @@ export default class obixModel extends Model {
 		fetch(myRequest)
 			.then(function(response) {
 				status = response.status;
+				console.log(['status=',status]);
 				console.log(['response=',response]);
 				return response.json();
 			})
@@ -240,12 +243,19 @@ export default class obixModel extends Model {
 						});
 					}
 					if (typeof resu.obj.list !== 'undefined' && Array.isArray(resu.obj.list)) {
+						
+						self.values = [];
+						
 						resu.obj.list.forEach(li=>{
 							if (typeof li.obj !== 'undefined' && Array.isArray(li.obj)) {
 								li.obj.forEach(foo=>{
 									//console.log(['foo=',foo]);
-									console.log([foo.abstime[0]['$'].name, ' ',foo.abstime[0]['$'].val]);
-									console.log([foo.real[0]['$'].name,' ',foo.real[0]['$'].val]);
+									//console.log([foo.abstime[0]['$'].name, ' ',foo.abstime[0]['$'].val]);
+									//console.log([foo.real[0]['$'].name,' ',foo.real[0]['$'].val]);
+									
+									
+									const date = new Date(foo.abstime[0]['$'].val);
+									self.values.push({'timestamp':date,'value':foo.real[0]['$'].val});
 								});
 							}
 						});
@@ -257,6 +267,8 @@ export default class obixModel extends Model {
 					// resu.obj.int [  {$:{name:"count", val:"456"}}   ]
 					
 					// resu.obj.list [   { $:{}, obj:[ {abstime:[{$:{name:"timestamp", val:""}}]  , real:[{$:{name:"value", val:""}}]    }  ]   }  ]
+					
+					
 					
 					
 					

@@ -9,6 +9,7 @@ export default class FeedbackModel extends Model {
 	
 	fetch(token) {
 		const self = this;
+		
 		if (this.fetching) {
 			console.log(this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
@@ -35,6 +36,9 @@ export default class FeedbackModel extends Model {
 			const myHeaders = new Headers();
 			const authorizationToken = 'Bearer '+token;
 			myHeaders.append("Authorization", authorizationToken);
+			
+			
+			
 			
 			const url = this.mongoBackend + '/feedbacks';
 			fetch(url, {headers: myHeaders})

@@ -14,7 +14,9 @@ export default class UserHeatingView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
+		this.chart = undefined;
 		this.rendered = false;
+		this.FELID = 'user-heating-view-failure';
 	}
 	
 	show() {
@@ -22,11 +24,19 @@ export default class UserHeatingView extends View {
 	}
 	
 	hide() {
+		if (typeof this.chart !== 'undefined') {
+			this.chart.dispose();
+			this.chart = undefined;
+		}
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		if (typeof this.chart !== 'undefined') {
+			this.chart.dispose();
+			this.chart = undefined;
+		}
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -36,11 +46,134 @@ export default class UserHeatingView extends View {
 	}
 	
 	notify(options) {
+		
+		const self = this;
+		
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				
+				if (typeof this.chart !== 'undefined') {
+					this.chart.dispose();
+					this.chart = undefined;
+				}
 				this.render();
+				
+			} else if (options.model==='UserHeatingModel' && options.method==='fetched') {
+				
+				
+				console.log('NOTIFY UserHeatingModel fetched!');
+				console.log(['options.status=',options.status]);
+				
+				if (this.rendered) {
+					if (options.status === 200 || options.status === '200') {
+						
+						$('#'+this.FELID).empty();
+						if (typeof this.chart !== 'undefined') {
+							console.log('fetched ..... UserHeatingView CHART UPDATED!');
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								s.data = self.models['UserHeatingModel'].values;
+							});
+							//this.appendAverage();
+							
+						} else {
+							console.log('fetched ..... render UserHeatingView()');
+							this.renderChart();
+						}
+						
+						
+					} else { // Error in fetching.
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to controller forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							// Call View-class method to handle error.
+							this.forceLogout(this.FELID);
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#'+this.FELID);
+						}
+					}
+				} else {
+					console.log('WTF?! rendered is NOT true BUT Model is FETCHED NOW... UserHeatingView RENDER?!?!');
+				}
 			}
 		}
+	}
+	
+	renderChart() {
+		
+		const self = this;
+		
+		am4core.ready(function() {
+			/*
+			function generateChartData() {
+				var chartData = [];
+				// current date
+				var firstDate = new Date();
+				// now set 500 minutes back
+				firstDate.setMinutes(firstDate.getDate() - 500);
+				
+				// and generate 500 data items
+				var visits = 500;
+				for (var i = 0; i < 500; i++) {
+					var newDate = new Date(firstDate);
+					// each time we add one minute
+					newDate.setMinutes(newDate.getMinutes() + i);
+					// some random number
+					visits += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+					// add data item to the array
+					chartData.push({
+						date: newDate,
+						visits: visits
+					});
+				}
+				return chartData;
+			}*/
+			
+			// Themes begin
+			am4core.useTheme(am4themes_dark);
+			//am4core.useTheme(am4themes_animated);
+			// Themes end
+			
+			// Create chart
+			self.chart = am4core.create("user-heating-chart", am4charts.XYChart);
+			self.paddingRight = 20;
+			//self.chart.data = generateChartData();
+			
+			// {'timestamp':...,'value':...}
+			self.chart.data = self.models['UserHeatingModel'].values;
+			console.log(['self.chart.data=',self.chart.data]);
+			
+			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
+			dateAxis.baseInterval = {
+				//"timeUnit": "minute",
+				//"count": 1
+				"timeUnit": "second",
+				"count": 5
+			};
+			dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
+			
+			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.tooltip.disabled = true;
+			valueAxis.title.text = "Value";//"Unique visitors";
+			
+			var series = self.chart.series.push(new am4charts.LineSeries());
+			series.dataFields.dateX = "timestamp"; // "date";
+			series.dataFields.valueY = "value"; // "visits";
+			series.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
+			series.fillOpacity = 0.3;
+			
+			
+			self.chart.cursor = new am4charts.XYCursor();
+			self.chart.cursor.lineY.opacity = 0;
+			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
+			self.chart.scrollbarX.series.push(series);
+			
+			
+			dateAxis.start = 0.8;
+			dateAxis.keepSelection = true;
+			
+		}); // end am4core.ready()
 	}
 	
 	render() {
@@ -53,24 +186,141 @@ export default class UserHeatingView extends View {
 				'<div class="col s12 center">'+
 					'<h4>Apartment temperature and humidity</h4>'+
 					'<p style="text-align:center;"><img src="./svg/radiator.svg" height="80"/></p>'+
-'<p>Stinking bishop macaroni cheese boursin. Who moved my cheese macaroni cheese queso cheese and wine cheese and biscuits the big cheese airedale gouda. Cheesy grin fondue stilton roquefort danish fontina cheeseburger mascarpone paneer. The big cheese cheese slices squirty cheese hard cheese cottage cheese.</p>'+
-//'<p>Gouda cheese and biscuits cheesecake. Emmental taleggio cauliflower cheese cheesy grin mascarpone who moved my cheese parmesan croque monsieur. Cheese strings port-salut halloumi babybel mascarpone cheese and wine blue castello cheddar. Monterey jack cottage cheese monterey jack fromage cheese slices monterey jack blue castello cheddar. Queso.</p>'+
-//'<p>Cheese and biscuits pecorino cheesy grin. Ricotta cheese and wine pecorino fromage feta gouda cauliflower cheese parmesan. Cheddar caerphilly fondue camembert de normandie st. agur blue cheese st. agur blue cheese st. agur blue cheese ricotta. Cheese and biscuits cheese and wine monterey jack cottage cheese caerphilly stilton goat halloumi. Swiss.</p>'+
-//'<p>Blue castello cheese and biscuits say cheese. Melted cheese mozzarella bavarian bergkase pecorino taleggio lancashire cheddar stilton. Cheeseburger stilton cheese on toast blue castello fondue squirty cheese mascarpone cheese strings. Pepper jack mascarpone bocconcini.</p>'+
-//"<p>When the cheese comes out everybody's happy cheesy feet edam. Monterey jack cheesecake pecorino cheese strings cheese and wine croque monsieur danish fontina queso. Port-salut cheesy feet jarlsberg bavarian bergkase the big cheese paneer cheese slices cut the cheese. Emmental who moved my cheese lancashire cow roquefort stilton.</p>"+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 chart-wrapper dark-theme">'+
+					'<div id="user-heating-chart" class="large-chart"></div>'+
+					//'<div id="user-heating-average"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+
 					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">BACK</button>'+
 				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		$("#back").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('USERPAGE');
+			self.models['MenuModel'].setSelected('USERPAGE');
 		});
 		
 		this.rendered = true;
+		
+		if (this.areModelsReady()) {
+			console.log('UserHeatingView => render models READY!!!!');
+			const errorMessages = this.modelsErrorMessages();
+			if (errorMessages.length > 0) {
+				const html =
+					'<div class="row">'+
+						'<div class="col s12 center" id="'+this.FELID+'">'+
+							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
+						'</div>'+
+					'</div>';
+				$(html).appendTo(this.el);
+				if (errorMessages.indexOf('Auth failed') >= 0) {
+					this.forceLogout(this.FELID);
+				}
+			} else {
+				this.renderChart();
+			}
+		} else {
+			console.log('UserHeatingView => render models ARE NOT READY!!!!');
+			this.showSpinner('#user-heating-chart');
+		}
 	}
 }
+
+/*
+
+<!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}
+
+</style>
+
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+<!-- Chart code -->
+<script>
+am4core.ready(function() {
+
+// Themes begin
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+// Create chart
+var chart = am4core.create("chartdiv", am4charts.XYChart);
+chart.paddingRight = 20;
+
+chart.data = generateChartData();
+
+var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+dateAxis.baseInterval = {
+  "timeUnit": "minute",
+  "count": 1
+};
+dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
+
+var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+valueAxis.tooltip.disabled = true;
+valueAxis.title.text = "Unique visitors";
+
+var series = chart.series.push(new am4charts.LineSeries());
+series.dataFields.dateX = "date";
+series.dataFields.valueY = "visits";
+series.tooltipText = "Visits: [bold]{valueY}[/]";
+series.fillOpacity = 0.3;
+
+
+chart.cursor = new am4charts.XYCursor();
+chart.cursor.lineY.opacity = 0;
+chart.scrollbarX = new am4charts.XYChartScrollbar();
+chart.scrollbarX.series.push(series);
+
+
+dateAxis.start = 0.8;
+dateAxis.keepSelection = true;
+
+
+
+function generateChartData() {
+    var chartData = [];
+    // current date
+    var firstDate = new Date();
+    // now set 500 minutes back
+    firstDate.setMinutes(firstDate.getDate() - 500);
+
+    // and generate 500 data items
+    var visits = 500;
+    for (var i = 0; i < 500; i++) {
+        var newDate = new Date(firstDate);
+        // each time we add one minute
+        newDate.setMinutes(newDate.getMinutes() + i);
+        // some random number
+        visits += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+        // add data item to the array
+        chartData.push({
+            date: newDate,
+            visits: visits
+        });
+    }
+    return chartData;
+}
+
+}); // end am4core.ready()
+</script>
+
+<!-- HTML -->
+<div id="chartdiv"></div>
+
+*/

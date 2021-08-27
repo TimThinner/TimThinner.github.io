@@ -14,6 +14,9 @@ export default class DView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
+		this.FBM = this.controller.master.modelRepo.get('FeedbackModel');
+		this.FBM.subscribe(this);
+		
 		this.rendered = false;
 	}
 	
@@ -31,6 +34,8 @@ export default class DView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
+		this.FBM.unsubscribe(this);
+		
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -110,7 +115,7 @@ export default class DView extends View {
 		$(html).appendTo(this.el);
 		
 		$("#back").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('menu');
+			self.models['MenuModel'].setSelected('menu');
 		});
 		
 		// Smileys act like radio buttons, only one can be selected at any one time.
@@ -164,13 +169,11 @@ export default class DView extends View {
 						console.log(['Sending Feedback ',selected]);
 						const data = {
 							refToUser: UM.id, // UserModel id
-							feedbackType: 'BuildingHeating',
+							feedbackType: 'Building',
 							feedback: selected
 						}
-						self.models['FeedbackModel'].send(data, UM.token); // see notify for the response...
+						self.FBM.send(data, UM.token); // see notify for the response...
 					}
-					
-					
 				}
 			}
 		});

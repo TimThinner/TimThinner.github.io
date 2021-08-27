@@ -2,6 +2,7 @@ import ModelRepo from './modules/common/ModelRepo.js';
 import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 
 import UserModel from './modules/user/UserModel.js';
+import FeedbackModel from './modules/common/FeedbackModel.js';
 
 import MenuController from './modules/menu/MenuController.js';
 import UserLoginController from './modules/user/UserLoginController.js';
@@ -41,6 +42,10 @@ class MasterController {
 			if (mm) {
 				mm.setSelected('menu');
 			}
+			/*
+				cleaning removes all user specific data from app. 
+				Default implemetation does nothing.
+			*/
 			Object.keys(this.controllers).forEach(key => {
 				this.controllers[key].clean();
 			});
@@ -64,6 +69,10 @@ class MasterController {
 		UM.subscribe(this); // Now we will receive notifications from the UserModel.
 		this.modelRepo.add('UserModel',UM);
 		UM.restore(); // Try to restore previous "session" stored into LocalStorage.
+		
+		const FBM = new FeedbackModel({name:'FeedbackModel',src:''});
+		FBM.subscribe(this);
+		this.modelRepo.add('FeedbackModel',FBM);
 		
 		console.log('Create Controllers...');
 		// Menu controller MUST be first!

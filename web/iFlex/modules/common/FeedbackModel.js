@@ -65,6 +65,7 @@ export default class FeedbackModel extends Model {
 	
 	send(data, token) {
 		const self = this;
+		console.log(['SENDING FEEDBACK: user=',data.refToUser,' type=', data.feedbackType,' feedback=',data.feedback]);
 		if (this.MOCKUP) {
 			
 			const msg = 'Feedback submitted OK';

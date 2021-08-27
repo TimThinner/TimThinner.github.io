@@ -1,0 +1,31 @@
+
+
+
+
+
+
+
+
+ObixModel has request XML hardcoded.
+requestXML:
+<?xml version="1.0" encoding="UTF-8"?>
+	<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">
+	<int name="limit" null="true"/>
+	<abstime name="start" val="'+start+'"/>
+	<abstime name="end" null="true"/>
+</obj>
+
+start is currently set in ObixModel:
+let start = moment().subtract(3600, 'seconds').format();
+which is measurements for the latest hour.
+and since Obix REST-API gives one sample for 5 second interval => 12 samples per minute => 720 samples per hour.
+
+
+
+In backend we have implemented a proxy cache in Mongo database.
+Each request is stored as key (=request), value (=response) pairs and stored into database. 
+nd served from the cache or asked again from the 
+http://localhost:3000/proxes/obix/
+
+A POST method is used to send request XML with authorization and expiration_in_seconds to backend service.
+

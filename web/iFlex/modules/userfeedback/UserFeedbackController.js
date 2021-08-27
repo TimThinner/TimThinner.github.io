@@ -9,11 +9,11 @@ export default class UserFeedbackController extends Controller {
 	}
 	
 	init() {
-		const mname = 'UserFeedbackModel';
-		const model = new UserFeedbackModel({name:mname,src:''});
-		model.subscribe(this);
-		this.master.modelRepo.add(mname,model);
-		this.models[mname] = model;
+		//const mname = 'UserFeedbackModel';
+		//const model = new UserFeedbackModel({name:mname,src:''});
+		//model.subscribe(this);
+		//this.master.modelRepo.add(mname,model);
+		//this.models[mname] = model;
 		
 		// These two lines MUST BE in every Controller.
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');

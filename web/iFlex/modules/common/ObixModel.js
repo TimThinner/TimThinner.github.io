@@ -219,8 +219,8 @@ export default class ObixModel extends Model {
 		
 		fetch(myRequest)
 			.then(function(response) {
-				status = response.status;
-				console.log(['status=',status]);
+				self.status = response.status;
+				console.log(['status=',self.status]);
 				console.log(['response=',response]);
 				return response.json();
 			})
@@ -232,8 +232,9 @@ export default class ObixModel extends Model {
 				//console.log(['cleaned=',cleaned]);
 				if (typeof resu.obj !== 'undefined') {
 					if (typeof resu.obj.abstime !== 'undefined' && Array.isArray(resu.obj.abstime)) {
-						
-						
+						// If "start" and "end" are defined in request, they are here:
+						// We don't need this information => do nothing.
+						// resu.obj.abstime [  {$:{name:"start",val:"2021-05-26T12:00:01.900039+03:00"}}, {$:{name:"end",val:""}}  ]
 					}
 					if (typeof resu.obj.int !== 'undefined' && Array.isArray(resu.obj.int)) {
 						typeof resu.obj.int.forEach(item=>{
@@ -243,17 +244,13 @@ export default class ObixModel extends Model {
 						});
 					}
 					if (typeof resu.obj.list !== 'undefined' && Array.isArray(resu.obj.list)) {
-						
-						self.values = [];
-						
+						self.values = []; // Start from scratch.
 						resu.obj.list.forEach(li=>{
 							if (typeof li.obj !== 'undefined' && Array.isArray(li.obj)) {
 								li.obj.forEach(foo=>{
 									//console.log(['foo=',foo]);
 									//console.log([foo.abstime[0]['$'].name, ' ',foo.abstime[0]['$'].val]);
 									//console.log([foo.real[0]['$'].name,' ',foo.real[0]['$'].val]);
-									
-									
 									const date = new Date(foo.abstime[0]['$'].val);
 									self.values.push({'timestamp':date,'value':foo.real[0]['$'].val});
 								});
@@ -261,25 +258,13 @@ export default class ObixModel extends Model {
 						});
 					}
 					// resu.obj.$ {}
-					
 					// resu.obj.abstime [  {$:{name:"start",val:"2021-05-26T12:00:01.900039+03:00"}}, {$:{name:"end",val:""}}  ]
-					
 					// resu.obj.int [  {$:{name:"count", val:"456"}}   ]
-					
 					// resu.obj.list [   { $:{}, obj:[ {abstime:[{$:{name:"timestamp", val:""}}]  , real:[{$:{name:"value", val:""}}]    }  ]   }  ]
-					
-					
-					
-					
-					
-				} else {
-					console.log('NO.');
 				}
-				
-				
 				self.fetching = false;
 				self.ready = true;
-				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:'OK'});
 			})
 			.catch(error => {
 				console.log([self.name+' fetch error=',error]);

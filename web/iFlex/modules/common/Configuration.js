@@ -1,6 +1,6 @@
 export default class Configuration {
 	constructor() {
-		this.MOCKUP = true;
+		this.MOCKUP = false;
 		this.mongoBackend = 'http://localhost:3000';
 	}
 }

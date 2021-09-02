@@ -1,47 +1,45 @@
-import Controller from '../common/Controller.js';
-import UserHeatingModel from  './UserHeatingModel.js';
-import UserHeatingView from './UserHeatingView.js';
+import Controller from '../../common/Controller.js';
+import RegCodeModel from  './RegCodeModel.js';
+import RegCodeView from './RegCodeView.js';
 
-export default class UserHeatingController extends Controller {
+export default class RegCodeController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		this.fetching_interval_in_seconds = 6;
 	}
 	
 	remove() {
 		super.remove();
-		// We must remove all models that were created here at the initialize-method.
+		// We must remove all models that were created here at the init():
+		// Currently this app does NOT remove Controllers. 
+		// They are all created at the load and stay that way, so init() is called ONLY once.
+		// BUT this is not how dynamic system should optimally behave.
+		// So I just add model removal here, to enable this in the future.
+		
 		Object.keys(this.models).forEach(key => {
-			if (key==='UserHeatingModel') {
+			if (key === 'RegCodeModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
+				
 			}
 		});
 		this.models = {};
 	}
 	
 	initialize() {
+		const model = new RegCodeModel({name:'RegCodeModel',src:'to-be-added-in-the-future'});
+		model.subscribe(this);
+		this.master.modelRepo.add('RegCodeModel',model);
+		this.models['RegCodeModel'] = model;
 		
-		/*
-			When we create a UserHeatingModel, we want to add some additional parameters,
-			for example how long cache keeps the data (cache expiration in seconds) and 
-			the fetching interval (also in seconds).
-		*/
-		const UHM = new UserHeatingModel({name:'UserHeatingModel',src:'',cache_expiration_in_seconds:60});
-		UHM.subscribe(this); // Now we will receive notifications from the UserModel.
-		this.master.modelRepo.add('UserHeatingModel',UHM);
-		this.models['UserHeatingModel'] = UHM;
-		
-		// These two lines MUST BE in every Controller.
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.view = new UserHeatingView(this);
+		this.view = new RegCodeView(this);
 	}
 	
 	clean() {
-		console.log('UserHeatingController is now REALLY cleaned!');
+		console.log('RegCodeController is now REALLY cleaned!');
 		this.remove();
 		/* IN PeriodicPoller:
 		Object.keys(this.timers).forEach(key => {
@@ -68,8 +66,7 @@ export default class UserHeatingController extends Controller {
 	
 	init() {
 		this.initialize();
-		const interval = this.fetching_interval_in_seconds * 1000; // once per 60 seconds by default.
-		this.timers['UserHeatingView'] = {timer:undefined, interval:interval, models:['UserHeatingModel']};
+		this.timers['RegCodeModel'] = {timer: undefined, interval: -1, models:['RegCodeModel']};
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		//this.show(); // Try if this view can be shown right now!

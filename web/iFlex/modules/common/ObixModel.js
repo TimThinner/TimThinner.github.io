@@ -53,6 +53,11 @@ export default class ObixModel extends Model {
 	constructor(options) {
 		super(options);
 		this.values = [];
+		if (typeof options.cache_expiration_in_seconds !== 'undefined') {
+			this.cache_expiration_in_seconds = options.cache_expiration_in_seconds;
+		} else {
+			this.cache_expiration_in_seconds = 60;
+		}
 	}
 	
 	
@@ -208,7 +213,7 @@ export default class ObixModel extends Model {
 			auth: authorizationToken, 
 			xml: reqXML,
 			url: 'Hash-key-to-cache',
-			expiration_in_seconds: 60
+			expiration_in_seconds: this.cache_expiration_in_seconds
 		};
 		const myPost = {
 			method: 'POST',

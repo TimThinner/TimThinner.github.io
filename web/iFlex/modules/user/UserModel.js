@@ -187,6 +187,34 @@ export default class UserModel extends Model {
 		}
 	}
 	
+	signupALT(data) {
+		const self = this;
+		if (this.MOCKUP) {
+			setTimeout(() => this.notifyAll({model:'UserModel',method:'signupALT',status:201,message:'Signup OK'}), 100);
+		} else {
+			let status = 500; // RESPONSE (OK: 201, MAIL EXISTS: 409, error: 500)
+			const url = this.mongoBackend + '/regcodes/anon';
+			fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers:{
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(function(response){
+				status = response.status;
+				return response.json();
+			})
+			.then(function(myJson){
+				const message = myJson.message;
+				self.notifyAll({model:'UserModel',method:'signupALT',status:status,message:message,data:data});
+			})
+			.catch(function(error){
+				self.notifyAll({model:'UserModel',method:'signupALT',status:status,message:error});
+			});
+		}
+	}
+	
 	changePassword(data) {
 		const self = this;
 		const myHeaders = new Headers();

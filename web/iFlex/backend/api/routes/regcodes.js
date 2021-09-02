@@ -96,6 +96,59 @@ router.post('/', checkAuth, (req,res,next)=>{
 		});
 });
 
+
+/*
+	Save a new regcode (without authentication).
+*/
+router.post('/anon', (req,res,next)=>{
+	const email_lc = req.body.email.toLowerCase();
+	// First check that this email is NOT already used.
+	Regcode.find({email:email_lc})
+		.exec()
+		.then(regcode=>{
+			if (regcode.length >= 1) {
+				// CONFLICT!
+				return res.status(409).json({
+					message: 'This email already exists'
+				});
+			} else {
+				// NO CONFLICT!
+				const code_lc = req.body.code.toLowerCase();
+				const reg = new Regcode({
+					_id: new mongoose.Types.ObjectId(),
+					email: email_lc,
+					apartmentId: req.body.apartmentId,
+					code: code_lc,
+					startdate: req.body.startdate,
+					enddate: req.body.enddate
+				});
+				reg
+					.save()
+					.then(result=>{
+						//console.log(result);
+						res.status(201).json({
+							message: 'Created regcode successfully',
+							_id:         result._id,
+							email:       result.email,
+							apartmentId: result.apartmentId,
+							code:        result.code,
+							startdate:   result.startdate,
+							enddate:     result.enddate
+						});
+					})
+					.catch(err=>{
+						console.log(err);
+						res.status(500).json({error: err});
+					})
+			}
+		})
+		.catch(err=>{
+			console.log(['err=',err]);
+			res.status(500).json({error:err});
+		});
+});
+
+
 /*
 	Update a specified regcode information.
 	https://www.youtube.com/watch?v=WDrU305J1yw&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=6

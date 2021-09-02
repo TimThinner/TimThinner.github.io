@@ -226,7 +226,7 @@ export default class UserModel extends Model {
 			this.id = 'nodatabaseid';
 			this.email = data.email;
 			this.token = 'nodatabasetoken';
-			this.is_superuser = false;
+			this.is_superuser = true;
 			
 			// this.DEFAULTS is defined in Configuration.js
 			this.price_energy_monthly  = this.DEFAULTS.price_energy_monthly;

@@ -45,6 +45,17 @@ export default class UserHeatingView extends View {
 		$(this.el).empty();
 	}
 	
+	
+	
+	showInfo() {
+		const html = '<p class="fetching-info">Fetching interval is ' + 
+			this.controller.fetching_interval_in_seconds + 
+			' seconds. Cache expiration is ' + 
+			this.models['UserHeatingModel'].cache_expiration_in_seconds + ' seconds.</p>';
+		$(html).appendTo('#user-heating-info');
+	}
+	
+	
 	notify(options) {
 		
 		const self = this;
@@ -60,7 +71,6 @@ export default class UserHeatingView extends View {
 				
 			} else if (options.model==='UserHeatingModel' && options.method==='fetched') {
 				
-				
 				console.log('NOTIFY UserHeatingModel fetched!');
 				console.log(['options.status=',options.status]);
 				
@@ -73,13 +83,11 @@ export default class UserHeatingView extends View {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								s.data = self.models['UserHeatingModel'].values;
 							});
-							//this.appendAverage();
 							
 						} else {
 							console.log('fetched ..... render UserHeatingView()');
 							this.renderChart();
 						}
-						
 						
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
@@ -163,12 +171,10 @@ export default class UserHeatingView extends View {
 			series.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
 			series.fillOpacity = 0.3;
 			
-			
 			self.chart.cursor = new am4charts.XYCursor();
 			self.chart.cursor.lineY.opacity = 0;
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series);
-			
 			
 			dateAxis.start = 0.8;
 			dateAxis.keepSelection = true;
@@ -191,7 +197,7 @@ export default class UserHeatingView extends View {
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					'<div id="user-heating-chart" class="large-chart"></div>'+
-					//'<div id="user-heating-average"></div>'+
+					'<div id="user-heating-info"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -208,6 +214,7 @@ export default class UserHeatingView extends View {
 			self.models['MenuModel'].setSelected('USERPAGE');
 		});
 		
+		this.showInfo();
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
@@ -233,94 +240,3 @@ export default class UserHeatingView extends View {
 		}
 	}
 }
-
-/*
-
-<!-- Styles -->
-<style>
-#chartdiv {
-  width: 100%;
-  height: 500px;
-}
-
-</style>
-
-<!-- Resources -->
-<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
-
-<!-- Chart code -->
-<script>
-am4core.ready(function() {
-
-// Themes begin
-am4core.useTheme(am4themes_animated);
-// Themes end
-
-// Create chart
-var chart = am4core.create("chartdiv", am4charts.XYChart);
-chart.paddingRight = 20;
-
-chart.data = generateChartData();
-
-var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-dateAxis.baseInterval = {
-  "timeUnit": "minute",
-  "count": 1
-};
-dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
-
-var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-valueAxis.tooltip.disabled = true;
-valueAxis.title.text = "Unique visitors";
-
-var series = chart.series.push(new am4charts.LineSeries());
-series.dataFields.dateX = "date";
-series.dataFields.valueY = "visits";
-series.tooltipText = "Visits: [bold]{valueY}[/]";
-series.fillOpacity = 0.3;
-
-
-chart.cursor = new am4charts.XYCursor();
-chart.cursor.lineY.opacity = 0;
-chart.scrollbarX = new am4charts.XYChartScrollbar();
-chart.scrollbarX.series.push(series);
-
-
-dateAxis.start = 0.8;
-dateAxis.keepSelection = true;
-
-
-
-function generateChartData() {
-    var chartData = [];
-    // current date
-    var firstDate = new Date();
-    // now set 500 minutes back
-    firstDate.setMinutes(firstDate.getDate() - 500);
-
-    // and generate 500 data items
-    var visits = 500;
-    for (var i = 0; i < 500; i++) {
-        var newDate = new Date(firstDate);
-        // each time we add one minute
-        newDate.setMinutes(newDate.getMinutes() + i);
-        // some random number
-        visits += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
-        // add data item to the array
-        chartData.push({
-            date: newDate,
-            visits: visits
-        });
-    }
-    return chartData;
-}
-
-}); // end am4core.ready()
-</script>
-
-<!-- HTML -->
-<div id="chartdiv"></div>
-
-*/

@@ -25,40 +25,40 @@ export default class Validator {
 				if (item.value.length > 0) {
 					var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 					if (!re.test(item.value)) {
-						messages.push(item.name+" NOT VALID");
+						messages.push(item.name+" not valid");
 					}
 				} else {
-					messages.push(item.name+" MISSING");
+					messages.push(item.name+" missing");
 				}
 			} else if (item.test === 'pass') {
 				if (item.value.length > 0) {
 					var min_length = 3;
 					if (item.value.length < min_length) {
-						messages.push(item.name+" TOO SHORT");
+						messages.push(item.name+" too short");
 					}
 				} else {
-					messages.push(item.name+" MISSING");
+					messages.push(item.name+" missing");
 				}
 			} else if (item.test === 'exist') {
 				if (item.value.length > 0) {
 					// OK.
 				} else {
-					messages.push(item.name+" MISSING");
+					messages.push(item.name+" missing");
 				}
 			} else if (item.test === 'is_positive_number') {
 				if (isNaN(item.value)) {
-					messages.push(item.name+" NOT A NUMBER");
+					messages.push(item.name+" not a number");
 				} else {
 					if (item.value <= 0) {
-						messages.push(item.name+" MUST BE POSITIVE NUMBER");
+						messages.push(item.name+" must be positive number");
 					}
 				}
 			} else if (item.test === 'quantity') {
 				if (isNaN(item.value)) {
-					messages.push(item.name+" NOT A NUMBER");
+					messages.push(item.name+" not a number");
 				} else {
 					if (item.value < 1) {
-						messages.push(item.name+" MUST BE GREATER THAN ZERO");
+						messages.push(item.name+" must be greater than zero");
 					}
 				}
 			}

@@ -38,7 +38,8 @@ router.get('/', checkAuth, (req,res,next)=>{
 	req.body.feedbackType
 	req.body.feedback
 */
-router.post("/", checkAuth, (req,res,next)=>{
+//router.post("/", checkAuth, (req,res,next)=>{
+router.post("/", (req,res,next)=>{
 	
 	const refToUser = req.body.refToUser;
 	const fbType = req.body.feedbackType;

@@ -89,6 +89,9 @@ export default class UserSignupALTView extends View {
 			$('#'+this.FELID).empty();
 			const html = '<div class="error-message"><p>'+localized_message+'</p></div>';
 			$(html).appendTo('#'+this.FELID);
+			// enable both buttons
+			$("#signup-submit").prop("disabled", false);
+			$("#cancel").prop("disabled", false);
 			
 		} else {
 			
@@ -108,8 +111,10 @@ export default class UserSignupALTView extends View {
 	
 	signupWithApartment() {
 		const _email = $('#signup-email').val();
+		const _password = $('#signup-password').val();
 		const validateArray = [
-			{test:"email",name:"Email",value:_email}
+			{test:"email",name:"Email",value:_email},
+			{test:"pass",name:"Password",value:_password}
 		];
 		const v = new Validator();
 		const errors = v.validate(validateArray);
@@ -119,6 +124,9 @@ export default class UserSignupALTView extends View {
 			$('#'+this.FELID).empty();
 			const html = '<div class="error-message"><p>'+localized_message+'</p></div>';
 			$(html).appendTo('#'+this.FELID);
+			// enable both buttons
+			$("#signup-submit").prop("disabled", false);
+			$("#cancel").prop("disabled", false);
 			
 		} else {
 			

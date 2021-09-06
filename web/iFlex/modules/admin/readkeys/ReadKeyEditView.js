@@ -147,12 +147,12 @@ export default class ReadKeyEditView extends View {
 		$(this.el).empty();
 		
 		const UM = this.controller.master.modelRepo.get('UserModel')
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
+		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		//const sel = LM.selected;
 		
 		const localized_string_title = 'ReadKey';
 		const localized_string_description = 'Modify ReadKeys validity period.';
-		const localized_string_da_cancel = LM['translation'][sel]['DA_CANCEL'];
+		const localized_string_da_cancel = 'Cancel';//LM['translation'][sel]['DA_CANCEL'];
 		const localized_string_update_readkey = 'Update Readkey';
 		
 		const localized_string_active_period_start = 'Start';

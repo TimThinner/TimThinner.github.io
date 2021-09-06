@@ -184,9 +184,9 @@ export default class UsersView extends View {
 		$(this.el).empty();
 		if (this.areModelsReady()) {
 			
-			const LM = this.controller.master.modelRepo.get('LanguageModel');
-			const sel = LM.selected;
-			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+			//const LM = this.controller.master.modelRepo.get('LanguageModel');
+			//const sel = LM.selected;
+			const localized_string_da_back = 'BACK';//LM['translation'][sel]['DA_BACK'];
 			//const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
 			//const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
 			

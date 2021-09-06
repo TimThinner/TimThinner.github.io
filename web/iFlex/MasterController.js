@@ -7,16 +7,26 @@ import FeedbackModel from './modules/common/FeedbackModel.js';
 import MenuController from './modules/menu/MenuController.js';
 import UserLoginController from './modules/user/UserLoginController.js';
 import UserSignupController from './modules/user/UserSignupController.js';
+
 import UserPageController from './modules/userpage/UserPageController.js';
-
-
+import UserPropsController from './modules/userprops/UserPropsController.js';
+import UserChangePswController from './modules/userprops/UserChangePswController.js';
 import UserHeatingController from './modules/userheating/UserHeatingController.js';
 import UserFeedbackController from './modules/userfeedback/UserFeedbackController.js';
+
 
 import AController from './modules/a/AController.js';
 import BController from './modules/b/BController.js';
 import CController from './modules/c/CController.js';
 import DController from './modules/d/DController.js';
+
+// ADMIN stuff:
+import RegCodeController from './modules/admin/regcodes/RegCodeController.js';
+import RegCodeCreateController from './modules/admin/regcodes/RegCodeCreateController.js';
+import RegCodeEditController from './modules/admin/regcodes/RegCodeEditController.js';
+import ReadKeyController from './modules/admin/readkeys/ReadKeyController.js';
+import ReadKeyEditController from './modules/admin/readkeys/ReadKeyEditController.js';
+import UsersController from './modules/admin/users/UsersController.js';
 
 class MasterController {
 	
@@ -86,6 +96,12 @@ class MasterController {
 		
 		this.controllers['USERPAGE'] = new UserPageController({name:'USERPAGE', master:this, el:'#content', visible:false});
 		this.controllers['USERPAGE'].init();
+		
+		this.controllers['USERPROPS'] = new UserPropsController({name:'USERPROPS', master:this, el:'#content', visible:false});
+		this.controllers['USERPROPS'].init();
+		this.controllers['USERCHANGEPSW'] = new UserChangePswController({name:'USERCHANGEPSW', master:this, el:'#content', visible:false});
+		this.controllers['USERCHANGEPSW'].init();
+		
 		this.controllers['USERHEATING'] = new UserHeatingController({name:'USERHEATING', master:this, el:'#content', visible:false});
 		this.controllers['USERHEATING'].init();
 		this.controllers['USERFEEDBACK'] = new UserFeedbackController({name:'USERFEEDBACK', master:this, el:'#content', visible:false});
@@ -102,6 +118,24 @@ class MasterController {
 		
 		this.controllers['D'] = new DController({name:'D', master:this, el:'#content', visible:false});
 		this.controllers['D'].init();
+		
+		
+		// Admin stuff start ------>
+		this.controllers['REGCODES'] = new RegCodeController({name:'REGCODES', master:this, el:'#content', visible:false});
+		this.controllers['REGCODES'].init();
+		this.controllers['REGCODECREATE'] = new RegCodeCreateController({name:'REGCODECREATE', master:this, el:'#content', visible:false});
+		this.controllers['REGCODECREATE'].init();
+		this.controllers['REGCODEEDIT'] = new RegCodeEditController({name:'REGCODEEDIT', master:this, el:'#content', visible:false});
+		this.controllers['REGCODEEDIT'].init();
+		
+		this.controllers['READKEYS'] = new ReadKeyController({name:'READKEYS', master:this, el:'#content', visible:false});
+		this.controllers['READKEYS'].init();
+		this.controllers['READKEYEDIT'] = new ReadKeyEditController({name:'READKEYEDIT', master:this, el:'#content', visible:false});
+		this.controllers['READKEYEDIT'].init();
+		
+		this.controllers['USERS'] = new UsersController({name:'USERS', master:this, el:'#content', visible:false});
+		this.controllers['USERS'].init();
+		// <------------- Admin stuff end.
 		
 		
 		REO.start(); // Start tracking resize events => will also do the initial "resize" for MenuView (View which is visible).

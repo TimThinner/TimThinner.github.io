@@ -153,10 +153,10 @@ export default class ReadKeyView extends View {
 		$(this.el).empty();
 		if (this.areModelsReady()) {
 			
-			const UM = this.controller.master.modelRepo.get('UserModel')
-			const LM = this.controller.master.modelRepo.get('LanguageModel');
-			const sel = LM.selected;
-			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+			//const UM = this.controller.master.modelRepo.get('UserModel')
+			//const LM = this.controller.master.modelRepo.get('LanguageModel');
+			//const sel = LM.selected;
+			const localized_string_da_back = 'Back';//LM['translation'][sel]['DA_BACK'];
 			//const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
 			//const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
 			

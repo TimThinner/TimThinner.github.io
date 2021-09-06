@@ -101,6 +101,7 @@ iFLEX Light green #78c51b (120, 197,  27)
 <!-- Big circle -->
 <!--<circle cx="0" cy="0" r="240" stroke="#ccc" stroke-width="2" fill="none" />
 <circle cx="0" cy="0" r="230" stroke="#ccc" stroke-width="2" fill="url(#grad)" opacity="0.75" />-->
+
 <circle cx="0" cy="0" r="230" stroke="#bbb" stroke-width="4" fill="url(#grad)" opacity="0.5" />
 
 <image x="-200" y="-160" width="400" height="300" xlink:href="user.svg" />
@@ -108,18 +109,17 @@ iFLEX Light green #78c51b (120, 197,  27)
 	<!--<rect x="1" y="1" width="298" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 	<text class="text" id="user-name" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
+<circle id="target-e" class="surface" cx="0" cy="0" r="230" />
 
 <!-- Line and dot from building to user -->
 <path d="M-250,-250 L-150,-150" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="none" />
-<circle cx="-150" cy="-150" r="5" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#1a488b" />
-
 <!-- Building -->
 <g transform="translate(-250,-250)">
 	<circle id="target-a-border" cx="0" cy="0" r="100" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
 	<circle cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
 	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
 	<image x="-50" y="-52.5" width="100" height="105" xlink:href="building.svg" />
-	<circle id="target-a" class="surface" x="0" y="0" r="100" />
+	<circle id="target-a" class="surface" cx="0" cy="0" r="100" />
 </g>
 
 <!-- Line and dot from LOGOUT to user -->
@@ -131,7 +131,7 @@ iFLEX Light green #78c51b (120, 197,  27)
 	<circle cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
 	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
 	<image x="-50" y="-37.5" width="100" height="75" xlink:href="logout.svg" />
-	<circle id="target-b" class="surface" x="0" y="0" r="100" />
+	<circle id="target-b" class="surface" cx="0" cy="0" r="100" />
 </g>
 
 <!-- Line and dot from to Heating to user -->
@@ -143,7 +143,7 @@ iFLEX Light green #78c51b (120, 197,  27)
 	<circle cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
 	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
 	<image x="-50" y="-37.5" width="100" height="75" xlink:href="radiator.svg" />
-	<circle id="target-c" class="surface" x="0" y="0" r="100" />
+	<circle id="target-c" class="surface" cx="0" cy="0" r="100" />
 </g>
 
 <!-- Line and dot from Feedback to user -->
@@ -155,7 +155,7 @@ iFLEX Light green #78c51b (120, 197,  27)
 	<circle cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
 	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
 	<image x="-50" y="-37.5" width="100" height="75" xlink:href="feedback.svg" />
-	<circle id="target-d" class="surface" x="0" y="0" r="100" />
+	<circle id="target-d" class="surface" cx="0" cy="0" r="100" />
 </g>
 
 </svg>

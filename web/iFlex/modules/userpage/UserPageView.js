@@ -129,6 +129,20 @@ export default class UserPageView extends View {
 				//svgObject.getElementById('target-d-border').style.stroke = STROKE_COLOR;
 				svgObject.getElementById('target-d-border').style.fill = FILL_COLOR;
 			}, false);
+			
+			
+			const targetE = svgObject.getElementById('target-e');
+			targetE.addEventListener("click", function(){
+				
+				self.models['MenuModel'].setSelected('USERPROPS');
+				
+				//const UM = self.controller.master.modelRepo.get('UserModel');
+				//if (UM) {
+					//if (UM.is_superuser) {
+						//self.models['MenuModel'].setSelected('USERPROPS');
+					//}
+				//}
+			}, false);
 		}
 	}
 	

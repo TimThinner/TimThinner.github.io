@@ -147,14 +147,14 @@ export default class RegCodeEditView extends View {
 		$(this.el).empty();
 		
 		const UM = this.controller.master.modelRepo.get('UserModel')
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
+		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		//const sel = LM.selected;
 		
 		const localized_string_title = 'RegCode';
 		const localized_string_description = 'Modify RegCodes validity period.';
-		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_user_email = 'Email'; //LM['translation'][sel]['USER_EMAIL'];
 		const localized_string_apartment_id = 'Apartment Id';
-		const localized_string_da_cancel = LM['translation'][sel]['DA_CANCEL'];
+		const localized_string_da_cancel = 'Cancel'; //LM['translation'][sel]['DA_CANCEL'];
 		const localized_string_update_regcode = 'Update RegCode';
 		
 		

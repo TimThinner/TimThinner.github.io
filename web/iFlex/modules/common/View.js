@@ -6,6 +6,15 @@ export default class View {
 		this.models = {};
 	}
 	
+	
+	hide() {
+	
+	}
+	
+	remove() {
+	
+	}
+	
 	areModelsReady() {
 		let retval = true;
 		Object.keys(this.models).forEach(key => {
@@ -45,9 +54,9 @@ export default class View {
 	}
 	
 	forceLogout(vid) {
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		const localized_string_session_expired = LM['translation'][sel]['SESSION_EXPIRED']; // Session has expired... logging out in 3 seconds!
+		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		//const sel = LM.selected;
+		const localized_string_session_expired = 'Session has expired... logging out in 3 seconds!';//LM['translation'][sel]['SESSION_EXPIRED']; // Session has expired... logging out in 3 seconds!
 		const html = '<div class="error-message"><p>'+localized_string_session_expired+'</p></div>';
 		$(html).appendTo('#'+vid);
 		setTimeout(() => {

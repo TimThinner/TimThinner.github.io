@@ -313,14 +313,6 @@ export default class UserSignupALTView extends View {
 				$('#signup-submit').focus().click();
 			}
 		});*/
-		
-		/*$('#signup-regcode').keypress(function(event){
-			if (event.keyCode == 13) {
-				$('#signup-submit').focus().click();
-			}
-		});
-		*/
-		
 		$("#select-apartment").change(function() {
 			const selected = $(this).find(":selected").val();
 			self.apartment = selected;
@@ -331,6 +323,24 @@ export default class UserSignupALTView extends View {
 		
 		// This must be called AFTER all select options are filled in and default selection done.
 		$('select').formSelect();
+		
+		
+		/*
+		$('#signup-regcode').keypress(function(event){
+			//if (event.keyCode == 13) {
+				//$('#signup-submit').focus().click();
+			//});
+			// IF REGCODE is given => disable the APARTMENT-selection input.
+			const temp = $('#signup-regcode').val().trim();
+			if (temp.length > 0) {
+				//<select disabled>
+				$("#select-apartment").prop('disabled', true);
+			} else {
+				// <select>
+				$("#select-apartment").prop('disabled', false);
+			}
+		});*/
+		
 		
 		
 		$("#cancel").on('click', function() {

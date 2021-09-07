@@ -6,15 +6,18 @@ export default class BView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'BModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
+			
 		});
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
+		this.chart = undefined;
 		this.rendered = false;
+		this.FELID = 'building-heating-view-failure';
+		this.CHARTID = 'building-heating-chart';
 	}
 	
 	show() {
@@ -22,11 +25,19 @@ export default class BView extends View {
 	}
 	
 	hide() {
+		if (typeof this.chart !== 'undefined') {
+			this.chart.dispose();
+			this.chart = undefined;
+		}
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		if (typeof this.chart !== 'undefined') {
+			this.chart.dispose();
+			this.chart = undefined;
+		}
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -35,12 +46,113 @@ export default class BView extends View {
 		$(this.el).empty();
 	}
 	
+	showInfo() {
+		const html = '<p class="fetching-info">Fetching interval is ' + 
+			this.controller.fetching_interval_in_seconds + 
+			' seconds. Cache expiration is ' + 
+			this.models['BuildingHeatingModel'].cache_expiration_in_seconds + ' seconds.</p>';
+		$(html).appendTo('#building-heating-info');
+	}
+	
 	notify(options) {
+		const self = this;
+		
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				
+				if (typeof this.chart !== 'undefined') {
+					this.chart.dispose();
+					this.chart = undefined;
+				}
 				this.render();
+				
+			} else if (options.model==='BuildingHeatingModel' && options.method==='fetched') {
+				
+				console.log('NOTIFY BuildingHeatingModel fetched!');
+				console.log(['options.status=',options.status]);
+				
+				if (this.rendered) {
+					if (options.status === 200 || options.status === '200') {
+						
+						$('#'+this.FELID).empty();
+						if (typeof this.chart !== 'undefined') {
+							console.log('fetched ..... BuildingHeatingView CHART UPDATED!');
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								s.data = self.models['BuildingHeatingModel'].values;
+							});
+							
+						} else {
+							console.log('fetched ..... render BuildingHeatingView()');
+							this.renderChart();
+						}
+						
+					} else { // Error in fetching.
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to controller forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							// Call View-class method to handle error.
+							this.forceLogout(this.FELID);
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#'+this.FELID);
+							// Maybe we shoud remove the spinner?
+							$('#'+this.CHARTID).empty();
+						}
+					}
+				} else {
+					console.log('WTF?! rendered is NOT true BUT Model is FETCHED NOW... BuildingHeatingView RENDER?!?!');
+				}
 			}
 		}
+	}
+	
+	renderChart() {
+		const self = this;
+		
+		am4core.ready(function() {
+			// Themes begin
+			am4core.useTheme(am4themes_dark);
+			//am4core.useTheme(am4themes_animated);
+			// Themes end
+			
+			// Create chart
+			self.chart = am4core.create(self.CHARTID, am4charts.XYChart);
+			self.paddingRight = 20;
+			//self.chart.data = generateChartData();
+			
+			// {'timestamp':...,'value':...}
+			self.chart.data = self.models['BuildingHeatingModel'].values;
+			console.log(['self.chart.data=',self.chart.data]);
+			
+			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
+			dateAxis.baseInterval = {
+				//"timeUnit": "minute",
+				//"count": 1
+				"timeUnit": "second",
+				"count": 5
+			};
+			dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
+			
+			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.tooltip.disabled = true;
+			valueAxis.title.text = "Value";//"Unique visitors";
+			
+			var series = self.chart.series.push(new am4charts.LineSeries());
+			series.dataFields.dateX = "timestamp"; // "date";
+			series.dataFields.valueY = "value"; // "visits";
+			series.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
+			series.fillOpacity = 0.3;
+			
+			self.chart.cursor = new am4charts.XYCursor();
+			self.chart.cursor.lineY.opacity = 0;
+			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
+			self.chart.scrollbarX.series.push(series);
+			
+			dateAxis.start = 0.8;
+			dateAxis.keepSelection = true;
+			
+		}); // end am4core.ready()
 	}
 	
 	render() {
@@ -53,24 +165,46 @@ export default class BView extends View {
 				'<div class="col s12 center">'+
 					'<h4>Building district heating</h4>'+
 					'<p style="text-align:center;"><img src="./svg/radiator.svg" height="80"/></p>'+
-'<p>Stinking bishop macaroni cheese boursin. Who moved my cheese macaroni cheese queso cheese and wine cheese and biscuits the big cheese airedale gouda. Cheesy grin fondue stilton roquefort danish fontina cheeseburger mascarpone paneer. The big cheese cheese slices squirty cheese hard cheese cottage cheese.</p>'+
-//'<p>Gouda cheese and biscuits cheesecake. Emmental taleggio cauliflower cheese cheesy grin mascarpone who moved my cheese parmesan croque monsieur. Cheese strings port-salut halloumi babybel mascarpone cheese and wine blue castello cheddar. Monterey jack cottage cheese monterey jack fromage cheese slices monterey jack blue castello cheddar. Queso.</p>'+
-//'<p>Cheese and biscuits pecorino cheesy grin. Ricotta cheese and wine pecorino fromage feta gouda cauliflower cheese parmesan. Cheddar caerphilly fondue camembert de normandie st. agur blue cheese st. agur blue cheese st. agur blue cheese ricotta. Cheese and biscuits cheese and wine monterey jack cottage cheese caerphilly stilton goat halloumi. Swiss.</p>'+
-//'<p>Blue castello cheese and biscuits say cheese. Melted cheese mozzarella bavarian bergkase pecorino taleggio lancashire cheddar stilton. Cheeseburger stilton cheese on toast blue castello fondue squirty cheese mascarpone cheese strings. Pepper jack mascarpone bocconcini.</p>'+
-//"<p>When the cheese comes out everybody's happy cheesy feet edam. Monterey jack cheesecake pecorino cheese strings cheese and wine croque monsieur danish fontina queso. Port-salut cheesy feet jarlsberg bavarian bergkase the big cheese paneer cheese slices cut the cheese. Emmental who moved my cheese lancashire cow roquefort stilton.</p>"+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 chart-wrapper dark-theme">'+
+					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
+					'<div id="building-heating-info"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+
 					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">BACK</button>'+
 				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		$("#back").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('menu');
+			self.models['MenuModel'].setSelected('menu');
 		});
 		
+		this.showInfo();
 		this.rendered = true;
+		
+		if (this.areModelsReady()) {
+			console.log('BView => render models READY!!!!');
+			const errorMessages = this.modelsErrorMessages();
+			if (errorMessages.length > 0) {
+				const html = '<div class="error-message"><p>'+errorMessages+'</p></div>';
+				$(html).appendTo('#'+this.FELID);
+				if (errorMessages.indexOf('Auth failed') >= 0) {
+					this.forceLogout(this.FELID);
+				}
+			} else {
+				this.renderChart();
+			}
+		} else {
+			console.log('BView => render models ARE NOT READY!!!!');
+			this.showSpinner('#'+this.CHARTID);
+		}
 	}
 }

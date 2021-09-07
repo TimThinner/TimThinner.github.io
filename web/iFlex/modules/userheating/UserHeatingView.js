@@ -17,6 +17,7 @@ export default class UserHeatingView extends View {
 		this.chart = undefined;
 		this.rendered = false;
 		this.FELID = 'user-heating-view-failure';
+		this.CHARTID = 'user-heating-chart';
 	}
 	
 	show() {
@@ -45,8 +46,6 @@ export default class UserHeatingView extends View {
 		$(this.el).empty();
 	}
 	
-	
-	
 	showInfo() {
 		const html = '<p class="fetching-info">Fetching interval is ' + 
 			this.controller.fetching_interval_in_seconds + 
@@ -55,9 +54,7 @@ export default class UserHeatingView extends View {
 		$(html).appendTo('#user-heating-info');
 	}
 	
-	
 	notify(options) {
-		
 		const self = this;
 		
 		if (this.controller.visible) {
@@ -99,6 +96,8 @@ export default class UserHeatingView extends View {
 						} else {
 							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 							$(html).appendTo('#'+this.FELID);
+							// Maybe we shoud remove the spinner?
+							$('#'+this.CHARTID).empty();
 						}
 					}
 				} else {
@@ -109,7 +108,6 @@ export default class UserHeatingView extends View {
 	}
 	
 	renderChart() {
-		
 		const self = this;
 		
 		am4core.ready(function() {
@@ -144,7 +142,7 @@ export default class UserHeatingView extends View {
 			// Themes end
 			
 			// Create chart
-			self.chart = am4core.create("user-heating-chart", am4charts.XYChart);
+			self.chart = am4core.create(self.CHARTID, am4charts.XYChart);
 			self.paddingRight = 20;
 			//self.chart.data = generateChartData();
 			
@@ -196,7 +194,7 @@ export default class UserHeatingView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					'<div id="user-heating-chart" class="large-chart"></div>'+
+					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
 					'<div id="user-heating-info"></div>'+
 				'</div>'+
 			'</div>'+
@@ -206,7 +204,7 @@ export default class UserHeatingView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="'+this.FELID+'"></div>'+
+				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
@@ -221,13 +219,8 @@ export default class UserHeatingView extends View {
 			console.log('UserHeatingView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
+				const html = '<div class="error-message"><p>'+errorMessages+'</p></div>';
+				$(html).appendTo('#'+this.FELID);
 				if (errorMessages.indexOf('Auth failed') >= 0) {
 					this.forceLogout(this.FELID);
 				}
@@ -236,7 +229,7 @@ export default class UserHeatingView extends View {
 			}
 		} else {
 			console.log('UserHeatingView => render models ARE NOT READY!!!!');
-			this.showSpinner('#user-heating-chart');
+			this.showSpinner('#'+this.CHARTID);
 		}
 	}
 }

@@ -170,7 +170,7 @@ export default class ObixModel extends Model {
 :{\"name\":\"start\",\"val\":\"2021-05-26T12:00:01.900039+03:00\"}},{\"$\":{\"name\":\"end\",\"val\":\"2021-05-26T12:00:31.90123+03:00\"}}]}}"
 
 	*/
-	fetch() {
+	fetch(token, readkey, readkey_start, readkey_end) {
 		const self = this;
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
@@ -192,92 +192,126 @@ export default class ObixModel extends Model {
 		// Normal user has a readkey, which was created when user registered into the system. 
 		//const url = 'https://ba.vtt.fi/TestServlet/testHistory/query/';
 		
-		const url = this.mongoBackend + '/proxes/obix/';
-		// 5 s interval => 12 samples in 60 seconds.
-		// One hour (60*60 seconds) takes 60 * 12 samples = 720 samples
-		let start = moment().subtract(3600, 'seconds').format();
-		console.log(['start=',start]);
 		
-		 // Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://ba.vtt.fi/TestServlet/testHistory/query/. 
-		 // (Reason: CORS header ‘Access-Control-Allow-Origin’ missing).
+		const nowMoment = moment();
+		console.log(['NOW=',nowMoment.format()]);
+		let valid = true;
 		
-		const reqXML = '<?xml version="1.0" encoding="UTF-8"?>'+
-		'<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
-		'<int name="limit" null="true"/>'+
-		'<abstime name="start" val="'+start+'"/>'+
-		'<abstime name="end" null="true"/>'+
-		'</obj>';
+		if (typeof readkey_start !== 'undefined') {
+			const staMoment = moment(readkey_start);
+			console.log(['STA=',staMoment.format()]);
+			if (staMoment.isAfter(nowMoment)) {
+				console.log('START NOT valid');
+				valid = false;
+			}
+		}
 		
-		const data = { 
-			type: 'application/xml',
-			auth: authorizationToken, 
-			xml: reqXML,
-			url: 'Hash-key-to-cache',
-			expiration_in_seconds: this.cache_expiration_in_seconds
-		};
-		const myPost = {
-			method: 'POST',
-			headers: myHeaders,
-			body: JSON.stringify(data)
-		};
-		const myRequest = new Request(url, myPost);
+		if (typeof readkey_end !== 'undefined') {
+			const endMoment = moment(readkey_end);
+			console.log(['END=',endMoment.format()]);
+			if (endMoment.isSameOrBefore(nowMoment)) {
+				console.log('END NOT valid');
+				valid = false;
+			}
+		}
 		
-		fetch(myRequest)
-			.then(function(response) {
-				self.status = response.status;
-				console.log(['status=',self.status]);
-				console.log(['response=',response]);
-				return response.json();
-			})
-			.then(function(myJson) {
-				
-				console.log(['myJson=',myJson]);
-				const resu = JSON.parse(myJson);
-				//const cleaned = myJson.replace(/\\/g, "");
-				//console.log(['cleaned=',cleaned]);
-				if (typeof resu.obj !== 'undefined') {
-					if (typeof resu.obj.abstime !== 'undefined' && Array.isArray(resu.obj.abstime)) {
-						// If "start" and "end" are defined in request, they are here:
-						// We don't need this information => do nothing.
+		if (valid) {
+			const url = this.mongoBackend + '/proxes/obix/';
+			// 5 s interval => 12 samples in 60 seconds.
+			// One hour (60*60 seconds) takes 60 * 12 samples = 720 samples
+			let start = moment().subtract(3600, 'seconds').format();
+			console.log(['start=',start]);
+			
+			// Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://ba.vtt.fi/TestServlet/testHistory/query/. 
+			// (Reason: CORS header ‘Access-Control-Allow-Origin’ missing).
+			
+			const reqXML = '<?xml version="1.0" encoding="UTF-8"?>'+
+			'<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
+			'<int name="limit" null="true"/>'+
+			'<abstime name="start" val="'+start+'"/>'+
+			'<abstime name="end" null="true"/>'+
+			'</obj>';
+			
+			const data = { 
+				type: 'application/xml',
+				auth: authorizationToken, 
+				xml: reqXML,
+				url: 'Hash-key-to-cache',
+				expiration_in_seconds: this.cache_expiration_in_seconds
+			};
+			const myPost = {
+				method: 'POST',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(url, myPost);
+			
+			fetch(myRequest)
+				.then(function(response) {
+					self.status = response.status;
+					console.log(['status=',self.status]);
+					console.log(['response=',response]);
+					return response.json();
+				})
+				.then(function(myJson) {
+					
+					console.log(['myJson=',myJson]);
+					const resu = JSON.parse(myJson);
+					//const cleaned = myJson.replace(/\\/g, "");
+					//console.log(['cleaned=',cleaned]);
+					if (typeof resu.obj !== 'undefined') {
+						if (typeof resu.obj.abstime !== 'undefined' && Array.isArray(resu.obj.abstime)) {
+							// If "start" and "end" are defined in request, they are here:
+							// We don't need this information => do nothing.
+							// resu.obj.abstime [  {$:{name:"start",val:"2021-05-26T12:00:01.900039+03:00"}}, {$:{name:"end",val:""}}  ]
+						}
+						if (typeof resu.obj.int !== 'undefined' && Array.isArray(resu.obj.int)) {
+							typeof resu.obj.int.forEach(item=>{
+								if (item['$'].name === 'count') {
+									console.log(['name count val = ',item['$'].val]);
+								}
+							});
+						}
+						if (typeof resu.obj.list !== 'undefined' && Array.isArray(resu.obj.list)) {
+							self.values = []; // Start from scratch.
+							resu.obj.list.forEach(li=>{
+								if (typeof li.obj !== 'undefined' && Array.isArray(li.obj)) {
+									li.obj.forEach(foo=>{
+										//console.log(['foo=',foo]);
+										//console.log([foo.abstime[0]['$'].name, ' ',foo.abstime[0]['$'].val]);
+										//console.log([foo.real[0]['$'].name,' ',foo.real[0]['$'].val]);
+										const date = new Date(foo.abstime[0]['$'].val);
+										self.values.push({'timestamp':date,'value':foo.real[0]['$'].val});
+									});
+								}
+							});
+						}
+						// resu.obj.$ {}
 						// resu.obj.abstime [  {$:{name:"start",val:"2021-05-26T12:00:01.900039+03:00"}}, {$:{name:"end",val:""}}  ]
+						// resu.obj.int [  {$:{name:"count", val:"456"}}   ]
+						// resu.obj.list [   { $:{}, obj:[ {abstime:[{$:{name:"timestamp", val:""}}]  , real:[{$:{name:"value", val:""}}]    }  ]   }  ]
 					}
-					if (typeof resu.obj.int !== 'undefined' && Array.isArray(resu.obj.int)) {
-						typeof resu.obj.int.forEach(item=>{
-							if (item['$'].name === 'count') {
-								console.log(['name count val = ',item['$'].val]);
-							}
-						});
-					}
-					if (typeof resu.obj.list !== 'undefined' && Array.isArray(resu.obj.list)) {
-						self.values = []; // Start from scratch.
-						resu.obj.list.forEach(li=>{
-							if (typeof li.obj !== 'undefined' && Array.isArray(li.obj)) {
-								li.obj.forEach(foo=>{
-									//console.log(['foo=',foo]);
-									//console.log([foo.abstime[0]['$'].name, ' ',foo.abstime[0]['$'].val]);
-									//console.log([foo.real[0]['$'].name,' ',foo.real[0]['$'].val]);
-									const date = new Date(foo.abstime[0]['$'].val);
-									self.values.push({'timestamp':date,'value':foo.real[0]['$'].val});
-								});
-							}
-						});
-					}
-					// resu.obj.$ {}
-					// resu.obj.abstime [  {$:{name:"start",val:"2021-05-26T12:00:01.900039+03:00"}}, {$:{name:"end",val:""}}  ]
-					// resu.obj.int [  {$:{name:"count", val:"456"}}   ]
-					// resu.obj.list [   { $:{}, obj:[ {abstime:[{$:{name:"timestamp", val:""}}]  , real:[{$:{name:"value", val:""}}]    }  ]   }  ]
-				}
-				self.fetching = false;
-				self.ready = true;
-				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:'OK'});
-			})
-			.catch(error => {
-				console.log([self.name+' fetch error=',error]);
-				self.fetching = false;
-				self.ready = true;
-				const message = self.name+': '+error;
-				self.errorMessage = message;
-				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
-			});
+					self.fetching = false;
+					self.ready = true;
+					self.notifyAll({model:self.name, method:'fetched', status:self.status, message:'OK'});
+				})
+				.catch(error => {
+					console.log([self.name+' fetch error=',error]);
+					self.fetching = false;
+					self.ready = true;
+					const message = self.name+': '+error;
+					self.errorMessage = message;
+					self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
+				});
+		} else {
+			setTimeout(() => {
+				const message = this.name + ' readkey is NOT valid anymore';
+				console.log(message);
+				this.fetching = false;
+				this.ready = true;
+				this.errorMessage = message;
+				this.notifyAll({model:this.name, method:'fetched', status:404, message:message});
+			}, 200);
+		}
 	}
 }

@@ -288,14 +288,7 @@ router.post("/signup", (req,res,next)=>{
 router.post("/login", (req,res,next)=>{
 	
 	const email_lc = req.body.email.toLowerCase();
-	const selString = '_id email password created readkey'+
-		' price_energy_monthly price_energy_basic price_energy_transfer'+
-		' heating_temperature_upper heating_target_temperature heating_temperature_lower'+
-		' heating_humidity_upper heating_target_humidity heating_humidity_lower'+
-		' water_hot_upper water_hot_target water_hot_lower'+
-		' water_cold_upper water_cold_target water_cold_lower'+
-		' energy_upper energy_target energy_lower'+
-		' is_superuser';
+	const selString = '_id email password created readkey is_superuser';
 	User.find({email:email_lc})
 		.select(selString)
 		.populate('readkey')
@@ -328,30 +321,8 @@ router.post("/login", (req,res,next)=>{
 						}
 					)
 					const rkey = user[0].readkey ? user[0].readkey._id : undefined;
-					
-					const pem = user[0].price_energy_monthly ? user[0].price_energy_monthly : undefined;
-					const peb = user[0].price_energy_basic ? user[0].price_energy_basic : undefined;
-					const pet = user[0].price_energy_transfer ? user[0].price_energy_transfer : undefined;
-					
-					const htu = user[0].heating_temperature_upper ? user[0].heating_temperature_upper : undefined;
-					const htt = user[0].heating_target_temperature ? user[0].heating_target_temperature : undefined;
-					const htl = user[0].heating_temperature_lower ? user[0].heating_temperature_lower : undefined;
-					const hhu = user[0].heating_humidity_upper ? user[0].heating_humidity_upper : undefined;
-					const hth = user[0].heating_target_humidity ? user[0].heating_target_humidity : undefined;
-					const hhl = user[0].heating_humidity_lower ? user[0].heating_humidity_lower : undefined;
-					
-					const whu = user[0].water_hot_upper ? user[0].water_hot_upper : undefined;
-					const wht = user[0].water_hot_target ? user[0].water_hot_target : undefined;
-					const whl = user[0].water_hot_lower ? user[0].water_hot_lower : undefined;
-					
-					const wcu = user[0].water_cold_upper ? user[0].water_cold_upper : undefined;
-					const wct = user[0].water_cold_target ? user[0].water_cold_target : undefined;
-					const wcl = user[0].water_cold_lower ? user[0].water_cold_lower : undefined;
-					
-					const eu = user[0].energy_upper ? user[0].energy_upper : undefined;
-					const et = user[0].energy_target ? user[0].energy_target : undefined;
-					const el = user[0].energy_lower ? user[0].energy_lower : undefined;
-					
+					const rkeys = user[0].readkey ? user[0].readkey.startdate : undefined;
+					const rkeye = user[0].readkey ? user[0].readkey.enddate : undefined;
 					// LOG this login.
 					/*
 					const logEntry = new Log({
@@ -374,24 +345,8 @@ router.post("/login", (req,res,next)=>{
 						userId: user[0]._id,
 						created: user[0].created,
 						readkey: rkey,
-						price_energy_monthly: pem,
-						price_energy_basic: peb,
-						price_energy_transfer: pet,
-						heating_temperature_upper: htu,
-						heating_target_temperature: htt,
-						heating_temperature_lower: htl,
-						heating_humidity_upper: hhu,
-						heating_target_humidity: hth,
-						heating_humidity_lower: hhl,
-						water_hot_upper: whu,
-						water_hot_target: wht,
-						water_hot_lower: whl,
-						water_cold_upper: wcu,
-						water_cold_target: wct,
-						water_cold_lower: wcl,
-						energy_upper: eu,
-						energy_target: et,
-						energy_lower: el,
+						readkey_start : rkeys,
+						readkey_end : rkeye,
 						is_superuser: user[0].is_superuser
 					});
 				}

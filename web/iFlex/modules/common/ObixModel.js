@@ -58,6 +58,7 @@ export default class ObixModel extends Model {
 		} else {
 			this.cache_expiration_in_seconds = 60;
 		}
+		this.access = options.access; // 'PUBLIC' or 'PRIVATE'
 	}
 	
 	
@@ -170,7 +171,7 @@ export default class ObixModel extends Model {
 :{\"name\":\"start\",\"val\":\"2021-05-26T12:00:01.900039+03:00\"}},{\"$\":{\"name\":\"end\",\"val\":\"2021-05-26T12:00:31.90123+03:00\"}}]}}"
 
 	*/
-	fetch(token, readkey, readkey_start, readkey_end) {
+	fetch(token, readkey) { //, readkey_start, readkey_end) {
 		const self = this;
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
@@ -192,11 +193,17 @@ export default class ObixModel extends Model {
 		// Normal user has a readkey, which was created when user registered into the system. 
 		//const url = 'https://ba.vtt.fi/TestServlet/testHistory/query/';
 		
-		
-		const nowMoment = moment();
-		console.log(['NOW=',nowMoment.format()]);
-		let valid = true;
-		
+		// NOTE: readkey can be undefined.
+		// This is ALWAYS the case when public data (building data) is fetched.
+		let my_readkey = undefined;
+		if (this.access === 'PRIVATE') {
+			my_readkey = readkey;
+		}
+		//
+		//const nowMoment = moment();
+		//console.log(['NOW=',nowMoment.format()]);
+		//let valid = true;
+		/*
 		if (typeof readkey_start !== 'undefined') {
 			const staMoment = moment(readkey_start);
 			console.log(['STA=',staMoment.format()]);
@@ -205,7 +212,6 @@ export default class ObixModel extends Model {
 				valid = false;
 			}
 		}
-		
 		if (typeof readkey_end !== 'undefined') {
 			const endMoment = moment(readkey_end);
 			console.log(['END=',endMoment.format()]);
@@ -213,48 +219,61 @@ export default class ObixModel extends Model {
 				console.log('END NOT valid');
 				valid = false;
 			}
-		}
+		}*/
 		
-		if (valid) {
-			const url = this.mongoBackend + '/proxes/obix/';
-			// 5 s interval => 12 samples in 60 seconds.
-			// One hour (60*60 seconds) takes 60 * 12 samples = 720 samples
-			let start = moment().subtract(3600, 'seconds').format();
-			console.log(['start=',start]);
+		//if (valid) {
+		
+		/*
+			NOTE: Consider if two diferent endpoints should be used here. 
+			One for anonymous calls and one for authenticated calls.
+			OR can we cope with this one and check if readkey is defined...
 			
-			// Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://ba.vtt.fi/TestServlet/testHistory/query/. 
-			// (Reason: CORS header ‘Access-Control-Allow-Origin’ missing).
-			
-			const reqXML = '<?xml version="1.0" encoding="UTF-8"?>'+
-			'<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
-			'<int name="limit" null="true"/>'+
-			'<abstime name="start" val="'+start+'"/>'+
-			'<abstime name="end" null="true"/>'+
-			'</obj>';
-			
-			const data = { 
-				type: 'application/xml',
-				auth: authorizationToken, 
-				xml: reqXML,
-				url: 'Hash-key-to-cache',
-				expiration_in_seconds: this.cache_expiration_in_seconds
-			};
-			const myPost = {
-				method: 'POST',
-				headers: myHeaders,
-				body: JSON.stringify(data)
-			};
-			const myRequest = new Request(url, myPost);
-			
-			fetch(myRequest)
-				.then(function(response) {
-					self.status = response.status;
-					console.log(['status=',self.status]);
-					console.log(['response=',response]);
-					return response.json();
-				})
-				.then(function(myJson) {
-					
+		*/
+		
+		
+		const url = this.mongoBackend + '/proxes/obix/';
+		// 5 s interval => 12 samples in 60 seconds.
+		// One hour (60*60 seconds) takes 60 * 12 samples = 720 samples
+		let start = moment().subtract(3600, 'seconds').format();
+		console.log(['start=',start]);
+		
+		// Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://ba.vtt.fi/TestServlet/testHistory/query/. 
+		// (Reason: CORS header ‘Access-Control-Allow-Origin’ missing).
+		
+		const reqXML = '<?xml version="1.0" encoding="UTF-8"?>'+
+		'<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
+		'<int name="limit" null="true"/>'+
+		'<abstime name="start" val="'+start+'"/>'+
+		'<abstime name="end" null="true"/>'+
+		'</obj>';
+		
+		const data = { 
+			type: 'application/xml',
+			auth: authorizationToken, 
+			readkey: my_readkey,
+			xml: reqXML,
+			url: 'Hash-key-to-cache',
+			expiration_in_seconds: this.cache_expiration_in_seconds
+		};
+		const myPost = {
+			method: 'POST',
+			headers: myHeaders,
+			body: JSON.stringify(data)
+		};
+		const myRequest = new Request(url, myPost);
+		
+		// RESET data at the TOP. 
+		this.values = [];
+		
+		fetch(myRequest)
+			.then(function(response) {
+				self.status = response.status;
+				console.log(['status=',self.status]);
+				console.log(['response=',response]);
+				return response.json();
+			})
+			.then(function(myJson) {
+				if (self.status === 200) {
 					console.log(['myJson=',myJson]);
 					const resu = JSON.parse(myJson);
 					//const cleaned = myJson.replace(/\\/g, "");
@@ -273,7 +292,7 @@ export default class ObixModel extends Model {
 							});
 						}
 						if (typeof resu.obj.list !== 'undefined' && Array.isArray(resu.obj.list)) {
-							self.values = []; // Start from scratch.
+							
 							resu.obj.list.forEach(li=>{
 								if (typeof li.obj !== 'undefined' && Array.isArray(li.obj)) {
 									li.obj.forEach(foo=>{
@@ -294,24 +313,32 @@ export default class ObixModel extends Model {
 					self.fetching = false;
 					self.ready = true;
 					self.notifyAll({model:self.name, method:'fetched', status:self.status, message:'OK'});
-				})
-				.catch(error => {
-					console.log([self.name+' fetch error=',error]);
+					
+				} else {
 					self.fetching = false;
 					self.ready = true;
-					const message = self.name+': '+error;
-					self.errorMessage = message;
+					console.log(['myJson=',myJson]);
+					const message = myJson.message;
 					self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
-				});
-		} else {
-			setTimeout(() => {
-				const message = this.name + ' readkey is NOT valid anymore';
-				console.log(message);
-				this.fetching = false;
-				this.ready = true;
-				this.errorMessage = message;
-				this.notifyAll({model:this.name, method:'fetched', status:404, message:message});
-			}, 200);
-		}
+				}
+			})
+			.catch(error => {
+				console.log([self.name+' fetch error=',error]);
+				self.fetching = false;
+				self.ready = true;
+				const message = self.name+': '+error;
+				self.errorMessage = message;
+				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
+			});
+		//} else {
+		//	setTimeout(() => {
+		//		const message = this.name + ' readkey is NOT valid anymore';
+		//		console.log(message);
+		//		this.fetching = false;
+		//		this.ready = true;
+		//		this.errorMessage = message;
+		//		this.notifyAll({model:this.name, method:'fetched', status:404, message:message});
+		//	}, 200);
+		//}
 	}
 }

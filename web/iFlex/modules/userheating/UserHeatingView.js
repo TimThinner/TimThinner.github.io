@@ -51,7 +51,12 @@ export default class UserHeatingView extends View {
 			this.controller.fetching_interval_in_seconds + 
 			' seconds. Cache expiration is ' + 
 			this.models['UserHeatingModel'].cache_expiration_in_seconds + ' seconds.</p>';
-		$(html).appendTo('#user-heating-info');
+		$('#user-heating-info').empty().append(html);
+	}
+	
+	showDataError(msg) {
+		const html = '<p class="error-info">' + msg + '. Data access not available anymore.</p>';
+		$('#data-error-info').empty().append(html);
 	}
 	
 	notify(options) {
@@ -97,7 +102,10 @@ export default class UserHeatingView extends View {
 							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 							$(html).appendTo('#'+this.FELID);
 							// Maybe we shoud remove the spinner?
-							$('#'+this.CHARTID).empty();
+							//$('#'+this.CHARTID).empty();
+							if (options.status === 403) {
+								this.showDataError(options.message);
+							}
 						}
 					}
 				} else {
@@ -194,6 +202,7 @@ export default class UserHeatingView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
+					'<div id="data-error-info"></div>'+
 					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
 					'<div id="user-heating-info"></div>'+
 				'</div>'+

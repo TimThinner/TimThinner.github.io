@@ -40,7 +40,7 @@ export default class Controller extends PeriodicPoller {
 	}
 	
 	hide() {
-		console.log(['HIDE CONTROLLER ',this.name]);
+		//console.log(['HIDE CONTROLLER ',this.name]);
 		super.hide();
 		if (this.view) {
 			this.view.hide();
@@ -50,10 +50,11 @@ export default class Controller extends PeriodicPoller {
 	show() {
 		console.log(['SHOW CONTROLLER ',this.name]);
 		if (this.visible && this.view) {
-			console.log('CONTROLLER SHOW');
-			this.view.show();
+			console.log('CONTROLLER SHOW: Start POLLERS...');
 			// Start polling all timers for THIS CONTROLLER:
 			this.startPollers();
+			console.log('... and Show the VIEW.');
+			this.view.show();
 		}
 	}
 	
@@ -75,7 +76,7 @@ export default class Controller extends PeriodicPoller {
 	*/
 	notify(options) {
 		if (options.model==='MenuModel' && options.method==='selected') {
-			console.log(['In ',this.name,' selected = ',options.selected]);
+			//console.log(['In ',this.name,' selected = ',options.selected]);
 			if (this.name === options.selected) {
 				setTimeout(() => {
 					this.visible = true;

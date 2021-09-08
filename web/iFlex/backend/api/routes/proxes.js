@@ -6,6 +6,7 @@ const https = require('https');
 const xml2js = require('xml2js');
 
 const Proxe = require('../models/proxe');
+const Readkey = require('../models/readkey');
 /*
 const proxeSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
@@ -199,28 +200,8 @@ const Proxe_Clean = (url) => {
 			console.log(err);
 		});
 };
-/*
-	const data = { xml: reqXML, auth: authorizationToken, type: 'application/xml'};
-*/
-/*
-curl -u user:pass -s -H "Content-Type: application/xml" -d "<obj is=\"obix:HistoryFilter\" xmlns=\"http://obix.org/ns/schema/1.0\"> name=\"limit\" val=\"3\" /><abstime name=\"start\" val=\"2021-05-03T09:51:15.062Z\"/><abstime name=\"end\" null=\"true\"/></obj>" https://ba.vtt.fi/TestServlet/testHistory/query/
-*/
-router.post('/obix', (req,res,next)=>{
-	// req.body.type
-	// req.body.auth
-	// req.body.xml
-	// req.body.url
-	// req.body.expiration_in_seconds
-	const type = req.body.type;
-	const auth = req.body.auth;
-	const body = req.body.xml;
-	const url = req.body.url;
-	const expiration = req.body.expiration_in_seconds;
-	
-	console.log(['obix url=',url]);
-	
-	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
-	
+
+const Proxe_Find = (type, auth, body, url, expiration, res) => {
 	// First check if this url is already in database.
 	Proxe.find({url:url})
 		.exec()
@@ -251,6 +232,66 @@ router.post('/obix', (req,res,next)=>{
 			console.log(['err=',err]);
 			res.status(500).json({error:err});
 		});
+};
+
+/*
+	const data = { xml: reqXML, auth: authorizationToken, type: 'application/xml'};
+*/
+/*
+curl -u user:pass -s -H "Content-Type: application/xml" -d "<obj is=\"obix:HistoryFilter\" xmlns=\"http://obix.org/ns/schema/1.0\"> name=\"limit\" val=\"3\" /><abstime name=\"start\" val=\"2021-05-03T09:51:15.062Z\"/><abstime name=\"end\" null=\"true\"/></obj>" https://ba.vtt.fi/TestServlet/testHistory/query/
+*/
+router.post('/obix', (req,res,next)=>{
+	// req.body.type
+	// req.body.auth
+	// req.body.xml
+	// req.body.url
+	// req.body.expiration_in_seconds
+	const type = req.body.type;
+	const auth = req.body.auth;
+	const readkey = req.body.readkey;
+	const body = req.body.xml;
+	const url = req.body.url;
+	const expiration = req.body.expiration_in_seconds;
+	
+	console.log(['obix url=',url]);
+	
+	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
+	
+	// First check if readkey is defined
+	if (typeof readkey !== 'undefined') {
+		// Check the validity of Readkey:
+		console.log(['readkey=',readkey]);
+		Readkey.findById(readkey)
+			.select('_id startdate enddate')
+			.exec()
+			.then(doc=>{
+				if (doc) {
+					//doc.startdate
+					//doc.enddate
+					console.log('WITH READKEY');
+					
+					const now = new Date();
+					const e_diffe = doc.enddate.getTime() - now.getTime();
+					const s_diffe = now.getTime() - doc.startdate.getTime();
+					console.log(['e_diffe=',e_diffe,' s_diffe=',s_diffe]);
+					if (e_diffe > 0 && s_diffe > 0) {
+						// OK
+						Proxe_Find(type, auth, body, url, expiration, res);
+					} else {
+						res.status(403).json({message:'Forbidden'});
+					}
+				} else {
+					res.status(404).json({message:'Not Found'});
+				}
+			})
+			.catch(err=>{
+				console.log(err);
+				res.status(500).json({error:err});
+			});
+	} else {
+		console.log('WITHOUT READKEY');
+		Proxe_Find(type, auth, body, url, expiration, res);
+	}
 });
 
 module.exports = router;

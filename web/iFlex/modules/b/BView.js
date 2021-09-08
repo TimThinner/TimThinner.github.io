@@ -51,7 +51,7 @@ export default class BView extends View {
 			this.controller.fetching_interval_in_seconds + 
 			' seconds. Cache expiration is ' + 
 			this.models['BuildingHeatingModel'].cache_expiration_in_seconds + ' seconds.</p>';
-		$(html).appendTo('#building-heating-info');
+		$('#data-fetching-info').empty().append(html);
 	}
 	
 	notify(options) {
@@ -97,7 +97,7 @@ export default class BView extends View {
 							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 							$(html).appendTo('#'+this.FELID);
 							// Maybe we shoud remove the spinner?
-							$('#'+this.CHARTID).empty();
+							//$('#'+this.CHARTID).empty();
 						}
 					}
 				} else {
@@ -169,8 +169,9 @@ export default class BView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
+					//'<div id="data-error-info"></div>'+
 					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
-					'<div id="building-heating-info"></div>'+
+					'<div id="data-fetching-info"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

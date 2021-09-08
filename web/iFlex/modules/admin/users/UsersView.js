@@ -62,8 +62,6 @@ export default class UsersView extends View {
 				let readkey = '-';
 				let readkey_validity = '&nbsp;';
 				
-				
-				
 				if (typeof user.regcode !== 'undefined') {
 					regcode_apaid = user.regcode.apartmentId;
 					regcode_code = '<a href="javascript:void(0);" id="edit-regcode-'+user.regcode._id+'">'+user.regcode.code+'</a>';

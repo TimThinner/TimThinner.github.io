@@ -5,8 +5,8 @@ import Model from '../common/Model.js';
 		email
 		token
 		readkey
-		readkey_start
-		readkey_end
+		
+		
 		
 		
 		is_superuser
@@ -19,8 +19,8 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
-		this.readkey_start = undefined;
-		this.readkey_end = undefined;
+		//this.readkey_start = undefined;
+		//this.readkey_end = undefined;
 		this.is_superuser = false;
 		this.localStorageLabel = 'iFlexUserModel';
 	}
@@ -38,8 +38,8 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
-		this.readkey_start = undefined;
-		this.readkey_end = undefined;
+		//this.readkey_start = undefined;
+		//this.readkey_end = undefined;
 		
 		this.is_superuser = false;
 	}
@@ -51,9 +51,9 @@ export default class UserModel extends Model {
 			'id': this.id,
 			'email': this.email,
 			'token': this.token,
-			'readkey': this.readkey,
-			'readkey_start': this.readkey_start,
-			'readkey_end': this.readkey_end
+			'readkey': this.readkey
+			//'readkey_start': this.readkey_start,
+			//'readkey_end': this.readkey_end
 		};
 		
 		// EXCEPT HERE FOR TEST PURPOSES:
@@ -84,8 +84,8 @@ export default class UserModel extends Model {
 			if (typeof stat.email !== 'undefined') { this.email = stat.email; }
 			if (typeof stat.token !== 'undefined') { this.token = stat.token; }
 			if (typeof stat.readkey !== 'undefined') { this.readkey = stat.readkey; }
-			if (typeof stat.readkey_start !== 'undefined') { this.readkey_start = stat.readkey_start; }
-			if (typeof stat.readkey_end !== 'undefined') { this.readkey_end = stat.readkey_end; }
+			//if (typeof stat.readkey_start !== 'undefined') { this.readkey_start = stat.readkey_start; }
+			//if (typeof stat.readkey_end !== 'undefined') { this.readkey_end = stat.readkey_end; }
 			
 			
 			// EXCEPT HERE FOR TEST PURPOSES:
@@ -159,8 +159,8 @@ export default class UserModel extends Model {
 					self.email = data.email;
 					self.is_superuser = myJson.is_superuser;
 					self.readkey = myJson.readkey;
-					self.readkey_start = myJson.readkey_start;
-					self.readkey_end = myJson.readkey_end;
+					//self.readkey_start = myJson.readkey_start;
+					//self.readkey_end = myJson.readkey_end;
 					// Store token and email temporarily into localStorage.
 					// It will be removed when the user logs-out.
 					self.store();
@@ -201,10 +201,10 @@ export default class UserModel extends Model {
 		}
 	}
 	
-	signupALT(data) {
+	signupApa(data) {
 		const self = this;
 		if (this.MOCKUP) {
-			setTimeout(() => this.notifyAll({model:'UserModel',method:'signupALT',status:201,message:'Signup OK'}), 100);
+			setTimeout(() => this.notifyAll({model:'UserModel',method:'signupApa',status:201,message:'Signup OK'}), 100);
 		} else {
 			let status = 500; // RESPONSE (OK: 201, MAIL EXISTS: 409, error: 500)
 			const url = this.mongoBackend + '/regcodes/anon';
@@ -221,10 +221,10 @@ export default class UserModel extends Model {
 			})
 			.then(function(myJson){
 				const message = myJson.message;
-				self.notifyAll({model:'UserModel',method:'signupALT',status:status,message:message,data:data});
+				self.notifyAll({model:'UserModel',method:'signupApa',status:status,message:message,data:data});
 			})
 			.catch(function(error){
-				self.notifyAll({model:'UserModel',method:'signupALT',status:status,message:error});
+				self.notifyAll({model:'UserModel',method:'signupApa',status:status,message:error});
 			});
 		}
 	}

@@ -17,11 +17,11 @@ export default class UserPropsController extends Controller {
 		// So I just add model removal here, to enable this in the future.
 		
 		
-		Object.keys(this.models).forEach(key => {
-			if (key === 'UserPropsModel') {
-				this.master.modelRepo.remove(key);
-			}
-		});
+		//Object.keys(this.models).forEach(key => {
+			//if (key === 'UserPropsModel') {
+				//this.master.modelRepo.remove(key);
+			//}
+		//});
 		
 		
 		this.models = {};

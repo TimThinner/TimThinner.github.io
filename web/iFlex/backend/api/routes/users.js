@@ -50,7 +50,7 @@ const Readkey = require('../models/readkey');
 */
 router.get('/', checkAuth, (req,res,next)=>{
 	User.find()
-		.select('_id email created regcode readkey')
+		.select('_id email created regcode readkey request_for_sensors')
 		.populate('regcode')
 		.populate('readkey')
 		.exec()
@@ -63,7 +63,8 @@ router.get('/', checkAuth, (req,res,next)=>{
 						email: doc.email,
 						created: doc.created,
 						regcode: doc.regcode,
-						readkey: doc.readkey
+						readkey: doc.readkey,
+						request_for_sensors: doc.request_for_sensors
 					}
 				})
 			});
@@ -93,6 +94,7 @@ router.get('/', checkAuth, (req,res,next)=>{
 router.post("/signup", (req,res,next)=>{
 	const email_lc = req.body.email.toLowerCase();
 	const regcode_lc = req.body.regcode.toLowerCase();
+	const request_for_sensors = req.body.request_for_sensors;
 	// First check that this email is NOT already used.
 	User.find({email:email_lc})
 		.exec()
@@ -142,7 +144,8 @@ router.post("/signup", (req,res,next)=>{
 													email: email_lc, // Store lowercase version of email.
 													password: hash,
 													regcode: regcode[0]._id, // Ref to Regcode
-													readkey: result._id // Ref to Readkey
+													readkey: result._id, // Ref to Readkey
+													request_for_sensors: request_for_sensors
 												});
 												user
 													.save()
@@ -233,7 +236,7 @@ router.post("/signup", (req,res,next)=>{
 router.post("/login", (req,res,next)=>{
 	
 	const email_lc = req.body.email.toLowerCase();
-	const selString = '_id email password created readkey is_superuser';
+	const selString = '_id email password created readkey request_for_sensors is_superuser';
 	User.find({email:email_lc})
 		.select(selString)
 		.populate('readkey')
@@ -266,8 +269,6 @@ router.post("/login", (req,res,next)=>{
 						}
 					)
 					const rkey = user[0].readkey ? user[0].readkey._id : undefined;
-					const rkeys = user[0].readkey ? user[0].readkey.startdate : undefined;
-					const rkeye = user[0].readkey ? user[0].readkey.enddate : undefined;
 					// LOG this login.
 					/*
 					const logEntry = new Log({
@@ -290,8 +291,7 @@ router.post("/login", (req,res,next)=>{
 						userId: user[0]._id,
 						created: user[0].created,
 						readkey: rkey,
-						readkey_start : rkeys,
-						readkey_end : rkeye,
+						request_for_sensors: user[0].request_for_sensors,
 						is_superuser: user[0].is_superuser
 					});
 				}

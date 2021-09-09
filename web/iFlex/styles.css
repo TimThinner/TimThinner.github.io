@@ -147,3 +147,10 @@ html, body {
 	font-size: 24px;
 	text-align: center;
 }
+.note {
+	text-align: center;
+	border: 2px solid #ccc;
+	background-color: #fff;
+	color: #555;
+	padding: 16px;
+}

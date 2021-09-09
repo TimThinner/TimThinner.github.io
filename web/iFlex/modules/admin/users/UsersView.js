@@ -98,6 +98,7 @@ export default class UsersView extends View {
 						'<td>'+user.email+'</td>'+
 						'<td>'+user.created+'</td>'+
 						'<td>'+regcode_apaid+'</td>'+
+						'<td>'+user.request_for_sensors+'</td>'+
 						'<td>'+regcode_code+'</td>'+
 						'<td>'+regcode_validity+'</td>'+
 						'<td>'+readkey+'</td>'+
@@ -110,6 +111,7 @@ export default class UsersView extends View {
 							'<p>Email: '+user.email+'<br/>'+
 							'Created: '+user.created+'<br/>'+
 							'ApartmentId: '+regcode_apaid+'<br/>'+
+							'Sensors REQ: '+user.request_for_sensors+'<br/>'+
 							'RegCode: '+regcode_code+' '+regcode_validity+'<br/>'+
 							'ReadKey: '+readkey+' '+readkey_validity+'</p>'+
 						'</div>'+
@@ -210,6 +212,7 @@ export default class UsersView extends View {
 								'<th>Email</th>'+
 								'<th>Created</th>'+
 								'<th>ApartmentId</th>'+
+								'<th>Sensors REQ</th>'+
 								'<th>RegCode</th>'+
 								'<th>&nbsp;</th>'+
 								'<th>ReadKey</th>'+

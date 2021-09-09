@@ -5,7 +5,7 @@ import Model from '../common/Model.js';
 		email
 		token
 		readkey
-		
+		request_for_sensors
 		
 		
 		
@@ -19,8 +19,7 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
-		//this.readkey_start = undefined;
-		//this.readkey_end = undefined;
+		this.request_for_sensors = false;
 		this.is_superuser = false;
 		this.localStorageLabel = 'iFlexUserModel';
 	}
@@ -38,9 +37,7 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
-		//this.readkey_start = undefined;
-		//this.readkey_end = undefined;
-		
+		this.request_for_sensors = false;
 		this.is_superuser = false;
 	}
 	
@@ -51,9 +48,8 @@ export default class UserModel extends Model {
 			'id': this.id,
 			'email': this.email,
 			'token': this.token,
-			'readkey': this.readkey
-			//'readkey_start': this.readkey_start,
-			//'readkey_end': this.readkey_end
+			'readkey': this.readkey,
+			'request_for_sensors': this.request_for_sensors
 		};
 		
 		// EXCEPT HERE FOR TEST PURPOSES:
@@ -84,9 +80,7 @@ export default class UserModel extends Model {
 			if (typeof stat.email !== 'undefined') { this.email = stat.email; }
 			if (typeof stat.token !== 'undefined') { this.token = stat.token; }
 			if (typeof stat.readkey !== 'undefined') { this.readkey = stat.readkey; }
-			//if (typeof stat.readkey_start !== 'undefined') { this.readkey_start = stat.readkey_start; }
-			//if (typeof stat.readkey_end !== 'undefined') { this.readkey_end = stat.readkey_end; }
-			
+			if (typeof stat.request_for_sensors !== 'undefined') { this.request_for_sensors = stat.request_for_sensors; }
 			
 			// EXCEPT HERE FOR TEST PURPOSES:
 			if (typeof stat.is_superuser !== 'undefined') { this.is_superuser = stat.is_superuser; }
@@ -151,16 +145,14 @@ export default class UserModel extends Model {
 				if (status === 200 && myJson.token) {
 					// Login was OK, set the Authentication-token to model.
 					
-					
-					console.log(['LOGIN myJson=',myJson]);
+					//console.log(['LOGIN myJson=',myJson]);
 					
 					self.token = myJson.token;
 					self.id = myJson.userId.toString();
 					self.email = data.email;
 					self.is_superuser = myJson.is_superuser;
 					self.readkey = myJson.readkey;
-					//self.readkey_start = myJson.readkey_start;
-					//self.readkey_end = myJson.readkey_end;
+					self.request_for_sensors = myJson.request_for_sensors;
 					// Store token and email temporarily into localStorage.
 					// It will be removed when the user logs-out.
 					self.store();

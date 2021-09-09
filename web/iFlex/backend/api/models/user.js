@@ -17,6 +17,7 @@ const userSchema = mongoose.Schema({
 	address_city: {type:String},*/
 	regcode: { type: mongoose.Schema.Types.ObjectId, ref:'Regcode'},
 	readkey: { type: mongoose.Schema.Types.ObjectId, ref:'Readkey'},
+	request_for_sensors: { type: Boolean, default: false },
 	is_superuser: { type: Boolean, default: false }
 });
 

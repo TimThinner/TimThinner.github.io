@@ -60,6 +60,7 @@ export default class UserSignupApaView extends View {
 	signupWithRegcode(opt) {
 		const _email = $('#signup-email').val();
 		const _password = $('#signup-password').val();
+		const _request_for_sensors = $('#request-for-sensors').is(':checked');
 		// NOTE: If REGCODE is copy-pasted from somewhere, it might contain extra spaces... 
 		// MUST remove them just in case!
 		// The trim() method removes whitespace from both ends of a string. 
@@ -86,9 +87,9 @@ export default class UserSignupApaView extends View {
 		if (errors.length > 0) {
 			
 			const localized_message = errors.join(' ');
-			$('#'+this.FELID).empty();
 			const html = '<div class="error-message"><p>'+localized_message+'</p></div>';
-			$(html).appendTo('#'+this.FELID);
+			$('#'+this.FELID).empty().append(html);
+			
 			// enable both buttons
 			$("#signup-submit").prop("disabled", false);
 			$("#cancel").prop("disabled", false);
@@ -100,7 +101,8 @@ export default class UserSignupApaView extends View {
 			var data = {
 				email: _email,
 				password: _password,
-				regcode: _regcode
+				regcode: _regcode,
+				request_for_sensors: _request_for_sensors
 			};
 			// disable both buttons
 			$("#cancel").prop("disabled", true);
@@ -112,6 +114,7 @@ export default class UserSignupApaView extends View {
 	signupWithApartment() {
 		const _email = $('#signup-email').val();
 		const _password = $('#signup-password').val();
+		
 		const validateArray = [
 			{test:"email",name:"Email",value:_email},
 			{test:"pass",name:"Password",value:_password}
@@ -121,9 +124,10 @@ export default class UserSignupApaView extends View {
 		if (errors.length > 0) {
 			
 			const localized_message = errors.join(' ');
-			$('#'+this.FELID).empty();
+			
 			const html = '<div class="error-message"><p>'+localized_message+'</p></div>';
-			$(html).appendTo('#'+this.FELID);
+			$('#'+this.FELID).empty().append(html);
+			
 			// enable both buttons
 			$("#signup-submit").prop("disabled", false);
 			$("#cancel").prop("disabled", false);
@@ -253,16 +257,13 @@ export default class UserSignupApaView extends View {
 						'</select>'+
 						'<label>Apartment number</label>'+
 					'</div>'+
+					'<div class="input-field col s12">'+
+						// checked="checked"
+						'<p class="note">You can also have sensors to measure temperature and humidity in your apartment. This data is shown only to you. Due to limited number of sensors in this PILOT, be quick and check the checkbox below.</p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="request-for-sensors" /><span>Yes, I want sensors.</span></label></p>'+
+					'</div>'+
 				'</div>'+
 			'</div>'+
-			
-			'<div class="row">'+
-				'<div class="col s12">'+
-					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-					'<div class="col s12 center" id="signup-success"></div>'+
-				'</div>'+
-			'</div>'+
-			
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
@@ -271,6 +272,12 @@ export default class UserSignupApaView extends View {
 					'<div class="col s6 center">'+
 						'<button class="btn waves-effect waves-light" type="submit" id="signup-submit">'+localized_string_signup_button_text+'</button>'+
 					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+					'<div class="col s12 center" id="signup-success"></div>'+
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
@@ -309,7 +316,7 @@ export default class UserSignupApaView extends View {
 			if (self.apartment === 'NONE') {
 				// Show the reason for failure (message).
 				const html = '<div class="error-message"><p>Must input <b>Apartment number</b></p></div>';
-				$(html).appendTo('#'+self.FELID);
+				$('#'+self.FELID).empty().append(html);
 			} else {
 				// Good to go for the Apartment Registration PHASE.
 				// Here we create a REGCODE WITHOUT authentication => a new backend endpoint is needed!

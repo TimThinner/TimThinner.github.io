@@ -17,6 +17,9 @@ export default class UserFeedbackView extends View {
 		this.FBM = this.controller.master.modelRepo.get('FeedbackModel');
 		this.FBM.subscribe(this);
 		
+		this.isFreeText = false;
+		this.isSmileySelected = false;
+		
 		this.rendered = false;
 	}
 	
@@ -25,6 +28,8 @@ export default class UserFeedbackView extends View {
 	}
 	
 	hide() {
+		this.isFreeText = false;
+		this.isSmileySelected = false;
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -36,8 +41,20 @@ export default class UserFeedbackView extends View {
 		this.REO.unsubscribe(this);
 		this.FBM.unsubscribe(this);
 		
+		this.isFreeText = false;
+		this.isSmileySelected = false;
 		this.rendered = false;
 		$(this.el).empty();
+	}
+	
+	submitState() {
+		if (this.isSmileySelected || this.isFreeText) {
+			$('#submit-feedback').removeClass('disabled');
+			$('#submit-feedback').addClass('teal lighten-1');
+		} else {
+			$('#submit-feedback').removeClass('teal lighten-1');
+			$('#submit-feedback').addClass('disabled');
+		}
 	}
 	
 	/*
@@ -73,14 +90,18 @@ export default class UserFeedbackView extends View {
 					this.resetSelectedSmiley();
 					$('#submit-feedback').removeClass('teal lighten-1');
 					$('#submit-feedback').addClass('disabled');
+					// and reset flags.
+					this.isFreeText = false;
+					this.isSmileySelected = false;
+					
 					$('#feedback-text-placeholder').empty();
+					$('#free-text').val('');
 				}
 			}
 		}
 	}
 	
 	render() {
-		
 		const self = this;
 		$(this.el).empty();
 		
@@ -102,6 +123,12 @@ export default class UserFeedbackView extends View {
 				'<div class="col s12 center">'+
 					'<p class="feedback-text" id="feedback-text-placeholder"></p>'+
 				'</div>'+
+				'<div class="col s12 center">'+
+					'<div class="input-field col s12">'+
+						'<textarea id="free-text" class="materialize-textarea"></textarea>'+
+						'<label for="free-text">Free text feedback</label>'+
+					'</div>'+
+				'</div>'+
 				'<div class="col s12 center" style="margin-top:16px;margin-bottom:16px;">'+
 					'<button class="btn waves-effect waves-light disabled" id="submit-feedback">SEND FEEDBACK'+
 						//'<i class="material-icons">send</i>'+
@@ -115,9 +142,19 @@ export default class UserFeedbackView extends View {
 			'</div>';
 		$(html).appendTo(this.el);
 		
+		$('#free-text').on('keyup', function(){
+			const v = $('#free-text').val();
+			//console.log(['free-text changed v=',v]);
+			if (v.length > 0) {
+				self.isFreeText = true;
+			} else {
+				self.isFreeText = false;
+			}
+			self.submitState();
+		});
+		
 		$("#back").on('click', function() {
 			self.models['MenuModel'].setSelected('USERPAGE');
-			//self.controller.models['MenuModel'].setSelected('menu');
 		});
 		
 		// Smileys act like radio buttons, only one can be selected at any one time.
@@ -128,16 +165,22 @@ export default class UserFeedbackView extends View {
 				if ($('#fb-smiley-'+i).hasClass('selected')) {
 					$('#fb-smiley-'+i).removeClass('selected');
 					$('#fb-smiley-'+i+' > img').attr('src','./svg/smiley-'+i+'.svg');
-					$('#submit-feedback').removeClass('teal lighten-1');
-					$('#submit-feedback').addClass('disabled');
+					
+					self.isSmileySelected = false;
+					//$('#submit-feedback').removeClass('teal lighten-1');
+					//$('#submit-feedback').addClass('disabled');
+					self.submitState();
 					$('#feedback-text-placeholder').empty();
 					
 				} else {
 					self.resetSelectedSmiley();
 					$('#fb-smiley-'+i).addClass('selected');
 					$('#fb-smiley-'+i+' > img').attr('src','./svg/smiley-'+i+'-frame.svg');
-					$('#submit-feedback').removeClass('disabled');
-					$('#submit-feedback').addClass('teal lighten-1');
+					self.isSmileySelected = true;
+					//$('#submit-feedback').removeClass('disabled');
+					//$('#submit-feedback').addClass('teal lighten-1');
+					self.submitState();
+					
 					if (i===1) {
 						$('#feedback-text-placeholder').empty().append('Cold');
 					} else if (i===2) {
@@ -158,61 +201,27 @@ export default class UserFeedbackView extends View {
 		}
 		
 		$('#submit-feedback').on('click',function() {
+			const ft = $('#free-text').val();
+			let selected = -1;
 			for (let i=1; i<8; i++) {
 				if ($('#fb-smiley-'+i).hasClass('selected')) {
-					const selected = i;
-					// FeedbackModel send (data, token) 
-						//const refToUser = req.body.refToUser;
-						//const fbType = req.body.feedbackType;
-						//const fb = req.body.feedback;
-					// JUST SIMULATE NOW!!!!!
-					const UM = self.controller.master.modelRepo.get('UserModel');
-					if (UM) {
-						console.log(['Sending Feedback ',selected]);
-						const data = {
-							refToUser: UM.id, // UserModel id
-							feedbackType: 'Apartment',
-							feedback: selected
-						}
-						self.FBM.send(data, UM.token); // see notify for the response...
-					}
+					selected = i;
 				}
+			}
+			// FeedbackModel send (data, token) 
+			const UM = self.controller.master.modelRepo.get('UserModel');
+			if (UM) {
+				console.log(['Sending Feedback ',selected]);
+				const data = {
+					refToUser: UM.id, // UserModel id
+					feedbackType: 'Apartment',
+					feedback: selected,
+					feedbackText: ft
+				}
+				self.FBM.send(data, UM.token); // see notify for the response...
 			}
 		});
 		
 		this.rendered = true;
-		
-		
-		/*
-		const self = this;
-		$(this.el).empty();
-		
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const html =
-			'<div class="row">'+
-				'<div class="col s12 center">'+
-					'<h4>Apartment feedback</h4>'+
-					'<p style="text-align:center;"><img src="./svg/feedback.svg" height="80"/></p>'+
-'<p>Stinking bishop macaroni cheese boursin. Who moved my cheese macaroni cheese queso cheese and wine cheese and biscuits the big cheese airedale gouda. Cheesy grin fondue stilton roquefort danish fontina cheeseburger mascarpone paneer. The big cheese cheese slices squirty cheese hard cheese cottage cheese.</p>'+
-//'<p>Gouda cheese and biscuits cheesecake. Emmental taleggio cauliflower cheese cheesy grin mascarpone who moved my cheese parmesan croque monsieur. Cheese strings port-salut halloumi babybel mascarpone cheese and wine blue castello cheddar. Monterey jack cottage cheese monterey jack fromage cheese slices monterey jack blue castello cheddar. Queso.</p>'+
-//'<p>Cheese and biscuits pecorino cheesy grin. Ricotta cheese and wine pecorino fromage feta gouda cauliflower cheese parmesan. Cheddar caerphilly fondue camembert de normandie st. agur blue cheese st. agur blue cheese st. agur blue cheese ricotta. Cheese and biscuits cheese and wine monterey jack cottage cheese caerphilly stilton goat halloumi. Swiss.</p>'+
-//'<p>Blue castello cheese and biscuits say cheese. Melted cheese mozzarella bavarian bergkase pecorino taleggio lancashire cheddar stilton. Cheeseburger stilton cheese on toast blue castello fondue squirty cheese mascarpone cheese strings. Pepper jack mascarpone bocconcini.</p>'+
-//"<p>When the cheese comes out everybody's happy cheesy feet edam. Monterey jack cheesecake pecorino cheese strings cheese and wine croque monsieur danish fontina queso. Port-salut cheesy feet jarlsberg bavarian bergkase the big cheese paneer cheese slices cut the cheese. Emmental who moved my cheese lancashire cow roquefort stilton.</p>"+
-				'</div>'+
-			'</div>'+
-			'<div class="row">'+
-				'<div class="col s12 center">'+
-					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">BACK</button>'+
-				'</div>'+
-			'</div>';
-		$(html).appendTo(this.el);
-		
-		$("#back").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('USERPAGE');
-		});
-		
-		this.rendered = true;
-		*/
-		
 	}
 }

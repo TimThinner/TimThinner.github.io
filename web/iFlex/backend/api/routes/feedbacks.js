@@ -11,7 +11,7 @@ const Feedback = require('../models/feedback');
 router.get('/', checkAuth, (req,res,next)=>{
 	
 	Feedback.find({_id:req.userData['userId']}) // Current User
-		.select('_id userId feedbackType created feedback')
+		.select('_id userId feedbackType created feedback feedbackText')
 		//.populate('userId')
 		.exec()
 		.then(docs=>{
@@ -23,7 +23,8 @@ router.get('/', checkAuth, (req,res,next)=>{
 						userId: doc.userId,
 						feedbackType: doc.feedbackType,
 						created: doc.created,
-						feedback: doc.feedback
+						feedback: doc.feedback,
+						feedbackText: doc.feedbackText
 					}
 				})
 			});
@@ -37,6 +38,7 @@ router.get('/', checkAuth, (req,res,next)=>{
 	req.body.refToUser
 	req.body.feedbackType
 	req.body.feedback
+	req.body.feedbackText
 */
 //router.post("/", checkAuth, (req,res,next)=>{
 router.post("/", (req,res,next)=>{
@@ -44,12 +46,14 @@ router.post("/", (req,res,next)=>{
 	const refToUser = req.body.refToUser;
 	const fbType = req.body.feedbackType;
 	const fb = req.body.feedback;
+	const fbText = req.body.feedbackText;
 	
 	const entry = new Feedback({
 		_id: new mongoose.Types.ObjectId(),
 		userId: refToUser,
 		feedbackType: fbType,
-		feedback: fb
+		feedback: fb,
+		feedbackText: fbText
 	});
 	entry
 		.save()

@@ -7,6 +7,8 @@ const xml2js = require('xml2js');
 
 const Proxe = require('../models/proxe');
 const Readkey = require('../models/readkey');
+const base64 = require('base-64');
+
 /*
 const proxeSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
@@ -172,7 +174,7 @@ const Proxe_Clean = (url) => {
 	Proxe.find()
 		.exec()
 		.then(docs=>{
-			console.log(['Proxe has now ',docs.length,' entries.']);
+			//console.log(['Proxe has now ',docs.length,' entries.']);
 			docs.forEach(doc => {
 				// DO NOT PROCESS the one given as parameter.
 				if (doc.url === url) {
@@ -215,16 +217,16 @@ const Proxe_Find = (type, auth, body, url, expiration, res) => {
 				//console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
 				if (elapsed < exp_ms) {
 					// Use CACHED version of RESPONSE
-					console.log('USE CACHED response!');
+					//console.log('USE CACHED response!');
 					res.status(200).json(proxe[0].response);
 				} else {
-					console.log('Expired => FETCH a FRESH copy!');
+					//console.log('Expired => FETCH a FRESH copy!');
 					// FETCH a FRESH copy from SOURCE and Update existing Proxe Entry
 					Proxe_HTTPS_Fetch({type:type, auth:auth, body:body, url:url, id:proxe[0]._id}, res);
 				}
 			} else {
 				// Not cached yet => FETCH a FRESH copy from SOURCE and SAVE it as a new Entry.
-				console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
+				//console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
 				Proxe_HTTPS_Fetch({type:type, auth:auth, body:body, url:url, expiration:expiration}, res);
 			}
 		})
@@ -247,20 +249,23 @@ router.post('/obix', (req,res,next)=>{
 	// req.body.url
 	// req.body.expiration_in_seconds
 	const type = req.body.type;
-	const auth = req.body.auth;
+	//const auth = req.body.auth;
 	const readkey = req.body.readkey;
 	const body = req.body.xml;
 	const url = req.body.url;
 	const expiration = req.body.expiration_in_seconds;
+	const base64user = base64.encode(process.env.OBIX_USER);//btoa(process.env.OBIX_USER);
+	const base64pass = base64.encode(process.env.OBIX_PASS);//btoa(process.env.OBIX_PASS);
+	const auth = 'Basic '+ base64user + '' + base64pass;
 	
-	console.log(['obix url=',url]);
+	//console.log(['auth=',auth]);
 	
 	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
 	
 	// First check if readkey is defined
 	if (typeof readkey !== 'undefined') {
 		// Check the validity of Readkey:
-		console.log(['readkey=',readkey]);
+		//console.log(['readkey=',readkey]);
 		Readkey.findById(readkey)
 			.select('_id startdate enddate')
 			.exec()
@@ -268,12 +273,11 @@ router.post('/obix', (req,res,next)=>{
 				if (doc) {
 					//doc.startdate
 					//doc.enddate
-					console.log('WITH READKEY');
-					
+					//console.log('WITH READKEY');
 					const now = new Date();
 					const e_diffe = doc.enddate.getTime() - now.getTime();
 					const s_diffe = now.getTime() - doc.startdate.getTime();
-					console.log(['e_diffe=',e_diffe,' s_diffe=',s_diffe]);
+					//console.log(['e_diffe=',e_diffe,' s_diffe=',s_diffe]);
 					if (e_diffe > 0 && s_diffe > 0) {
 						// OK
 						Proxe_Find(type, auth, body, url, expiration, res);
@@ -289,7 +293,7 @@ router.post('/obix', (req,res,next)=>{
 				res.status(500).json({error:err});
 			});
 	} else {
-		console.log('WITHOUT READKEY');
+		//console.log('WITHOUT READKEY');
 		Proxe_Find(type, auth, body, url, expiration, res);
 	}
 });

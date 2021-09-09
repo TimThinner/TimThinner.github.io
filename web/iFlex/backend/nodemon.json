@@ -1,5 +1,7 @@
 {
 	"env":{
-		"JWT_KEY":"dpm58ekf0922jkl"
+		"JWT_KEY":"dpm58ekf0922jkl",
+		"OBIX_USER": "user",
+		"OBIX_PASS": "pass"
 	}
 }

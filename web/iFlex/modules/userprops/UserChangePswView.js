@@ -11,7 +11,7 @@ export default class UserChangePswView extends View {
 		});
 		this.userModel = this.controller.master.modelRepo.get('UserModel');
 		this.userModel.subscribe(this);
-		this.FELID = 'form-failed';
+		this.FELID = 'form-message';
 	}
 	
 	show() {
@@ -39,9 +39,8 @@ export default class UserChangePswView extends View {
 			// Check the status (OK: 200, Auth Failed: 401, error: 500)
 			if (options.status === 200) {
 				var html = '<div class="success-message"><p>'+options.message+'</p></div>';
-				$(html).appendTo('#password-form-success');
+				$('#'+this.FELID).empty().append(html);
 				setTimeout(() => {
-					
 					
 					this.models['MenuModel'].setSelected('USERPROPS');
 					
@@ -69,41 +68,36 @@ export default class UserChangePswView extends View {
 		let html_email_field = '';
 		if (this.userModel.is_superuser===true) {
 			html_email_field =
-				'<div class="row">'+
-					'<div class="input-field col s12">'+
-						'<input id="super-email" type="email" class="validate" required="" aria-required="true" />'+
-						'<label for="super-email" class="active">Email</label>'+
-					'</div>'+
+				'<div class="input-field col s12">'+
+					'<input id="super-email" type="email" class="validate" required="" aria-required="true" />'+
+					'<label for="super-email" class="active">Email</label>'+
 				'</div>';
 		}
 		const html = 
 			'<div class="row">'+
-				'<div class="col s12 center">'+
-					'<h6>Change password</h6>'+
+				'<div class="col s12">'+
+					'<div class="col s12">'+
+						'<h4 style="text-align:center;">Change password</h4>'+
+					'</div>'+ html_email_field +
+					'<div class="input-field col s12 m6">'+
+						'<input id="old-password" type="password" class="validate" required="" aria-required="true" />'+
+						'<label for="old-password">Old password</label>'+
+					'</div>'+
+					'<div class="input-field col s12 m6">'+
+						'<input id="new-password" type="password" class="validate" required="" aria-required="true" />'+
+						'<label for="new-password">New password</label>'+
+					'</div>'+
+					'<div class="col s6">'+
+						'<button class="btn grey lighten-2" style="color:#000" id="password-cancel">Cancel</button>'+
+					'</div>'+
+					'<div class="col s6">'+
+						'<button class="btn waves-effect waves-light" id="password-submit">Save'+
+							'<i class="material-icons right">send</i>'+
+						'</button>'+
+					'</div>'+
+					'<div class="col s12 center" id="'+this.FELID+'" style="margin-top:16px;">'+
+					'</div>'+
 				'</div>'+
-			'</div>'+
-			html_email_field +
-			'<div class="row">'+
-				'<div class="input-field col s12 m6">'+
-					'<input id="old-password" type="password" class="validate" required="" aria-required="true" />'+
-					'<label for="old-password">Old password</label>'+
-				'</div>'+
-				'<div class="input-field col s12 m6">'+
-					'<input id="new-password" type="password" class="validate" required="" aria-required="true" />'+
-					'<label for="new-password">New password</label>'+
-				'</div>'+
-				'<div class="col s6">'+
-					'<button class="btn grey lighten-2" style="color:#000" id="password-cancel">Cancel</button>'+
-				'</div>'+
-				'<div class="col s6">'+
-					'<button class="btn waves-effect waves-light" id="password-submit">Save'+
-						'<i class="material-icons right">send</i>'+
-					'</button>'+
-				'</div>'+
-			'</div>'+
-			'<div class="row">'+
-				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-				'<div class="col s12 center" id="password-form-success"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
@@ -130,7 +124,6 @@ export default class UserChangePswView extends View {
 			event.preventDefault();
 			
 			$('#'+self.FELID).empty();
-			$('#form-success').empty();
 			
 			const old_password = $("#old-password").val();
 			const new_password = $("#new-password").val();

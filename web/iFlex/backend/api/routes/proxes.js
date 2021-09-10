@@ -243,13 +243,7 @@ const Proxe_Find = (type, auth, body, url, expiration, res) => {
 curl -u user:pass -s -H "Content-Type: application/xml" -d "<obj is=\"obix:HistoryFilter\" xmlns=\"http://obix.org/ns/schema/1.0\"> name=\"limit\" val=\"3\" /><abstime name=\"start\" val=\"2021-05-03T09:51:15.062Z\"/><abstime name=\"end\" null=\"true\"/></obj>" https://ba.vtt.fi/TestServlet/testHistory/query/
 */
 router.post('/obix', (req,res,next)=>{
-	// req.body.type
-	// req.body.auth
-	// req.body.xml
-	// req.body.url
-	// req.body.expiration_in_seconds
 	const type = req.body.type;
-	//const auth = req.body.auth;
 	const readkey = req.body.readkey;
 	const body = req.body.xml;
 	const url = req.body.url;

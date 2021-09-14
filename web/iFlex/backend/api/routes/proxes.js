@@ -104,25 +104,31 @@ const Proxe_Update = (po, res) => {
 
 const Proxe_HTTPS_Fetch = (po, res) => {
 	/*
-	po.type				
-	po.auth				
-	po.body				
-	po.url				String to identify cached resource
-	
 	po.id				Call has id OR expiration
 	po.expiration		Call has id OR expiration
 	*/
 	const type = po.type;
 	const auth = po.auth;
-	const body = po.body;
+	const xml = po.xml;
 	const url = po.url;
 	const id = po.id;
 	const expiration = po.expiration;
 	
+	//https://ba.vtt.fi/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/
+	//https://ba.vtt.fi/obixStore/store/Fingrid/emissionFactorOfElectricityProductionInFinland/query/
+	
+	// curl -u 'timokinnunen':'tuaxiMun0wx6ff!sBaq' -s -H "Content-Type: text/xml;charset=UTF-8" -d "<obj is=\"obix:HistoryFilter\" 
+	//xmlns=\"http://obix.org/ns/schema/1.0\"><int name=\"limit\" val=\"3\" /><abstime name=\"start\" val=\"2021-09-03T09:51:15.062Z\"/>
+	//<abstime name=\"end\" null=\"true\"/></obj>" https://ba.vtt.fi/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/
+	
+	
 	const options = {
-		host: '130.188.4.49',
+		//host: '130.188.4.49',
+		host: 'ba.vtt.fi',
 		port: 443,
-		path: '/TestServlet/testHistory/query/',
+		//path: '/TestServlet/testHistory/query/',
+		path: url, //'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/',
+		//path: '/obixStore/store/Fingrid/emissionFactorOfElectricityProductionInFinland/query/',
 		method: 'POST',
 		rejectUnauthorized: false, // SEE: https://levelup.gitconnected.com/how-to-resolve-certificate-errors-in-nodejs-app-involving-ssl-calls-781ce48daded
 		headers: {
@@ -161,8 +167,8 @@ const Proxe_HTTPS_Fetch = (po, res) => {
 		//console.error(`problem with request: ${e.message}`);
 		res.status(500).json({error: e});
 	});
-	// Write data to request body
-	req2.write(body);
+	// Write data to request body (XML)
+	req2.write(xml);
 	req2.end();
 };
 /*
@@ -203,7 +209,7 @@ const Proxe_Clean = (url) => {
 		});
 };
 
-const Proxe_Find = (type, auth, body, url, expiration, res) => {
+const Proxe_Find = (type, auth, xml, url, expiration, res) => {
 	// First check if this url is already in database.
 	Proxe.find({url:url})
 		.exec()
@@ -222,12 +228,12 @@ const Proxe_Find = (type, auth, body, url, expiration, res) => {
 				} else {
 					//console.log('Expired => FETCH a FRESH copy!');
 					// FETCH a FRESH copy from SOURCE and Update existing Proxe Entry
-					Proxe_HTTPS_Fetch({type:type, auth:auth, body:body, url:url, id:proxe[0]._id}, res);
+					Proxe_HTTPS_Fetch({type:type, auth:auth, xml:xml, url:url, id:proxe[0]._id}, res);
 				}
 			} else {
 				// Not cached yet => FETCH a FRESH copy from SOURCE and SAVE it as a new Entry.
 				//console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
-				Proxe_HTTPS_Fetch({type:type, auth:auth, body:body, url:url, expiration:expiration}, res);
+				Proxe_HTTPS_Fetch({type:type, auth:auth, xml:xml, url:url, expiration:expiration}, res);
 			}
 		})
 		.catch(err=>{
@@ -245,12 +251,17 @@ curl -u user:pass -s -H "Content-Type: application/xml" -d "<obj is=\"obix:Histo
 router.post('/obix', (req,res,next)=>{
 	const type = req.body.type;
 	const readkey = req.body.readkey;
-	const body = req.body.xml;
-	const url = req.body.url;
+	const xml = req.body.xml;
+	const url = req.body.obix_url;
 	const expiration = req.body.expiration_in_seconds;
-	const base64user = base64.encode(process.env.OBIX_USER);//btoa(process.env.OBIX_USER);
-	const base64pass = base64.encode(process.env.OBIX_PASS);//btoa(process.env.OBIX_PASS);
-	const auth = 'Basic '+ base64user + '' + base64pass;
+	
+	const base64string = base64.encode(process.env.OBIX_USER+':'+process.env.OBIX_PASS);//btoa(process.env.OBIX_USER);
+	//const base64pass = base64.encode(process.env.OBIX_PASS);//btoa(process.env.OBIX_PASS);
+	
+	//const base64user = base64.encode(process.env.OBIX_USER);//btoa(process.env.OBIX_USER);
+	//const base64pass = base64.encode(process.env.OBIX_PASS);//btoa(process.env.OBIX_PASS);
+	//const auth = 'Basic '+ base64user + ':' + base64pass;
+	const auth = 'Basic '+ base64string;
 	
 	//console.log(['auth=',auth]);
 	
@@ -274,7 +285,7 @@ router.post('/obix', (req,res,next)=>{
 					//console.log(['e_diffe=',e_diffe,' s_diffe=',s_diffe]);
 					if (e_diffe > 0 && s_diffe > 0) {
 						// OK
-						Proxe_Find(type, auth, body, url, expiration, res);
+						Proxe_Find(type, auth, xml, url, expiration, res);
 					} else {
 						res.status(403).json({message:'Forbidden'});
 					}
@@ -288,7 +299,7 @@ router.post('/obix', (req,res,next)=>{
 			});
 	} else {
 		//console.log('WITHOUT READKEY');
-		Proxe_Find(type, auth, body, url, expiration, res);
+		Proxe_Find(type, auth, xml, url, expiration, res);
 	}
 });
 

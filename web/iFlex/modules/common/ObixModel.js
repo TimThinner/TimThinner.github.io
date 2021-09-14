@@ -14,9 +14,7 @@ console.log();
 
 In basic HTTP authentication, a request contains a header field in the form of Authorization: Basic <credentials>, where credentials is the Base64 encoding of ID and password joined by a single colon :.
 
-Authorization: Basic Base64_encoding_of_ID:Base64_encoding_of_password
-
-const auth = 'Basic ' + btoa('user') + ':' + btoa('pass');
+const auth = 'Basic ' + btoa('user:pass');
 Authorization: auth
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -97,6 +95,7 @@ export default class ObixModel extends Model {
 		
 		const myHeaders = new Headers();
 		myHeaders.append("Content-Type", "application/json");
+		
 		// Normal user has a readkey, which was created when user registered into the system. 
 		//const url = 'https://ba.vtt.fi/TestServlet/testHistory/query/';
 		
@@ -114,24 +113,48 @@ export default class ObixModel extends Model {
 		const url = this.mongoBackend + '/proxes/obix/';
 		// 5 s interval => 12 samples in 60 seconds.
 		// One hour (60*60 seconds) takes 60 * 12 samples = 720 samples
-		let start = moment().subtract(3600, 'seconds').format();
+		
+		// "emissionFactorForElectricityConsumedInFinland/query/" once every 3 minutes => 
+		// 1 hour = 20 values = > 24 h = 24 x 20 = 480 values
+		
+		let start = moment().subtract(24*3600, 'seconds').format();
 		console.log(['start=',start]);
 		
 		// Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://ba.vtt.fi/TestServlet/testHistory/query/. 
 		// (Reason: CORS header ‘Access-Control-Allow-Origin’ missing).
+		/*
+		const reqXML = //'<?xml version="1.0" encoding="UTF-8"?>'+
+		'<obj is="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
+		'<int name="limit" val="3"/>'+
+		'<abstime name="start" val="'+start+'"/>'+
+		'<abstime name="end" null="true"/>'+
+		'</obj>';*/
 		
+		/*
 		const reqXML = '<?xml version="1.0" encoding="UTF-8"?>'+
 		'<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
 		'<int name="limit" null="true"/>'+
 		'<abstime name="start" val="'+start+'"/>'+
 		'<abstime name="end" null="true"/>'+
 		'</obj>';
+		*/
+		
+		const reqXML = //'<?xml version="1.0" encoding="UTF-8"?>'+
+		'<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
+		'<int name="limit" null="true"/>'+
+		'<abstime name="start" val="'+start+'"/>'+
+		'<abstime name="end" null="true"/>'+
+		'</obj>';
+		
+		
+		//path: '/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/',
+		//path: '/obixStore/store/Fingrid/emissionFactorOfElectricityProductionInFinland/query/',
 		
 		const data = { 
-			type: 'application/xml',
+			type: 'text/xml;charset=UTF-8',
 			readkey: my_readkey,
 			xml: reqXML,
-			url: 'Hash-key-to-cache',
+			obix_url: '/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/',
 			expiration_in_seconds: this.cache_expiration_in_seconds
 		};
 		const myPost = {

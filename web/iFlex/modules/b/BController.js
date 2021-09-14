@@ -22,7 +22,12 @@ export default class BController extends Controller {
 	}
 	
 	initialize() {
-		const BHM = new BuildingHeatingModel({name:'BuildingHeatingModel',src:'',cache_expiration_in_seconds:60,access:'PUBLIC'});
+		const BHM = new BuildingHeatingModel({
+			name:'BuildingHeatingModel',
+			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/',
+			cache_expiration_in_seconds:60,
+			access:'PUBLIC'
+		});
 		BHM.subscribe(this); // Now we will receive notifications from the UserModel.
 		this.master.modelRepo.add('BuildingHeatingModel',BHM);
 		this.models['BuildingHeatingModel'] = BHM;

@@ -28,7 +28,12 @@ export default class UserHeatingController extends Controller {
 			for example how long cache keeps the data (cache expiration in seconds) and 
 			the fetching interval (also in seconds).
 		*/
-		const UHM = new UserHeatingModel({name:'UserHeatingModel',src:'',cache_expiration_in_seconds:60,access:'PRIVATE'});
+		const UHM = new UserHeatingModel({
+			name:'UserHeatingModel',
+			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/',
+			cache_expiration_in_seconds:60,
+			access:'PRIVATE'
+		});
 		UHM.subscribe(this); // Now we will receive notifications from the UserModel.
 		this.master.modelRepo.add('UserHeatingModel',UHM);
 		this.models['UserHeatingModel'] = UHM;

@@ -57,6 +57,9 @@ export default class ObixModel extends Model {
 			this.cache_expiration_in_seconds = 60;
 		}
 		this.access = options.access; // 'PUBLIC' or 'PRIVATE'
+		// Start moment is by default 24 hours from now.
+		this.rangeValue = 24;
+		this.rangeUnit = 'hours';
 	}
 	
 	/*
@@ -117,8 +120,8 @@ export default class ObixModel extends Model {
 		// "emissionFactorForElectricityConsumedInFinland/query/" once every 3 minutes => 
 		// 1 hour = 20 values = > 24 h = 24 x 20 = 480 values
 		
-		let start = moment().subtract(24*3600, 'seconds').format();
-		console.log(['start=',start]);
+		//let start = moment().subtract(24*3600, 'seconds').format();
+		//console.log(['start=',start]);
 		
 		// Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://ba.vtt.fi/TestServlet/testHistory/query/. 
 		// (Reason: CORS header ‘Access-Control-Allow-Origin’ missing).
@@ -139,6 +142,9 @@ export default class ObixModel extends Model {
 		'</obj>';
 		*/
 		
+		const start = moment().subtract(this.rangeValue,this.rangeUnit).format();
+		const hash = this.src + this.rangeValue + this.rangeUnit;
+		
 		const reqXML = //'<?xml version="1.0" encoding="UTF-8"?>'+
 		'<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
 		'<int name="limit" null="true"/>'+
@@ -154,7 +160,8 @@ export default class ObixModel extends Model {
 			type: 'text/xml;charset=UTF-8',
 			readkey: my_readkey,
 			xml: reqXML,
-			obix_url: '/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/',
+			hash: hash,
+			obix_url: this.src,
 			expiration_in_seconds: this.cache_expiration_in_seconds
 		};
 		const myPost = {

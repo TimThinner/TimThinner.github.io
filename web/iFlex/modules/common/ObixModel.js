@@ -58,8 +58,7 @@ export default class ObixModel extends Model {
 		}
 		this.access = options.access; // 'PUBLIC' or 'PRIVATE'
 		// Start moment is by default 24 hours from now.
-		this.rangeValue = 24;
-		this.rangeUnit = 'hours';
+		this.timerange = 1;
 	}
 	
 	/*
@@ -142,8 +141,17 @@ export default class ObixModel extends Model {
 		'</obj>';
 		*/
 		
-		const start = moment().subtract(this.rangeValue,this.rangeUnit).format();
-		const hash = this.src + this.rangeValue + this.rangeUnit;
+		// Fetching values for URL+1d, URL+2d, URL+3d, ...
+		// this.timerange has the number of days to be subtracted from now.
+		
+		//let start = moment().subtract(this.rangeValue,this.rangeUnit).format();
+		
+		const start = moment().subtract(this.timerange, 'days').format();
+		// Create a hash using URL and timerange and CURRENT DATETIME IN HOUR PRECISION.
+		// This is how we can cover different responses having timestamp to help cleaning 
+		// in BACKEND.
+		const now = moment().format('YYYY-MM-DDTHH');
+		const hash = this.src + '_' + this.timerange + '_days_'+now;
 		
 		const reqXML = //'<?xml version="1.0" encoding="UTF-8"?>'+
 		'<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
@@ -151,7 +159,6 @@ export default class ObixModel extends Model {
 		'<abstime name="start" val="'+start+'"/>'+
 		'<abstime name="end" null="true"/>'+
 		'</obj>';
-		
 		
 		//path: '/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/',
 		//path: '/obixStore/store/Fingrid/emissionFactorOfElectricityProductionInFinland/query/',

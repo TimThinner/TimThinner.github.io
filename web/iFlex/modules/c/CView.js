@@ -16,6 +16,7 @@ export default class CView extends View {
 		this.rendered = false;
 		this.FELID = 'building-emissions-view-failure';
 		this.CHARTID = 'building-emissions-chart';
+		this.selected = "b1d";
 	}
 	
 	show() {
@@ -44,15 +45,123 @@ export default class CView extends View {
 		$(this.el).empty();
 	}
 	
-	// BuildingEmissionFactorForElectricityConsumedInFinlandModel
-	// BuildingEmissionFactorOfElectricityProductionInFinlandModel
-	
 	showInfo() {
 		const html = '<p class="fetching-info">Fetching interval is ' + 
 			this.controller.fetching_interval_in_seconds + 
 			' seconds. Cache expiration is ' + 
 			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].cache_expiration_in_seconds + ' seconds.</p>';
 		$('#data-fetching-info').empty().append(html);
+	}
+	
+	
+	resetButtonClass() {
+		const elems = document.getElementsByClassName("my-range-button");
+		for(let i = 0; i < elems.length; i++) {
+			$(elems[i]).removeClass("selected");
+		}
+		$('#'+this.selected).addClass("selected");
+	}
+	
+	/*
+		Timerange is set with buttons.
+		New param is an array of models 
+	*/
+	setTimerangeHandlers(models) {
+		const self = this;
+		
+		$('#'+this.selected).addClass("selected");
+		
+		$('#b1d').on('click',function() {
+			self.selected = "b1d";
+			self.resetButtonClass();
+			// Controller has all needed models + menumodel, which we ignore here.
+			Object.keys(self.controller.models).forEach(key => {
+				if (models.includes(key)) {
+					const model = self.controller.models[key];
+					console.log(['SET TIMERANGE=1 for model.name=',model.name]);
+					model.timerange = 1;
+				}
+			});
+			self.controller.refreshTimerange();
+		});
+		
+		$('#b2d').on('click',function() {
+			self.selected = "b2d";
+			self.resetButtonClass();
+			Object.keys(self.controller.models).forEach(key => {
+				if (models.includes(key)) {
+					const model = self.controller.models[key];
+					console.log(['SET TIMERANGE=2 for model.name=',model.name]);
+					model.timerange = 2;
+				}
+			});
+			self.controller.refreshTimerange();
+		});
+		
+		$('#b3d').on('click',function() {
+			self.selected = "b3d";
+			self.resetButtonClass();
+			Object.keys(self.controller.models).forEach(key => {
+				if (models.includes(key)) {
+					const model = self.controller.models[key];
+					console.log(['SET TIMERANGE=3 for model.name=',model.name]);
+					model.timerange = 3;
+				}
+			});
+			self.controller.refreshTimerange();
+		});
+		
+		$('#b4d').on('click',function() {
+			self.selected = "b4d";
+			self.resetButtonClass();
+			Object.keys(self.controller.models).forEach(key => {
+				if (models.includes(key)) {
+					const model = self.controller.models[key];
+					console.log(['SET TIMERANGE=4 for model.name=',model.name]);
+					model.timerange = 4;
+				}
+			});
+			self.controller.refreshTimerange();
+		});
+		
+		$('#b5d').on('click',function() {
+			self.selected = "b5d";
+			self.resetButtonClass();
+			Object.keys(self.controller.models).forEach(key => {
+				if (models.includes(key)) {
+					const model = self.controller.models[key];
+					console.log(['SET TIMERANGE=5 for model.name=',model.name]);
+					model.timerange = 5;
+				}
+			});
+			self.controller.refreshTimerange();
+		});
+		
+		$('#b6d').on('click',function() {
+			self.selected = "b6d";
+			self.resetButtonClass();
+			Object.keys(self.controller.models).forEach(key => {
+				if (models.includes(key)) {
+					const model = self.controller.models[key];
+					console.log(['SET TIMERANGE=6 for model.name=',model.name]);
+					model.timerange = 6;
+				}
+			});
+			self.controller.refreshTimerange();
+		});
+		
+		$('#b7d').on('click',function() {
+			self.selected = "b7d";
+			self.resetButtonClass();
+			Object.keys(self.controller.models).forEach(key => {
+				if (models.includes(key)) {
+					const model = self.controller.models[key];
+					console.log(['SET TIMERANGE=7 for model.name=',model.name]);
+					model.timerange = 7;
+				}
+			});
+			self.controller.refreshTimerange();
+		});
 	}
 	
 	notify(options) {
@@ -68,8 +177,7 @@ export default class CView extends View {
 				this.render();
 				
 			} else if (options.model==='BuildingEmissionFactorForElectricityConsumedInFinlandModel' && options.method==='fetched') {
-				//console.log('NOTIFY BuildingEmissionFactorForElectricityConsumedInFinlandModel fetched!');
-				//console.log(['options.status=',options.status]);
+				
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
@@ -79,8 +187,6 @@ export default class CView extends View {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								if (s.name === 'Consumption') {
 									s.data = self.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
-								} else {
-									//s.data = self.models['BuildingEmissionFactorOfElectricityProductionInFinlandModel'].values;
 								}
 							});
 						} else {
@@ -102,13 +208,12 @@ export default class CView extends View {
 							//$('#'+this.CHARTID).empty();
 						}
 					}
-				} else {
-					console.log('WTF?! rendered is NOT true BUT Model is FETCHED NOW... CView RENDER?!?!');
+				} else { // This should never be the case, but render anyway if we get here.
+					this.render();
 				}
+				
 			} else if (options.model==='BuildingEmissionFactorOfElectricityProductionInFinlandModel' && options.method==='fetched') {
 				
-				//console.log('NOTIFY BuildingEmissionFactorOfElectricityProductionInFinlandModel fetched!');
-				//console.log(['options.status=',options.status]);
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
@@ -116,9 +221,7 @@ export default class CView extends View {
 						if (typeof this.chart !== 'undefined') {
 							//console.log('fetched ..... CView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'Consumption') {
-									//s.data = self.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
-								} else {
+								if (s.name === 'Production') {
 									s.data = self.models['BuildingEmissionFactorOfElectricityProductionInFinlandModel'].values;
 								}
 							});
@@ -141,6 +244,8 @@ export default class CView extends View {
 							//$('#'+this.CHARTID).empty();
 						}
 					}
+				} else { // This should never be the case, but render anyway if we get here.
+					this.render();
 				}
 			}
 		}
@@ -229,11 +334,23 @@ export default class CView extends View {
 				'<div class="col s12 center">'+
 					'<h4>Building CO<sub>2</sub> emissions</h4>'+
 					'<p style="text-align:center;"><img src="./svg/leaf.svg" height="80"/></p>'+
+					'<p style="text-align:center;">This chart displays <b>EMISSION FACTORS</b> for electricity consumed and produced in Finland</p>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					//'<p style="color:#aaa;margin-top:-16px;padding:0;">'+localized_string_daw_sel_timerange+'</p>'+
+					'<a href="javascript:void(0);" id="b1d" class="my-range-button" style="float:right;">1d</a>'+
+					'<a href="javascript:void(0);" id="b2d" class="my-range-button" style="float:right;">2d</a>'+
+					'<a href="javascript:void(0);" id="b3d" class="my-range-button" style="float:right;">3d</a>'+
+					'<a href="javascript:void(0);" id="b4d" class="my-range-button" style="float:right;">4d</a>'+
+					'<a href="javascript:void(0);" id="b5d" class="my-range-button" style="float:right;">5d</a>'+
+					'<a href="javascript:void(0);" id="b6d" class="my-range-button" style="float:right;">6d</a>'+
+					'<a href="javascript:void(0);" id="b7d" class="my-range-button" style="float:right;">7d</a>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					//'<div id="data-error-info"></div>'+
 					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
 					'<div id="data-fetching-info"></div>'+
 				'</div>'+
@@ -248,6 +365,8 @@ export default class CView extends View {
 			'</div>';
 		$(html).appendTo(this.el);
 		
+		this.setTimerangeHandlers(['BuildingEmissionFactorForElectricityConsumedInFinlandModel','BuildingEmissionFactorOfElectricityProductionInFinlandModel']);
+		
 		$("#back").on('click', function() {
 			self.models['MenuModel'].setSelected('menu');
 		});
@@ -255,7 +374,7 @@ export default class CView extends View {
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
-			console.log('CView => render models READY!!!!');
+			//console.log('CView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html = '<div class="error-message"><p>'+errorMessages+'</p></div>';
@@ -267,7 +386,7 @@ export default class CView extends View {
 				this.renderChart();
 			}
 		} else {
-			console.log('CView => render models ARE NOT READY!!!!');
+			//console.log('CView => render models ARE NOT READY!!!!');
 			this.showSpinner('#'+this.CHARTID);
 		}
 	}

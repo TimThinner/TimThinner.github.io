@@ -186,6 +186,7 @@ const Proxe_Clean = (hash) => {
 				} else {
 					const upd = doc.updated; // Date object
 					const exp_ms = 3*3600*1000; // Cleaning time in milliseconds (3 hours).
+					//const exp_ms = 60*1000; // Cleaning time in milliseconds (60 seconds).
 					const now = new Date();
 					const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
 					if (elapsed > exp_ms) {
@@ -230,7 +231,7 @@ const Proxe_Find = (type, auth, xml, hash, url, expiration, res) => {
 				}
 			} else {
 				// Not cached yet => FETCH a FRESH copy from SOURCE and SAVE it as a new Entry.
-				console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
+				console.log(['Not cached yet => FETCH a FRESH copy! hash=',hash]);
 				Proxe_HTTPS_Fetch({type:type, auth:auth, xml:xml, hash:hash, url:url, expiration:expiration}, res);
 			}
 		})
@@ -254,12 +255,8 @@ router.post('/obix', (req,res,next)=>{
 	const url = req.body.obix_url;
 	const expiration = req.body.expiration_in_seconds;
 	
-	const base64string = base64.encode(process.env.OBIX_USER+':'+process.env.OBIX_PASS);//btoa(process.env.OBIX_USER);
-	//const base64pass = base64.encode(process.env.OBIX_PASS);//btoa(process.env.OBIX_PASS);
-	
-	//const base64user = base64.encode(process.env.OBIX_USER);//btoa(process.env.OBIX_USER);
-	//const base64pass = base64.encode(process.env.OBIX_PASS);//btoa(process.env.OBIX_PASS);
-	//const auth = 'Basic '+ base64user + ':' + base64pass;
+	// base64.encode() is in Browser btoa()
+	const base64string = base64.encode(process.env.OBIX_USER+':'+process.env.OBIX_PASS);
 	const auth = 'Basic '+ base64string;
 	
 	//console.log(['auth=',auth]);

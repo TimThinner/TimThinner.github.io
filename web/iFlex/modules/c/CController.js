@@ -66,6 +66,12 @@ export default class CController extends Controller {
 		*/
 	}
 	
+	refreshTimerange() {
+		const timerName = 'CView';
+		this.restartPollingInterval(timerName);
+	}
+	
+	
 	clean() {
 		console.log('CController is now REALLY cleaned!');
 		this.remove();

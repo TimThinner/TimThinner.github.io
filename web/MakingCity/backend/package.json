@@ -15,17 +15,17 @@
   "author": "Timo Kinnunen",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.0.0",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "csv-parser": "^3.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.8",
+    "mongoose": "^5.13.9",
     "morgan": "^1.9.1",
-    "read-excel-file": "^5.2.8",
+    "read-excel-file": "^5.2.10",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.12"
   }
 }

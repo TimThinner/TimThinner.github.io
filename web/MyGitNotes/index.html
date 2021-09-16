@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<!--Import Google Material Icons Font-->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import Materialize Styles-->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		<!--Import Google Open Sans Font-->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+		<!--Import My Styles-->
+		<link rel="stylesheet" href="styles.css">
+		<title>My Git Notes</title>
+	</head>
+	<body>
+		<section class="container">
+			<div class="row">
+				<div class="col s12">
+					<h2 style="text-align:center;">My git notes</h2>
+					
+					
+					<div class="row"><div class="col s12 step-content">
+					<h2><img src="git-logo.svg" height="52" />&nbsp;BASICS</h2>
+					<h5>A: Starting a new project</h5>
+					<ol>
+						<li class="command">mkdir my-new-working-directory</li>
+						<li class="command">cd my-new-working-directory</li>
+						<li class="command">git init</li>
+					</ol>
+					<h5>B: Cloning an existing project</h5>
+					<p class="grey-note">Navigate to directory, where you want the cloned files to be copied. Remember that <b>git clone</b> will automatically create a new working directory named after the repository on the server by default.</p>
+					<ol>
+						<li class="command">git clone https://address.of.repo/git-project-to-copy.git</li>
+					</ol>
+					<p>&nbsp;</p>
+					<h5>Now that we have a project started, typical workflow would be like this:</h5>
+					<p class="grey-note">Modify files at your local working directories.</p>
+					<h5>Adding (changed) files to Git</h5>
+					<ol>
+						<li class="command">git add --all</li>
+					</ol>
+					<p class="grey-note">This added modified files to so-called staging area.</p>
+					<h5>Check the status</h5>
+					<p class="grey-note">This is OPTIONAL, but it is nice to see what are the files to be committed.</p>
+					<ol>
+						<li class="command">git status</li>
+					</ol>
+					
+					<h5>Commit changes to local repository</h5>
+					<ol>
+						<li class="command">git commit -m "Your comments about this commit."</li>
+					</ol>
+					<h5>Push changes to GitHub</h5>
+					<ol>
+						<li class="command">git push origin master OR</li>
+						<li class="command">git push origin main</li>
+					</ol>
+					
+					</div></div>
+					
+					<p>&nbsp;</p>
+					
+					
+					
+					<div class="row"><div class="col s12 step-content">
+					<h2><img src="git-logo.svg" height="52" />&nbsp;BRANCHES</h2>
+					<h5>View all branches</h5>
+					<ol>
+						<li class="command">git branch</li>
+					</ol>
+					<p class="response">* master</p>
+					<img class="responsive-img" src="branches-master.png" />
+					
+					
+					
+					
+					<p class="grey-note">Here there's only one branch - master - and the asterisk tells us it's the current one.</p>
+					
+					<h5>Starting a new branch</h5>
+					<ol>
+						<li class="command">git branch new-homepage</li>
+						<li class="command">git checkout new-homepage</li>
+					</ol>
+					OR with just one command:
+					<ol>
+						<li class="command">git checkout -b new-homepage</li>
+					</ol>
+					<img class="responsive-img" src="branches-master-new-homepage.png" />
+					<p class="grey-note">In the absence of new commits, these two branches are literally identical.</p>
+					
+					</div></div>
+					
+					<p>&nbsp;</p>
+					
+				</div>
+			</div>
+		</section>
+		<section class="container">
+			<div class="row">
+				<div class="col s12 center">
+					<a href="../index.html#MyGitNotes" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>
+				</div>
+			</div>
+		</section>
+		<!--
+		<script
+			src="https://code.jquery.com/jquery-3.4.1.min.js"
+			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			crossorigin="anonymous"></script>
+		-->
+		<!--
+		<script
+			src="https://code.jquery.com/jquery-2.2.4.min.js"
+			integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+			crossorigin="anonymous"></script>-->
+		<!-- Compiled and minified JavaScript -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<!--<script src="moment.js"></script>-->
+		<!-- Resources -->
+		<!--<script src="https://www.amcharts.com/lib/4/core.js"></script>
+		<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+		<script src="https://www.amcharts.com/lib/4/themes/dark.js"></script>
+		<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+		<script type="module" src="MasterController.js"></script>-->
+	</body>
+</html>

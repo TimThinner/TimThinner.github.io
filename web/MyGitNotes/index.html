@@ -79,13 +79,13 @@
 					<span class="command">git checkout master</span><br/>
 					<span class="command">git merge update-contact-info</span><br/>
 					<span class="response">Updating 286af1c...885e3ff<br/>Fast-forward</span></p>
-					<p>Three different cases of merge can be identified</p>
+					<p class="grey-note">Three different cases of merge can be identified:</p>
 					<ol>
 						<li>fast forward</li>
 						<li>merge commit</li>
 						<li>merge conflict</li>
 					</ol>
-					<p>The first two cases are handled automatically by Git. Only third needs your input, you must select correct line within conflicting file (and remove all angle bracket conflict markers) using text editor. After that add conflicted file to staging area (<span class="command">git add</span>) and finally do the commit (<span class="command">git commit</span>)</p>
+					<p class="grey-note">The first two cases are handled automatically by Git. Only third needs your input, you must select correct line within conflicting file (and remove all angle bracket conflict markers) using text editor. After that add conflicted file to staging area (<span class="command">git add</span>) and finally do the commit (<span class="command">git commit</span>).</p>
 					</div></div>
 					
 					
@@ -94,10 +94,23 @@
 					
 					<div class="row"><div class="col s12 step-content">
 					<h2><img src="git-logo.svg" height="52" />&nbsp;REMOTES</h2>
-					<p class="grey-note">If you initialize a new (empty) project at GitHub and then clone it to your computer, it is called origin by default.</p>
+					<p class="grey-note">If you initialize a new (empty) project at GitHub and then clone it to your computer, remote is called origin by default.</p>
 					<p class="grey-note"><span class="command">git push origin master</span><br/>
-					<span class="command">git pull origin master</span><br/></p>
+					<span class="command">git pull origin master</span></p>
 					<p class="important-note">If there are other people working with same project pushing changes to code, always pull before you push to make sure your own local copy is up to date. Otherwise you can get push rejection, which has to be fixed with pull request anyway.</p>
+					
+					<p class="grey-note">To see what remotes are defined:</p>
+					<p class="command">git remote<br/>
+					<span class="response">origin</span></p>
+					
+					<p class="grey-note">You can also specify -v, which shows you the URLs that Git has stored for the shortname to be used when reading and writing to that remote:</p>
+					<p class="command">git remote -v</p>
+					<p class="response">origin  https://github.com/TimThinner/TimThinner.github.io (fetch)<br/>
+					origin  https://github.com/TimThinner/TimThinner.github.io (push)</p>
+					<p class="grey-note">If you have more than one remote, the command lists them all.</p>
+					
+					<p class="grey-note">To add a new remote Git repository as a shortname you can reference easily, run <span class="command">git remote add &lt;shortname&gt; &lt;url&gt;</span></p>
+					
 					</div></div>
 					
 					
@@ -106,6 +119,7 @@
 					
 					<div class="row"><div class="col s12 step-content">
 					<h2><img src="git-logo.svg" height="52" />&nbsp;HISTORY</h2>
+					
 					
 					
 					

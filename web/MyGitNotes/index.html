@@ -20,9 +20,9 @@
 				<div class="col s12">
 					<h2><a href="../index.html#MyGitNotes" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>BACK</a>&nbsp;My git notes</h2>
 					
-					
 					<div class="row"><div class="col s12 step-content">
 					<h2><img src="git-logo.svg" height="52" />&nbsp;BASICS</h2>
+					
 					<h5>A: Starting a new project</h5>
 					<p>
 						<span class="command">mkdir my-new-working-directory</span><br/>
@@ -34,9 +34,9 @@
 					<p class="grey-note">Navigate to directory, where you want the cloned files to be copied. Remember that <span class="command">git clone</span> will automatically create a new working directory named after the repository on the server by default.</p>
 					<p><span class="command">git clone https://address.of.repo/git-project-to-copy.git</span></p>
 					<p>&nbsp;</p>
+					
 					<h5>Now that we have a project started, typical workflow would be like this:</h5>
 					<p class="grey-note">Modify files at your local working directories.</p>
-					
 					<h5>Adding (changed) files to Git</h5>
 					<p><span class="command">git add --all</span></p>
 					<p class="grey-note">This added modified files to so-called staging area.</p>
@@ -53,7 +53,9 @@
 					<p class="grey-note">Nowadays the default master branch is named main.</p>
 					</div></div>
 					
+					
 					<p>&nbsp;</p>
+					
 					
 					<div class="row"><div class="col s12 step-content">
 					<h2><img src="git-logo.svg" height="52" />&nbsp;BRANCHES</h2>
@@ -67,10 +69,6 @@
 					<h5>Starting a new branch</h5>
 					<p class="grey-note">Create new branch:<br/><span class="command">git branch new-homepage</span><br/>
 					and switch that as a current branch you work with:<br/><span class="command">git checkout new-homepage</span></p>
-					<!--OR with just one command:
-					<ol>
-						<li class="command">git checkout -b new-homepage</li>
-					</ol>-->
 					<img class="responsive-img" src="branches-master-new-homepage.png" />
 					<p class="grey-note">In the absence of new commits, these two branches are literally identical.<br/>
 					Now the <span class="command">git branch</span> command would return:<br/>
@@ -90,14 +88,29 @@
 					<p>The first two cases are handled automatically by Git. Only third needs your input, you must select correct line within conflicting file (and remove all angle bracket conflict markers) using text editor. After that add conflicted file to staging area (<span class="command">git add</span>) and finally do the commit (<span class="command">git commit</span>)</p>
 					</div></div>
 					
+					
+					<p>&nbsp;</p>
+					
+					
 					<div class="row"><div class="col s12 step-content">
 					<h2><img src="git-logo.svg" height="52" />&nbsp;REMOTES</h2>
+					<p class="grey-note">If you initialize a new (empty) project at GitHub and then clone it to your computer, it is called origin by default.</p>
+					<p class="grey-note"><span class="command">git push origin master</span><br/>
+					<span class="command">git pull origin master</span><br/></p>
+					<p class="important-note">If there are other people working with same project pushing changes to code, always pull before you push to make sure your own local copy is up to date. Otherwise you can get push rejection, which has to be fixed with pull request anyway.</p>
 					</div></div>
+					
+					
+					<p>&nbsp;</p>
+					
 					
 					<div class="row"><div class="col s12 step-content">
 					<h2><img src="git-logo.svg" height="52" />&nbsp;HISTORY</h2>
-					</div></div>
 					
+					
+					
+					
+					</div></div>
 					
 					<p>&nbsp;</p>
 					

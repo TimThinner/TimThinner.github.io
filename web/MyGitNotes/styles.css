@@ -170,6 +170,12 @@ html, body {
 .grey-note {
 	color: #aaa;
 }
+.important-note {
+	color: #ff0;
+	background-color: rgba(240,81,51,0.1);
+	border: 2px solid #f05133;
+	padding: 16px;
+}
 .step-content {
 	background-color: #3a3a3a;
 	border: 1px solid #888; 

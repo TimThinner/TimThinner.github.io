@@ -79,7 +79,7 @@ export default class CView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=1 for model.name=',model.name]);
-					model.timerange = 1;
+					model.timerange = { begin: 1, end: 0 };
 				}
 			});
 			self.controller.refreshTimerange();
@@ -92,7 +92,7 @@ export default class CView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=2 for model.name=',model.name]);
-					model.timerange = 2;
+					model.timerange = { begin: 2, end: 0 };
 				}
 			});
 			self.controller.refreshTimerange();
@@ -105,7 +105,7 @@ export default class CView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=3 for model.name=',model.name]);
-					model.timerange = 3;
+					model.timerange = { begin: 3, end: 0 };
 				}
 			});
 			self.controller.refreshTimerange();
@@ -118,7 +118,7 @@ export default class CView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=4 for model.name=',model.name]);
-					model.timerange = 4;
+					model.timerange = { begin: 4, end: 0 };
 				}
 			});
 			self.controller.refreshTimerange();
@@ -131,7 +131,7 @@ export default class CView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=5 for model.name=',model.name]);
-					model.timerange = 5;
+					model.timerange = { begin: 5, end: 0 };
 				}
 			});
 			self.controller.refreshTimerange();
@@ -144,7 +144,7 @@ export default class CView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=6 for model.name=',model.name]);
-					model.timerange = 6;
+					model.timerange = { begin: 6, end: 0 };
 				}
 			});
 			self.controller.refreshTimerange();
@@ -157,7 +157,7 @@ export default class CView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=7 for model.name=',model.name]);
-					model.timerange = 7;
+					model.timerange = { begin: 7, end: 0 };
 				}
 			});
 			self.controller.refreshTimerange();

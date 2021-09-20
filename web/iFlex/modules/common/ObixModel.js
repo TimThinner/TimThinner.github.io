@@ -58,7 +58,7 @@ export default class ObixModel extends Model {
 		}
 		this.access = options.access; // 'PUBLIC' or 'PRIVATE'
 		// Start moment is by default 24 hours from now.
-		this.timerange = 1;
+		this.timerange = { begin: 1, end: 0 };
 	}
 	
 	/*
@@ -146,18 +146,33 @@ export default class ObixModel extends Model {
 		
 		//let start = moment().subtract(this.rangeValue,this.rangeUnit).format();
 		
-		const start = moment().subtract(this.timerange, 'days').format();
+		
+		// Testing 
+		//curl -u 'timokinnunen':'tuaxiMun0wx6ff!sBaq' -s -H "Content-Type: text/xml;charset=UTF-8" -d "<obj is=\"obix:HistoryFilter\" xmlns=\"http://obix.org/ns/schema/1.0\"><int name=\"limit\" val=\"20\" /><abstime name=\"start\" val=\"2021-09-03T09:51:15.062Z\"/><abstime name=\"end\" val=\"2021-09-05T09:51:15.062Z\"/></obj>" https://ba.vtt.fi/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/
+		
+
+		//curl -u 'timokinnunen':'tuaxiMun0wx6ff!sBaq' -s -H "Content-Type: text/xml;charset=UTF-8" -d "<obj is=\"obix:HistoryFilter\" xmlns=\"http://obix.org/ns/schema/1.0\"><int name=\"limit\" val=\"20\" /><abstime name=\"start\" val=\"2021-09-03T09:51:15.062Z\"/><abstime name=\"end\" val=\"2021-09-05T09:51:15.062Z\"/></obj>" https://ba.vtt.fi/obixStore/store/NuukaOpenData/1752%20Malmitalo/Electricity/
+		
+
+
+		
+		
+		
+		const start = moment().subtract(this.timerange.begin, 'days').format();
+		const end = moment().subtract(this.timerange.end, 'days').format();
+		
 		// Create a hash using URL and timerange and CURRENT DATETIME IN HOUR PRECISION.
 		// This is how we can cover different responses having timestamp to help cleaning 
 		// in BACKEND.
 		const now = moment().format('YYYY-MM-DDTHH');
-		const hash = this.src + '_' + this.timerange + '_days_'+now;
+		const hash = this.src + '_' + this.timerange.begin + '_days_'+now;
 		
 		const reqXML = //'<?xml version="1.0" encoding="UTF-8"?>'+
 		'<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
 		'<int name="limit" null="true"/>'+
 		'<abstime name="start" val="'+start+'"/>'+
-		'<abstime name="end" null="true"/>'+
+		'<abstime name="end" val="'+end+'"/>'+
+		//'<abstime name="end" null="true"/>'+
 		'</obj>';
 		
 		//path: '/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/',

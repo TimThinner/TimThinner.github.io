@@ -39,14 +39,19 @@
 					<p class="grey-note">Modify files at your local working directories.</p>
 					<h5>Adding (changed) files to Git</h5>
 					<p><span class="command">git add --all</span></p>
-					<p class="grey-note">This added modified files to so-called staging area.</p>
+					<p class="grey-note">This added modified files to so-called staging area (also called index).</p>
 					
 					<h5>Check the status</h5>
 					<p class="grey-note">This is OPTIONAL, but it is nice to see what are the files to be committed.</p>
 					<p><span class="command">git status</span></p>
 					
+					<p>NOTE ABOUT RESET: <span class="grey-note">If you realize now after checking staging area status that this was not what you wanted to commit after all, don't worry, you can reset the staging area with git reset command:</span></p>
+					<p><span class="command">git reset</span></p>
+					
 					<h5>Commit changes to local repository</h5>
 					<p><span class="command">git commit -m "Your comments about this commit."</span></p>
+					
+					<p>NOTE ABOUT RESET: <span class="grey-note">If you want to undo the last commit but preserve the changes done to the files, use:</span><br/><span class="command">git reset --soft HEAD~1</span><br/><span class="grey-note">With --hard option you will lose all changes done to files, so be careful.</span></p>
 					
 					<h5>Push changes to GitHub</h5>
 					<p><span class="command">git push origin master</span></p>
@@ -85,7 +90,7 @@
 						<li>merge commit</li>
 						<li>merge conflict</li>
 					</ol>
-					<p class="grey-note">The first two cases are handled automatically by Git. Only third needs your input, you must select correct line within conflicting file (and remove all angle bracket conflict markers) using text editor. After that add conflicted file to staging area (<span class="command">git add</span>) and finally do the commit (<span class="command">git commit</span>).</p>
+					<p class="grey-note">The first two cases are handled automatically by Git. Only third needs your input, you must select correct line within conflicting file (and remove all angle bracket conflict markers) using text editor. After that add conflicted file to staging area (<span class="command">git add</span>) and finally do the commit (<span class="command">git commit</span>) and push (<span class="command">git push</span>).</p>
 					</div></div>
 					
 					
@@ -113,24 +118,9 @@
 					
 					</div></div>
 					
-					
-					<p>&nbsp;</p>
-					
-					
-					<div class="row"><div class="col s12 step-content">
-					<h2><img src="git-logo.svg" height="52" />&nbsp;HISTORY</h2>
-					
-					<p>&nbsp;</p>
-					<p class="grey-note">Coming soon.</p>
-					<p>&nbsp;</p>
-					
-					</div></div>
-					
-					<p>&nbsp;</p>
 					<p>&nbsp;</p>
 					<h5>Want to learn more?</h5>
 					<h5><a href="https://git-scm.com/" target="_blank">Click here to read more about Git</a></h5>
-					<p>&nbsp;</p>
 					<p>&nbsp;</p>
 				</div>
 			</div>

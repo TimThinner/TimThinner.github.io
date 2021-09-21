@@ -32,10 +32,9 @@ export default class BController extends Controller {
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
 			src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/query/',
 			cache_expiration_in_seconds:60,
+			timerange: { begin: 20, end: 15 },
 			access:'PUBLIC'
 		});
-		// Set data reading to start at the date 20 days from now and end at date 18 days from now!
-		BHM.timerange = { begin: 20, end: 18 };
 		
 		BHM.subscribe(this); // Now we will receive notifications from the UserModel.
 		this.master.modelRepo.add('BuildingHeatingModel',BHM);

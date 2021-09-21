@@ -147,7 +147,8 @@ export default class BView extends View {
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series);
 			
-			dateAxis.start = 0.8;
+			dateAxis.start = 0.0;
+			dateAxis.end = 1.0;
 			dateAxis.keepSelection = true;
 			
 		}); // end am4core.ready()

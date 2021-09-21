@@ -28,6 +28,7 @@ export default class CController extends Controller {
 			name:'BuildingEmissionFactorForElectricityConsumedInFinlandModel',
 			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/',
 			cache_expiration_in_seconds:120,
+			timerange: { begin: 1, end: 0 },
 			access:'PUBLIC'
 		});
 		BEFFECIFM.subscribe(this); // Now we will receive notifications from the UserModel.
@@ -38,6 +39,7 @@ export default class CController extends Controller {
 			name:'BuildingEmissionFactorOfElectricityProductionInFinlandModel',
 			src:'/obixStore/store/Fingrid/emissionFactorOfElectricityProductionInFinland/query/',
 			cache_expiration_in_seconds:120,
+			timerange: { begin: 1, end: 0 },
 			access:'PUBLIC'
 		});
 		BEFOEPIFM.subscribe(this); // Now we will receive notifications from the UserModel.

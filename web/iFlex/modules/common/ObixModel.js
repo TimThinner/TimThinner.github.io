@@ -56,9 +56,12 @@ export default class ObixModel extends Model {
 		} else {
 			this.cache_expiration_in_seconds = 60;
 		}
+		if (typeof options.timerange !== 'undefined') {
+			this.timerange = options.timerange;
+		} else {
+			this.timerange = {begin:1,end:0};
+		}
 		this.access = options.access; // 'PUBLIC' or 'PRIVATE'
-		// Start moment is by default 24 hours from now.
-		this.timerange = { begin: 1, end: 0 };
 	}
 	
 	/*
@@ -165,7 +168,7 @@ export default class ObixModel extends Model {
 		// This is how we can cover different responses having timestamp to help cleaning 
 		// in BACKEND.
 		const now = moment().format('YYYY-MM-DDTHH');
-		const hash = this.src + '_' + this.timerange.begin + '_days_'+now;
+		const hash = this.src + '_from_' + this.timerange.begin + '_to_' + this.timerange.end + '_days_' + now;
 		
 		const reqXML = //'<?xml version="1.0" encoding="UTF-8"?>'+
 		'<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+

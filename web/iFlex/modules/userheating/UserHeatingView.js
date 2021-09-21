@@ -160,10 +160,8 @@ export default class UserHeatingView extends View {
 			
 			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
 			dateAxis.baseInterval = {
-				//"timeUnit": "minute",
-				//"count": 1
-				"timeUnit": "second",
-				"count": 5
+				"timeUnit": "minute",
+				"count": 3
 			};
 			dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
 			
@@ -182,7 +180,8 @@ export default class UserHeatingView extends View {
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series);
 			
-			dateAxis.start = 0.8;
+			dateAxis.start = 0.0;
+			dateAxis.end = 1.0;
 			dateAxis.keepSelection = true;
 			
 		}); // end am4core.ready()

@@ -1,4 +1,4 @@
-import View from '../common/View.js';
+import UserView from './UserView.js';
 import Validator from '../common/Validator.js';
 /*
 	If not logged in:
@@ -13,39 +13,19 @@ import Validator from '../common/Validator.js';
 	If logged in => Account info + logout
 		Account INFO
 		CANCEL-button AND LOGOUT-button
+		
 */
-export default class UserSignupApaView extends View {
+export default class UserSignupApaView extends UserView {
 	
 	constructor(controller) {
 		super(controller);
-		
-		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UserModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
-		});
-		this.rendered = false;
 		this.FELID = 'signup-failed';
 		this.apartment = 'NONE';
 	}
 	
-	show() {
-		this.render();
-	}
-	
 	hide() {
-		this.rendered = false;
+		super.hide();
 		this.apartment = 'NONE';
-		$(this.el).empty();
-	}
-	
-	remove() {
-		Object.keys(this.models).forEach(key => {
-			this.models[key].unsubscribe(this);
-		});
-		this.rendered = false;
-		$(this.el).empty();
 	}
 	
 	// Generate a "random" Registration code (this is the same method as in RegCodeCreateView.js).
@@ -54,8 +34,6 @@ export default class UserSignupApaView extends View {
 		for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
 		return result;
 	}
-	
-	
 	
 	signupWithRegcode(opt) {
 		const _email = $('#signup-email').val();
@@ -262,6 +240,9 @@ export default class UserSignupApaView extends View {
 						'<p class="note">You can also have sensors to measure temperature and humidity in your apartment. This data is shown only to you. Due to limited number of sensors in this PILOT, be quick and check the checkbox below.</p>'+
 						'<p><label><input type="checkbox" class="filled-in" id="request-for-sensors" /><span>Yes, I want sensors.</span></label></p>'+
 					'</div>'+
+					'<div class="input-field col s12">'+
+						'<p><label><input type="checkbox" class="filled-in" id="consent-gdpr" /><span>I have read the <a href="javascript:void(0);" id="gdpr-text">GDPR statement</a> and give my consent.</span></label></p>'+
+					'</div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -283,6 +264,22 @@ export default class UserSignupApaView extends View {
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
+		
+		$("#consent-gdpr").change(function() {
+			 if (this.checked) {
+				$("#signup-submit").prop("disabled", false);
+			} else {
+				$("#signup-submit").prop("disabled", true);
+			}
+		});
+		if ($('#consent-gdpr').is(':checked')) {
+			$("#signup-submit").prop("disabled", false);
+		} else {
+			$("#signup-submit").prop("disabled", true);
+		}
+		$("#gdpr-text").on('click', function() {
+			self.controller.models['MenuModel'].setSelected('userGDPR');
+		});
 		
 		// Attach all event-handlers:
 		$('#signup-email').on('keyup', function(){

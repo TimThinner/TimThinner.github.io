@@ -44,13 +44,6 @@ export default class UserPropsView extends View {
 	
 	updateLatestValues() {
 		console.log('UPDATE UserProps  !!!!!!!');
-		
-		let s = '';
-		
-		//this.models['UserPropsModel'].bindings.forEach(b=>{
-		//	s += 'apartmentId='+b.apartmentId+' readkey='+b.readkey+'<br/>';
-		//});
-		$('#bindings-response-wrapper').empty().append(s);
 	}
 	
 	notify(options) {
@@ -103,7 +96,6 @@ export default class UserPropsView extends View {
 			const localized_string_description = 'You can change your password.';//LM['translation'][sel]['USER_PROPS_DESCRIPTION'];
 			
 			let buttons_html = '';
-			//let bindings_html = ''; // Just to debug what does the bindings REST-API call return. Only in superuser mode!
 			if (UM.is_superuser) {
 				buttons_html = 
 					'<div class="row">'+
@@ -128,14 +120,6 @@ export default class UserPropsView extends View {
 							'</div>'+
 						'</div>'+
 					'</div>';
-				/*bindings_html = 
-					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<h5>Bindings</h5>'+
-							'<p id="bindings-response-wrapper"></p>'+
-						'</div>'+
-					'</div>';*/
-				
 			} else {
 				buttons_html = 
 					'<div class="row">'+
@@ -156,7 +140,7 @@ export default class UserPropsView extends View {
 						'<button class="btn waves-effect waves-light" id="changepsw">Change password</button>'+
 						'<p>&nbsp;</p>'+
 					'</div>'+
-				'</div>'+ buttons_html + //bindings_html +
+				'</div>'+ buttons_html +
 				'<div class="row">'+
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 				'</div>';
@@ -180,7 +164,7 @@ export default class UserPropsView extends View {
 			});
 			
 			this.handleErrorMessages(this.FELID);
-			this.updateLatestValues(); // Try if bindings array has already values
+			//this.updateLatestValues();
 			
 			this.rendered = true;
 			

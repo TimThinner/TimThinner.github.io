@@ -7,13 +7,13 @@ import FeedbackModel from './modules/common/FeedbackModel.js';
 import MenuController from './modules/menu/MenuController.js';
 import UserLoginController from './modules/user/UserLoginController.js';
 import UserSignupController from './modules/user/UserSignupController.js';
+import UserGDPRController from './modules/user/UserGDPRController.js';
 
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';
 import UserChangePswController from './modules/userprops/UserChangePswController.js';
 import UserHeatingController from './modules/userheating/UserHeatingController.js';
 import UserFeedbackController from './modules/userfeedback/UserFeedbackController.js';
-
 
 import AController from './modules/a/AController.js';
 import BController from './modules/b/BController.js';
@@ -93,6 +93,9 @@ class MasterController {
 		this.controllers['userlogin'].init();
 		this.controllers['usersignup'] = new UserSignupController({name:'usersignup', master:this, el:'#content', visible:false});
 		this.controllers['usersignup'].init();
+		this.controllers['userGDPR'] = new UserGDPRController({name:'userGDPR', master:this, el:'#content', visible:false});
+		this.controllers['userGDPR'].init();
+		
 		
 		this.controllers['USERPAGE'] = new UserPageController({name:'USERPAGE', master:this, el:'#content', visible:false});
 		this.controllers['USERPAGE'].init();

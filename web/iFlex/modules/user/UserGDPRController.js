@@ -1,7 +1,7 @@
 import Controller from '../common/Controller.js';
-import UserChangePswView from './UserChangePswView.js';
+import UserGDPRView from './UserGDPRView.js';
 
-export default class UserChangePswController extends Controller {
+export default class UserGDPRController extends Controller {
 	
 	constructor(options) {
 		super(options);
@@ -12,18 +12,9 @@ export default class UserChangePswController extends Controller {
 		this.models = {};
 	}
 	
-	initialize() {
+	init() {
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
-		this.view = new UserChangePswView(this);
-	}
-	
-	clean() {
-		this.remove();
-		this.initialize();
-	}
-	
-	init() {
-		this.initialize();
+		this.view = new UserGDPRView(this);
 	}
 }

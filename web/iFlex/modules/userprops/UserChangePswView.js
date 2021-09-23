@@ -48,7 +48,7 @@ export default class UserChangePswView extends View {
 				
 			} else {
 				var html = '<div class="error-message"><p>'+options.message+'</p></div>';
-				$(html).appendTo('#'+this.FELID);
+				$('#'+this.FELID).empty().append(html);
 				// Force LOGOUT if Auth failed!
 				/*if (options.status === 401) {
 					setTimeout(() => {
@@ -62,36 +62,45 @@ export default class UserChangePswView extends View {
 	
 	render() {
 		var self = this;
-		
 		$(this.el).empty();
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		
+		const localized_string_change_password_title = LM['translation'][sel]['USER_CHANGE_PASSWORD_TITLE'];
+		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_old_password = LM['translation'][sel]['USER_OLD_PASSWORD'];
+		const localized_string_new_password = LM['translation'][sel]['USER_NEW_PASSWORD'];
+		const localized_string_cancel = LM['translation'][sel]['CANCEL'];
+		const localized_string_save = LM['translation'][sel]['SAVE'];
 		
 		let html_email_field = '';
 		if (this.userModel.is_superuser===true) {
 			html_email_field =
 				'<div class="input-field col s12">'+
 					'<input id="super-email" type="email" class="validate" required="" aria-required="true" />'+
-					'<label for="super-email" class="active">Email</label>'+
+					'<label for="super-email" class="active">'+localized_string_user_email+'</label>'+
 				'</div>';
 		}
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12">'+
-						'<h4 style="text-align:center;">Change password</h4>'+
+						'<h4 style="text-align:center;">'+localized_string_change_password_title+'</h4>'+
 					'</div>'+ html_email_field +
 					'<div class="input-field col s12 m6">'+
 						'<input id="old-password" type="password" class="validate" required="" aria-required="true" />'+
-						'<label for="old-password">Old password</label>'+
+						'<label for="old-password">'+localized_string_old_password+'</label>'+
 					'</div>'+
 					'<div class="input-field col s12 m6">'+
 						'<input id="new-password" type="password" class="validate" required="" aria-required="true" />'+
-						'<label for="new-password">New password</label>'+
+						'<label for="new-password">'+localized_string_new_password+'</label>'+
 					'</div>'+
 					'<div class="col s6">'+
-						'<button class="btn grey lighten-2" style="color:#000" id="password-cancel">Cancel</button>'+
+						'<button class="btn grey lighten-2" style="color:#000" id="password-cancel">'+localized_string_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6">'+
-						'<button class="btn waves-effect waves-light" id="password-submit">Save'+
+						'<button class="btn waves-effect waves-light" id="password-submit">'+localized_string_save+
 							'<i class="material-icons right">send</i>'+
 						'</button>'+
 					'</div>'+
@@ -129,27 +138,26 @@ export default class UserChangePswView extends View {
 			const new_password = $("#new-password").val();
 			let super_email = self.userModel.email;
 			
-			
 			const validateArray = [];
-			
 			
 			if (self.userModel.is_superuser===true) {
 				super_email = $("#super-email").val();
 				// Test ONLY that new password exist!
-				validateArray.push({test:"pass",name:"New password",value:new_password});
+				validateArray.push({test:"pass",name:localized_string_new_password,value:new_password});
 			} else {
 				// BOTH passwords MUST exist!
-				validateArray.push({test:"pass",name:"Old password",value:old_password});
-				validateArray.push({test:"pass",name:"New password",value:new_password});
+				validateArray.push({test:"pass",name:localized_string_old_password,value:old_password});
+				validateArray.push({test:"pass",name:localized_string_new_password,value:new_password});
 			}
 			
-			const v = new Validator();
+			const v = new Validator({languagemodel:LM});
 			const errors = v.validate(validateArray);
 			if (errors.length > 0) {
 				const localized_message = errors.join(' ');
-				$('#'+self.FELID).empty();
+				
 				const html = '<div class="error-message"><p>'+localized_message+'</p></div>';
-				$(html).appendTo('#'+self.FELID);
+				$('#'+self.FELID).empty().append(html);
+				
 			} else {
 				$("#password-submit").prop("disabled", true);
 				var data = {

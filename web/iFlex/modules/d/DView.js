@@ -79,8 +79,10 @@ export default class DView extends View {
 				if (options.status === 200) {
 					// const msg = 'Feedback submitted OK';
 					// Show Toast: Saved OK!
+					const LM = this.controller.master.modelRepo.get('LanguageModel');
+					const sel = LM.selected;
+					const localized_string_feedback_ok = LM['translation'][sel]['FEEDBACK_SENT_OK'];
 					
-					const localized_string_feedback_ok = 'Thank you for your feedback!';
 					M.toast({
 						displayLength:1000, 
 						html: localized_string_feedback_ok,
@@ -105,13 +107,27 @@ export default class DView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_feedback_title = LM['translation'][sel]['FEEDBACK_BUILDING_TITLE'];
+		const localized_string_feedback_description = LM['translation'][sel]['FEEDBACK_BUILDING_DESCRIPTION'];
+		const localized_string_feedback_text_cold = LM['translation'][sel]['FEEDBACK_TEXT_COLD'];
+		const localized_string_feedback_text_cool = LM['translation'][sel]['FEEDBACK_TEXT_COOL'];
+		const localized_string_feedback_text_slightly_cool = LM['translation'][sel]['FEEDBACK_TEXT_SLIGHTLY_COOL'];
+		const localized_string_feedback_text_happy = LM['translation'][sel]['FEEDBACK_TEXT_HAPPY'];
+		const localized_string_feedback_text_slightly_warm = LM['translation'][sel]['FEEDBACK_TEXT_SLIGHTLY_WARM'];
+		const localized_string_feedback_text_warm = LM['translation'][sel]['FEEDBACK_TEXT_WARM'];
+		const localized_string_feedback_text_hot = LM['translation'][sel]['FEEDBACK_TEXT_HOT'];
+		const localized_string_feedback_free_text_label = LM['translation'][sel]['FEEDBACK_FREE_TEXT_LABEL'];
+		const localized_string_back = LM['translation'][sel]['BACK'];
+		const localized_string_send_feedback = LM['translation'][sel]['FEEDBACK_SEND_FEEDBACK'];
+		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h4>Building feedback</h4>'+
+					'<h4>'+localized_string_feedback_title+'</h4>'+
 					'<p style="text-align:center;"><img src="./svg/feedback.svg" height="80"/></p>'+
-					'<p style="text-align:center;">How do you feel about the building temperature today? Select smiley and send feedback.</p>'+
+					'<p style="text-align:center;">'+localized_string_feedback_description+'</p>'+
 					'<a href="javascript:void(0);" id="fb-smiley-1" class="feedback-smiley"><img src="./svg/smiley-1.svg" height="50"/></a>'+
 					'<a href="javascript:void(0);" id="fb-smiley-2" class="feedback-smiley"><img src="./svg/smiley-2.svg" height="50"/></a>'+
 					'<a href="javascript:void(0);" id="fb-smiley-3" class="feedback-smiley"><img src="./svg/smiley-3.svg" height="50"/></a>'+
@@ -126,18 +142,18 @@ export default class DView extends View {
 				'<div class="col s12 center">'+
 					'<div class="input-field col s12">'+
 						'<textarea id="free-text" class="materialize-textarea"></textarea>'+
-						'<label for="free-text">Free text feedback</label>'+
+						'<label for="free-text">'+localized_string_feedback_free_text_label+'</label>'+
 					'</div>'+
 				'</div>'+
 				'<div class="col s12 center" style="margin-top:16px;margin-bottom:16px;">'+
-					'<button class="btn waves-effect waves-light disabled" id="submit-feedback">SEND FEEDBACK'+
+					'<button class="btn waves-effect waves-light disabled" id="submit-feedback">'+localized_string_send_feedback+
 						//'<i class="material-icons">send</i>'+
 					'</button>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">BACK</button>'+
+					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">'+localized_string_back+'</button>'+
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
@@ -182,19 +198,19 @@ export default class DView extends View {
 					self.submitState();
 					
 					if (i===1) {
-						$('#feedback-text-placeholder').empty().append('Cold');
+						$('#feedback-text-placeholder').empty().append(localized_string_feedback_text_cold);
 					} else if (i===2) {
-						$('#feedback-text-placeholder').empty().append('Cool');
+						$('#feedback-text-placeholder').empty().append(localized_string_feedback_text_cool);
 					} else if (i===3) {
-						$('#feedback-text-placeholder').empty().append('Slightly Cool');
+						$('#feedback-text-placeholder').empty().append(localized_string_feedback_text_slightly_cool);
 					} else if (i===4) {
-						$('#feedback-text-placeholder').empty().append('Happy');
+						$('#feedback-text-placeholder').empty().append(localized_string_feedback_text_happy);
 					} else if (i===5) {
-						$('#feedback-text-placeholder').empty().append('Slightly  Warm');
+						$('#feedback-text-placeholder').empty().append(localized_string_feedback_text_slightly_warm);
 					} else if (i===6) {
-						$('#feedback-text-placeholder').empty().append('Warm');
+						$('#feedback-text-placeholder').empty().append(localized_string_feedback_text_warm);
 					} else {
-						$('#feedback-text-placeholder').empty().append('Hot');
+						$('#feedback-text-placeholder').empty().append(localized_string_feedback_text_hot);
 					}
 				}
 			});

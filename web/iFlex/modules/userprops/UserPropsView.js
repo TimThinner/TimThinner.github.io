@@ -88,19 +88,25 @@ export default class UserPropsView extends View {
 		if (this.areModelsReady()) {
 			
 			const UM = this.userModel;
-			//const LM = this.controller.master.modelRepo.get('LanguageModel');
-			//const sel = LM.selected;
-			const localized_string_da_back = 'Back';//LM['translation'][sel]['DA_BACK'];
+			const LM = this.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
+			const localized_string_back = LM['translation'][sel]['BACK'];
 			
-			const localized_string_title = 'User Properties';//LM['translation'][sel]['USER_PROPS_TITLE'];
-			const localized_string_description = 'You can change your password.';//LM['translation'][sel]['USER_PROPS_DESCRIPTION'];
+			const localized_string_title = LM['translation'][sel]['USER_PROPS_TITLE'];
+			const localized_string_description = LM['translation'][sel]['USER_PROPS_DESCRIPTION'];
+			const localized_string_change_password_btn_txt = LM['translation'][sel]['USER_PROPS_CHANGE_PASSWORD_BTN_TXT'];
+			const localized_string_admin_description = LM['translation'][sel]['USER_PROPS_ADMIN_DESCRIPTION'];
+			
+			const localized_string_admin_regcodes = LM['translation'][sel]['USER_PROPS_ADMIN_REGCODES'];
+			const localized_string_admin_users = LM['translation'][sel]['USER_PROPS_ADMIN_USERS'];
+			
 			
 			let buttons_html = '';
 			if (UM.is_superuser) {
 				buttons_html = 
 					'<div class="row">'+
 						'<div class="col s12 center" style="margin-top:32px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
 						'</div>'+
@@ -109,13 +115,13 @@ export default class UserPropsView extends View {
 						'<div class="col s12" style="margin-top:16px;">'+
 							'<div class="col s12" style="padding:16px 0 16px 0; border:1px solid #ccc; background-color:#fff">'+
 								'<div class="col s12 center">'+
-									'<p>Admin can view and edit RegCodes, view Users and associated ReadKeys.</p>'+
+									'<p>'+localized_string_admin_description+'</p>'+
 								'</div>'+
 								'<div class="col s6 center">'+
-									'<button class="btn waves-effect waves-light" id="regcodes">RegCodes</button>'+
+									'<button class="btn waves-effect waves-light" id="regcodes">'+localized_string_admin_regcodes+'</button>'+
 								'</div>'+
 								'<div class="col s6 center">'+
-									'<button class="btn waves-effect waves-light" id="users">Users</button>'+
+									'<button class="btn waves-effect waves-light" id="users">'+localized_string_admin_users+'</button>'+
 								'</div>'+
 							'</div>'+
 						'</div>'+
@@ -124,7 +130,7 @@ export default class UserPropsView extends View {
 				buttons_html = 
 					'<div class="row">'+
 						'<div class="col s12 center" style="margin-top:32px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+							'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
 								'<i class="material-icons left">arrow_back</i>'+
 							'</button>'+
 						'</div>'+
@@ -137,7 +143,7 @@ export default class UserPropsView extends View {
 						'<p><img src="./svg/user.svg" height="80"/></p>'+
 						'<p>'+localized_string_description+'</p>'+
 						'<p>&nbsp;</p>'+
-						'<button class="btn waves-effect waves-light" id="changepsw">Change password</button>'+
+						'<button class="btn waves-effect waves-light" id="changepsw">'+localized_string_change_password_btn_txt+'</button>'+
 						'<p>&nbsp;</p>'+
 					'</div>'+
 				'</div>'+ buttons_html +

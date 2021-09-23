@@ -30,7 +30,7 @@ export default class UserLoginView extends UserView {
 				} else {
 					// Show the reason for failure (message).
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-					$(html).appendTo('#login-failed');
+					$(html).appendTo('#login-response');
 				}
 				$("#login-submit").prop("disabled", false);
 			}
@@ -51,23 +51,28 @@ export default class UserLoginView extends UserView {
 				'USER_OPEN_SIGNUP_FORM':'Open signup form &raquo;',
 				'USER_SIGNUP_TITLE':'Signup',
 				'USER_SIGNUP_BTN_TXT':'Signup',
-				'COMING_SOON':'COMING SOON!',
-		
-				'DA_BACK':'BACK',
-				'DA_CANCEL':'CANCEL',
-				'DA_SAVE':'SAVE',
-				'DA_QUICK_LOGIN':'MOCKUP LOGIN',
-				'DA_QUICK_LOGIN_MESSAGE':'NOTE: This is a MOCKUP. You can use the login button below to login as "testuser@testdomain.com".',
+				
+				'BACK':'BACK',
+				'CANCEL':'CANCEL',
+				'SAVE':'SAVE',
 		*/
 		
 		
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		const localized_string_da_cancel = 'CANCEL'; //LM['translation'][sel]['DA_CANCEL'];
-		const localized_quick_login = 'MOCKUP LOGIN';//LM['translation'][sel]['DA_QUICK_LOGIN'];
-		const localized_quick_login_message = 'NOTE: This is a MOCKUP. You can use the login button below to login as "testuser@testdomain.com".';//LM['translation'][sel]['DA_QUICK_LOGIN_MESSAGE'];
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		
+		const localized_string_login_title = LM['translation'][sel]['USER_LOGIN_TITLE'];
+		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_user_password = LM['translation'][sel]['USER_PASSWORD'];
+		const localized_string_login_button_text = LM['translation'][sel]['USER_LOGIN_BTN_TXT'];
+		const localized_string_open_signup_form_link_text = LM['translation'][sel]['USER_OPEN_SIGNUP_FORM'];
+		
+		const localized_string_cancel = LM['translation'][sel]['CANCEL'];
+		const localized_quick_login = LM['translation'][sel]['QUICK_LOGIN'];
+		const localized_quick_login_message = LM['translation'][sel]['QUICK_LOGIN_MESSAGE'];
 		
 		const USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+		
 		let mockup_button_markup = '';
 		if (USER_MODEL.MOCKUP===true) {
 			mockup_button_markup = 
@@ -80,11 +85,6 @@ export default class UserLoginView extends UserView {
 				'</div>'+
 			'</div>';
 		}
-		const localized_string_login_title = 'Login';//LM['translation'][sel]['USER_LOGIN_TITLE'];
-		const localized_string_user_email = 'Email';//LM['translation'][sel]['USER_EMAIL'];
-		const localized_string_user_password = 'Password';//LM['translation'][sel]['USER_PASSWORD'];
-		const localized_string_login_button_text = 'Login';//LM['translation'][sel]['USER_LOGIN_BTN_TXT'];
-		const localized_string_open_signup_form_link_text = 'Open signup form &raquo;';//LM['translation'][sel]['USER_OPEN_SIGNUP_FORM'];
 		
 		const html = 
 			'<div class="row">'+
@@ -101,16 +101,14 @@ export default class UserLoginView extends UserView {
 						'<input id="login-password" type="password" class="validate" required="" aria-required="true" />'+
 						'<label for="login-password">'+localized_string_user_password+'</label>'+
 					'</div>'+
-					
-					'<div class="col s12 center" id="login-failed"></div>'+
-					'<div class="col s12 center" id="login-success"></div>'+
+					'<div class="col s12 center" id="login-response"></div>'+
 				'</div>'+
 			'</div>'+
 			
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_da_cancel+'</button>'+
+						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6 center">'+
 						'<button class="btn waves-effect waves-light" type="submit" id="login-submit">'+localized_string_login_button_text+'</button>'+
@@ -128,13 +126,11 @@ export default class UserLoginView extends UserView {
 		
 		// Attach all event-handlers:
 		$('#login-email').on('keyup', function(){
-			$('#login-failed').empty();
-			$('#login-success').empty();
+			$('#login-response').empty();
 		});
 		
 		$('#login-password').on('keyup', function(){
-			$('#login-failed').empty();
-			$('#login-success').empty();
+			$('#login-response').empty();
 		});
 		
 		$('#login-password').keypress(function(event){
@@ -157,23 +153,22 @@ export default class UserLoginView extends UserView {
 			const _password = $('#login-password').val();
 			
 			const validateArray = [
-				{test:"email",name:"Email",value:_email},
-				{test:"pass",name:"Password",value:_password}
+				{test:"email",name:localized_string_user_email,value:_email},
+				{test:"pass",name:localized_string_user_password,value:_password}
 			];
-			const v = new Validator();
+			const v = new Validator({languagemodel:LM});
 			const errors = v.validate(validateArray);
 			
 			if (errors.length > 0) {
 				
 				const localized_message = errors.join(' ');
-				$('#login-failed').empty();
+				$('#login-response').empty();
 				const html = '<div class="error-message"><p>'+localized_message+'</p></div>';
-				$(html).appendTo('#login-failed');
+				$(html).appendTo('#login-response');
 				
 			} else {
 				
-				$('#login-failed').empty();
-				$('#login-success').empty();
+				$('#login-response').empty();
 				
 				var data = {
 					email: _email,

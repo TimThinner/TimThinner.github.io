@@ -19,7 +19,7 @@ export default class UserSignupApaView extends UserView {
 	
 	constructor(controller) {
 		super(controller);
-		this.FELID = 'signup-failed';
+		this.FELID = 'signup-response';
 		this.apartment = 'NONE';
 	}
 	
@@ -36,6 +36,14 @@ export default class UserSignupApaView extends UserView {
 	}
 	
 	signupWithRegcode(opt) {
+		
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_user_password = LM['translation'][sel]['USER_PASSWORD'];
+		const localized_string_user_regcode = LM['translation'][sel]['USER_REGCODE'];
+		
 		const _email = $('#signup-email').val();
 		const _password = $('#signup-password').val();
 		const _request_for_sensors = $('#request-for-sensors').is(':checked');
@@ -56,11 +64,11 @@ export default class UserSignupApaView extends UserView {
 		}
 		
 		const validateArray = [
-			{test:"email",name:"Email",value:_email},
-			{test:"pass",name:"Password",value:_password},
-			{test:"exist",name:"Regcode",value:_regcode}
+			{test:"email",name:localized_string_user_email,value:_email},
+			{test:"pass",name:localized_string_user_password,value:_password},
+			{test:"exist",name:localized_string_user_regcode,value:_regcode}
 		];
-		const v = new Validator();
+		const v = new Validator({languagemodel:LM});
 		const errors = v.validate(validateArray);
 		if (errors.length > 0) {
 			
@@ -75,7 +83,6 @@ export default class UserSignupApaView extends UserView {
 		} else {
 			
 			$('#'+this.FELID).empty();
-			$('#signup-success').empty();
 			var data = {
 				email: _email,
 				password: _password,
@@ -90,14 +97,20 @@ export default class UserSignupApaView extends UserView {
 	}
 	
 	signupWithApartment() {
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_user_password = LM['translation'][sel]['USER_PASSWORD'];
+		
 		const _email = $('#signup-email').val();
 		const _password = $('#signup-password').val();
 		
 		const validateArray = [
-			{test:"email",name:"Email",value:_email},
-			{test:"pass",name:"Password",value:_password}
+			{test:"email",name:localized_string_user_email,value:_email},
+			{test:"pass",name:localized_string_user_password,value:_password}
 		];
-		const v = new Validator();
+		const v = new Validator({languagemodel:LM});
 		const errors = v.validate(validateArray);
 		if (errors.length > 0) {
 			
@@ -113,7 +126,6 @@ export default class UserSignupApaView extends UserView {
 		} else {
 			
 			$('#'+this.FELID).empty();
-			$('#signup-success').empty();
 			
 			const startDate = moment().toDate();
 			const endDate = moment().add(12, 'months').toDate();
@@ -141,7 +153,8 @@ export default class UserSignupApaView extends UserView {
 				if (options.status === 201) {
 					// User is now signed as a new user.
 					const html = '<div class="success-message"><p>'+options.message+'</p></div>';
-					$(html).appendTo('#signup-success');
+					$('#'+this.FELID).empty().append(html);
+					
 					setTimeout(() => {
 						this.controller.models['MenuModel'].setSelected('menu');
 						//$("#signup-submit").prop("disabled", false);
@@ -151,7 +164,8 @@ export default class UserSignupApaView extends UserView {
 				} else {
 					// Show the reason for failure (message).
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-					$(html).appendTo('#'+this.FELID);
+					$('#'+this.FELID).empty().append(html);
+					
 					$("#signup-submit").prop("disabled", false);
 					$("#cancel").prop("disabled", false);
 				}
@@ -165,7 +179,8 @@ export default class UserSignupApaView extends UserView {
 				} else {
 					// Show the reason for failure (message).
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-					$(html).appendTo('#'+this.FELID);
+					$('#'+this.FELID).empty().append(html);
+					
 					$("#signup-submit").prop("disabled", false);
 					$("#cancel").prop("disabled", false);
 				}
@@ -178,33 +193,23 @@ export default class UserSignupApaView extends UserView {
 		const self = this;
 		$(this.el).empty();
 		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_cancel = LM['translation'][sel]['CANCEL'];
+		const localized_string_signup_title = LM['translation'][sel]['USER_SIGNUP_TITLE'];
+		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_user_password = LM['translation'][sel]['USER_PASSWORD'];
+		const localized_string_signup_button_text = LM['translation'][sel]['USER_SIGNUP_BTN_TXT'];
+		const localized_string_signup_sensors_text = LM['translation'][sel]['USER_SIGNUP_SENSORS_TXT'];
+		const localized_string_signup_sensors_cb_label = LM['translation'][sel]['USER_SIGNUP_SENSORS_CHECKBOX_LABEL'];
 		
-		/*
-				'USER_LOGIN_TITLE':'Login',
-				'USER_EMAIL':'Email',
-				'USER_PASSWORD':'Password',
-				'USER_REGCODE':'Registration code',
-				'USER_LOGIN_BTN_TXT':'Login',
-				'USER_OPEN_SIGNUP_FORM':'Open signup form &raquo;',
-				'USER_SIGNUP_TITLE':'Signup',
-				'USER_SIGNUP_BTN_TXT':'Signup',
-				'COMING_SOON':'COMING SOON!',
+		const gdpr_ok_1 = LM['translation'][sel]['USER_SIGNUP_GDPR_OK_1'];
+		const gdpr_ok_2 = LM['translation'][sel]['USER_SIGNUP_GDPR_OK_2'];
+		const gdpr_link_text = LM['translation'][sel]['USER_SIGNUP_GDPR_LINK_TXT'];
 		
-				'DA_BACK':'BACK',
-				'DA_CANCEL':'CANCEL',
-				'DA_SAVE':'SAVE',
-				'DA_QUICK_LOGIN':'MOCKUP LOGIN',
-				'DA_QUICK_LOGIN_MESSAGE':'NOTE: This is a MOCKUP. You can use the login button below to login as "testuser@testdomain.com".',
-		*/
-		
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		const localized_string_da_cancel = 'CANCEL'; //LM['translation'][sel]['DA_CANCEL'];
-		
-		const localized_string_signup_title = 'Signup';//LM['translation'][sel]['USER_SIGNUP_TITLE'];
-		const localized_string_user_email = 'Email';//LM['translation'][sel]['USER_EMAIL'];
-		const localized_string_user_password = 'Password';//LM['translation'][sel]['USER_PASSWORD'];
-		const localized_string_signup_button_text = 'Signup';//LM['translation'][sel]['USER_SIGNUP_BTN_TXT'];
+		const localized_string_signup_apartment_number = LM['translation'][sel]['USER_SIGNUP_APARTMENT_NUMBER'];
+		const localized_string_signup_apartment_not_selected = LM['translation'][sel]['USER_SIGNUP_APARTMENT_NOT_SELECTED'];
+		const localized_string_signup_apartment_must_input = LM['translation'][sel]['USER_SIGNUP_APARTMENT_MUST_INPUT'];
 		
 		const html = 
 			'<div class="row">'+
@@ -222,7 +227,7 @@ export default class UserSignupApaView extends UserView {
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<select id="select-apartment">'+
-							'<option value="NONE" selected>Not selected</option>'+ // Choose your apartment
+							'<option value="NONE" selected>'+localized_string_signup_apartment_not_selected+'</option>'+ // Choose your apartment
 							'<option value="A1">A1</option>'+
 							'<option value="A2">A2</option>'+
 							'<option value="A3">A3</option>'+
@@ -233,22 +238,22 @@ export default class UserSignupApaView extends UserView {
 							'<option value="A8">A8</option>'+
 							'<option value="A9">A9</option>'+
 						'</select>'+
-						'<label>Apartment number</label>'+
+						'<label>'+localized_string_signup_apartment_number+'</label>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						// checked="checked"
-						'<p class="note">You can also have sensors to measure temperature and humidity in your apartment. This data is shown only to you. Due to limited number of sensors in this PILOT, be quick and check the checkbox below.</p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="request-for-sensors" /><span>Yes, I want sensors.</span></label></p>'+
+						'<p class="note">'+localized_string_signup_sensors_text+'</p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="request-for-sensors" /><span>'+localized_string_signup_sensors_cb_label+'</span></label></p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<p><label><input type="checkbox" class="filled-in" id="consent-gdpr" /><span>I have read the <a href="javascript:void(0);" id="gdpr-text">GDPR statement</a> and give my consent.</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="consent-gdpr" /><span>'+gdpr_ok_1+'<a href="javascript:void(0);" id="gdpr-text">'+gdpr_link_text+'</a>'+gdpr_ok_2+'</span></label></p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_da_cancel+'</button>'+
+						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6 center">'+
 						'<button class="btn waves-effect waves-light" type="submit" id="signup-submit">'+localized_string_signup_button_text+'</button>'+
@@ -258,7 +263,6 @@ export default class UserSignupApaView extends UserView {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-					'<div class="col s12 center" id="signup-success"></div>'+
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
@@ -284,12 +288,10 @@ export default class UserSignupApaView extends UserView {
 		// Attach all event-handlers:
 		$('#signup-email').on('keyup', function(){
 			$('#'+self.FELID).empty();
-			$('#signup-success').empty();
 		});
 		
 		$('#signup-password').on('keyup', function(){
 			$('#'+self.FELID).empty();
-			$('#signup-success').empty();
 		});
 		$("#select-apartment").change(function() {
 			$('#'+self.FELID).empty();
@@ -312,7 +314,7 @@ export default class UserSignupApaView extends UserView {
 			// If there is no REGCODE => 1st phase creates a REGCODE and second phase does the rest of the sign-up.
 			if (self.apartment === 'NONE') {
 				// Show the reason for failure (message).
-				const html = '<div class="error-message"><p>Must input <b>Apartment number</b></p></div>';
+				const html = '<div class="error-message"><p>'+localized_string_signup_apartment_must_input+'</p></div>';
 				$('#'+self.FELID).empty().append(html);
 			} else {
 				// Good to go for the Apartment Registration PHASE.

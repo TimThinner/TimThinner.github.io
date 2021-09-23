@@ -17,6 +17,7 @@ export default class RegCodeCreateView extends View {
 			}
 		});
 		this.serviceDates = {'start':'','end':''};
+		this.FELID = 'reg-code-create-response';
 		this.rendered = false;
 	}
 	
@@ -48,12 +49,10 @@ export default class RegCodeCreateView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='RegCodeModel' && options.method==='addOne') {
-				$('#failed').empty();
-				$('#success').empty();
 				if (options.status === 201) {
 					// RegCode added OK, show OK message and go back to RegCodeList (after 1 second delay).
 					const html = '<div class="success-message"><p>'+options.message+'</p></div>';
-					$(html).appendTo('#success');
+					$('#'+this.FELID).empty().append(html);
 					setTimeout(() => {
 						this.models['MenuModel'].setSelected('REGCODES');
 					}, 1000);
@@ -61,7 +60,7 @@ export default class RegCodeCreateView extends View {
 				} else {
 					// Something went wrong, stay in this view (page).
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-					$(html).appendTo('#failed');
+					$('#'+this.FELID).empty().append(html);
 				}
 			}
 		}
@@ -150,18 +149,22 @@ export default class RegCodeCreateView extends View {
 		$(this.el).empty();
 		
 		const UM = this.controller.master.modelRepo.get('UserModel')
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
 		
-		const localized_string_title = 'Create a new RegCode';
-		const localized_string_user_email = 'Email';//LM['translation'][sel]['USER_EMAIL'];
-		const localized_string_apartment_id = 'Apartment Id';
-		const localized_string_da_cancel = 'Cancel';//LM['translation'][sel]['DA_CANCEL'];
-		const localized_string_create_regcode = 'Create RegCode';
+		const localized_string_title = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_TITLE'];
+		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_apartment_id = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_APA_ID'];
+		const localized_string_cancel = LM['translation'][sel]['CANCEL'];
+		const localized_string_create_regcode = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_BTN_TXT'];
 		
+		const localized_string_invalid_start_date = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_INVALID_START_DATE'];
+		const localized_string_invalid_end_date = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_INVALID_END_DATE'];
+		const localized_string_invalid_date_order = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_INVALID_DATE_ORDER'];
 		
-		const localized_string_active_period_start = 'Start';
-		const localized_string_active_period_end = 'End';
+		const localized_string_active_period_start = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_START_LABEL'];
+		const localized_string_active_period_end = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_END_LABEL'];
+		
 		let display_start_datetime = '';
 		let display_end_datetime = '';
 		
@@ -205,14 +208,14 @@ export default class RegCodeCreateView extends View {
 						'<label class="active" for="active-period-end">'+localized_string_active_period_end+'</label>'+
 					'</div>'+
 					
-					'<div class="col s12 center" id="failed"></div>'+
-					'<div class="col s12 center" id="success"></div>'+
+					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+					
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_da_cancel+'</button>'+
+						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6 center">'+
 						'<button class="btn waves-effect waves-light" id="create-regcode">'+localized_string_create_regcode+'</button>'+
@@ -285,32 +288,37 @@ export default class RegCodeCreateView extends View {
 			
 			const date_errors = [];
 			if (staMoment.format() === 'Invalid date') {
-				date_errors.push('Invalid start date');
+				
+				date_errors.push(localized_string_invalid_start_date);
+				
 			}
 			if (endMoment.format() === 'Invalid date') {
-				date_errors.push('Invalid end date');
+				
+				date_errors.push(localized_string_invalid_end_date);
+				
 			}
 			/*if (endMoment.isBefore(nowMoment)) {
 				date_errors.push('End must be now or in the future.');
 			}*/
 			if (endMoment.isSameOrBefore(staMoment)) {
-				date_errors.push('End must be after the start.');
+				date_errors.push(localized_string_invalid_date_order);
 			}
 			
 			const validateArray = [
-				{test:"email",name:"Email",value:_email},
-				{test:"exist",name:"Apartment Id",value:_apaid}
+				{test:"email",name:localized_string_user_email,value:_email},
+				{test:"exist",name:localized_string_apartment_id,value:_apaid}
 			];
-			const v = new Validator();
+			const v = new Validator({languagemodel:LM});
 			const errors = v.validate(validateArray); // returns an array of errors.
 			
 			const all_errors = date_errors.concat(errors);
 			
 			if (all_errors.length > 0) {
 				const localized_message = all_errors.join(' ');
-				$('#failed').empty();
+				
 				const html = '<div class="error-message"><p>'+localized_message+'</p></div>';
-				$(html).appendTo('#failed');
+				$('#'+self.FELID).empty().append(html);
+				
 				
 			} else {
 				const authToken = UM.token;

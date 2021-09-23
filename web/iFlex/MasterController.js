@@ -1,5 +1,6 @@
 import ModelRepo from './modules/common/ModelRepo.js';
 import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
+import LanguageModel from './modules/common/LanguageModel.js';
 
 import UserModel from './modules/user/UserModel.js';
 import FeedbackModel from './modules/common/FeedbackModel.js';
@@ -72,7 +73,9 @@ class MasterController {
 		const REO = new ResizeEventObserver();
 		this.modelRepo.add('ResizeEventObserver',REO);
 		
-		
+		console.log('Create LanguageModel!');
+		const LM = new LanguageModel();
+		this.modelRepo.add('LanguageModel',LM);
 		
 		console.log('Create UserModel!');
 		const UM = new UserModel({name:'UserModel',src:'user'});

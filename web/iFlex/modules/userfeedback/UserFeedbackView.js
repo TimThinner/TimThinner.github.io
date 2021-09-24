@@ -79,8 +79,10 @@ export default class UserFeedbackView extends View {
 				if (options.status === 200) {
 					// const msg = 'Feedback submitted OK';
 					// Show Toast: Saved OK!
+					const LM = this.controller.master.modelRepo.get('LanguageModel');
+					const sel = LM.selected;
+					const localized_string_feedback_ok = LM['translation'][sel]['FEEDBACK_SENT_OK'];
 					
-					const localized_string_feedback_ok = 'Thank you for your feedback!';
 					M.toast({
 						displayLength:1000, 
 						html: localized_string_feedback_ok,

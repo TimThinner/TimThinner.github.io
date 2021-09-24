@@ -160,11 +160,15 @@ export default class AView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_title = LM['translation'][sel]['BUILDING_ELECTRICITY_TITLE'];
+		const localized_string_back = LM['translation'][sel]['BACK'];
+		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h4>Building electricity consumption</h4>'+
+					'<h4>'+localized_string_title+'</h4>'+
 					'<p style="text-align:center;"><img src="./svg/electricity.svg" height="80"/></p>'+
 				'</div>'+
 			'</div>'+
@@ -177,7 +181,7 @@ export default class AView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">BACK</button>'+
+					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">'+localized_string_back+'</button>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

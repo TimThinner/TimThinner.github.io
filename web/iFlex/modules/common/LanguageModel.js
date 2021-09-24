@@ -62,6 +62,13 @@ export default class LanguageModel {
 				'FEEDBACK_FREE_TEXT_LABEL':'Free text feedback',
 				'FEEDBACK_SEND_FEEDBACK':'Send',
 				'FEEDBACK_SENT_OK':'Thank you for your feedback!',
+				'BUILDING_ELECTRICITY_TITLE':'Building electricity consumption',
+				'BUILDING_HEATING_TITLE':'Building district heating',
+				'BUILDING_CO2_TITLE':'Building CO<sub>2</sub> emissions',
+				'BUILDING_CO2_DESCRIPTION':'This chart displays <b>EMISSION FACTORS</b> for electricity consumed and produced in Finland',
+				'BUILDING_CO2_CONSUMPTION':'Consumption',
+				'BUILDING_CO2_PRODUCTION':'Production',
+				'USER_HEATING_TITLE':'Apartment temperature and humidity',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!'
 			},
 			'fi':{
@@ -123,6 +130,13 @@ export default class LanguageModel {
 				'FEEDBACK_FREE_TEXT_LABEL':'Vapaamuotoinen palaute',
 				'FEEDBACK_SEND_FEEDBACK':'Lähetä',
 				'FEEDBACK_SENT_OK':'Kiitos palautteestasi!',
+				'BUILDING_ELECTRICITY_TITLE':'Rakennuksen sähkönkulutus',
+				'BUILDING_HEATING_TITLE':'Rakennuksen kaukolämmön kulutus',
+				'BUILDING_CO2_TITLE':'Rakennuksen hiilijalanjälki',
+				'BUILDING_CO2_DESCRIPTION':'Sähkön kulutuksen ja tuotannon <b>päästökertoimet</b> Suomessa',
+				'BUILDING_CO2_CONSUMPTION':'Kulutus',
+				'BUILDING_CO2_PRODUCTION':'Tuotanto',
+				'USER_HEATING_TITLE':'Asunnon lämpötila ja kosteus',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!'
 			}
 		}

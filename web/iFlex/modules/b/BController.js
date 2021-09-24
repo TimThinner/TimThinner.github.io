@@ -32,7 +32,7 @@ export default class BController extends Controller {
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
 			src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/query/',
 			cache_expiration_in_seconds:60,
-			timerange: { begin: 20, end: 15 },
+			timerange: { begin: 10, end: 2 },
 			access:'PUBLIC'
 		});
 		

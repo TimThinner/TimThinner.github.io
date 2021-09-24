@@ -43,15 +43,107 @@ export default class MenuView extends View {
 		}
 	}
 	
+	localizeSVGTexts() {
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			
+			console.log('LOCALIZE TEXTS!');
+			//const LM = this.controller.master.modelRepo.get('LanguageModel');
+			//const sel = LM.selected;
+			
+			//const localized_grid_title = LM['translation'][sel]['DAA_TITLE'];
+			//this.fillSVGTextElement(svgObject, 'a-title', 'A');
+			//this.fillSVGTextElement(svgObject, 'b-title', 'B');
+		}
+	}
+	
+	setLanguageSelection(sel) {
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			if (sel === 'fi') {
+				const lang_en_bg = svgObject.getElementById('language-en-background');
+				if (lang_en_bg) {
+					lang_en_bg.style.fill = '#eee'; // Set fill to #eee
+					lang_en_bg.style.stroke = '#1a488b'; // Set stroke to #aaa
+					lang_en_bg.style.strokeWidth = 1;
+				}
+				const lang_fi_bg = svgObject.getElementById('language-fi-background');
+				if (lang_fi_bg) {
+					lang_fi_bg.style.fill = '#fff'; // Set fill to #fff
+					lang_fi_bg.style.stroke = '#78c51b'; // Set stroke to light green
+					lang_fi_bg.style.strokeWidth = 3;
+				}
+			} else {
+				const lang_fi_bg = svgObject.getElementById('language-fi-background');
+				if (lang_fi_bg) {
+					lang_fi_bg.style.fill = '#eee'; // Set fill to #eee
+					lang_fi_bg.style.stroke = '#1a488b'; // Set stroke to #aaa
+					lang_fi_bg.style.strokeWidth = 1;
+				}
+				const lang_en_bg = svgObject.getElementById('language-en-background');
+				if (lang_en_bg) {
+					lang_en_bg.style.fill = '#fff'; // Set fill to #fff
+					lang_en_bg.style.stroke = '#78c51b'; // Set stroke to light green
+					lang_en_bg.style.strokeWidth = 3;
+				}
+			}
+		}
+	}
+	
 	addSVGEventHandlers() {
 		const self = this;
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		/*const STROKE_COLOR = '#1a488b';
 		const STROKE_COLOR_HOVER = '#0f0';*/
 		const FILL_COLOR = '#fff';
 		const FILL_COLOR_HOVER = '#0f0';
-		
+/*
+iFLEX Dark blue   #1a488b ( 26,  72, 139)
+iFLEX Dark green  #008245 (  0, 130,  69)
+iFLEX Light green #78c51b (120, 197,  27)
+*/
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
+			
+			const lang_fi = svgObject.getElementById('language-fi');
+			lang_fi.addEventListener("click", function(){
+				if (LM.selected !== 'fi') {
+					const lang_en_bg = svgObject.getElementById('language-en-background');
+					if (lang_en_bg) {
+						lang_en_bg.style.fill = '#eee'; // Set fill to #eee
+						lang_en_bg.style.stroke = '#1a488b'; // Stroke Dark Blue
+						lang_en_bg.style.strokeWidth = 1;
+					}
+					const lang_fi_bg = svgObject.getElementById('language-fi-background');
+					if (lang_fi_bg) {
+						lang_fi_bg.style.fill = '#fff'; // Set fill to #fff
+						lang_fi_bg.style.stroke = '#78c51b'; // Set stroke to light green
+						lang_fi_bg.style.strokeWidth = 3;
+					}
+					LM.selected = 'fi';
+					self.localizeSVGTexts();
+				}
+			}, false);
+			
+			const lang_en = svgObject.getElementById('language-en');
+			lang_en.addEventListener("click", function(){
+				if (LM.selected !== 'en') {
+					const lang_fi_bg = svgObject.getElementById('language-fi-background');
+					if (lang_fi_bg) {
+						lang_fi_bg.style.fill = '#eee'; // Set fill to #eee
+						lang_fi_bg.style.stroke = '#1a488b'; // Stroke Dark Blue
+						lang_fi_bg.style.strokeWidth = 1;
+					}
+					const lang_en_bg = svgObject.getElementById('language-en-background');
+					if (lang_en_bg) {
+						lang_en_bg.style.fill = '#fff'; // Set fill to #fff
+						lang_en_bg.style.stroke = '#78c51b'; // Set stroke to light green
+						lang_en_bg.style.strokeWidth = 3;
+					}
+					LM.selected = 'en';
+					self.localizeSVGTexts();
+				}
+			}, false);
 			
 			const targetA = svgObject.getElementById('target-a');
 			targetA.addEventListener("click", function(){
@@ -115,19 +207,6 @@ export default class MenuView extends View {
 				//svgObject.getElementById('target-d-border').style.stroke = STROKE_COLOR;
 				svgObject.getElementById('target-d-border').style.fill = FILL_COLOR;
 			}, false);
-		}
-	}
-	
-	localizeSVGTexts() {
-		const svgObject = document.getElementById('svg-object').contentDocument;
-		if (svgObject) {
-			
-			//const LM = this.controller.master.modelRepo.get('LanguageModel');
-			//const sel = LM.selected;
-			
-			//const localized_grid_title = LM['translation'][sel]['DAA_TITLE'];
-			//this.fillSVGTextElement(svgObject, 'a-title', 'A');
-			//this.fillSVGTextElement(svgObject, 'b-title', 'B');
 		}
 	}
 	
@@ -340,7 +419,7 @@ export default class MenuView extends View {
 			svgClass = 'svg-square-container';
 		}
 		
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const html =
 			'<div class="row">'+ // style="margin-top:-20px">'+
 				'<div class="col s12" style="padding-left:0;padding-right:0;">'+
@@ -362,9 +441,9 @@ export default class MenuView extends View {
 		svgObj.addEventListener('load', function(){
 			console.log('ADD SVG EVENT HANDLERS!');
 			
-			//self.setLanguageSelection(LM.selected);
+			self.setLanguageSelection(LM.selected);
 			self.addSVGEventHandlers();
-			//self.localizeSVGTexts();
+			self.localizeSVGTexts();
 			
 			if (USER_MODEL.isLoggedIn()) {
 				console.log('User is Logged in.');

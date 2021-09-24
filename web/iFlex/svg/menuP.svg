@@ -16,6 +16,9 @@ iFLEX Light green #78c51b (120, 197,  27)
 	stroke-width: 1;
 	opacity: 0.2;
 }
+.language-selection-box {
+	cursor: pointer;
+}
 </style>
 <defs>
 	<radialGradient id="grad" cx="50%" cy="50%" r="100%">
@@ -150,5 +153,16 @@ iFLEX Light green #78c51b (120, 197,  27)
 	<circle id="target-e" class="surface" x="0" y="0" r="100" />
 	-->
 </g>
+
+<svg x="-150" y="350" width="130px" height="50px">
+	<rect id="language-fi-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
+	<text font-family="Arial, Helvetica, sans-serif" font-size="18px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Suomi</text>
+	<rect id="language-fi" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#000" stroke-width="2" opacity="0" fill="#fff" />
+</svg>
+<svg x="20" y="350" width="130px" height="50px">
+	<rect id="language-en-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
+	<text font-family="Arial, Helvetica, sans-serif" font-size="18px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">English</text>
+	<rect id="language-en" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#1fac78" stroke-width="2" opacity="0" fill="#fff" />
+</svg>
 
 </svg>

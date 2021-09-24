@@ -184,8 +184,13 @@ export default class CView extends View {
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							//console.log('fetched ..... CView CHART UPDATED!');
+							
+							const LM = this.controller.master.modelRepo.get('LanguageModel');
+							const sel = LM.selected;
+							const localized_string_consumption = LM['translation'][sel]['BUILDING_CO2_CONSUMPTION'];
+							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'Consumption') {
+								if (s.name === localized_string_consumption) {
 									s.data = self.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
 								}
 							});
@@ -220,8 +225,13 @@ export default class CView extends View {
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							//console.log('fetched ..... CView CHART UPDATED!');
+							
+							const LM = this.controller.master.modelRepo.get('LanguageModel');
+							const sel = LM.selected;
+							const localized_string_production = LM['translation'][sel]['BUILDING_CO2_PRODUCTION'];
+							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'Production') {
+								if (s.name === localized_string_production) {
 									s.data = self.models['BuildingEmissionFactorOfElectricityProductionInFinlandModel'].values;
 								}
 							});
@@ -253,6 +263,11 @@ export default class CView extends View {
 	
 	renderChart() {
 		const self = this;
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_consumption = LM['translation'][sel]['BUILDING_CO2_CONSUMPTION'];
+		const localized_string_production = LM['translation'][sel]['BUILDING_CO2_PRODUCTION'];
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -289,7 +304,7 @@ export default class CView extends View {
 			series1.dataFields.valueY = "value"; // "visits";
 			series1.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
 			series1.fillOpacity = 0.2;
-			series1.name = 'Consumption';
+			series1.name = localized_string_consumption;
 			series1.stroke = am4core.color("#ff0");
 			series1.fill = "#ff0";
 			
@@ -299,7 +314,7 @@ export default class CView extends View {
 			series2.dataFields.valueY = "value"; // "visits";
 			series2.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
 			series2.fillOpacity = 0.2;
-			series2.name = 'Production';
+			series2.name = localized_string_production;
 			series2.stroke = am4core.color("#0f0");
 			series2.fill = "#0f0";
 			
@@ -328,13 +343,18 @@ export default class CView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_title = LM['translation'][sel]['BUILDING_CO2_TITLE'];
+		const localized_string_descr = LM['translation'][sel]['BUILDING_CO2_DESCRIPTION'];
+		const localized_string_back = LM['translation'][sel]['BACK'];
+		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h4>Building CO<sub>2</sub> emissions</h4>'+
+					'<h4>'+localized_string_title+'</h4>'+
 					'<p style="text-align:center;"><img src="./svg/leaf.svg" height="80"/></p>'+
-					'<p style="text-align:center;">This chart displays <b>EMISSION FACTORS</b> for electricity consumed and produced in Finland</p>'+
+					'<p style="text-align:center;">'+localized_string_descr+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -357,7 +377,7 @@ export default class CView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">BACK</button>'+
+					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">'+localized_string_back+'</button>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

@@ -32,6 +32,10 @@ export default class UserGDPRView extends View {
 		const self = this;
 		$(this.el).empty();
 		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_back = LM['translation'][sel]['BACK'];
+		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12">'+
@@ -43,7 +47,7 @@ export default class UserGDPRView extends View {
 "<p>Blue castello when the cheese comes out everybody's happy fondue. Who moved my cheese say cheese croque monsieur the big cheese monterey jack fromage frais cheese strings cheesy feet. Mascarpone fondue cream cheese cheese and biscuits cheese strings cheesecake feta cheese triangles. Who moved my cheese red leicester st. agur blue cheese taleggio cheesy grin who moved my cheese croque monsieur.</p>"+
 				'</div>'+
 				'<div class="col s12 center" style="margin-top:16px;">'+
-					'<button class="btn waves-effect waves-light" id="back">BACK'+
+					'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
 						'<i class="material-icons left">arrow_back</i>'+
 					'</button>'+
 				'</div>'+

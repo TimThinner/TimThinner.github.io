@@ -33,7 +33,7 @@ export default class UserHeatingController extends Controller {
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
 			src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/query/',
 			cache_expiration_in_seconds:60,
-			timerange: { begin: 20, end: 15 },
+			timerange: { begin: 10, end: 2 },
 			access:'PRIVATE'
 		});
 		UHM.subscribe(this); // Now we will receive notifications from the UserModel.

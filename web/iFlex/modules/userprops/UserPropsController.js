@@ -18,6 +18,7 @@ export default class UserPropsController extends Controller {
 	}
 	
 	initialize() {
+		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		

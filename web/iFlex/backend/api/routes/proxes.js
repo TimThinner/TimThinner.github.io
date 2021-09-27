@@ -140,19 +140,31 @@ const Proxe_HTTPS_Fetch = (po, res) => {
 		res2.on('data', (chunk) => { rawData += chunk; });
 		res2.on('end', () => {
 			try {
-				const parser = new xml2js.Parser();
-				parser.parseStringPromise(rawData).then(function (result) {
-					//console.log(['result=',result]);
-					const json = JSON.stringify(result);
-					//console.log(['json=',json]);
-					if (typeof id !== 'undefined') {
-						// Update
-						Proxe_Update({id:id, json:json}, res);
-					} else {
-						// Save
-						Proxe_Save({hash:hash, url:url, json:json, expiration:expiration}, res);
-					}
-				});
+				/*
+				console.log(['end rawData=',rawData]);
+[ 'end rawData=',
+  '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">\n<html><head>\n<title>503 Service Unavailable</title>\n</head><body>\n<h1>Service Unavailable</h1>\n<p>The server is temporarily unable to service your\nrequest due to maintenance downtime or capacity\nproblems. Please try again later.</p>\n<hr>\n<address>Apache/2.4.48 (Debian) Server at ba.vtt.fi Port 443</address>\n</body></html>\n' ]
+				*/
+				if (rawData.indexOf('<!DOCTYPE HTML PUBLIC') === 0) {
+					// NOT XML RESPONSE => REJECT.
+					console.log('NOT XML RESPONSE!');
+					res.status(500).json({error: new Error('NOT XML RESPONSE!')});
+					
+				} else {
+					const parser = new xml2js.Parser();
+					parser.parseStringPromise(rawData).then(function (result) {
+						//console.log(['result=',result]);
+						const json = JSON.stringify(result);
+						//console.log(['json=',json]);
+						if (typeof id !== 'undefined') {
+							// Update
+							Proxe_Update({id:id, json:json}, res);
+						} else {
+							// Save
+							Proxe_Save({hash:hash, url:url, json:json, expiration:expiration}, res);
+						}
+					});
+				}
 				
 			} catch(e) {
 				console.log(['error message=',e.message]);

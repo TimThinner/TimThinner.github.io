@@ -282,6 +282,12 @@ export default class UserSignupApaView extends UserView {
 			$("#signup-submit").prop("disabled", true);
 		}
 		$("#gdpr-text").on('click', function() {
+			
+			const UGDPRM = self.controller.master.modelRepo.get('UserGDPRModel');
+			if (UGDPRM) {
+				console.log(['SET caller usersignup']);
+				UGDPRM.caller = 'usersignup';
+			}
 			self.controller.models['MenuModel'].setSelected('userGDPR');
 		});
 		

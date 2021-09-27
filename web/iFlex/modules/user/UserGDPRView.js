@@ -57,7 +57,14 @@ export default class UserGDPRView extends View {
 		this.rendered = true;
 		
 		$("#back").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('usersignup');
+			
+			const caller = self.controller.models['UserGDPRModel'].caller;
+			
+			if (typeof caller !== 'undefined') {
+				self.controller.models['MenuModel'].setSelected(caller);
+			} else {
+				self.controller.models['MenuModel'].setSelected('usersignup');
+			}
 		});
 		
 	}

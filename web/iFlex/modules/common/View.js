@@ -6,7 +6,6 @@ export default class View {
 		this.models = {};
 	}
 	
-	
 	hide() {
 	
 	}

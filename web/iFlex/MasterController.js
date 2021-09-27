@@ -92,13 +92,12 @@ class MasterController {
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
 		
+		this.controllers['userGDPR'] = new UserGDPRController({name:'userGDPR', master:this, el:'#content', visible:false});
+		this.controllers['userGDPR'].init();
 		this.controllers['userlogin'] = new UserLoginController({name:'userlogin', master:this, el:'#content', visible:false});
 		this.controllers['userlogin'].init();
 		this.controllers['usersignup'] = new UserSignupController({name:'usersignup', master:this, el:'#content', visible:false});
 		this.controllers['usersignup'].init();
-		this.controllers['userGDPR'] = new UserGDPRController({name:'userGDPR', master:this, el:'#content', visible:false});
-		this.controllers['userGDPR'].init();
-		
 		
 		this.controllers['USERPAGE'] = new UserPageController({name:'USERPAGE', master:this, el:'#content', visible:false});
 		this.controllers['USERPAGE'].init();

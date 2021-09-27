@@ -248,7 +248,12 @@ export default class ObixModel extends Model {
 					self.ready = true;
 					self.notifyAll({model:self.name, method:'fetched', status:self.status, message:'OK'});
 					
-				} else {
+				} else if (self.status === 500) {
+					self.fetching = false;
+					self.ready = true;
+					self.notifyAll({model:self.name, method:'fetched', status:self.status, message:'SERVER ERROR!'});
+					
+				} else  {
 					self.fetching = false;
 					self.ready = true;
 					console.log(['myJson=',myJson]);

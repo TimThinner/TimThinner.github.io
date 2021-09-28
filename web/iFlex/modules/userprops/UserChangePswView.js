@@ -96,10 +96,10 @@ export default class UserChangePswView extends View {
 						'<input id="new-password" type="password" class="validate" required="" aria-required="true" />'+
 						'<label for="new-password">'+localized_string_new_password+'</label>'+
 					'</div>'+
-					'<div class="col s6">'+
+					'<div class="col s6 center" style="margin-top:16px;">'+
 						'<button class="btn grey lighten-2" style="color:#000" id="password-cancel">'+localized_string_cancel+'</button>'+
 					'</div>'+
-					'<div class="col s6">'+
+					'<div class="col s6 center" style="margin-top:16px;">'+
 						'<button class="btn waves-effect waves-light" id="password-submit">'+localized_string_save+
 							'<i class="material-icons right">send</i>'+
 						'</button>'+

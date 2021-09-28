@@ -162,8 +162,8 @@ export default class RegCodeCreateView extends View {
 		const localized_string_invalid_end_date = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_INVALID_END_DATE'];
 		const localized_string_invalid_date_order = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_INVALID_DATE_ORDER'];
 		
-		const localized_string_active_period_start = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_START_LABEL'];
-		const localized_string_active_period_end = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_END_LABEL'];
+		const localized_string_active_period_start = LM['translation'][sel]['ADMIN_START_LABEL'];
+		const localized_string_active_period_end = LM['translation'][sel]['ADMIN_END_LABEL'];
 		
 		let display_start_datetime = '';
 		let display_end_datetime = '';

@@ -181,7 +181,9 @@ export default class AView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">'+localized_string_back+'</button>'+
+					'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
+						'<i class="material-icons left">arrow_back</i>'+
+					'</button>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

@@ -103,19 +103,12 @@ export default class UserPropsView extends View {
 			const gdpr_text = LM['translation'][sel]['USER_PROPS_GDPR'];
 			const gdpr_link_text = LM['translation'][sel]['USER_SIGNUP_GDPR_LINK_TXT'];
 			
-			let buttons_html = '';
+			let admin_buttons_html = '';
 			if (UM.is_superuser) {
-				buttons_html = 
+				admin_buttons_html = 
 					'<div class="row">'+
-						'<div class="col s12 center" style="margin-top:32px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>'+
-					'<div class="row">'+
-						'<div class="col s12" style="margin-top:16px;">'+
-							'<div class="col s12" style="padding:16px 0 16px 0; border:1px solid #ccc; background-color:#fff">'+
+						'<div class="col s12" style="margin-top:32px;">'+
+							'<div class="col s12" style="padding:16px 0 32px 0; border:1px solid #ccc; background-color:#fff">'+
 								'<div class="col s12 center">'+
 									'<p>'+localized_string_admin_description+'</p>'+
 								'</div>'+
@@ -128,15 +121,6 @@ export default class UserPropsView extends View {
 							'</div>'+
 						'</div>'+
 					'</div>';
-			} else {
-				buttons_html = 
-					'<div class="row">'+
-						'<div class="col s12 center" style="margin-top:32px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>';
 			}
 			const html =
 				'<div class="row">'+
@@ -144,14 +128,20 @@ export default class UserPropsView extends View {
 						'<h4>'+localized_string_title+'</h4>'+
 						'<p><img src="./svg/user.svg" height="80"/></p>'+
 						'<p>'+localized_string_description+'</p>'+
-						'<p>&nbsp;</p>'+
+						//'<p>&nbsp;</p>'+
 						'<button class="btn waves-effect waves-light" id="changepsw">'+localized_string_change_password_btn_txt+'</button>'+
 						'<p>&nbsp;</p>'+
-						
 						'<p>'+gdpr_text+'<a href="javascript:void(0);" id="gdpr-text">'+gdpr_link_text+'</a></p>'+
 						
 					'</div>'+
-				'</div>'+ buttons_html +
+				'</div>'+ 
+				'<div class="row">'+
+					'<div class="col s12 center" style="margin-top:32px;">'+
+						'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
+							'<i class="material-icons left">arrow_back</i>'+
+						'</button>'+
+					'</div>'+
+				'</div>'+ admin_buttons_html +
 				'<div class="row">'+
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 				'</div>';

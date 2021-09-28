@@ -155,8 +155,9 @@ export default class ReadKeyEditView extends View {
 		const localized_string_cancel = LM['translation'][sel]['CANCEL'];
 		const localized_string_update = LM['translation'][sel]['UPDATE'];
 		
-		const localized_string_active_period_start = 'Start';
-		const localized_string_active_period_end = 'End';
+		const localized_string_active_period_start = LM['translation'][sel]['ADMIN_START_LABEL'];
+		const localized_string_active_period_end = LM['translation'][sel]['ADMIN_END_LABEL'];
+		
 		let display_start_datetime = '';
 		let display_end_datetime = '';
 		

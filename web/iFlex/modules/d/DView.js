@@ -11,16 +11,17 @@ export default class DView extends View {
 			this.models[key].subscribe(this);
 			
 		});
-		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
-		this.REO.subscribe(this);
+		// NOTE: Do NOT use ResizeEventObserver, this is not SVG BASED VIEW!
+		//this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
+		//this.REO.subscribe(this);
 		
 		this.FBM = this.controller.master.modelRepo.get('FeedbackModel');
 		this.FBM.subscribe(this);
 		
 		this.isFreeText = false;
 		this.isSmileySelected = false;
-		
 		this.rendered = false;
+		this.FELID = 'feedback-response';
 	}
 	
 	show() {
@@ -38,7 +39,7 @@ export default class DView extends View {
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
-		this.REO.unsubscribe(this);
+		//this.REO.unsubscribe(this);
 		this.FBM.unsubscribe(this);
 		
 		this.isFreeText = false;
@@ -71,12 +72,10 @@ export default class DView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				
-				this.render();
-				
-			} else if (options.model==='FeedbackModel' && options.method==='send') {
+			if (options.model==='FeedbackModel' && options.method==='send') {
 				if (options.status === 200) {
+					
+					$('#'+this.FELID).empty();
 					// const msg = 'Feedback submitted OK';
 					// Show Toast: Saved OK!
 					const LM = this.controller.master.modelRepo.get('LanguageModel');
@@ -98,6 +97,10 @@ export default class DView extends View {
 					
 					$('#feedback-text-placeholder').empty();
 					$('#free-text').val('');
+				} else {
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
 				}
 			}
 		}
@@ -145,16 +148,17 @@ export default class DView extends View {
 						'<label for="free-text">'+localized_string_feedback_free_text_label+'</label>'+
 					'</div>'+
 				'</div>'+
-				'<div class="col s12 center" style="margin-top:16px;margin-bottom:16px;">'+
+				'<div class="col s6 center" style="margin-top:16px;margin-bottom:16px;">'+
+					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">'+localized_string_back+'</button>'+
+				'</div>'+
+				'<div class="col s6 center" style="margin-top:16px;margin-bottom:16px;">'+
 					'<button class="btn waves-effect waves-light disabled" id="submit-feedback">'+localized_string_send_feedback+
 						//'<i class="material-icons">send</i>'+
 					'</button>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12 center">'+
-					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="back">'+localized_string_back+'</button>'+
-				'</div>'+
+				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
@@ -183,8 +187,6 @@ export default class DView extends View {
 					$('#fb-smiley-'+i+' > img').attr('src','./svg/smiley-'+i+'.svg');
 					
 					self.isSmileySelected = false;
-					//$('#submit-feedback').removeClass('teal lighten-1');
-					//$('#submit-feedback').addClass('disabled');
 					self.submitState();
 					$('#feedback-text-placeholder').empty();
 					
@@ -193,8 +195,6 @@ export default class DView extends View {
 					$('#fb-smiley-'+i).addClass('selected');
 					$('#fb-smiley-'+i+' > img').attr('src','./svg/smiley-'+i+'-frame.svg');
 					self.isSmileySelected = true;
-					//$('#submit-feedback').removeClass('disabled');
-					//$('#submit-feedback').addClass('teal lighten-1');
 					self.submitState();
 					
 					if (i===1) {

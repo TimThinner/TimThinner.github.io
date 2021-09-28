@@ -147,13 +147,13 @@ export default class ReadKeyEditView extends View {
 		$(this.el).empty();
 		
 		const UM = this.controller.master.modelRepo.get('UserModel')
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
 		
-		const localized_string_title = 'ReadKey';
-		const localized_string_description = 'Modify ReadKeys validity period.';
-		const localized_string_da_cancel = 'Cancel';//LM['translation'][sel]['DA_CANCEL'];
-		const localized_string_update_readkey = 'Update Readkey';
+		const localized_string_title = LM['translation'][sel]['ADMIN_EDIT_READKEY_TITLE'];
+		const localized_string_description = LM['translation'][sel]['ADMIN_EDIT_READKEY_DESCRIPTION'];
+		const localized_string_cancel = LM['translation'][sel]['CANCEL'];
+		const localized_string_update = LM['translation'][sel]['UPDATE'];
 		
 		const localized_string_active_period_start = 'Start';
 		const localized_string_active_period_end = 'End';
@@ -166,8 +166,6 @@ export default class ReadKeyEditView extends View {
 		const selected = this.models['ReadKeyModel'].getSelected();
 		const sid = selected.id;
 		const caller = selected.caller;
-		let email = '';
-		let apaId = '';
 		this.models['ReadKeyModel'].readkeys.forEach(key => {
 			if (key._id === sid) {
 				this.serviceDates.start = key.startdate;
@@ -176,9 +174,6 @@ export default class ReadKeyEditView extends View {
 		});
 		/*
 			_id: doc._id,
-			email: doc.email,
-			apartmentId: doc.apartmentId,
-			code: doc.code,
 			startdate: doc.startdate,     "2020-09-22T21:00:00.000Z"
 			enddate: doc.enddate          "2020-10-22T21:00:00.000Z"
 		*/
@@ -216,10 +211,10 @@ export default class ReadKeyEditView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_da_cancel+'</button>'+
+						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light" id="update-readkey">'+localized_string_update_readkey+'</button>'+
+						'<button class="btn waves-effect waves-light" id="update-readkey">'+localized_string_update+'</button>'+
 					'</div>'+
 				'</div>'+
 			'</div>';

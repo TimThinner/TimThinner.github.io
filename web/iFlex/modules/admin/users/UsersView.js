@@ -11,10 +11,10 @@ export default class UsersView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UsersModel' || key === 'RegCodeModel' || key === 'ReadKeyModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
+			
 		});
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
@@ -184,14 +184,11 @@ export default class UsersView extends View {
 		$(this.el).empty();
 		if (this.areModelsReady()) {
 			
-			//const LM = this.controller.master.modelRepo.get('LanguageModel');
-			//const sel = LM.selected;
-			const localized_string_da_back = 'BACK';//LM['translation'][sel]['DA_BACK'];
-			//const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
-			//const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
-			
-			const localized_string_title = 'Users';
-			const localized_string_description = 'Admin can list all Users and see RegCode and ReadKey information.';
+			const LM = this.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
+			const localized_string_back = LM['translation'][sel]['BACK'];
+			const localized_string_title = LM['translation'][sel]['USER_PROPS_ADMIN_USERS'];
+			//const localized_string_description = 'Admin can list all Users and see RegCode and ReadKey information.';
 			/*
 				regcode:
 				apartmentId: { type:String, required:true },
@@ -230,7 +227,7 @@ export default class UsersView extends View {
 				'<div class="row">'+
 					'<div class="col s12">'+
 						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-						'<p style="text-align:center;">'+localized_string_description+'</p>'+
+						//'<p style="text-align:center;">'+localized_string_description+'</p>'+
 					'</div>'+
 					'<div class="col s12" style="padding: 0 24px;">'+
 					'<form action="#">'+
@@ -248,7 +245,7 @@ export default class UsersView extends View {
 						'</p>'+
 					'</form></div>'+ placeholder +
 					'<div class="col s12 center" style="margin-top:16px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+						'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
 							'<i class="material-icons left">arrow_back</i>'+
 						'</button>'+
 					'</div>'+

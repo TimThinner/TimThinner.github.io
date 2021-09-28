@@ -156,7 +156,7 @@ export default class RegCodeCreateView extends View {
 		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
 		const localized_string_apartment_id = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_APA_ID'];
 		const localized_string_cancel = LM['translation'][sel]['CANCEL'];
-		const localized_string_create_regcode = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_BTN_TXT'];
+		const localized_string_save = LM['translation'][sel]['SAVE'];
 		
 		const localized_string_invalid_start_date = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_INVALID_START_DATE'];
 		const localized_string_invalid_end_date = LM['translation'][sel]['ADMIN_CREATE_NEW_REGCODE_INVALID_END_DATE'];
@@ -218,7 +218,7 @@ export default class RegCodeCreateView extends View {
 						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light" id="create-regcode">'+localized_string_create_regcode+'</button>'+
+						'<button class="btn waves-effect waves-light" id="create-regcode">'+localized_string_save+'</button>'+
 					'</div>'+
 				'</div>'+
 			'</div>';

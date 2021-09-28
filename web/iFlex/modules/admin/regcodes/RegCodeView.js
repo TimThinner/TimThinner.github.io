@@ -11,10 +11,10 @@ export default class RegCodeView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'RegCodeModel' || key === 'MenuModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
+			
 		});
 		this.rendered = false;
 		this.FELID = 'view-failure';
@@ -196,14 +196,12 @@ export default class RegCodeView extends View {
 		if (this.areModelsReady()) {
 			
 			const UM = this.controller.master.modelRepo.get('UserModel')
-			//const LM = this.controller.master.modelRepo.get('LanguageModel');
-			//const sel = LM.selected;
-			const localized_string_da_back = 'Back';//LM['translation'][sel]['DA_BACK'];
-			//const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
-			//const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
+			const LM = this.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
+			const localized_string_back = LM['translation'][sel]['BACK'];
+			const localized_string_title = LM['translation'][sel]['USER_PROPS_ADMIN_REGCODES'];
+			const localized_string_create_new_regcode  = LM['translation'][sel]['USER_PROPS_ADMIN_REGCODES_CREATE_BTN_TXT'];
 			
-			const localized_string_title = 'RegCodes';
-			const localized_string_description = 'Admin can list all RegCodes and generate new codes.';
 			
 			let placeholder = 
 				'<div class="col s12">'+
@@ -230,7 +228,7 @@ export default class RegCodeView extends View {
 				'<div class="row">'+
 					'<div class="col s12">'+
 						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-						'<p style="text-align:center;">'+localized_string_description+'</p>'+
+						//'<p style="text-align:center;">'+localized_string_description+'</p>'+
 					'</div>'+
 					'<div class="col s12" style="padding: 0 24px;">'+
 					'<form action="#">'+
@@ -248,12 +246,12 @@ export default class RegCodeView extends View {
 						'</p>'+
 					'</form></div>'+ placeholder +
 					'<div class="col s6 center" style="margin-top:16px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+						'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
 							'<i class="material-icons left">arrow_back</i>'+
 						'</button>'+
 					'</div>'+
 					'<div class="col s6 center" style="margin-top:16px;">'+
-						'<button class="btn waves-effect waves-light" id="create-regcode">Create new Regcode'+
+						'<button class="btn waves-effect waves-light" id="create-regcode">'+localized_string_create_new_regcode+
 						'</button>'+
 					'</div>'+
 				'</div>'+

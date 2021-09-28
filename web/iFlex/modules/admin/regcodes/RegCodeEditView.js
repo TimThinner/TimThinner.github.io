@@ -147,15 +147,15 @@ export default class RegCodeEditView extends View {
 		$(this.el).empty();
 		
 		const UM = this.controller.master.modelRepo.get('UserModel')
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
 		
-		const localized_string_title = 'RegCode';
-		const localized_string_description = 'Modify RegCodes validity period.';
-		const localized_string_user_email = 'Email'; //LM['translation'][sel]['USER_EMAIL'];
-		const localized_string_apartment_id = 'Apartment Id';
-		const localized_string_da_cancel = 'Cancel'; //LM['translation'][sel]['DA_CANCEL'];
-		const localized_string_update_regcode = 'Update RegCode';
+		const localized_string_title = LM['translation'][sel]['ADMIN_EDIT_REGCODE_TITLE'];
+		const localized_string_description = LM['translation'][sel]['ADMIN_EDIT_REGCODE_DESCRIPTION'];
+		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_apartment_id = LM['translation'][sel]['ADMIN_EDIT_REGCODE_APARTMENT'];
+		const localized_string_cancel = LM['translation'][sel]['CANCEL'];
+		const localized_string_update = LM['translation'][sel]['UPDATE'];
 		
 		
 		const localized_string_active_period_start = 'Start';
@@ -164,7 +164,7 @@ export default class RegCodeEditView extends View {
 		let display_end_datetime = '';
 		
 		
-		console.log(['this.models[RegCodeModel]=',this.models['RegCodeModel']]);
+		//console.log(['this.models[RegCodeModel]=',this.models['RegCodeModel']]);
 		
 		// Should we reset this everytime we render the FORM?
 		//this.serviceDates = {'start':'','end':''};
@@ -241,10 +241,10 @@ export default class RegCodeEditView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_da_cancel+'</button>'+
+						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light" id="update-regcode">'+localized_string_update_regcode+'</button>'+
+						'<button class="btn waves-effect waves-light" id="update-regcode">'+localized_string_update+'</button>'+
 					'</div>'+
 				'</div>'+
 			'</div>';

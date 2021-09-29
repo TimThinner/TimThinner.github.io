@@ -47,13 +47,17 @@ export default class MenuView extends View {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
-			console.log('LOCALIZE TEXTS!');
-			//const LM = this.controller.master.modelRepo.get('LanguageModel');
-			//const sel = LM.selected;
+			const LM = this.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
 			
-			//const localized_grid_title = LM['translation'][sel]['DAA_TITLE'];
-			//this.fillSVGTextElement(svgObject, 'a-title', 'A');
-			//this.fillSVGTextElement(svgObject, 'b-title', 'B');
+			const USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+			let mode = 'L';
+			if (USER_MODEL.MOCKUP===true) {
+				mode = 'M';
+			}
+			const localized_version = LM['translation'][sel]['MENU_VERSION'];
+			 // fillSVGTextElement is implemented in parent class View.js
+			this.fillSVGTextElement(svgObject, 'version', localized_version+mode);
 		}
 	}
 	

@@ -14,10 +14,16 @@ iFLEX Light green #78c51b (120, 197,  27)
 .grid {
 	stroke: #00f;
 	stroke-width: 1;
-	opacity: 0.2;
+	opacity: 0.1;
 }
 .language-selection-box {
 	cursor: pointer;
+}
+.version-info {
+	opacity: 0.3;
+	font-family: "Arial, Helvetica, sans-serif";
+	font-size: 28px;
+	fill: #1a488b;
 }
 </style>
 <defs>
@@ -183,6 +189,11 @@ iFLEX Light green #78c51b (120, 197,  27)
 	<rect id="language-en-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
 	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">English</text>
 	<rect id="language-en" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#1fac78" stroke-width="2" opacity="0" fill="#fff" />
+</svg>
+
+<svg x="-100" y="410" width="200px" height="32px">
+	<!--<rect x="1" y="1" width="198" height="30" stroke="#fff" stroke-width="1" opacity="0.2" fill="#ff0" />-->
+	<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="version" class="version-info"></text>
 </svg>
 
 </svg>

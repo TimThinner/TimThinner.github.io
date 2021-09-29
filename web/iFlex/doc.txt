@@ -29,3 +29,29 @@ http://localhost:3000/proxes/obix/
 
 A POST method is used to send request XML with authorization and expiration_in_seconds to backend service.
 
+
+PT30S (30 seconds)
+PT5M (5 minutes)
+PT1H (1 hour)
+PT24H (24 hours)
+
+
+INTERVAL	TIMERANGE		NUMBER OF SAMPLES
+1 MIN		1 day (24H)		1440 (24 x 60)
+10 MINS		1 week			1008 (7 x 24 x 6)
+30 MINS 	1 month			1440 (30 x 48)
+4 HOURS		6 months		1080 (30 x 6 x 6)
+6 HOURS		1 year			1460 (4 x 365)
+
+https://en.wikipedia.org/wiki/ISO_8601
+
+
+P is the duration designator (for period) placed at the start of the duration representation.
+Y is the year designator that follows the value for the number of years.
+M is the month designator that follows the value for the number of months.
+W is the week designator that follows the value for the number of weeks.
+D is the day designator that follows the value for the number of days.
+T is the time designator that precedes the time components of the representation.
+
+
+

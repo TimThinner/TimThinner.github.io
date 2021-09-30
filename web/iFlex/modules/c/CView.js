@@ -46,13 +46,20 @@ export default class CView extends View {
 	}
 	
 	showInfo() {
+		const html = '<p class="fetching-info">Timerange is ' + 
+			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].timerange.begin +
+			' days and the interval is ' + 
+			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].interval + '</p>';
+			
+		$('#data-fetching-info').empty().append(html);
+		/*
 		const html = '<p class="fetching-info">Fetching interval is ' + 
 			this.controller.fetching_interval_in_seconds + 
 			' seconds. Cache expiration is ' + 
 			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].cache_expiration_in_seconds + ' seconds.</p>';
 		$('#data-fetching-info').empty().append(html);
+		*/
 	}
-	
 	
 	resetButtonClass() {
 		const elems = document.getElementsByClassName("my-range-button");
@@ -65,6 +72,28 @@ export default class CView extends View {
 	/*
 		Timerange is set with buttons.
 		New param is an array of models 
+		
+		
+		PT30S (30 seconds)
+		PT5M (5 minutes)
+		PT1H (1 hour)
+		PT24H (24 hours)
+		
+		INTERVAL	TIMERANGE		NUMBER OF SAMPLES
+		3 MIN		1 day (24H)		 480 (24 x 20)
+		10 MINS		1 week			1008 (7 x 24 x 6)
+		20 MINS		2 weeks			1008 (14 x 24 x 3)
+		30 MINS 	1 month			1440 (30 x 48)
+		4 HOURS		6 months		1080 (30 x 6 x 6)
+		6 HOURS		1 year			1460 (4 x 365)
+		
+		
+		"b1d"	1D
+		"b1w"	1W
+		"b2w"	2W
+		"b1m"	1M
+		"b6m"	6M
+		"b1y"	1Y
 	*/
 	setTimerangeHandlers(models) {
 		const self = this;
@@ -80,87 +109,86 @@ export default class CView extends View {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=1 for model.name=',model.name]);
 					model.timerange = { begin: 1, end: 0 };
+					model.interval = 'PT3M';
 				}
 			});
 			self.controller.refreshTimerange();
+			self.showInfo();
 		});
 		
-		$('#b2d').on('click',function() {
-			self.selected = "b2d";
+		$('#b1w').on('click',function() {
+			self.selected = "b1w";
 			self.resetButtonClass();
 			Object.keys(self.controller.models).forEach(key => {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=2 for model.name=',model.name]);
-					model.timerange = { begin: 2, end: 0 };
+					model.timerange = { begin: 7, end: 0 };
+					model.interval = 'PT10M';
 				}
 			});
 			self.controller.refreshTimerange();
+			self.showInfo();
 		});
 		
-		$('#b3d').on('click',function() {
-			self.selected = "b3d";
+		$('#b2w').on('click',function() {
+			self.selected = "b2w";
 			self.resetButtonClass();
 			Object.keys(self.controller.models).forEach(key => {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=3 for model.name=',model.name]);
-					model.timerange = { begin: 3, end: 0 };
+					model.timerange = { begin: 14, end: 0 };
+					model.interval = 'PT20M';
 				}
 			});
 			self.controller.refreshTimerange();
+			self.showInfo();
 		});
 		
-		$('#b4d').on('click',function() {
-			self.selected = "b4d";
+		$('#b1m').on('click',function() {
+			self.selected = "b1m";
 			self.resetButtonClass();
 			Object.keys(self.controller.models).forEach(key => {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=4 for model.name=',model.name]);
-					model.timerange = { begin: 4, end: 0 };
+					model.timerange = { begin: 30, end: 0 };
+					model.interval = 'PT30M';
 				}
 			});
 			self.controller.refreshTimerange();
+			self.showInfo();
 		});
 		
-		$('#b5d').on('click',function() {
-			self.selected = "b5d";
+		$('#b6m').on('click',function() {
+			self.selected = "b6m";
 			self.resetButtonClass();
 			Object.keys(self.controller.models).forEach(key => {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=5 for model.name=',model.name]);
-					model.timerange = { begin: 5, end: 0 };
+					model.timerange = { begin: 180, end: 0 };
+					model.interval = 'PT4H';
 				}
 			});
 			self.controller.refreshTimerange();
+			self.showInfo();
 		});
 		
-		$('#b6d').on('click',function() {
-			self.selected = "b6d";
+		$('#b1y').on('click',function() {
+			self.selected = "b1y";
 			self.resetButtonClass();
 			Object.keys(self.controller.models).forEach(key => {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=6 for model.name=',model.name]);
-					model.timerange = { begin: 6, end: 0 };
+					model.timerange = { begin: 364, end: 0 };
+					model.interval = 'PT6H';
 				}
 			});
 			self.controller.refreshTimerange();
-		});
-		
-		$('#b7d').on('click',function() {
-			self.selected = "b7d";
-			self.resetButtonClass();
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=7 for model.name=',model.name]);
-					model.timerange = { begin: 7, end: 0 };
-				}
-			});
-			self.controller.refreshTimerange();
+			self.showInfo();
 		});
 	}
 	
@@ -360,13 +388,12 @@ export default class CView extends View {
 			'<div class="row">'+
 				'<div class="col s12 center">'+
 					//'<p style="color:#aaa;margin-top:-16px;padding:0;">'+localized_string_daw_sel_timerange+'</p>'+
-					'<a href="javascript:void(0);" id="b1d" class="my-range-button" style="float:right;">1d</a>'+
-					'<a href="javascript:void(0);" id="b2d" class="my-range-button" style="float:right;">2d</a>'+
-					'<a href="javascript:void(0);" id="b3d" class="my-range-button" style="float:right;">3d</a>'+
-					'<a href="javascript:void(0);" id="b4d" class="my-range-button" style="float:right;">4d</a>'+
-					'<a href="javascript:void(0);" id="b5d" class="my-range-button" style="float:right;">5d</a>'+
-					'<a href="javascript:void(0);" id="b6d" class="my-range-button" style="float:right;">6d</a>'+
-					'<a href="javascript:void(0);" id="b7d" class="my-range-button" style="float:right;">7d</a>'+
+					'<a href="javascript:void(0);" id="b1d" class="my-range-button" style="float:right;">1D</a>'+
+					'<a href="javascript:void(0);" id="b1w" class="my-range-button" style="float:right;">1W</a>'+
+					'<a href="javascript:void(0);" id="b2w" class="my-range-button" style="float:right;">2W</a>'+
+					'<a href="javascript:void(0);" id="b1m" class="my-range-button" style="float:right;">1M</a>'+
+					'<a href="javascript:void(0);" id="b6m" class="my-range-button" style="float:right;">6M</a>'+
+					'<a href="javascript:void(0);" id="b1y" class="my-range-button" style="float:right;">1Y</a>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

@@ -37,6 +37,22 @@ Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remot
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://ba.vtt.fi/TestServlet/testHistory/query/. (Reason: CORS request did not succeed).
 
 
+
+
+PT30S (30 seconds)
+PT5M (5 minutes)
+PT1H (1 hour)
+PT24H (24 hours)
+
+INTERVAL	TIMERANGE		NUMBER OF SAMPLES
+1 MIN		1 day (24H)		1440 (24 x 60)
+10 MINS		1 week			1008 (7 x 24 x 6)
+30 MINS 	1 month			1440 (30 x 48)
+4 HOURS		6 months		1080 (30 x 6 x 6)
+6 HOURS		1 year			1460 (4 x 365)
+
+
+
 */
 export default class ObixModel extends Model {
 	
@@ -60,6 +76,12 @@ export default class ObixModel extends Model {
 			this.timerange = options.timerange;
 		} else {
 			this.timerange = {begin:1,end:0};
+		}
+		// define interval for ROLLUP API
+		if (typeof options.interval !== 'undefined') {
+			this.interval = options.interval;
+		} else {
+			this.interval = undefined;
 		}
 		this.access = options.access; // 'PUBLIC' or 'PRIVATE'
 	}
@@ -153,40 +175,56 @@ export default class ObixModel extends Model {
 		// Testing 
 		//curl -u 'timokinnunen':'tuaxiMun0wx6ff!sBaq' -s -H "Content-Type: text/xml;charset=UTF-8" -d "<obj is=\"obix:HistoryFilter\" xmlns=\"http://obix.org/ns/schema/1.0\"><int name=\"limit\" val=\"20\" /><abstime name=\"start\" val=\"2021-09-03T09:51:15.062Z\"/><abstime name=\"end\" val=\"2021-09-05T09:51:15.062Z\"/></obj>" https://ba.vtt.fi/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/
 		
-
 		//curl -u 'timokinnunen':'tuaxiMun0wx6ff!sBaq' -s -H "Content-Type: text/xml;charset=UTF-8" -d "<obj is=\"obix:HistoryFilter\" xmlns=\"http://obix.org/ns/schema/1.0\"><int name=\"limit\" val=\"20\" /><abstime name=\"start\" val=\"2021-09-03T09:51:15.062Z\"/><abstime name=\"end\" val=\"2021-09-05T09:51:15.062Z\"/></obj>" https://ba.vtt.fi/obixStore/store/NuukaOpenData/1752%20Malmitalo/Electricity/
-		
-
-
-		
 		
 		
 		const start = moment().subtract(this.timerange.begin, 'days').format();
 		const end = moment().subtract(this.timerange.end, 'days').format();
+		const now = moment().format('YYYY-MM-DDTHH');
+		const interval = this.interval;
 		
+		// We can select dynamically whether data fetcher uses "QUERY" or "ROLLUP" API:
+		// "query/" or "rollup/" is added at ObixModel depending on if "interval" is defined or not.
+		let source = this.src;
+		let reqXML = '';
+		let hash = '';
 		// Create a hash using URL and timerange and CURRENT DATETIME IN HOUR PRECISION.
 		// This is how we can cover different responses having timestamp to help cleaning 
 		// in BACKEND.
-		const now = moment().format('YYYY-MM-DDTHH');
-		const hash = this.src + '_from_' + this.timerange.begin + '_to_' + this.timerange.end + '_days_' + now;
 		
-		const reqXML = //'<?xml version="1.0" encoding="UTF-8"?>'+
-		'<obj href="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
-		'<int name="limit" null="true"/>'+
-		'<abstime name="start" val="'+start+'"/>'+
-		'<abstime name="end" val="'+end+'"/>'+
-		//'<abstime name="end" null="true"/>'+
-		'</obj>';
+		if (typeof interval !== 'undefined') {
+			
+			source += 'rollup/';
+			hash = source + '_from_' + this.timerange.begin + '_to_' + this.timerange.end + '_days_' + now + '_' + interval;
+			reqXML = '<?xml version="1.0" encoding="UTF-8"?>'+
+			'<obj is="obix:HistoryRollupIn obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
+			'<reltime name="interval" val="'+interval+'"/>'+
+			'<int name="limit" null="true"/>'+
+			'<abstime name="start" val="'+start+'"/>'+
+			'<abstime name="end" val="'+end+'"/>'+
+			'</obj>';
+			
+		} else {
+			
+			source += 'query/';
+			hash = source + '_from_' + this.timerange.begin + '_to_' + this.timerange.end + '_days_' + now;
+			reqXML = '<?xml version="1.0" encoding="UTF-8"?>'+
+			'<obj is="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
+			'<int name="limit" null="true"/>'+
+			'<abstime name="start" val="'+start+'"/>'+
+			'<abstime name="end" val="'+end+'"/>'+
+			//'<abstime name="end" null="true"/>'+
+			'</obj>';
+		}
 		
 		//path: '/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/',
 		//path: '/obixStore/store/Fingrid/emissionFactorOfElectricityProductionInFinland/query/',
-		
 		const data = { 
 			type: 'text/xml;charset=UTF-8',
 			readkey: my_readkey,
 			xml: reqXML,
 			hash: hash,
-			obix_url: this.src,
+			obix_url: source,
 			expiration_in_seconds: this.cache_expiration_in_seconds
 		};
 		const myPost = {
@@ -213,6 +251,8 @@ export default class ObixModel extends Model {
 					//const cleaned = myJson.replace(/\\/g, "");
 					//console.log(['cleaned=',cleaned]);
 					if (typeof resu.obj !== 'undefined') {
+						
+						/*
 						if (typeof resu.obj.abstime !== 'undefined' && Array.isArray(resu.obj.abstime)) {
 							// If "start" and "end" are defined in request, they are here:
 							// We don't need this information => do nothing.
@@ -225,6 +265,8 @@ export default class ObixModel extends Model {
 								}
 							});
 						}
+						*/
+						// Response is different for query and rollup:
 						if (typeof resu.obj.list !== 'undefined' && Array.isArray(resu.obj.list)) {
 							
 							resu.obj.list.forEach(li=>{
@@ -233,8 +275,33 @@ export default class ObixModel extends Model {
 										//console.log(['foo=',foo]);
 										//console.log([foo.abstime[0]['$'].name, ' ',foo.abstime[0]['$'].val]);
 										//console.log([foo.real[0]['$'].name,' ',foo.real[0]['$'].val]);
-										const date = new Date(foo.abstime[0]['$'].val);
-										self.values.push({'timestamp':date,'value':foo.real[0]['$'].val});
+										
+										// IN ROLLUP the following takes abstime => start 
+										let ts = undefined;
+										let val = undefined;
+										
+										foo.abstime.forEach(at=>{
+											// if we have a at.$.name === 'timestamp' we have a query timestamp
+											if (at['$'].name === 'timestamp') {
+												ts = at['$'].val;
+											} else if (at['$'].name === 'start') { // in rollup use "start" (ignore "end")
+												ts = at['$'].val;
+											}
+										});
+										
+										foo.real.forEach(r=>{
+											if (r['$'].name === 'value') {
+												val = r['$'].val;
+											} else if (r['$'].name === 'avg') { // in rollup use "avg" (ignore "min", "max" and "sum")
+												val = r['$'].val;
+											}
+										});
+										
+										if (typeof ts !== 'undefined' && typeof val !== 'undefined') {
+											const date = new Date(ts);
+											self.values.push({'timestamp':date,'value':val});
+										}
+										
 									});
 								}
 							});
@@ -243,6 +310,44 @@ export default class ObixModel extends Model {
 						// resu.obj.abstime [  {$:{name:"start",val:"2021-05-26T12:00:01.900039+03:00"}}, {$:{name:"end",val:""}}  ]
 						// resu.obj.int [  {$:{name:"count", val:"456"}}   ]
 						// resu.obj.list [   { $:{}, obj:[ {abstime:[{$:{name:"timestamp", val:""}}]  , real:[{$:{name:"value", val:""}}]    }  ]   }  ]
+						
+						/*
+[
+"myJson=", 
+"{"obj":{	"$":{"xmlns":"http://obix.org/ns/schema/1.0","is":"obix:HistoryRollupOut"},
+			"list":
+				[
+					{
+					"$":{"name":"data","of":"obix:HistoryRollupRecord"},
+					"obj": [
+						{
+							"abstime":[
+								{"$":{"name":"start","val":"2021-09-20T09:57:06+03:00"}},
+								{"$":{"name":"end","val":"2021-09-21T09:57:06+03:00"}}
+							],
+							"int":[{"$":{"name":"count","val":"24"}}],
+							"real":[
+								{"$":{"name":"min","val":"46.18"}},
+								{"$":{"name":"max","val":"151.94"}},
+								{"$":{"name":"avg","val":"97.16000000000003"}},
+								{"$":{"name":"sum","val":"2331.8400000000006"}}
+							]
+						},
+						{
+							"abstime":[
+								{"$":{"name":"start","val":"2021-09-21T09:57:06+03:00"}},
+								{"$":{"name":"end","val":"2021-09-22T09:57:06+03:00"}}
+							],
+							"int":[{"$":{"name":"count","val":"24"}}],
+							"real\":[
+								{"$":{"name":"min","val":"53.29"}},
+								{"$":{"name":"max","val":"159.85000000000002"}},
+								{"$":{"name":"avg","val":"112.59166666666665"}},
+								{"$":{"name":"sum","val":"2702.2"}}
+							]
+						},
+]						
+						*/
 					}
 					self.fetching = false;
 					self.ready = true;

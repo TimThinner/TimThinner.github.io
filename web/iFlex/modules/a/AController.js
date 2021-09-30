@@ -31,8 +31,11 @@ export default class AController extends Controller {
 			// https://ba.vtt.fi/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/query/
 			
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
-			src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Electricity/query/',
-			// '/TestServlet/testHistory/query/';
+			// We can select dynamically whether data fetcher uses "QUERY" or "ROLLUP" API:
+			// "query/" or "rollup/" is added at ObixModel depending on if "interval" is defined or not.
+			src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Electricity/',
+			interval: 'PT1H', // interval MUST BE defined for ROLLUP API
+			
 			cache_expiration_in_seconds:60,
 			timerange: { begin: 10, end: 2 },
 			access:'PUBLIC'

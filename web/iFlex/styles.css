@@ -155,7 +155,7 @@ html, body {
 	padding: 16px;
 }
 .my-range-button {
-	width: 14%;/* 7 x 14 = 98*/ /*50px;*/
+	width: 16.65%;/* 100 / 6 = 16.666667 */
 	padding: 6px 0 6px 0;
 	background-color: #eee;
 	color: #888;

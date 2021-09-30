@@ -22,11 +22,26 @@ export default class CController extends Controller {
 		});
 		this.models = {};
 	}
-	
+/*
+PT30S (30 seconds)
+PT5M (5 minutes)
+PT1H (1 hour)
+PT24H (24 hours)
+
+INTERVAL	TIMERANGE		NUMBER OF SAMPLES
+1 MIN		1 day (24H)		1440 (24 x 60)
+10 MINS		1 week			1008 (7 x 24 x 6)
+30 MINS 	1 month			1440 (30 x 48)
+4 HOURS		6 months		1080 (30 x 6 x 6)
+6 HOURS		1 year			1460 (4 x 365)
+*/
 	initialize() {
 		const BEFFECIFM = new BuildingEmissionFactorForElectricityConsumedInFinlandModel({
 			name:'BuildingEmissionFactorForElectricityConsumedInFinlandModel',
-			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/',
+			
+			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/',
+			interval: 'PT3M', // interval MUST BE defined for ROLLUP API
+			
 			cache_expiration_in_seconds:120,
 			timerange: { begin: 1, end: 0 },
 			access:'PUBLIC'
@@ -37,7 +52,10 @@ export default class CController extends Controller {
 		
 		const BEFOEPIFM = new BuildingEmissionFactorOfElectricityProductionInFinlandModel({
 			name:'BuildingEmissionFactorOfElectricityProductionInFinlandModel',
-			src:'/obixStore/store/Fingrid/emissionFactorOfElectricityProductionInFinland/query/',
+			
+			src:'/obixStore/store/Fingrid/emissionFactorOfElectricityProductionInFinland/',
+			interval: 'PT3M', // interval MUST BE defined for ROLLUP API
+			
 			cache_expiration_in_seconds:120,
 			timerange: { begin: 1, end: 0 },
 			access:'PUBLIC'

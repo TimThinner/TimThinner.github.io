@@ -30,7 +30,9 @@ export default class BController extends Controller {
 			// https://ba.vtt.fi/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/query/
 			
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
-			src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/query/',
+			src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/',
+			interval: 'PT1H', // interval MUST BE defined for ROLLUP API
+			
 			cache_expiration_in_seconds:60,
 			timerange: { begin: 10, end: 2 },
 			access:'PUBLIC'

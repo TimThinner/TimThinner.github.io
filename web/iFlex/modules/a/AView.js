@@ -48,7 +48,7 @@ export default class AView extends View {
 		const html = '<p class="fetching-info">Fetching interval is ' + 
 			this.controller.fetching_interval_in_seconds + 
 			' seconds. Cache expiration is ' + 
-			this.models['BuildingElectricityModel'].cache_expiration_in_seconds + ' seconds.</p>';
+			this.models['BuildingElectricityPL1Model'].cache_expiration_in_seconds + ' seconds.</p>';
 		$('#data-fetching-info').empty().append(html);
 	}
 	
@@ -65,26 +65,91 @@ export default class AView extends View {
 				}
 				this.render();
 				
-			} else if (options.model==='BuildingElectricityModel' && options.method==='fetched') {
-				
-				console.log('NOTIFY BuildingElectricityModel fetched!');
+			} else if (options.model==='BuildingElectricityPL1Model' && options.method==='fetched') {
+				console.log('NOTIFY BuildingElectricityPL1Model fetched!');
 				console.log(['options.status=',options.status]);
-				
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
-						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... BuildingElectricityView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['BuildingElectricityModel'].values;
+								if (s.name === 'L1') {
+									s.data = self.models['BuildingElectricityPL1Model'].values;
+								}
 							});
-							
 						} else {
 							console.log('fetched ..... render BuildingElectricityView()');
 							this.renderChart();
 						}
-						
+					} else { // Error in fetching.
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to controller forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							// Call View-class method to handle error.
+							this.forceLogout(this.FELID);
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#'+this.FELID);
+							// Maybe we shoud remove the spinner?
+							//$('#'+this.CHARTID).empty();
+						}
+					}
+				} else {
+					console.log('WTF?! rendered is NOT true BUT Model is FETCHED NOW... BuildingElectricityView RENDER?!?!');
+				}
+			} else if (options.model==='BuildingElectricityPL2Model' && options.method==='fetched') {
+				console.log('NOTIFY BuildingElectricityPL2Model fetched!');
+				console.log(['options.status=',options.status]);
+				if (this.rendered) {
+					if (options.status === 200 || options.status === '200') {
+						$('#'+this.FELID).empty();
+						if (typeof this.chart !== 'undefined') {
+							console.log('fetched ..... BuildingElectricityView CHART UPDATED!');
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								if (s.name === 'L2') {
+									s.data = self.models['BuildingElectricityPL2Model'].values;
+								}
+							});
+						} else {
+							console.log('fetched ..... render BuildingElectricityView()');
+							this.renderChart();
+						}
+					} else { // Error in fetching.
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to controller forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							// Call View-class method to handle error.
+							this.forceLogout(this.FELID);
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#'+this.FELID);
+							// Maybe we shoud remove the spinner?
+							//$('#'+this.CHARTID).empty();
+						}
+					}
+				} else {
+					console.log('WTF?! rendered is NOT true BUT Model is FETCHED NOW... BuildingElectricityView RENDER?!?!');
+				}
+			} else if (options.model==='BuildingElectricityPL3Model' && options.method==='fetched') {
+				console.log('NOTIFY BuildingElectricityPL3Model fetched!');
+				console.log(['options.status=',options.status]);
+				if (this.rendered) {
+					if (options.status === 200 || options.status === '200') {
+						$('#'+this.FELID).empty();
+						if (typeof this.chart !== 'undefined') {
+							console.log('fetched ..... BuildingElectricityView CHART UPDATED!');
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								if (s.name === 'L3') {
+									s.data = self.models['BuildingElectricityPL3Model'].values;
+								}
+							});
+						} else {
+							console.log('fetched ..... render BuildingElectricityView()');
+							this.renderChart();
+						}
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
 						if (options.status === 401) {
@@ -106,7 +171,6 @@ export default class AView extends View {
 		}
 	}
 	
-	
 	renderChart() {
 		const self = this;
 		
@@ -122,15 +186,15 @@ export default class AView extends View {
 			//self.chart.data = generateChartData();
 			
 			// {'timestamp':...,'value':...}
-			self.chart.data = self.models['BuildingElectricityModel'].values;
-			console.log(['self.chart.data=',self.chart.data]);
+			//self.chart.data = self.models['BuildingElectricityPL1Model'].values;
+			//console.log(['self.chart.data=',self.chart.data]);
 			
 			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
 			dateAxis.baseInterval = {
 				//"timeUnit": "minute",
 				//"count": 1
-				"timeUnit": "second",
-				"count": 5
+				"timeUnit": "minute",
+				"count": 3
 			};
 			dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
 			
@@ -138,16 +202,49 @@ export default class AView extends View {
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = "Value";//"Unique visitors";
 			
-			var series = self.chart.series.push(new am4charts.LineSeries());
-			series.dataFields.dateX = "timestamp"; // "date";
-			series.dataFields.valueY = "value"; // "visits";
-			series.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series.fillOpacity = 0.3;
+			var series1 = self.chart.series.push(new am4charts.LineSeries());
+			series1.data = self.models['BuildingElectricityPL1Model'].values;
+			series1.dataFields.dateX = "timestamp"; // "date";
+			series1.dataFields.valueY = "value"; // "visits";
+			series1.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
+			series1.fillOpacity = 0.2;
+			series1.name = 'L1';
+			series1.stroke = am4core.color("#ff0");
+			series1.fill = "#ff0";
+			
+			var series2 = self.chart.series.push(new am4charts.LineSeries());
+			series2.data = self.models['BuildingElectricityPL2Model'].values;
+			series2.dataFields.dateX = "timestamp"; // "date";
+			series2.dataFields.valueY = "value"; // "visits";
+			series2.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
+			series2.fillOpacity = 0.2;
+			series2.name = 'L2';
+			series2.stroke = am4core.color("#0f0");
+			series2.fill = "#0f0";
+			
+			var series3 = self.chart.series.push(new am4charts.LineSeries());
+			series3.data = self.models['BuildingElectricityPL3Model'].values;
+			series3.dataFields.dateX = "timestamp"; // "date";
+			series3.dataFields.valueY = "value"; // "visits";
+			series3.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
+			series3.fillOpacity = 0.2;
+			series3.name = 'L3';
+			series3.stroke = am4core.color("#f80");
+			series3.fill = "#f80";
+			
+			// Legend:
+			self.chart.legend = new am4charts.Legend();
+			self.chart.legend.useDefaultMarker = true;
+			var marker = self.chart.legend.markers.template.children.getIndex(0);
+			marker.cornerRadius(12, 12, 12, 12);
+			marker.strokeWidth = 2;
+			marker.strokeOpacity = 1;
+			marker.stroke = am4core.color("#000");
 			
 			self.chart.cursor = new am4charts.XYCursor();
 			self.chart.cursor.lineY.opacity = 0;
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series);
+			self.chart.scrollbarX.series.push(series1);
 			
 			dateAxis.start = 0.0;
 			dateAxis.end = 1.0;

@@ -1,5 +1,5 @@
 import Controller from '../common/Controller.js';
-import BuildingHeatingModel from  './BuildingHeatingModel.js';
+import { BuildingHeatingFE01Model, BuildingHeatingQE01Model }  from  './BuildingHeatingModels.js';
 import BView from './BView.js';
 
 export default class BController extends Controller {
@@ -13,7 +13,7 @@ export default class BController extends Controller {
 		super.remove();
 		// We must remove all models that were created here at the initialize-method.
 		Object.keys(this.models).forEach(key => {
-			if (key==='BuildingHeatingModel') {
+			if (key==='BuildingHeatingFE01Model' || key==='BuildingHeatingQE01Model') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -21,26 +21,36 @@ export default class BController extends Controller {
 		this.models = {};
 	}
 	
+	//https://ba.vtt.fi/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_FE01/
+	//https://ba.vtt.fi/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/
+	
+	// NOTE: host: 'ba.vtt.fi' is added at the backend
+	
 	initialize() {
-		const BHM = new BuildingHeatingModel({
-			name:'BuildingHeatingModel',
-			// https://ba.vtt.fi/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/
-			// https://ba.vtt.fi/obixStore/store/Fingrid/emissionFactorOfElectricityProductionInFinland/query/
-			// https://ba.vtt.fi/obixStore/store/NuukaOpenData/1752%20Malmitalo/Electricity/query/
-			// https://ba.vtt.fi/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/query/
-			
-			// NOTE: host: 'ba.vtt.fi' is added at the backend
-			src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/',
-			interval: 'PT1H', // interval MUST BE defined for ROLLUP API
-			
+		const BHFE01M = new BuildingHeatingFE01Model({
+			name:'BuildingHeatingFE01Model',
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_FE01/',
+			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
 			cache_expiration_in_seconds:60,
 			timerange: { begin: 10, end: 2 },
 			access:'PUBLIC'
 		});
+		BHFE01M.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add('BuildingHeatingFE01Model',BHFE01M);
+		this.models['BuildingHeatingFE01Model'] = BHFE01M;
 		
-		BHM.subscribe(this); // Now we will receive notifications from the UserModel.
-		this.master.modelRepo.add('BuildingHeatingModel',BHM);
-		this.models['BuildingHeatingModel'] = BHM;
+		
+		const BHQE01M = new BuildingHeatingQE01Model({
+			name:'BuildingHeatingQE01Model',
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
+			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
+			cache_expiration_in_seconds:60,
+			timerange: { begin: 10, end: 2 },
+			access:'PUBLIC'
+		});
+		BHQE01M.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add('BuildingHeatingQE01Model',BHQE01M);
+		this.models['BuildingHeatingQE01Model'] = BHQE01M;
 		
 		// These two lines MUST BE in every Controller.
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
@@ -92,7 +102,7 @@ export default class BController extends Controller {
 	init() {
 		this.initialize();
 		const interval = this.fetching_interval_in_seconds * 1000; // once per 60 seconds by default.
-		this.timers['BView'] = {timer:undefined, interval:interval, models:['BuildingHeatingModel']};
+		this.timers['BView'] = {timer:undefined, interval:interval, models:['BuildingHeatingFE01Model','BuildingHeatingQE01Model']};
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		//this.show(); // Try if this view can be shown right now!

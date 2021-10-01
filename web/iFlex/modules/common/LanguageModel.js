@@ -79,7 +79,7 @@ export default class LanguageModel {
 				'BUILDING_CO2_PRODUCTION':'Production',
 				'USER_HEATING_TITLE':'Apartment temperature and humidity',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.09.29'
+				'MENU_VERSION':'v 21.10.01'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -157,7 +157,7 @@ export default class LanguageModel {
 				'BUILDING_CO2_PRODUCTION':'Tuotanto',
 				'USER_HEATING_TITLE':'Asunnon lämpötila ja kosteus',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.09.29'
+				'MENU_VERSION':'v 21.10.01'
 			}
 		}
 	}

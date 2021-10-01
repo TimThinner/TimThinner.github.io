@@ -1,6 +1,10 @@
 import Controller from '../common/Controller.js';
-import BuildingElectricityModel from  './BuildingElectricityModel.js';
+import { BuildingElectricityPL1Model, BuildingElectricityPL2Model, BuildingElectricityPL3Model } from  './BuildingElectricityModels.js';
 import AView from './AView.js';
+
+//https://ba.vtt.fi/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L1/
+//https://ba.vtt.fi/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L2/
+//https://ba.vtt.fi/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L3/
 
 export default class AController extends Controller {
 	
@@ -13,7 +17,7 @@ export default class AController extends Controller {
 		super.remove();
 		// We must remove all models that were created here at the initialize-method.
 		Object.keys(this.models).forEach(key => {
-			if (key==='BuildingElectricityModel') {
+			if (key==='BuildingElectricityPL1Model' || key==='BuildingElectricityPL2Model' || key==='BuildingElectricityPL3Model') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -22,28 +26,45 @@ export default class AController extends Controller {
 	}
 	
 	initialize() {
-		
-		const BEM = new BuildingElectricityModel({
-			name:'BuildingElectricityModel',
-			// https://ba.vtt.fi/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/query/
-			// https://ba.vtt.fi/obixStore/store/Fingrid/emissionFactorOfElectricityProductionInFinland/query/
-			// https://ba.vtt.fi/obixStore/store/NuukaOpenData/1752%20Malmitalo/Electricity/query/
-			// https://ba.vtt.fi/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/query/
 			
-			// NOTE: host: 'ba.vtt.fi' is added at the backend
-			// We can select dynamically whether data fetcher uses "QUERY" or "ROLLUP" API:
-			// "query/" or "rollup/" is added at ObixModel depending on if "interval" is defined or not.
-			src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Electricity/',
-			interval: 'PT1H', // interval MUST BE defined for ROLLUP API
-			
+		// NOTE: host: 'ba.vtt.fi' is added at the backend
+		// We can select dynamically whether data fetcher uses "QUERY" or "ROLLUP" API:
+		// "query/" or "rollup/" is added at ObixModel depending on if "interval" is defined or not.
+		const BEPL1M = new BuildingElectricityPL1Model({
+			name:'BuildingElectricityPL1Model',
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L1/', // Power of L1
+			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
 			cache_expiration_in_seconds:60,
 			timerange: { begin: 10, end: 2 },
 			access:'PUBLIC'
 		});
+		BEPL1M.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add('BuildingElectricityPL1Model',BEPL1M);
+		this.models['BuildingElectricityPL1Model'] = BEPL1M;
 		
-		BEM.subscribe(this); // Now we will receive notifications from the UserModel.
-		this.master.modelRepo.add('BuildingElectricityModel',BEM);
-		this.models['BuildingElectricityModel'] = BEM;
+		const BEPL2M = new BuildingElectricityPL2Model({
+			name:'BuildingElectricityPL2Model',
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L2/', // Power of L2
+			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
+			cache_expiration_in_seconds:60,
+			timerange: { begin: 10, end: 2 },
+			access:'PUBLIC'
+		});
+		BEPL2M.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add('BuildingElectricityPL2Model',BEPL2M);
+		this.models['BuildingElectricityPL2Model'] = BEPL2M;
+		
+		const BEPL3M = new BuildingElectricityPL3Model({
+			name:'BuildingElectricityPL3Model',
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L3/', // Power of L3
+			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
+			cache_expiration_in_seconds:60,
+			timerange: { begin: 10, end: 2 },
+			access:'PUBLIC'
+		});
+		BEPL3M.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add('BuildingElectricityPL3Model',BEPL3M);
+		this.models['BuildingElectricityPL3Model'] = BEPL3M;
 		
 		// These two lines MUST BE in every Controller.
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
@@ -61,7 +82,7 @@ export default class AController extends Controller {
 	init() {
 		this.initialize();
 		const interval = this.fetching_interval_in_seconds * 1000; // once per 60 seconds by default.
-		this.timers['AView'] = {timer:undefined, interval:interval, models:['BuildingElectricityModel']};
+		this.timers['AView'] = {timer:undefined, interval:interval, models:['BuildingElectricityPL1Model','BuildingElectricityPL2Model','BuildingElectricityPL3Model']};
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		//this.show(); // Try if this view can be shown right now!

@@ -90,7 +90,6 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 		this.restartPollingInterval('CView');
 	}
 	
-	
 	clean() {
 		console.log('CController is now REALLY cleaned!');
 		this.remove();

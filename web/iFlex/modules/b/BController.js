@@ -21,6 +21,10 @@ export default class BController extends Controller {
 		this.models = {};
 	}
 	
+	refreshTimerange() {
+		this.restartPollingInterval('BView');
+	}
+	
 	//https://ba.vtt.fi/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_FE01/
 	//https://ba.vtt.fi/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/
 	

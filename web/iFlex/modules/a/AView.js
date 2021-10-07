@@ -18,7 +18,7 @@ export default class AView extends View {
 		this.CHARTID = 'building-electricity-chart';
 		this.selected = "b1d";
 		
-		this.sumbucket = {};
+		//this.sumbucket = {};
 		//this.sumhash = {};
 		this.values = [];
 	}
@@ -57,6 +57,63 @@ export default class AView extends View {
 		$('#data-fetching-info').empty().append(html);
 	}
 	
+	
+	calculateSum() {
+		
+		// CALL THIS FOR EVERY MODEL, BUT NOTE THAT SUM IS CALCULATED ONLY WHEN ALL 3 MODELS ARE READY AND FILLED WITH VALUES!
+		
+		if (this.models['BuildingElectricityPL1Model'].values.length > 0 && 
+			this.models['BuildingElectricityPL2Model'].values.length > 0 &&
+			this.models['BuildingElectricityPL3Model'].values.length > 0) {
+			
+			// Calculate the sum of models like before.
+			// and assign that to self.values array {timestamp => value}
+			const sumbucket = {};
+			this.values = [];
+			
+			this.models['BuildingElectricityPL1Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				const val = +v.value; // Converts string to number.
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['BuildingElectricityPL1Model'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['BuildingElectricityPL1Model'] = val; // update
+				}
+			});
+			
+			this.models['BuildingElectricityPL2Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				const val = +v.value; // Converts string to number.
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['BuildingElectricityPL2Model'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['BuildingElectricityPL2Model'] = val; // update
+				}
+			});
+			
+			this.models['BuildingElectricityPL3Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				const val = +v.value; // Converts string to number.
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['BuildingElectricityPL3Model'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['BuildingElectricityPL3Model'] = val; // update
+				}
+			});
+			
+			Object.keys(sumbucket).forEach(key => {
+				let sum = 0;
+				Object.keys(sumbucket[key]).forEach(m => {
+					sum += sumbucket[key][m];
+				});
+				this.values.push({timestamp: moment(key).toDate(), value:sum});
+			});
+			
+		}
+	}
 	/*
 		TODO:
 		Calculate the sum of all three models:
@@ -86,16 +143,17 @@ export default class AView extends View {
 		PT4H
 		PT6H
 	*/
+	sum(mname) {
 	
 	
 	
-	
-	sum(mname) { 
 		//console.log(['values = ',this.models['BuildingElectricityPL1Model'].values]);
 		//const begin = this.models['BuildingElectricityPL1Model'].timerange.begin;
 		//const interval = this.models['BuildingElectricityPL1Model'].interval;
 		//const start = moment().subtract(begin_1, 'days').format();
 		//console.log(['start_1=',start_1]); // For example: "2021-09-25T09:54:24+03:00"
+		
+		/*
 		this.models[mname].values.forEach(v=>{
 			const ds = moment(v.timestamp).format();
 			const val = +v.value; // Converts string to number.
@@ -115,6 +173,9 @@ export default class AView extends View {
 			});
 			this.values.push({timestamp: moment(key).toDate(), value:sum});
 		});
+		
+		
+		*/
 		
 		
 		
@@ -222,7 +283,7 @@ export default class AView extends View {
 		
 		$('#b1d').on('click',function() {
 			
-			self.sumbucket = {};
+			//self.sumbucket = {};
 			//self.sumhash = {};
 			
 			self.selected = "b1d";
@@ -233,7 +294,7 @@ export default class AView extends View {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=1 for model.name=',model.name]);
 					model.timerange = { begin: 1, end: 0 };
-					model.interval = 'PT3M';
+					model.interval = undefined;//'PT3M';
 					model.values = [];
 				}
 			});
@@ -243,7 +304,7 @@ export default class AView extends View {
 		
 		$('#b1w').on('click',function() {
 			
-			self.sumbucket = {};
+			//self.sumbucket = {};
 			//self.sumhash = {};
 			
 			self.selected = "b1w";
@@ -253,7 +314,7 @@ export default class AView extends View {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=2 for model.name=',model.name]);
 					model.timerange = { begin: 7, end: 0 };
-					model.interval = 'PT10M';
+					model.interval = 'PT20M';//'PT10M';
 					model.values = [];
 				}
 			});
@@ -263,7 +324,7 @@ export default class AView extends View {
 		
 		$('#b2w').on('click',function() {
 			
-			self.sumbucket = {};
+			//self.sumbucket = {};
 			//self.sumhash = {};
 			
 			self.selected = "b2w";
@@ -283,7 +344,7 @@ export default class AView extends View {
 		
 		$('#b1m').on('click',function() {
 			
-			self.sumbucket = {};
+			//self.sumbucket = {};
 			//self.sumhash = {};
 			
 			self.selected = "b1m";
@@ -303,7 +364,7 @@ export default class AView extends View {
 		
 		$('#b6m').on('click',function() {
 			
-			self.sumbucket = {};
+			//self.sumbucket = {};
 			//self.sumhash = {};
 			
 			self.selected = "b6m";
@@ -323,7 +384,7 @@ export default class AView extends View {
 		
 		$('#b1y').on('click',function() {
 			
-			self.sumbucket = {};
+			//self.sumbucket = {};
 			//self.sumhash = {};
 			
 			self.selected = "b1y";
@@ -363,6 +424,8 @@ export default class AView extends View {
 						console.log('BuildingElectricityPL1Model 11111111111111111');
 						//this.sum('BuildingElectricityPL1Model'); // recalculate sum
 						
+						this.calculateSum();
+						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... BuildingElectricityView CHART UPDATED!');
@@ -399,6 +462,8 @@ export default class AView extends View {
 						console.log('BuildingElectricityPL2Model 22222222222222222');
 						//this.sum('BuildingElectricityPL2Model'); // recalculate sum
 						
+						this.calculateSum();
+						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... BuildingElectricityView CHART UPDATED!');
@@ -434,6 +499,8 @@ export default class AView extends View {
 						
 						console.log('BuildingElectricityPL3Model 333333333333333333');
 						//this.sum('BuildingElectricityPL3Model'); // recalculate sum
+						
+						this.calculateSum();
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
@@ -502,7 +569,7 @@ export default class AView extends View {
 			series1.dataFields.dateX = "timestamp"; // "date";
 			series1.dataFields.valueY = "value"; // "visits";
 			series1.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series1.fillOpacity = 0.2;
+			series1.fillOpacity = 0;
 			series1.name = 'L1';
 			series1.stroke = am4core.color("#ff0");
 			series1.fill = "#ff0";
@@ -512,7 +579,7 @@ export default class AView extends View {
 			series2.dataFields.dateX = "timestamp"; // "date";
 			series2.dataFields.valueY = "value"; // "visits";
 			series2.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series2.fillOpacity = 0.2;
+			series2.fillOpacity = 0;
 			series2.name = 'L2';
 			series2.stroke = am4core.color("#0f0");
 			series2.fill = "#0f0";
@@ -522,7 +589,7 @@ export default class AView extends View {
 			series3.dataFields.dateX = "timestamp"; // "date";
 			series3.dataFields.valueY = "value"; // "visits";
 			series3.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series3.fillOpacity = 0.2;
+			series3.fillOpacity = 0;
 			series3.name = 'L3';
 			series3.stroke = am4core.color("#f80");
 			series3.fill = "#f80";
@@ -533,10 +600,10 @@ export default class AView extends View {
 			series4.dataFields.dateX = "timestamp"; // "date";
 			series4.dataFields.valueY = "value"; // "visits";
 			series4.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series4.fillOpacity = 0.2;
+			series4.fillOpacity = 0;
 			series4.name = 'SUM';
-			series4.stroke = am4core.color("#f00");
-			series4.fill = "#f00";
+			series4.stroke = am4core.color("#0ff");
+			series4.fill = "#0ff";
 			
 			
 			// Legend:
@@ -616,7 +683,9 @@ export default class AView extends View {
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
+			
 			console.log('AView => render models READY!!!!');
+			
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html = '<div class="error-message"><p>'+errorMessages+'</p></div>';
@@ -625,6 +694,8 @@ export default class AView extends View {
 					this.forceLogout(this.FELID);
 				}
 			} else {
+				
+				this.calculateSum();
 				this.renderChart();
 			}
 		} else {

@@ -174,7 +174,7 @@ export default class BView extends View {
 			series1.dataFields.dateX = "timestamp"; // "date";
 			series1.dataFields.valueY = "value"; // "visits";
 			series1.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series1.fillOpacity = 0.2;
+			series1.fillOpacity = 0;// 0.2;
 			series1.name = 'FE';
 			series1.stroke = am4core.color("#ff0");
 			series1.fill = "#ff0";
@@ -184,7 +184,7 @@ export default class BView extends View {
 			series2.dataFields.dateX = "timestamp"; // "date";
 			series2.dataFields.valueY = "value"; // "visits";
 			series2.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series2.fillOpacity = 0.2;
+			series2.fillOpacity = 0;
 			series2.name = 'QE';
 			series2.stroke = am4core.color("#0f0");
 			series2.fill = "#0f0";

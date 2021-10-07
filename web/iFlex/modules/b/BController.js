@@ -36,7 +36,7 @@ export default class BController extends Controller {
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_FE01/',
 			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
 			cache_expiration_in_seconds:60,
-			timerange: { begin: 10, end: 2 },
+			timerange: { begin: 1, end: 0 },
 			access:'PUBLIC'
 		});
 		BHFE01M.subscribe(this); // Now we will receive notifications from the UserModel.
@@ -49,7 +49,7 @@ export default class BController extends Controller {
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
 			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
 			cache_expiration_in_seconds:60,
-			timerange: { begin: 10, end: 2 },
+			timerange: { begin: 1, end: 0 },
 			access:'PUBLIC'
 		});
 		BHQE01M.subscribe(this); // Now we will receive notifications from the UserModel.

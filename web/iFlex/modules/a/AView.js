@@ -73,7 +73,10 @@ export default class AView extends View {
 			
 			this.models['BuildingElectricityPL1Model'].values.forEach(v=>{
 				const ds = moment(v.timestamp).format();
-				const val = +v.value; // Converts string to number.
+				let val = +v.value; // Converts string to number.
+				
+				if (val > 1000) { val = val/1000; }
+				
 				if (sumbucket.hasOwnProperty(ds)) {
 					sumbucket[ds]['BuildingElectricityPL1Model'] = val; // update
 				} else {
@@ -84,7 +87,10 @@ export default class AView extends View {
 			
 			this.models['BuildingElectricityPL2Model'].values.forEach(v=>{
 				const ds = moment(v.timestamp).format();
-				const val = +v.value; // Converts string to number.
+				let val = +v.value; // Converts string to number.
+				
+				if (val > 1000) { val = val/1000; }
+				
 				if (sumbucket.hasOwnProperty(ds)) {
 					sumbucket[ds]['BuildingElectricityPL2Model'] = val; // update
 				} else {
@@ -95,7 +101,10 @@ export default class AView extends View {
 			
 			this.models['BuildingElectricityPL3Model'].values.forEach(v=>{
 				const ds = moment(v.timestamp).format();
-				const val = +v.value; // Converts string to number.
+				let val = +v.value; // Converts string to number.
+				
+				if (val > 1000) { val = val/1000; }
+				
 				if (sumbucket.hasOwnProperty(ds)) {
 					sumbucket[ds]['BuildingElectricityPL3Model'] = val; // update
 				} else {
@@ -314,7 +323,7 @@ export default class AView extends View {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=2 for model.name=',model.name]);
 					model.timerange = { begin: 7, end: 0 };
-					model.interval = 'PT20M';//'PT10M';
+					model.interval = undefined; //'PT20M';//'PT10M';
 					model.values = [];
 				}
 			});
@@ -334,7 +343,7 @@ export default class AView extends View {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=3 for model.name=',model.name]);
 					model.timerange = { begin: 14, end: 0 };
-					model.interval = 'PT20M';
+					model.interval = undefined; //'PT20M';
 					model.values = [];
 				}
 			});
@@ -430,11 +439,20 @@ export default class AView extends View {
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... BuildingElectricityView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								/*
 								if (s.name === 'L1') {
 									s.data = self.models['BuildingElectricityPL1Model'].values;
 								} else if (s.name === 'SUM') {
 									s.data = self.values;
+								}*/
+								
+								
+								
+								if (s.name === 'SUM') {
+									s.data = self.values;
 								}
+								
+								
 							});
 						} else {
 							console.log('fetched ..... render BuildingElectricityView()');
@@ -468,11 +486,17 @@ export default class AView extends View {
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... BuildingElectricityView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								/*
 								if (s.name === 'L2') {
 									s.data = self.models['BuildingElectricityPL2Model'].values;
 								} else if (s.name === 'SUM') {
 									s.data = self.values;
+								}*/
+								
+								if (s.name === 'SUM') {
+									s.data = self.values;
 								}
+								
 							});
 						} else {
 							console.log('fetched ..... render BuildingElectricityView()');
@@ -506,11 +530,17 @@ export default class AView extends View {
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... BuildingElectricityView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								/*
 								if (s.name === 'L3') {
 									s.data = self.models['BuildingElectricityPL3Model'].values;
 								} else if (s.name === 'SUM') {
 									s.data = self.values;
+								}*/
+								
+								if (s.name === 'SUM') {
+									s.data = self.values;
 								}
+								
 							});
 						} else {
 							console.log('fetched ..... render BuildingElectricityView()');
@@ -535,6 +565,12 @@ export default class AView extends View {
 	
 	renderChart() {
 		const self = this;
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_power = LM['translation'][sel]['BUILDING_POWER'];
+		const localized_string_power_axis = LM['translation'][sel]['BUILDING_POWER_AXIS_LABEL'];
+		const localized_string_power_legend = LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -562,8 +598,8 @@ export default class AView extends View {
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
-			valueAxis.title.text = "Value";
-			
+			valueAxis.title.text = localized_string_power_axis;
+			/*
 			var series1 = self.chart.series.push(new am4charts.LineSeries());
 			series1.data = self.models['BuildingElectricityPL1Model'].values;
 			series1.dataFields.dateX = "timestamp"; // "date";
@@ -593,17 +629,19 @@ export default class AView extends View {
 			series3.name = 'L3';
 			series3.stroke = am4core.color("#f80");
 			series3.fill = "#f80";
-			
+			*/
 			
 			var series4 = self.chart.series.push(new am4charts.LineSeries());
 			series4.data = self.values;
 			series4.dataFields.dateX = "timestamp"; // "date";
 			series4.dataFields.valueY = "value"; // "visits";
-			series4.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
+			series4.tooltipText = localized_string_power + ": [bold]{valueY}[/] kW";
 			series4.fillOpacity = 0;
 			series4.name = 'SUM';
+			series4.customname = localized_string_power_legend;
 			series4.stroke = am4core.color("#0ff");
 			series4.fill = "#0ff";
+			series4.legendSettings.labelText = "{customname}";
 			
 			
 			// Legend:
@@ -618,7 +656,7 @@ export default class AView extends View {
 			self.chart.cursor = new am4charts.XYCursor();
 			self.chart.cursor.lineY.opacity = 0;
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series1);
+			self.chart.scrollbarX.series.push(series4);
 			
 			dateAxis.start = 0.0;
 			dateAxis.end = 1.0;

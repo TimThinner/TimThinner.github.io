@@ -45,10 +45,17 @@ export default class BView extends View {
 	}
 	
 	showInfo() {
+		/*
 		const html = '<p class="fetching-info">Fetching interval is ' + 
 			this.controller.fetching_interval_in_seconds + 
 			' seconds. Cache expiration is ' + 
 			this.models['BuildingHeatingFE01Model'].cache_expiration_in_seconds + ' seconds.</p>';
+		$('#data-fetching-info').empty().append(html);*/
+		
+		const html = '<p class="fetching-info">Fetching interval is ' + 
+			this.controller.fetching_interval_in_seconds + 
+			' seconds. Cache expiration is ' + 
+			this.models['BuildingHeatingQE01Model'].cache_expiration_in_seconds + ' seconds.</p>';
 		$('#data-fetching-info').empty().append(html);
 	}
 	
@@ -63,7 +70,7 @@ export default class BView extends View {
 					this.chart = undefined;
 				}
 				this.render();
-				
+			/*
 			} else if (options.model==='BuildingHeatingFE01Model' && options.method==='fetched') {
 				console.log('NOTIFY BuildingHeatingFE01Model fetched!');
 				console.log(['options.status=',options.status]);
@@ -84,21 +91,13 @@ export default class BView extends View {
 						}
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to controller forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							// Call View-class method to handle error.
-							this.forceLogout(this.FELID);
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-							// Maybe we shoud remove the spinner?
-							//$('#'+this.CHARTID).empty();
-						}
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#'+this.FELID);
 					}
 				} else {
 					console.log('WTF?! rendered is NOT true BUT Model is FETCHED NOW... BuildingHeatingView RENDER?!?!');
 				}
+			*/
 			} else if (options.model==='BuildingHeatingQE01Model' && options.method==='fetched') {
 				console.log('NOTIFY BuildingHeatingQE01Model fetched!');
 				console.log(['options.status=',options.status]);
@@ -119,17 +118,8 @@ export default class BView extends View {
 						}
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to controller forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							// Call View-class method to handle error.
-							this.forceLogout(this.FELID);
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-							// Maybe we shoud remove the spinner?
-							//$('#'+this.CHARTID).empty();
-						}
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#'+this.FELID);
 					}
 				} else {
 					console.log('WTF?! rendered is NOT true BUT Model is FETCHED NOW... BuildingHeatingView RENDER?!?!');
@@ -140,6 +130,13 @@ export default class BView extends View {
 	
 	renderChart() {
 		const self = this;
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		
+		const localized_string_power = LM['translation'][sel]['BUILDING_POWER'];
+		const localized_string_power_axis = LM['translation'][sel]['BUILDING_POWER_AXIS_LABEL'];
+		const localized_string_power_legend = LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -167,8 +164,8 @@ export default class BView extends View {
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
-			valueAxis.title.text = "Value";//"Unique visitors";
-			
+			valueAxis.title.text = localized_string_power_axis;
+			/*
 			var series1 = self.chart.series.push(new am4charts.LineSeries());
 			series1.data = self.models['BuildingHeatingFE01Model'].values;
 			series1.dataFields.dateX = "timestamp"; // "date";
@@ -177,17 +174,19 @@ export default class BView extends View {
 			series1.fillOpacity = 0;// 0.2;
 			series1.name = 'FE';
 			series1.stroke = am4core.color("#ff0");
-			series1.fill = "#ff0";
+			series1.fill = "#ff0";*/
 			
 			var series2 = self.chart.series.push(new am4charts.LineSeries());
 			series2.data = self.models['BuildingHeatingQE01Model'].values;
 			series2.dataFields.dateX = "timestamp"; // "date";
 			series2.dataFields.valueY = "value"; // "visits";
-			series2.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
+			series2.tooltipText = localized_string_power + ": [bold]{valueY}[/] kW"; // NOTE: [/] is a closing bracket for [bold]
 			series2.fillOpacity = 0;
 			series2.name = 'QE';
+			series2.customname = localized_string_power_legend;
 			series2.stroke = am4core.color("#0f0");
 			series2.fill = "#0f0";
+			series2.legendSettings.labelText = "{customname}";
 			
 			// Legend:
 			self.chart.legend = new am4charts.Legend();
@@ -198,10 +197,11 @@ export default class BView extends View {
 			marker.strokeOpacity = 1;
 			marker.stroke = am4core.color("#000");
 			
+			
 			self.chart.cursor = new am4charts.XYCursor();
 			self.chart.cursor.lineY.opacity = 0;
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series1);
+			self.chart.scrollbarX.series.push(series2);
 			
 			dateAxis.start = 0.0;
 			dateAxis.end = 1.0;

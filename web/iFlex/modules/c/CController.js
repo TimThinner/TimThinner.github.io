@@ -1,6 +1,6 @@
 import Controller from '../common/Controller.js';
 import BuildingEmissionFactorForElectricityConsumedInFinlandModel from  './BuildingEmissionFactorForElectricityConsumedInFinlandModel.js';
-import BuildingEmissionFactorOfElectricityProductionInFinlandModel from './BuildingEmissionFactorOfElectricityProductionInFinlandModel.js';
+//import BuildingEmissionFactorOfElectricityProductionInFinlandModel from './BuildingEmissionFactorOfElectricityProductionInFinlandModel.js';
 import CView from './CView.js';
 
 export default class CController extends Controller {
@@ -14,8 +14,9 @@ export default class CController extends Controller {
 		super.remove();
 		// We must remove all models that were created here at the initialize-method.
 		Object.keys(this.models).forEach(key => {
-			if (key==='BuildingEmissionFactorForElectricityConsumedInFinlandModel' ||
-				key==='BuildingEmissionFactorOfElectricityProductionInFinlandModel') {
+			
+			if (key==='BuildingEmissionFactorForElectricityConsumedInFinlandModel') { // ||
+				//key==='BuildingEmissionFactorOfElectricityProductionInFinlandModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -40,7 +41,7 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 			name:'BuildingEmissionFactorForElectricityConsumedInFinlandModel',
 			
 			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/',
-			interval: 'PT3M', // interval MUST BE defined for ROLLUP API
+			//interval: 'PT3M', // interval MUST BE defined for ROLLUP API
 			
 			cache_expiration_in_seconds:120,
 			timerange: { begin: 1, end: 0 },
@@ -50,6 +51,24 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 		this.master.modelRepo.add('BuildingEmissionFactorForElectricityConsumedInFinlandModel',BEFFECIFM);
 		this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'] = BEFFECIFM;
 		
+		
+		
+		// Get models for calculating Electricity consumption.
+		this.models['BuildingElectricityPL1Model'] = this.master.modelRepo.get('BuildingElectricityPL1Model');
+		this.models['BuildingElectricityPL1Model'].subscribe(this);
+		
+		this.models['BuildingElectricityPL2Model'] = this.master.modelRepo.get('BuildingElectricityPL2Model');
+		this.models['BuildingElectricityPL2Model'].subscribe(this);
+		
+		this.models['BuildingElectricityPL3Model'] = this.master.modelRepo.get('BuildingElectricityPL3Model');
+		this.models['BuildingElectricityPL3Model'].subscribe(this);
+		
+		// and the Heating ...
+		this.models['BuildingHeatingQE01Model'] = this.master.modelRepo.get('BuildingHeatingQE01Model');
+		this.models['BuildingHeatingQE01Model'].subscribe(this);
+		
+		
+		/*
 		const BEFOEPIFM = new BuildingEmissionFactorOfElectricityProductionInFinlandModel({
 			name:'BuildingEmissionFactorOfElectricityProductionInFinlandModel',
 			
@@ -63,7 +82,7 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 		BEFOEPIFM.subscribe(this); // Now we will receive notifications from the UserModel.
 		this.master.modelRepo.add('BuildingEmissionFactorOfElectricityProductionInFinlandModel',BEFOEPIFM);
 		this.models['BuildingEmissionFactorOfElectricityProductionInFinlandModel'] = BEFOEPIFM;
-		
+		*/
 		
 		// These two lines MUST BE in every Controller.
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
@@ -124,7 +143,11 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 			interval:interval,
 			models:[
 				'BuildingEmissionFactorForElectricityConsumedInFinlandModel',
-				'BuildingEmissionFactorOfElectricityProductionInFinlandModel'
+				'BuildingElectricityPL1Model',
+				'BuildingElectricityPL2Model',
+				'BuildingElectricityPL3Model',
+				'BuildingHeatingQE01Model'
+				//'BuildingEmissionFactorOfElectricityProductionInFinlandModel'
 			]
 		};
 	}

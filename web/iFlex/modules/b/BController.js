@@ -1,5 +1,6 @@
 import Controller from '../common/Controller.js';
-import { BuildingHeatingFE01Model, BuildingHeatingQE01Model }  from  './BuildingHeatingModels.js';
+//import { BuildingHeatingFE01Model, BuildingHeatingQE01Model }  from  './BuildingHeatingModels.js';
+import { BuildingHeatingQE01Model }  from  './BuildingHeatingModels.js';
 import BView from './BView.js';
 
 export default class BController extends Controller {
@@ -13,7 +14,8 @@ export default class BController extends Controller {
 		super.remove();
 		// We must remove all models that were created here at the initialize-method.
 		Object.keys(this.models).forEach(key => {
-			if (key==='BuildingHeatingFE01Model' || key==='BuildingHeatingQE01Model') {
+			//if (key==='BuildingHeatingFE01Model' || key==='BuildingHeatingQE01Model') {
+			if (key==='BuildingHeatingQE01Model') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -31,6 +33,7 @@ export default class BController extends Controller {
 	// NOTE: host: 'ba.vtt.fi' is added at the backend
 	
 	initialize() {
+		/*
 		const BHFE01M = new BuildingHeatingFE01Model({
 			name:'BuildingHeatingFE01Model',
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_FE01/',
@@ -43,6 +46,7 @@ export default class BController extends Controller {
 		this.master.modelRepo.add('BuildingHeatingFE01Model',BHFE01M);
 		this.models['BuildingHeatingFE01Model'] = BHFE01M;
 		
+		*/
 		
 		const BHQE01M = new BuildingHeatingQE01Model({
 			name:'BuildingHeatingQE01Model',
@@ -106,7 +110,9 @@ export default class BController extends Controller {
 	init() {
 		this.initialize();
 		const interval = this.fetching_interval_in_seconds * 1000; // once per 60 seconds by default.
-		this.timers['BView'] = {timer:undefined, interval:interval, models:['BuildingHeatingFE01Model','BuildingHeatingQE01Model']};
+		//this.timers['BView'] = {timer:undefined, interval:interval, models:['BuildingHeatingFE01Model','BuildingHeatingQE01Model']};
+		this.timers['BView'] = {timer:undefined, interval:interval, models:['BuildingHeatingQE01Model']};
+		
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		//this.show(); // Try if this view can be shown right now!

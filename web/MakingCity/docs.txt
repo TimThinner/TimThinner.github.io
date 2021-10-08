@@ -635,7 +635,3 @@ Heating                     1h  24h  7d  1m
 Lisäksi toleranssit sekä ylöspäin että alaspäin %-arvo tai absoluuttinen arvo.
 
 
-
-
-
-

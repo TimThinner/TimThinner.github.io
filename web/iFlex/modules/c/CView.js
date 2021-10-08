@@ -17,6 +17,9 @@ export default class CView extends View {
 		this.FELID = 'building-emissions-view-failure';
 		this.CHARTID = 'building-emissions-chart';
 		this.selected = "b1d";
+		
+		this.calculated_EL_emissions = [];
+		this.calculated_DH_emissions = [];
 	}
 	
 	show() {
@@ -109,7 +112,7 @@ export default class CView extends View {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=1 for model.name=',model.name]);
 					model.timerange = { begin: 1, end: 0 };
-					model.interval = 'PT3M';
+					model.interval = undefined;//'PT3M';
 				}
 			});
 			self.controller.refreshTimerange();
@@ -124,7 +127,7 @@ export default class CView extends View {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=2 for model.name=',model.name]);
 					model.timerange = { begin: 7, end: 0 };
-					model.interval = 'PT10M';
+					model.interval = undefined; //'PT10M';
 				}
 			});
 			self.controller.refreshTimerange();
@@ -139,7 +142,7 @@ export default class CView extends View {
 					const model = self.controller.models[key];
 					console.log(['SET TIMERANGE=3 for model.name=',model.name]);
 					model.timerange = { begin: 14, end: 0 };
-					model.interval = 'PT20M';
+					model.interval = undefined; //PT20M';
 				}
 			});
 			self.controller.refreshTimerange();
@@ -192,6 +195,90 @@ export default class CView extends View {
 		});
 	}
 	
+	calculate_DH_Sum() {
+		
+		
+		if (this.models['BuildingHeatingQE01Model'].values.length > 0) {
+			
+			this.calculated_DH_emissions = [];
+			
+			this.models['BuildingHeatingQE01Model'].values.forEach(v=>{
+				const val = v.value * 220; // Converts string to number.
+				this.calculated_DH_emissions.push({timestamp: moment(v.timestamp).toDate(), value:val});
+			});
+		}
+	}
+	
+	calculateSum() {
+		
+		// CALL THIS FOR EVERY MODEL, BUT NOTE THAT SUM IS CALCULATED ONLY WHEN ALL 3 MODELS ARE READY AND FILLED WITH VALUES!
+		
+		if (this.models['BuildingElectricityPL1Model'].values.length > 0 && 
+			this.models['BuildingElectricityPL2Model'].values.length > 0 &&
+			this.models['BuildingElectricityPL3Model'].values.length > 0) {
+			
+			// Calculate the sum of models like before.
+			// and assign that to self.values array {timestamp => value}
+			const sumbucket = {};
+			this.calculated_EL_emissions = [];
+			
+			this.models['BuildingElectricityPL1Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				let val = +v.value; // Converts string to number.
+				
+				if (val > 1000) { val = val/1000; }
+				
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['BuildingElectricityPL1Model'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['BuildingElectricityPL1Model'] = val; // update
+				}
+			});
+			
+			this.models['BuildingElectricityPL2Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				let val = +v.value; // Converts string to number.
+				
+				if (val > 1000) { val = val/1000; }
+				
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['BuildingElectricityPL2Model'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['BuildingElectricityPL2Model'] = val; // update
+				}
+			});
+			
+			this.models['BuildingElectricityPL3Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				let val = +v.value; // Converts string to number.
+				
+				if (val > 1000) { val = val/1000; }
+				
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['BuildingElectricityPL3Model'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['BuildingElectricityPL3Model'] = val; // update
+				}
+			});
+			
+			Object.keys(sumbucket).forEach(key => {
+				let sum = 0;
+				Object.keys(sumbucket[key]).forEach(m => {
+					sum += sumbucket[key][m] * 100;
+				});
+				
+				
+				
+				this.calculated_EL_emissions.push({timestamp: moment(key).toDate(), value:sum});
+			});
+			
+		}
+	}
+	
+	
 	notify(options) {
 		const self = this;
 		
@@ -206,19 +293,19 @@ export default class CView extends View {
 				
 			} else if (options.model==='BuildingEmissionFactorForElectricityConsumedInFinlandModel' && options.method==='fetched') {
 				
+				
+				// series1.name = "ELEMISSIONS";
+				//series2.name = "DHEMISSIONS";
+				
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
+						/*
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							//console.log('fetched ..... CView CHART UPDATED!');
-							
-							const LM = this.controller.master.modelRepo.get('LanguageModel');
-							const sel = LM.selected;
-							const localized_string_consumption = LM['translation'][sel]['BUILDING_CO2_CONSUMPTION'];
-							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === localized_string_consumption) {
+								if (s.name === 'ELEMISSIONS') {
 									s.data = self.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
 								}
 							});
@@ -226,6 +313,7 @@ export default class CView extends View {
 							//console.log('fetched ..... render CView()');
 							this.renderChart();
 						}
+						*/
 						
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
@@ -244,48 +332,141 @@ export default class CView extends View {
 				} else { // This should never be the case, but render anyway if we get here.
 					this.render();
 				}
-				
-			} else if (options.model==='BuildingEmissionFactorOfElectricityProductionInFinlandModel' && options.method==='fetched') {
-				
+			/*
+				'BuildingElectricityPL1Model',
+				'BuildingElectricityPL2Model',
+				'BuildingElectricityPL3Model',
+				'BuildingHeatingQE01Model'
+			*/
+			
+			} else if (options.model==='BuildingElectricityPL1Model' && options.method==='fetched') {
+				console.log('NOTIFY BuildingElectricityPL1Model fetched!');
+				console.log(['options.status=',options.status]);
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
+						this.calculateSum();
+						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
-							//console.log('fetched ..... CView CHART UPDATED!');
-							
-							const LM = this.controller.master.modelRepo.get('LanguageModel');
-							const sel = LM.selected;
-							const localized_string_production = LM['translation'][sel]['BUILDING_CO2_PRODUCTION'];
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								
+								//if (s.name === 'L1') {
+								//	s.data = self.models['BuildingElectricityPL1Model'].values;
+								//} else if (s.name === 'SUM') {
+								//	s.data = self.values;
+								//}
+								if (s.name === 'ELEMISSIONS') {
+									s.data = self.calculated_EL_emissions;
+								}
+								
+							});
+						}
+						
+						
+						
+					} else { // Error in fetching.
+						$('#'+this.FELID).empty();
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#'+this.FELID);
+					}
+				}
+			} else if (options.model==='BuildingElectricityPL2Model' && options.method==='fetched') {
+				if (this.rendered) {
+					if (options.status === 200 || options.status === '200') {
+						
+						this.calculateSum();
+						
+						$('#'+this.FELID).empty();
+						if (typeof this.chart !== 'undefined') {
 							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === localized_string_production) {
-									s.data = self.models['BuildingEmissionFactorOfElectricityProductionInFinlandModel'].values;
+								
+								//if (s.name === 'L2') {
+								//	s.data = self.models['BuildingElectricityPL2Model'].values;
+								//} else if (s.name === 'SUM') {
+								//	s.data = self.values;
+								//}
+								
+								if (s.name === 'ELEMISSIONS') {
+									s.data = self.calculated_EL_emissions;
 								}
+								
 							});
 						} else {
-							//console.log('fetched ..... render CView()');
+							
+							this.renderChart();
+						}
+					} else { // Error in fetching.
+						$('#'+this.FELID).empty();
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#'+this.FELID);
+					}
+				}
+			} else if (options.model==='BuildingElectricityPL3Model' && options.method==='fetched') {
+				if (this.rendered) {
+					if (options.status === 200 || options.status === '200') {
+						
+						this.calculateSum();
+						
+						$('#'+this.FELID).empty();
+						if (typeof this.chart !== 'undefined') {
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								
+								//if (s.name === 'L3') {
+								//	s.data = self.models['BuildingElectricityPL3Model'].values;
+								//} else if (s.name === 'SUM') {
+								//	s.data = self.values;
+								//}
+								
+								if (s.name === 'ELEMISSIONS') {
+									s.data = self.calculated_EL_emissions;
+								}
+								
+							});
+						} else {
+							this.renderChart();
+						}
+					} else { // Error in fetching.
+						$('#'+this.FELID).empty();
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#'+this.FELID);
+					}
+				}
+				
+				
+				
+			} else if (options.model==='BuildingHeatingQE01Model' && options.method==='fetched') {
+				console.log('NOTIFY BuildingHeatingQE01Model fetched!');
+				console.log(['options.status=',options.status]);
+				if (this.rendered) {
+					if (options.status === 200 || options.status === '200') {
+						
+						this.calculate_DH_Sum();
+						
+						$('#'+this.FELID).empty();
+						if (typeof this.chart !== 'undefined') {
+							
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								if (s.name === 'DHEMISSIONS') {
+									s.data = self.calculated_DH_emissions;
+								}
+							});
+							
+						} else {
 							this.renderChart();
 						}
 						
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to controller forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							// Call View-class method to handle error.
-							this.forceLogout(this.FELID);
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-							// Maybe we shoud remove the spinner?
-							//$('#'+this.CHARTID).empty();
-						}
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#'+this.FELID);
 					}
-				} else { // This should never be the case, but render anyway if we get here.
-					this.render();
 				}
 			}
+			
+			
+			
 		}
 	}
 	
@@ -294,8 +475,9 @@ export default class CView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_consumption = LM['translation'][sel]['BUILDING_CO2_CONSUMPTION'];
-		const localized_string_production = LM['translation'][sel]['BUILDING_CO2_PRODUCTION'];
+		const localized_string_emission = LM['translation'][sel]['BUILDING_EMISSION'];
+		const localized_string_emission_axis = LM['translation'][sel]['BUILDING_EMISSION_AXIS_LABEL'];
+		const localized_string_emission_legend = LM['translation'][sel]['BUILDING_EMISSION_LEGEND'];
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -323,26 +505,28 @@ export default class CView extends View {
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
-			valueAxis.title.text = "Value";//"Unique visitors";
+			valueAxis.title.text = localized_string_emission_axis;
 			valueAxis.min = 0;
 			
 			var series1 = self.chart.series.push(new am4charts.LineSeries());
 			series1.data = self.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
 			series1.dataFields.dateX = "timestamp"; // "date";
 			series1.dataFields.valueY = "value"; // "visits";
-			series1.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
+			series1.tooltipText = localized_string_emission + ": [bold]{valueY}[/] gCO2/h";
 			series1.fillOpacity = 0.2;
-			series1.name = localized_string_consumption;
+			series1.name = "ELEMISSIONS";
+			series1.customname = localized_string_emission_legend;
 			series1.stroke = am4core.color("#ff0");
 			series1.fill = "#ff0";
+			series1.legendSettings.labelText = "{customname}";
 			
 			var series2 = self.chart.series.push(new am4charts.LineSeries());
-			series2.data = self.models['BuildingEmissionFactorOfElectricityProductionInFinlandModel'].values;
+			series2.data = self.calculated_DH_emissions; 
 			series2.dataFields.dateX = "timestamp"; // "date";
 			series2.dataFields.valueY = "value"; // "visits";
 			series2.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
 			series2.fillOpacity = 0.2;
-			series2.name = localized_string_production;
+			series2.name = "DHEMISSIONS";//localized_string_production;
 			series2.stroke = am4core.color("#0f0");
 			series2.fill = "#0f0";
 			
@@ -414,7 +598,10 @@ export default class CView extends View {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		this.setTimerangeHandlers(['BuildingEmissionFactorForElectricityConsumedInFinlandModel','BuildingEmissionFactorOfElectricityProductionInFinlandModel']);
+		//this.setTimerangeHandlers(['BuildingEmissionFactorForElectricityConsumedInFinlandModel','BuildingEmissionFactorOfElectricityProductionInFinlandModel']);
+		this.setTimerangeHandlers(['BuildingEmissionFactorForElectricityConsumedInFinlandModel',
+				'BuildingElectricityPL1Model','BuildingElectricityPL2Model','BuildingElectricityPL3Model',
+				'BuildingHeatingQE01Model']);
 		
 		$("#back").on('click', function() {
 			self.models['MenuModel'].setSelected('menu');

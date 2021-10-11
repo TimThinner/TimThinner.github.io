@@ -72,6 +72,151 @@ export default class CView extends View {
 		$('#'+this.selected).addClass("selected");
 	}
 	
+	//return y0*(x1-x) + y1*(x-x0) / (x1-x0);
+	
+	linearInterpolation(x, x0, y0, x1, y1) {
+		var y = y0*(x1-x) + y1*(x-x0) / (x1-x0);
+		return y;
+		//var a = (y1 - y0) / (x1 - x0)
+		//var b = -a * x0 + y0
+		//return a * x + b
+	}
+	
+	/*
+	
+	Factor is sampled with 3 mins interval.
+	Values can be found in here:
+	
+	this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
+	
+	
+	Electricity is sampled with 15 mins interval.
+	The sum power can be calculated from 3 components:
+	
+	this.models['BuildingElectricityPL1Model'].values
+	this.models['BuildingElectricityPL2Model'].values
+	this.models['BuildingElectricityPL3Model'].values
+	
+	
+		const start = moment().subtract(this.timerange.begin, 'days').format();
+		const end = moment().subtract(this.timerange.end, 'days').format();
+		
+	
+	*/
+	resample() { //start, end, interval_in_mins) {
+		let average = 0;
+		if (this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.length > 0) {
+			// start and end are handled in minute accuracy.
+			const interval_in_mins = 1;
+			
+			
+			const trb = this.models['BuildingElectricityPL1Model'].timerange.begin;
+			const tre = this.models['BuildingElectricityPL1Model'].timerange.end
+			
+			const start = moment().subtract(trb, 'days').format();
+			const end = moment().subtract(tre, 'days').format();
+			
+			let start_m = moment(start);
+			start_m.milliseconds(0);
+			start_m.seconds(0);
+			
+			let end_m = moment(end);
+			end_m.milliseconds(0);
+			end_m.seconds(0);
+			
+			let minute_hash = {};
+			
+			// First initialize hash with empty objects for each minute.
+			while (end_m.isAfter(start_m)) {
+				const ds = start_m.format();
+				minute_hash[ds] = {}; // create new entry
+				start_m.add(interval_in_mins,'minutes');
+			}
+			
+			let sum = 0;
+			let count = 0;
+			
+			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.forEach(v=>{
+				const m = moment(v.timestamp);
+				m.milliseconds(0);
+				m.seconds(0);
+				const ds = m.format();
+				let val = +v.value; // Converts string to number.
+				if (minute_hash.hasOwnProperty(ds)) {
+					minute_hash[ds]['BuildingEmissionFactorForElectricityConsumedInFinlandModel'] = val;
+					sum += val;
+					count++;
+				} else {
+					console.log(['NOT IN HASH ds=',ds]);
+				}
+			});
+			console.log(['minute_hash=',minute_hash,' count=',count]);
+			if (count > 0) {
+				average = sum/count;
+				console.log(['average=',average]);
+			}
+		}
+		return average;
+		
+		/*
+		
+		this.models['BuildingElectricityPL1Model'].values.forEach(v=>{
+			const m = moment(v.timestamp);
+			m.milliseconds(0);
+			m.seconds(0);
+			const ds = m.format();
+			let val = +v.value; // Converts string to number.
+			if (val > 1000) { val = val/1000; }
+			if (minute_hash.hasOwnProperty(ds)) {
+				minute_hash[ds]['BuildingElectricityPL1Model'] = val; // update
+			}
+		});
+		this.models['BuildingElectricityPL2Model'].values.forEach(v=>{
+			const m = moment(v.timestamp);
+			m.milliseconds(0);
+			m.seconds(0);
+			const ds = m.format();
+			let val = +v.value; // Converts string to number.
+			if (val > 1000) { val = val/1000; }
+			
+			if (minute_hash.hasOwnProperty(ds)) {
+				minute_hash[ds]['BuildingElectricityPL2Model'] = val; // update
+			}
+		});
+		this.models['BuildingElectricityPL3Model'].values.forEach(v=>{
+			const m = moment(v.timestamp);
+			m.milliseconds(0);
+			m.seconds(0);
+			const ds = m.format();
+			let val = +v.value; // Converts string to number.
+			if (val > 1000) { val = val/1000; }
+			if (minute_hash.hasOwnProperty(ds)) {
+				minute_hash[ds]['BuildingElectricityPL3Model'] = val; // update
+			}
+		});
+		*/
+		/*
+		let cc=0;
+		let keyz = [];
+		Object.keys(minute_hash).forEach(key => {
+			
+			//if (typeof minute_hash[key]['BuildingEmissionFactorForElectricityConsumedInFinlandModel'] !== 'undefined' &&
+			if (typeof minute_hash[key]['BuildingElectricityPL1Model'] !== 'undefined' &&
+				typeof minute_hash[key]['BuildingElectricityPL2Model'] !== 'undefined' &&
+				typeof minute_hash[key]['BuildingElectricityPL3Model'] !== 'undefined') {
+				
+				cc++;
+			} else {
+				keyz.push(key);
+			}
+		});
+		console.log('#########################################################');
+		console.log(['cc=',cc, ' keyz=', keyz]);
+		*/
+		
+	}
+	
+	
 	/*
 		Timerange is set with buttons.
 		New param is an array of models 
@@ -264,17 +409,18 @@ export default class CView extends View {
 				}
 			});
 			
+			let factor_average = this.resample();
+			if (factor_average === 0) { 
+				factor_average = 100;
+			}
+			
 			Object.keys(sumbucket).forEach(key => {
 				let sum = 0;
 				Object.keys(sumbucket[key]).forEach(m => {
-					sum += sumbucket[key][m] * 100;
+					sum += sumbucket[key][m] * factor_average;
 				});
-				
-				
-				
 				this.calculated_EL_emissions.push({timestamp: moment(key).toDate(), value:sum});
 			});
-			
 		}
 	}
 	
@@ -300,12 +446,15 @@ export default class CView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
+						
+						//this.resample();
+						
 						/*
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							//console.log('fetched ..... CView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'ELEMISSIONS') {
+								if (s.name === 'ELE_FACTOR') {
 									s.data = self.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
 								}
 							});
@@ -345,6 +494,7 @@ export default class CView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
+						//this.resample();
 						this.calculateSum();
 						
 						$('#'+this.FELID).empty();
@@ -375,7 +525,9 @@ export default class CView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
+						//this.resample();
 						this.calculateSum();
+						
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
@@ -407,7 +559,9 @@ export default class CView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
+						//this.resample();
 						this.calculateSum();
+						
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
@@ -475,9 +629,12 @@ export default class CView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_emission = LM['translation'][sel]['BUILDING_EMISSION'];
+		const localized_string_emission_el = LM['translation'][sel]['BUILDING_EMISSION_EL'];
+		const localized_string_emission_dh = LM['translation'][sel]['BUILDING_EMISSION_DH'];
 		const localized_string_emission_axis = LM['translation'][sel]['BUILDING_EMISSION_AXIS_LABEL'];
-		const localized_string_emission_legend = LM['translation'][sel]['BUILDING_EMISSION_LEGEND'];
+		const localized_string_emission_el_legend = LM['translation'][sel]['BUILDING_EMISSION_EL_LEGEND'];
+		const localized_string_emission_elef_legend = 'Ele FACTOR';
+		const localized_string_emission_dh_legend = LM['translation'][sel]['BUILDING_EMISSION_DH_LEGEND'];
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -509,13 +666,13 @@ export default class CView extends View {
 			valueAxis.min = 0;
 			
 			var series1 = self.chart.series.push(new am4charts.LineSeries());
-			series1.data = self.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
+			series1.data = self.calculated_EL_emissions; 
 			series1.dataFields.dateX = "timestamp"; // "date";
 			series1.dataFields.valueY = "value"; // "visits";
-			series1.tooltipText = localized_string_emission + ": [bold]{valueY}[/] gCO2/h";
-			series1.fillOpacity = 0.2;
+			series1.tooltipText = localized_string_emission_el + ": [bold]{valueY}[/] gCO2/h";
+			series1.fillOpacity = 0;
 			series1.name = "ELEMISSIONS";
-			series1.customname = localized_string_emission_legend;
+			series1.customname = localized_string_emission_el_legend;
 			series1.stroke = am4core.color("#ff0");
 			series1.fill = "#ff0";
 			series1.legendSettings.labelText = "{customname}";
@@ -524,11 +681,29 @@ export default class CView extends View {
 			series2.data = self.calculated_DH_emissions; 
 			series2.dataFields.dateX = "timestamp"; // "date";
 			series2.dataFields.valueY = "value"; // "visits";
-			series2.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series2.fillOpacity = 0.2;
-			series2.name = "DHEMISSIONS";//localized_string_production;
+			series2.tooltipText = localized_string_emission_dh + ": [bold]{valueY}[/] gCO2/h";
+			series2.fillOpacity = 0;
+			series2.name = 'DHEMISSIONS';
+			series2.customname = localized_string_emission_dh_legend;
 			series2.stroke = am4core.color("#0f0");
 			series2.fill = "#0f0";
+			series2.legendSettings.labelText = "{customname}";
+			
+			/*
+			var series3 = self.chart.series.push(new am4charts.LineSeries());
+			series3.data = self.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
+			series3.dataFields.dateX = "timestamp"; // "date";
+			series3.dataFields.valueY = "value"; // "visits";
+			series3.tooltipText = localized_string_emission_dh + ": [bold]{valueY}[/] gCO2/h";
+			series3.fillOpacity = 0;
+			series3.name = 'ELE_FACTOR';
+			series3.customname = localized_string_emission_elef_legend;
+			series3.stroke = am4core.color("#0ff");
+			series3.fill = "#0ff";
+			series3.legendSettings.labelText = "{customname}";
+			*/
+			
+			
 			
 			// Legend:
 			self.chart.legend = new am4charts.Legend();
@@ -609,6 +784,9 @@ export default class CView extends View {
 		this.showInfo();
 		this.rendered = true;
 		
+		
+		
+		
 		if (this.areModelsReady()) {
 			//console.log('CView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
@@ -620,6 +798,11 @@ export default class CView extends View {
 				}
 			} else {
 				this.renderChart();
+				
+				//this.resample();
+				this.calculateSum();
+				
+				
 			}
 		} else {
 			//console.log('CView => render models ARE NOT READY!!!!');

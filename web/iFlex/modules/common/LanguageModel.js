@@ -80,12 +80,20 @@ export default class LanguageModel {
 				'BUILDING_CO2_DESCRIPTION':'This chart displays CO2 emissions for electricity and district heating',
 				'BUILDING_CO2_CONSUMPTION':'Consumption',
 				'BUILDING_CO2_PRODUCTION':'Production',
-				'BUILDING_EMISSION':'Emissions',
+				'BUILDING_EMISSION_EL':'EL',
+				'BUILDING_EMISSION_DH':'DH',
 				'BUILDING_EMISSION_AXIS_LABEL':'Emissions (gCO2/h)',
-				'BUILDING_EMISSION_LEGEND':'Consumtion',
+				'BUILDING_EMISSION_EL_LEGEND':'Electricity',
+				'BUILDING_EMISSION_DH_LEGEND':'District heating',
 				'USER_HEATING_TITLE':'Apartment temperature and humidity',
+				'APARTMENT_TEMPERATURE_TOOLTIP':'T',
+				'APARTMENT_TEMPERATURE_AXIS_LABEL':'Temp',
+				'APARTMENT_TEMPERATURE_LEGEND':'Temperature',
+				'APARTMENT_HUMIDITY_TOOLTIP':'H',
+				'APARTMENT_HUMIDITY_AXIS_LABEL':'Humi',
+				'APARTMENT_HUMIDITY_LEGEND':'Humidity',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.10.01'
+				'MENU_VERSION':'v 21.10.11'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -164,12 +172,20 @@ export default class LanguageModel {
 				'BUILDING_CO2_DESCRIPTION':'Sähkön ja kaukolämmön CO2 päästöt',
 				'BUILDING_CO2_CONSUMPTION':'Kulutus',
 				'BUILDING_CO2_PRODUCTION':'Tuotanto',
-				'BUILDING_EMISSION':'Päästöt',
+				'BUILDING_EMISSION_EL':'Sähkö',
+				'BUILDING_EMISSION_DH':'KL',
 				'BUILDING_EMISSION_AXIS_LABEL':'Päästöt (gCO2/h)',
-				'BUILDING_EMISSION_LEGEND':'Kulutus',
+				'BUILDING_EMISSION_EL_LEGEND':'Sähkö',
+				'BUILDING_EMISSION_DH_LEGEND':'Kaukolämpö',
 				'USER_HEATING_TITLE':'Asunnon lämpötila ja kosteus',
+				'APARTMENT_TEMPERATURE_TOOLTIP':'L',
+				'APARTMENT_TEMPERATURE_AXIS_LABEL':'Lämpö',
+				'APARTMENT_TEMPERATURE_LEGEND':'Lämpötila',
+				'APARTMENT_HUMIDITY_TOOLTIP':'K',
+				'APARTMENT_HUMIDITY_AXIS_LABEL':'Kosteus',
+				'APARTMENT_HUMIDITY_LEGEND':'Kosteus',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.10.01'
+				'MENU_VERSION':'v 21.10.11'
 			}
 		}
 	}

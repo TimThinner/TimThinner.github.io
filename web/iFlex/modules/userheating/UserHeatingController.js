@@ -32,11 +32,12 @@ export default class UserHeatingController extends Controller {
 			name:'UserHeatingModel',
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
 			
-			src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/',
-			interval: 'PT1H', // interval MUST BE defined for ROLLUP API
+			//src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/',
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
+			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
 			
 			cache_expiration_in_seconds:60,
-			timerange: { begin: 10, end: 2 },
+			timerange: { begin: 1, end: 0 },
 			access:'PRIVATE'
 		});
 		UHM.subscribe(this); // Now we will receive notifications from the UserModel.

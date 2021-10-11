@@ -82,9 +82,9 @@ export default class UserHeatingView extends View {
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... UserHeatingView CHART UPDATED!');
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['UserHeatingModel'].values;
-							});
+							//am4core.iter.each(this.chart.series.iterator(), function (s) {
+							//	s.data = self.models['UserHeatingModel'].values;
+							//});
 							
 						} else {
 							console.log('fetched ..... render UserHeatingView()');
@@ -118,31 +118,46 @@ export default class UserHeatingView extends View {
 	renderChart() {
 		const self = this;
 		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_temperature_tooltip = LM['translation'][sel]['APARTMENT_TEMPERATURE_TOOLTIP'];
+		const localized_string_temperature_axis_label = LM['translation'][sel]['APARTMENT_TEMPERATURE_AXIS_LABEL'];
+		const localized_string_temperature_legend = LM['translation'][sel]['APARTMENT_TEMPERATURE_LEGEND'];
+		const localized_string_humidity_tooltip = LM['translation'][sel]['APARTMENT_HUMIDITY_TOOLTIP'];
+		const localized_string_humidity_axis_label = LM['translation'][sel]['APARTMENT_HUMIDITY_AXIS_LABEL'];
+		const localized_string_humidity_legend = LM['translation'][sel]['APARTMENT_HUMIDITY_LEGEND'];
+		
 		am4core.ready(function() {
-			/*
-			function generateChartData() {
+			
+			function generateChartData(offs) {
 				var chartData = [];
 				// current date
 				var firstDate = new Date();
-				// now set 500 minutes back
-				firstDate.setMinutes(firstDate.getDate() - 500);
+				// now set 500 minutes back (1 day is 24 x 60 minutes = 1440 minutes
+				firstDate.setMinutes(firstDate.getDate() - 1440);
 				
-				// and generate 500 data items
-				var visits = 500;
-				for (var i = 0; i < 500; i++) {
+				// and generate 1440 data items
+				var temp = 0;
+				for (var i = 0; i < 1440; i++) {
 					var newDate = new Date(firstDate);
 					// each time we add one minute
 					newDate.setMinutes(newDate.getMinutes() + i);
 					// some random number
-					visits += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+					//visits = Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+					//temp = 20 + Math.round((Math.random()<0.5?1:-1)*Math.random()*2);
+					
+					temp = offs + 4*Math.sin(i*Math.PI/180);
+					
 					// add data item to the array
 					chartData.push({
-						date: newDate,
-						visits: visits
+						//date: newDate,
+						//visits: visits
+						timestamp: newDate,
+						value: temp
 					});
 				}
 				return chartData;
-			}*/
+			}
 			
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -155,7 +170,7 @@ export default class UserHeatingView extends View {
 			//self.chart.data = generateChartData();
 			
 			// {'timestamp':...,'value':...}
-			self.chart.data = self.models['UserHeatingModel'].values;
+			//self.chart.data = self.models['UserHeatingModel'].values;
 			console.log(['self.chart.data=',self.chart.data]);
 			
 			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
@@ -167,18 +182,57 @@ export default class UserHeatingView extends View {
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
-			valueAxis.title.text = "Value";//"Unique visitors";
+			valueAxis.title.text = localized_string_temperature_axis_label + ', ' + localized_string_humidity_axis_label;
+			valueAxis.min = 0;
 			
-			var series = self.chart.series.push(new am4charts.LineSeries());
-			series.dataFields.dateX = "timestamp"; // "date";
-			series.dataFields.valueY = "value"; // "visits";
-			series.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series.fillOpacity = 0.3;
+			var series1 = self.chart.series.push(new am4charts.LineSeries());
+			series1.data = generateChartData(18);
+			series1.dataFields.dateX = "timestamp"; // "date";
+			series1.dataFields.valueY = "value"; // "visits";
+			series1.tooltipText = localized_string_temperature_tooltip + ": [bold]{valueY}[/] °C";
+			series1.fillOpacity = 0;
+			series1.name = 'TEMPERATURE';
+			series1.customname = localized_string_temperature_legend;
+			series1.stroke = am4core.color("#f77");
+			series1.fill = "#f77";
+			series1.legendSettings.labelText = "{customname}";
+			
+			
+			//series1.tooltipText = localized_string_emission_el + ": [bold]{valueY}[/] gCO2/h";
+			//series1.fillOpacity = 0.2;
+			//series1.name = "ELEMISSIONS";
+			//series1.customname = localized_string_emission_el_legend;
+			//series1.stroke = am4core.color("#ff0");
+			//series1.fill = "#ff0";
+			//series1.legendSettings.labelText = "{customname}";
+			
+			
+			var series2 = self.chart.series.push(new am4charts.LineSeries());
+			series2.data = generateChartData(28);
+			series2.dataFields.dateX = "timestamp"; // "date";
+			series2.dataFields.valueY = "value"; // "visits";
+			series2.tooltipText = localized_string_humidity_tooltip + ": [bold]{valueY}[/] %";
+			series2.fillOpacity = 0;
+			series2.name = 'HUMIDITY';
+			series2.customname = localized_string_humidity_legend;
+			series2.stroke = am4core.color("#0ff");
+			series2.fill = "#0ff";
+			series2.legendSettings.labelText = "{customname}";
+			
+			// Legend:
+			self.chart.legend = new am4charts.Legend();
+			self.chart.legend.useDefaultMarker = true;
+			var marker = self.chart.legend.markers.template.children.getIndex(0);
+			marker.cornerRadius(12, 12, 12, 12);
+			marker.strokeWidth = 2;
+			marker.strokeOpacity = 1;
+			marker.stroke = am4core.color("#000");
+			
 			
 			self.chart.cursor = new am4charts.XYCursor();
 			self.chart.cursor.lineY.opacity = 0;
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series);
+			self.chart.scrollbarX.series.push(series1);
 			
 			dateAxis.start = 0.0;
 			dateAxis.end = 1.0;

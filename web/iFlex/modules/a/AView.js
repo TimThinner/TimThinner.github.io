@@ -1,6 +1,6 @@
-import View from '../common/View.js';
+import TimeRangeView from '../common/TimeRangeView.js';
 
-export default class AView extends View {
+export default class AView extends TimeRangeView {
 	
 	constructor(controller) {
 		super(controller);
@@ -16,10 +16,7 @@ export default class AView extends View {
 		this.rendered = false;
 		this.FELID = 'building-electricity-view-failure';
 		this.CHARTID = 'building-electricity-chart';
-		this.selected = "b1d";
 		
-		//this.sumbucket = {};
-		//this.sumhash = {};
 		this.values = [];
 	}
 	
@@ -48,15 +45,6 @@ export default class AView extends View {
 		this.rendered = false;
 		$(this.el).empty();
 	}
-	
-	showInfo() {
-		const html = '<p class="fetching-info">Fetching interval is ' + 
-			this.controller.fetching_interval_in_seconds + 
-			' seconds. Cache expiration is ' + 
-			this.models['BuildingElectricityPL1Model'].cache_expiration_in_seconds + ' seconds.</p>';
-		$('#data-fetching-info').empty().append(html);
-	}
-	
 	
 	calculateSum() {
 		
@@ -249,169 +237,6 @@ export default class AView extends View {
 		
 	}
 	
-	
-	
-	resetButtonClass() {
-		const elems = document.getElementsByClassName("my-range-button");
-		for(let i = 0; i < elems.length; i++) {
-			$(elems[i]).removeClass("selected");
-		}
-		$('#'+this.selected).addClass("selected");
-	}
-	
-	/*
-		Timerange is set with buttons.
-		New param is an array of models 
-		
-		
-		PT30S (30 seconds)
-		PT5M (5 minutes)
-		PT1H (1 hour)
-		PT24H (24 hours)
-		
-		INTERVAL	TIMERANGE		NUMBER OF SAMPLES
-		3 MIN		1 day (24H)		 480 (24 x 20)
-		10 MINS		1 week			1008 (7 x 24 x 6)
-		20 MINS		2 weeks			1008 (14 x 24 x 3)
-		30 MINS 	1 month			1440 (30 x 48)
-		4 HOURS		6 months		1080 (30 x 6 x 6)
-		6 HOURS		1 year			1460 (4 x 365)
-		
-		
-		"b1d"	1D
-		"b1w"	1W
-		"b2w"	2W
-		"b1m"	1M
-		"b6m"	6M
-		"b1y"	1Y
-	*/
-	setTimerangeHandlers(models) {
-		const self = this;
-		
-		$('#'+this.selected).addClass("selected");
-		
-		$('#b1d').on('click',function() {
-			
-			//self.sumbucket = {};
-			//self.sumhash = {};
-			
-			self.selected = "b1d";
-			self.resetButtonClass();
-			// Controller has all needed models + menumodel, which we ignore here.
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=1 for model.name=',model.name]);
-					model.timerange = { begin: 1, end: 0 };
-					model.interval = undefined;//'PT3M';
-					model.values = [];
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
-		
-		$('#b1w').on('click',function() {
-			
-			//self.sumbucket = {};
-			//self.sumhash = {};
-			
-			self.selected = "b1w";
-			self.resetButtonClass();
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=2 for model.name=',model.name]);
-					model.timerange = { begin: 7, end: 0 };
-					model.interval = undefined; //'PT20M';//'PT10M';
-					model.values = [];
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
-		
-		$('#b2w').on('click',function() {
-			
-			//self.sumbucket = {};
-			//self.sumhash = {};
-			
-			self.selected = "b2w";
-			self.resetButtonClass();
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=3 for model.name=',model.name]);
-					model.timerange = { begin: 14, end: 0 };
-					model.interval = undefined; //'PT20M';
-					model.values = [];
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
-		
-		$('#b1m').on('click',function() {
-			
-			//self.sumbucket = {};
-			//self.sumhash = {};
-			
-			self.selected = "b1m";
-			self.resetButtonClass();
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=4 for model.name=',model.name]);
-					model.timerange = { begin: 30, end: 0 };
-					model.interval = 'PT30M';
-					model.values = [];
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
-		
-		$('#b6m').on('click',function() {
-			
-			//self.sumbucket = {};
-			//self.sumhash = {};
-			
-			self.selected = "b6m";
-			self.resetButtonClass();
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=5 for model.name=',model.name]);
-					model.timerange = { begin: 180, end: 0 };
-					model.interval = 'PT4H';
-					model.values = [];
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
-		
-		$('#b1y').on('click',function() {
-			
-			//self.sumbucket = {};
-			//self.sumhash = {};
-			
-			self.selected = "b1y";
-			self.resetButtonClass();
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=6 for model.name=',model.name]);
-					model.timerange = { begin: 364, end: 0 };
-					model.interval = 'PT6H';
-					model.values = [];
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
-	}
-	
 	notify(options) {
 		const self = this;
 		
@@ -430,9 +255,7 @@ export default class AView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
-						console.log('BuildingElectricityPL1Model 11111111111111111');
-						//this.sum('BuildingElectricityPL1Model'); // recalculate sum
-						
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
 						this.calculateSum();
 						
 						$('#'+this.FELID).empty();
@@ -477,9 +300,7 @@ export default class AView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
-						console.log('BuildingElectricityPL2Model 22222222222222222');
-						//this.sum('BuildingElectricityPL2Model'); // recalculate sum
-						
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
 						this.calculateSum();
 						
 						$('#'+this.FELID).empty();
@@ -521,9 +342,7 @@ export default class AView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
-						console.log('BuildingElectricityPL3Model 333333333333333333');
-						//this.sum('BuildingElectricityPL3Model'); // recalculate sum
-						
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
 						this.calculateSum();
 						
 						$('#'+this.FELID).empty();
@@ -588,12 +407,7 @@ export default class AView extends View {
 			//console.log(['self.chart.data=',self.chart.data]);
 			
 			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
-			dateAxis.baseInterval = {
-				//"timeUnit": "minute",
-				//"count": 1
-				"timeUnit": "minute",
-				"count": 3
-			};
+			dateAxis.baseInterval = {"timeUnit": "minute","count": 3};
 			dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
@@ -694,9 +508,7 @@ export default class AView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					//'<div id="data-error-info"></div>'+
 					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
-					'<div id="data-fetching-info"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -708,16 +520,22 @@ export default class AView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					'<div id="data-fetching-info"></div>'+
+				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		this.setTimerangeHandlers(['BuildingElectricityPL1Model','BuildingElectricityPL2Model','BuildingElectricityPL3Model']);
+		const myModels = ['BuildingElectricityPL1Model','BuildingElectricityPL2Model','BuildingElectricityPL3Model'];
+		this.setTimerangeHandlers(myModels);
 		
 		$("#back").on('click', function() {
 			self.models['MenuModel'].setSelected('menu');
 		});
 		
-		this.showInfo();
+		this.showInfo(myModels);
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
@@ -732,9 +550,11 @@ export default class AView extends View {
 					this.forceLogout(this.FELID);
 				}
 			} else {
-				
 				this.calculateSum();
 				this.renderChart();
+				myModels.forEach(m=>{
+					this.updateInfoModelValues(m, this.models[m].values.length); // implemented in TimeRangeView
+				});
 			}
 		} else {
 			console.log('AView => render models ARE NOT READY!!!!');

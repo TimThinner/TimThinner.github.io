@@ -1,6 +1,80 @@
-import View from '../common/View.js';
+import TimeRangeView from '../common/TimeRangeView.js';
 
-export default class CView extends View {
+/*
+
+When "query" API is used, we get response (from Obix) with default interval. 
+For example Electricity will give values with 15 minute intervals:
+...
+​​"2021-10-12T11:15:00+03:00": Object { PL1: 8, PL2: 6, PL3: 7 }
+"2021-10-12T11:30:00+03:00": Object { PL1: 8, PL2: 6, PL3: 7 }
+​​...
+
+AND the Electricity Consumption FACTOR will give values with 3 minute intervals:
+...
+​​"2021-10-12T11:07:00+03:00": Object { factor: 101.85 }
+​​"2021-10-12T11:10:00+03:00": Object { factor: 101.74 }
+​​"2021-10-12T11:13:00+03:00": Object { factor: 101.46 }
+​​"2021-10-12T11:16:00+03:00": Object { factor: 101.81 }
+​​"2021-10-12T11:19:00+03:00": Object { factor: 102.16 }
+​​"2021-10-12T11:22:00+03:00": Object { factor: 101.78 }
+​​"2021-10-12T11:25:00+03:00": Object { factor: 101.62 }
+​​"2021-10-12T11:28:00+03:00": Object { factor: 101.66 }
+​​​"2021-10-12T11:31:00+03:00": Object { factor: 101.54 }
+​​...
+
+
+But we don't always use "query" API, but "rollup" API instead. There we can set the "interval", but we cannot 
+be sure that both measurements will have same timestamps. They are NOT in sync! For example:
+
+FACTOR interval 'PT15M' gives now values with difference, which depends when fetching was started:
+...
+​​"2021-10-12T10:30:00+03:00": Object { PL1: 8, PL2: 6, PL3: 7 }
+​​"2021-10-12T10:31:00+03:00": Object { factor: 102.494 }
+​​...
+​​
+"2021-10-12T10:30:00+03:00": Object { PL1: 8, PL2: 6, PL3: 7 }
+​​"2021-10-12T10:34:00+03:00": Object { factor: 102.582 }
+​​
+NOTE that at ObixModel the start and end times are both truncated to whole minute value 
+by setting milliseconds and seconds to 0.
+​​	'<abstime name="start" val="'+start+'"/>'+
+	'<abstime name="end" val="'+end+'"/>'+
+But the point is that we know that values are more likely to be "out-of-sync" than "in-sync".
+
+
+=> must find closest factor (in time) for each electricity consumption sum.
+We propably get close enough approximation when we use same interval and then just 
+
+INTERVAL	TIMERANGE		NUMBER OF SAMPLES		REALITY
+3 MIN		1 day (24H)		 480 (24 x 20)			"QUERY" FACTOR: 3 mins, ELECTRICITY: 15 mins
+10 MINS		1 week			1008 (7 x 24 x 6)		"
+20 MINS		2 weeks			1008 (14 x 24 x 3)		
+30 MINS 	1 month			1440 (30 x 48)			
+4 HOURS		6 months		1080 (30 x 6 x 6)		
+6 HOURS		13 months		1585 					"ROLLUP" 
+
+Old version has number of days to subtract from current time.
+this.timerange = {begin:1, end:0} 
+But since moment handles dates very flexible, we can change timerange into structure like this:
+
+​​this.timerange = {begin:{value:1,unit:'days'},end:{value:0,unit:'days'}}
+using same units as moment.js library:
+Key 	Shorthand
+years 		y
+quarters 	Q
+months 		M
+weeks 		w
+days 		d
+hours 		h
+minutes 	m
+seconds 	s
+milliseconds 	ms
+
+For example: moment().subtract(7, 'days');
+
+*/
+
+export default class CView extends TimeRangeView {
 	
 	constructor(controller) {
 		super(controller);
@@ -16,7 +90,6 @@ export default class CView extends View {
 		this.rendered = false;
 		this.FELID = 'building-emissions-view-failure';
 		this.CHARTID = 'building-emissions-chart';
-		this.selected = "b1d";
 		
 		this.calculated_EL_emissions = [];
 		this.calculated_DH_emissions = [];
@@ -48,39 +121,36 @@ export default class CView extends View {
 		$(this.el).empty();
 	}
 	
+	/*
+	Models used in CView:
+	
+	BuildingEmissionFactorForElectricityConsumedInFinlandModel
+	BuildingElectricityPL1Model
+	BuildingElectricityPL2Model
+	BuildingElectricityPL3Model
+	BuildingHeatingQE01Model
+	*/
+	/*
 	showInfo() {
-		const html = '<p class="fetching-info">Timerange is ' + 
-			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].timerange.begin +
-			' days and the interval is ' + 
-			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].interval + '</p>';
-			
-		$('#data-fetching-info').empty().append(html);
-		/*
-		const html = '<p class="fetching-info">Fetching interval is ' + 
-			this.controller.fetching_interval_in_seconds + 
-			' seconds. Cache expiration is ' + 
+		const html = '<p class="fetching-info">Obix timerange is ' + 
+			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].timerange.begin.value + ' ' +
+			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].timerange.begin.unit + ' and the interval is ' + 
+			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].interval + '<br/>Fetching interval is '+ 
+			this.controller.fetching_interval_in_seconds + ' seconds. Cache expiration is ' + 
 			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].cache_expiration_in_seconds + ' seconds.</p>';
 		$('#data-fetching-info').empty().append(html);
-		*/
-	}
-	
-	resetButtonClass() {
-		const elems = document.getElementsByClassName("my-range-button");
-		for(let i = 0; i < elems.length; i++) {
-			$(elems[i]).removeClass("selected");
-		}
-		$('#'+this.selected).addClass("selected");
-	}
+	}*/
 	
 	//return y0*(x1-x) + y1*(x-x0) / (x1-x0);
 	
+	/*
 	linearInterpolation(x, x0, y0, x1, y1) {
 		var y = y0*(x1-x) + y1*(x-x0) / (x1-x0);
 		return y;
 		//var a = (y1 - y0) / (x1 - x0)
 		//var b = -a * x0 + y0
 		//return a * x + b
-	}
+	}*/
 	
 	/*
 	
@@ -100,21 +170,27 @@ export default class CView extends View {
 	
 		const start = moment().subtract(this.timerange.begin, 'days').format();
 		const end = moment().subtract(this.timerange.end, 'days').format();
-		
+	
+	
+	We can resample the whole timerange into some meaningful number of slots (interval for example 1 minute).
+	Then go through factor array and fill in the slots in minute_hash.
+	
+	Then minute_hash can be used to calculate for example HOURLY AVERAGES.
 	
 	*/
-	resample() { //start, end, interval_in_mins) {
+	resample() {
 		let average = 0;
 		if (this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.length > 0) {
 			// start and end are handled in minute accuracy.
 			const interval_in_mins = 1;
+			const trbv = this.models['BuildingElectricityPL1Model'].timerange.begin.value;
+			const trev = this.models['BuildingElectricityPL1Model'].timerange.end.value;
 			
+			const trbu = this.models['BuildingElectricityPL1Model'].timerange.begin.unit;
+			const treu = this.models['BuildingElectricityPL1Model'].timerange.end.unit;
 			
-			const trb = this.models['BuildingElectricityPL1Model'].timerange.begin;
-			const tre = this.models['BuildingElectricityPL1Model'].timerange.end
-			
-			const start = moment().subtract(trb, 'days').format();
-			const end = moment().subtract(tre, 'days').format();
+			const start = moment().subtract(trbv, trbu).format();
+			const end = moment().subtract(trev, treu).format();
 			
 			let start_m = moment(start);
 			start_m.milliseconds(0);
@@ -126,16 +202,24 @@ export default class CView extends View {
 			
 			let minute_hash = {};
 			
-			// First initialize hash with empty objects for each minute.
+			// 1st PHASE: initialize hash with empty objects for each minute.
 			while (end_m.isAfter(start_m)) {
 				const ds = start_m.format();
-				minute_hash[ds] = {}; // create new entry
+				// create new entry for raw value, for example: { factor: 103.44 }
+				minute_hash[ds] = {}; 
+				/*const hourly = ds.slice(0,13); // '2021-10-12T12'
+				const daily = ds.slice(0,10); // '2021-10-12'
+				if (!minute_hash.hasOwnProperty(hourly)) {
+					minute_hash[hourly] = {}; // create new entry for hourly average
+				}
+				if (!minute_hash.hasOwnProperty(daily)) {
+					minute_hash[daily] = {}; // create new entry for hourly average
+				}*/
 				start_m.add(interval_in_mins,'minutes');
 			}
-			
+			// 2nd PHASE: fill in the factors from model and calculate averages.
 			let sum = 0;
 			let count = 0;
-			
 			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.forEach(v=>{
 				const m = moment(v.timestamp);
 				m.milliseconds(0);
@@ -143,14 +227,51 @@ export default class CView extends View {
 				const ds = m.format();
 				let val = +v.value; // Converts string to number.
 				if (minute_hash.hasOwnProperty(ds)) {
-					minute_hash[ds]['BuildingEmissionFactorForElectricityConsumedInFinlandModel'] = val;
+					minute_hash[ds]['factor'] = val;
 					sum += val;
 					count++;
 				} else {
 					console.log(['NOT IN HASH ds=',ds]);
 				}
 			});
+			
+			
+			
+			
+			this.models['BuildingElectricityPL1Model'].values.forEach(v=>{
+				const m = moment(v.timestamp);
+				m.milliseconds(0);
+				m.seconds(0);
+				const ds = m.format();
+				let val = +v.value; // Converts string to number.
+				if (minute_hash.hasOwnProperty(ds)) {
+					minute_hash[ds]['PL1'] = val;
+				}
+			});
+			this.models['BuildingElectricityPL2Model'].values.forEach(v=>{
+				const m = moment(v.timestamp);
+				m.milliseconds(0);
+				m.seconds(0);
+				const ds = m.format();
+				let val = +v.value; // Converts string to number.
+				if (minute_hash.hasOwnProperty(ds)) {
+					minute_hash[ds]['PL2'] = val;
+				}
+			});
+			this.models['BuildingElectricityPL3Model'].values.forEach(v=>{
+				const m = moment(v.timestamp);
+				m.milliseconds(0);
+				m.seconds(0);
+				const ds = m.format();
+				let val = +v.value; // Converts string to number.
+				if (minute_hash.hasOwnProperty(ds)) {
+					minute_hash[ds]['PL3'] = val;
+				}
+			});
+			
+			
 			console.log(['minute_hash=',minute_hash,' count=',count]);
+			
 			if (count > 0) {
 				average = sum/count;
 				console.log(['average=',average]);
@@ -214,130 +335,6 @@ export default class CView extends View {
 		console.log(['cc=',cc, ' keyz=', keyz]);
 		*/
 		
-	}
-	
-	
-	/*
-		Timerange is set with buttons.
-		New param is an array of models 
-		
-		
-		PT30S (30 seconds)
-		PT5M (5 minutes)
-		PT1H (1 hour)
-		PT24H (24 hours)
-		
-		INTERVAL	TIMERANGE		NUMBER OF SAMPLES
-		3 MIN		1 day (24H)		 480 (24 x 20)
-		10 MINS		1 week			1008 (7 x 24 x 6)
-		20 MINS		2 weeks			1008 (14 x 24 x 3)
-		30 MINS 	1 month			1440 (30 x 48)
-		4 HOURS		6 months		1080 (30 x 6 x 6)
-		6 HOURS		1 year			1460 (4 x 365)
-		
-		
-		"b1d"	1D
-		"b1w"	1W
-		"b2w"	2W
-		"b1m"	1M
-		"b6m"	6M
-		"b1y"	1Y
-	*/
-	setTimerangeHandlers(models) {
-		const self = this;
-		
-		$('#'+this.selected).addClass("selected");
-		
-		$('#b1d').on('click',function() {
-			self.selected = "b1d";
-			self.resetButtonClass();
-			// Controller has all needed models + menumodel, which we ignore here.
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=1 for model.name=',model.name]);
-					model.timerange = { begin: 1, end: 0 };
-					model.interval = undefined;//'PT3M';
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
-		
-		$('#b1w').on('click',function() {
-			self.selected = "b1w";
-			self.resetButtonClass();
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=2 for model.name=',model.name]);
-					model.timerange = { begin: 7, end: 0 };
-					model.interval = undefined; //'PT10M';
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
-		
-		$('#b2w').on('click',function() {
-			self.selected = "b2w";
-			self.resetButtonClass();
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=3 for model.name=',model.name]);
-					model.timerange = { begin: 14, end: 0 };
-					model.interval = undefined; //PT20M';
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
-		
-		$('#b1m').on('click',function() {
-			self.selected = "b1m";
-			self.resetButtonClass();
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=4 for model.name=',model.name]);
-					model.timerange = { begin: 30, end: 0 };
-					model.interval = 'PT30M';
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
-		
-		$('#b6m').on('click',function() {
-			self.selected = "b6m";
-			self.resetButtonClass();
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=5 for model.name=',model.name]);
-					model.timerange = { begin: 180, end: 0 };
-					model.interval = 'PT4H';
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
-		
-		$('#b1y').on('click',function() {
-			self.selected = "b1y";
-			self.resetButtonClass();
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					console.log(['SET TIMERANGE=6 for model.name=',model.name]);
-					model.timerange = { begin: 364, end: 0 };
-					model.interval = 'PT6H';
-				}
-			});
-			self.controller.refreshTimerange();
-			self.showInfo();
-		});
 	}
 	
 	calculate_DH_Sum() {
@@ -410,7 +407,11 @@ export default class CView extends View {
 			});
 			
 			let factor_average = this.resample();
-			if (factor_average === 0) { 
+			if (factor_average === 0) {
+				// Fallback to some meaningful value, but note to user that FACTOR was not available!
+				$('#'+this.FELID).empty();
+				const html = '<div class="success-message"><p>Factor NOT available. Using default value.</p></div>';
+				$(html).appendTo('#'+this.FELID);
 				factor_average = 100;
 			}
 			
@@ -446,7 +447,7 @@ export default class CView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
-						
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
 						//this.resample();
 						
 						/*
@@ -466,17 +467,8 @@ export default class CView extends View {
 						
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to controller forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							// Call View-class method to handle error.
-							this.forceLogout(this.FELID);
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-							// Maybe we shoud remove the spinner?
-							//$('#'+this.CHARTID).empty();
-						}
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#'+this.FELID);
 					}
 				} else { // This should never be the case, but render anyway if we get here.
 					this.render();
@@ -494,7 +486,7 @@ export default class CView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
-						//this.resample();
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
 						this.calculateSum();
 						
 						$('#'+this.FELID).empty();
@@ -525,9 +517,8 @@ export default class CView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
-						//this.resample();
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
 						this.calculateSum();
-						
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
@@ -559,9 +550,8 @@ export default class CView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
-						//this.resample();
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
 						this.calculateSum();
-						
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
@@ -596,6 +586,7 @@ export default class CView extends View {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
 						this.calculate_DH_Sum();
 						
 						$('#'+this.FELID).empty();
@@ -652,12 +643,7 @@ export default class CView extends View {
 			//console.log(['self.chart.data=',self.chart.data]);
 			
 			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
-			dateAxis.baseInterval = {
-				"timeUnit": "minute",
-				"count": 3
-				//"timeUnit": "second",
-				//"count": 5
-			};
+			dateAxis.baseInterval = {"timeUnit": "minute","count": 3};
 			dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
@@ -758,7 +744,6 @@ export default class CView extends View {
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
-					'<div id="data-fetching-info"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -770,25 +755,28 @@ export default class CView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					'<div id="data-fetching-info"></div>'+
+				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		//this.setTimerangeHandlers(['BuildingEmissionFactorForElectricityConsumedInFinlandModel','BuildingEmissionFactorOfElectricityProductionInFinlandModel']);
-		this.setTimerangeHandlers(['BuildingEmissionFactorForElectricityConsumedInFinlandModel',
+		const myModels = ['BuildingEmissionFactorForElectricityConsumedInFinlandModel',
 				'BuildingElectricityPL1Model','BuildingElectricityPL2Model','BuildingElectricityPL3Model',
-				'BuildingHeatingQE01Model']);
+				'BuildingHeatingQE01Model'
+			];
+		this.setTimerangeHandlers(myModels);
 		
 		$("#back").on('click', function() {
 			self.models['MenuModel'].setSelected('menu');
 		});
-		this.showInfo();
+		this.showInfo(myModels);
 		this.rendered = true;
 		
-		
-		
-		
 		if (this.areModelsReady()) {
-			//console.log('CView => render models READY!!!!');
+			console.log('CView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html = '<div class="error-message"><p>'+errorMessages+'</p></div>';
@@ -797,12 +785,15 @@ export default class CView extends View {
 					this.forceLogout(this.FELID);
 				}
 			} else {
+				
+				this.calculateSum();
+				this.calculate_DH_Sum();
+				
 				this.renderChart();
 				
-				//this.resample();
-				this.calculateSum();
-				
-				
+				myModels.forEach(m=>{
+					this.updateInfoModelValues(m, this.models[m].values.length); // implemented in TimeRangeView
+				});
 			}
 		} else {
 			//console.log('CView => render models ARE NOT READY!!!!');

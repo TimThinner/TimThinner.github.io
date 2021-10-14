@@ -37,9 +37,8 @@ export default class AController extends Controller {
 		const BEPL1M = new BuildingElectricityPL1Model({
 			name:'BuildingElectricityPL1Model',
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L1/', // Power of L1
-			//interval: 'PT3M', // interval MUST BE defined for ROLLUP API
-			//timerange: { begin: 9, end: 2 },
-			timerange: { begin: 1, end: 0 },
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			cache_expiration_in_seconds:60,
 			access:'PUBLIC'
 		});
@@ -50,9 +49,8 @@ export default class AController extends Controller {
 		const BEPL2M = new BuildingElectricityPL2Model({
 			name:'BuildingElectricityPL2Model',
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L2/', // Power of L2
-			//interval: 'PT3M', // interval MUST BE defined for ROLLUP API
-			//timerange: { begin: 9, end: 2 },
-			timerange: { begin: 1, end: 0 },
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			cache_expiration_in_seconds:60,
 			access:'PUBLIC'
 		});
@@ -63,9 +61,8 @@ export default class AController extends Controller {
 		const BEPL3M = new BuildingElectricityPL3Model({
 			name:'BuildingElectricityPL3Model',
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L3/', // Power of L3
-			//interval: 'PT3M', // interval MUST BE defined for ROLLUP API
-			//timerange: { begin: 9, end: 2 },
-			timerange: { begin: 1, end: 0 },
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			cache_expiration_in_seconds:60,
 			access:'PUBLIC'
 		});

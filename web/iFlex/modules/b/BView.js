@@ -1,6 +1,6 @@
-import View from '../common/View.js';
+import TimeRangeView from '../common/TimeRangeView.js';
 
-export default class BView extends View {
+export default class BView extends TimeRangeView {
 	
 	constructor(controller) {
 		super(controller);
@@ -16,6 +16,8 @@ export default class BView extends View {
 		this.rendered = false;
 		this.FELID = 'building-heating-view-failure';
 		this.CHARTID = 'building-heating-chart';
+		
+		this.values = [];
 	}
 	
 	show() {
@@ -44,21 +46,6 @@ export default class BView extends View {
 		$(this.el).empty();
 	}
 	
-	showInfo() {
-		/*
-		const html = '<p class="fetching-info">Fetching interval is ' + 
-			this.controller.fetching_interval_in_seconds + 
-			' seconds. Cache expiration is ' + 
-			this.models['BuildingHeatingFE01Model'].cache_expiration_in_seconds + ' seconds.</p>';
-		$('#data-fetching-info').empty().append(html);*/
-		
-		const html = '<p class="fetching-info">Fetching interval is ' + 
-			this.controller.fetching_interval_in_seconds + 
-			' seconds. Cache expiration is ' + 
-			this.models['BuildingHeatingQE01Model'].cache_expiration_in_seconds + ' seconds.</p>';
-		$('#data-fetching-info').empty().append(html);
-	}
-	
 	notify(options) {
 		const self = this;
 		
@@ -70,42 +57,17 @@ export default class BView extends View {
 					this.chart = undefined;
 				}
 				this.render();
-			/*
-			} else if (options.model==='BuildingHeatingFE01Model' && options.method==='fetched') {
-				console.log('NOTIFY BuildingHeatingFE01Model fetched!');
-				console.log(['options.status=',options.status]);
-				if (this.rendered) {
-					if (options.status === 200 || options.status === '200') {
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... BuildingHeatingView CHART UPDATED!');
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'FE') {
-									s.data = self.models['BuildingHeatingFE01Model'].values;
-								}
-							});
-							
-						} else {
-							console.log('fetched ..... render BuildingHeatingView()');
-							this.renderChart();
-						}
-					} else { // Error in fetching.
-						$('#'+this.FELID).empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#'+this.FELID);
-					}
-				} else {
-					console.log('WTF?! rendered is NOT true BUT Model is FETCHED NOW... BuildingHeatingView RENDER?!?!');
-				}
-			*/
 			} else if (options.model==='BuildingHeatingQE01Model' && options.method==='fetched') {
-				console.log('NOTIFY BuildingHeatingQE01Model fetched!');
-				console.log(['options.status=',options.status]);
+				//console.log('NOTIFY BuildingHeatingQE01Model fetched!');
+				//console.log(['options.status=',options.status]);
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						$('#'+this.FELID).empty();
+						
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
+						
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... BuildingHeatingView CHART UPDATED!');
+							//console.log('fetched ..... BuildingHeatingView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								if (s.name === 'QE') {
 									s.data = self.models['BuildingHeatingQE01Model'].values;
@@ -121,8 +83,6 @@ export default class BView extends View {
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 						$(html).appendTo('#'+this.FELID);
 					}
-				} else {
-					console.log('WTF?! rendered is NOT true BUT Model is FETCHED NOW... BuildingHeatingView RENDER?!?!');
 				}
 			}
 		}
@@ -154,12 +114,7 @@ export default class BView extends View {
 			//console.log(['self.chart.data=',self.chart.data]);
 			
 			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
-			dateAxis.baseInterval = {
-				//"timeUnit": "minute",
-				//"count": 1
-				"timeUnit": "second",
-				"count": 5
-			};
+			dateAxis.baseInterval = {"timeUnit": "minute","count": 3};
 			dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
@@ -226,11 +181,23 @@ export default class BView extends View {
 					'<p style="text-align:center;"><img src="./svg/radiator.svg" height="80"/></p>'+
 				'</div>'+
 			'</div>'+
+			
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					//'<p style="color:#aaa;margin-top:-16px;padding:0;">'+localized_string_daw_sel_timerange+'</p>'+
+					'<a href="javascript:void(0);" id="b1d" class="my-range-button" style="float:right;">1D</a>'+
+					'<a href="javascript:void(0);" id="b1w" class="my-range-button" style="float:right;">1W</a>'+
+					'<a href="javascript:void(0);" id="b2w" class="my-range-button" style="float:right;">2W</a>'+
+					'<a href="javascript:void(0);" id="b1m" class="my-range-button" style="float:right;">1M</a>'+
+					'<a href="javascript:void(0);" id="b6m" class="my-range-button" style="float:right;">6M</a>'+
+					'<a href="javascript:void(0);" id="b1y" class="my-range-button" style="float:right;">1Y</a>'+
+				'</div>'+
+			'</div>'+
+			
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					//'<div id="data-error-info"></div>'+
 					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
-					'<div id="data-fetching-info"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -242,14 +209,22 @@ export default class BView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					'<div id="data-fetching-info"></div>'+
+				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
+		
+		const myModels = ['BuildingHeatingQE01Model'];
+		this.setTimerangeHandlers(myModels);
 		
 		$("#back").on('click', function() {
 			self.models['MenuModel'].setSelected('menu');
 		});
 		
-		this.showInfo();
+		this.showInfo(myModels);
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
@@ -263,6 +238,9 @@ export default class BView extends View {
 				}
 			} else {
 				this.renderChart();
+				myModels.forEach(m=>{
+					this.updateInfoModelValues(m, this.models[m].values.length); // implemented in TimeRangeView
+				});
 			}
 		} else {
 			console.log('BView => render models ARE NOT READY!!!!');

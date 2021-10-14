@@ -1,6 +1,6 @@
-import View from '../common/View.js';
+import TimeRangeView from '../common/TimeRangeView.js';
 
-export default class UserHeatingView extends View {
+export default class UserHeatingView extends TimeRangeView {
 	
 	constructor(controller) {
 		super(controller);
@@ -46,19 +46,6 @@ export default class UserHeatingView extends View {
 		$(this.el).empty();
 	}
 	
-	showInfo() {
-		const html = '<p class="fetching-info">Fetching interval is ' + 
-			this.controller.fetching_interval_in_seconds + 
-			' seconds. Cache expiration is ' + 
-			this.models['UserHeatingModel'].cache_expiration_in_seconds + ' seconds.</p>';
-		$('#user-heating-info').empty().append(html);
-	}
-	
-	showDataError(msg) {
-		const html = '<p class="error-info">' + msg + '. Data access not available anymore.</p>';
-		$('#data-error-info').empty().append(html);
-	}
-	
 	notify(options) {
 		const self = this;
 		
@@ -71,15 +58,15 @@ export default class UserHeatingView extends View {
 				}
 				this.render();
 				
-			} else if (options.model==='UserHeatingModel' && options.method==='fetched') {
-				
-				console.log('NOTIFY UserHeatingModel fetched!');
-				console.log(['options.status=',options.status]);
+			} else if (options.model==='UserTemperatureModel' && options.method==='fetched') {
 				
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
 						$('#'+this.FELID).empty();
+						
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
+						
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... UserHeatingView CHART UPDATED!');
 							//am4core.iter.each(this.chart.series.iterator(), function (s) {
@@ -98,18 +85,50 @@ export default class UserHeatingView extends View {
 							// Force LOGOUT if Auth failed!
 							// Call View-class method to handle error.
 							this.forceLogout(this.FELID);
+						} else if (options.status === 403) {
+							const html = '<p class="error-info">' + options.message + '. Data access not available anymore.</p>';
+							$('#data-error-info').empty().append(html);
 						} else {
 							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-							// Maybe we shoud remove the spinner?
-							//$('#'+this.CHARTID).empty();
-							if (options.status === 403) {
-								this.showDataError(options.message);
-							}
+							$('#'+this.FELID).empty().append(html);
 						}
 					}
-				} else {
-					console.log('WTF?! rendered is NOT true BUT Model is FETCHED NOW... UserHeatingView RENDER?!?!');
+				}
+			} else if (options.model==='UserHumidityModel' && options.method==='fetched') {
+				
+				if (this.rendered) {
+					if (options.status === 200 || options.status === '200') {
+						
+						$('#'+this.FELID).empty();
+						
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
+						
+						if (typeof this.chart !== 'undefined') {
+							console.log('fetched ..... UserHeatingView CHART UPDATED!');
+							//am4core.iter.each(this.chart.series.iterator(), function (s) {
+							//	s.data = self.models['UserHeatingModel'].values;
+							//});
+							
+						} else {
+							console.log('fetched ..... render UserHeatingView()');
+							this.renderChart();
+						}
+						
+					} else { // Error in fetching.
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to controller forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							// Call View-class method to handle error.
+							this.forceLogout(this.FELID);
+						} else if (options.status === 403) {
+							const html = '<p class="error-info">' + options.message + '. Data access not available anymore.</p>';
+							$('#data-error-info').empty().append(html);
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$('#'+this.FELID).empty().append(html);
+						}
+					}
 				}
 			}
 		}
@@ -146,7 +165,7 @@ export default class UserHeatingView extends View {
 					//visits = Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
 					//temp = 20 + Math.round((Math.random()<0.5?1:-1)*Math.random()*2);
 					
-					temp = offs + 4*Math.sin(i*Math.PI/180);
+					temp = offs + 5*Math.sin(i*Math.PI/180);
 					
 					// add data item to the array
 					chartData.push({
@@ -167,17 +186,11 @@ export default class UserHeatingView extends View {
 			// Create chart
 			self.chart = am4core.create(self.CHARTID, am4charts.XYChart);
 			self.paddingRight = 20;
-			//self.chart.data = generateChartData();
 			
 			// {'timestamp':...,'value':...}
-			//self.chart.data = self.models['UserHeatingModel'].values;
-			console.log(['self.chart.data=',self.chart.data]);
 			
 			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
-			dateAxis.baseInterval = {
-				"timeUnit": "minute",
-				"count": 3
-			};
+			dateAxis.baseInterval = {"timeUnit": "minute","count": 3};
 			dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
@@ -186,7 +199,7 @@ export default class UserHeatingView extends View {
 			valueAxis.min = 0;
 			
 			var series1 = self.chart.series.push(new am4charts.LineSeries());
-			series1.data = generateChartData(18);
+			series1.data = generateChartData(20);
 			series1.dataFields.dateX = "timestamp"; // "date";
 			series1.dataFields.valueY = "value"; // "visits";
 			series1.tooltipText = localized_string_temperature_tooltip + ": [bold]{valueY}[/] °C";
@@ -208,7 +221,7 @@ export default class UserHeatingView extends View {
 			
 			
 			var series2 = self.chart.series.push(new am4charts.LineSeries());
-			series2.data = generateChartData(28);
+			series2.data = generateChartData(40);
 			series2.dataFields.dateX = "timestamp"; // "date";
 			series2.dataFields.valueY = "value"; // "visits";
 			series2.tooltipText = localized_string_humidity_tooltip + ": [bold]{valueY}[/] %";
@@ -258,6 +271,17 @@ export default class UserHeatingView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
+				'<div class="col s12 center">'+
+					//'<p style="color:#aaa;margin-top:-16px;padding:0;">'+localized_string_daw_sel_timerange+'</p>'+
+					'<a href="javascript:void(0);" id="b1d" class="my-range-button" style="float:right;">1D</a>'+
+					'<a href="javascript:void(0);" id="b1w" class="my-range-button" style="float:right;">1W</a>'+
+					'<a href="javascript:void(0);" id="b2w" class="my-range-button" style="float:right;">2W</a>'+
+					'<a href="javascript:void(0);" id="b1m" class="my-range-button" style="float:right;">1M</a>'+
+					'<a href="javascript:void(0);" id="b6m" class="my-range-button" style="float:right;">6M</a>'+
+					'<a href="javascript:void(0);" id="b1y" class="my-range-button" style="float:right;">1Y</a>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					'<div id="data-error-info"></div>'+
 					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
@@ -273,14 +297,22 @@ export default class UserHeatingView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					'<div id="data-fetching-info"></div>'+
+				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
+		
+		const myModels = ['UserTemperatureModel','UserHumidityModel'];
+		this.setTimerangeHandlers(myModels);
 		
 		$("#back").on('click', function() {
 			self.models['MenuModel'].setSelected('USERPAGE');
 		});
 		
-		this.showInfo();
+		this.showInfo(myModels);
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
@@ -294,6 +326,9 @@ export default class UserHeatingView extends View {
 				}
 			} else {
 				this.renderChart();
+				myModels.forEach(m=>{
+					this.updateInfoModelValues(m, this.models[m].values.length); // implemented in TimeRangeView
+				});
 			}
 		} else {
 			console.log('UserHeatingView => render models ARE NOT READY!!!!');

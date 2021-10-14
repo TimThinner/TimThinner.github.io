@@ -41,10 +41,11 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 			name:'BuildingEmissionFactorForElectricityConsumedInFinlandModel',
 			
 			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/',
-			//interval: 'PT3M', // interval MUST BE defined for ROLLUP API
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
 			
 			cache_expiration_in_seconds:120,
-			timerange: { begin: 1, end: 0 },
+			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
+			//timerange: { begin: 1, end: 0 },
 			access:'PUBLIC'
 		});
 		BEFFECIFM.subscribe(this); // Now we will receive notifications from the UserModel.
@@ -147,7 +148,6 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 				'BuildingElectricityPL2Model',
 				'BuildingElectricityPL3Model',
 				'BuildingHeatingQE01Model'
-				//'BuildingEmissionFactorOfElectricityProductionInFinlandModel'
 			]
 		};
 	}

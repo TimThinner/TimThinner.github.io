@@ -1,5 +1,5 @@
 import Controller from '../common/Controller.js';
-import UserHeatingModel from  './UserHeatingModel.js';
+import { UserTemperatureModel, UserHumidityModel } from  './UserHeatingModels.js';
 import UserHeatingView from './UserHeatingView.js';
 
 export default class UserHeatingController extends Controller {
@@ -13,12 +13,16 @@ export default class UserHeatingController extends Controller {
 		super.remove();
 		// We must remove all models that were created here at the initialize-method.
 		Object.keys(this.models).forEach(key => {
-			if (key==='UserHeatingModel') {
+			if (key==='UserTemperatureModel' || key==='UserHumidityModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
 		});
 		this.models = {};
+	}
+	
+	refreshTimerange() {
+		this.restartPollingInterval('UserHeatingView');
 	}
 	
 	initialize() {
@@ -28,8 +32,8 @@ export default class UserHeatingController extends Controller {
 			for example how long cache keeps the data (cache expiration in seconds) and 
 			the fetching interval (also in seconds).
 		*/
-		const UHM = new UserHeatingModel({
-			name:'UserHeatingModel',
+		const UTM = new UserTemperatureModel({
+			name:'UserTemperatureModel',
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
 			
 			//src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/',
@@ -37,12 +41,29 @@ export default class UserHeatingController extends Controller {
 			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
 			
 			cache_expiration_in_seconds:60,
-			timerange: { begin: 1, end: 0 },
+			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
+			access:'PRIVATE'
+		});
+		UTM.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add('UserTemperatureModel',UTM);
+		this.models['UserTemperatureModel'] = UTM;
+		
+		const UHM = new UserHumidityModel({
+			name:'UserHumidityModel',
+			// NOTE: host: 'ba.vtt.fi' is added at the backend
+			
+			//src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/',
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
+			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
+			
+			cache_expiration_in_seconds:60,
+			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			access:'PRIVATE'
 		});
 		UHM.subscribe(this); // Now we will receive notifications from the UserModel.
-		this.master.modelRepo.add('UserHeatingModel',UHM);
-		this.models['UserHeatingModel'] = UHM;
+		this.master.modelRepo.add('UserHumidityModel',UHM);
+		this.models['UserHumidityModel'] = UHM;
+		
 		
 		// These two lines MUST BE in every Controller.
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
@@ -80,7 +101,7 @@ export default class UserHeatingController extends Controller {
 	init() {
 		this.initialize();
 		const interval = this.fetching_interval_in_seconds * 1000; // once per 60 seconds by default.
-		this.timers['UserHeatingView'] = {timer:undefined, interval:interval, models:['UserHeatingModel']};
+		this.timers['UserHeatingView'] = {timer:undefined, interval:interval, models:['UserTemperatureModel','UserHumidityModel']};
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 
 		//this.show(); // Try if this view can be shown right now!

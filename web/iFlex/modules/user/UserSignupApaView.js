@@ -20,12 +20,16 @@ export default class UserSignupApaView extends UserView {
 	constructor(controller) {
 		super(controller);
 		this.FELID = 'signup-response';
+		
+		this.emaile = '';
+		this.passworde = '';
+		this.request_for_sensors = false;
 		this.apartment = 'NONE';
 	}
 	
 	hide() {
 		super.hide();
-		this.apartment = 'NONE';
+		//this.apartment = 'NONE';
 	}
 	
 	// Generate a "random" Registration code (this is the same method as in RegCodeCreateView.js).
@@ -155,6 +159,12 @@ export default class UserSignupApaView extends UserView {
 					const html = '<div class="success-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
 					
+					// Here we shoud empty the filled properties:
+					this.emaile = '';
+					this.passworde = '';
+					this.request_for_sensors = false;
+					this.apartment = 'NONE';
+					
 					setTimeout(() => {
 						this.controller.models['MenuModel'].setSelected('menu');
 						//$("#signup-submit").prop("disabled", false);
@@ -281,6 +291,7 @@ export default class UserSignupApaView extends UserView {
 		} else {
 			$("#signup-submit").prop("disabled", true);
 		}
+		
 		$("#gdpr-text").on('click', function() {
 			
 			const UGDPRM = self.controller.master.modelRepo.get('UserGDPRModel');
@@ -294,11 +305,22 @@ export default class UserSignupApaView extends UserView {
 		// Attach all event-handlers:
 		$('#signup-email').on('keyup', function(){
 			$('#'+self.FELID).empty();
+			self.emaile = $('#signup-email').val();
 		});
+		if (this.emaile.length > 0) {
+			$('#signup-email').val(this.emaile);
+			$('label[for="signup-email"]').addClass('active');
+		}
 		
 		$('#signup-password').on('keyup', function(){
 			$('#'+self.FELID).empty();
+			self.passworde = $('#signup-password').val();
 		});
+		if (this.passworde.length > 0) {
+			$('#signup-password').val(this.passworde);
+			$('label[for="signup-password"]').addClass('active');
+		}
+		
 		$("#select-apartment").change(function() {
 			$('#'+self.FELID).empty();
 			const selected = $(this).find(":selected").val();
@@ -308,10 +330,26 @@ export default class UserSignupApaView extends UserView {
 		
 		$('#select-apartment > option[value='+self.apartment+']').prop('selected', true);
 		
+		$("#request-for-sensors").change(function() {
+			 if (this.checked) {
+				self.request_for_sensors = true;
+			} else {
+				self.request_for_sensors = false;
+			}
+		});
+		if (this.request_for_sensors === true) {
+			$('#request-for-sensors').attr('checked','checked');
+		}
+		
 		// This must be called AFTER all select options are filled in and default selection done.
 		$('select').formSelect();
 		
 		$("#cancel").on('click', function() {
+			// Here we shoud empty the filled properties:
+			self.emaile = '';
+			self.passworde = '';
+			self.request_for_sensors = false;
+			self.apartment = 'NONE';
 			self.controller.models['MenuModel'].setSelected('menu');
 		});
 		

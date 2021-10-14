@@ -93,7 +93,7 @@ export default class LanguageModel {
 				'APARTMENT_HUMIDITY_AXIS_LABEL':'Humi',
 				'APARTMENT_HUMIDITY_LEGEND':'Humidity',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.10.11'
+				'MENU_VERSION':'v 21.10.14'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -185,7 +185,7 @@ export default class LanguageModel {
 				'APARTMENT_HUMIDITY_AXIS_LABEL':'Kosteus',
 				'APARTMENT_HUMIDITY_LEGEND':'Kosteus',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.10.11'
+				'MENU_VERSION':'v 21.10.14'
 			}
 		}
 	}

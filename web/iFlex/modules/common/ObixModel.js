@@ -66,7 +66,9 @@ export default class ObixModel extends Model {
 	*/
 	constructor(options) {
 		super(options);
+		
 		this.values = [];
+		
 		if (typeof options.cache_expiration_in_seconds !== 'undefined') {
 			this.cache_expiration_in_seconds = options.cache_expiration_in_seconds;
 		} else {
@@ -75,7 +77,7 @@ export default class ObixModel extends Model {
 		if (typeof options.timerange !== 'undefined') {
 			this.timerange = options.timerange;
 		} else {
-			this.timerange = {begin:1,end:0};
+			this.timerange = {begin:{value:1,unit:'days'},end:{value:0,unit:'days'}};
 		}
 		// define interval for ROLLUP API
 		if (typeof options.interval !== 'undefined') {
@@ -178,8 +180,16 @@ export default class ObixModel extends Model {
 		//curl -u 'timokinnunen':'tuaxiMun0wx6ff!sBaq' -s -H "Content-Type: text/xml;charset=UTF-8" -d "<obj is=\"obix:HistoryFilter\" xmlns=\"http://obix.org/ns/schema/1.0\"><int name=\"limit\" val=\"20\" /><abstime name=\"start\" val=\"2021-09-03T09:51:15.062Z\"/><abstime name=\"end\" val=\"2021-09-05T09:51:15.062Z\"/></obj>" https://ba.vtt.fi/obixStore/store/NuukaOpenData/1752%20Malmitalo/Electricity/
 		
 		
-		const start = moment().subtract(this.timerange.begin, 'days').format();
-		const end = moment().subtract(this.timerange.end, 'days').format();
+		const start_mom = moment().subtract(this.timerange.begin.value, this.timerange.begin.unit);
+		start_mom.milliseconds(0);
+		start_mom.seconds(0);
+		const start = start_mom.format();
+		
+		const end_mom = moment().subtract(this.timerange.end.value, this.timerange.end.unit);
+		end_mom.milliseconds(0);
+		end_mom.seconds(0);
+		const end = end_mom.format();
+		
 		const now = moment().format('YYYY-MM-DDTHH');
 		const interval = this.interval;
 		
@@ -191,11 +201,11 @@ export default class ObixModel extends Model {
 		// Create a hash using URL and timerange and CURRENT DATETIME IN HOUR PRECISION.
 		// This is how we can cover different responses having timestamp to help cleaning 
 		// in BACKEND.
-		
+		const from_to_string = '_from_' + this.timerange.begin.value + '_' + this.timerange.begin.unit + '_to_' + this.timerange.end.value + '_' + this.timerange.end.unit + now;
 		if (typeof interval !== 'undefined') {
 			
 			source += 'rollup/';
-			hash = source + '_from_' + this.timerange.begin + '_to_' + this.timerange.end + '_days_' + now + '_' + interval;
+			hash = source + from_to_string + '_' + interval;
 			reqXML = '<?xml version="1.0" encoding="UTF-8"?>'+
 			'<obj is="obix:HistoryRollupIn obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
 			'<reltime name="interval" val="'+interval+'"/>'+
@@ -207,7 +217,7 @@ export default class ObixModel extends Model {
 		} else {
 			
 			source += 'query/';
-			hash = source + '_from_' + this.timerange.begin + '_to_' + this.timerange.end + '_days_' + now;
+			hash = source + from_to_string;
 			reqXML = '<?xml version="1.0" encoding="UTF-8"?>'+
 			'<obj is="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
 			'<int name="limit" null="true"/>'+

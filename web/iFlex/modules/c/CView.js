@@ -121,6 +121,19 @@ export default class CView extends TimeRangeView {
 		$(this.el).empty();
 	}
 	
+	evaluateIntervalInMinutes(v1, v2) {
+		let d = 0;
+		if (typeof v1 !== 'undefined' && typeof v2 !== 'undefined') {
+			const p = moment(v1.timestamp);
+			const n = moment(v2.timestamp);
+			const duration = moment.duration(n.diff(p));
+			const dm = duration.asMinutes();
+			d = Math.round(dm);
+		}
+		console.log(['d=',d]);
+		return d;
+	}
+	
 	/*
 	Models used in CView:
 	
@@ -130,16 +143,6 @@ export default class CView extends TimeRangeView {
 	BuildingElectricityPL3Model
 	BuildingHeatingQE01Model
 	*/
-	/*
-	showInfo() {
-		const html = '<p class="fetching-info">Obix timerange is ' + 
-			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].timerange.begin.value + ' ' +
-			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].timerange.begin.unit + ' and the interval is ' + 
-			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].interval + '<br/>Fetching interval is '+ 
-			this.controller.fetching_interval_in_seconds + ' seconds. Cache expiration is ' + 
-			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].cache_expiration_in_seconds + ' seconds.</p>';
-		$('#data-fetching-info').empty().append(html);
-	}*/
 	
 	//return y0*(x1-x) + y1*(x-x0) / (x1-x0);
 	
@@ -177,17 +180,59 @@ export default class CView extends TimeRangeView {
 	
 	Then minute_hash can be used to calculate for example HOURLY AVERAGES.
 	
+	BUT what if interval is NOT 3 mins or 15 mins, it will be different when rollup API is used.
+	We must check what the real interval is and NOT make any assumptions about it.
+	
+	
 	*/
 	resample() {
-		let average = 0;
+		let average = 100;
 		if (this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.length > 0) {
 			// start and end are handled in minute accuracy.
-			const interval_in_mins = 1;
+			let interval_in_mins = 1;
 			const trbv = this.models['BuildingElectricityPL1Model'].timerange.begin.value;
-			const trev = this.models['BuildingElectricityPL1Model'].timerange.end.value;
-			
 			const trbu = this.models['BuildingElectricityPL1Model'].timerange.begin.unit;
+			const trev = this.models['BuildingElectricityPL1Model'].timerange.end.value;
 			const treu = this.models['BuildingElectricityPL1Model'].timerange.end.unit;
+			
+			
+			let interval_PL = 1;
+			if (typeof this.models['BuildingElectricityPL1Model'].interval !== 'undefined') {
+				const intervalli = this.models['BuildingElectricityPL1Model'].interval;
+				if (typeof intervalli === 'string') {
+					const dm = moment.duration(intervalli).asMinutes();
+					interval_PL = Math.round(dm);
+				}
+			} else {
+				interval_PL = this.evaluateIntervalInMinutes(
+					this.models['BuildingElectricityPL1Model'].values[0],
+					this.models['BuildingElectricityPL1Model'].values[1]);
+			}
+			
+			let interval_FACTOR = 1;
+			if (typeof this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].interval !== 'undefined') {
+				const intervalli = this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].interval;
+				if (typeof intervalli === 'string') {
+					const dm = moment.duration(intervalli).asMinutes();
+					interval_FACTOR = Math.round(dm);
+				}
+			} else {
+				interval_FACTOR = this.evaluateIntervalInMinutes(
+					this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values[0],
+					this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values[1]);
+			}
+			
+			console.log('================================================================');
+			console.log(['interval_PL=', interval_PL,' interval_FACTOR=', interval_FACTOR]);
+			console.log('================================================================');
+			
+			// Use the smaller interval as a base interval for HASH:
+			if (interval_FACTOR < interval_PL) {
+				interval_in_mins = interval_FACTOR;
+			} else {
+				interval_in_mins = interval_PL;
+			}
+			
 			
 			const start = moment().subtract(trbv, trbu).format();
 			const end = moment().subtract(trev, treu).format();
@@ -199,83 +244,6 @@ export default class CView extends TimeRangeView {
 			let end_m = moment(end);
 			end_m.milliseconds(0);
 			end_m.seconds(0);
-			
-			let minute_hash = {};
-			
-			// 1st PHASE: initialize hash with empty objects for each minute.
-			while (end_m.isAfter(start_m)) {
-				const ds = start_m.format();
-				// create new entry for raw value, for example: { factor: 103.44 }
-				minute_hash[ds] = {}; 
-				/*const hourly = ds.slice(0,13); // '2021-10-12T12'
-				const daily = ds.slice(0,10); // '2021-10-12'
-				if (!minute_hash.hasOwnProperty(hourly)) {
-					minute_hash[hourly] = {}; // create new entry for hourly average
-				}
-				if (!minute_hash.hasOwnProperty(daily)) {
-					minute_hash[daily] = {}; // create new entry for hourly average
-				}*/
-				start_m.add(interval_in_mins,'minutes');
-			}
-			// 2nd PHASE: fill in the factors from model and calculate averages.
-			let sum = 0;
-			let count = 0;
-			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.forEach(v=>{
-				const m = moment(v.timestamp);
-				m.milliseconds(0);
-				m.seconds(0);
-				const ds = m.format();
-				let val = +v.value; // Converts string to number.
-				if (minute_hash.hasOwnProperty(ds)) {
-					minute_hash[ds]['factor'] = val;
-					sum += val;
-					count++;
-				} else {
-					console.log(['NOT IN HASH ds=',ds]);
-				}
-			});
-			
-			
-			
-			
-			this.models['BuildingElectricityPL1Model'].values.forEach(v=>{
-				const m = moment(v.timestamp);
-				m.milliseconds(0);
-				m.seconds(0);
-				const ds = m.format();
-				let val = +v.value; // Converts string to number.
-				if (minute_hash.hasOwnProperty(ds)) {
-					minute_hash[ds]['PL1'] = val;
-				}
-			});
-			this.models['BuildingElectricityPL2Model'].values.forEach(v=>{
-				const m = moment(v.timestamp);
-				m.milliseconds(0);
-				m.seconds(0);
-				const ds = m.format();
-				let val = +v.value; // Converts string to number.
-				if (minute_hash.hasOwnProperty(ds)) {
-					minute_hash[ds]['PL2'] = val;
-				}
-			});
-			this.models['BuildingElectricityPL3Model'].values.forEach(v=>{
-				const m = moment(v.timestamp);
-				m.milliseconds(0);
-				m.seconds(0);
-				const ds = m.format();
-				let val = +v.value; // Converts string to number.
-				if (minute_hash.hasOwnProperty(ds)) {
-					minute_hash[ds]['PL3'] = val;
-				}
-			});
-			
-			
-			console.log(['minute_hash=',minute_hash,' count=',count]);
-			
-			if (count > 0) {
-				average = sum/count;
-				console.log(['average=',average]);
-			}
 		}
 		return average;
 		
@@ -337,6 +305,29 @@ export default class CView extends TimeRangeView {
 		
 	}
 	
+	findClosestFactor(key) {
+		
+		//console.log(['key=',key]);
+		const emm = moment(key);
+		
+		let retval = 100;
+		let distance = 10000;
+		
+		this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.forEach(v=>{
+			const val = +v.value;
+			const m = moment(v.timestamp);
+			//m.milliseconds(0);
+			//m.seconds(0);
+			const dist = Math.abs(moment.duration(emm.diff(m)).asMinutes());
+			if (dist < distance) {
+				distance = dist;
+				retval = val;
+			}
+		});
+		//console.log(['FACTOR=',retval]);
+		return retval;
+	}
+	
 	calculate_DH_Sum() {
 		
 		
@@ -355,9 +346,12 @@ export default class CView extends TimeRangeView {
 		
 		// CALL THIS FOR EVERY MODEL, BUT NOTE THAT SUM IS CALCULATED ONLY WHEN ALL 3 MODELS ARE READY AND FILLED WITH VALUES!
 		
+		console.log('!!!!!!!!!!!!!!!    CALCULATE SUM ??%%%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+		
 		if (this.models['BuildingElectricityPL1Model'].values.length > 0 && 
-			this.models['BuildingElectricityPL2Model'].values.length > 0 &&
-			this.models['BuildingElectricityPL3Model'].values.length > 0) {
+			this.models['BuildingElectricityPL2Model'].values.length > 0 && 
+			this.models['BuildingElectricityPL3Model'].values.length > 0 && 
+			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.length > 0) {
 			
 			// Calculate the sum of models like before.
 			// and assign that to self.values array {timestamp => value}
@@ -405,7 +399,7 @@ export default class CView extends TimeRangeView {
 					sumbucket[ds]['BuildingElectricityPL3Model'] = val; // update
 				}
 			});
-			
+			/*
 			let factor_average = this.resample();
 			if (factor_average === 0) {
 				// Fallback to some meaningful value, but note to user that FACTOR was not available!
@@ -414,12 +408,15 @@ export default class CView extends TimeRangeView {
 				$(html).appendTo('#'+this.FELID);
 				factor_average = 100;
 			}
+			*/
 			
 			Object.keys(sumbucket).forEach(key => {
 				let sum = 0;
 				Object.keys(sumbucket[key]).forEach(m => {
-					sum += sumbucket[key][m] * factor_average;
+					//sum += sumbucket[key][m] * factor_average;
+					sum += sumbucket[key][m];
 				});
+				sum *= this.findClosestFactor(key);
 				this.calculated_EL_emissions.push({timestamp: moment(key).toDate(), value:sum});
 			});
 		}
@@ -440,49 +437,6 @@ export default class CView extends TimeRangeView {
 				
 			} else if (options.model==='BuildingEmissionFactorForElectricityConsumedInFinlandModel' && options.method==='fetched') {
 				
-				
-				// series1.name = "ELEMISSIONS";
-				//series2.name = "DHEMISSIONS";
-				
-				if (this.rendered) {
-					if (options.status === 200 || options.status === '200') {
-						
-						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						//this.resample();
-						
-						/*
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							//console.log('fetched ..... CView CHART UPDATED!');
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'ELE_FACTOR') {
-									s.data = self.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
-								}
-							});
-						} else {
-							//console.log('fetched ..... render CView()');
-							this.renderChart();
-						}
-						*/
-						
-					} else { // Error in fetching.
-						$('#'+this.FELID).empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#'+this.FELID);
-					}
-				} else { // This should never be the case, but render anyway if we get here.
-					this.render();
-				}
-			/*
-				'BuildingElectricityPL1Model',
-				'BuildingElectricityPL2Model',
-				'BuildingElectricityPL3Model',
-				'BuildingHeatingQE01Model'
-			*/
-			
-			} else if (options.model==='BuildingElectricityPL1Model' && options.method==='fetched') {
-				console.log('NOTIFY BuildingElectricityPL1Model fetched!');
-				console.log(['options.status=',options.status]);
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
@@ -492,20 +446,41 @@ export default class CView extends TimeRangeView {
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								
-								//if (s.name === 'L1') {
-								//	s.data = self.models['BuildingElectricityPL1Model'].values;
-								//} else if (s.name === 'SUM') {
-								//	s.data = self.values;
-								//}
 								if (s.name === 'ELEMISSIONS') {
 									s.data = self.calculated_EL_emissions;
 								}
-								
 							});
+						} else {
+							this.renderChart();
 						}
 						
+					} else { // Error in fetching.
+						$('#'+this.FELID).empty();
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#'+this.FELID);
+					}
+				} else { // This should never be the case, but render anyway if we get here.
+					this.render();
+				}
+			} else if (options.model==='BuildingElectricityPL1Model' && options.method==='fetched') {
+				//console.log('NOTIFY BuildingElectricityPL1Model fetched!');
+				//console.log(['options.status=',options.status]);
+				if (this.rendered) {
+					if (options.status === 200 || options.status === '200') {
 						
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
+						this.calculateSum();
+						
+						$('#'+this.FELID).empty();
+						if (typeof this.chart !== 'undefined') {
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								if (s.name === 'ELEMISSIONS') {
+									s.data = self.calculated_EL_emissions;
+								}
+							});
+						} else {
+							this.renderChart();
+						}
 						
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
@@ -522,22 +497,12 @@ export default class CView extends TimeRangeView {
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
-							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								
-								//if (s.name === 'L2') {
-								//	s.data = self.models['BuildingElectricityPL2Model'].values;
-								//} else if (s.name === 'SUM') {
-								//	s.data = self.values;
-								//}
-								
 								if (s.name === 'ELEMISSIONS') {
 									s.data = self.calculated_EL_emissions;
 								}
-								
 							});
 						} else {
-							
 							this.renderChart();
 						}
 					} else { // Error in fetching.
@@ -556,17 +521,9 @@ export default class CView extends TimeRangeView {
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								
-								//if (s.name === 'L3') {
-								//	s.data = self.models['BuildingElectricityPL3Model'].values;
-								//} else if (s.name === 'SUM') {
-								//	s.data = self.values;
-								//}
-								
 								if (s.name === 'ELEMISSIONS') {
 									s.data = self.calculated_EL_emissions;
 								}
-								
 							});
 						} else {
 							this.renderChart();
@@ -577,9 +534,6 @@ export default class CView extends TimeRangeView {
 						$(html).appendTo('#'+this.FELID);
 					}
 				}
-				
-				
-				
 			} else if (options.model==='BuildingHeatingQE01Model' && options.method==='fetched') {
 				console.log('NOTIFY BuildingHeatingQE01Model fetched!');
 				console.log(['options.status=',options.status]);
@@ -591,7 +545,6 @@ export default class CView extends TimeRangeView {
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
-							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								if (s.name === 'DHEMISSIONS') {
 									s.data = self.calculated_DH_emissions;
@@ -609,9 +562,6 @@ export default class CView extends TimeRangeView {
 					}
 				}
 			}
-			
-			
-			
 		}
 	}
 	
@@ -801,3 +751,84 @@ export default class CView extends TimeRangeView {
 		}
 	}
 }
+
+
+			/*
+			
+			
+			let minute_hash = {};
+			
+			// 1st PHASE: initialize hash with empty objects for each minute.
+			while (end_m.isAfter(start_m)) {
+				const ds = start_m.format();
+				// create new entry for raw value, for example: { factor: 103.44 }
+				minute_hash[ds] = {}; 
+				//const hourly = ds.slice(0,13); // '2021-10-12T12'
+				//const daily = ds.slice(0,10); // '2021-10-12'
+				//if (!minute_hash.hasOwnProperty(hourly)) {
+					//minute_hash[hourly] = {}; // create new entry for hourly average
+				//}
+				//if (!minute_hash.hasOwnProperty(daily)) {
+					//minute_hash[daily] = {}; // create new entry for hourly average
+				//}
+				start_m.add(interval_in_mins,'minutes');
+			}
+			// 2nd PHASE: fill in the factors from model and calculate averages.
+			let sum = 0;
+			let count = 0;
+			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.forEach(v=>{
+				const m = moment(v.timestamp);
+				m.milliseconds(0);
+				m.seconds(0);
+				const ds = m.format();
+				let val = +v.value; // Converts string to number.
+				if (minute_hash.hasOwnProperty(ds)) {
+					minute_hash[ds]['factor'] = val;
+					sum += val;
+					count++;
+				} else {
+					console.log(['NOT IN HASH ds=',ds]);
+				}
+			});
+			
+			*/
+			
+			/*
+			this.models['BuildingElectricityPL1Model'].values.forEach(v=>{
+				const m = moment(v.timestamp);
+				m.milliseconds(0);
+				m.seconds(0);
+				const ds = m.format();
+				let val = +v.value; // Converts string to number.
+				if (minute_hash.hasOwnProperty(ds)) {
+					minute_hash[ds]['PL1'] = val;
+				}
+			});
+			this.models['BuildingElectricityPL2Model'].values.forEach(v=>{
+				const m = moment(v.timestamp);
+				m.milliseconds(0);
+				m.seconds(0);
+				const ds = m.format();
+				let val = +v.value; // Converts string to number.
+				if (minute_hash.hasOwnProperty(ds)) {
+					minute_hash[ds]['PL2'] = val;
+				}
+			});
+			this.models['BuildingElectricityPL3Model'].values.forEach(v=>{
+				const m = moment(v.timestamp);
+				m.milliseconds(0);
+				m.seconds(0);
+				const ds = m.format();
+				let val = +v.value; // Converts string to number.
+				if (minute_hash.hasOwnProperty(ds)) {
+					minute_hash[ds]['PL3'] = val;
+				}
+			});
+			
+			console.log(['minute_hash=',minute_hash,' count=',count]);
+			
+			if (count > 0) {
+				average = sum/count;
+				console.log(['average=',average]);
+			}
+			*/

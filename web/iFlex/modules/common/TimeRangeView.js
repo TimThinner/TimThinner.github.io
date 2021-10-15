@@ -120,7 +120,7 @@ export default class TimeRangeView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					model.timerange = { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}};
-					model.interval = undefined;//'PT3M';
+					model.interval = 'PT15M';
 					model.values = [];
 				}
 			});
@@ -136,7 +136,7 @@ export default class TimeRangeView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					model.timerange = { begin:{value:7,unit:'days'},end:{value:0,unit:'days'}};
-					model.interval = undefined; //'PT20M';//'PT10M';
+					model.interval = 'PT30M';
 					model.values = [];
 				}
 			});
@@ -152,7 +152,7 @@ export default class TimeRangeView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					model.timerange = { begin:{value:14,unit:'days'},end:{value:0,unit:'days'}};
-					model.interval = undefined; //'PT20M';
+					model.interval = 'PT60M';
 					model.values = [];
 				}
 			});
@@ -168,7 +168,7 @@ export default class TimeRangeView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					model.timerange = { begin:{value:1,unit:'months'},end:{value:0,unit:'months'}};
-					model.interval = 'PT30M';
+					model.interval = 'PT2H';
 					model.values = [];
 				}
 			});

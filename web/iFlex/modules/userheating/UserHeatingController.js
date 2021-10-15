@@ -38,7 +38,7 @@ export default class UserHeatingController extends Controller {
 			
 			//src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/',
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
-			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
+			interval: 'PT15M', // interval MUST BE defined for ROLLUP API
 			
 			cache_expiration_in_seconds:60,
 			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
@@ -54,7 +54,7 @@ export default class UserHeatingController extends Controller {
 			
 			//src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/',
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
-			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
+			interval: 'PT15M', // interval MUST BE defined for ROLLUP API
 			
 			cache_expiration_in_seconds:60,
 			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},

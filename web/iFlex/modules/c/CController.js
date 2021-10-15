@@ -41,7 +41,7 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 			name:'BuildingEmissionFactorForElectricityConsumedInFinlandModel',
 			
 			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/',
-			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			interval: 'PT15M', // interval MUST BE defined for ROLLUP API
 			
 			cache_expiration_in_seconds:120,
 			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},

@@ -69,9 +69,9 @@ export default class UserHeatingView extends TimeRangeView {
 						
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... UserHeatingView CHART UPDATED!');
-							//am4core.iter.each(this.chart.series.iterator(), function (s) {
-							//	s.data = self.models['UserHeatingModel'].values;
-							//});
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								//s.data = self.models['UserHeatingModel'].values;
+							});
 							
 						} else {
 							console.log('fetched ..... render UserHeatingView()');
@@ -105,9 +105,9 @@ export default class UserHeatingView extends TimeRangeView {
 						
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... UserHeatingView CHART UPDATED!');
-							//am4core.iter.each(this.chart.series.iterator(), function (s) {
-							//	s.data = self.models['UserHeatingModel'].values;
-							//});
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								//s.data = self.models['UserHeatingModel'].values;
+							});
 							
 						} else {
 							console.log('fetched ..... render UserHeatingView()');

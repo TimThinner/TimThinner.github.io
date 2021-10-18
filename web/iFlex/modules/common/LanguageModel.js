@@ -43,9 +43,10 @@ export default class LanguageModel {
 				'ADMIN_EDIT_REGCODE_APARTMENT':'Apartment',
 				'ADMIN_EDIT_READKEY_TITLE':'ReadKey',
 				'ADMIN_EDIT_READKEY_DESCRIPTION':'Modify ReadKey validity period.',
-				'BACK':'BACK',
+				'BACK':'&nbsp;BACK&nbsp;',
+				'OK':'&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;',
 				'CANCEL':'CANCEL',
-				'SAVE':'SAVE',
+				'SAVE':'&nbsp;SAVE&nbsp;',
 				'UPDATE':'UPDATE',
 				'VALIDATOR_NOT_VALID':' not valid',
 				'VALIDATOR_MISSING':' missing',
@@ -93,7 +94,7 @@ export default class LanguageModel {
 				'APARTMENT_HUMIDITY_AXIS_LABEL':'Humi',
 				'APARTMENT_HUMIDITY_LEGEND':'Humidity',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.10.14'
+				'MENU_VERSION':'v 21.10.18'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -136,7 +137,8 @@ export default class LanguageModel {
 				'ADMIN_EDIT_READKEY_TITLE':'Lukuavain',
 				'ADMIN_EDIT_READKEY_DESCRIPTION':'Voit muuttaa lukuavaimen voimassaoloaikaa.',
 				'BACK':'TAKAISIN',
-				'CANCEL':'PERU',
+				'OK':'&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;',
+				'CANCEL':'&nbsp;PERU&nbsp;',
 				'SAVE':'TALLETA',
 				'UPDATE':'PÄIVITÄ',
 				'VALIDATOR_NOT_VALID':' ei kelpaa',
@@ -185,7 +187,7 @@ export default class LanguageModel {
 				'APARTMENT_HUMIDITY_AXIS_LABEL':'Kosteus',
 				'APARTMENT_HUMIDITY_LEGEND':'Kosteus',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.10.14'
+				'MENU_VERSION':'v 21.10.18'
 			}
 		}
 	}

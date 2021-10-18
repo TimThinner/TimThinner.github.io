@@ -111,7 +111,7 @@ export default class TimeRangeView extends View {
 		
 		$('#'+this.selected).addClass("selected");
 		
-		// timerange 1 day interval = 3 mins (24x20 = 480 values) or 15 mins (24x4 = 96 values)
+		// timerange 1 day interval = 15 mins (24x4 = 96 values)
 		$('#b1d').on('click',function() {
 			self.selected = "b1d";
 			self.resetButtonClass();
@@ -128,7 +128,7 @@ export default class TimeRangeView extends View {
 			self.showInfo(models);
 		});
 		
-		// timerange 7 days interval = 3 mins (7x24x20 = 3360 values) or 15 mins (7x24x4 = 672 values)
+		// timerange 7 days interval = 30 mins (7x24x2 =  336 values)
 		$('#b1w').on('click',function() {
 			self.selected = "b1w";
 			self.resetButtonClass();
@@ -144,7 +144,7 @@ export default class TimeRangeView extends View {
 			self.showInfo(models);
 		});
 		
-		// timerange 14 days interval = 3 mins (14x24x20 = 6720 values) or 15 mins (14x24x4 = 1344 values)
+		// timerange 14 days interval = 60 mins (14x24 =  336 values)
 		$('#b2w').on('click',function() {
 			self.selected = "b2w";
 			self.resetButtonClass();
@@ -160,7 +160,7 @@ export default class TimeRangeView extends View {
 			self.showInfo(models);
 		});
 		
-		// timerange 1 month interval = 30 MINUTES (approx 30x24x2 = 1440 values)
+		// timerange 1 month interval = 120 MINUTES (approx 30x12 = 360 values)
 		$('#b1m').on('click',function() {
 			self.selected = "b1m";
 			self.resetButtonClass();
@@ -176,7 +176,7 @@ export default class TimeRangeView extends View {
 			self.showInfo(models);
 		});
 		
-		// timerange 6 months interval = 4 HOURS (approx 6x30x6 = 1080 values)
+		// timerange 6 months interval = 12 HOURS (approx 6x30x2 =  360 values)
 		$('#b6m').on('click',function() {
 			self.selected = "b6m";
 			self.resetButtonClass();
@@ -184,7 +184,7 @@ export default class TimeRangeView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					model.timerange = { begin:{value:6,unit:'months'},end:{value:0,unit:'months'}};
-					model.interval = 'PT4H';
+					model.interval = 'PT12H';
 					model.values = [];
 				}
 			});
@@ -192,7 +192,7 @@ export default class TimeRangeView extends View {
 			self.showInfo(models);
 		});
 		
-		// timerange 13 months interval = 6 HOURS (approx 13x30x4 = 1560 values)
+		// timerange 13 months interval = 24 HOURS (approx 13x30 = 390 values)
 		$('#b1y').on('click',function() {
 			self.selected = "b1y";
 			self.resetButtonClass();
@@ -200,7 +200,7 @@ export default class TimeRangeView extends View {
 				if (models.includes(key)) {
 					const model = self.controller.models[key];
 					model.timerange = { begin:{value:13,unit:'months'},end:{value:0,unit:'months'}};
-					model.interval = 'PT6H';
+					model.interval = 'PT24H';
 					model.values = [];
 				}
 			});

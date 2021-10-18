@@ -53,6 +53,11 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 
 
 
+
+
+
+
+
 */
 export default class ObixModel extends Model {
 	
@@ -68,23 +73,29 @@ export default class ObixModel extends Model {
 		super(options);
 		
 		this.values = [];
-		
+		/*
 		if (typeof options.cache_expiration_in_seconds !== 'undefined') {
 			this.cache_expiration_in_seconds = options.cache_expiration_in_seconds;
 		} else {
 			this.cache_expiration_in_seconds = 60;
 		}
+		*/
+		this.cache_expiration_in_seconds = 60;
+		/*
 		if (typeof options.timerange !== 'undefined') {
 			this.timerange = options.timerange;
 		} else {
 			this.timerange = {begin:{value:1,unit:'days'},end:{value:0,unit:'days'}};
-		}
+		}*/
+		this.timerange = { begin:{value:1,unit:'days'}, end:{value:0,unit:'days'} };
 		// define interval for ROLLUP API
+		/*
 		if (typeof options.interval !== 'undefined') {
 			this.interval = options.interval;
 		} else {
 			this.interval = undefined;
-		}
+		}*/
+		this.interval = 'PT15M';
 		this.access = options.access; // 'PUBLIC' or 'PRIVATE'
 	}
 	

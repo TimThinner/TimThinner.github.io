@@ -25,6 +25,18 @@ export default class UserHeatingController extends Controller {
 		this.restartPollingInterval('UserHeatingView');
 	}
 	
+	/*
+		FI_H_H160_PV1_ME13/', Humidity A 1st floor
+		FI_H_H160_PV1_ME14/', Humidity A 4th floor
+		FI_H_H160_PV1_ME15/', Humidity C 1st floor
+		FI_H_H160_PV1_ME16/', Humidity C 4th floor
+		
+		FI_H_H160_PV1_TE13/', Temperature A 1st floor
+		FI_H_H160_PV1_TE14/', Temperature A 4th floor
+		FI_H_H160_PV1_TE15/', Temperature C 1st floor
+		FI_H_H160_PV1_TE16/', Temperature C 4th floor
+	*/
+	
 	initialize() {
 		
 		/*
@@ -35,13 +47,11 @@ export default class UserHeatingController extends Controller {
 		const UTM = new UserTemperatureModel({
 			name:'UserTemperatureModel',
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
-			
 			//src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/',
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
-			interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			
-			cache_expiration_in_seconds:60,
-			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			//cache_expiration_in_seconds:60,
+			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			access:'PRIVATE'
 		});
 		UTM.subscribe(this); // Now we will receive notifications from the UserModel.
@@ -51,13 +61,11 @@ export default class UserHeatingController extends Controller {
 		const UHM = new UserHumidityModel({
 			name:'UserHumidityModel',
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
-			
 			//src:'/obixStore/store/NuukaOpenData/1752%20Malmitalo/Heat/',
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
-			interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			
-			cache_expiration_in_seconds:60,
-			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			//cache_expiration_in_seconds:60,
+			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			access:'PRIVATE'
 		});
 		UHM.subscribe(this); // Now we will receive notifications from the UserModel.

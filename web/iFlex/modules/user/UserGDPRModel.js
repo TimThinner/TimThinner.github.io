@@ -27,5 +27,7 @@ export default class UserGDPRModel extends Model {
 		this.ready = true;
 		this.status = 200;
 		this.caller = undefined;
+		this.consent_one = false;
+		this.consent_two = false;
 	}
 }

@@ -52,10 +52,10 @@ export default class BController extends Controller {
 		const BHQE01M = new BuildingHeatingQE01Model({
 			name:'BuildingHeatingQE01Model',
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
-			interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			cache_expiration_in_seconds:60,
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			//cache_expiration_in_seconds:60,
 			//timerange: { begin: 1, end: 0 },
-			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
+			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			access:'PUBLIC'
 		});
 		BHQE01M.subscribe(this); // Now we will receive notifications from the UserModel.

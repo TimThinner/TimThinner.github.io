@@ -279,6 +279,14 @@ export default class UserSignupApaView extends UserView {
 		
 		this.rendered = true;
 		
+		const UGDPRM = this.controller.master.modelRepo.get('UserGDPRModel');
+		
+		if (UGDPRM.consent_one === true && UGDPRM.consent_two === true) {
+			$("#consent-gdpr").prop("disabled", false);
+		} else {
+			$("#consent-gdpr").prop("disabled", true);
+		}
+		
 		$("#consent-gdpr").change(function() {
 			 if (this.checked) {
 				$("#signup-submit").prop("disabled", false);
@@ -294,11 +302,9 @@ export default class UserSignupApaView extends UserView {
 		
 		$("#gdpr-text").on('click', function() {
 			
-			const UGDPRM = self.controller.master.modelRepo.get('UserGDPRModel');
-			if (UGDPRM) {
-				console.log(['SET caller usersignup']);
-				UGDPRM.caller = 'usersignup';
-			}
+			//console.log(['SET caller usersignup']);
+			UGDPRM.caller = 'usersignup';
+			
 			self.controller.models['MenuModel'].setSelected('userGDPR');
 		});
 		

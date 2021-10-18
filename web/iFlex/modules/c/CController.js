@@ -39,12 +39,10 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 	initialize() {
 		const BEFFECIFM = new BuildingEmissionFactorForElectricityConsumedInFinlandModel({
 			name:'BuildingEmissionFactorForElectricityConsumedInFinlandModel',
-			
 			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/',
-			interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			
-			cache_expiration_in_seconds:120,
-			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			//cache_expiration_in_seconds:120,
+			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			//timerange: { begin: 1, end: 0 },
 			access:'PUBLIC'
 		});

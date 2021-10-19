@@ -62,6 +62,15 @@ export default class UsersView extends View {
 				let readkey = '-';
 				let readkey_validity = '&nbsp;';
 				
+				let consent_a_validity = '<i style="color:red;vertical-align:middle;" class="material-icons small">brightness_1</i>';
+				let consent_b_validity = '<i style="color:red;vertical-align:middle;" class="material-icons small">brightness_1</i>';
+				if (user.consent_a) {
+					consent_a_validity = '<i style="color:green;vertical-align:middle;" class="material-icons small">brightness_1</i>';
+				}
+				if (user.consent_b) {
+					consent_b_validity = '<i style="color:green;vertical-align:middle;" class="material-icons small">brightness_1</i>';
+				}
+				
 				if (typeof user.regcode !== 'undefined') {
 					regcode_apaid = user.regcode.apartmentId;
 					regcode_code = '<a href="javascript:void(0);" id="edit-regcode-'+user.regcode._id+'">'+user.regcode.code+'</a>';
@@ -99,6 +108,8 @@ export default class UsersView extends View {
 						'<td>'+user.created+'</td>'+
 						'<td>'+regcode_apaid+'</td>'+
 						'<td>'+user.request_for_sensors+'</td>'+
+						'<td>'+consent_a_validity+'</td>'+
+						'<td>'+consent_b_validity+'</td>'+
 						'<td>'+regcode_code+'</td>'+
 						'<td>'+regcode_validity+'</td>'+
 						'<td>'+readkey+'</td>'+
@@ -111,7 +122,9 @@ export default class UsersView extends View {
 							'<p>Email: '+user.email+'<br/>'+
 							'Created: '+user.created+'<br/>'+
 							'ApartmentId: '+regcode_apaid+'<br/>'+
-							'Sensors REQ: '+user.request_for_sensors+'<br/>'+
+							'Sensors: '+user.request_for_sensors+'<br/>'+
+							'Consent A: '+consent_a_validity+'<br/>'+
+							'Consent B: '+consent_b_validity+'<br/>'+
 							'RegCode: '+regcode_code+' '+regcode_validity+'<br/>'+
 							'ReadKey: '+readkey+' '+readkey_validity+'</p>'+
 						'</div>'+
@@ -208,8 +221,10 @@ export default class UsersView extends View {
 							'<tr>'+
 								'<th>Email</th>'+
 								'<th>Created</th>'+
-								'<th>ApartmentId</th>'+
-								'<th>Sensors REQ</th>'+
+								'<th>Apartment</th>'+
+								'<th>Sensors</th>'+
+								'<th>Cons A</th>'+
+								'<th>Cons B</th>'+
 								'<th>RegCode</th>'+
 								'<th>&nbsp;</th>'+
 								'<th>ReadKey</th>'+

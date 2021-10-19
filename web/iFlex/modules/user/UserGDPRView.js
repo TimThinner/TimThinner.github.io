@@ -38,38 +38,68 @@ export default class UserGDPRView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_ok = LM['translation'][sel]['OK'];
 		
+		const localized_string_gdpr_title = LM['translation'][sel]['GDPR_TITLE'];
+		const localized_string_gdpr_description = LM['translation'][sel]['GDPR_DESCRIPTION'];
+		const localized_string_gdpr_chapter_1 = LM['translation'][sel]['GDPR_CHAPTER_1'];
+		const localized_string_gdpr_chapter_1a  = LM['translation'][sel]['GDPR_CHAPTER_1A'];
+		const localized_string_gdpr_chapter_1b  = LM['translation'][sel]['GDPR_CHAPTER_1B'];
+		const localized_string_gdpr_chapter_2 = LM['translation'][sel]['GDPR_CHAPTER_2'];
+		const localized_string_gdpr_chapter_2a  = LM['translation'][sel]['GDPR_CHAPTER_2A'];
+		const localized_string_gdpr_chapter_2aa  = LM['translation'][sel]['GDPR_CHAPTER_2AA'];
+		const localized_string_gdpr_chapter_2aaa  = LM['translation'][sel]['GDPR_CHAPTER_2AAA'];
+		const localized_string_gdpr_chapter_2aab  = LM['translation'][sel]['GDPR_CHAPTER_2AAB'];
+		const localized_string_gdpr_chapter_2aac  = LM['translation'][sel]['GDPR_CHAPTER_2AAC'];
+		const localized_string_gdpr_chapter_2ab  = LM['translation'][sel]['GDPR_CHAPTER_2AB'];
+		const localized_string_gdpr_chapter_2aba  = LM['translation'][sel]['GDPR_CHAPTER_2ABA'];
+		const localized_string_gdpr_chapter_2abb  = LM['translation'][sel]['GDPR_CHAPTER_2ABB'];
+		const localized_string_gdpr_chapter_2abc  = LM['translation'][sel]['GDPR_CHAPTER_2ABC'];
+		const localized_string_gdpr_chapter_2b  = LM['translation'][sel]['GDPR_CHAPTER_2B'];
+		
+		const localized_string_ok = LM['translation'][sel]['OK'];
 		const html =
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12">'+
-						'<h4 style="text-align:center;">GDPR</h4>'+
-						"<p>Babybel smelly cheese pecorino. When the cheese comes out everybody's happy cheese strings cheese on toast babybel cheese strings when the cheese comes out everybody's happy halloumi caerphilly. Caerphilly boursin fondue cheesy feet pecorino edam mozzarella cow. Manchego.</p>"+
-						"<p>Fromage red leicester red leicester. Jarlsberg stinking bishop taleggio cow stinking bishop bocconcini cottage cheese chalk and cheese. Roquefort squirty cheese lancashire cut the cheese cheese strings stinking bishop roquefort squirty cheese. Goat cheese and wine halloumi jarlsberg dolcelatte cheesecake boursin caerphilly. Cottage cheese fondue cheese strings fromage.</p>"+
-						"<p>Caerphilly cottage cheese taleggio. Babybel camembert de normandie red leicester mascarpone queso goat fromage squirty cheese. Cottage cheese cheesy feet cheese and wine mascarpone when the cheese comes out everybody's happy stilton cow cheese and biscuits. Hard cheese fromage frais cream cheese cheeseburger feta goat monterey jack stinking bishop. Monterey jack cream cheese.</p>"+
+						'<h4>'+localized_string_gdpr_title+'</h4>'+
+						'<p>'+localized_string_gdpr_description+'</p>'+
 					'</div>'+
 				'</div>'+
-				'<div class="col s12">'+
-					'<div class="input-field col s12">'+
-						'<p><label><input type="checkbox" class="filled-in" id="consent-one" /><span>CONSENT ONE</span></label></p>'+
-					'</div>'+
-				'</div>'+
+			'</div>'+
+			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12">'+
-						"<p>Cheesy feet pepper jack ricotta. Cheese and biscuits cheddar red leicester cauliflower cheese ricotta lancashire paneer rubber cheese. Cheeseburger cheesy feet cheddar brie st. agur blue cheese pepper jack stinking bishop dolcelatte. Melted cheese queso pepper jack everyone loves say cheese paneer edam pepper jack. Melted cheese chalk and cheese macaroni cheese halloumi.</p>"+					
+						'<h5>'+localized_string_gdpr_chapter_1+'</h5>'+
+						'<p>'+localized_string_gdpr_chapter_1a+'<br/>'+localized_string_gdpr_chapter_1b+'</p>'+
 					'</div>'+
 				'</div>'+
-				'<div class="col s12">'+
-					'<div class="input-field col s12">'+
-						'<p><label><input type="checkbox" class="filled-in" id="consent-two" /><span>CONSENT TWO</span></label></p>'+
-					'</div>'+
-				'</div>'+
+			'</div>'+
+			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12">'+
-						"<p>Blue castello when the cheese comes out everybody's happy fondue. Who moved my cheese say cheese croque monsieur the big cheese monterey jack fromage frais cheese strings cheesy feet. Mascarpone fondue cream cheese cheese and biscuits cheese strings cheesecake feta cheese triangles. Who moved my cheese red leicester st. agur blue cheese taleggio cheesy grin who moved my cheese croque monsieur.</p>"+
+						'<h5>'+localized_string_gdpr_chapter_2+'</h5>'+
+						'<p>'+localized_string_gdpr_chapter_2a+'</p>'+
+						'<div class="row">'+
+							'<div class="col s1">&nbsp;</div>'+
+							'<div class="col s11">'+
+								'<p><b>'+localized_string_gdpr_chapter_2aa+'</b><br/>'+
+								localized_string_gdpr_chapter_2aaa+'<br/>'+
+								localized_string_gdpr_chapter_2aab+'<br/>'+
+								localized_string_gdpr_chapter_2aac+'</p>'+
+							'</div>'+
+							'<div class="col s1">&nbsp;</div>'+
+							'<div class="col s11">'+
+								'<p><b>'+localized_string_gdpr_chapter_2ab+'</b><br/>'+
+								localized_string_gdpr_chapter_2aba+'<br/>'+
+								localized_string_gdpr_chapter_2abb+'<br/>'+
+								localized_string_gdpr_chapter_2abc+'</p>'+
+							'</div>'+
+						'</div>'+
+						'<p>'+localized_string_gdpr_chapter_2b+'</p>'+
 					'</div>'+
 				'</div>'+
+			'</div>'+
+			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center" style="margin-top:16px;">'+
 						'<button class="btn waves-effect waves-light" id="back">'+localized_string_ok+
@@ -81,29 +111,6 @@ export default class UserGDPRView extends View {
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
-		
-		if (this.models['UserGDPRModel'].consent_one === true) {
-			$('#consent-one').attr('checked','checked');
-		}
-		if (this.models['UserGDPRModel'].consent_two === true) {
-			$('#consent-two').attr('checked','checked');
-		}
-		
-		$("#consent-one").change(function() {
-			 if (this.checked) {
-				self.models['UserGDPRModel'].consent_one = true;
-			} else {
-				self.models['UserGDPRModel'].consent_one = false;
-			}
-		});
-		
-		$("#consent-two").change(function() {
-			 if (this.checked) {
-				self.models['UserGDPRModel'].consent_two = true;
-			} else {
-				self.models['UserGDPRModel'].consent_two = false;
-			}
-		});
 		
 		$("#back").on('click', function() {
 			const caller = self.controller.models['UserGDPRModel'].caller;

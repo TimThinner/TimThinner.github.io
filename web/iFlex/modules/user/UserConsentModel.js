@@ -20,12 +20,14 @@ import Model from '../common/Model.js';
 		this.ready = true;
 	}
 */
-export default class UserGDPRModel extends Model {
+export default class UserConsentModel extends Model {
 	
 	constructor(options) {
 		super(options);
 		this.ready = true;
 		this.status = 200;
 		this.caller = undefined;
+		this.consent_one = false;
+		this.consent_two = false;
 	}
 }

@@ -40,8 +40,6 @@ export default class UserSignupApaView extends UserView {
 	}
 	
 	signupWithRegcode(opt) {
-		
-		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
@@ -91,7 +89,9 @@ export default class UserSignupApaView extends UserView {
 				email: _email,
 				password: _password,
 				regcode: _regcode,
-				request_for_sensors: _request_for_sensors
+				request_for_sensors: _request_for_sensors,
+				consent_a: true,
+				consent_b: true
 			};
 			// disable both buttons
 			$("#cancel").prop("disabled", true);
@@ -213,8 +213,9 @@ export default class UserSignupApaView extends UserView {
 		const localized_string_signup_sensors_text = LM['translation'][sel]['USER_SIGNUP_SENSORS_TXT'];
 		const localized_string_signup_sensors_cb_label = LM['translation'][sel]['USER_SIGNUP_SENSORS_CHECKBOX_LABEL'];
 		
-		const gdpr_ok_1 = LM['translation'][sel]['USER_SIGNUP_GDPR_OK_1'];
-		const gdpr_ok_2 = LM['translation'][sel]['USER_SIGNUP_GDPR_OK_2'];
+		const consent_ok_1 = LM['translation'][sel]['USER_SIGNUP_CONSENT_OK_1'];
+		const consent_ok_2 = LM['translation'][sel]['USER_SIGNUP_CONSENT_OK_2'];
+		const consent_link_text = LM['translation'][sel]['USER_SIGNUP_CONSENT_LINK_TXT'];
 		const gdpr_link_text = LM['translation'][sel]['USER_SIGNUP_GDPR_LINK_TXT'];
 		
 		const localized_string_signup_apartment_number = LM['translation'][sel]['USER_SIGNUP_APARTMENT_NUMBER'];
@@ -256,7 +257,11 @@ export default class UserSignupApaView extends UserView {
 						'<p><label><input type="checkbox" class="filled-in" id="request-for-sensors" /><span>'+localized_string_signup_sensors_cb_label+'</span></label></p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<p><label><input type="checkbox" class="filled-in" id="consent-gdpr" /><span>'+gdpr_ok_1+'<a href="javascript:void(0);" id="gdpr-text">'+gdpr_link_text+'</a>'+gdpr_ok_2+'</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="consent" />'+
+						'<span>'+consent_ok_1+
+							'<a href="javascript:void(0);" id="gdpr-text">'+gdpr_link_text+'</a>'+consent_ok_2+
+							'<a href="javascript:void(0);" id="consent-text">'+consent_link_text+'</a>'+
+						'</span></label></p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -279,33 +284,35 @@ export default class UserSignupApaView extends UserView {
 		
 		this.rendered = true;
 		
-		const UGDPRM = this.controller.master.modelRepo.get('UserGDPRModel');
+		const UCM = this.controller.master.modelRepo.get('UserConsentModel');
 		
-		if (UGDPRM.consent_one === true && UGDPRM.consent_two === true) {
-			$("#consent-gdpr").prop("disabled", false);
+		if (UCM.consent_one === true && UCM.consent_two === true) {
+			$("#consent").prop("disabled", false);
 		} else {
-			$("#consent-gdpr").prop("disabled", true);
+			$("#consent").prop("disabled", true);
 		}
 		
-		$("#consent-gdpr").change(function() {
+		$("#consent").change(function() {
 			 if (this.checked) {
 				$("#signup-submit").prop("disabled", false);
 			} else {
 				$("#signup-submit").prop("disabled", true);
 			}
 		});
-		if ($('#consent-gdpr').is(':checked')) {
+		if ($('#consent').is(':checked')) {
 			$("#signup-submit").prop("disabled", false);
 		} else {
 			$("#signup-submit").prop("disabled", true);
 		}
 		
 		$("#gdpr-text").on('click', function() {
-			
-			//console.log(['SET caller usersignup']);
-			UGDPRM.caller = 'usersignup';
-			
+			UCM.caller = 'usersignup';
 			self.controller.models['MenuModel'].setSelected('userGDPR');
+		});
+		
+		$("#consent-text").on('click', function() {
+			UCM.caller = 'usersignup';
+			self.controller.models['MenuModel'].setSelected('userConsent');
 		});
 		
 		// Attach all event-handlers:
@@ -355,6 +362,8 @@ export default class UserSignupApaView extends UserView {
 			self.emaile = '';
 			self.passworde = '';
 			self.request_for_sensors = false;
+			UCM.consent_one = false;
+			UCM.consent_two = false;
 			self.apartment = 'NONE';
 			self.controller.models['MenuModel'].setSelected('menu');
 		});

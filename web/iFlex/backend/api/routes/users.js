@@ -23,25 +23,9 @@ const Readkey = require('../models/readkey');
 	created: { type: Date, default: Date.now },
 	regcode:  { type: mongoose.Schema.Types.ObjectId, ref:'Regcode'},
 	readkey:  { type: mongoose.Schema.Types.ObjectId, ref:'Readkey'},
-	
-	price_energy_monthly: {type:Number, default:0},
-	price_energy_basic: {type:Number, default:0},
-	price_energy_transfer: {type:Number, default:0},
-	heating_temperature_upper: {type:Number, default:0},
-	heating_target_temperature: {type:Number, default:0},
-	heating_temperature_lower: {type:Number, default:0},
-	heating_humidity_upper: {type:Number, default:0},
-	heating_target_humidity: {type:Number, default:0},
-	heating_humidity_lower: {type:Number, default:0},
-	water_hot_upper: {type:Number, default:0},
-	water_hot_target: {type:Number, default:0},
-	water_hot_lower: {type:Number, default:0},
-	water_cold_upper: {type:Number, default:0},
-	water_cold_target: {type:Number, default:0},
-	water_cold_lower: {type:Number, default:0},
-	energy_upper: {type:Number, default:0},
-	energy_target: {type:Number, default:0},
-	energy_lower: {type:Number, default:0},
+	request_for_sensors: { type: Boolean, default: false },
+	consent_a: { type: Boolean, default: false },
+	consent_b: { type: Boolean, default: false },
 	is_superuser: { type: Boolean, default: false }
 */
 
@@ -50,7 +34,7 @@ const Readkey = require('../models/readkey');
 */
 router.get('/', checkAuth, (req,res,next)=>{
 	User.find()
-		.select('_id email created regcode readkey request_for_sensors')
+		.select('_id email created regcode readkey request_for_sensors consent_a consent_b')
 		.populate('regcode')
 		.populate('readkey')
 		.exec()
@@ -64,7 +48,9 @@ router.get('/', checkAuth, (req,res,next)=>{
 						created: doc.created,
 						regcode: doc.regcode,
 						readkey: doc.readkey,
-						request_for_sensors: doc.request_for_sensors
+						request_for_sensors: doc.request_for_sensors,
+						consent_a: doc.consent_a,
+						consent_b: doc.consent_b
 					}
 				})
 			});
@@ -95,6 +81,9 @@ router.post("/signup", (req,res,next)=>{
 	const email_lc = req.body.email.toLowerCase();
 	const regcode_lc = req.body.regcode.toLowerCase();
 	const request_for_sensors = req.body.request_for_sensors;
+	const consent_a = req.body.consent_a;
+	const consent_b = req.body.consent_b;
+	
 	// First check that this email is NOT already used.
 	User.find({email:email_lc})
 		.exec()
@@ -145,7 +134,9 @@ router.post("/signup", (req,res,next)=>{
 													password: hash,
 													regcode: regcode[0]._id, // Ref to Regcode
 													readkey: result._id, // Ref to Readkey
-													request_for_sensors: request_for_sensors
+													request_for_sensors: request_for_sensors,
+													consent_a: consent_a,
+													consent_b: consent_b
 												});
 												user
 													.save()
@@ -236,7 +227,7 @@ router.post("/signup", (req,res,next)=>{
 router.post("/login", (req,res,next)=>{
 	
 	const email_lc = req.body.email.toLowerCase();
-	const selString = '_id email password created readkey request_for_sensors is_superuser';
+	const selString = '_id email password created readkey request_for_sensors consent_a consent_b is_superuser';
 	User.find({email:email_lc})
 		.select(selString)
 		.populate('readkey')
@@ -292,6 +283,8 @@ router.post("/login", (req,res,next)=>{
 						created: user[0].created,
 						readkey: rkey,
 						request_for_sensors: user[0].request_for_sensors,
+						consent_a: user[0].consent_a,
+						consent_b: user[0].consent_b,
 						is_superuser: user[0].is_superuser
 					});
 				}
@@ -426,43 +419,19 @@ router.delete("/:userId", checkAuth, (req,res,next)=>{
 	Update a specified User information.
 	https://www.youtube.com/watch?v=WDrU305J1yw&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=6
 	
-	price_energy_monthly: {type:Number, default:0},
-	price_energy_basic: {type:Number, default:0},
-	price_energy_transfer: {type:Number, default:0},
-	heating_temperature_upper: {type:Number, default:0},
-	heating_target_temperature: {type:Number, default:0},
-	heating_temperature_lower: {type:Number, default:0},
-	heating_humidity_upper: {type:Number, default:0},
-	heating_target_humidity: {type:Number, default:0},
-	heating_humidity_lower: {type:Number, default:0},
-	water_hot_upper: {type:Number, default:0},
-	water_hot_target: {type:Number, default:0},
-	water_hot_lower: {type:Number, default:0},
-	water_cold_upper: {type:Number, default:0},
-	water_cold_target: {type:Number, default:0},
-	water_cold_lower: {type:Number, default:0},
-	energy_upper: {type:Number, default:0},
-	energy_target: {type:Number, default:0},
-	energy_lower: {type:Number, default:0},
-	
 	For example:
 	const data = [
-		{propName:'price_energy_monthly', value:6.0},
-		{propName:'price_energy_basic', value:4.6},
-		{propName:'price_energy_transfer', value:3.1}
+		{propName:'consent_a', value:false},
+		{propName:'consent_b', value:false}
 	];
-	
 */
 router.put('/:userId', checkAuth, (req,res,next)=>{
 	const id = req.params.userId;
 	const updateOps = {};
 	let filled = false;
 	for (const ops of req.body) {
-		// Allow only "price_" OR "heating_" changes!
-		if (ops.propName.indexOf('price_') === 0 || 
-			ops.propName.indexOf('heating_') === 0 || 
-			ops.propName.indexOf('water_') === 0 || 
-			ops.propName.indexOf('energy_') === 0) {
+		// Allow only "consent" changes!
+		if (ops.propName.indexOf('consent') === 0) {
 			updateOps[ops.propName] = ops.value;
 			filled = true;
 		}

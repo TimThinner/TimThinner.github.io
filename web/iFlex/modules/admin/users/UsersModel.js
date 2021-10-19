@@ -31,14 +31,15 @@ export default class UsersModel extends Model {
 		}
 		if (this.MOCKUP) {
 			setTimeout(() => {
-			this.users = [
+				this.users = [];
+			/*
 				{"_id":"5f75cff0251f6e38b8a6a733","email":"timo.kinnunen@vtt.fi","created":"2020-10-01T12:47:44.259Z"},
 				{"_id":"5f75d010251f6e38b8a6a734","email":"sivakka@vtt.fi","created":"2020-10-01T12:48:16.411Z"},
 				{"_id":"5f75d08b251f6e38b8a6a737","email":"snoopy@vtt.fi","created":"2020-10-01T12:50:19.865Z",
 "regcode":{"_id":"5f75d04e251f6e38b8a6a735","email":"snoopy@vtt.fi","apartmentId":"123","code":"fzyjw6","startdate":"2020-09-30T21:00:00.000Z","enddate":"2020-12-31T22:00:00.000Z","__v":0},
 "readkey":{"_id":"5f75d08b251f6e38b8a6a736","startdate":"2020-09-30T21:00:00.000Z","enddate":"2020-12-31T22:00:00.000Z","__v":0}
 				}
-			];
+			];*/
 				this.fetching = false;
 				this.ready = true;
 				this.notifyAll({model:this.name, method:'fetched', status:200, message:'OK'});

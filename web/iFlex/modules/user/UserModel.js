@@ -20,6 +20,8 @@ export default class UserModel extends Model {
 		this.token = undefined;
 		this.readkey = undefined;
 		this.request_for_sensors = false;
+		this.consent_a = false;
+		this.consent_b = false;
 		this.is_superuser = false;
 		this.localStorageLabel = 'iFlexUserModel';
 	}
@@ -38,6 +40,8 @@ export default class UserModel extends Model {
 		this.token = undefined;
 		this.readkey = undefined;
 		this.request_for_sensors = false;
+		this.consent_a = false;
+		this.consent_b = false;
 		this.is_superuser = false;
 	}
 	
@@ -49,7 +53,9 @@ export default class UserModel extends Model {
 			'email': this.email,
 			'token': this.token,
 			'readkey': this.readkey,
-			'request_for_sensors': this.request_for_sensors
+			'request_for_sensors': this.request_for_sensors,
+			'consent_a': this.consent_a,
+			'consent_b': this.consent_b
 		};
 		
 		// EXCEPT HERE FOR TEST PURPOSES:
@@ -81,6 +87,8 @@ export default class UserModel extends Model {
 			if (typeof stat.token !== 'undefined') { this.token = stat.token; }
 			if (typeof stat.readkey !== 'undefined') { this.readkey = stat.readkey; }
 			if (typeof stat.request_for_sensors !== 'undefined') { this.request_for_sensors = stat.request_for_sensors; }
+			if (typeof stat.consent_a !== 'undefined') { this.consent_a = stat.consent_a; }
+			if (typeof stat.consent_b !== 'undefined') { this.consent_b = stat.consent_b; }
 			
 			// EXCEPT HERE FOR TEST PURPOSES:
 			if (typeof stat.is_superuser !== 'undefined') { this.is_superuser = stat.is_superuser; }
@@ -153,6 +161,8 @@ export default class UserModel extends Model {
 					self.is_superuser = myJson.is_superuser;
 					self.readkey = myJson.readkey;
 					self.request_for_sensors = myJson.request_for_sensors;
+					self.consent_a = myJson.consent_a;
+					self.consent_b = myJson.consent_b;
 					// Store token and email temporarily into localStorage.
 					// It will be removed when the user logs-out.
 					self.store();
@@ -248,5 +258,50 @@ export default class UserModel extends Model {
 			.catch(function(error){
 				self.notifyAll({model:'UserModel', method:'changePassword', status:status, message:error});
 			});
+	}
+	
+	
+	updateUserData(id, data, token) {
+		const self = this;
+		
+		const myHeaders = new Headers();
+		const authorizationToken = 'Bearer '+token;
+		myHeaders.append("Authorization", authorizationToken);
+		myHeaders.append("Content-Type", "application/json");
+		
+		const myPut = {
+			method: 'PUT',
+			headers: myHeaders,
+			body: JSON.stringify(data)
+		};
+		const myRequest = new Request(this.mongoBackend + '/users/'+id, myPut);
+		let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+		
+		fetch(myRequest)
+			.then(function(response){
+				status = response.status;
+				return response.json();
+			})
+			.then(function(myJson){
+				if (status === 200) {
+					/*const data = [
+						{propName:'consent_a', value:   },
+						{propName:'consent_b', value:   },
+					];*/
+					data.forEach(d => {
+						if (d.propName === 'consent_a') {
+							self.consent_a = d.value;
+						} else if (d.propName === 'consent_b') {
+							self.consent_b = d.value;
+						}
+					});
+					self.store();
+				}
+				self.notifyAll({model:self.name, method:'updateUserData', status:status, message:myJson.message});
+			})
+			.catch(function(error){
+				self.notifyAll({model:self.name, method:'updateUserData', status:status, message:error});
+			});
+		
 	}
 }

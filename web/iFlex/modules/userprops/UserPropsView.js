@@ -100,8 +100,10 @@ export default class UserPropsView extends View {
 			const localized_string_admin_regcodes = LM['translation'][sel]['USER_PROPS_ADMIN_REGCODES'];
 			const localized_string_admin_users = LM['translation'][sel]['USER_PROPS_ADMIN_USERS'];
 			
-			const gdpr_text = LM['translation'][sel]['USER_PROPS_GDPR'];
-			const gdpr_link_text = LM['translation'][sel]['USER_SIGNUP_GDPR_LINK_TXT'];
+			//const consent_text = LM['translation'][sel]['USER_PROPS_CONSENT'];
+			//const consent_link_text = LM['translation'][sel]['USER_SIGNUP_CONSENT_LINK_TXT'];
+			const consent_text = LM['translation'][sel]['USER_CONSENT_TXT'];
+			const consent_link_text = LM['translation'][sel]['USER_CONSENT_LINK_TXT'];
 			
 			let admin_buttons_html = '';
 			if (UM.is_superuser) {
@@ -131,7 +133,7 @@ export default class UserPropsView extends View {
 						//'<p>&nbsp;</p>'+
 						'<button class="btn waves-effect waves-light" id="changepsw">'+localized_string_change_password_btn_txt+'</button>'+
 						'<p>&nbsp;</p>'+
-						'<p>'+gdpr_text+'<a href="javascript:void(0);" id="gdpr-text">'+gdpr_link_text+'</a></p>'+
+						'<p>'+consent_text+'<a href="javascript:void(0);" id="consent-text">'+consent_link_text+'</a></p>'+
 						
 					'</div>'+
 				'</div>'+ 
@@ -164,13 +166,12 @@ export default class UserPropsView extends View {
 				self.models['MenuModel'].setSelected('USERCHANGEPSW');
 			});
 			
-			$('#gdpr-text').on('click',function() {
-				const UGDPRM = self.controller.master.modelRepo.get('UserGDPRModel');
-				if (UGDPRM) {
-					console.log(['SET caller USERPROPS']);
-					UGDPRM.caller = 'USERPROPS';
+			$('#consent-text').on('click',function() {
+				const UCM = self.controller.master.modelRepo.get('UserConsentModel');
+				if (UCM) {
+					UCM.caller = 'USERPROPS';
 				}
-				self.models['MenuModel'].setSelected('userGDPR');
+				self.models['MenuModel'].setSelected('userConsent');
 			});
 			
 			this.handleErrorMessages(this.FELID);

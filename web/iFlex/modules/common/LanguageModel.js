@@ -34,6 +34,8 @@ export default class LanguageModel {
 				'USER_NEW_PASSWORD':'New password',
 				'USER_CONSENT_TXT':'You can also view and modify your ',
 				'USER_CONSENT_LINK_TXT':'consent form.',
+				'USER_GDPR_TXT':'You can also view ',
+				'USER_GDPR_LINK_TXT':'GDPR text.',
 				'ADMIN_START_LABEL':'Start',
 				'ADMIN_END_LABEL':'End',
 				'ADMIN_CREATE_NEW_REGCODE_TITLE':'Create a new RegCode',
@@ -117,8 +119,107 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_2ABB':'Osoite: Teknologian tutkimuskeskus VTT Oy, Kaitoväylä 1, 90571 Oulu',
 				'GDPR_CHAPTER_2ABC':'Sähköposti: <a href="mailto:iFLEX-Info@vtt.fi">iFLEX-Info@vtt.fi</a>',
 				'GDPR_CHAPTER_2B':'Muut yhteisrekisterinpitäjät:',
+				'GDPR_CHAPTER_2BA':'<b>SCOM</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BB':'<b>Enerim</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BC':'<b>JSI</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BD':'<b>AUEB</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BE':'<b>ICOM</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BF':'<b>ELE</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BG':'<b>Caverion</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BH':'<b>IN-JET</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BI':'<b>ECE</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BJ':'<b>HERON</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BK':'<b>OPTIMUS</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BL':'<b>ZPS</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_3':'3. Yhteisrekisterin osalta rekisterinpitäjien vastuunjako',
+				'GDPR_CHAPTER_3A':'Teknologian Tutkimuskeskus VTT Oy on ensisijainen rekisteröityjen yhteystaho ja koordinoi muiden yhteisrekisterinpitäjien suuntaan rekisteröityjen pyyntöjä. Muut yhteisrekisterinpitäjät (katso kohta 2) vastaavat omalta osaltaan pyyntöjen toteuttamisesta. Rekisteröity voi toteuttaa henkilötietojen käsittelyä koskevat oikeutensa keskitetysti yhteyshenkilön välityksellä: Seppo Viinikainen, Teknologian tutkimuskeskus VTT Oy, Koivurannantie 1, 40400 Jyväskylä, <a href="mailto:Seppo.Viinikainen@vtt.fi">Seppo.Viinikainen@vtt.fi</a>. Yhteyshenkilö toimittaa tarvittaessa rekisteröidyn yhteydenoton muille yhteisrekisterinpitäjille.',
+				'GDPR_CHAPTER_4':'4. Käsiteltävät henkilötiedot',
+				'GDPR_CHAPTER_4A':'Käsiteltävät henkilötiedot ovat: Asunnon lämpötila, kosteus, CO2, VOC-yhdisteet, käyttäjäpalaute.',
+				'GDPR_CHAPTER_4B':'Henkilöt edustavat seuraavia ryhmiä: HOAS-opiskelija-asunnossa asuvia tutkimukseen osallistuvia henkilöitä.',
+				'GDPR_CHAPTER_5':'5. Käsittelytarkoitus ja oikeusperuste',
+				'GDPR_CHAPTER_5A':'Henkilötietojen käsittelyn tarkoitus on: VTT käsittelee kerättyjä tietoja suostumuksellasi projektissa tehtävään energia-aiheiseen tutkimukseen asuntojen olosuhteista ja energiankulutuksesta. Tietoja käytetään ainoastaan tutkimustarkoituksiin. Tietoja ei yhdistetä yksittäiseen henkilöön.',
+				'GDPR_CHAPTER_5B':'Henkilötietojen käsittelyn oikeusperuste<sup>1</sup>:',
+				'GDPR_CHAPTER_5BA':'Yleistä etua koskeva tehtävä',
+				'GDPR_CHAPTER_5BAA':'tieteellinen tai historiallinen tutkimus tai tilastointi',
+				'GDPR_CHAPTER_5BAB':'tutkimusaineistojen ja kulttuuriperintöaineistojen arkistointi',
+				'GDPR_CHAPTER_5BB':'Rekisterinpitäjän tai kolmannen osapuolen oikeutettujen etujen toteuttaminen',
+				'GDPR_CHAPTER_5BBA':'mikä oikeutettu etu on kyseessä:',
+				'GDPR_CHAPTER_5BC':'Rekisteröidyn suostumus',
+				'GDPR_CHAPTER_5BD':'Muu:',
+				'GDPR_CHAPTER_5B_SUP':'<sup>1</sup>Tietosuoja-asetus, artikla 6 ja tietosuojalaki 4 §.',
+				'GDPR_CHAPTER_6':'6. Henkilötietojen tietolähteet',
+				'GDPR_CHAPTER_6A':'Tiedot saadaan keräämällä mittauslaitteilla ja sensoreilla asunnosta olosuhteisiin ja energiankulutukseen liittyviä tietoja. Lisäksi asukkaan on mahdollista antaa palautetta myös asukkaan käyttöliittymän kautta.',
+				'GDPR_CHAPTER_7':'7. Henkilötietojen vastaanottajat tai vastaanottajaryhmät',
+				'GDPR_CHAPTER_7A':'Henkilötietoja luovutetaan seuraaville vastaanottajille:',
+				'GDPR_CHAPTER_7AA':'<b>SCOM</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AB':'<b>Enerim</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AC':'<b>JSI</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AD':'<b>AUEB</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AE':'<b>ICOM</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AF':'<b>ELE</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AG':'<b>Caverion</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AH':'<b>IN-JET</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AI':'<b>ECE</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AJ':'<b>HERON</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AK':'<b>OPTIMUS</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AL':'<b>ZPS</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AM':'<b>HOAS</b> - henkilötietojen vastaanottaja',
+				'GDPR_CHAPTER_8':'8. Henkilötietojen siirto EU:n tai ETA:n ulkopuolelle',
+				'GDPR_CHAPTER_8A':'Henkilötietoja siirretään EU:n/ ETA:n ulkopuolelle (huomioiden palvelimien sijainti ja myös pääsyoikeudet):',
+				'GDPR_CHAPTER_8AA':'Ei',
+				'GDPR_CHAPTER_8AB':'Mahdollista, mekanismi täsmentyy ja informoidaan tapauskohtaisesti.',
+				'GDPR_CHAPTER_8AC':'Kyllä, seuraavilla tietosuoja-asetuksen mukaisilla menettelyillä: ',
+				'GDPR_CHAPTER_8BA':'Tietosuojan riittävyyttä koskeva komission päätös.',
+				'GDPR_CHAPTER_8BB':'Yritystä koskevat sitovat säännöt ',
+				'GDPR_CHAPTER_8BC':'Komission mallisopimuslausekkeet.',
+				'GDPR_CHAPTER_8BD':'Muu:',
+				'GDPR_CHAPTER_8BE':'Tiedossa olevat maat:',
+				'GDPR_CHAPTER_9':'9. Automaattinen päätöksenteko',
+				'GDPR_CHAPTER_9A':'Automaattista päätöksentekoa ei henkilötiedoista tehdä.',
+				'GDPR_CHAPTER_10':'10. Henkilötietojen säilyttäminen',
+				'GDPR_CHAPTER_10A':'Tutkimusaineisto ja sen mukana henkilötiedot hävitetään tutkimuksen päätyttyä.',
+				'GDPR_CHAPTER_10B':'Tutkimuksen päätyttyä tutkimusaineisto säilytetään 24 kuukauden ajan, ja',
+				'GDPR_CHAPTER_10BA':'henkilötiedot anonymisoidaan',
+				'GDPR_CHAPTER_10BB':'henkilötiedot pseudonymisoidaan',
+				'GDPR_CHAPTER_10BC':'aineisto sisältää suoria rekisteröidyn tunnistetietoja, peruste:',
+				'GDPR_CHAPTER_10C':'Tutkimusaineisto tallennetaan tutkimuksen päätyttyä VTT:n palvelimella ylläpidettävässä tietokannassa.',
+				'GDPR_CHAPTER_11':'11. Henkilötietojen suojauksen periaatteet',
+				'GDPR_CHAPTER_11A':'Tutkimuksen suorittamista varten tutkimusaineisto:',
+				'GDPR_CHAPTER_11AA':'anonymisoidaan ennen tutkimuksen aloittamista',
+				'GDPR_CHAPTER_11AB':'pseudonymisoidaan',
+				'GDPR_CHAPTER_11AC':'käsitellään rekisteröidyn suorin tunnistetiedoin.',
+				'GDPR_CHAPTER_11B':'<b>Manuaalisesti</b> käsiteltävien henkilötietojen suojaaminen: Henkilötiedot pseudonymisoidaan ja suojataan VTT:n tutkimusympäristön käytäntöjen mukaisesti.',
+				'GDPR_CHAPTER_11C':'<b>Tietojärjestelmässä</b> käsiteltävien henkilötietojen suojaaminen:',
+				'GDPR_CHAPTER_11CA':'käyttäjätunnus',
+				'GDPR_CHAPTER_11CB':'salasana',
+				'GDPR_CHAPTER_11CC':'kaksivaiheinen käyttäjän tunnistus (MFA)',
+				'GDPR_CHAPTER_11CD':'pääsynhallinta verkko-osoitteiden avulla (IP-osoitteet)',
+				'GDPR_CHAPTER_11CE':'käytön rekisteröinti (lokitietojen kerääminen)',
+				'GDPR_CHAPTER_11CF':'kulunvalvonta',
+				'GDPR_CHAPTER_11D':'<b>Tiedonsiirrossa</b> henkilötietojen suojaaminen:',
+				'GDPR_CHAPTER_11DA':'tiedonsiirron salaus: HTTPS-standardi, SSL-protokolla',
+				'GDPR_CHAPTER_11DB':'tiedoston salaus: Käyttäjätunnus ja salasana',
+				'GDPR_CHAPTER_11DC':'muu, mikä:',
+				'GDPR_CHAPTER_12':'12. Rekisteröidyn oikeudet',
+				'GDPR_CHAPTER_12A':'Rekisteröidyllä on seuraavat oikeudet, joista kuitenkin voidaan poiketa ja/tai joita voidaan rajoittaa soveltuvan lainsäädännön mukaisesti. Rajoittaminen ja poikkeaminen tarkistetaan tapauskohtaisesti.',
+				'GDPR_CHAPTER_12B':'Lisätietoja rekisteröidyn oikeuksista:',
+				'GDPR_CHAPTER_12C':'<b>Oikeus peruuttaa suostumuksensa</b>',
+				'GDPR_CHAPTER_12CA':'Mikäli käsittely perustuu suostumukseen, rekisteröidyllä on milloin tahansa oikeus peruuttaa suostumuksensa henkilötietojensa käsittelyä koskien.',
+				'GDPR_CHAPTER_12D':'<b>Rekisteröidyn oikeus saada pääsy tietoihin</b>',
+				'GDPR_CHAPTER_12DA':'Rekisteröidyllä on oikeus saada rekisterinpitäjältä vahvistus siitä, käsitelläänkö häntä koskevia henkilötietoja. Rekisteröidyllä on lisäksi oikeus saada pääsy rekisteröityä itseään koskeviin henkilötietoihin sekä tiedot henkilötietojen käsittelystä.',
+				'GDPR_CHAPTER_12E':'<b>Oikeus tietojen oikaisemiseen</b>',
+				'GDPR_CHAPTER_12EA':'Rekisteröidyllä on oikeus saada rekisteröityä koskevat epätarkat ja virheelliset henkilötiedot ilman aiheetonta viivytystä oikaistua ja puutteelliset henkilötiedot täydennettyä.',
+				'GDPR_CHAPTER_12F':'<b>Oikeus tietojen poistamiseen, ns. "oikeus tulla unohdetuksi"</b>',
+				'GDPR_CHAPTER_12FA':'Rekisteröidyllä on oikeus saada rekisterinpitäjä poistamaan rekisteröityä koskevat henkilötiedot ilman aiheetonta viivytystä.',
+				'GDPR_CHAPTER_12G':'<b>Oikeus käsittelyn rajoittamiseen</b>',
+				'GDPR_CHAPTER_12GA':'Rekisteröidyllä on tietyissä tilanteissa oikeus vaatia, että rekisterinpitäjä rajoittaa käsittelyä.',
+				'GDPR_CHAPTER_12H':'<b>Oikeus siirtää tiedot järjestelmästä toiseen</b>',
+				'GDPR_CHAPTER_12HA':'Rekisteröidyllä on oikeus saada häntä koskevat henkilötiedot, jotka hän on toimittanut rekisterinpitäjälle, ja oikeus siirtää kyseiset tiedot toiselle rekisterinpitäjälle siltä osin kuin käsittely perustuu suostumukseen tai sopimukseen, ja käsittely suoritetaan automaattisesti.',
+				'GDPR_CHAPTER_12I':'<b>Oikeus tehdä valitus valvontaviranomaiselle</b>',
+				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
+				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.10.19'
+				'MENU_VERSION':'v 21.10.20'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -151,6 +252,8 @@ export default class LanguageModel {
 				'USER_NEW_PASSWORD':'Uusi salasana',
 				'USER_CONSENT_TXT':'Täältä voit katsella ja muokata ',
 				'USER_CONSENT_LINK_TXT':'suostumuslomakettasi.',
+				'USER_GDPR_TXT':'Täältä voit katsella ',
+				'USER_GDPR_LINK_TXT':'GDPR tekstiä.',
 				'ADMIN_START_LABEL':'Alkaa',
 				'ADMIN_END_LABEL':'Loppuu',
 				'ADMIN_CREATE_NEW_REGCODE_TITLE':'Uusi rekisteröintikoodi',
@@ -234,186 +337,108 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_2ABB':'Osoite: Teknologian tutkimuskeskus VTT Oy, Kaitoväylä 1, 90571 Oulu',
 				'GDPR_CHAPTER_2ABC':'Sähköposti: <a href="mailto:iFLEX-Info@vtt.fi">iFLEX-Info@vtt.fi</a>',
 				'GDPR_CHAPTER_2B':'Muut yhteisrekisterinpitäjät:',
+				'GDPR_CHAPTER_2BA':'<b>SCOM</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BB':'<b>Enerim</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BC':'<b>JSI</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BD':'<b>AUEB</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BE':'<b>ICOM</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BF':'<b>ELE</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BG':'<b>Caverion</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BH':'<b>IN-JET</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BI':'<b>ECE</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BJ':'<b>HERON</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BK':'<b>OPTIMUS</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_2BL':'<b>ZPS</b> Tietosuojavastaava: e-mail',
+				'GDPR_CHAPTER_3':'3. Yhteisrekisterin osalta rekisterinpitäjien vastuunjako',
+				'GDPR_CHAPTER_3A':'Teknologian Tutkimuskeskus VTT Oy on ensisijainen rekisteröityjen yhteystaho ja koordinoi muiden yhteisrekisterinpitäjien suuntaan rekisteröityjen pyyntöjä. Muut yhteisrekisterinpitäjät (katso kohta 2) vastaavat omalta osaltaan pyyntöjen toteuttamisesta. Rekisteröity voi toteuttaa henkilötietojen käsittelyä koskevat oikeutensa keskitetysti yhteyshenkilön välityksellä: Seppo Viinikainen, Teknologian tutkimuskeskus VTT Oy, Koivurannantie 1, 40400 Jyväskylä, <a href="mailto:Seppo.Viinikainen@vtt.fi">Seppo.Viinikainen@vtt.fi</a>. Yhteyshenkilö toimittaa tarvittaessa rekisteröidyn yhteydenoton muille yhteisrekisterinpitäjille.',
+				'GDPR_CHAPTER_4':'4. Käsiteltävät henkilötiedot',
+				'GDPR_CHAPTER_4A':'Käsiteltävät henkilötiedot ovat: Asunnon lämpötila, kosteus, CO2, VOC-yhdisteet, käyttäjäpalaute.',
+				'GDPR_CHAPTER_4B':'Henkilöt edustavat seuraavia ryhmiä: HOAS-opiskelija-asunnossa asuvia tutkimukseen osallistuvia henkilöitä.',
+				'GDPR_CHAPTER_5':'5. Käsittelytarkoitus ja oikeusperuste',
+				'GDPR_CHAPTER_5A':'Henkilötietojen käsittelyn tarkoitus on: VTT käsittelee kerättyjä tietoja suostumuksellasi projektissa tehtävään energia-aiheiseen tutkimukseen asuntojen olosuhteista ja energiankulutuksesta. Tietoja käytetään ainoastaan tutkimustarkoituksiin. Tietoja ei yhdistetä yksittäiseen henkilöön.',
+				'GDPR_CHAPTER_5B':'Henkilötietojen käsittelyn oikeusperuste<sup>1</sup>:',
+				'GDPR_CHAPTER_5BA':'Yleistä etua koskeva tehtävä',
+				'GDPR_CHAPTER_5BAA':'tieteellinen tai historiallinen tutkimus tai tilastointi',
+				'GDPR_CHAPTER_5BAB':'tutkimusaineistojen ja kulttuuriperintöaineistojen arkistointi',
+				'GDPR_CHAPTER_5BB':'Rekisterinpitäjän tai kolmannen osapuolen oikeutettujen etujen toteuttaminen',
+				'GDPR_CHAPTER_5BBA':'mikä oikeutettu etu on kyseessä:',
+				'GDPR_CHAPTER_5BC':'Rekisteröidyn suostumus',
+				'GDPR_CHAPTER_5BD':'Muu:',
+				'GDPR_CHAPTER_5B_SUP':'<sup>1</sup>Tietosuoja-asetus, artikla 6 ja tietosuojalaki 4 §.',
+				'GDPR_CHAPTER_6':'6. Henkilötietojen tietolähteet',
+				'GDPR_CHAPTER_6A':'Tiedot saadaan keräämällä mittauslaitteilla ja sensoreilla asunnosta olosuhteisiin ja energiankulutukseen liittyviä tietoja. Lisäksi asukkaan on mahdollista antaa palautetta myös asukkaan käyttöliittymän kautta.',
+				'GDPR_CHAPTER_7':'7. Henkilötietojen vastaanottajat tai vastaanottajaryhmät',
+				'GDPR_CHAPTER_7A':'Henkilötietoja luovutetaan seuraaville vastaanottajille:',
+				'GDPR_CHAPTER_7AA':'<b>SCOM</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AB':'<b>Enerim</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AC':'<b>JSI</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AD':'<b>AUEB</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AE':'<b>ICOM</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AF':'<b>ELE</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AG':'<b>Caverion</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AH':'<b>IN-JET</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AI':'<b>ECE</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AJ':'<b>HERON</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AK':'<b>OPTIMUS</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AL':'<b>ZPS</b> - yhteisrekisterinpitäjä, henkilötietojen käsittelijä',
+				'GDPR_CHAPTER_7AM':'<b>HOAS</b> - henkilötietojen vastaanottaja',
+				'GDPR_CHAPTER_8':'8. Henkilötietojen siirto EU:n tai ETA:n ulkopuolelle',
+				'GDPR_CHAPTER_8A':'Henkilötietoja siirretään EU:n/ ETA:n ulkopuolelle (huomioiden palvelimien sijainti ja myös pääsyoikeudet):',
+				'GDPR_CHAPTER_8AA':'Ei',
+				'GDPR_CHAPTER_8AB':'Mahdollista, mekanismi täsmentyy ja informoidaan tapauskohtaisesti.',
+				'GDPR_CHAPTER_8AC':'Kyllä, seuraavilla tietosuoja-asetuksen mukaisilla menettelyillä: ',
+				'GDPR_CHAPTER_8BA':'Tietosuojan riittävyyttä koskeva komission päätös.',
+				'GDPR_CHAPTER_8BB':'Yritystä koskevat sitovat säännöt ',
+				'GDPR_CHAPTER_8BC':'Komission mallisopimuslausekkeet.',
+				'GDPR_CHAPTER_8BD':'Muu:',
+				'GDPR_CHAPTER_8BE':'Tiedossa olevat maat:',
+				'GDPR_CHAPTER_9':'9. Automaattinen päätöksenteko',
+				'GDPR_CHAPTER_9A':'Automaattista päätöksentekoa ei henkilötiedoista tehdä.',
+				'GDPR_CHAPTER_10':'10. Henkilötietojen säilyttäminen',
+				'GDPR_CHAPTER_10A':'Tutkimusaineisto ja sen mukana henkilötiedot hävitetään tutkimuksen päätyttyä.',
+				'GDPR_CHAPTER_10B':'Tutkimuksen päätyttyä tutkimusaineisto säilytetään 24 kuukauden ajan, ja',
+				'GDPR_CHAPTER_10BA':'henkilötiedot anonymisoidaan',
+				'GDPR_CHAPTER_10BB':'henkilötiedot pseudonymisoidaan',
+				'GDPR_CHAPTER_10BC':'aineisto sisältää suoria rekisteröidyn tunnistetietoja, peruste:',
+				'GDPR_CHAPTER_10C':'Tutkimusaineisto tallennetaan tutkimuksen päätyttyä VTT:n palvelimella ylläpidettävässä tietokannassa.',
+				'GDPR_CHAPTER_11':'11. Henkilötietojen suojauksen periaatteet',
+				'GDPR_CHAPTER_11A':'Tutkimuksen suorittamista varten tutkimusaineisto:',
+				'GDPR_CHAPTER_11AA':'anonymisoidaan ennen tutkimuksen aloittamista',
+				'GDPR_CHAPTER_11AB':'pseudonymisoidaan',
+				'GDPR_CHAPTER_11AC':'käsitellään rekisteröidyn suorin tunnistetiedoin.',
+				'GDPR_CHAPTER_11B':'<b>Manuaalisesti</b> käsiteltävien henkilötietojen suojaaminen: Henkilötiedot pseudonymisoidaan ja suojataan VTT:n tutkimusympäristön käytäntöjen mukaisesti.',
+				'GDPR_CHAPTER_11C':'<b>Tietojärjestelmässä</b> käsiteltävien henkilötietojen suojaaminen:',
+				'GDPR_CHAPTER_11CA':'käyttäjätunnus',
+				'GDPR_CHAPTER_11CB':'salasana',
+				'GDPR_CHAPTER_11CC':'kaksivaiheinen käyttäjän tunnistus (MFA)',
+				'GDPR_CHAPTER_11CD':'pääsynhallinta verkko-osoitteiden avulla (IP-osoitteet)',
+				'GDPR_CHAPTER_11CE':'käytön rekisteröinti (lokitietojen kerääminen)',
+				'GDPR_CHAPTER_11CF':'kulunvalvonta',
+				'GDPR_CHAPTER_11D':'<b>Tiedonsiirrossa</b> henkilötietojen suojaaminen:',
+				'GDPR_CHAPTER_11DA':'tiedonsiirron salaus: HTTPS-standardi, SSL-protokolla',
+				'GDPR_CHAPTER_11DB':'tiedoston salaus: Käyttäjätunnus ja salasana',
+				'GDPR_CHAPTER_11DC':'muu, mikä:',
+				'GDPR_CHAPTER_12':'12. Rekisteröidyn oikeudet',
+				'GDPR_CHAPTER_12A':'Rekisteröidyllä on seuraavat oikeudet, joista kuitenkin voidaan poiketa ja/tai joita voidaan rajoittaa soveltuvan lainsäädännön mukaisesti. Rajoittaminen ja poikkeaminen tarkistetaan tapauskohtaisesti.',
+				'GDPR_CHAPTER_12B':'Lisätietoja rekisteröidyn oikeuksista:',
+				'GDPR_CHAPTER_12C':'<b>Oikeus peruuttaa suostumuksensa</b>',
+				'GDPR_CHAPTER_12CA':'Mikäli käsittely perustuu suostumukseen, rekisteröidyllä on milloin tahansa oikeus peruuttaa suostumuksensa henkilötietojensa käsittelyä koskien.',
+				'GDPR_CHAPTER_12D':'<b>Rekisteröidyn oikeus saada pääsy tietoihin</b>',
+				'GDPR_CHAPTER_12DA':'Rekisteröidyllä on oikeus saada rekisterinpitäjältä vahvistus siitä, käsitelläänkö häntä koskevia henkilötietoja. Rekisteröidyllä on lisäksi oikeus saada pääsy rekisteröityä itseään koskeviin henkilötietoihin sekä tiedot henkilötietojen käsittelystä.',
+				'GDPR_CHAPTER_12E':'<b>Oikeus tietojen oikaisemiseen</b>',
+				'GDPR_CHAPTER_12EA':'Rekisteröidyllä on oikeus saada rekisteröityä koskevat epätarkat ja virheelliset henkilötiedot ilman aiheetonta viivytystä oikaistua ja puutteelliset henkilötiedot täydennettyä.',
+				'GDPR_CHAPTER_12F':'<b>Oikeus tietojen poistamiseen, ns. "oikeus tulla unohdetuksi"</b>',
+				'GDPR_CHAPTER_12FA':'Rekisteröidyllä on oikeus saada rekisterinpitäjä poistamaan rekisteröityä koskevat henkilötiedot ilman aiheetonta viivytystä.',
+				'GDPR_CHAPTER_12G':'<b>Oikeus käsittelyn rajoittamiseen</b>',
+				'GDPR_CHAPTER_12GA':'Rekisteröidyllä on tietyissä tilanteissa oikeus vaatia, että rekisterinpitäjä rajoittaa käsittelyä.',
+				'GDPR_CHAPTER_12H':'<b>Oikeus siirtää tiedot järjestelmästä toiseen</b>',
+				'GDPR_CHAPTER_12HA':'Rekisteröidyllä on oikeus saada häntä koskevat henkilötiedot, jotka hän on toimittanut rekisterinpitäjälle, ja oikeus siirtää kyseiset tiedot toiselle rekisterinpitäjälle siltä osin kuin käsittely perustuu suostumukseen tai sopimukseen, ja käsittely suoritetaan automaattisesti.',
+				'GDPR_CHAPTER_12I':'<b>Oikeus tehdä valitus valvontaviranomaiselle</b>',
+				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
+				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.10.19'
+				'MENU_VERSION':'v 21.10.20'
 			}
 		}
 	}
 }
-
-
-
-/*
-SCOM
-Tietosuojavastaava: e-mail
-
-Enerim
-Tietosuojavastaava: e-mail
-
-JSI
-Tietosuojavastaava: e-mail
-
-AUEB
-Tietosuojavastaava: e-mail
-
-ICOM
-Tietosuojavastaava: e-mail
-
-ELE
-Tietosuojavastaava: e-mail
-
-
-Caverion
-Tietosuojavastaava: e-mail
-
-IN-JET
-Tietosuojavastaava: e-mail
-
-ECE
-Tietosuojavastaava: e-mail
-
-HERON
-Tietosuojavastaava: e-mail
-
-OPTIMUS
-Tietosuojavastaava: e-mail
-
-ZPS
-Tietosuojavastaava: e-mail
-
-3.	Yhteisrekisterin osalta rekisterinpitäjien vastuunjako
-
-Teknologian Tutkimuskeskus VTT Oy on ensisijainen rekisteröityjen yhteystaho ja koordinoi muiden yhteisrekisterinpitäjien suuntaan rekisteröityjen pyyntöjä. Muut yhteisrekisterinpitäjät (katso kohta 2) vastaavat omalta osaltaan pyyntöjen toteuttamisesta. Rekisteröity voi toteuttaa henkilötietojen käsittelyä koskevat oikeutensa keskitetysti yhteyshenkilön välityksellä: Seppo Viinikainen, Teknologian tutkimuskeskus VTT Oy, Koivurannantie 1, 40400 Jyväskylä, Seppo.Viinikainen@vtt.fi. Yhteyshenkilö toimittaa tarvittaessa rekisteröidyn yhteydenoton muille yhteisrekisterinpitäjille.
-
-4.	Käsiteltävät henkilötiedot
-
-Käsiteltävät henkilötiedot ovat: Asunnon lämpötila, kosteus, CO2, VOC-yhdisteet, käyttäjäpalaute
-
-Henkilöt edustavat seuraavia ryhmiä: HOAS-opiskelija-asunnossa asuvia tutkimukseen osallistuvia henkilöitä.
-
-5.	Käsittelytarkoitus ja oikeusperuste
-
-Henkilötietojen käsittelyn tarkoitus on: VTT käsittelee kerättyjä tietoja suostumuksellasi projektissa tehtävään energia-aiheiseen tutkimukseen asuntojen olosuhteista ja energiankulutuksesta. Tietoja käytetään ainoastaan tutkimustarkoituksiin. Tietoja ei yhdistetä yksittäiseen henkilöön. 
-
-Henkilötietojen käsittelyn oikeusperuste : 
-0 Yleistä etua koskeva tehtävä
-0 tieteellinen tai historiallinen tutkimus tai tilastointi
-0 tutkimusaineistojen ja kulttuuriperintöaineistojen arkistointi
-0 Rekisterinpitäjän tai kolmannen osapuolen oikeutettujen etujen toteuttaminen
-	mikä oikeutettu etu on kyseessä: 
-1 Rekisteröidyn suostumus
-0 Muu: 
-
-6.	Henkilötietojen tietolähteet
-
-Tiedot saadaan keräämällä mittauslaitteilla ja sensoreilla asunnosta olosuhteisiin ja energiankulutukseen liittyviä tietoja. Lisäksi asukkaan on mahdollista antaa palautetta myös asukkaan käyttöliittymän kautta.  
-
-7.	Henkilötietojen vastaanottajat tai vastaanottajaryhmät
-
-Henkilötietoja luovutetaan seuraaville vastaanottajille: 
-
-HERON - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-SCOM - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-Enerim - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-JSI - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-AUEB - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-ICOM - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-ELE - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-Caverion - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-IN-JET - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-ECE - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-HERON - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-OPTIMUS - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-ZPS - yhteisrekisterinpitäjä, henkilötietojen käsittelijä
-
-HOAS - henkilötietojen vastaanottaja
-
-
-8.	Henkilötietojen siirto EU:n tai ETA:n ulkopuolelle
-Henkilötietoja siirretään EU:n/ ETA:n ulkopuolelle (huomioiden palvelimien sijainti ja myös pääsyoikeudet):
-1 Ei 
-0 Mahdollista, mekanismi täsmentyy ja informoidaan tapauskohtaisesti.
-0 Kyllä, seuraavilla tietosuoja-asetuksen mukaisilla menettelyillä: 
-0 Tietosuojan riittävyyttä koskeva komission päätös.
-0 Yritystä koskevat sitovat säännöt. 
-0 Komission mallisopimuslausekkeet.
-0 Muu:
-
-Tiedossa olevat maat:
-
-9.	Automaattinen päätöksenteko
-Automaattista päätöksentekoa ei henkilötiedoista tehdä.
-
-10.	Henkilötietojen säilyttäminen 
-
-0 Tutkimusaineisto ja sen mukana henkilötiedot hävitetään tutkimuksen päätyttyä.
-1 Tutkimuksen päätyttyä tutkimusaineisto säilytetään 24 kuukauden ajan, ja 
-0 henkilötiedot anonymisoidaan 
-1 henkilötiedot pseudonymisoidaan 
-0 aineisto sisältää suoria rekisteröidyn tunnistetietoja, peruste: 
-
-Tutkimusaineisto tallennetaan tutkimuksen päätyttyä VTT:n palvelimella ylläpidettävässä tietokannassa.
-
-11.	Henkilötietojen suojauksen periaatteet 
-
-Tutkimuksen suorittamista varten tutkimusaineisto:
-0 anonymisoidaan ennen tutkimuksen aloittamista
-1 pseudonymisoidaan
-0 käsitellään rekisteröidyn suorin tunnistetiedoin. 
-
-Manuaalisesti käsiteltävien henkilötietojen suojaaminen: Henkilötiedot pseudonymisoidaan ja suojataan VTT:n tutkimusympäristön käytäntöjen mukaisesti. 
-
-Tietojärjestelmässä käsiteltävien henkilötietojen suojaaminen:
-1 käyttäjätunnus
-1 salasana
-0 kaksivaiheinen käyttäjän tunnistus (MFA)
-0 pääsynhallinta verkko-osoitteiden avulla (IP-osoitteet)
-0 käytön rekisteröinti (lokitietojen kerääminen)
-0 kulunvalvonta
-
-Tiedonsiirrossa henkilötietojen suojaaminen:
-1 tiedonsiirron salaus: HTTPS-standardi, SSL-protokolla
-1 tiedoston salaus: Käyttäjätunnus ja salasana
-0 muu, mikä:
-
-12.	Rekisteröidyn oikeudet
-
-Rekisteröidyllä on seuraavat oikeudet, joista kuitenkin voidaan poiketa ja/tai joita voidaan rajoittaa soveltuvan lainsäädännön mukaisesti. Rajoittaminen ja poikkeaminen tarkistetaan tapauskohtaisesti.
-
-Lisätietoja rekisteröidyn oikeuksista: 
-
-Oikeus peruuttaa suostumuksensa
-Mikäli käsittely perustuu suostumukseen, rekisteröidyllä on milloin tahansa oikeus peruuttaa suostumuksensa henkilötietojensa käsittelyä koskien. 
-
-Rekisteröidyn oikeus saada pääsy tietoihin
-Rekisteröidyllä on oikeus saada rekisterinpitäjältä vahvistus siitä, käsitelläänkö häntä koskevia henkilötietoja. Rekisteröidyllä on lisäksi oikeus saada pääsy rekisteröityä itseään koskeviin henkilötietoihin sekä tiedot henkilötietojen käsittelystä. 
-
-Oikeus tietojen oikaisemiseen
-Rekisteröidyllä on oikeus saada rekisteröityä koskevat epätarkat ja virheelliset henkilötiedot ilman aiheetonta viivytystä oikaistua ja puutteelliset henkilötiedot täydennettyä. 
-
-Oikeus tietojen poistamiseen, ns. ”oikeus tulla unohdetuksi”
-Rekisteröidyllä on oikeus saada rekisterinpitäjä poistamaan rekisteröityä koskevat henkilötiedot ilman aiheetonta viivytystä.
-
-Oikeus käsittelyn rajoittamiseen
-Rekisteröidyllä on tietyissä tilanteissa oikeus vaatia, että rekisterinpitäjä rajoittaa käsittelyä. 
-
-Oikeus siirtää tiedot järjestelmästä toiseen
-Rekisteröidyllä on oikeus saada häntä koskevat henkilötiedot, jotka hän on toimittanut rekisterinpitäjälle, ja oikeus siirtää kyseiset tiedot toiselle rekisterinpitäjälle siltä osin kuin käsittely perustuu suostumukseen tai sopimukseen, ja käsittely suoritetaan automaattisesti.
-
-Oikeus tehdä valitus valvontaviranomaiselle
-Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: https://tietosuoja.fi/yhteystiedot 
-
-Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.
-*/

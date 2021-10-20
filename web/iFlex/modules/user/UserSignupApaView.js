@@ -285,6 +285,7 @@ export default class UserSignupApaView extends UserView {
 		this.rendered = true;
 		
 		const UCM = this.controller.master.modelRepo.get('UserConsentModel');
+		const UGDPRM = this.controller.master.modelRepo.get('UserGDPRModel');
 		
 		if (UCM.consent_one === true && UCM.consent_two === true) {
 			$("#consent").prop("disabled", false);
@@ -306,7 +307,7 @@ export default class UserSignupApaView extends UserView {
 		}
 		
 		$("#gdpr-text").on('click', function() {
-			UCM.caller = 'usersignup';
+			UGDPRM.caller = 'usersignup';
 			self.controller.models['MenuModel'].setSelected('userGDPR');
 		});
 		

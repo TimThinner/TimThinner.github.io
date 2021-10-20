@@ -104,6 +104,8 @@ export default class UserPropsView extends View {
 			//const consent_link_text = LM['translation'][sel]['USER_SIGNUP_CONSENT_LINK_TXT'];
 			const consent_text = LM['translation'][sel]['USER_CONSENT_TXT'];
 			const consent_link_text = LM['translation'][sel]['USER_CONSENT_LINK_TXT'];
+			const gdpr_text = LM['translation'][sel]['USER_GDPR_TXT'];
+			const gdpr_link_text = LM['translation'][sel]['USER_GDPR_LINK_TXT'];
 			
 			let admin_buttons_html = '';
 			if (UM.is_superuser) {
@@ -134,7 +136,7 @@ export default class UserPropsView extends View {
 						'<button class="btn waves-effect waves-light" id="changepsw">'+localized_string_change_password_btn_txt+'</button>'+
 						'<p>&nbsp;</p>'+
 						'<p>'+consent_text+'<a href="javascript:void(0);" id="consent-text">'+consent_link_text+'</a></p>'+
-						
+						'<p>'+gdpr_text+'<a href="javascript:void(0);" id="gdpr-text">'+gdpr_link_text+'</a></p>'+
 					'</div>'+
 				'</div>'+ 
 				'<div class="row">'+
@@ -172,6 +174,14 @@ export default class UserPropsView extends View {
 					UCM.caller = 'USERPROPS';
 				}
 				self.models['MenuModel'].setSelected('userConsent');
+			});
+			
+			$('#gdpr-text').on('click',function() {
+				const UGDPRM = self.controller.master.modelRepo.get('UserGDPRModel');
+				if (UGDPRM) {
+					UGDPRM.caller = 'USERPROPS';
+				}
+				self.models['MenuModel'].setSelected('userGDPR');
 			});
 			
 			this.handleErrorMessages(this.FELID);

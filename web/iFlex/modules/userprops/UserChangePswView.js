@@ -112,7 +112,6 @@ export default class UserChangePswView extends View {
 		
 		
 		if (this.userModel.is_superuser===true) {
-			console.log("YES! I'm a SUPERHERO!");
 			$("#super-email").val(this.userModel.email);
 		}
 		

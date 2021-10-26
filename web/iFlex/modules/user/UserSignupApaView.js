@@ -24,12 +24,14 @@ export default class UserSignupApaView extends UserView {
 		this.emaile = '';
 		this.passworde = '';
 		this.request_for_sensors = false;
-		this.apartment = 'NONE';
+		this.apa_letter = 'A';
+		this.apa_tens = 0;
+		this.apa_ones = 0;
+		this.apartment = 'A0';
 	}
 	
 	hide() {
 		super.hide();
-		//this.apartment = 'NONE';
 	}
 	
 	// Generate a "random" Registration code (this is the same method as in RegCodeCreateView.js).
@@ -163,7 +165,10 @@ export default class UserSignupApaView extends UserView {
 					this.emaile = '';
 					this.passworde = '';
 					this.request_for_sensors = false;
-					this.apartment = 'NONE';
+					this.apa_letter = 'A';
+					this.apa_tens = 0;
+					this.apa_ones = 0;
+					this.apartment = 'A0';
 					
 					setTimeout(() => {
 						this.controller.models['MenuModel'].setSelected('menu');
@@ -199,6 +204,198 @@ export default class UserSignupApaView extends UserView {
 		}
 	}
 	
+	/*
+		type = letter or number
+	*/
+	
+	/*
+	showApaEdit(type) {
+		const self = this;
+		
+		
+		const place = '#energy-'+type+'-price-edit-placeholder';
+		
+		let current_value = '';
+		let current_value_frac = '';
+		
+		if (type === 'monthly') {
+			current_value = this.pad(this.price.monthly,3);
+			current_value_frac = this.pad(this.price.monthly_frac,2);
+			
+		} else if (type === 'basic') {
+			current_value = this.pad(this.price.energy,3);
+			current_value_frac = this.pad(this.price.energy_frac,2);
+			
+		} else {
+			current_value = this.pad(this.price.transfer,3);
+			current_value_frac = this.pad(this.price.transfer_frac,2);
+		}
+		
+		let hundreds = parseInt(current_value[0], 10);
+		let tens = parseInt(current_value[1], 10);
+		let ones = parseInt(current_value[2], 10);
+		
+		let tenths = parseInt(current_value_frac[0], 10);
+		let hundredths = parseInt(current_value_frac[1], 10);
+		
+		$(place).empty();
+		// Ones, Tens, Hundreds
+		// Tenths, Hundredths
+		const html =
+			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+				'<div class="col s2 m1 offset-m3 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				
+				
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1">&nbsp;</div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tenths-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="hundredths-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+			'</div>'+
+			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+				'<div class="col s2 m1 offset-m3 edit-item-change-number" id="hundreds">'+hundreds+'</div>'+
+				'<div class="col s2 m1 edit-item-change-number" id="tens">'+tens+'</div>'+
+				'<div class="col s2 m1 edit-item-change-number" id="ones">'+ones+'</div>'+
+				'<div class="col s2 m1 edit-item-change-number">,</div>'+
+				'<div class="col s2 m1 edit-item-change-number" id="tenths">'+tenths+'</div>'+
+				'<div class="col s2 m1 edit-item-change-number" id="hundredths">'+hundredths+'</div>'+
+			'</div>'+
+			'<div class="row" style="margin-top:0;">'+
+				'<div class="col s2 m1 offset-m3 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1">&nbsp;</div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tenths-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="hundredths-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s2 center">'+
+					'<p>&nbsp;</p>'+
+				'</div>'+
+				'<div class="col s4 center">'+
+					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel-price">'+localized_string_da_cancel+'</button>'+
+				'</div>'+
+				'<div class="col s4 center">'+
+					'<button class="btn waves-effect waves-light" id="update-price">'+localized_string_da_save+'</button>'+
+				'</div>'+
+				'<div class="col s2 center">'+
+					'<p>&nbsp;</p>'+
+				'</div>'+
+			'</div>';
+		$(html).appendTo(place);
+		
+		// All digits can be set to values from 0 to 9.
+		$('#hundreds-up').on('click',function() {
+			if (hundreds < 9) {
+				hundreds++;
+				$('#hundreds').empty().append(hundreds);
+			}
+		});
+		$('#hundreds-down').on('click',function() {
+			if (hundreds > 0) {
+				hundreds--;
+				$('#hundreds').empty().append(hundreds);
+			}
+		});
+		$('#tens-up').on('click',function() {
+			if (tens < 9) {
+				tens++;
+				$('#tens').empty().append(tens);
+			}
+		});
+		$('#tens-down').on('click',function() {
+			if (tens > 0) {
+				tens--;
+				$('#tens').empty().append(tens);
+			}
+		});
+		$('#ones-up').on('click',function() {
+			if (ones < 9) {
+				ones++;
+				$('#ones').empty().append(ones);
+			}
+		});
+		$('#ones-down').on('click',function() {
+			if (ones > 0) {
+				ones--;
+				$('#ones').empty().append(ones);
+			}
+		});
+		$('#tenths-up').on('click',function() {
+			if (tenths < 9) {
+				tenths++;
+				$('#tenths').empty().append(tenths);
+			}
+		});
+		$('#tenths-down').on('click',function() {
+			if (tenths > 0) {
+				tenths--;
+				$('#tenths').empty().append(tenths);
+			}
+		});
+		$('#hundredths-up').on('click',function() {
+			if (hundredths < 9) {
+				hundredths++;
+				$('#hundredths').empty().append(hundredths);
+			}
+		});
+		$('#hundredths-down').on('click',function() {
+			if (hundredths > 0) {
+				hundredths--;
+				$('#hundredths').empty().append(hundredths);
+			}
+		});
+		
+		$('#cancel-price').on('click',function() {
+			$(place).empty();
+			if (type === 'monthly') {
+				$('#energy-basic-price-wrapper').show();
+				$('#energy-transfer-price-wrapper').show();
+				
+			} else if (type === 'basic') {
+				$('#energy-monthly-price-wrapper').show();
+				$('#energy-transfer-price-wrapper').show();
+				
+			} else {
+				$('#energy-monthly-price-wrapper').show();
+				$('#energy-basic-price-wrapper').show();
+			}
+		});
+		
+		$('#update-price').on('click',function() {
+			const UM = self.userModel;
+			const id = UM.id;
+			const authToken = UM.token;
+			
+			const newfloat = hundreds*100 + tens*10 + ones + tenths/10 + hundredths/100;
+			console.log(['newfloat=',newfloat]);
+			
+			const data = [{propName:'price_energy_'+type, value:newfloat}];
+			UM.updateEnergyPrices(id, data, authToken, type);
+		});
+	}
+	
+	*/
+	updateApaInfo() {
+		
+		$('#'+this.FELID).empty();
+		
+		$('#letters').empty().append(this.apa_letter);
+		
+		if (this.apa_tens > 0) {
+			$('#tens').empty().append(this.apa_tens);
+		} else {
+			$('#tens').empty();
+		}
+		$('#ones').empty().append(this.apa_ones);
+		
+		this.apartment = this.apa_letter;
+		if (this.apa_tens > 0) {
+			this.apartment += this.apa_tens;
+		}
+		this.apartment += this.apa_ones;
+	}
+	
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -218,8 +415,9 @@ export default class UserSignupApaView extends UserView {
 		const consent_link_text = LM['translation'][sel]['USER_SIGNUP_CONSENT_LINK_TXT'];
 		const gdpr_link_text = LM['translation'][sel]['USER_SIGNUP_GDPR_LINK_TXT'];
 		
+		
 		const localized_string_signup_apartment_number = LM['translation'][sel]['USER_SIGNUP_APARTMENT_NUMBER'];
-		const localized_string_signup_apartment_not_selected = LM['translation'][sel]['USER_SIGNUP_APARTMENT_NOT_SELECTED'];
+		//const localized_string_signup_apartment_not_selected = LM['translation'][sel]['USER_SIGNUP_APARTMENT_NOT_SELECTED'];
 		const localized_string_signup_apartment_must_input = LM['translation'][sel]['USER_SIGNUP_APARTMENT_MUST_INPUT'];
 		
 		const html = 
@@ -236,21 +434,79 @@ export default class UserSignupApaView extends UserView {
 						'<input id="signup-password" type="password" class="validate" required="" aria-required="true" />'+
 						'<label for="signup-password">'+localized_string_user_password+'</label>'+
 					'</div>'+
-					'<div class="input-field col s12">'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					//'<div class="col s12 center">'+
+						'<p style="color:#aaa;">'+localized_string_signup_apartment_number+'</p>'+
+					//'</div>'+
+				'</div>'+
+				//'<div class="col s12">'+
+				//	'<div class="col s2 m1 offset-m3"></div>'+
+				//	'<div class="col s4 m2">PORRAS:</div>'+
+				//	'<div class="col s4 m2">NUMERO:</div>'+
+				//	'<div class="col s2 m1"></div>'+
+				//'</div>'+
+			'</div>'+
+			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+				'<div class="col s2 m1 offset-m3">&nbsp;</div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="letters-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1">&nbsp;</div>'+
+				//'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+				'<div class="col s2 m1"></div>'+
+			'</div>'+
+			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+				'<div class="col s2 m1 offset-m3">&nbsp;</div>'+
+				'<div class="col s2 m1 edit-item-change-number" id="letters"></div>'+
+				'<div class="col s2 m1 edit-item-change-number">&nbsp;</div>'+
+				//'<div class="col s2 m1 edit-item-change-number" id="hundreds"></div>'+
+				'<div class="col s2 m1 edit-item-change-number" id="tens"></div>'+
+				'<div class="col s2 m1 edit-item-change-number" id="ones"></div>'+
+				'<div class="col s2 m1"></div>'+
+			'</div>'+
+			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+				'<div class="col s2 m1 offset-m3">&nbsp;</div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="letters-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1">&nbsp;</div>'+
+				//'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+				'<div class="col s2 m1"></div>'+
+			'</div>'+
+					/*
+					'<div class="input-field col s6">'+
 						'<select id="select-apartment">'+
 							'<option value="NONE" selected>'+localized_string_signup_apartment_not_selected+'</option>'+ // Choose your apartment
-							'<option value="A1">A1</option>'+
-							'<option value="A2">A2</option>'+
-							'<option value="A3">A3</option>'+
-							'<option value="A4">A4</option>'+
-							'<option value="A5">A5</option>'+
-							'<option value="A6">A6</option>'+
-							'<option value="A7">A7</option>'+
-							'<option value="A8">A8</option>'+
-							'<option value="A9">A9</option>'+
+							'<option value="A">A</option>'+
+							'<option value="B">B</option>'+
+							'<option value="C">C</option>'+
 						'</select>'+
 						'<label>'+localized_string_signup_apartment_number+'</label>'+
 					'</div>'+
+					*/
+					/*
+					'<div class="input-field col s6">'+
+						'<select id="select-apartment">'+
+							'<option value="NONE" selected>'+localized_string_signup_apartment_not_selected+'</option>'+ // Choose your apartment
+							'<option value="1">1</option>'+
+							'<option value="2">2</option>'+
+							'<option value="3">3</option>'+
+							'<option value="4">4</option>'+
+							'<option value="5">5</option>'+
+							'<option value="6">6</option>'+
+							'<option value="7">7</option>'+
+							'<option value="8">8</option>'+
+							'<option value="9">9</option>'+
+							'<option value="10">10</option>'+
+						'</select>'+
+						'<label>'+localized_string_signup_apartment_number+'</label>'+
+					'</div>'+
+					*/
+			'<div class="row">'+
+				'<div class="col s12">'+
 					'<div class="input-field col s12">'+
 						// checked="checked"
 						'<p class="note">'+localized_string_signup_sensors_text+'</p>'+
@@ -267,17 +523,17 @@ export default class UserSignupApaView extends UserView {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
+					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
 					'<div class="col s6 center">'+
 						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6 center">'+
 						'<button class="btn waves-effect waves-light" type="submit" id="signup-submit">'+localized_string_signup_button_text+'</button>'+
 					'</div>'+
-				'</div>'+
-			'</div>'+
-			'<div class="row">'+
-				'<div class="col s12">'+
-					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
@@ -335,6 +591,58 @@ export default class UserSignupApaView extends UserView {
 			$('label[for="signup-password"]').addClass('active');
 		}
 		
+		this.updateApaInfo();
+		
+		// All digits can be set to values from 0 to 9.
+		$('#tens-up').on('click',function() {
+			if (self.apa_tens < 9) {
+				self.apa_tens++;
+				self.updateApaInfo();
+			}
+		});
+		$('#tens-down').on('click',function() {
+			if (self.apa_tens > 0) {
+				self.apa_tens--;
+				self.updateApaInfo();
+			}
+		});
+		$('#ones-up').on('click',function() {
+			if (self.apa_ones < 9) {
+				self.apa_ones++;
+				self.updateApaInfo();
+			}
+		});
+		$('#ones-down').on('click',function() {
+			if (self.apa_ones > 0) {
+				self.apa_ones--;
+				self.updateApaInfo();
+			}
+		});
+		
+		
+		$('#letters-up').on('click',function() {
+			if (self.apa_letter === 'A') {
+				self.apa_letter = 'B';
+			} else if (self.apa_letter === 'B') {
+				self.apa_letter = 'C';
+			} else if (self.apa_letter === 'C') {
+				self.apa_letter = 'D';
+			}
+			self.updateApaInfo();
+		});
+		$('#letters-down').on('click',function() {
+			if (self.apa_letter === 'D') {
+				self.apa_letter = 'C';
+			} else if (self.apa_letter === 'C') {
+				self.apa_letter = 'B';
+			} else if (self.apa_letter === 'B') {
+				self.apa_letter = 'A';
+			}
+			self.updateApaInfo();
+		});
+		
+		
+		/*
 		$("#select-apartment").change(function() {
 			$('#'+self.FELID).empty();
 			const selected = $(this).find(":selected").val();
@@ -344,6 +652,7 @@ export default class UserSignupApaView extends UserView {
 		
 		$('#select-apartment > option[value='+self.apartment+']').prop('selected', true);
 		
+		*/
 		$("#request-for-sensors").change(function() {
 			 if (this.checked) {
 				self.request_for_sensors = true;
@@ -356,7 +665,7 @@ export default class UserSignupApaView extends UserView {
 		}
 		
 		// This must be called AFTER all select options are filled in and default selection done.
-		$('select').formSelect();
+		//$('select').formSelect();
 		
 		$("#cancel").on('click', function() {
 			// Here we shoud empty the filled properties:
@@ -365,14 +674,17 @@ export default class UserSignupApaView extends UserView {
 			self.request_for_sensors = false;
 			UCM.consent_one = false;
 			UCM.consent_two = false;
-			self.apartment = 'NONE';
+			self.apa_letter = 'A';
+			self.apa_tens = 0;
+			self.apa_ones = 0;
+			self.apartment = 'A0';
 			self.controller.models['MenuModel'].setSelected('menu');
 		});
 		
 		$("#signup-submit").on('click', function() {
 			
 			// If there is no REGCODE => 1st phase creates a REGCODE and second phase does the rest of the sign-up.
-			if (self.apartment === 'NONE') {
+			if (self.apartment === 'A0' || self.apartment === 'B0' || self.apartment === 'C0' || self.apartment === 'D0') {
 				// Show the reason for failure (message).
 				const html = '<div class="error-message"><p>'+localized_string_signup_apartment_must_input+'</p></div>';
 				$('#'+self.FELID).empty().append(html);

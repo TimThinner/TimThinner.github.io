@@ -5,6 +5,7 @@ import Model from '../common/Model.js';
 		email
 		token
 		readkey
+		obix_code
 		request_for_sensors
 		
 		
@@ -19,6 +20,7 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
+		this.obix_code = '';
 		this.request_for_sensors = false;
 		this.consent_a = false;
 		this.consent_b = false;
@@ -39,13 +41,13 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
+		this.obix_code = '';
 		this.request_for_sensors = false;
 		this.consent_a = false;
 		this.consent_b = false;
 		this.is_superuser = false;
 	}
 	
-	/* For safety reasons the "is_superuser"-flag is never stored or restored automatically. */
 	store() {
 		const status = localStorage.getItem(this.localStorageLabel);
 		const new_status = {
@@ -53,6 +55,7 @@ export default class UserModel extends Model {
 			'email': this.email,
 			'token': this.token,
 			'readkey': this.readkey,
+			'obix_code': this.obix_code,
 			'request_for_sensors': this.request_for_sensors,
 			'consent_a': this.consent_a,
 			'consent_b': this.consent_b
@@ -86,6 +89,7 @@ export default class UserModel extends Model {
 			if (typeof stat.email !== 'undefined') { this.email = stat.email; }
 			if (typeof stat.token !== 'undefined') { this.token = stat.token; }
 			if (typeof stat.readkey !== 'undefined') { this.readkey = stat.readkey; }
+			if (typeof stat.obix_code !== 'undefined') { this.obix_code = stat.obix_code; }
 			if (typeof stat.request_for_sensors !== 'undefined') { this.request_for_sensors = stat.request_for_sensors; }
 			if (typeof stat.consent_a !== 'undefined') { this.consent_a = stat.consent_a; }
 			if (typeof stat.consent_b !== 'undefined') { this.consent_b = stat.consent_b; }
@@ -160,6 +164,7 @@ export default class UserModel extends Model {
 					self.email = data.email;
 					self.is_superuser = myJson.is_superuser;
 					self.readkey = myJson.readkey;
+					self.obix_code = myJson.obix_code;
 					self.request_for_sensors = myJson.request_for_sensors;
 					self.consent_a = myJson.consent_a;
 					self.consent_b = myJson.consent_b;
@@ -287,12 +292,15 @@ export default class UserModel extends Model {
 					/*const data = [
 						{propName:'consent_a', value:   },
 						{propName:'consent_b', value:   },
+						{propName:'obix_code', value:   },
 					];*/
 					data.forEach(d => {
 						if (d.propName === 'consent_a') {
 							self.consent_a = d.value;
 						} else if (d.propName === 'consent_b') {
 							self.consent_b = d.value;
+						} else if (d.propName === 'obix_code') {
+							self.obix_code = d.value;
 						}
 					});
 					self.store();

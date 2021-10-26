@@ -28,6 +28,7 @@ import RegCodeCreateController from './modules/admin/regcodes/RegCodeCreateContr
 import RegCodeEditController from './modules/admin/regcodes/RegCodeEditController.js';
 import ReadKeyController from './modules/admin/readkeys/ReadKeyController.js';
 import ReadKeyEditController from './modules/admin/readkeys/ReadKeyEditController.js';
+import ObixCodeEditController from './modules/admin/users/ObixCodeEditController.js';
 import UsersController from './modules/admin/users/UsersController.js';
 
 class MasterController {
@@ -143,6 +144,8 @@ class MasterController {
 		
 		this.controllers['USERS'] = new UsersController({name:'USERS', master:this, el:'#content', visible:false});
 		this.controllers['USERS'].init();
+		this.controllers['OBIXCODEEDIT'] = new ObixCodeEditController({name:'OBIXCODEEDIT', master:this, el:'#content', visible:false});
+		this.controllers['OBIXCODEEDIT'].init();
 		// <------------- Admin stuff end.
 		
 		

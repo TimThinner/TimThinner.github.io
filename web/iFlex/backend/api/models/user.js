@@ -12,11 +12,9 @@ const userSchema = mongoose.Schema({
 	password: {type:String, required:true},
 	//isVerified: {type:Boolean, default:false},
 	created: { type: Date, default: Date.now },
-	/*address_street: {type:String},
-	address_postal_code: {type:String},
-	address_city: {type:String},*/
 	regcode: { type: mongoose.Schema.Types.ObjectId, ref:'Regcode'},
 	readkey: { type: mongoose.Schema.Types.ObjectId, ref:'Readkey'},
+	obix_code: { type:String, default:'' },
 	request_for_sensors: { type: Boolean, default: false },
 	consent_a: { type: Boolean, default: false },
 	consent_b: { type: Boolean, default: false },

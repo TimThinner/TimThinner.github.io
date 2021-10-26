@@ -56,6 +56,14 @@ export default class UsersView extends View {
 			this.models['UsersModel'].users.forEach(user => {
 				//console.log(['user=',user]);
 				
+				// A way to edit Obix codes:
+				const id = user._id;
+				let obix_code = user.obix_code;
+				if (obix_code.length === 0) {
+					obix_code = 'UNDEF'; // Must be something for the link text
+				}
+				const obix_code_link = '<a href="javascript:void(0);" id="edit-obixcode-'+id+'">'+obix_code+'</a>';
+				
 				let regcode_apaid = '-';
 				let regcode_code = '-';
 				let regcode_validity = '&nbsp;';
@@ -107,6 +115,7 @@ export default class UsersView extends View {
 						'<td>'+user.email+'</td>'+
 						'<td>'+user.created+'</td>'+
 						'<td>'+regcode_apaid+'</td>'+
+						'<td>'+obix_code_link+'</td>'+
 						'<td>'+user.request_for_sensors+'</td>'+
 						'<td>'+consent_a_validity+'</td>'+
 						'<td>'+consent_b_validity+'</td>'+
@@ -122,6 +131,7 @@ export default class UsersView extends View {
 							'<p>Email: '+user.email+'<br/>'+
 							'Created: '+user.created+'<br/>'+
 							'ApartmentId: '+regcode_apaid+'<br/>'+
+							'ObixCode: '+obix_code_link+'<br/>'+
 							'Sensors: '+user.request_for_sensors+'<br/>'+
 							'Consent A: '+consent_a_validity+'<br/>'+
 							'Consent B: '+consent_b_validity+'<br/>'+
@@ -135,10 +145,17 @@ export default class UsersView extends View {
 			
 			
 			this.models['UsersModel'].users.forEach(user => {
+				
+				const uid = user._id;
+				$('#edit-obixcode-'+uid).on('click', function(){
+					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
+					self.models['MenuModel'].setSelected('OBIXCODEEDIT');
+				});
+				
 				if (typeof user.regcode !== 'undefined') {
 					const id = user.regcode._id;
 					$('#edit-regcode-'+id).on('click', function(){
-						console.log(['SET RegCodeModel selected id=',id]);
+						//console.log(['SET RegCodeModel selected id=',id]);
 						self.models['RegCodeModel'].setSelected({'id':id,'caller':'USERS'});
 						self.menuModel.setSelected('REGCODEEDIT');
 					});
@@ -146,14 +163,52 @@ export default class UsersView extends View {
 				if (typeof user.readkey !== 'undefined') {
 					const id = user.readkey._id;
 					$('#edit-readkey-'+id).on('click', function(){
-						console.log(['SET ReadkeyModel selected id=',id]);
+						//console.log(['SET ReadkeyModel selected id=',id]);
 						self.models['ReadKeyModel'].setSelected({'id':id,'caller':'USERS'});
 						self.menuModel.setSelected('READKEYEDIT');
 					});
 				}
+				
+				
 			});
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+		if (typeof this.models['ReadKeyModel'].readkeys !== 'undefined') {
+			
+			this.models['ReadKeyModel'].readkeys.forEach(key => {
+				const id = key._id;
+				const title = '<a href="javascript:void(0);" id="edit-readkey-'+id+'">'+id+'</a>';
+				const startDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(key.startdate));
+				const endDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(key.enddate));
+				
+				
+				
+				
+				
+				//console.log(['key._id=',id]);
+				const html = '<tr class="readkey-item">'+
+					'<td>'+title+'</td>'+
+					'<td>'+startDateStringLocalTZ+'</td>'+
+					'<td>'+endDateStringLocalTZ+'</td></tr>';
+				
+				$(html).appendTo("#readkeys-table");
+				$('#edit-readkey-'+id).on('click', function(){
+					self.models['ReadKeyModel'].setSelected({'id':id,'caller':'READKEYS'});
+					self.models['MenuModel'].setSelected('READKEYEDIT');
+				});
+			});
+		}
+	*/
+	
 	
 	notify(options) {
 		if (this.controller.visible) {
@@ -222,6 +277,7 @@ export default class UsersView extends View {
 								'<th>Email</th>'+
 								'<th>Created</th>'+
 								'<th>Apartment</th>'+
+								'<th>ObixCode</th>'+
 								'<th>Sensors</th>'+
 								'<th>Cons A</th>'+
 								'<th>Cons B</th>'+

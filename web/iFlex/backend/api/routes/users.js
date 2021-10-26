@@ -23,6 +23,7 @@ const Readkey = require('../models/readkey');
 	created: { type: Date, default: Date.now },
 	regcode:  { type: mongoose.Schema.Types.ObjectId, ref:'Regcode'},
 	readkey:  { type: mongoose.Schema.Types.ObjectId, ref:'Readkey'},
+	obix_code: { type:String, default:'' },
 	request_for_sensors: { type: Boolean, default: false },
 	consent_a: { type: Boolean, default: false },
 	consent_b: { type: Boolean, default: false },
@@ -34,7 +35,7 @@ const Readkey = require('../models/readkey');
 */
 router.get('/', checkAuth, (req,res,next)=>{
 	User.find()
-		.select('_id email created regcode readkey request_for_sensors consent_a consent_b')
+		.select('_id email created regcode readkey obix_code request_for_sensors consent_a consent_b')
 		.populate('regcode')
 		.populate('readkey')
 		.exec()
@@ -48,6 +49,7 @@ router.get('/', checkAuth, (req,res,next)=>{
 						created: doc.created,
 						regcode: doc.regcode,
 						readkey: doc.readkey,
+						obix_code: doc.obix_code,
 						request_for_sensors: doc.request_for_sensors,
 						consent_a: doc.consent_a,
 						consent_b: doc.consent_b
@@ -227,7 +229,7 @@ router.post("/signup", (req,res,next)=>{
 router.post("/login", (req,res,next)=>{
 	
 	const email_lc = req.body.email.toLowerCase();
-	const selString = '_id email password created readkey request_for_sensors consent_a consent_b is_superuser';
+	const selString = '_id email password created readkey obix_code request_for_sensors consent_a consent_b is_superuser';
 	User.find({email:email_lc})
 		.select(selString)
 		.populate('readkey')
@@ -282,6 +284,7 @@ router.post("/login", (req,res,next)=>{
 						userId: user[0]._id,
 						created: user[0].created,
 						readkey: rkey,
+						obix_code: user[0].obix_code,
 						request_for_sensors: user[0].request_for_sensors,
 						consent_a: user[0].consent_a,
 						consent_b: user[0].consent_b,
@@ -422,7 +425,8 @@ router.delete("/:userId", checkAuth, (req,res,next)=>{
 	For example:
 	const data = [
 		{propName:'consent_a', value:false},
-		{propName:'consent_b', value:false}
+		{propName:'consent_b', value:false},
+		{propName:'obix_code', value:'123'}
 	];
 */
 router.put('/:userId', checkAuth, (req,res,next)=>{
@@ -430,8 +434,8 @@ router.put('/:userId', checkAuth, (req,res,next)=>{
 	const updateOps = {};
 	let filled = false;
 	for (const ops of req.body) {
-		// Allow only "consent" changes!
-		if (ops.propName.indexOf('consent') === 0) {
+		// Allow only "consent" or "obix" changes!
+		if (ops.propName.indexOf('consent') === 0 || ops.propName.indexOf('obix') === 0) {
 			updateOps[ops.propName] = ops.value;
 			filled = true;
 		}

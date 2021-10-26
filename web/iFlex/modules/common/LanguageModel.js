@@ -48,6 +48,9 @@ export default class LanguageModel {
 				'ADMIN_EDIT_REGCODE_APARTMENT':'Apartment',
 				'ADMIN_EDIT_READKEY_TITLE':'ReadKey',
 				'ADMIN_EDIT_READKEY_DESCRIPTION':'Modify ReadKey validity period.',
+				'ADMIN_EDIT_OBIXCODE_TITLE':'Obix code',
+				'ADMIN_EDIT_OBIXCODE_DESCRIPTION':'You can modify Users Obix code',
+				'ADMIN_EDIT_OBIXCODE_LABEL':'Obix code',
 				'BACK':'&nbsp;BACK&nbsp;',
 				'OK':'&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;',
 				'CANCEL':'CANCEL',
@@ -219,7 +222,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.10.20'
+				'MENU_VERSION':'v 21.10.26'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -266,6 +269,9 @@ export default class LanguageModel {
 				'ADMIN_EDIT_REGCODE_APARTMENT':'Asunto',
 				'ADMIN_EDIT_READKEY_TITLE':'Lukuavain',
 				'ADMIN_EDIT_READKEY_DESCRIPTION':'Voit muuttaa lukuavaimen voimassaoloaikaa.',
+				'ADMIN_EDIT_OBIXCODE_TITLE':'Obix-koodi',
+				'ADMIN_EDIT_OBIXCODE_DESCRIPTION':'Voit muuttaa käyttäjän Obix-koodia',
+				'ADMIN_EDIT_OBIXCODE_LABEL':'Obix-koodi',
 				'BACK':'TAKAISIN',
 				'OK':'&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;',
 				'CANCEL':'&nbsp;PERU&nbsp;',
@@ -437,7 +443,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.10.20'
+				'MENU_VERSION':'v 21.10.26'
 			}
 		}
 	}

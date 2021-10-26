@@ -35,6 +35,11 @@ export default class UserHeatingController extends Controller {
 		FI_H_H160_PV1_TE14/', Temperature A 4th floor
 		FI_H_H160_PV1_TE15/', Temperature C 1st floor
 		FI_H_H160_PV1_TE16/', Temperature C 4th floor
+		
+		FI_H_H160_PV1_QE13	Room air co2 A 1st floor
+		FI_H_H160_PV1_QE14	Room air co2 A 4th floor
+		FI_H_H160_PV1_QE15	Room air co2 C 1st floor
+		FI_H_H160_PV1_QE16	Room air co2 C 4th floor
 	*/
 	
 	initialize() {

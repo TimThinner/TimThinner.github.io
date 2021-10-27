@@ -63,7 +63,7 @@ export default class AView extends TimeRangeView {
 				const ds = moment(v.timestamp).format();
 				let val = +v.value; // Converts string to number.
 				
-				if (val > 1000) { val = val/1000; }
+				//if (val > 1000) { val = val/1000; }
 				
 				if (sumbucket.hasOwnProperty(ds)) {
 					sumbucket[ds]['BuildingElectricityPL1Model'] = val; // update
@@ -77,7 +77,7 @@ export default class AView extends TimeRangeView {
 				const ds = moment(v.timestamp).format();
 				let val = +v.value; // Converts string to number.
 				
-				if (val > 1000) { val = val/1000; }
+				//if (val > 1000) { val = val/1000; }
 				
 				if (sumbucket.hasOwnProperty(ds)) {
 					sumbucket[ds]['BuildingElectricityPL2Model'] = val; // update
@@ -91,7 +91,7 @@ export default class AView extends TimeRangeView {
 				const ds = moment(v.timestamp).format();
 				let val = +v.value; // Converts string to number.
 				
-				if (val > 1000) { val = val/1000; }
+				//if (val > 1000) { val = val/1000; }
 				
 				if (sumbucket.hasOwnProperty(ds)) {
 					sumbucket[ds]['BuildingElectricityPL3Model'] = val; // update
@@ -450,7 +450,7 @@ export default class AView extends TimeRangeView {
 			series4.dataFields.dateX = "timestamp"; // "date";
 			series4.dataFields.valueY = "value"; // "visits";
 			series4.tooltipText = localized_string_power + ": [bold]{valueY}[/] kW";
-			series4.fillOpacity = 0;
+			series4.fillOpacity = 0.2;
 			series4.name = 'SUM';
 			series4.customname = localized_string_power_legend;
 			series4.stroke = am4core.color("#0ff");

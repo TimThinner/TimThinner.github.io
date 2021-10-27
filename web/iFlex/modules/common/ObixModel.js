@@ -121,7 +121,7 @@ export default class ObixModel extends Model {
 
 :{\"name\":\"start\",\"val\":\"2021-05-26T12:00:01.900039+03:00\"}},{\"$\":{\"name\":\"end\",\"val\":\"2021-05-26T12:00:31.90123+03:00\"}}]}}"
 	*/
-	fetch(token, readkey) { //, readkey_start, readkey_end) {
+	fetch(token, readkey, obix_code) {
 		const self = this;
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
@@ -142,8 +142,10 @@ export default class ObixModel extends Model {
 		// NOTE: readkey can be undefined.
 		// This is ALWAYS the case when public data (building data) is fetched.
 		let my_readkey = undefined;
+		let my_obix_code = undefined;
 		if (this.access === 'PRIVATE') {
 			my_readkey = readkey;
+			my_obix_code = obix_code;
 		}
 		/*
 			NOTE: Consider if two diferent endpoints should be used here. 
@@ -207,6 +209,18 @@ export default class ObixModel extends Model {
 		// We can select dynamically whether data fetcher uses "QUERY" or "ROLLUP" API:
 		// "query/" or "rollup/" is added at ObixModel depending on if "interval" is defined or not.
 		let source = this.src;
+		
+		// Also here we append obix_code if it is defined.
+		if (typeof my_obix_code !== 'undefined') {
+			source =  this.src + obix_code + '/';
+		}
+		console.log('===========================');
+		console.log(['fetch token=',token]);
+		console.log(['fetch my_readkey=',my_readkey]);
+		console.log(['fetch my_obix_code=',my_obix_code]);
+		console.log(['fetch source=',source]);
+		console.log('===========================');
+		
 		let reqXML = '';
 		let hash = '';
 		// Create a hash using URL and timerange and CURRENT DATETIME IN HOUR PRECISION.

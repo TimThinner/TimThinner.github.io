@@ -88,6 +88,16 @@ export default class UserPropsView extends View {
 		if (this.areModelsReady()) {
 			
 			const UM = this.userModel;
+			
+			//console.log(['UM=',UM]);
+			let consent_A_state = '<p style="color:#4a4">Suostumus <b>tutkimukseen osallistumiseen</b> on voimassa.</p>';
+			if (UM.consent_a === false) {
+				consent_A_state = '<p style="color:#a44">Suostumus <b>tutkimukseen osallistumiseen</b> on peruttu.</p>';
+			}
+			let consent_B_state = '<p style="color:#4a4">Suostumus <b>henkilötietojen käsittelyyn tutkimuksessa</b> on voimassa.</p>';
+			if (UM.consent_b === false) {
+				consent_B_state = '<p style="color:#a44">Suostumus <b>henkilötietojen käsittelyyn tutkimuksessa</b> on peruttu.</p>';
+			}
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_back = LM['translation'][sel]['BACK'];
@@ -132,11 +142,13 @@ export default class UserPropsView extends View {
 						'<h4>'+localized_string_title+'</h4>'+
 						'<p><img src="./svg/user.svg" height="80"/></p>'+
 						'<p>'+localized_string_description+'</p>'+
-						//'<p>&nbsp;</p>'+
-						'<button class="btn waves-effect waves-light" id="changepsw">'+localized_string_change_password_btn_txt+'</button>'+
-						'<p>&nbsp;</p>'+
+						// Show user info here:
+						consent_A_state + consent_B_state +
+						'<p>Email: '+UM.email+'</p>'+'<p>ObixCode: '+UM.obix_code+'</p>'+
 						'<p>'+consent_text+'<a href="javascript:void(0);" id="consent-text">'+consent_link_text+'</a></p>'+
 						'<p>'+gdpr_text+'<a href="javascript:void(0);" id="gdpr-text">'+gdpr_link_text+'</a></p>'+
+						//'<button class="btn waves-effect waves-light" id="changepsw">'+localized_string_change_password_btn_txt+'</button>'+
+						'<p><a href="javascript:void(0);" id="changepsw">'+localized_string_change_password_btn_txt+'</a></p>'+
 					'</div>'+
 				'</div>'+ 
 				'<div class="row">'+

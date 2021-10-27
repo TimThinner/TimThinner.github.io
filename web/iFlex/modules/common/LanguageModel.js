@@ -23,7 +23,7 @@ export default class LanguageModel {
 				'USER_SIGNUP_APARTMENT_MUST_INPUT':'Must input <b>Apartment number</b>',
 				'USER_PROPS_TITLE':'User Properties',
 				'USER_PROPS_DESCRIPTION':'User can can view and modify own properties here.',
-				'USER_PROPS_CHANGE_PASSWORD_BTN_TXT':'Change password',
+				'USER_PROPS_CHANGE_PASSWORD_BTN_TXT':'Change your password',
 				'USER_PROPS_CONSENT':'Click this link to read the ',
 				'USER_PROPS_ADMIN_DESCRIPTION':'Admin can view and edit RegCodes, view Users and associated ReadKeys.',
 				'USER_PROPS_ADMIN_REGCODES':'RegCodes',
@@ -91,7 +91,7 @@ export default class LanguageModel {
 				'BUILDING_CO2_PRODUCTION':'Production',
 				'BUILDING_EMISSION_EL':'EL',
 				'BUILDING_EMISSION_DH':'DH',
-				'BUILDING_EMISSION_AXIS_LABEL':'Emissions (gCO2/h)',
+				'BUILDING_EMISSION_AXIS_LABEL':'Emissions (kgCO2/h)',
 				'BUILDING_EMISSION_EL_LEGEND':'Electricity',
 				'BUILDING_EMISSION_DH_LEGEND':'District heating',
 				'USER_HEATING_TITLE':'Apartment temperature and humidity',
@@ -222,7 +222,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.10.26'
+				'MENU_VERSION':'v 21.10.27'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -244,7 +244,7 @@ export default class LanguageModel {
 				'USER_SIGNUP_APARTMENT_MUST_INPUT':'<b>Asunnon numero</b> täytyy ilmoittaa</b>',
 				'USER_PROPS_TITLE':'Omat tiedot',
 				'USER_PROPS_DESCRIPTION':'Tällä sivulla käyttäjä voi katsoa ja muokata omia tietojaan.',
-				'USER_PROPS_CHANGE_PASSWORD_BTN_TXT':'Vaihda salasana',
+				'USER_PROPS_CHANGE_PASSWORD_BTN_TXT':'Vaihda salasanasi',
 				'USER_PROPS_CONSENT':'Täältä voit lukea ',
 				'USER_PROPS_ADMIN_DESCRIPTION':'Ylläpitäjä voi nähdä ja muokata rekisteröintikoodeja ja lisäksi hallita kaikkien käyttäjien lukuavaimia.',
 				'USER_PROPS_ADMIN_REGCODES':'Rekisteröintikoodit',
@@ -312,7 +312,7 @@ export default class LanguageModel {
 				'BUILDING_CO2_PRODUCTION':'Tuotanto',
 				'BUILDING_EMISSION_EL':'Sähkö',
 				'BUILDING_EMISSION_DH':'KL',
-				'BUILDING_EMISSION_AXIS_LABEL':'Päästöt (gCO2/h)',
+				'BUILDING_EMISSION_AXIS_LABEL':'Päästöt (kgCO2/h)',
 				'BUILDING_EMISSION_EL_LEGEND':'Sähkö',
 				'BUILDING_EMISSION_DH_LEGEND':'Kaukolämpö',
 				'USER_HEATING_TITLE':'Asunnon lämpötila ja kosteus',
@@ -443,7 +443,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.10.26'
+				'MENU_VERSION':'v 21.10.27'
 			}
 		}
 	}

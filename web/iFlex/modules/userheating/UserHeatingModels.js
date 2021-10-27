@@ -11,3 +11,9 @@ export class UserHumidityModel extends ObixModel {
 		super(options);
 	}
 }
+
+export class UserCO2Model extends ObixModel {
+	constructor(options) {
+		super(options);
+	}
+}

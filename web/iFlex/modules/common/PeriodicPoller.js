@@ -50,8 +50,8 @@ export default class PeriodicPoller {
 				const um = this.master.modelRepo.get('UserModel');
 				const token = um ? um.token : undefined;
 				const readkey = um ? um.readkey : undefined;
-				//const readkey_start = um ? um.readkey_start : undefined;
-				//const readkey_end = um ? um.readkey_end : undefined;
+				const obix_code = um ? um.obix_code : undefined;
+				
 				//
 				// Residents are allowed to fetch their own data. This is secured so that each resident 
 				// must be registered using a specific REGCODE, which is associated with a his/her apartment.
@@ -60,8 +60,8 @@ export default class PeriodicPoller {
 				// by the administrator.
 				//
 				this.timers[name].models.forEach(key => {
-					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey]);
-					this.models[key].fetch(token, readkey); //, readkey_start, readkey_end);
+					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
+					this.models[key].fetch(token, readkey, obix_code);
 				});
 				this.timers[name].timer = setTimeout(()=>{
 					this.poller(name);
@@ -72,12 +72,11 @@ export default class PeriodicPoller {
 				const um = this.master.modelRepo.get('UserModel');
 				const token = um ? um.token : undefined;
 				const readkey = um ? um.readkey : undefined;
-				//const readkey_start = um ? um.readkey_start : undefined;
-				//const readkey_end = um ? um.readkey_end : undefined;
+				const obix_code = um ? um.obix_code : undefined;
 				
 				this.timers[name].models.forEach(key => {
-					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey]);
-					this.models[key].fetch(token, readkey); //, readkey_start, readkey_end);
+					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
+					this.models[key].fetch(token, readkey, obix_code);
 				});
 			}
 		}

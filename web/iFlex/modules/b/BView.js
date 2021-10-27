@@ -136,7 +136,7 @@ export default class BView extends TimeRangeView {
 			series2.dataFields.dateX = "timestamp"; // "date";
 			series2.dataFields.valueY = "value"; // "visits";
 			series2.tooltipText = localized_string_power + ": [bold]{valueY}[/] kW"; // NOTE: [/] is a closing bracket for [bold]
-			series2.fillOpacity = 0;
+			series2.fillOpacity = 0.25;
 			series2.name = 'QE';
 			series2.customname = localized_string_power_legend;
 			series2.stroke = am4core.color("#0f0");

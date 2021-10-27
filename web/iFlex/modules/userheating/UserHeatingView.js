@@ -68,13 +68,15 @@ export default class UserHeatingView extends TimeRangeView {
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
 						
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... UserHeatingView CHART UPDATED!');
+							//console.log('fetched ..... UserHeatingView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								//s.data = self.models['UserHeatingModel'].values;
+								if (s.name === 'TEMPERATURE') {
+									s.data = self.models['UserTemperatureModel'].values;
+								}
 							});
 							
 						} else {
-							console.log('fetched ..... render UserHeatingView()');
+							//console.log('fetched ..... render UserHeatingView()');
 							this.renderChart();
 						}
 						
@@ -104,13 +106,51 @@ export default class UserHeatingView extends TimeRangeView {
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
 						
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... UserHeatingView CHART UPDATED!');
+							//console.log('fetched ..... UserHeatingView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								//s.data = self.models['UserHeatingModel'].values;
+								if (s.name === 'HUMIDITY') {
+									s.data = self.models['UserHumidityModel'].values;
+								}
 							});
 							
 						} else {
-							console.log('fetched ..... render UserHeatingView()');
+							//console.log('fetched ..... render UserHeatingView()');
+							this.renderChart();
+						}
+						
+					} else { // Error in fetching.
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to controller forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							// Call View-class method to handle error.
+							this.forceLogout(this.FELID);
+						} else if (options.status === 403) {
+							const html = '<p class="error-info">' + options.message + '. Data access not available anymore.</p>';
+							$('#data-error-info').empty().append(html);
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$('#'+this.FELID).empty().append(html);
+						}
+					}
+				}
+			} else if (options.model==='UserCO2Model' && options.method==='fetched') {
+				
+				if (this.rendered) {
+					if (options.status === 200 || options.status === '200') {
+						
+						$('#'+this.FELID).empty();
+						
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
+						
+						if (typeof this.chart !== 'undefined') {
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								if (s.name === 'CO2') {
+									s.data = self.models['UserCO2Model'].values;
+								}
+							});
+							
+						} else {
 							this.renderChart();
 						}
 						
@@ -145,6 +185,10 @@ export default class UserHeatingView extends TimeRangeView {
 		const localized_string_humidity_tooltip = LM['translation'][sel]['APARTMENT_HUMIDITY_TOOLTIP'];
 		const localized_string_humidity_axis_label = LM['translation'][sel]['APARTMENT_HUMIDITY_AXIS_LABEL'];
 		const localized_string_humidity_legend = LM['translation'][sel]['APARTMENT_HUMIDITY_LEGEND'];
+		
+		const localized_string_co2_tooltip = 'CO2';
+		const localized_string_co2_axis_label = 'CO2';
+		const localized_string_co2_legend = 'CO2';
 		
 		am4core.ready(function() {
 			
@@ -195,13 +239,15 @@ export default class UserHeatingView extends TimeRangeView {
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
-			valueAxis.title.text = localized_string_temperature_axis_label + ', ' + localized_string_humidity_axis_label;
+			valueAxis.title.text = localized_string_temperature_axis_label + ', ' + localized_string_humidity_axis_label + ', ' + localized_string_co2_axis_label;
 			valueAxis.min = 0;
 			
 			var series1 = self.chart.series.push(new am4charts.LineSeries());
-			series1.data = generateChartData(20);
-			series1.dataFields.dateX = "timestamp"; // "date";
-			series1.dataFields.valueY = "value"; // "visits";
+			//series1.data = generateChartData(20);
+			series1.data = self.models['UserTemperatureModel'].values;
+			
+			series1.dataFields.dateX = "timestamp";
+			series1.dataFields.valueY = "value";
 			series1.tooltipText = localized_string_temperature_tooltip + ": [bold]{valueY}[/] °C";
 			series1.fillOpacity = 0;
 			series1.name = 'TEMPERATURE';
@@ -221,9 +267,10 @@ export default class UserHeatingView extends TimeRangeView {
 			
 			
 			var series2 = self.chart.series.push(new am4charts.LineSeries());
-			series2.data = generateChartData(40);
-			series2.dataFields.dateX = "timestamp"; // "date";
-			series2.dataFields.valueY = "value"; // "visits";
+			//series2.data = generateChartData(40);
+			series2.data = self.models['UserHumidityModel'].values;
+			series2.dataFields.dateX = "timestamp";
+			series2.dataFields.valueY = "value";
 			series2.tooltipText = localized_string_humidity_tooltip + ": [bold]{valueY}[/] %";
 			series2.fillOpacity = 0;
 			series2.name = 'HUMIDITY';
@@ -231,6 +278,19 @@ export default class UserHeatingView extends TimeRangeView {
 			series2.stroke = am4core.color("#0ff");
 			series2.fill = "#0ff";
 			series2.legendSettings.labelText = "{customname}";
+			
+			
+			var series3 = self.chart.series.push(new am4charts.LineSeries());
+			series3.data = self.models['UserCO2Model'].values;
+			series3.dataFields.dateX = "timestamp";
+			series3.dataFields.valueY = "value";
+			series3.tooltipText = localized_string_co2_tooltip + ": [bold]{valueY}[/] gCO2/h";
+			series3.fillOpacity = 0;
+			series3.name = 'CO2';
+			series3.customname = localized_string_co2_legend;
+			series3.stroke = am4core.color("#ff0");
+			series3.fill = "#ff0";
+			series3.legendSettings.labelText = "{customname}";
 			
 			// Legend:
 			self.chart.legend = new am4charts.Legend();
@@ -305,7 +365,7 @@ export default class UserHeatingView extends TimeRangeView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		const myModels = ['UserTemperatureModel','UserHumidityModel'];
+		const myModels = ['UserTemperatureModel','UserHumidityModel','UserCO2Model'];
 		this.setTimerangeHandlers(myModels);
 		
 		$("#back").on('click', function() {

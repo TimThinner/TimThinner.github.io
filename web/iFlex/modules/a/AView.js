@@ -529,6 +529,7 @@ export default class AView extends TimeRangeView {
 		$(html).appendTo(this.el);
 		
 		const myModels = ['BuildingElectricityPL1Model','BuildingElectricityPL2Model','BuildingElectricityPL3Model'];
+		//this.setTimeranges(myModels);
 		this.setTimerangeHandlers(myModels);
 		
 		$("#back").on('click', function() {

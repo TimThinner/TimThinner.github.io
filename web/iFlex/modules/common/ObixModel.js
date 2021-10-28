@@ -214,12 +214,12 @@ export default class ObixModel extends Model {
 		if (typeof my_obix_code !== 'undefined') {
 			source =  this.src + obix_code + '/';
 		}
-		console.log('===========================');
-		console.log(['fetch token=',token]);
-		console.log(['fetch my_readkey=',my_readkey]);
-		console.log(['fetch my_obix_code=',my_obix_code]);
-		console.log(['fetch source=',source]);
-		console.log('===========================');
+		//console.log('===========================');
+		//console.log(['fetch token=',token]);
+		//console.log(['fetch my_readkey=',my_readkey]);
+		//console.log(['fetch my_obix_code=',my_obix_code]);
+		//console.log(['fetch source=',source]);
+		//console.log('===========================');
 		
 		let reqXML = '';
 		let hash = '';
@@ -228,9 +228,9 @@ export default class ObixModel extends Model {
 		// in BACKEND.
 		const from_to_string = '_from_' + this.timerange.begin.value + '_' + this.timerange.begin.unit + '_to_' + this.timerange.end.value + '_' + this.timerange.end.unit + now;
 		if (typeof interval !== 'undefined') {
-			
 			source += 'rollup/';
 			hash = source + from_to_string + '_' + interval;
+			console.log(['hash=',hash]);
 			reqXML = '<?xml version="1.0" encoding="UTF-8"?>'+
 			'<obj is="obix:HistoryRollupIn obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
 			'<reltime name="interval" val="'+interval+'"/>'+
@@ -240,9 +240,9 @@ export default class ObixModel extends Model {
 			'</obj>';
 			
 		} else {
-			
 			source += 'query/';
 			hash = source + from_to_string;
+			console.log(['hash=',hash]);
 			reqXML = '<?xml version="1.0" encoding="UTF-8"?>'+
 			'<obj is="obix:HistoryFilter" xmlns="http://obix.org/ns/schema/1.0">'+
 			'<int name="limit" null="true"/>'+
@@ -275,13 +275,13 @@ export default class ObixModel extends Model {
 		fetch(myRequest)
 			.then(function(response) {
 				self.status = response.status;
-				console.log(['status=',self.status]);
-				console.log(['response=',response]);
+				//console.log(['status=',self.status]);
+				//console.log(['response=',response]);
 				return response.json();
 			})
 			.then(function(myJson) {
 				if (self.status === 200) {
-					console.log(['myJson=',myJson]);
+					//console.log(['myJson=',myJson]);
 					const resu = JSON.parse(myJson);
 					//const cleaned = myJson.replace(/\\/g, "");
 					//console.log(['cleaned=',cleaned]);

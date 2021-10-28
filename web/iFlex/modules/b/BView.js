@@ -218,6 +218,7 @@ export default class BView extends TimeRangeView {
 		$(html).appendTo(this.el);
 		
 		const myModels = ['BuildingHeatingQE01Model'];
+		//this.setTimeranges(myModels);
 		this.setTimerangeHandlers(myModels);
 		
 		$("#back").on('click', function() {

@@ -106,71 +106,65 @@ export default class TimeRangeView extends View {
 		"b1y"	13M
 	*/
 	
-	setTR1d(models) {
+	setTR(models, timerange, interval) {
 		Object.keys(this.controller.models).forEach(key => {
+			// Controller has all needed models + menumodel, which we ignore here (models are listed in function call).
 			if (models.includes(key)) {
 				const model = this.controller.models[key];
-				model.timerange = { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}};
-				model.interval = 'PT15M';
+				model.timerange = timerange;
+				model.interval = interval;
 				model.values = [];
 			}
 		});
 	}
-	
-	setTR1w(models) {
-		Object.keys(this.controller.models).forEach(key => {
-			if (models.includes(key)) {
-				const model = this.controller.models[key];
-				model.timerange = { begin:{value:7,unit:'days'},end:{value:0,unit:'days'}};
-				model.interval = 'PT30M';
-				model.values = [];
-			}
-		});
-	}
-	
-	setTR2w(models) {
-		Object.keys(this.controller.models).forEach(key => {
-			if (models.includes(key)) {
-				const model = this.controller.models[key];
-				model.timerange = { begin:{value:14,unit:'days'},end:{value:0,unit:'days'}};
-				model.interval = 'PT60M';
-				model.values = [];
-			}
-		});
-	}
-	
-	setTR1m(models) {
-		Object.keys(this.controller.models).forEach(key => {
-			if (models.includes(key)) {
-				const model = this.controller.models[key];
-				model.timerange = { begin:{value:1,unit:'months'},end:{value:0,unit:'months'}};
-				model.interval = 'PT2H';
-				model.values = [];
-			}
-		});
-	}
-	
-	setTR6m(models) {
-		Object.keys(this.controller.models).forEach(key => {
-			if (models.includes(key)) {
-				const model = this.controller.models[key];
-				model.timerange = { begin:{value:6,unit:'months'},end:{value:0,unit:'months'}};
-				model.interval = 'PT12H';
-				model.values = [];
-			}
-		});
-	}
-	
-	setTR1y(models) {
-		Object.keys(this.controller.models).forEach(key => {
-			if (models.includes(key)) {
-				const model = this.controller.models[key];
-				model.timerange = { begin:{value:13,unit:'months'},end:{value:0,unit:'months'}};
-				model.interval = 'PT24H';
-				model.values = [];
-			}
-		});
-	}
+	/*
+	setTimeranges(models) {
+		// Set all model variables according to current situation!
+		this.resetButtonClass();
+		if (this.selected === 'b1d') {
+			// timerange 1 day interval = 15 mins (24x4 = 96 values)
+			const timerange = { begin:{value:24,unit:'hours'},end:{value:0,unit:'hours'}};
+			const interval = 'PT15M';
+			this.setTR(models, timerange, interval);
+			
+		} else if (this.selected === 'b1w') {
+			// timerange 7 days interval = 30 mins (7x24x2 =  336 values)
+			const timerange = { begin:{value:7,unit:'days'},end:{value:0,unit:'days'}};
+			const interval = 'PT30M';
+			this.setTR(models, timerange, interval);
+			
+		} else if (this.selected === 'b2w') {
+			// timerange 14 days interval = 60 mins (14x24 =  336 values)
+			const timerange = { begin:{value:14,unit:'days'},end:{value:0,unit:'days'}};
+			const interval = 'PT60M';
+			this.setTR(models, timerange, interval);
+			
+		} else if (this.selected === 'b1m') {
+			// timerange 1 month interval = 120 MINUTES (approx 30x12 = 360 values)
+			const timerange = { begin:{value:1,unit:'months'},end:{value:0,unit:'months'}};
+			const interval = 'PT2H';
+			this.setTR(models, timerange, interval);
+			
+		} else if (this.selected === 'b6m') {
+			// timerange 6 months interval = 12 HOURS (approx 6x30x2 =  360 values)
+			const timerange = { begin:{value:6,unit:'months'},end:{value:0,unit:'months'}};
+			const interval = 'PT12H';
+			this.setTR(models, timerange, interval);
+			
+		} else {
+			// timerange 13 months interval = 24 HOURS (approx 13x30 = 390 values)
+			const timerange = { begin:{value:13,unit:'months'},end:{value:0,unit:'months'}};
+			const interval = 'PT24H';
+			this.setTR(models, timerange, interval);
+		}
+		
+		
+		// This will result a fetch to all models.
+			// => this.restartPollingInterval('CView');
+			// 
+			
+		this.controller.refreshTimerange(); 
+	}*/
 	
 	setTimerangeHandlers(models) {
 		const self = this;
@@ -178,41 +172,18 @@ export default class TimeRangeView extends View {
 		console.log(['this.selected=',this.selected]);
 		console.log('========================================');
 		
-		
-		// Set all model variables according to current situation!
-		//$('#'+this.selected).addClass("selected");
-		this.resetButtonClass();
-		
-		if (this.selected === 'b1d') {
-			this.setTR1d(models);
-		} else if (this.selected === 'b1w') {
-			this.setTR1w(models);
-		} else if (this.selected === 'b2w') {
-			this.setTR2w(models);
-		} else if (this.selected === 'b1m') {
-			this.setTR1m(models);
-		} else if (this.selected === 'b6m') {
-			this.setTR6m(models);
-		} else {
-			this.setTR1y(models);
-		}
-		this.controller.refreshTimerange();
+		$('#'+this.selected).addClass("selected");
+		/*
+		*/
 		
 		// THEN SET CLICK HANDLERS!
 		// timerange 1 day interval = 15 mins (24x4 = 96 values)
 		$('#b1d').on('click',function() {
 			self.selected = "b1d";
 			self.resetButtonClass();
-			// Controller has all needed models + menumodel, which we ignore here (models are listed in function call).
-			/*Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					model.timerange = { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}};
-					model.interval = 'PT15M';
-					model.values = [];
-				}
-			});*/
-			self.setTR1d(models);
+			const timerange = { begin:{value:24,unit:'hours'},end:{value:0,unit:'hours'}};
+			const interval = 'PT15M';
+			self.setTR(models, timerange, interval);
 			self.controller.refreshTimerange();
 			self.showInfo(models);
 		});
@@ -221,16 +192,9 @@ export default class TimeRangeView extends View {
 		$('#b1w').on('click',function() {
 			self.selected = "b1w";
 			self.resetButtonClass();
-			/*
-			Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					model.timerange = { begin:{value:7,unit:'days'},end:{value:0,unit:'days'}};
-					model.interval = 'PT30M';
-					model.values = [];
-				}
-			});*/
-			self.setTR1w(models);
+			const timerange = { begin:{value:7,unit:'days'},end:{value:0,unit:'days'}};
+			const interval = 'PT30M';
+			self.setTR(models, timerange, interval);
 			self.controller.refreshTimerange();
 			self.showInfo(models);
 		});
@@ -239,16 +203,9 @@ export default class TimeRangeView extends View {
 		$('#b2w').on('click',function() {
 			self.selected = "b2w";
 			self.resetButtonClass();
-			/*Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					model.timerange = { begin:{value:14,unit:'days'},end:{value:0,unit:'days'}};
-					model.interval = 'PT60M';
-					model.values = [];
-				}
-			});*/
-			
-			self.setTR2w(models);
+			const timerange = { begin:{value:14,unit:'days'},end:{value:0,unit:'days'}};
+			const interval = 'PT60M';
+			self.setTR(models, timerange, interval);
 			self.controller.refreshTimerange();
 			self.showInfo(models);
 		});
@@ -257,16 +214,9 @@ export default class TimeRangeView extends View {
 		$('#b1m').on('click',function() {
 			self.selected = "b1m";
 			self.resetButtonClass();
-			/*Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					model.timerange = { begin:{value:1,unit:'months'},end:{value:0,unit:'months'}};
-					model.interval = 'PT2H';
-					model.values = [];
-				}
-			});*/
-			
-			self.setTR1m(models);
+			const timerange = { begin:{value:1,unit:'months'},end:{value:0,unit:'months'}};
+			const interval = 'PT2H';
+			self.setTR(models, timerange, interval);
 			self.controller.refreshTimerange();
 			self.showInfo(models);
 		});
@@ -275,16 +225,9 @@ export default class TimeRangeView extends View {
 		$('#b6m').on('click',function() {
 			self.selected = "b6m";
 			self.resetButtonClass();
-			/*Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					model.timerange = { begin:{value:6,unit:'months'},end:{value:0,unit:'months'}};
-					model.interval = 'PT12H';
-					model.values = [];
-				}
-			});*/
-			
-			self.setTR6m(models);
+			const timerange = { begin:{value:6,unit:'months'},end:{value:0,unit:'months'}};
+			const interval = 'PT12H';
+			self.setTR(models, timerange, interval);
 			self.controller.refreshTimerange();
 			self.showInfo(models);
 		});
@@ -293,16 +236,9 @@ export default class TimeRangeView extends View {
 		$('#b1y').on('click',function() {
 			self.selected = "b1y";
 			self.resetButtonClass();
-			/*Object.keys(self.controller.models).forEach(key => {
-				if (models.includes(key)) {
-					const model = self.controller.models[key];
-					model.timerange = { begin:{value:13,unit:'months'},end:{value:0,unit:'months'}};
-					model.interval = 'PT24H';
-					model.values = [];
-				}
-			});*/
-			
-			self.setTR1y(models);
+			const timerange = { begin:{value:13,unit:'months'},end:{value:0,unit:'months'}};
+			const interval = 'PT24H';
+			self.setTR(models, timerange, interval);
 			self.controller.refreshTimerange();
 			self.showInfo(models);
 		});

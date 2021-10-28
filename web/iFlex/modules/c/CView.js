@@ -190,96 +190,108 @@ export default class CView extends TimeRangeView {
 	
 	
 	calculate_ALL_Sum() {
-		if (this.calculated_EL_emissions.length > 0 && this.calculated_DH_emissions.length > 0) {
+		//if (this.calculated_EL_emissions.length > 0 && this.calculated_DH_emissions.length > 0) {
 			
 			const sumbucket = {};
 			this.calculated_ALL_emissions = [];
 			
 			this.calculated_EL_emissions.forEach(v=>{
-				const ds = moment(v.timestamp).format();
+				const ds = moment(v.timestamp).format().slice(0,-6);
+				//console.log(['EL ds=',ds]);
 				const val = v.value;
 				sumbucket[ds] = val;
 			});
+			//console.log(['sumbucket=',sumbucket]);
+			
+			let miss = 0;
+			let hit = 0;
+			let total = 0;
 			this.calculated_DH_emissions.forEach(v=>{
-				const ds = moment(v.timestamp).format();
-				const val = v.value; // Converts string to number.
+				total++;
+				const ds = moment(v.timestamp).format().slice(0,-6);
+				//console.log(['DH ds=',ds]);
+				const val = v.value;
 				if (sumbucket.hasOwnProperty(ds)) {
+					
+					hit++;
+					//console.log(['HIT ds=',ds,' hit=',hit]);
+					
 					sumbucket[ds] += val;
 					this.calculated_ALL_emissions.push({timestamp: v.timestamp, value:sumbucket[ds]});
 				} else {
-					console.log('=====================================================');
-					console.log('       CALCULATE ALL   ---  NOT MATCHING ELEMENT!    ');
-					console.log('=====================================================');
+					miss++;
+					//console.log('=====================================================');
+					//console.log(['CALCULATE ALL NOT MATCHING ELEMENT ds=',ds,' miss=',miss]);
+					//console.log('=====================================================');
 				}
 			});
-		}
+			console.log(['hit=',hit,' miss=',miss,' total=',total]);
+		//}
 	}
 	
 	calculate_DH_Sum() {
-		if (this.models['BuildingHeatingQE01Model'].values.length > 0) {
-			
+		//if (this.models['CControllerBuildingHeatingQE01Model'].values.length > 0) {
 			this.calculated_DH_emissions = [];
-			
-			this.models['BuildingHeatingQE01Model'].values.forEach(v=>{
-				const val = v.value * 220 / 1000; // Converts string to number.
+			this.models['CControllerBuildingHeatingQE01Model'].values.forEach(v=>{
+				const val = v.value * 220; // Converts string to number.
 				this.calculated_DH_emissions.push({timestamp: moment(v.timestamp).toDate(), value:val});
 			});
-		}
+		//}
 	}
 	
 	calculateSum() {
-		if (this.models['BuildingElectricityPL1Model'].values.length > 0 && 
-			this.models['BuildingElectricityPL2Model'].values.length > 0 && 
-			this.models['BuildingElectricityPL3Model'].values.length > 0 && 
+		/*if (this.models['CControllerBuildingElectricityPL1Model'].values.length > 0 && 
+			this.models['CControllerBuildingElectricityPL2Model'].values.length > 0 && 
+			this.models['CControllerBuildingElectricityPL3Model'].values.length > 0 && 
 			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.length > 0) {
-			
+			*/
 			// Calculate the sum of models like before.
 			// and assign that to self.values array {timestamp => value}
 			const sumbucket = {};
 			this.calculated_EL_emissions = [];
 			
-			this.models['BuildingElectricityPL1Model'].values.forEach(v=>{
+			this.models['CControllerBuildingElectricityPL1Model'].values.forEach(v=>{
 				const ds = moment(v.timestamp).format();
 				let val = +v.value; // Converts string to number.
 				
 				//if (val > 1000) { val = val/1000; }
-				val = val/1000;
+				//val = val/1000;
 				
 				if (sumbucket.hasOwnProperty(ds)) {
-					sumbucket[ds]['BuildingElectricityPL1Model'] = val; // update
+					sumbucket[ds]['PL1'] = val; // update
 				} else {
 					sumbucket[ds] = {}; // create new entry
-					sumbucket[ds]['BuildingElectricityPL1Model'] = val; // update
+					sumbucket[ds]['PL1'] = val; // update
 				}
 			});
 			
-			this.models['BuildingElectricityPL2Model'].values.forEach(v=>{
+			this.models['CControllerBuildingElectricityPL2Model'].values.forEach(v=>{
 				const ds = moment(v.timestamp).format();
 				let val = +v.value; // Converts string to number.
 				
 				//if (val > 1000) { val = val/1000; }
-				val = val/1000;
+				//val = val/1000;
 				
 				if (sumbucket.hasOwnProperty(ds)) {
-					sumbucket[ds]['BuildingElectricityPL2Model'] = val; // update
+					sumbucket[ds]['PL2'] = val; // update
 				} else {
 					sumbucket[ds] = {}; // create new entry
-					sumbucket[ds]['BuildingElectricityPL2Model'] = val; // update
+					sumbucket[ds]['PL2'] = val; // update
 				}
 			});
 			
-			this.models['BuildingElectricityPL3Model'].values.forEach(v=>{
+			this.models['CControllerBuildingElectricityPL3Model'].values.forEach(v=>{
 				const ds = moment(v.timestamp).format();
 				let val = +v.value; // Converts string to number.
 				
 				//if (val > 1000) { val = val/1000; }
-				val = val/1000;
+				//val = val/1000;
 				
 				if (sumbucket.hasOwnProperty(ds)) {
-					sumbucket[ds]['BuildingElectricityPL3Model'] = val; // update
+					sumbucket[ds]['PL3'] = val; // update
 				} else {
 					sumbucket[ds] = {}; // create new entry
-					sumbucket[ds]['BuildingElectricityPL3Model'] = val; // update
+					sumbucket[ds]['PL3'] = val; // update
 				}
 			});
 			Object.keys(sumbucket).forEach(key => {
@@ -290,6 +302,19 @@ export default class CView extends TimeRangeView {
 				sum *= this.findClosestFactor(key);
 				this.calculated_EL_emissions.push({timestamp: moment(key).toDate(), value:sum});
 			});
+		//}
+	}
+	
+	calculate_ALL() {
+		if (this.models['CControllerBuildingElectricityPL1Model'].values.length > 0 && 
+			this.models['CControllerBuildingElectricityPL2Model'].values.length > 0 && 
+			this.models['CControllerBuildingElectricityPL3Model'].values.length > 0 && 
+			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.length > 0 &&
+			this.models['CControllerBuildingHeatingQE01Model'].values.length > 0) {
+			
+			this.calculateSum();
+			this.calculate_DH_Sum();
+			this.calculate_ALL_Sum();
 		}
 	}
 	
@@ -312,17 +337,25 @@ export default class CView extends TimeRangeView {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculateSum();
-						this.calculate_ALL_Sum();
+						//this.calculateSum();
+						//this.calculate_ALL_Sum();
+						this.calculate_ALL();
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'ELEMISSIONS') {
+								/*if (s.name === 'ELEMISSIONS') {
 									s.data = self.calculated_EL_emissions;
 								} else if (s.name === 'ALLEMISSIONS') {
 									s.data = self.calculated_ALL_emissions;
+								}*/
+								
+								
+								
+								if (s.name === 'ALLEMISSIONS') {
+									s.data = self.calculated_ALL_emissions;
 								}
+								
 							});
 						} else {
 							this.renderChart();
@@ -336,24 +369,30 @@ export default class CView extends TimeRangeView {
 				} else { // This should never be the case, but render anyway if we get here.
 					this.render();
 				}
-			} else if (options.model==='BuildingElectricityPL1Model' && options.method==='fetched') {
+			} else if (options.model==='CControllerBuildingElectricityPL1Model' && options.method==='fetched') {
 				//console.log('NOTIFY BuildingElectricityPL1Model fetched!');
 				//console.log(['options.status=',options.status]);
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculateSum();
-						this.calculate_ALL_Sum();
+						//this.calculateSum();
+						//this.calculate_ALL_Sum();
+						this.calculate_ALL();
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								/*
 								if (s.name === 'ELEMISSIONS') {
 									s.data = self.calculated_EL_emissions;
 								} else if (s.name === 'ALLEMISSIONS') {
 									s.data = self.calculated_ALL_emissions;
+								}*/
+								if (s.name === 'ALLEMISSIONS') {
+									s.data = self.calculated_ALL_emissions;
 								}
+								
 							});
 						} else {
 							this.renderChart();
@@ -365,46 +404,24 @@ export default class CView extends TimeRangeView {
 						$(html).appendTo('#'+this.FELID);
 					}
 				}
-			} else if (options.model==='BuildingElectricityPL2Model' && options.method==='fetched') {
+			} else if (options.model==='CControllerBuildingElectricityPL2Model' && options.method==='fetched') {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculateSum();
-						this.calculate_ALL_Sum();
+						//this.calculateSum();
+						//this.calculate_ALL_Sum();
+						this.calculate_ALL();
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'ELEMISSIONS') {
+								/*if (s.name === 'ELEMISSIONS') {
 									s.data = self.calculated_EL_emissions;
 								} else if (s.name === 'ALLEMISSIONS') {
 									s.data = self.calculated_ALL_emissions;
-								}
-							});
-						} else {
-							this.renderChart();
-						}
-					} else { // Error in fetching.
-						$('#'+this.FELID).empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#'+this.FELID);
-					}
-				}
-			} else if (options.model==='BuildingElectricityPL3Model' && options.method==='fetched') {
-				if (this.rendered) {
-					if (options.status === 200 || options.status === '200') {
-						
-						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculateSum();
-						this.calculate_ALL_Sum();
-						
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'ELEMISSIONS') {
-									s.data = self.calculated_EL_emissions;
-								} else if (s.name === 'ALLEMISSIONS') {
+								}*/
+								if (s.name === 'ALLEMISSIONS') {
 									s.data = self.calculated_ALL_emissions;
 								}
 							});
@@ -417,22 +434,56 @@ export default class CView extends TimeRangeView {
 						$(html).appendTo('#'+this.FELID);
 					}
 				}
-			} else if (options.model==='BuildingHeatingQE01Model' && options.method==='fetched') {
-				console.log('NOTIFY BuildingHeatingQE01Model fetched!');
-				console.log(['options.status=',options.status]);
+			} else if (options.model==='CControllerBuildingElectricityPL3Model' && options.method==='fetched') {
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculate_DH_Sum();
-						this.calculate_ALL_Sum();
+						//this.calculateSum();
+						//this.calculate_ALL_Sum();
+						this.calculate_ALL();
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'DHEMISSIONS') {
+								/*if (s.name === 'ELEMISSIONS') {
+									s.data = self.calculated_EL_emissions;
+								} else if (s.name === 'ALLEMISSIONS') {
+									s.data = self.calculated_ALL_emissions;
+								}*/
+								if (s.name === 'ALLEMISSIONS') {
+									s.data = self.calculated_ALL_emissions;
+								}
+							});
+						} else {
+							this.renderChart();
+						}
+					} else { // Error in fetching.
+						$('#'+this.FELID).empty();
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#'+this.FELID);
+					}
+				}
+			} else if (options.model==='CControllerBuildingHeatingQE01Model' && options.method==='fetched') {
+				//console.log('NOTIFY BuildingHeatingQE01Model fetched!');
+				//console.log(['options.status=',options.status]);
+				if (this.rendered) {
+					if (options.status === 200 || options.status === '200') {
+						
+						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
+						//this.calculate_DH_Sum();
+						//this.calculate_ALL_Sum();
+						this.calculate_ALL();
+						
+						$('#'+this.FELID).empty();
+						if (typeof this.chart !== 'undefined') {
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								/*if (s.name === 'DHEMISSIONS') {
 									s.data = self.calculated_DH_emissions;
 								} else if (s.name === 'ALLEMISSIONS') {
+									s.data = self.calculated_ALL_emissions;
+								}*/
+								if (s.name === 'ALLEMISSIONS') {
 									s.data = self.calculated_ALL_emissions;
 								}
 							});
@@ -461,10 +512,8 @@ export default class CView extends TimeRangeView {
 		const localized_string_emission_axis = LM['translation'][sel]['BUILDING_EMISSION_AXIS_LABEL'];
 		const localized_string_emission_el_legend = LM['translation'][sel]['BUILDING_EMISSION_EL_LEGEND'];
 		const localized_string_emission_dh_legend = LM['translation'][sel]['BUILDING_EMISSION_DH_LEGEND'];
-		
-		
-		const localized_string_emission_all = 'SUMMA';
-		const localized_string_emission_all_legend = 'SUMMA';
+		const localized_string_emission_all = LM['translation'][sel]['BUILDING_EMISSION_ALL'];
+		const localized_string_emission_all_legend = LM['translation'][sel]['BUILDING_EMISSION_ALL_LEGEND'];
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -490,6 +539,7 @@ export default class CView extends TimeRangeView {
 			valueAxis.title.text = localized_string_emission_axis;
 			valueAxis.min = 0;
 			
+			/*
 			var series1 = self.chart.series.push(new am4charts.LineSeries());
 			series1.data = self.calculated_EL_emissions; 
 			series1.dataFields.dateX = "timestamp";
@@ -513,13 +563,13 @@ export default class CView extends TimeRangeView {
 			series2.stroke = am4core.color("#0f0");
 			series2.fill = "#0f0";
 			series2.legendSettings.labelText = "{customname}";
-			
+			*/
 			
 			var series3 = self.chart.series.push(new am4charts.LineSeries());
 			series3.data = self.calculated_ALL_emissions; 
 			series3.dataFields.dateX = "timestamp";
 			series3.dataFields.valueY = "value";
-			series3.tooltipText = localized_string_emission_all + ": [bold]{valueY.formatNumber('#.')}[/] kgCO2/h";
+			series3.tooltipText = localized_string_emission_all + ": [bold]{valueY.formatNumber('#.')}[/] gCO2/h";
 			series3.fillOpacity = 0.25;
 			series3.name = 'ALLEMISSIONS';
 			series3.customname = localized_string_emission_all_legend;
@@ -540,7 +590,7 @@ export default class CView extends TimeRangeView {
 			self.chart.cursor = new am4charts.XYCursor();
 			self.chart.cursor.lineY.opacity = 0;
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series1);
+			self.chart.scrollbarX.series.push(series3);
 			
 			dateAxis.start = 0.0;
 			dateAxis.end = 1.0;
@@ -600,10 +650,8 @@ export default class CView extends TimeRangeView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		const myModels = ['BuildingEmissionFactorForElectricityConsumedInFinlandModel',
-				'BuildingElectricityPL1Model','BuildingElectricityPL2Model','BuildingElectricityPL3Model',
-				'BuildingHeatingQE01Model'
-			];
+		const myModels = this.controller.modelnames;
+		//this.setTimeranges(myModels);
 		this.setTimerangeHandlers(myModels);
 		
 		$("#back").on('click', function() {
@@ -623,9 +671,10 @@ export default class CView extends TimeRangeView {
 				}
 			} else {
 				
-				this.calculateSum();
-				this.calculate_DH_Sum();
-				this.calculate_ALL_Sum();
+				this.calculate_ALL();
+				//this.calculateSum();
+				//this.calculate_DH_Sum();
+				//this.calculate_ALL_Sum();
 				
 				this.renderChart();
 				

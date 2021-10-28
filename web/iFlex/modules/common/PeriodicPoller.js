@@ -84,9 +84,7 @@ export default class PeriodicPoller {
 	
 	startPollers() {
 		Object.keys(this.timers).forEach(key => {
-			
 			console.log(['startPollers key=',key]);
-			
 			this.poller(key);
 		});
 	}

@@ -1,5 +1,4 @@
 import Controller from '../common/Controller.js';
-//import { BuildingHeatingFE01Model, BuildingHeatingQE01Model }  from  './BuildingHeatingModels.js';
 import { BuildingHeatingQE01Model }  from  './BuildingHeatingModels.js';
 import BView from './BView.js';
 
@@ -14,7 +13,6 @@ export default class BController extends Controller {
 		super.remove();
 		// We must remove all models that were created here at the initialize-method.
 		Object.keys(this.models).forEach(key => {
-			//if (key==='BuildingHeatingFE01Model' || key==='BuildingHeatingQE01Model') {
 			if (key==='BuildingHeatingQE01Model') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
@@ -33,23 +31,7 @@ export default class BController extends Controller {
 	// NOTE: host: 'ba.vtt.fi' is added at the backend
 	
 	initialize() {
-		/*
-		const BHFE01M = new BuildingHeatingFE01Model({
-			name:'BuildingHeatingFE01Model',
-			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_FE01/',
-			//interval: 'PT1H', // interval MUST BE defined for ROLLUP API
-			cache_expiration_in_seconds:60,
-			//timerange: { begin: 1, end: 0 },
-			timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
-			access:'PUBLIC'
-		});
-		BHFE01M.subscribe(this); // Now we will receive notifications from the UserModel.
-		this.master.modelRepo.add('BuildingHeatingFE01Model',BHFE01M);
-		this.models['BuildingHeatingFE01Model'] = BHFE01M;
-		
-		*/
-		
-		const BHQE01M = new BuildingHeatingQE01Model({
+		const model = new BuildingHeatingQE01Model({
 			name:'BuildingHeatingQE01Model',
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
 			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
@@ -58,9 +40,9 @@ export default class BController extends Controller {
 			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			access:'PUBLIC'
 		});
-		BHQE01M.subscribe(this); // Now we will receive notifications from the UserModel.
-		this.master.modelRepo.add('BuildingHeatingQE01Model',BHQE01M);
-		this.models['BuildingHeatingQE01Model'] = BHQE01M;
+		model.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add('BuildingHeatingQE01Model',model);
+		this.models['BuildingHeatingQE01Model'] = model;
 		
 		// These two lines MUST BE in every Controller.
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
@@ -112,7 +94,6 @@ export default class BController extends Controller {
 	init() {
 		this.initialize();
 		const interval = this.fetching_interval_in_seconds * 1000; // once per 60 seconds by default.
-		//this.timers['BView'] = {timer:undefined, interval:interval, models:['BuildingHeatingFE01Model','BuildingHeatingQE01Model']};
 		this.timers['BView'] = {timer:undefined, interval:interval, models:['BuildingHeatingQE01Model']};
 		
 		// If view is shown immediately and poller is used, like in this case, 

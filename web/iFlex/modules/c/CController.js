@@ -1,6 +1,7 @@
 import Controller from '../common/Controller.js';
 import BuildingEmissionFactorForElectricityConsumedInFinlandModel from  './BuildingEmissionFactorForElectricityConsumedInFinlandModel.js';
-//import BuildingEmissionFactorOfElectricityProductionInFinlandModel from './BuildingEmissionFactorOfElectricityProductionInFinlandModel.js';
+import { BuildingElectricityPL1Model, BuildingElectricityPL2Model, BuildingElectricityPL3Model } from  '../a/BuildingElectricityModels.js';
+import { BuildingHeatingQE01Model }  from  '../b/BuildingHeatingModels.js';
 import CView from './CView.js';
 
 export default class CController extends Controller {
@@ -8,15 +9,22 @@ export default class CController extends Controller {
 	constructor(options) {
 		super(options);
 		this.fetching_interval_in_seconds = 60;
+		
+		// These are the models that are created in this Controller.
+		this.modelnames = [
+			'BuildingEmissionFactorForElectricityConsumedInFinlandModel',
+			'CControllerBuildingElectricityPL1Model',
+			'CControllerBuildingElectricityPL2Model',
+			'CControllerBuildingElectricityPL3Model',
+			'CControllerBuildingHeatingQE01Model'
+		];
 	}
 	
 	remove() {
 		super.remove();
 		// We must remove all models that were created here at the initialize-method.
 		Object.keys(this.models).forEach(key => {
-			
-			if (key==='BuildingEmissionFactorForElectricityConsumedInFinlandModel') { // ||
-				//key==='BuildingEmissionFactorOfElectricityProductionInFinlandModel') {
+			if (this.modelnames.includes(key)) {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -37,8 +45,8 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 6 HOURS		1 year			1460 (4 x 365)
 */
 	initialize() {
-		const BEFFECIFM = new BuildingEmissionFactorForElectricityConsumedInFinlandModel({
-			name:'BuildingEmissionFactorForElectricityConsumedInFinlandModel',
+		const model_1 = new BuildingEmissionFactorForElectricityConsumedInFinlandModel({
+			name: this.modelnames[0],
 			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/',
 			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
 			//cache_expiration_in_seconds:120,
@@ -46,42 +54,66 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 			//timerange: { begin: 1, end: 0 },
 			access:'PUBLIC'
 		});
-		BEFFECIFM.subscribe(this); // Now we will receive notifications from the UserModel.
-		this.master.modelRepo.add('BuildingEmissionFactorForElectricityConsumedInFinlandModel',BEFFECIFM);
-		this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'] = BEFFECIFM;
+		model_1.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add(this.modelnames[0], model_1);
+		this.models[this.modelnames[0]] = model_1;
 		
 		
-		
-		// Get models for calculating Electricity consumption.
-		this.models['BuildingElectricityPL1Model'] = this.master.modelRepo.get('BuildingElectricityPL1Model');
-		this.models['BuildingElectricityPL1Model'].subscribe(this);
-		
-		this.models['BuildingElectricityPL2Model'] = this.master.modelRepo.get('BuildingElectricityPL2Model');
-		this.models['BuildingElectricityPL2Model'].subscribe(this);
-		
-		this.models['BuildingElectricityPL3Model'] = this.master.modelRepo.get('BuildingElectricityPL3Model');
-		this.models['BuildingElectricityPL3Model'].subscribe(this);
-		
-		// and the Heating ...
-		this.models['BuildingHeatingQE01Model'] = this.master.modelRepo.get('BuildingHeatingQE01Model');
-		this.models['BuildingHeatingQE01Model'].subscribe(this);
+		// NOTE: do not use same model instances created in A or B controller. 
+		// Create new instances here:
 		
 		
-		/*
-		const BEFOEPIFM = new BuildingEmissionFactorOfElectricityProductionInFinlandModel({
-			name:'BuildingEmissionFactorOfElectricityProductionInFinlandModel',
-			
-			src:'/obixStore/store/Fingrid/emissionFactorOfElectricityProductionInFinland/',
-			interval: 'PT3M', // interval MUST BE defined for ROLLUP API
-			
-			cache_expiration_in_seconds:120,
-			timerange: { begin: 1, end: 0 },
+		// NOTE: host: 'ba.vtt.fi' is added at the backend
+		// We can select dynamically whether data fetcher uses "QUERY" or "ROLLUP" API:
+		// "query/" or "rollup/" is added at ObixModel depending on if "interval" is defined or not.
+		const model_2 = new BuildingElectricityPL1Model({
+			name: this.modelnames[1],
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L1/', // Power of L1
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
+			//cache_expiration_in_seconds:60,
 			access:'PUBLIC'
 		});
-		BEFOEPIFM.subscribe(this); // Now we will receive notifications from the UserModel.
-		this.master.modelRepo.add('BuildingEmissionFactorOfElectricityProductionInFinlandModel',BEFOEPIFM);
-		this.models['BuildingEmissionFactorOfElectricityProductionInFinlandModel'] = BEFOEPIFM;
-		*/
+		model_2.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add(this.modelnames[1], model_2);
+		this.models[this.modelnames[1]] = model_2;
+		
+		const model_3 = new BuildingElectricityPL2Model({
+			name: this.modelnames[2],
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L2/', // Power of L2
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
+			//cache_expiration_in_seconds:60,
+			access:'PUBLIC'
+		});
+		model_3.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add(this.modelnames[2], model_3);
+		this.models[this.modelnames[2]] = model_3;
+		
+		const model_4 = new BuildingElectricityPL3Model({
+			name: this.modelnames[3],
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L3/', // Power of L3
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
+			//cache_expiration_in_seconds:60,
+			access:'PUBLIC'
+		});
+		model_4.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add(this.modelnames[3], model_4);
+		this.models[this.modelnames[3]] = model_4;
+		
+		const model_5 = new BuildingHeatingQE01Model({
+			name: this.modelnames[4],
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
+			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
+			//cache_expiration_in_seconds:60,
+			//timerange: { begin: 1, end: 0 },
+			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
+			access:'PUBLIC'
+		});
+		model_5.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add(this.modelnames[4], model_5);
+		this.models[this.modelnames[4]] = model_5;
 		
 		// These two lines MUST BE in every Controller.
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
@@ -140,13 +172,7 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 		this.timers['CView'] = {
 			timer:undefined,
 			interval:interval,
-			models:[
-				'BuildingEmissionFactorForElectricityConsumedInFinlandModel',
-				'BuildingElectricityPL1Model',
-				'BuildingElectricityPL2Model',
-				'BuildingElectricityPL3Model',
-				'BuildingHeatingQE01Model'
-			]
+			models: this.modelnames
 		};
 	}
 }

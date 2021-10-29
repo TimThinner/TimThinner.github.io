@@ -171,32 +171,39 @@ export default class CView extends TimeRangeView {
 	findClosestFactor(key) {
 		const emm = moment(key);
 		let retval = 100; // Default return value is 100.
-		let distance = 10000; // Just a very large number, a starting point for our comparison.
-		
+		let distance = 604800; //7 * 24 * 60 * 60; // Just a very large number, a starting point for our comparison (604 800 = 1 week).
+		//let dc = 0;
 		this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.forEach(v=>{
 			const val = +v.value; // convert value to number
 			const m = moment(v.timestamp);
 			//m.milliseconds(0);
 			//m.seconds(0);
-			const dist = Math.abs(moment.duration(emm.diff(m)).asMinutes());
+			
+			//const dist = Math.abs(moment.duration(emm.diff(m)).asMinutes());
+			
+			//moment().unix(); // moment#unix outputs a Unix timestamp (the number of seconds since the Unix Epoch).
+			const dist = Math.abs(m.unix() - emm.unix());
 			if (dist < distance) {
+				//dc++;
+				//console.log(['dist=',dist]);
 				distance = dist;
 				retval = val;
 			}
 		});
+		//console.log(['dist count=',dc]);
 		//console.log(['FACTOR=',retval]);
 		return retval;
 	}
 	
 	
 	calculate_ALL_Sum() {
-		//if (this.calculated_EL_emissions.length > 0 && this.calculated_DH_emissions.length > 0) {
+		if (this.calculated_EL_emissions.length > 0 && this.calculated_DH_emissions.length > 0) {
 			
 			const sumbucket = {};
 			this.calculated_ALL_emissions = [];
 			
 			this.calculated_EL_emissions.forEach(v=>{
-				const ds = moment(v.timestamp).format().slice(0,-6);
+				const ds = moment(v.timestamp).format();//.slice(0,-6);
 				//console.log(['EL ds=',ds]);
 				const val = v.value;
 				sumbucket[ds] = val;
@@ -208,7 +215,7 @@ export default class CView extends TimeRangeView {
 			let total = 0;
 			this.calculated_DH_emissions.forEach(v=>{
 				total++;
-				const ds = moment(v.timestamp).format().slice(0,-6);
+				const ds = moment(v.timestamp).format();//.slice(0,-6);
 				//console.log(['DH ds=',ds]);
 				const val = v.value;
 				if (sumbucket.hasOwnProperty(ds)) {
@@ -226,7 +233,7 @@ export default class CView extends TimeRangeView {
 				}
 			});
 			console.log(['hit=',hit,' miss=',miss,' total=',total]);
-		//}
+		}
 	}
 	
 	calculate_DH_Sum() {
@@ -312,9 +319,19 @@ export default class CView extends TimeRangeView {
 			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.length > 0 &&
 			this.models['CControllerBuildingHeatingQE01Model'].values.length > 0) {
 			
+			// WHAT IS THE PERFORMANCE?
+			// Measure how many milliseconds it takes to calculate all values.
+			const start = moment();
+			
 			this.calculateSum();
 			this.calculate_DH_Sum();
 			this.calculate_ALL_Sum();
+			
+			const stop = moment();
+			 // moment#valueOf simply outputs the number of milliseconds since the Unix Epoch.
+			const dms = stop.valueOf() - start.valueOf();
+			//console.log(['Performance: ',dms,'ms']);
+			$('#performance').empty().append('Performance: '+dms+'ms');
 		}
 	}
 	
@@ -337,8 +354,6 @@ export default class CView extends TimeRangeView {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						//this.calculateSum();
-						//this.calculate_ALL_Sum();
 						this.calculate_ALL();
 						
 						$('#'+this.FELID).empty();
@@ -376,8 +391,6 @@ export default class CView extends TimeRangeView {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						//this.calculateSum();
-						//this.calculate_ALL_Sum();
 						this.calculate_ALL();
 						
 						$('#'+this.FELID).empty();
@@ -409,8 +422,6 @@ export default class CView extends TimeRangeView {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						//this.calculateSum();
-						//this.calculate_ALL_Sum();
 						this.calculate_ALL();
 						
 						$('#'+this.FELID).empty();
@@ -439,8 +450,6 @@ export default class CView extends TimeRangeView {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						//this.calculateSum();
-						//this.calculate_ALL_Sum();
 						this.calculate_ALL();
 						
 						$('#'+this.FELID).empty();
@@ -471,8 +480,6 @@ export default class CView extends TimeRangeView {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						//this.calculate_DH_Sum();
-						//this.calculate_ALL_Sum();
 						this.calculate_ALL();
 						
 						$('#'+this.FELID).empty();
@@ -569,7 +576,7 @@ export default class CView extends TimeRangeView {
 			series3.data = self.calculated_ALL_emissions; 
 			series3.dataFields.dateX = "timestamp";
 			series3.dataFields.valueY = "value";
-			series3.tooltipText = localized_string_emission_all + ": [bold]{valueY.formatNumber('#.')}[/] gCO2/h";
+			series3.tooltipText = localized_string_emission_all + ": [bold]{valueY.formatNumber('#.')}[/] gCO2";
 			series3.fillOpacity = 0.25;
 			series3.name = 'ALLEMISSIONS';
 			series3.customname = localized_string_emission_all_legend;
@@ -631,6 +638,7 @@ export default class CView extends TimeRangeView {
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
+					'<div id="performance" class="performance"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -657,7 +665,7 @@ export default class CView extends TimeRangeView {
 		$("#back").on('click', function() {
 			self.models['MenuModel'].setSelected('menu');
 		});
-		this.showInfo(myModels);
+		this.showInfo(myModels); // Lists models with parameters at #data-fetching-info
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
@@ -670,14 +678,8 @@ export default class CView extends TimeRangeView {
 					this.forceLogout(this.FELID);
 				}
 			} else {
-				
 				this.calculate_ALL();
-				//this.calculateSum();
-				//this.calculate_DH_Sum();
-				//this.calculate_ALL_Sum();
-				
 				this.renderChart();
-				
 				myModels.forEach(m=>{
 					this.updateInfoModelValues(m, this.models[m].values.length); // implemented in TimeRangeView
 				});

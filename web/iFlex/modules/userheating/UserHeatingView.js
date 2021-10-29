@@ -164,6 +164,9 @@ export default class UserHeatingView extends TimeRangeView {
 						} else if (options.status === 403) {
 							const html = '<p class="error-info">' + options.message + '. Data access not available anymore.</p>';
 							$('#data-error-info').empty().append(html);
+							// Remove the Spinner:
+							$('#'+this.CHARTID).empty();
+							
 						} else {
 							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 							$('#'+this.FELID).empty().append(html);

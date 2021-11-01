@@ -124,8 +124,14 @@ export default class ObixModel extends Model {
 
 :{\"name\":\"start\",\"val\":\"2021-05-26T12:00:01.900039+03:00\"}},{\"$\":{\"name\":\"end\",\"val\":\"2021-05-26T12:00:31.90123+03:00\"}}]}}"
 	*/
-	fetch(token, readkey, obix_code) {
+	fetch(po) {
 		const self = this;
+		const token = po.token;
+		const readkey = po.readkey;
+		const readkey_startdate = po.readkey_startdate;
+		const readkey_enddate = po.readkey_enddate;
+		const obix_code = po.obix_code;
+		
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
@@ -145,13 +151,23 @@ export default class ObixModel extends Model {
 		// NOTE: readkey can be undefined.
 		// This is ALWAYS the case when public data (building data) is fetched.
 		let my_readkey = undefined;
+		
+		
 		let my_obix_code = undefined;
+		let my_readkey_startdate = undefined;
+		let my_readkey_enddate = undefined;
 		
 		if (this.access === 'PRIVATE') {
 			// When access is PRIVATE, obix_code is added to the path.
 			// What if obix_code is not defined yet? It is an empty string by default.
 			my_readkey = readkey;
 			my_obix_code = obix_code;
+			
+			// NOTE: xml contains timerange of the data to be fetched and returned.
+			// It must be checked (and limited) to readkey limits to make sure we are not 
+			// accessing data from previous resident.
+			my_readkey_startdate = readkey_startdate;
+			my_readkey_enddate = readkey_enddate;
 		}
 		
 		if (this.access === 'PRIVATE' && my_obix_code.length === 0) {
@@ -166,13 +182,40 @@ export default class ObixModel extends Model {
 			const start_mom = moment().subtract(this.timerange.begin.value, this.timerange.begin.unit);
 			start_mom.milliseconds(0);
 			start_mom.seconds(0);
-			const start = start_mom.format();
+			let start = start_mom.format();
 			
 			const end_mom = moment().subtract(this.timerange.end.value, this.timerange.end.unit);
 			end_mom.milliseconds(0);
 			end_mom.seconds(0);
-			const end = end_mom.format();
+			let end = end_mom.format();
 			
+			// NOTE: Check that we are not trying to fetch data BEFORE or AFTER our readkey validity timeranges!
+			if (typeof my_readkey_startdate !== 'undefined' && typeof my_readkey_enddate !== 'undefined') {
+				console.log(['start=',start,' end=',end,' my_readkey_startdate=',my_readkey_startdate,' my_readkey_enddate=',my_readkey_enddate]);
+				/*
+				start:					"2021-10-31T15:05:00+02:00",
+				end:					"2021-11-01T15:05:00+02:00", 
+				my_readkey_startdate:	"2021-09-09T10:50:21.012Z",
+				my_readkey_enddate:		"2022-09-09T10:50:21.013Z"
+				*/
+				const start_limit_mom = moment(my_readkey_startdate);
+				start_limit_mom.milliseconds(0);
+				start_limit_mom.seconds(0);
+				
+				const end_limit_mom = moment(my_readkey_enddate);
+				end_limit_mom.milliseconds(0);
+				end_limit_mom.seconds(0);
+				
+				if (start_mom.isBefore(start_limit_mom)) {
+					start = start_limit_mom.format();
+				}
+				if (end_mom.isAfter(end_limit_mom)) {
+					end = end_limit_mom.format();
+				}
+				console.log('=====================================================');
+				console.log(['start=',start,' end=',end]);
+				console.log('=====================================================');
+			}
 			const now = moment().format('YYYY-MM-DDTHH');
 			const interval = this.interval;
 			
@@ -186,7 +229,7 @@ export default class ObixModel extends Model {
 			}
 			//console.log('===========================');
 			//console.log(['fetch token=',token]);
-			//console.log(['fetch my_readkey=',my_readkey]);
+			console.log(['fetch my_readkey=',my_readkey]);
 			//console.log(['fetch my_obix_code=',my_obix_code]);
 			//console.log(['fetch source=',source]);
 			//console.log('===========================');
@@ -227,6 +270,8 @@ export default class ObixModel extends Model {
 			const data = { 
 				type: 'text/xml;charset=UTF-8',
 				readkey: my_readkey,
+				start: start,
+				end: end,
 				xml: reqXML,
 				hash: hash,
 				obix_url: source,

@@ -262,6 +262,9 @@ router.post("/login", (req,res,next)=>{
 						}
 					)
 					const rkey = user[0].readkey ? user[0].readkey._id : undefined;
+					const rkey_startdate = user[0].readkey ? user[0].readkey.startdate : undefined;
+					const rkey_enddate = user[0].readkey ? user[0].readkey.enddate : undefined;
+					//console.log(['rkey_startdate=',rkey_startdate,' rkey_enddate=',rkey_enddate]);
 					// LOG this login.
 					/*
 					const logEntry = new Log({
@@ -284,6 +287,8 @@ router.post("/login", (req,res,next)=>{
 						userId: user[0]._id,
 						created: user[0].created,
 						readkey: rkey,
+						readkey_startdate: rkey_startdate,
+						readkey_enddate: rkey_enddate,
 						obix_code: user[0].obix_code,
 						request_for_sensors: user[0].request_for_sensors,
 						consent_a: user[0].consent_a,

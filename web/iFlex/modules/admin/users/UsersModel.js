@@ -32,8 +32,10 @@ export default class UsersModel extends Model {
 		return this.selected;
 	}
 	
-	fetch(token) {
+	fetch(po) {
 		const self = this;
+		const token = po.token;
+		
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
@@ -71,7 +73,7 @@ export default class UsersModel extends Model {
 					return response.json();
 				})
 				.then(function(myJson) {
-					//console.log(['myJson=',myJson]);
+					console.log(['myJson=',myJson]);
 					self.users = myJson.users;
 					console.log(['self.users=',self.users]);
 					self.fetching = false;

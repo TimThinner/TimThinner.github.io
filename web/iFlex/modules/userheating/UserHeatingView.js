@@ -287,7 +287,7 @@ export default class UserHeatingView extends TimeRangeView {
 			series3.data = self.models['UserCO2Model'].values;
 			series3.dataFields.dateX = "timestamp";
 			series3.dataFields.valueY = "value";
-			series3.tooltipText = localized_string_co2_tooltip + ": [bold]{valueY}[/] gCO2/h";
+			series3.tooltipText = localized_string_co2_tooltip + ": [bold]{valueY}[/] ppm";
 			series3.fillOpacity = 0;
 			series3.name = 'CO2';
 			series3.customname = localized_string_co2_legend;

@@ -5,10 +5,12 @@ import Model from '../common/Model.js';
 		email
 		token
 		readkey
+		readkey_startdate
+		readkey_enddate
 		obix_code
 		request_for_sensors
-		
-		
+		consent_a
+		consent_b
 		
 		is_superuser
 */
@@ -20,6 +22,8 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
+		this.readkey_startdate = undefined;
+		this.readkey_enddate = undefined;
 		this.obix_code = '';
 		this.request_for_sensors = false;
 		this.consent_a = false;
@@ -41,6 +45,8 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 		this.readkey = undefined;
+		this.readkey_startdate = undefined;
+		this.readkey_enddate = undefined;
 		this.obix_code = '';
 		this.request_for_sensors = false;
 		this.consent_a = false;
@@ -55,6 +61,8 @@ export default class UserModel extends Model {
 			'email': this.email,
 			'token': this.token,
 			'readkey': this.readkey,
+			'readkey_startdate': this.readkey_startdate,
+			'readkey_enddate': this.readkey_enddate,
 			'obix_code': this.obix_code,
 			'request_for_sensors': this.request_for_sensors,
 			'consent_a': this.consent_a,
@@ -89,6 +97,8 @@ export default class UserModel extends Model {
 			if (typeof stat.email !== 'undefined') { this.email = stat.email; }
 			if (typeof stat.token !== 'undefined') { this.token = stat.token; }
 			if (typeof stat.readkey !== 'undefined') { this.readkey = stat.readkey; }
+			if (typeof stat.readkey_startdate !== 'undefined') { this.readkey_startdate = stat.readkey_startdate; }
+			if (typeof stat.readkey_enddate !== 'undefined') { this.readkey_enddate = stat.readkey_enddate; }
 			if (typeof stat.obix_code !== 'undefined') { this.obix_code = stat.obix_code; }
 			if (typeof stat.request_for_sensors !== 'undefined') { this.request_for_sensors = stat.request_for_sensors; }
 			if (typeof stat.consent_a !== 'undefined') { this.consent_a = stat.consent_a; }
@@ -156,14 +166,13 @@ export default class UserModel extends Model {
 				const message = myJson.message;
 				if (status === 200 && myJson.token) {
 					// Login was OK, set the Authentication-token to model.
-					
-					//console.log(['LOGIN myJson=',myJson]);
-					
 					self.token = myJson.token;
 					self.id = myJson.userId.toString();
 					self.email = data.email;
 					self.is_superuser = myJson.is_superuser;
 					self.readkey = myJson.readkey;
+					self.readkey_startdate = myJson.readkey_startdate;
+					self.readkey_enddate = myJson.readkey_enddate;
 					self.obix_code = myJson.obix_code;
 					self.request_for_sensors = myJson.request_for_sensors;
 					self.consent_a = myJson.consent_a;

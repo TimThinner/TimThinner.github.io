@@ -16,8 +16,9 @@ export default class UserPropsModel extends Model {
 		this.fetching = false;
 	*/
 	
-	fetch(token) {
+	fetch(po) {
 		const self = this;
+		const token = po.token;
 		
 		if (this.fetching) {
 			console.log(this.name+' FETCHING ALREADY IN PROCESS!');

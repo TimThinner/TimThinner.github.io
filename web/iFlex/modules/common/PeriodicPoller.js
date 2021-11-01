@@ -50,6 +50,8 @@ export default class PeriodicPoller {
 				const um = this.master.modelRepo.get('UserModel');
 				const token = um ? um.token : undefined;
 				const readkey = um ? um.readkey : undefined;
+				const readkey_startdate = um ? um.readkey_startdate : undefined;
+				const readkey_enddate = um ? um.readkey_enddate : undefined;
 				const obix_code = um ? um.obix_code : undefined;
 				
 				//
@@ -60,8 +62,14 @@ export default class PeriodicPoller {
 				// by the administrator.
 				//
 				this.timers[name].models.forEach(key => {
-					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
-					this.models[key].fetch(token, readkey, obix_code);
+					//console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
+					this.models[key].fetch({
+						token: token,
+						readkey: readkey,
+						readkey_startdate: readkey_startdate,
+						readkey_enddate: readkey_enddate,
+						obix_code: obix_code
+					});
 				});
 				this.timers[name].timer = setTimeout(()=>{
 					this.poller(name);
@@ -72,11 +80,19 @@ export default class PeriodicPoller {
 				const um = this.master.modelRepo.get('UserModel');
 				const token = um ? um.token : undefined;
 				const readkey = um ? um.readkey : undefined;
+				const readkey_startdate = um ? um.readkey_startdate : undefined;
+				const readkey_enddate = um ? um.readkey_enddate : undefined;
 				const obix_code = um ? um.obix_code : undefined;
 				
 				this.timers[name].models.forEach(key => {
-					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
-					this.models[key].fetch(token, readkey, obix_code);
+					//console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
+					this.models[key].fetch({
+						token: token,
+						readkey: readkey,
+						readkey_startdate: readkey_startdate,
+						readkey_enddate: readkey_enddate,
+						obix_code: obix_code
+					});
 				});
 			}
 		}

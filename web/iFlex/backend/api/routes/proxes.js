@@ -266,6 +266,8 @@ router.post('/obix', (req,res,next)=>{
 	const hash = req.body.hash;
 	const url = req.body.obix_url;
 	const expiration = req.body.expiration_in_seconds;
+	//const start = req.body.start;
+	//const end = req.body.end;
 	
 	// base64.encode() is in Browser btoa()
 	const base64string = base64.encode(process.env.OBIX_USER+':'+process.env.OBIX_PASS);
@@ -290,6 +292,7 @@ router.post('/obix', (req,res,next)=>{
 					const now = new Date();
 					const e_diffe = doc.enddate.getTime() - now.getTime();
 					const s_diffe = now.getTime() - doc.startdate.getTime();
+					
 					//console.log(['e_diffe=',e_diffe,' s_diffe=',s_diffe]);
 					if (e_diffe > 0 && s_diffe > 0) {
 						// OK

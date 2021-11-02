@@ -68,15 +68,10 @@ export default class UserModel extends Model {
 			'consent_a': this.consent_a,
 			'consent_b': this.consent_b
 		};
-		
-		// EXCEPT HERE FOR TEST PURPOSES:
-		new_status.is_superuser = this.is_superuser;
-		
 		if (status == null) {
 			// no previous status.
 			const encoded = JSON.stringify(new_status);
 			localStorage.setItem(this.localStorageLabel, encoded);
-			
 		} else {
 			// previous status exist.
 			localStorage.removeItem(this.localStorageLabel);
@@ -103,9 +98,6 @@ export default class UserModel extends Model {
 			if (typeof stat.request_for_sensors !== 'undefined') { this.request_for_sensors = stat.request_for_sensors; }
 			if (typeof stat.consent_a !== 'undefined') { this.consent_a = stat.consent_a; }
 			if (typeof stat.consent_b !== 'undefined') { this.consent_b = stat.consent_b; }
-			
-			// EXCEPT HERE FOR TEST PURPOSES:
-			if (typeof stat.is_superuser !== 'undefined') { this.is_superuser = stat.is_superuser; }
 		}
 		
 		if (this.isLoggedIn()) {

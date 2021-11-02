@@ -58,9 +58,6 @@ export default class UserHeatingController extends Controller {
 			name:'UserTemperatureModel',
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_TE', // add obix_code + '/' at fetch phase (ObixModel).
-			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			//cache_expiration_in_seconds:60,
-			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			access:'PRIVATE'
 		});
 		UTM.subscribe(this); // Now we will receive notifications from the UserModel.
@@ -71,9 +68,6 @@ export default class UserHeatingController extends Controller {
 			name:'UserHumidityModel',
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_ME', // add obix_code + '/' at fetch phase (ObixModel).
-			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			//cache_expiration_in_seconds:60,
-			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			access:'PRIVATE'
 		});
 		UHM.subscribe(this); // Now we will receive notifications from the UserModel.
@@ -84,9 +78,6 @@ export default class UserHeatingController extends Controller {
 			name:'UserCO2Model',
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_QE', // add obix_code + '/' at fetch phase (ObixModel).
-			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			//cache_expiration_in_seconds:60,
-			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			access:'PRIVATE'
 		});
 		UCO2M.subscribe(this); // Now we will receive notifications from the UserModel.

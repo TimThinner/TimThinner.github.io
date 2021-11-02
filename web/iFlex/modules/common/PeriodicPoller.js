@@ -43,6 +43,7 @@ export default class PeriodicPoller {
 	}
 	
 	poller(name) {
+		
 		if (this.timers.hasOwnProperty(name)) {
 			if (this.timers[name].interval > 0) {
 				// Feed the UserModel auth-token into fetch call.
@@ -53,7 +54,6 @@ export default class PeriodicPoller {
 				const readkey_startdate = um ? um.readkey_startdate : undefined;
 				const readkey_enddate = um ? um.readkey_enddate : undefined;
 				const obix_code = um ? um.obix_code : undefined;
-				
 				//
 				// Residents are allowed to fetch their own data. This is secured so that each resident 
 				// must be registered using a specific REGCODE, which is associated with a his/her apartment.
@@ -61,6 +61,9 @@ export default class PeriodicPoller {
 				// The READKEY has startDate and endDate, when it is valid to fetch users data. This is managed 
 				// by the administrator.
 				//
+				const now = moment();
+				const sync_minute = now.minutes();
+				const sync_hour = now.hours();
 				this.timers[name].models.forEach(key => {
 					//console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
 					this.models[key].fetch({
@@ -69,7 +72,7 @@ export default class PeriodicPoller {
 						readkey_startdate: readkey_startdate,
 						readkey_enddate: readkey_enddate,
 						obix_code: obix_code
-					});
+					}, sync_minute, sync_hour);
 				});
 				this.timers[name].timer = setTimeout(()=>{
 					this.poller(name);
@@ -84,6 +87,11 @@ export default class PeriodicPoller {
 				const readkey_enddate = um ? um.readkey_enddate : undefined;
 				const obix_code = um ? um.obix_code : undefined;
 				
+				// When there are multiple models to be fetched, there is usually need to call fetch with THE SAME start time!
+				// That is to make sure response has SAME TIMESTAMPS in returned values.
+				const now = moment();
+				const sync_minute = now.minutes();
+				const sync_hour = now.hours();
 				this.timers[name].models.forEach(key => {
 					//console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
 					this.models[key].fetch({
@@ -92,7 +100,7 @@ export default class PeriodicPoller {
 						readkey_startdate: readkey_startdate,
 						readkey_enddate: readkey_enddate,
 						obix_code: obix_code
-					});
+					}, sync_minute, sync_hour);
 				});
 			}
 		}

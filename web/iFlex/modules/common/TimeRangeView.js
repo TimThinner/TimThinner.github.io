@@ -4,7 +4,7 @@ export default class TimeRangeView extends View {
 	
 	constructor(controller) {
 		super(controller);
-		this.selected = "b1d";
+		this.selected = "TR1D";
 	}
 	
 	resetButtonClass() {
@@ -98,73 +98,35 @@ export default class TimeRangeView extends View {
 		
 		To be able to monitor these frequncies and number of samples, we show some info at the bottom of the page.
 		
-		"b1d"	1D
-		"b1w"	1W
-		"b2w"	2W
-		"b1m"	1M
-		"b6m"	6M
-		"b1y"	13M
+		"TR1D"	1D
+		"TR1W"	1W
+		"TR2W"	2W
+		"TR1M"	1M
+		"TR6M"	6M
+		"TR13M"	13M
 	*/
 	
-	setTR(models, timerange, interval) {
+	setTR(models) { //, timerange, interval) {
 		Object.keys(this.controller.models).forEach(key => {
 			// Controller has all needed models + menumodel, which we ignore here (models are listed in function call).
 			if (models.includes(key)) {
 				const model = this.controller.models[key];
-				model.timerange = timerange;
-				model.interval = interval;
+				// Set timerange and interval from Configuration (Model inherits Configuration)
+				model.setConfigurationDefaults(key, this.selected); // key is modelname.
 				model.values = [];
 			}
 		});
 	}
-	/*
-	setTimeranges(models) {
-		// Set all model variables according to current situation!
-		this.resetButtonClass();
-		if (this.selected === 'b1d') {
-			// timerange 1 day interval = 15 mins (24x4 = 96 values)
-			const timerange = { begin:{value:24,unit:'hours'},end:{value:0,unit:'hours'}};
-			const interval = 'PT15M';
-			this.setTR(models, timerange, interval);
-			
-		} else if (this.selected === 'b1w') {
-			// timerange 7 days interval = 30 mins (7x24x2 =  336 values)
-			const timerange = { begin:{value:7,unit:'days'},end:{value:0,unit:'days'}};
-			const interval = 'PT30M';
-			this.setTR(models, timerange, interval);
-			
-		} else if (this.selected === 'b2w') {
-			// timerange 14 days interval = 60 mins (14x24 =  336 values)
-			const timerange = { begin:{value:14,unit:'days'},end:{value:0,unit:'days'}};
-			const interval = 'PT60M';
-			this.setTR(models, timerange, interval);
-			
-		} else if (this.selected === 'b1m') {
-			// timerange 1 month interval = 120 MINUTES (approx 30x12 = 360 values)
-			const timerange = { begin:{value:1,unit:'months'},end:{value:0,unit:'months'}};
-			const interval = 'PT2H';
-			this.setTR(models, timerange, interval);
-			
-		} else if (this.selected === 'b6m') {
-			// timerange 6 months interval = 12 HOURS (approx 6x30x2 =  360 values)
-			const timerange = { begin:{value:6,unit:'months'},end:{value:0,unit:'months'}};
-			const interval = 'PT12H';
-			this.setTR(models, timerange, interval);
-			
-		} else {
-			// timerange 13 months interval = 24 HOURS (approx 13x30 = 390 values)
-			const timerange = { begin:{value:13,unit:'months'},end:{value:0,unit:'months'}};
-			const interval = 'PT24H';
-			this.setTR(models, timerange, interval);
-		}
-		
-		
-		// This will result a fetch to all models.
-			// => this.restartPollingInterval('CView');
-			// 
-			
-		this.controller.refreshTimerange(); 
-	}*/
+	
+	setTimerangeButtons(id) {
+		const html = '<a href="javascript:void(0);" id="TR1D" class="my-range-button" style="float:right;">1D</a>'+
+			'<a href="javascript:void(0);" id="TR1W" class="my-range-button" style="float:right;">1W</a>'+
+			'<a href="javascript:void(0);" id="TR2W" class="my-range-button" style="float:right;">2W</a>'+
+			'<a href="javascript:void(0);" id="TR1M" class="my-range-button" style="float:right;">1M</a>'+
+			'<a href="javascript:void(0);" id="TR6M" class="my-range-button" style="float:right;">6M</a>'+
+			'<a href="javascript:void(0);" id="TR13M" class="my-range-button" style="float:right;">13M</a>';
+		$('#'+id).empty().append(html);
+	}
 	
 	setTimerangeHandlers(models) {
 		const self = this;
@@ -173,83 +135,69 @@ export default class TimeRangeView extends View {
 		//console.log('========================================');
 		
 		$('#'+this.selected).addClass("selected");
-		/*
-		*/
 		
 		// THEN SET CLICK HANDLERS!
 		// timerange 1 day interval = 15 mins (24x4 = 96 values)
-		$('#b1d').on('click',function() {
-			if (self.selected !== "b1d") {
-				self.selected = "b1d";
+		$('#TR1D').on('click',function() {
+			if (self.selected !== "TR1D") {
+				self.selected = "TR1D";
 				self.resetButtonClass();
-				const timerange = { begin:{value:24,unit:'hours'},end:{value:0,unit:'hours'}};
-				const interval = 'PT15M';
-				self.setTR(models, timerange, interval);
+				self.setTR(models);
 				self.controller.refreshTimerange();
 				self.showInfo(models);
 			}
 		});
 		
 		// timerange 7 days interval = 30 mins (7x24x2 =  336 values)
-		$('#b1w').on('click',function() {
-			if (self.selected !== "b1w") {
-				self.selected = "b1w";
+		$('#TR1W').on('click',function() {
+			if (self.selected !== "TR1W") {
+				self.selected = "TR1W";
 				self.resetButtonClass();
-				const timerange = { begin:{value:7,unit:'days'},end:{value:0,unit:'days'}};
-				const interval = 'PT30M';
-				self.setTR(models, timerange, interval);
+				self.setTR(models);
 				self.controller.refreshTimerange();
 				self.showInfo(models);
 			}
 		});
 		
 		// timerange 14 days interval = 60 mins (14x24 =  336 values)
-		$('#b2w').on('click',function() {
-			if (self.selected !== "b2w") {
-				self.selected = "b2w";
+		$('#TR2W').on('click',function() {
+			if (self.selected !== "TR2W") {
+				self.selected = "TR2W";
 				self.resetButtonClass();
-				const timerange = { begin:{value:14,unit:'days'},end:{value:0,unit:'days'}};
-				const interval = 'PT60M';
-				self.setTR(models, timerange, interval);
+				self.setTR(models);
 				self.controller.refreshTimerange();
 				self.showInfo(models);
 			}
 		});
 		
 		// timerange 1 month interval = 120 MINUTES (approx 30x12 = 360 values)
-		$('#b1m').on('click',function() {
-			if (self.selected !== "b1m") {
-				self.selected = "b1m";
+		$('#TR1M').on('click',function() {
+			if (self.selected !== "TR1M") {
+				self.selected = "TR1M";
 				self.resetButtonClass();
-				const timerange = { begin:{value:1,unit:'months'},end:{value:0,unit:'months'}};
-				const interval = 'PT2H';
-				self.setTR(models, timerange, interval);
+				self.setTR(models);
 				self.controller.refreshTimerange();
 				self.showInfo(models);
 			}
 		});
 		
 		// timerange 6 months interval = 12 HOURS (approx 6x30x2 =  360 values)
-		$('#b6m').on('click',function() {
-			if (self.selected !== "b6m") {
-				self.selected = "b6m";
+		$('#TR6M').on('click',function() {
+			if (self.selected !== "TR6M") {
+				self.selected = "TR6M";
 				self.resetButtonClass();
-				const timerange = { begin:{value:6,unit:'months'},end:{value:0,unit:'months'}};
-				const interval = 'PT12H';
-				self.setTR(models, timerange, interval);
+				self.setTR(models);
 				self.controller.refreshTimerange();
 				self.showInfo(models);
 			}
 		});
 		
 		// timerange 13 months interval = 24 HOURS (approx 13x30 = 390 values)
-		$('#b1y').on('click',function() {
-			if (self.selected !== "b1y") {
-				self.selected = "b1y";
+		$('#TR13M').on('click',function() {
+			if (self.selected !== "TR13M") {
+				self.selected = "TR13M";
 				self.resetButtonClass();
-				const timerange = { begin:{value:13,unit:'months'},end:{value:0,unit:'months'}};
-				const interval = 'PT24H';
-				self.setTR(models, timerange, interval);
+				self.setTR(models);
 				self.controller.refreshTimerange();
 				self.showInfo(models);
 			}

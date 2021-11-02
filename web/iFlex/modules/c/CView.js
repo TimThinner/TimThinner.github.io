@@ -233,6 +233,12 @@ export default class CView extends TimeRangeView {
 				}
 			});
 			console.log(['hit=',hit,' miss=',miss,' total=',total]);
+			if (miss > 0) {
+				for (let i=0; i<10; i++) {
+					console.log(['calculated_EL_emissions ',i,' =',this.calculated_EL_emissions[i]]);
+					console.log(['calculated_DH_emissions ',i,' =',this.calculated_DH_emissions[i]]);
+				}
+			}
 		}
 	}
 	
@@ -625,15 +631,7 @@ export default class CView extends TimeRangeView {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12 center">'+
-					//'<p style="color:#aaa;margin-top:-16px;padding:0;">'+localized_string_daw_sel_timerange+'</p>'+
-					'<a href="javascript:void(0);" id="b1d" class="my-range-button" style="float:right;">1D</a>'+
-					'<a href="javascript:void(0);" id="b1w" class="my-range-button" style="float:right;">1W</a>'+
-					'<a href="javascript:void(0);" id="b2w" class="my-range-button" style="float:right;">2W</a>'+
-					'<a href="javascript:void(0);" id="b1m" class="my-range-button" style="float:right;">1M</a>'+
-					'<a href="javascript:void(0);" id="b6m" class="my-range-button" style="float:right;">6M</a>'+
-					'<a href="javascript:void(0);" id="b1y" class="my-range-button" style="float:right;">1Y</a>'+
-				'</div>'+
+				'<div class="col s12 center" id="timerange-buttons-wrapper"></div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
@@ -658,8 +656,9 @@ export default class CView extends TimeRangeView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
+		this.setTimerangeButtons('timerange-buttons-wrapper');
+		
 		const myModels = this.controller.modelnames;
-		//this.setTimeranges(myModels);
 		this.setTimerangeHandlers(myModels);
 		
 		$("#back").on('click', function() {

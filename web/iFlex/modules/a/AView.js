@@ -111,131 +111,6 @@ export default class AView extends TimeRangeView {
 			
 		}
 	}
-	/*
-		TODO:
-		Calculate the sum of all three models:
-		values have {timestamp (Date), value (String)} -pairs and they sholud have same timestamps to match components
-		
-		maybe use hash object with timesamp as a key, 
-		
-		{ timestamp: Date Fri Sep 24 2021 15:45:00 GMT+0300 (Eastern European Summer Time), value: "0.0" }
-​​​		
-		Models are updated in random order.
-		Each fetch (triplet) will have same time-scale, which should be "harmonized" with previous sumbucket.
-		Fetched models have timerange dynamically creted at fetch-time. Timerange is almost the same, and 
-		then response has timestamps depending on interval and frequency of the Obix source data acquisition.
-		
-		INTERVAL	TIMERANGE		NUMBER OF SAMPLES
-		3 MIN		1 day (24H)		 480 (24 x 20)
-		10 MINS		1 week			1008 (7 x 24 x 6)
-		20 MINS		2 weeks			1008 (14 x 24 x 3)
-		30 MINS 	1 month			1440 (30 x 48)
-		4 HOURS		6 months		1080 (30 x 6 x 6)
-		6 HOURS		1 year			1460 (4 x 365)
-		
-		PT3M
-		PT10M
-		PT20M
-		PT30M
-		PT4H
-		PT6H
-	*/
-	sum(mname) {
-	
-	
-	
-		//console.log(['values = ',this.models['BuildingElectricityPL1Model'].values]);
-		//const begin = this.models['BuildingElectricityPL1Model'].timerange.begin;
-		//const interval = this.models['BuildingElectricityPL1Model'].interval;
-		//const start = moment().subtract(begin_1, 'days').format();
-		//console.log(['start_1=',start_1]); // For example: "2021-09-25T09:54:24+03:00"
-		
-		/*
-		this.models[mname].values.forEach(v=>{
-			const ds = moment(v.timestamp).format();
-			const val = +v.value; // Converts string to number.
-			if (this.sumbucket.hasOwnProperty(ds)) {
-				this.sumbucket[ds][mname] = val; // update
-			} else {
-				this.sumbucket[ds] = {}; // create new entry
-				this.sumbucket[ds][mname] = val; // update
-			}
-		});
-		
-		this.values = [];
-		Object.keys(this.sumbucket).forEach(key => {
-			let sum = 0;
-			Object.keys(this.sumbucket[key]).forEach(m => {
-				sum += this.sumbucket[key][m];
-			});
-			this.values.push({timestamp: moment(key).toDate(), value:sum});
-		});
-		
-		
-		*/
-		
-		
-		
-		/* TODO:
-		Use sumbucket like a stack.
-		put values in and after all three values are found => make a sum and throw entry away!
-		TS =>	m1 -> val
-				m2 -> val
-				m3 -> val
-		Cleaning still needs to be managed. If for some reason TS does not get all 3 components?!? 
-		Cleaning is done when timerange is changed, but if user stays on same timerange for longer period....
-		
-		CALL THIS FOR EVERY MODEL, BUT NOTE THAT SUM IS CALCULATED ONLY WHEN ALL 3 MODELS ARE READY AND FILLED WITH VALUES!
-		
-		if (this.models['BuildingElectricityPL1Model'].values.length > 0 && 
-			this.models['BuildingElectricityPL2Model'].values.length > 0 &&
-			this.models['BuildingElectricityPL3Model'].values.length > 0) {
-			// Calculate the sum of models like before.
-			// and assign that to self.values array {timestamp => value}
-			
-			
-			this.values.push({timestamp: moment(key).toDate(), value:sum});
-			
-		}
-		
-		
-		
-		else if (options.model==='BuildingElectricityPL1Model' && options.method==='fetched') {
-		
-		
-		*/
-		
-		//console.log(['this.sumhash=',this.sumhash]);
-		/*
-		// Make sure that sumbucket and sumhash NEVER EXPAND BEYOND timerange limits!
-		const b = this.models[mname].timerange.begin;
-		const e = this.models[mname].timerange.end;
-		const start = moment().subtract(b, 'days');
-		const stop  = moment().subtract(e, 'days');
-		
-		// CLEANING!
-		const new_sumbucket = {};
-		const new_sumhash = {};
-		Object.keys(this.sumbucket).forEach(key => {
-			const ts = moment(key);
-			if (ts.isSameOrAfter(start) && ts.isSameOrBefore(stop)) {
-				new_sumbucket[key] = this.sumbucket[key];
-				new_sumhash[key] = this.sumhash[key];
-			} else {
-				console.log(['THROW ',key,' AWAY!']);
-			}
-		});
-		
-		this.sumbucket = new_sumbucket;
-		this.sumhash = new_sumhash;
-		*/
-		
-		/*Object.keys(this.sumhash).forEach(key => {
-			//console.log(['key=',key,' sum=',this.sumhash[key]]);
-			this.values.push({timestamp: moment(key).toDate(), value:this.sumhash[key]});
-		});*/
-		
-	}
 	
 	notify(options) {
 		const self = this;
@@ -268,14 +143,9 @@ export default class AView extends TimeRangeView {
 								} else if (s.name === 'SUM') {
 									s.data = self.values;
 								}*/
-								
-								
-								
 								if (s.name === 'SUM') {
 									s.data = self.values;
 								}
-								
-								
 							});
 						} else {
 							console.log('fetched ..... render BuildingElectricityView()');
@@ -313,11 +183,9 @@ export default class AView extends TimeRangeView {
 								} else if (s.name === 'SUM') {
 									s.data = self.values;
 								}*/
-								
 								if (s.name === 'SUM') {
 									s.data = self.values;
 								}
-								
 							});
 						} else {
 							console.log('fetched ..... render BuildingElectricityView()');
@@ -355,11 +223,9 @@ export default class AView extends TimeRangeView {
 								} else if (s.name === 'SUM') {
 									s.data = self.values;
 								}*/
-								
 								if (s.name === 'SUM') {
 									s.data = self.values;
 								}
-								
 							});
 						} else {
 							console.log('fetched ..... render BuildingElectricityView()');
@@ -496,15 +362,7 @@ export default class AView extends TimeRangeView {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12 center">'+
-					//'<p style="color:#aaa;margin-top:-16px;padding:0;">'+localized_string_daw_sel_timerange+'</p>'+
-					'<a href="javascript:void(0);" id="b1d" class="my-range-button" style="float:right;">1D</a>'+
-					'<a href="javascript:void(0);" id="b1w" class="my-range-button" style="float:right;">1W</a>'+
-					'<a href="javascript:void(0);" id="b2w" class="my-range-button" style="float:right;">2W</a>'+
-					'<a href="javascript:void(0);" id="b1m" class="my-range-button" style="float:right;">1M</a>'+
-					'<a href="javascript:void(0);" id="b6m" class="my-range-button" style="float:right;">6M</a>'+
-					'<a href="javascript:void(0);" id="b1y" class="my-range-button" style="float:right;">1Y</a>'+
-				'</div>'+
+				'<div class="col s12 center" id="timerange-buttons-wrapper"></div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
@@ -528,8 +386,9 @@ export default class AView extends TimeRangeView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
+		this.setTimerangeButtons('timerange-buttons-wrapper');
+		
 		const myModels = ['BuildingElectricityPL1Model','BuildingElectricityPL2Model','BuildingElectricityPL3Model'];
-		//this.setTimeranges(myModels);
 		this.setTimerangeHandlers(myModels);
 		
 		$("#back").on('click', function() {

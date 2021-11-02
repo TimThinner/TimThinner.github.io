@@ -48,16 +48,11 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 		const model_1 = new BuildingEmissionFactorForElectricityConsumedInFinlandModel({
 			name: this.modelnames[0],
 			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/',
-			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			//cache_expiration_in_seconds:120,
-			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
-			//timerange: { begin: 1, end: 0 },
 			access:'PUBLIC'
 		});
 		model_1.subscribe(this); // Now we will receive notifications from the UserModel.
 		this.master.modelRepo.add(this.modelnames[0], model_1);
 		this.models[this.modelnames[0]] = model_1;
-		
 		
 		// NOTE: do not use same model instances created in A or B controller. 
 		// Create new instances here:
@@ -69,9 +64,6 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 		const model_2 = new BuildingElectricityPL1Model({
 			name: this.modelnames[1],
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L1/', // Power of L1
-			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
-			//cache_expiration_in_seconds:60,
 			access:'PUBLIC'
 		});
 		model_2.subscribe(this); // Now we will receive notifications from the UserModel.
@@ -81,9 +73,6 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 		const model_3 = new BuildingElectricityPL2Model({
 			name: this.modelnames[2],
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L2/', // Power of L2
-			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
-			//cache_expiration_in_seconds:60,
 			access:'PUBLIC'
 		});
 		model_3.subscribe(this); // Now we will receive notifications from the UserModel.
@@ -93,9 +82,6 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 		const model_4 = new BuildingElectricityPL3Model({
 			name: this.modelnames[3],
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L3/', // Power of L3
-			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
-			//cache_expiration_in_seconds:60,
 			access:'PUBLIC'
 		});
 		model_4.subscribe(this); // Now we will receive notifications from the UserModel.
@@ -105,10 +91,6 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 		const model_5 = new BuildingHeatingQE01Model({
 			name: this.modelnames[4],
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/',
-			//interval: 'PT15M', // interval MUST BE defined for ROLLUP API
-			//cache_expiration_in_seconds:60,
-			//timerange: { begin: 1, end: 0 },
-			//timerange: { begin:{value:1,unit:'days'},end:{value:0,unit:'days'}},
 			access:'PUBLIC'
 		});
 		model_5.subscribe(this); // Now we will receive notifications from the UserModel.

@@ -76,30 +76,48 @@ export default class ObixModel extends Model {
 		super(options);
 		
 		this.values = [];
-		/*
+		
 		if (typeof options.cache_expiration_in_seconds !== 'undefined') {
 			this.cache_expiration_in_seconds = options.cache_expiration_in_seconds;
 		} else {
 			this.cache_expiration_in_seconds = 60;
 		}
-		*/
-		this.cache_expiration_in_seconds = 60;
+		
 		/*
 		if (typeof options.timerange !== 'undefined') {
 			this.timerange = options.timerange;
 		} else {
 			this.timerange = {begin:{value:1,unit:'days'},end:{value:0,unit:'days'}};
-		}*/
-		this.timerange = { begin:{value:1,unit:'days'}, end:{value:0,unit:'days'} };
-		// define interval for ROLLUP API
-		/*
+		}
 		if (typeof options.interval !== 'undefined') {
 			this.interval = options.interval;
 		} else {
 			this.interval = undefined;
 		}*/
-		this.interval = 'PT15M';
 		this.access = options.access; // 'PUBLIC' or 'PRIVATE'
+		
+		// NOTE: Do NOT set "timerange" and "interval" from constructor!
+		// These are always initialized from Configuration.js
+		// SET the FIRST timerange at the constructor.
+		this.defaults.forEach(d=>{
+			if (d.model_names.includes(this.name)) {
+				this.interval = d.timeranges[0].interval;
+				this.timerange = d.timeranges[0].timerange;
+			}
+		});
+	}
+	
+	setConfigurationDefaults(model_name, tr_name) {
+		this.defaults.forEach(d=>{
+			if (d.model_names.includes(model_name)) {
+				d.timeranges.forEach(tr=>{
+					if (tr.name === tr_name) {
+						this.interval = tr.interval;
+						this.timerange = tr.timerange;
+					}
+				});
+			}
+		});
 	}
 	
 	/*
@@ -124,7 +142,7 @@ export default class ObixModel extends Model {
 
 :{\"name\":\"start\",\"val\":\"2021-05-26T12:00:01.900039+03:00\"}},{\"$\":{\"name\":\"end\",\"val\":\"2021-05-26T12:00:31.90123+03:00\"}}]}}"
 	*/
-	fetch(po) {
+	fetch(po, sync_minute, sync_hour) {
 		const self = this;
 		const token = po.token;
 		const readkey = po.readkey;
@@ -151,7 +169,6 @@ export default class ObixModel extends Model {
 		// NOTE: readkey can be undefined.
 		// This is ALWAYS the case when public data (building data) is fetched.
 		let my_readkey = undefined;
-		
 		
 		let my_obix_code = undefined;
 		let my_readkey_startdate = undefined;
@@ -182,11 +199,21 @@ export default class ObixModel extends Model {
 			const start_mom = moment().subtract(this.timerange.begin.value, this.timerange.begin.unit);
 			start_mom.milliseconds(0);
 			start_mom.seconds(0);
-			let start = start_mom.format();
 			
 			const end_mom = moment().subtract(this.timerange.end.value, this.timerange.end.unit);
 			end_mom.milliseconds(0);
 			end_mom.seconds(0);
+			
+			if (typeof sync_minute !== 'undefined') {
+				start_mom.minutes(sync_minute);
+				end_mom.minutes(sync_minute);
+			}
+			if (typeof sync_hour !== 'undefined') {
+				start_mom.hours(sync_hour);
+				end_mom.hours(sync_hour);
+			}
+			
+			let start = start_mom.format();
 			let end = end_mom.format();
 			
 			// NOTE: Check that we are not trying to fetch data BEFORE or AFTER our readkey validity timeranges!
@@ -206,16 +233,27 @@ export default class ObixModel extends Model {
 				end_limit_mom.milliseconds(0);
 				end_limit_mom.seconds(0);
 				
+				if (typeof sync_minute !== 'undefined') {
+					start_limit_mom.minutes(sync_minute);
+					end_limit_mom.minutes(sync_minute);
+				}
+				if (typeof sync_hour !== 'undefined') {
+					start_limit_mom.hours(sync_hour);
+					end_limit_mom.hours(sync_hour);
+				}
+				
+				
 				if (start_mom.isBefore(start_limit_mom)) {
 					start = start_limit_mom.format();
 				}
 				if (end_mom.isAfter(end_limit_mom)) {
 					end = end_limit_mom.format();
 				}
-				console.log('=====================================================');
-				console.log(['start=',start,' end=',end]);
-				console.log('=====================================================');
 			}
+			//console.log('=====================================================');
+			//console.log(['start=',start,' end=',end]);
+			//console.log('=====================================================');
+			
 			const now = moment().format('YYYY-MM-DDTHH');
 			const interval = this.interval;
 			
@@ -229,7 +267,7 @@ export default class ObixModel extends Model {
 			}
 			//console.log('===========================');
 			//console.log(['fetch token=',token]);
-			console.log(['fetch my_readkey=',my_readkey]);
+			//console.log(['fetch my_readkey=',my_readkey]);
 			//console.log(['fetch my_obix_code=',my_obix_code]);
 			//console.log(['fetch source=',source]);
 			//console.log('===========================');
@@ -296,7 +334,7 @@ export default class ObixModel extends Model {
 				})
 				.then(function(myJson) {
 					if (self.status === 200) {
-						console.log(['myJson=',myJson]);
+						//console.log(['myJson=',myJson]);
 						const resu = JSON.parse(myJson);
 						//const cleaned = myJson.replace(/\\/g, "");
 						//console.log(['cleaned=',cleaned]);

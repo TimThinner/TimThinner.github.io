@@ -17,6 +17,7 @@ const feedbackRoutes = require('./api/routes/feedbacks');
 const proxeRoutes = require('./api/routes/proxes');
 //const csvRoutes = require('./api/routes/csvs');
 //const xlsxRoutes = require('./api/routes/xlsxs');
+const configurationRoutes = require('./api/routes/configurations');
 
 mongoose.connect('mongodb://localhost:27017/iflex', {
 	useNewUrlParser: true,
@@ -64,6 +65,7 @@ app.use('/feedbacks', feedbackRoutes);
 app.use('/proxes', proxeRoutes);
 //app.use('/csvs', csvRoutes);
 //app.use('/xlsxs', xlsxRoutes);
+app.use('/configurations', configurationRoutes);
 
 // If we reach this line we have to report an error.
 app.use((req,res,next)=>{

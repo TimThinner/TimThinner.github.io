@@ -97,11 +97,14 @@ export default class LanguageModel {
 				'BUILDING_EMISSION_ALL':'Sum',
 				'BUILDING_EMISSION_ALL_LEGEND':'Sum',
 				'USER_HEATING_TITLE':'Apartment temperature and humidity',
-				'APARTMENT_TEMPERATURE_TOOLTIP':'T',
-				'APARTMENT_TEMPERATURE_AXIS_LABEL':'Temp',
+				'USER_HEATING_TEMPERATURE_NOW_TITLE':'Temp (°C)',
+				'USER_HEATING_HUMIDITY_NOW_TITLE':'Humidity (%)',
+				'USER_HEATING_CO2_NOW_TITLE':'CO<sub>2</sub> (ppm)',
+				'APARTMENT_TEMPERATURE_TOOLTIP':'Temperature',
+				'APARTMENT_TEMPERATURE_AXIS_LABEL':'Temperature',
 				'APARTMENT_TEMPERATURE_LEGEND':'Temperature',
-				'APARTMENT_HUMIDITY_TOOLTIP':'H',
-				'APARTMENT_HUMIDITY_AXIS_LABEL':'Humi',
+				'APARTMENT_HUMIDITY_TOOLTIP':'Humidity',
+				'APARTMENT_HUMIDITY_AXIS_LABEL':'Humidity',
 				'APARTMENT_HUMIDITY_LEGEND':'Humidity',
 				'CONSENT_TITLE':'SUOSTUMUS',
 				'CONSENT_TEXT_A':'Vahvistan lukeneeni ja ymmärtäneeni tutkimustiedotteen ja sen liitteenä olleen tietosuojailmoituksen. Vahvistan, että tiedossani ei ole tutkimustiedotteessa esitettyä poissulkukriteeriä ja/tai täytän valintakriteerit. Minulla on ollut mahdollisuus harkita saamaani tietoa, esittää kysymyksiä ja olen saanut kysymyksiini riittävän vastauksen.',
@@ -224,7 +227,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.10.28'
+				'MENU_VERSION':'v 21.11.03'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -320,10 +323,13 @@ export default class LanguageModel {
 				'BUILDING_EMISSION_ALL':'Summa',
 				'BUILDING_EMISSION_ALL_LEGEND':'Summa',
 				'USER_HEATING_TITLE':'Asunnon lämpötila ja kosteus',
-				'APARTMENT_TEMPERATURE_TOOLTIP':'L',
-				'APARTMENT_TEMPERATURE_AXIS_LABEL':'Lämpö',
+				'USER_HEATING_TEMPERATURE_NOW_TITLE':'Lämpötila (°C)',
+				'USER_HEATING_HUMIDITY_NOW_TITLE':'Kosteus (%)',
+				'USER_HEATING_CO2_NOW_TITLE':'CO<sub>2</sub> (ppm)',
+				'APARTMENT_TEMPERATURE_TOOLTIP':'Lämpötila',
+				'APARTMENT_TEMPERATURE_AXIS_LABEL':'Lämpötila',
 				'APARTMENT_TEMPERATURE_LEGEND':'Lämpötila',
-				'APARTMENT_HUMIDITY_TOOLTIP':'K',
+				'APARTMENT_HUMIDITY_TOOLTIP':'Kosteus',
 				'APARTMENT_HUMIDITY_AXIS_LABEL':'Kosteus',
 				'APARTMENT_HUMIDITY_LEGEND':'Kosteus',
 				'CONSENT_TITLE':'SUOSTUMUS',
@@ -447,7 +453,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.10.28'
+				'MENU_VERSION':'v 21.11.03'
 			}
 		}
 	}

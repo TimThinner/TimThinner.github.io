@@ -197,6 +197,8 @@ export default class CView extends TimeRangeView {
 	
 	
 	calculate_ALL_Sum() {
+		let retval = false;
+		
 		if (this.calculated_EL_emissions.length > 0 && this.calculated_DH_emissions.length > 0) {
 			
 			const sumbucket = {};
@@ -210,115 +212,111 @@ export default class CView extends TimeRangeView {
 			});
 			//console.log(['sumbucket=',sumbucket]);
 			
-			let miss = 0;
-			let hit = 0;
-			let total = 0;
+			//let miss = 0;
+			//let hit = 0;
+			//let total = 0;
 			this.calculated_DH_emissions.forEach(v=>{
-				total++;
+				//total++;
 				const ds = moment(v.timestamp).format();//.slice(0,-6);
 				//console.log(['DH ds=',ds]);
 				const val = v.value;
 				if (sumbucket.hasOwnProperty(ds)) {
 					
-					hit++;
+					//hit++;
 					//console.log(['HIT ds=',ds,' hit=',hit]);
 					
 					sumbucket[ds] += val;
 					this.calculated_ALL_emissions.push({timestamp: v.timestamp, value:sumbucket[ds]});
-				} else {
-					miss++;
+				}// else {
+					//miss++;
 					//console.log('=====================================================');
 					//console.log(['CALCULATE ALL NOT MATCHING ELEMENT ds=',ds,' miss=',miss]);
 					//console.log('=====================================================');
-				}
+				//}
 			});
-			console.log(['hit=',hit,' miss=',miss,' total=',total]);
-			if (miss > 0) {
+			//console.log(['hit=',hit,' miss=',miss,' total=',total]);
+			/*if (miss > 0) {
 				for (let i=0; i<10; i++) {
 					console.log(['calculated_EL_emissions ',i,' =',this.calculated_EL_emissions[i]]);
 					console.log(['calculated_DH_emissions ',i,' =',this.calculated_DH_emissions[i]]);
 				}
-			}
+			}*/
+			retval = true;
 		}
+		return retval;
 	}
 	
 	calculate_DH_Sum() {
-		//if (this.models['CControllerBuildingHeatingQE01Model'].values.length > 0) {
-			this.calculated_DH_emissions = [];
-			this.models['CControllerBuildingHeatingQE01Model'].values.forEach(v=>{
-				const val = v.value * 220; // Converts string to number.
-				this.calculated_DH_emissions.push({timestamp: moment(v.timestamp).toDate(), value:val});
-			});
-		//}
+		this.calculated_DH_emissions = [];
+		this.models['CControllerBuildingHeatingQE01Model'].values.forEach(v=>{
+			const val = v.value * 220; // Converts string to number.
+			this.calculated_DH_emissions.push({timestamp: moment(v.timestamp).toDate(), value:val});
+		});
 	}
 	
 	calculateSum() {
-		/*if (this.models['CControllerBuildingElectricityPL1Model'].values.length > 0 && 
-			this.models['CControllerBuildingElectricityPL2Model'].values.length > 0 && 
-			this.models['CControllerBuildingElectricityPL3Model'].values.length > 0 && 
-			this.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values.length > 0) {
-			*/
-			// Calculate the sum of models like before.
-			// and assign that to self.values array {timestamp => value}
-			const sumbucket = {};
-			this.calculated_EL_emissions = [];
+		// Calculate the sum of models like before.
+		// and assign that to self.values array {timestamp => value}
+		const sumbucket = {};
+		this.calculated_EL_emissions = [];
+		
+		this.models['CControllerBuildingElectricityPL1Model'].values.forEach(v=>{
+			const ds = moment(v.timestamp).format();
+			let val = +v.value; // Converts string to number.
 			
-			this.models['CControllerBuildingElectricityPL1Model'].values.forEach(v=>{
-				const ds = moment(v.timestamp).format();
-				let val = +v.value; // Converts string to number.
-				
-				//if (val > 1000) { val = val/1000; }
-				//val = val/1000;
-				
-				if (sumbucket.hasOwnProperty(ds)) {
-					sumbucket[ds]['PL1'] = val; // update
-				} else {
-					sumbucket[ds] = {}; // create new entry
-					sumbucket[ds]['PL1'] = val; // update
-				}
-			});
+			//if (val > 1000) { val = val/1000; }
+			//val = val/1000;
 			
-			this.models['CControllerBuildingElectricityPL2Model'].values.forEach(v=>{
-				const ds = moment(v.timestamp).format();
-				let val = +v.value; // Converts string to number.
-				
-				//if (val > 1000) { val = val/1000; }
-				//val = val/1000;
-				
-				if (sumbucket.hasOwnProperty(ds)) {
-					sumbucket[ds]['PL2'] = val; // update
-				} else {
-					sumbucket[ds] = {}; // create new entry
-					sumbucket[ds]['PL2'] = val; // update
-				}
-			});
+			if (sumbucket.hasOwnProperty(ds)) {
+				sumbucket[ds]['PL1'] = val; // update
+			} else {
+				sumbucket[ds] = {}; // create new entry
+				sumbucket[ds]['PL1'] = val; // update
+			}
+		});
+		
+		this.models['CControllerBuildingElectricityPL2Model'].values.forEach(v=>{
+			const ds = moment(v.timestamp).format();
+			let val = +v.value; // Converts string to number.
 			
-			this.models['CControllerBuildingElectricityPL3Model'].values.forEach(v=>{
-				const ds = moment(v.timestamp).format();
-				let val = +v.value; // Converts string to number.
-				
-				//if (val > 1000) { val = val/1000; }
-				//val = val/1000;
-				
-				if (sumbucket.hasOwnProperty(ds)) {
-					sumbucket[ds]['PL3'] = val; // update
-				} else {
-					sumbucket[ds] = {}; // create new entry
-					sumbucket[ds]['PL3'] = val; // update
-				}
+			//if (val > 1000) { val = val/1000; }
+			//val = val/1000;
+			
+			if (sumbucket.hasOwnProperty(ds)) {
+				sumbucket[ds]['PL2'] = val; // update
+			} else {
+				sumbucket[ds] = {}; // create new entry
+				sumbucket[ds]['PL2'] = val; // update
+			}
+		});
+		
+		this.models['CControllerBuildingElectricityPL3Model'].values.forEach(v=>{
+			const ds = moment(v.timestamp).format();
+			let val = +v.value; // Converts string to number.
+			
+			//if (val > 1000) { val = val/1000; }
+			//val = val/1000;
+			
+			if (sumbucket.hasOwnProperty(ds)) {
+				sumbucket[ds]['PL3'] = val; // update
+			} else {
+				sumbucket[ds] = {}; // create new entry
+				sumbucket[ds]['PL3'] = val; // update
+			}
+		});
+		
+		Object.keys(sumbucket).forEach(key => {
+			let sum = 0;
+			Object.keys(sumbucket[key]).forEach(m => {
+				sum += sumbucket[key][m];
 			});
-			Object.keys(sumbucket).forEach(key => {
-				let sum = 0;
-				Object.keys(sumbucket[key]).forEach(m => {
-					sum += sumbucket[key][m];
-				});
-				sum *= this.findClosestFactor(key);
-				this.calculated_EL_emissions.push({timestamp: moment(key).toDate(), value:sum});
-			});
-		//}
+			sum *= this.findClosestFactor(key);
+			this.calculated_EL_emissions.push({timestamp: moment(key).toDate(), value:sum});
+		});
 	}
 	
 	calculate_ALL() {
+		let retval = false;
 		if (this.models['CControllerBuildingElectricityPL1Model'].values.length > 0 && 
 			this.models['CControllerBuildingElectricityPL2Model'].values.length > 0 && 
 			this.models['CControllerBuildingElectricityPL3Model'].values.length > 0 && 
@@ -331,7 +329,8 @@ export default class CView extends TimeRangeView {
 			
 			this.calculateSum();
 			this.calculate_DH_Sum();
-			this.calculate_ALL_Sum();
+			
+			retval = this.calculate_ALL_Sum();
 			
 			const stop = moment();
 			 // moment#valueOf simply outputs the number of milliseconds since the Unix Epoch.
@@ -339,6 +338,7 @@ export default class CView extends TimeRangeView {
 			//console.log(['Performance: ',dms,'ms']);
 			$('#performance').empty().append('Performance: '+dms+'ms');
 		}
+		return retval;
 	}
 	
 	
@@ -360,26 +360,22 @@ export default class CView extends TimeRangeView {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculate_ALL();
 						
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								/*if (s.name === 'ELEMISSIONS') {
-									s.data = self.calculated_EL_emissions;
-								} else if (s.name === 'ALLEMISSIONS') {
-									s.data = self.calculated_ALL_emissions;
-								}*/
-								
-								
-								
-								if (s.name === 'ALLEMISSIONS') {
-									s.data = self.calculated_ALL_emissions;
-								}
-								
-							});
-						} else {
-							this.renderChart();
+						if (this.calculate_ALL() === true) {
+							$('#'+this.FELID).empty();
+							if (typeof this.chart !== 'undefined') {
+								am4core.iter.each(this.chart.series.iterator(), function (s) {
+									if (s.name === 'DHEMISSIONS') {
+										s.data = self.calculated_DH_emissions;
+									} else if (s.name === 'ELEMISSIONS') {
+										s.data = self.calculated_EL_emissions;
+									} else if (s.name === 'ALLEMISSIONS') {
+										s.data = self.calculated_ALL_emissions;
+									}
+								});
+							} else {
+								this.renderChart();
+							}
 						}
 						
 					} else { // Error in fetching.
@@ -397,24 +393,22 @@ export default class CView extends TimeRangeView {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculate_ALL();
 						
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								/*
-								if (s.name === 'ELEMISSIONS') {
-									s.data = self.calculated_EL_emissions;
-								} else if (s.name === 'ALLEMISSIONS') {
-									s.data = self.calculated_ALL_emissions;
-								}*/
-								if (s.name === 'ALLEMISSIONS') {
-									s.data = self.calculated_ALL_emissions;
-								}
-								
-							});
-						} else {
-							this.renderChart();
+						if (this.calculate_ALL() === true) {
+							$('#'+this.FELID).empty();
+							if (typeof this.chart !== 'undefined') {
+								am4core.iter.each(this.chart.series.iterator(), function (s) {
+									if (s.name === 'DHEMISSIONS') {
+										s.data = self.calculated_DH_emissions;
+									} else if (s.name === 'ELEMISSIONS') {
+										s.data = self.calculated_EL_emissions;
+									} else if (s.name === 'ALLEMISSIONS') {
+										s.data = self.calculated_ALL_emissions;
+									}
+								});
+							} else {
+								this.renderChart();
+							}
 						}
 						
 					} else { // Error in fetching.
@@ -428,23 +422,24 @@ export default class CView extends TimeRangeView {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculate_ALL();
 						
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								/*if (s.name === 'ELEMISSIONS') {
-									s.data = self.calculated_EL_emissions;
-								} else if (s.name === 'ALLEMISSIONS') {
-									s.data = self.calculated_ALL_emissions;
-								}*/
-								if (s.name === 'ALLEMISSIONS') {
-									s.data = self.calculated_ALL_emissions;
-								}
-							});
-						} else {
-							this.renderChart();
+						if (this.calculate_ALL() === true) {
+							$('#'+this.FELID).empty();
+							if (typeof this.chart !== 'undefined') {
+								am4core.iter.each(this.chart.series.iterator(), function (s) {
+									if (s.name === 'DHEMISSIONS') {
+										s.data = self.calculated_DH_emissions;
+									} else if (s.name === 'ELEMISSIONS') {
+										s.data = self.calculated_EL_emissions;
+									} else if (s.name === 'ALLEMISSIONS') {
+										s.data = self.calculated_ALL_emissions;
+									}
+								});
+							} else {
+								this.renderChart();
+							}
 						}
+						
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
@@ -456,23 +451,24 @@ export default class CView extends TimeRangeView {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculate_ALL();
 						
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								/*if (s.name === 'ELEMISSIONS') {
-									s.data = self.calculated_EL_emissions;
-								} else if (s.name === 'ALLEMISSIONS') {
-									s.data = self.calculated_ALL_emissions;
-								}*/
-								if (s.name === 'ALLEMISSIONS') {
-									s.data = self.calculated_ALL_emissions;
-								}
-							});
-						} else {
-							this.renderChart();
+						if (this.calculate_ALL() === true) {
+							$('#'+this.FELID).empty();
+							if (typeof this.chart !== 'undefined') {
+								am4core.iter.each(this.chart.series.iterator(), function (s) {
+									if (s.name === 'DHEMISSIONS') {
+										s.data = self.calculated_DH_emissions;
+									} else if (s.name === 'ELEMISSIONS') {
+										s.data = self.calculated_EL_emissions;
+									} else if (s.name === 'ALLEMISSIONS') {
+										s.data = self.calculated_ALL_emissions;
+									}
+								});
+							} else {
+								this.renderChart();
+							}
 						}
+						
 					} else { // Error in fetching.
 						$('#'+this.FELID).empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
@@ -486,23 +482,22 @@ export default class CView extends TimeRangeView {
 					if (options.status === 200 || options.status === '200') {
 						
 						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculate_ALL();
 						
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								/*if (s.name === 'DHEMISSIONS') {
-									s.data = self.calculated_DH_emissions;
-								} else if (s.name === 'ALLEMISSIONS') {
-									s.data = self.calculated_ALL_emissions;
-								}*/
-								if (s.name === 'ALLEMISSIONS') {
-									s.data = self.calculated_ALL_emissions;
-								}
-							});
-							
-						} else {
-							this.renderChart();
+						if (this.calculate_ALL() === true) {
+							$('#'+this.FELID).empty();
+							if (typeof this.chart !== 'undefined') {
+								am4core.iter.each(this.chart.series.iterator(), function (s) {
+									if (s.name === 'DHEMISSIONS') {
+										s.data = self.calculated_DH_emissions;
+									} else if (s.name === 'ELEMISSIONS') {
+										s.data = self.calculated_EL_emissions;
+									} else if (s.name === 'ALLEMISSIONS') {
+										s.data = self.calculated_ALL_emissions;
+									}
+								});
+							} else {
+								this.renderChart();
+							}
 						}
 						
 					} else { // Error in fetching.
@@ -552,12 +547,11 @@ export default class CView extends TimeRangeView {
 			valueAxis.title.text = localized_string_emission_axis;
 			valueAxis.min = 0;
 			
-			/*
 			var series1 = self.chart.series.push(new am4charts.LineSeries());
 			series1.data = self.calculated_EL_emissions; 
 			series1.dataFields.dateX = "timestamp";
 			series1.dataFields.valueY = "value";
-			series1.tooltipText = localized_string_emission_el + ": [bold]{valueY.formatNumber('#.')}[/] kgCO2/h";
+			series1.tooltipText = localized_string_emission_el + ": [bold]{valueY.formatNumber('#.')}[/] kgCO2";
 			series1.fillOpacity = 0;
 			series1.name = "ELEMISSIONS";
 			series1.customname = localized_string_emission_el_legend;
@@ -569,14 +563,13 @@ export default class CView extends TimeRangeView {
 			series2.data = self.calculated_DH_emissions; 
 			series2.dataFields.dateX = "timestamp";
 			series2.dataFields.valueY = "value";
-			series2.tooltipText = localized_string_emission_dh + ": [bold]{valueY.formatNumber('#.')}[/] kgCO2/h";
+			series2.tooltipText = localized_string_emission_dh + ": [bold]{valueY.formatNumber('#.')}[/] kgCO2";
 			series2.fillOpacity = 0;
 			series2.name = 'DHEMISSIONS';
 			series2.customname = localized_string_emission_dh_legend;
 			series2.stroke = am4core.color("#0f0");
 			series2.fill = "#0f0";
 			series2.legendSettings.labelText = "{customname}";
-			*/
 			
 			var series3 = self.chart.series.push(new am4charts.LineSeries());
 			series3.data = self.calculated_ALL_emissions; 
@@ -589,7 +582,6 @@ export default class CView extends TimeRangeView {
 			series3.stroke = am4core.color("#fff");
 			series3.fill = "#fff";
 			series3.legendSettings.labelText = "{customname}";
-			
 			
 			// Legend:
 			self.chart.legend = new am4charts.Legend();

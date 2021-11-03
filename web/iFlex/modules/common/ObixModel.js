@@ -250,9 +250,9 @@ export default class ObixModel extends Model {
 					end = end_limit_mom.format();
 				}
 			}
-			//console.log('=====================================================');
-			//console.log(['start=',start,' end=',end]);
-			//console.log('=====================================================');
+			console.log('=====================================================');
+			console.log(['start=',start,' end=',end]);
+			console.log('=====================================================');
 			
 			const now = moment().format('YYYY-MM-DDTHH');
 			const interval = this.interval;
@@ -334,7 +334,7 @@ export default class ObixModel extends Model {
 				})
 				.then(function(myJson) {
 					if (self.status === 200) {
-						//console.log(['myJson=',myJson]);
+						console.log(['myJson=',myJson]);
 						const resu = JSON.parse(myJson);
 						//const cleaned = myJson.replace(/\\/g, "");
 						//console.log(['cleaned=',cleaned]);

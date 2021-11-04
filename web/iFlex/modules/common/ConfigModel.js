@@ -73,7 +73,7 @@ export default class ConfigModel extends Model {
 					];*/
 					data.forEach(d => {
 						if (d.propName === 'signup') {
-							if (self.configs.length > 0) 
+							if (self.configs.length > 0) {
 								self.configs[0].signup = d.value;
 							}
 						}

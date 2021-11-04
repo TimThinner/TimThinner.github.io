@@ -81,8 +81,7 @@ export default class UserLoginView extends UserView {
 		
 		let signup_link_markup = '<div class="row">'+
 				'<div class="col s12 center" style="margin-top:1rem">'+
-					'<p>'+localized_string_signup_coming_soon+
-					'<br/><a href="javascript:void(0);" class="disabled" id="show-signup-form">'+localized_string_open_signup_form_link_text+'</a></p>'+
+					'<p>'+localized_string_signup_coming_soon+'<br/><span style="color:#ccc;">'+localized_string_open_signup_form_link_text+'</span></p>'+
 				'</div>'+
 			'</div>';
 		if (signup_enabled) {

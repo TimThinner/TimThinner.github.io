@@ -40,8 +40,6 @@ export default class UserLoginView extends UserView {
 	render() {
 		var self = this;
 		$(this.el).empty();
-		
-		
 		/*
 				'USER_LOGIN_TITLE':'Login',
 				'USER_EMAIL':'Email',
@@ -56,8 +54,6 @@ export default class UserLoginView extends UserView {
 				'CANCEL':'CANCEL',
 				'SAVE':'SAVE',
 		*/
-		
-		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		
@@ -66,13 +62,38 @@ export default class UserLoginView extends UserView {
 		const localized_string_user_password = LM['translation'][sel]['USER_PASSWORD'];
 		const localized_string_login_button_text = LM['translation'][sel]['USER_LOGIN_BTN_TXT'];
 		const localized_string_open_signup_form_link_text = LM['translation'][sel]['USER_OPEN_SIGNUP_FORM'];
+		const localized_string_signup_coming_soon = LM['translation'][sel]['USER_SIGNUP_COMING_SOON'];
 		
 		const localized_string_cancel = LM['translation'][sel]['CANCEL'];
 		const localized_quick_login = LM['translation'][sel]['QUICK_LOGIN'];
 		const localized_quick_login_message = LM['translation'][sel]['QUICK_LOGIN_MESSAGE'];
 		
+		let signup_enabled = false;
 		const USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+		const CONFIG_MODEL = this.controller.master.modelRepo.get('ConfigModel'); // Stored at the MongoDB.
+		if (CONFIG_MODEL) {
+			// CONFIG_MODEL.configs is an array where first element contains different configuration parameters:
+			// { "_id" : ObjectId("618298bcc577f5f73eaaa0d1"), "signup" : true, "version" : "21.11.03" }
+			if (typeof CONFIG_MODEL.configs !== 'undefined' && Array.isArray(CONFIG_MODEL.configs)) {
+				signup_enabled = CONFIG_MODEL.configs[0].signup;
+			}
+		}
 		
+		let signup_link_markup = '<div class="row">'+
+				'<div class="col s12 center" style="margin-top:1rem">'+
+					'<p>'+localized_string_signup_coming_soon+
+					'<br/><a href="javascript:void(0);" class="disabled" id="show-signup-form">'+localized_string_open_signup_form_link_text+'</a></p>'+
+				'</div>'+
+			'</div>';
+		if (signup_enabled) {
+			signup_link_markup = '<div class="row">'+
+				'<div class="col s12 center" style="margin-top:1rem">'+
+					'<a href="javascript:void(0);" id="show-signup-form">'+localized_string_open_signup_form_link_text+'</a>'+
+				'</div>'+
+			'</div>';
+		}
+
+		/*
 		let mockup_button_markup = '';
 		if (USER_MODEL.MOCKUP===true) {
 			mockup_button_markup = 
@@ -85,7 +106,7 @@ export default class UserLoginView extends UserView {
 				'</div>'+
 			'</div>';
 		}
-		
+		*/
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
@@ -114,12 +135,15 @@ export default class UserLoginView extends UserView {
 						'<button class="btn waves-effect waves-light" type="submit" id="login-submit">'+localized_string_login_button_text+'</button>'+
 					'</div>'+
 				'</div>'+
-			'</div>'+
+			'</div>' + signup_link_markup;
+			/*
 			'<div class="row">'+
 				'<div class="col s12 center" style="margin-top:1rem">'+
 					'<a href="javascript:void(0);" id="show-signup-form">'+localized_string_open_signup_form_link_text+'</a>'+
 				'</div>'+
 			'</div>'+mockup_button_markup;
+			*/
+			
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
@@ -139,9 +163,12 @@ export default class UserLoginView extends UserView {
 			}
 		});
 		
-		$("#show-signup-form").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('usersignup');
-		});
+		// Handle link click message ONLY if SIGNUP is enabled.
+		if (signup_enabled) {
+			$("#show-signup-form").on('click', function() {
+				self.controller.models['MenuModel'].setSelected('usersignup');
+			});
+		}
 		
 		$("#cancel").on('click', function() {
 			self.controller.models['MenuModel'].setSelected('menu');
@@ -179,6 +206,7 @@ export default class UserLoginView extends UserView {
 				self.models['UserModel'].login(data);
 			}
 		});
+		/*
 		if (USER_MODEL.MOCKUP===true) {
 			$("#quick-login").on('click', function() {
 				const _email = 'testuser@testdomain.com';
@@ -191,6 +219,6 @@ export default class UserLoginView extends UserView {
 				$("#login-submit").prop("disabled", true);
 				self.models['UserModel'].login(data);
 			});
-		}
+		}*/
 	}
 }

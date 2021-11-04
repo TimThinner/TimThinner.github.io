@@ -109,6 +109,7 @@ export default class UserPropsView extends View {
 			
 			const localized_string_admin_regcodes = LM['translation'][sel]['USER_PROPS_ADMIN_REGCODES'];
 			const localized_string_admin_users = LM['translation'][sel]['USER_PROPS_ADMIN_USERS'];
+			const localized_string_admin_configs = 'Configs';//LM['translation'][sel]['USER_PROPS_ADMIN_USERS'];
 			
 			//const consent_text = LM['translation'][sel]['USER_PROPS_CONSENT'];
 			//const consent_link_text = LM['translation'][sel]['USER_SIGNUP_CONSENT_LINK_TXT'];
@@ -126,11 +127,14 @@ export default class UserPropsView extends View {
 								'<div class="col s12 center">'+
 									'<p>'+localized_string_admin_description+'</p>'+
 								'</div>'+
-								'<div class="col s6 center">'+
+								'<div class="col s4 center">'+
 									'<button class="btn waves-effect waves-light" id="regcodes">'+localized_string_admin_regcodes+'</button>'+
 								'</div>'+
-								'<div class="col s6 center">'+
+								'<div class="col s4 center">'+
 									'<button class="btn waves-effect waves-light" id="users">'+localized_string_admin_users+'</button>'+
+								'</div>'+
+								'<div class="col s4 center">'+
+									'<button class="btn waves-effect waves-light" id="configs">'+localized_string_admin_configs+'</button>'+
 								'</div>'+
 							'</div>'+
 						'</div>'+
@@ -169,6 +173,9 @@ export default class UserPropsView extends View {
 				});
 				$('#users').on('click',function() {
 					self.models['MenuModel'].setSelected('USERS');
+				});
+				$('#configs').on('click',function() {
+					self.models['MenuModel'].setSelected('CONFIGS');
 				});
 			}
 			

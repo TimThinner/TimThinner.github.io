@@ -1,5 +1,5 @@
 import Controller from '../../common/Controller.js';
-import ConfigModel from  '../../ConfigModel.js';
+import ConfigModel from  '../../common/ConfigModel.js';
 import ConfigsView from './ConfigsView.js';
 
 export default class ConfigsController extends Controller {

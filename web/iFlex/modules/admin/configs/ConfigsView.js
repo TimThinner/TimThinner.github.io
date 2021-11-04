@@ -41,7 +41,7 @@ export default class ConfigsView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if ((options.model==='ConfigModel' && options.method==='updateConfig') {
+			if (options.model==='ConfigModel' && options.method==='updateConfig') {
 				if (options.status === 200) {
 					
 					

@@ -74,7 +74,9 @@ export default class UserLoginView extends UserView {
 		if (CONFIG_MODEL) {
 			// CONFIG_MODEL.configs is an array where first element contains different configuration parameters:
 			// { "_id" : ObjectId("618298bcc577f5f73eaaa0d1"), "signup" : true, "version" : "21.11.03" }
-			if (typeof CONFIG_MODEL.configs !== 'undefined' && Array.isArray(CONFIG_MODEL.configs)) {
+			if (typeof CONFIG_MODEL.configs !== 'undefined' && 
+				Array.isArray(CONFIG_MODEL.configs) && 
+				CONFIG_MODEL.configs.length > 0) {
 				signup_enabled = CONFIG_MODEL.configs[0].signup;
 			}
 		}
@@ -91,21 +93,6 @@ export default class UserLoginView extends UserView {
 				'</div>'+
 			'</div>';
 		}
-
-		/*
-		let mockup_button_markup = '';
-		if (USER_MODEL.MOCKUP===true) {
-			mockup_button_markup = 
-			'<div class="row">'+
-				'<div class="col s12">'+
-					'<div class="col s12 center">'+
-						'<p class="success-message" style="padding:10px;">'+localized_quick_login_message+'</p>'+
-						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="quick-login">'+localized_quick_login+'</button>'+
-					'</div>'+
-				'</div>'+
-			'</div>';
-		}
-		*/
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
@@ -135,14 +122,6 @@ export default class UserLoginView extends UserView {
 					'</div>'+
 				'</div>'+
 			'</div>' + signup_link_markup;
-			/*
-			'<div class="row">'+
-				'<div class="col s12 center" style="margin-top:1rem">'+
-					'<a href="javascript:void(0);" id="show-signup-form">'+localized_string_open_signup_form_link_text+'</a>'+
-				'</div>'+
-			'</div>'+mockup_button_markup;
-			*/
-			
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
@@ -205,19 +184,5 @@ export default class UserLoginView extends UserView {
 				self.models['UserModel'].login(data);
 			}
 		});
-		/*
-		if (USER_MODEL.MOCKUP===true) {
-			$("#quick-login").on('click', function() {
-				const _email = 'testuser@testdomain.com';
-				const _password = 'anything123';
-				var data = {
-					email: _email,
-					password: _password
-				};
-				// disable the submit button
-				$("#login-submit").prop("disabled", true);
-				self.models['UserModel'].login(data);
-			});
-		}*/
 	}
 }

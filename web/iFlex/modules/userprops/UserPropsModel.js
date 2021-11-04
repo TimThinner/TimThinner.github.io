@@ -25,45 +25,33 @@ export default class UserPropsModel extends Model {
 			return;
 		}
 		
-		if (this.MOCKUP) {
-			
-			this.errorMessage = '';
-			this.fetching = true;
-			setTimeout(() => {
-				this.fetching = false;
-				this.ready = true;
-				this.notifyAll({model:this.name, method:'fetched', status:200, message:'OK'});
-			}, 200);
-			
-		} else {
-			let status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
-			this.errorMessage = '';
-			this.fetching = true;
-			
-			const myHeaders = new Headers();
-			const authorizationToken = 'Bearer '+token;
-			myHeaders.append("Authorization", authorizationToken);
-			
-			const url = this.mongoBackend + '/bindings';
-			fetch(url, {headers: myHeaders})
-				.then(function(response) {
-					status = response.status;
-					return response.json();
-				})
-				.then(function(myJson) {
-					console.log(['myJson=',myJson]);
-					self.bindings = myJson.bindings;
-					console.log(['self.bindings=',self.bindings]);
-					self.fetching = false;
-					self.ready = true;
-					self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
-				})
-				.catch(error => {
-					self.fetching = false;
-					self.ready = true;
-					self.errorMessage = error;
-					self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
-				});
-		}
+		let status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
+		this.errorMessage = '';
+		this.fetching = true;
+		
+		const myHeaders = new Headers();
+		const authorizationToken = 'Bearer '+token;
+		myHeaders.append("Authorization", authorizationToken);
+		
+		const url = this.mongoBackend + '/bindings';
+		fetch(url, {headers: myHeaders})
+			.then(function(response) {
+				status = response.status;
+				return response.json();
+			})
+			.then(function(myJson) {
+				console.log(['myJson=',myJson]);
+				self.bindings = myJson.bindings;
+				console.log(['self.bindings=',self.bindings]);
+				self.fetching = false;
+				self.ready = true;
+				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
+			})
+			.catch(error => {
+				self.fetching = false;
+				self.ready = true;
+				self.errorMessage = error;
+				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
+			});
 	}
 }

@@ -129,112 +129,91 @@ export default class UserModel extends Model {
 	
 	login(data) {
 		const self = this;
-		if (this.MOCKUP) {
-			
-			this.id = 'nodatabaseid';
-			this.email = data.email;
-			this.token = 'nodatabasetoken';
-			this.is_superuser = false;
-			
-			// Store token and email temporarily into localStorage.
-			// It will be removed when the user logs-out.
-			this.store();
-			setTimeout(() => this.notifyAll({model:'UserModel',method:'login',status:200,message:'Login OK'}), 100);
-		} else {
-			let status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
-			const url = this.mongoBackend + '/users/login';
-			fetch(url, {
-				method: 'POST',
-				body: JSON.stringify(data),
-				headers:{
-					'Content-Type': 'application/json'
-				}
-			})
-			.then(function(response) {
-				status = response.status;
-				return response.json();
-			})
-			.then(function(myJson) {
-				const message = myJson.message;
-				if (status === 200 && myJson.token) {
-					// Login was OK, set the Authentication-token to model.
-					self.token = myJson.token;
-					self.id = myJson.userId.toString();
-					self.email = data.email;
-					self.is_superuser = myJson.is_superuser;
-					self.readkey = myJson.readkey;
-					self.readkey_startdate = myJson.readkey_startdate;
-					self.readkey_enddate = myJson.readkey_enddate;
-					self.obix_code = myJson.obix_code;
-					self.request_for_sensors = myJson.request_for_sensors;
-					self.consent_a = myJson.consent_a;
-					self.consent_b = myJson.consent_b;
-					// Store token and email temporarily into localStorage.
-					// It will be removed when the user logs-out.
-					self.store();
-				}
-				self.notifyAll({model:'UserModel',method:'login',status:status,message:message});
-			})
-			.catch(function(error) {
-				self.notifyAll({model:'UserModel',method:'login',status:status,message:error});
-			});
-		}
+		let status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
+		const url = this.mongoBackend + '/users/login';
+		fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers:{
+				'Content-Type': 'application/json'
+			}
+		})
+		.then(function(response) {
+			status = response.status;
+			return response.json();
+		})
+		.then(function(myJson) {
+			const message = myJson.message;
+			if (status === 200 && myJson.token) {
+				// Login was OK, set the Authentication-token to model.
+				self.token = myJson.token;
+				self.id = myJson.userId.toString();
+				self.email = data.email;
+				self.is_superuser = myJson.is_superuser;
+				self.readkey = myJson.readkey;
+				self.readkey_startdate = myJson.readkey_startdate;
+				self.readkey_enddate = myJson.readkey_enddate;
+				self.obix_code = myJson.obix_code;
+				self.request_for_sensors = myJson.request_for_sensors;
+				self.consent_a = myJson.consent_a;
+				self.consent_b = myJson.consent_b;
+				// Store token and email temporarily into localStorage.
+				// It will be removed when the user logs-out.
+				self.store();
+			}
+			self.notifyAll({model:'UserModel',method:'login',status:status,message:message});
+		})
+		.catch(function(error) {
+			self.notifyAll({model:'UserModel',method:'login',status:status,message:error});
+		});
 	}
 	
 	signup(data) {
 		const self = this;
-		if (this.MOCKUP) {
-			setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:201,message:'Signup OK'}), 100);
-		} else {
-			let status = 500; // RESPONSE (OK: 201, MAIL EXISTS: 409, error: 500)
-			const url = this.mongoBackend + '/users/signup';
-			fetch(url, {
-				method: 'POST',
-				body: JSON.stringify(data),
-				headers:{
-					'Content-Type': 'application/json'
-				}
-			})
-			.then(function(response){
-				status = response.status;
-				return response.json();
-			})
-			.then(function(myJson){
-				const message = myJson.message;
-				self.notifyAll({model:'UserModel',method:'signup',status:status,message:message});
-			})
-			.catch(function(error){
-				self.notifyAll({model:'UserModel',method:'signup',status:status,message:error});
-			});
-		}
+		let status = 500; // RESPONSE (OK: 201, MAIL EXISTS: 409, error: 500)
+		const url = this.mongoBackend + '/users/signup';
+		fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers:{
+				'Content-Type': 'application/json'
+			}
+		})
+		.then(function(response){
+			status = response.status;
+			return response.json();
+		})
+		.then(function(myJson){
+			const message = myJson.message;
+			self.notifyAll({model:'UserModel',method:'signup',status:status,message:message});
+		})
+		.catch(function(error){
+			self.notifyAll({model:'UserModel',method:'signup',status:status,message:error});
+		});
 	}
 	
 	signupApa(data) {
 		const self = this;
-		if (this.MOCKUP) {
-			setTimeout(() => this.notifyAll({model:'UserModel',method:'signupApa',status:201,message:'Signup OK'}), 100);
-		} else {
-			let status = 500; // RESPONSE (OK: 201, MAIL EXISTS: 409, error: 500)
-			const url = this.mongoBackend + '/regcodes/anon';
-			fetch(url, {
-				method: 'POST',
-				body: JSON.stringify(data),
-				headers:{
-					'Content-Type': 'application/json'
-				}
-			})
-			.then(function(response){
-				status = response.status;
-				return response.json();
-			})
-			.then(function(myJson){
-				const message = myJson.message;
-				self.notifyAll({model:'UserModel',method:'signupApa',status:status,message:message,data:data});
-			})
-			.catch(function(error){
-				self.notifyAll({model:'UserModel',method:'signupApa',status:status,message:error});
-			});
-		}
+		let status = 500; // RESPONSE (OK: 201, MAIL EXISTS: 409, error: 500)
+		const url = this.mongoBackend + '/regcodes/anon';
+		fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers:{
+				'Content-Type': 'application/json'
+			}
+		})
+		.then(function(response){
+			status = response.status;
+			return response.json();
+		})
+		.then(function(myJson){
+			const message = myJson.message;
+			self.notifyAll({model:'UserModel',method:'signupApa',status:status,message:message,data:data});
+		})
+		.catch(function(error){
+			self.notifyAll({model:'UserModel',method:'signupApa',status:status,message:error});
+		});
 	}
 	
 	changePassword(data) {

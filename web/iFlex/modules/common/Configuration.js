@@ -1,8 +1,6 @@
 export default class Configuration {
 	constructor() {
-		this.MOCKUP = false; // Not really supported 
 		this.mongoBackend = 'http://localhost:3000';
-		
 		// Should we define different models with timeranges and intervals here?
 		// query (interval = undefined) or rollup (interval = 'PTNNN')
 		this.defaults = [

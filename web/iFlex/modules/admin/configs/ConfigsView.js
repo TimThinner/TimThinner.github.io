@@ -105,7 +105,7 @@ export default class ConfigsView extends View {
 			$(html).appendTo(this.el);
 			
 			$('#back').on('click',function() {
-				self.menuModel.setSelected('USERPROPS');
+				self.models['MenuModel'].setSelected('USERPROPS');
 			});
 			
 			this.handleErrorMessages(this.FELID);

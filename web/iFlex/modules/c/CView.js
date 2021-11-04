@@ -249,7 +249,8 @@ export default class CView extends TimeRangeView {
 	calculate_DH_Sum() {
 		this.calculated_DH_emissions = [];
 		this.models['CControllerBuildingHeatingQE01Model'].values.forEach(v=>{
-			const val = v.value * 220; // Converts string to number.
+			// NOTE: convert gCO2 to kgCO2 => divide sum by 1000
+			const val = v.value * 220/1000; // Converts string to number.
 			this.calculated_DH_emissions.push({timestamp: moment(v.timestamp).toDate(), value:val});
 		});
 	}
@@ -310,7 +311,8 @@ export default class CView extends TimeRangeView {
 			Object.keys(sumbucket[key]).forEach(m => {
 				sum += sumbucket[key][m];
 			});
-			sum *= this.findClosestFactor(key);
+			// NOTE: convert gCO2 to kgCO2 => divide sum by 1000
+			sum = sum*this.findClosestFactor(key)/1000;
 			this.calculated_EL_emissions.push({timestamp: moment(key).toDate(), value:sum});
 		});
 	}
@@ -575,7 +577,7 @@ export default class CView extends TimeRangeView {
 			series3.data = self.calculated_ALL_emissions; 
 			series3.dataFields.dateX = "timestamp";
 			series3.dataFields.valueY = "value";
-			series3.tooltipText = localized_string_emission_all + ": [bold]{valueY.formatNumber('#.')}[/] gCO2";
+			series3.tooltipText = localized_string_emission_all + ": [bold]{valueY.formatNumber('#.')}[/] kgCO2";
 			series3.fillOpacity = 0.25;
 			series3.name = 'ALLEMISSIONS';
 			series3.customname = localized_string_emission_all_legend;

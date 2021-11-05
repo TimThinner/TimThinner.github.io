@@ -17,7 +17,7 @@ export default class ConfigsView extends View {
 			
 		});
 		this.rendered = false;
-		this.FELID = 'view-failure';
+		this.FELID = 'action-response';
 	}
 	
 	show() {
@@ -43,23 +43,23 @@ export default class ConfigsView extends View {
 		if (this.controller.visible) {
 			if (options.model==='ConfigModel' && options.method==='updateConfig') {
 				if (options.status === 200) {
+					const html = '<div class="success-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
 					
+					const signup_value = this.models['ConfigModel'].configs[0].signup;
+					$("#signup").empty().append('signup: '+signup_value);
+					setTimeout(() => {
+						this.models['MenuModel'].setSelected('USERPROPS');
+					}, 1000);
 					
-					
-					
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
+				} else {
+					// Something went wrong
+					if (options.status === 401) {
+						// This status code must be caught and wired to forceLogout() action.
+						this.forceLogout(this.FELID);
 					} else {
-						this.render();
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$('#'+this.FELID).empty().append(html);
 					}
 				}
 			}
@@ -74,15 +74,20 @@ export default class ConfigsView extends View {
 			let config_html = '';
 			
 			const CONFIG_MODEL = this.models['ConfigModel']; // Stored at the MongoDB.
-			if (CONFIG_MODEL) {
+			if (CONFIG_MODEL && typeof CONFIG_MODEL.configs !== 'undefined' && Array.isArray(CONFIG_MODEL.configs) && CONFIG_MODEL.configs.length > 0) {
 				// CONFIG_MODEL.configs is an array where first element contains different configuration parameters:
 				// { "_id" : ObjectId("618298bcc577f5f73eaaa0d1"), "signup" : true, "version" : "21.11.03" }
-				if (typeof CONFIG_MODEL.configs !== 'undefined' && 
-					Array.isArray(CONFIG_MODEL.configs) && 
-					CONFIG_MODEL.configs.length > 0) {
-					config_html = '<div class="col s12"><p>SIGNUP: '+CONFIG_MODEL.configs[0].signup+'</p>'+
-					'<p>VERSION: '+CONFIG_MODEL.configs[0].version+'</p></div>';
-				}
+				/*
+				const props = [];
+				Object.keys(CONFIG_MODEL.configs[0]).forEach(key => {
+					const p = key+': '+CONFIG_MODEL.configs[0][key];
+					props.push(p);
+				};
+				config_html = '<div class="col s12"><p>';
+				config_html += props.join('<br/>');
+				config_html += '</p></div>';*/
+				config_html = '<div class="col s6 center"><p id="signup">signup: '+CONFIG_MODEL.configs[0].signup+'</p></div>';
+				config_html += '<div class="col s6 center"><p><button class="btn waves-effect waves-light" id="toggle">TOGGLE</button></p></div>';
 			}
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
@@ -92,7 +97,8 @@ export default class ConfigsView extends View {
 				'<div class="row">'+
 					'<div class="col s12">'+
 						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-					'</div>'+ config_html +
+					'</div>'+ 
+					config_html +
 					'<div class="col s12 center" style="margin-top:16px;">'+
 						'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
 							'<i class="material-icons left">arrow_back</i>'+
@@ -104,12 +110,25 @@ export default class ConfigsView extends View {
 				'</div>';
 			$(html).appendTo(this.el);
 			
+			if (CONFIG_MODEL && typeof CONFIG_MODEL.configs !== 'undefined' && Array.isArray(CONFIG_MODEL.configs) && CONFIG_MODEL.configs.length > 0) {
+				$('#toggle').on('click',function() {
+					const UM = self.controller.master.modelRepo.get('UserModel')
+					const id = CONFIG_MODEL.configs[0]._id;
+					let signup = CONFIG_MODEL.configs[0].signup;
+					signup = !signup; // Toggle
+					const authToken = UM.token;
+					const data = [
+						{propName:'signup', value:signup}
+					];
+					CONFIG_MODEL.updateConfig(id, data, authToken);
+				});
+			}
+			
 			$('#back').on('click',function() {
 				self.models['MenuModel'].setSelected('USERPROPS');
 			});
 			
 			this.handleErrorMessages(this.FELID);
-			
 			this.rendered = true;
 			
 		} else {

@@ -86,14 +86,37 @@ export default class CView extends TimeRangeView {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		this.chart = undefined;
+		this.chart_comparison = undefined;
+		this.chart_timeseries = undefined;
 		this.rendered = false;
 		this.FELID = 'building-emissions-view-failure';
-		this.CHARTID = 'building-emissions-chart';
+		this.CHARTID_COMPARISON = 'comparison-chart';
+		this.CHARTID_TIMESERIES = 'timeseries-chart';
+		
+		this.calculated_USER_emissions = [];
+		this.calculated_AVE_emissions = [];
 		
 		this.calculated_EL_emissions = [];
 		this.calculated_DH_emissions = [];
 		this.calculated_ALL_emissions = [];
+		
+		/*
+		15 min => 2100 / (365 * 24 * 4) = 2100/35040 = 0,0599
+		30 min => 2100 / (365 * 24 * 2) = 2100/17520 = 0,120
+		60 min => 2100 / (365 * 24) =     2100/8760  = 0,240
+		2 h =>    2100 / (365 * 12) =     2100/4380  = 0,479
+		12 h =>   2100 / (365 * 2) =      2100/730   = 2,88
+		24 h =>   2100 / 365 =            2100/365   = 5,75
+		*/
+		this.intervalMap = {
+			'PT15M': 0.0599,
+			'PT30M': 0.120,
+			'PT60M': 0.240,
+			'PT1H': 0.240,
+			'PT2H': 0.479,
+			'PT12H': 2.88,
+			'PT24H': 5.75
+		};
 	}
 	
 	show() {
@@ -101,19 +124,29 @@ export default class CView extends TimeRangeView {
 	}
 	
 	hide() {
-		if (typeof this.chart !== 'undefined') {
-			this.chart.dispose();
-			this.chart = undefined;
+		if (typeof this.chart_comparison !== 'undefined') {
+			this.chart_comparison.dispose();
+			this.chart_comparison = undefined;
 		}
+		if (typeof this.chart_timeseries !== 'undefined') {
+			this.chart_timeseries.dispose();
+			this.chart_timeseries = undefined;
+		}
+		
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		if (typeof this.chart !== 'undefined') {
-			this.chart.dispose();
-			this.chart = undefined;
+		if (typeof this.chart_comparison !== 'undefined') {
+			this.chart_comparison.dispose();
+			this.chart_comparison = undefined;
 		}
+		if (typeof this.chart_timeseries !== 'undefined') {
+			this.chart_timeseries.dispose();
+			this.chart_timeseries = undefined;
+		}
+		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -195,6 +228,38 @@ export default class CView extends TimeRangeView {
 		return retval;
 	}
 	
+	/*
+		We can calculate the comparison value from the yearly average finnish citized value (2100 kg / asuminen).
+		Take interval from any of models (all have same interval), and divide 2100 with corresponding duration:
+		
+		"1D" => PT15M => 2100/(365*24*4) = 2100/35040 = 0,0599
+		"1W" => PT30M => 2100/(365*24*2) = 2100/17520 = 0,120
+		"2W" => PT60M => 2100/(365*24)   = 2100/8760  = 0,240
+		"1M" => PT2H  => 2100/(365*12)   = 2100/4380  = 0,479
+		"6M" => PT12H => 2100/(365*2)    = 2100/730   = 2,88
+		"13M"=> PT24H => 2100/365        = 2100/365   = 5,75
+	*/
+	calculate_USER_AVE_Sum() {
+		if (this.calculated_ALL_emissions.length > 0) {
+			
+			const NumberOfResidents = 100;
+			this.calculated_USER_emissions = [];
+			this.calculated_AVE_emissions = [];
+			const interval = this.models['BuildingElectricityPL1Model'].interval;
+			let factor = undefined;
+			if (typeof interval !== 'undefined') {
+				factor = this.intervalMap[interval];
+			}
+			this.calculated_ALL_emissions.forEach(v=>{
+				if (typeof factor !== 'undefined') {
+					const comparison = v.value/factor;
+					this.calculated_AVE_emissions.push({timestamp: v.timestamp, value:comparison});
+				}
+				const value = v.value/NumberOfResidents;
+				this.calculated_USER_emissions.push({timestamp: v.timestamp, value:value});
+			});
+		}
+	}
 	
 	calculate_ALL_Sum() {
 		let retval = false;
@@ -227,6 +292,8 @@ export default class CView extends TimeRangeView {
 					
 					sumbucket[ds] += val;
 					this.calculated_ALL_emissions.push({timestamp: v.timestamp, value:sumbucket[ds]});
+					
+					
 				}// else {
 					//miss++;
 					//console.log('=====================================================');
@@ -317,6 +384,23 @@ export default class CView extends TimeRangeView {
 		});
 	}
 	
+	/*
+		How the average and user emissions are calculated?
+		Values are calculated per person / interval 
+		and since average per person per year is 2100 kg => we can calculate user values:
+		
+		We have NUMBER_OF_RESIDENTS (100)
+		
+		selected interval		
+		15 min => 2100 / (365 * 24 * 4) = 2100/35040 = 0,0599
+		30 min => 2100 / (365 * 24 * 2) = 2100/17520 = 0,120
+		60 min => 2100 / (365 * 24) =     2100/8760  = 0,240
+		2 h =>    2100 / (365 * 12) =     2100/4380  = 0,479
+		12 h =>   2100 / (365 * 2) =      2100/730   = 2,88
+		24 h =>   2100 / 365 =            2100/365   = 5,75
+		
+	*/
+	
 	calculate_ALL() {
 		let retval = false;
 		if (this.models['CControllerBuildingElectricityPL1Model'].values.length > 0 && 
@@ -327,18 +411,18 @@ export default class CView extends TimeRangeView {
 			
 			// WHAT IS THE PERFORMANCE?
 			// Measure how many milliseconds it takes to calculate all values.
-			const start = moment();
+			//const start = moment();
 			
 			this.calculateSum();
 			this.calculate_DH_Sum();
 			
 			retval = this.calculate_ALL_Sum();
 			
-			const stop = moment();
+			//const stop = moment();
 			 // moment#valueOf simply outputs the number of milliseconds since the Unix Epoch.
-			const dms = stop.valueOf() - start.valueOf();
+			//const dms = stop.valueOf() - start.valueOf();
 			//console.log(['Performance: ',dms,'ms']);
-			$('#performance').empty().append('Performance: '+dms+'ms');
+			//$('#performance').empty().append('Performance: '+dms+'ms');
 		}
 		return retval;
 	}
@@ -350,9 +434,13 @@ export default class CView extends TimeRangeView {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				
-				if (typeof this.chart !== 'undefined') {
-					this.chart.dispose();
-					this.chart = undefined;
+				if (typeof this.chart_comparison !== 'undefined') {
+					this.chart_comparison.dispose();
+					this.chart_comparison = undefined;
+				}
+				if (typeof this.chart_timeseries !== 'undefined') {
+					this.chart_timeseries.dispose();
+					this.chart_timeseries = undefined;
 				}
 				this.render();
 				
@@ -365,8 +453,20 @@ export default class CView extends TimeRangeView {
 						
 						if (this.calculate_ALL() === true) {
 							$('#'+this.FELID).empty();
-							if (typeof this.chart !== 'undefined') {
-								am4core.iter.each(this.chart.series.iterator(), function (s) {
+							
+							if (typeof this.chart_comparison !== 'undefined') {
+								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
+									if (s.name === 'AVERAGEEMISSIONS') {
+										s.data = self.calculated_AVE_emissions;
+									} else if (s.name === 'USEREMISSIONS') {
+										s.data = self.calculated_USER_emissions;
+									}
+								});
+							} else {
+								this.renderChartComparison();
+							}
+							if (typeof this.chart_timeseries !== 'undefined') {
+								am4core.iter.each(this.chart_timeseries.series.iterator(), function (s) {
 									if (s.name === 'DHEMISSIONS') {
 										s.data = self.calculated_DH_emissions;
 									} else if (s.name === 'ELEMISSIONS') {
@@ -376,7 +476,7 @@ export default class CView extends TimeRangeView {
 									}
 								});
 							} else {
-								this.renderChart();
+								this.renderChartTimeseries();
 							}
 						}
 						
@@ -398,8 +498,20 @@ export default class CView extends TimeRangeView {
 						
 						if (this.calculate_ALL() === true) {
 							$('#'+this.FELID).empty();
-							if (typeof this.chart !== 'undefined') {
-								am4core.iter.each(this.chart.series.iterator(), function (s) {
+							
+							if (typeof this.chart_comparison !== 'undefined') {
+								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
+									if (s.name === 'AVERAGEEMISSIONS') {
+										s.data = self.calculated_AVE_emissions;
+									} else if (s.name === 'USEREMISSIONS') {
+										s.data = self.calculated_USER_emissions;
+									}
+								});
+							} else {
+								this.renderChartComparison();
+							}
+							if (typeof this.chart_timeseries !== 'undefined') {
+								am4core.iter.each(this.chart_timeseries.series.iterator(), function (s) {
 									if (s.name === 'DHEMISSIONS') {
 										s.data = self.calculated_DH_emissions;
 									} else if (s.name === 'ELEMISSIONS') {
@@ -409,7 +521,7 @@ export default class CView extends TimeRangeView {
 									}
 								});
 							} else {
-								this.renderChart();
+								this.renderChartTimeseries();
 							}
 						}
 						
@@ -427,8 +539,20 @@ export default class CView extends TimeRangeView {
 						
 						if (this.calculate_ALL() === true) {
 							$('#'+this.FELID).empty();
-							if (typeof this.chart !== 'undefined') {
-								am4core.iter.each(this.chart.series.iterator(), function (s) {
+							
+							if (typeof this.chart_comparison !== 'undefined') {
+								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
+									if (s.name === 'AVERAGEEMISSIONS') {
+										s.data = self.calculated_AVE_emissions;
+									} else if (s.name === 'USEREMISSIONS') {
+										s.data = self.calculated_USER_emissions;
+									}
+								});
+							} else {
+								this.renderChartComparison();
+							}
+							if (typeof this.chart_timeseries !== 'undefined') {
+								am4core.iter.each(this.chart_timeseries.series.iterator(), function (s) {
 									if (s.name === 'DHEMISSIONS') {
 										s.data = self.calculated_DH_emissions;
 									} else if (s.name === 'ELEMISSIONS') {
@@ -438,7 +562,7 @@ export default class CView extends TimeRangeView {
 									}
 								});
 							} else {
-								this.renderChart();
+								this.renderChartTimeseries();
 							}
 						}
 						
@@ -456,8 +580,20 @@ export default class CView extends TimeRangeView {
 						
 						if (this.calculate_ALL() === true) {
 							$('#'+this.FELID).empty();
-							if (typeof this.chart !== 'undefined') {
-								am4core.iter.each(this.chart.series.iterator(), function (s) {
+							
+							if (typeof this.chart_comparison !== 'undefined') {
+								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
+									if (s.name === 'AVERAGEEMISSIONS') {
+										s.data = self.calculated_AVE_emissions;
+									} else if (s.name === 'USEREMISSIONS') {
+										s.data = self.calculated_USER_emissions;
+									}
+								});
+							} else {
+								this.renderChartComparison();
+							}
+							if (typeof this.chart_timeseries !== 'undefined') {
+								am4core.iter.each(this.chart_timeseries.series.iterator(), function (s) {
 									if (s.name === 'DHEMISSIONS') {
 										s.data = self.calculated_DH_emissions;
 									} else if (s.name === 'ELEMISSIONS') {
@@ -467,7 +603,7 @@ export default class CView extends TimeRangeView {
 									}
 								});
 							} else {
-								this.renderChart();
+								this.renderChartTimeseries();
 							}
 						}
 						
@@ -487,8 +623,20 @@ export default class CView extends TimeRangeView {
 						
 						if (this.calculate_ALL() === true) {
 							$('#'+this.FELID).empty();
-							if (typeof this.chart !== 'undefined') {
-								am4core.iter.each(this.chart.series.iterator(), function (s) {
+							
+							if (typeof this.chart_comparison !== 'undefined') {
+								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
+									if (s.name === 'AVERAGEEMISSIONS') {
+										s.data = self.calculated_AVE_emissions;
+									} else if (s.name === 'USEREMISSIONS') {
+										s.data = self.calculated_USER_emissions;
+									}
+								});
+							} else {
+								this.renderChartComparison();
+							}
+							if (typeof this.chart_timeseries !== 'undefined') {
+								am4core.iter.each(this.chart_timeseries.series.iterator(), function (s) {
 									if (s.name === 'DHEMISSIONS') {
 										s.data = self.calculated_DH_emissions;
 									} else if (s.name === 'ELEMISSIONS') {
@@ -498,7 +646,7 @@ export default class CView extends TimeRangeView {
 									}
 								});
 							} else {
-								this.renderChart();
+								this.renderChartTimeseries();
 							}
 						}
 						
@@ -512,7 +660,93 @@ export default class CView extends TimeRangeView {
 		}
 	}
 	
-	renderChart() {
+	renderChartComparison() {
+		const self = this;
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		//const localized_string_emission_el = LM['translation'][sel]['BUILDING_EMISSION_EL'];
+		//const localized_string_emission_dh = LM['translation'][sel]['BUILDING_EMISSION_DH'];
+		const localized_string_emission_axis = LM['translation'][sel]['BUILDING_EMISSION_AXIS_LABEL'];
+		//const localized_string_emission_el_legend = LM['translation'][sel]['BUILDING_EMISSION_EL_LEGEND'];
+		//const localized_string_emission_dh_legend = LM['translation'][sel]['BUILDING_EMISSION_DH_LEGEND'];
+		//const localized_string_emission_all = LM['translation'][sel]['BUILDING_EMISSION_ALL'];
+		//const localized_string_emission_all_legend = LM['translation'][sel]['BUILDING_EMISSION_ALL_LEGEND'];
+		
+		const localized_string_emission_user = 'USER';
+		const localized_string_emission_user_legend = 'USER';
+		const localized_string_emission_ave = 'KA';
+		const localized_string_emission_ave_legend = 'KA';
+		
+		am4core.ready(function() {
+			// Themes begin
+			am4core.useTheme(am4themes_dark);
+			//am4core.useTheme(am4themes_animated);
+			// Themes end
+			
+			// Create chart
+			self.chart_comparison = am4core.create(self.CHARTID_COMPARISON, am4charts.XYChart);
+			self.paddingRight = 20;
+			//self.chart.data = generateChartData();
+			
+			// {'timestamp':...,'value':...}
+			//self.chart.data = self.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
+			//console.log(['self.chart.data=',self.chart.data]);
+			
+			var dateAxis = self.chart_comparison.xAxes.push(new am4charts.DateAxis());
+			dateAxis.baseInterval = {"timeUnit": "minute","count": 3};
+			dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
+			
+			var valueAxis = self.chart_comparison.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.tooltip.disabled = true;
+			valueAxis.title.text = localized_string_emission_axis;
+			valueAxis.min = 0;
+			
+			var series1 = self.chart_comparison.series.push(new am4charts.LineSeries());
+			series1.data = self.calculated_EL_emissions; 
+			series1.dataFields.dateX = "timestamp";
+			series1.dataFields.valueY = "value";
+			series1.tooltipText = localized_string_emission_ave + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2";
+			series1.fillOpacity = 0;
+			series1.name = "AVERAGEEMISSIONS";
+			series1.customname = localized_string_emission_ave_legend;
+			series1.stroke = am4core.color("#ff0");
+			series1.fill = "#ff0";
+			series1.legendSettings.labelText = "{customname}";
+			
+			var series2 = self.chart_comparison.series.push(new am4charts.LineSeries());
+			series2.data = self.calculated_ALL_emissions; 
+			series2.dataFields.dateX = "timestamp";
+			series2.dataFields.valueY = "value";
+			series2.tooltipText = localized_string_emission_user + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2";
+			series2.fillOpacity = 0;
+			series2.name = 'USEREMISSIONS';
+			series2.customname = localized_string_emission_user_legend;
+			series2.stroke = am4core.color("#0f0");
+			series2.fill = "#0f0";
+			series2.legendSettings.labelText = "{customname}";
+			
+			// Legend:
+			self.chart_comparison.legend = new am4charts.Legend();
+			self.chart_comparison.legend.useDefaultMarker = true;
+			var marker = self.chart_comparison.legend.markers.template.children.getIndex(0);
+			marker.cornerRadius(12, 12, 12, 12);
+			marker.strokeWidth = 2;
+			marker.strokeOpacity = 1;
+			marker.stroke = am4core.color("#000");
+			
+			self.chart_comparison.cursor = new am4charts.XYCursor();
+			self.chart_comparison.cursor.lineY.opacity = 0;
+			self.chart_comparison.scrollbarX = new am4charts.XYChartScrollbar();
+			self.chart_comparison.scrollbarX.series.push(series1);
+			
+			dateAxis.start = 0.0;
+			dateAxis.end = 1.0;
+			dateAxis.keepSelection = true;
+		}); // end am4core.ready()
+	}
+	
+	renderChartTimeseries() {
 		const self = this;
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
@@ -532,7 +766,7 @@ export default class CView extends TimeRangeView {
 			// Themes end
 			
 			// Create chart
-			self.chart = am4core.create(self.CHARTID, am4charts.XYChart);
+			self.chart_timeseries = am4core.create(self.CHARTID_TIMESERIES, am4charts.XYChart);
 			self.paddingRight = 20;
 			//self.chart.data = generateChartData();
 			
@@ -540,16 +774,16 @@ export default class CView extends TimeRangeView {
 			//self.chart.data = self.models['BuildingEmissionFactorForElectricityConsumedInFinlandModel'].values;
 			//console.log(['self.chart.data=',self.chart.data]);
 			
-			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
+			var dateAxis = self.chart_timeseries.xAxes.push(new am4charts.DateAxis());
 			dateAxis.baseInterval = {"timeUnit": "minute","count": 3};
 			dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
 			
-			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
+			var valueAxis = self.chart_timeseries.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_emission_axis;
 			valueAxis.min = 0;
 			
-			var series1 = self.chart.series.push(new am4charts.LineSeries());
+			var series1 = self.chart_timeseries.series.push(new am4charts.LineSeries());
 			series1.data = self.calculated_EL_emissions; 
 			series1.dataFields.dateX = "timestamp";
 			series1.dataFields.valueY = "value";
@@ -561,7 +795,7 @@ export default class CView extends TimeRangeView {
 			series1.fill = "#ff0";
 			series1.legendSettings.labelText = "{customname}";
 			
-			var series2 = self.chart.series.push(new am4charts.LineSeries());
+			var series2 = self.chart_timeseries.series.push(new am4charts.LineSeries());
 			series2.data = self.calculated_DH_emissions; 
 			series2.dataFields.dateX = "timestamp";
 			series2.dataFields.valueY = "value";
@@ -573,7 +807,7 @@ export default class CView extends TimeRangeView {
 			series2.fill = "#0f0";
 			series2.legendSettings.labelText = "{customname}";
 			
-			var series3 = self.chart.series.push(new am4charts.LineSeries());
+			var series3 = self.chart_timeseries.series.push(new am4charts.LineSeries());
 			series3.data = self.calculated_ALL_emissions; 
 			series3.dataFields.dateX = "timestamp";
 			series3.dataFields.valueY = "value";
@@ -586,18 +820,18 @@ export default class CView extends TimeRangeView {
 			series3.legendSettings.labelText = "{customname}";
 			
 			// Legend:
-			self.chart.legend = new am4charts.Legend();
-			self.chart.legend.useDefaultMarker = true;
-			var marker = self.chart.legend.markers.template.children.getIndex(0);
+			self.chart_timeseries.legend = new am4charts.Legend();
+			self.chart_timeseries.legend.useDefaultMarker = true;
+			var marker = self.chart_timeseries.legend.markers.template.children.getIndex(0);
 			marker.cornerRadius(12, 12, 12, 12);
 			marker.strokeWidth = 2;
 			marker.strokeOpacity = 1;
 			marker.stroke = am4core.color("#000");
 			
-			self.chart.cursor = new am4charts.XYCursor();
-			self.chart.cursor.lineY.opacity = 0;
-			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series3);
+			self.chart_timeseries.cursor = new am4charts.XYCursor();
+			self.chart_timeseries.cursor.lineY.opacity = 0;
+			self.chart_timeseries.scrollbarX = new am4charts.XYChartScrollbar();
+			self.chart_timeseries.scrollbarX.series.push(series3);
 			
 			dateAxis.start = 0.0;
 			dateAxis.end = 1.0;
@@ -629,8 +863,14 @@ export default class CView extends TimeRangeView {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
-					'<div id="performance" class="performance"></div>'+
+					'<div id="'+this.CHARTID_COMPARISON+'" class="medium-chart"></div>'+
+					//'<div id="performance" class="performance"></div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 chart-wrapper dark-theme">'+
+					'<div id="'+this.CHARTID_TIMESERIES+'" class="medium-chart"></div>'+
+					//'<div id="performance" class="performance"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -672,14 +912,16 @@ export default class CView extends TimeRangeView {
 				}
 			} else {
 				this.calculate_ALL();
-				this.renderChart();
+				this.renderChartComparison();
+				this.renderChartTimeseries();
 				myModels.forEach(m=>{
 					this.updateInfoModelValues(m, this.models[m].values.length); // implemented in TimeRangeView
 				});
 			}
 		} else {
 			//console.log('CView => render models ARE NOT READY!!!!');
-			this.showSpinner('#'+this.CHARTID);
+			this.showSpinner('#'+this.CHARTID_COMPARISON);
+			this.showSpinner('#'+this.CHARTID_TIMESERIES);
 		}
 	}
 }

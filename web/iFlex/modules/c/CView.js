@@ -241,7 +241,6 @@ export default class CView extends TimeRangeView {
 	*/
 	calculate_USER_AVE_Sum() {
 		if (this.calculated_ALL_emissions.length > 0) {
-			
 			const NumberOfResidents = 100;
 			this.calculated_USER_emissions = [];
 			this.calculated_AVE_emissions = [];
@@ -258,12 +257,12 @@ export default class CView extends TimeRangeView {
 				const value = v.value/NumberOfResidents;
 				this.calculated_USER_emissions.push({timestamp: v.timestamp, value:value});
 			});
+			
 		}
 	}
 	
 	calculate_ALL_Sum() {
 		let retval = false;
-		
 		if (this.calculated_EL_emissions.length > 0 && this.calculated_DH_emissions.length > 0) {
 			
 			const sumbucket = {};
@@ -417,7 +416,9 @@ export default class CView extends TimeRangeView {
 			this.calculate_DH_Sum();
 			
 			retval = this.calculate_ALL_Sum();
-			
+			if (retval) {
+				this.calculate_USER_AVE_Sum();
+			}
 			//const stop = moment();
 			 // moment#valueOf simply outputs the number of milliseconds since the Unix Epoch.
 			//const dms = stop.valueOf() - start.valueOf();

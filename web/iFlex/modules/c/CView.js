@@ -238,6 +238,9 @@ export default class CView extends TimeRangeView {
 		"1M" => PT2H  => 2100/(365*12)   = 2100/4380  = 0,479
 		"6M" => PT12H => 2100/(365*2)    = 2100/730   = 2,88
 		"13M"=> PT24H => 2100/365        = 2100/365   = 5,75
+		
+		
+		Convert kg => g at the same time to have meaninful values.
 	*/
 	calculate_USER_AVE_Sum() {
 		if (this.calculated_ALL_emissions.length > 0) {
@@ -674,7 +677,7 @@ export default class CView extends TimeRangeView {
 		const sel = LM.selected;
 		//const localized_string_emission_el = LM['translation'][sel]['BUILDING_EMISSION_EL'];
 		//const localized_string_emission_dh = LM['translation'][sel]['BUILDING_EMISSION_DH'];
-		const localized_string_emission_axis = LM['translation'][sel]['BUILDING_EMISSION_AXIS_LABEL'];
+		const localized_string_emission_comparison_axis = LM['translation'][sel]['BUILDING_EMISSION_COMPARISON_AXIS_LABEL'];
 		//const localized_string_emission_el_legend = LM['translation'][sel]['BUILDING_EMISSION_EL_LEGEND'];
 		//const localized_string_emission_dh_legend = LM['translation'][sel]['BUILDING_EMISSION_DH_LEGEND'];
 		//const localized_string_emission_all = LM['translation'][sel]['BUILDING_EMISSION_ALL'];
@@ -706,14 +709,14 @@ export default class CView extends TimeRangeView {
 			
 			var valueAxis = self.chart_comparison.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
-			valueAxis.title.text = localized_string_emission_axis;
+			valueAxis.title.text = localized_string_emission_comparison_axis;
 			valueAxis.min = 0;
 			
 			var series1 = self.chart_comparison.series.push(new am4charts.LineSeries());
 			series1.data = self.calculated_AVE_emissions;
 			series1.dataFields.dateX = "timestamp";
 			series1.dataFields.valueY = "value";
-			series1.tooltipText = localized_string_emission_ave + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2";
+			series1.tooltipText = localized_string_emission_ave + ": [bold]{valueY.formatNumber('#.#')}[/] gCO2";
 			series1.fillOpacity = 0;
 			series1.name = "AVERAGEEMISSIONS";
 			series1.customname = localized_string_emission_ave_legend;
@@ -725,7 +728,7 @@ export default class CView extends TimeRangeView {
 			series2.data = self.calculated_USER_emissions; 
 			series2.dataFields.dateX = "timestamp";
 			series2.dataFields.valueY = "value";
-			series2.tooltipText = localized_string_emission_user + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2";
+			series2.tooltipText = localized_string_emission_user + ": [bold]{valueY.formatNumber('#.#')}[/] gCO2";
 			series2.fillOpacity = 0;
 			series2.name = 'USEREMISSIONS';
 			series2.customname = localized_string_emission_user_legend;

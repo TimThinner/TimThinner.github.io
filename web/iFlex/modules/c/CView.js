@@ -263,7 +263,7 @@ export default class CView extends TimeRangeView {
 			if (typeof comparison !== 'undefined' && typeof NOR !== 'undefined') {
 				this.calculated_ALL_emissions.forEach(v=>{
 					this.calculated_AVE_emissions.push({timestamp: v.timestamp, value:comparison});
-					const value = v.value/NOR;
+					const value = v.value*1000/NOR;
 					this.calculated_USER_emissions.push({timestamp: v.timestamp, value:value});
 				});
 			}

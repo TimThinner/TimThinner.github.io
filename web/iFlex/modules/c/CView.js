@@ -244,7 +244,7 @@ export default class CView extends TimeRangeView {
 			const NumberOfResidents = 100;
 			this.calculated_USER_emissions = [];
 			this.calculated_AVE_emissions = [];
-			const interval = this.models['BuildingElectricityPL1Model'].interval;
+			const interval = this.models['CControllerBuildingElectricityPL1Model'].interval;
 			let factor = undefined;
 			if (typeof interval !== 'undefined') {
 				factor = this.intervalMap[interval];

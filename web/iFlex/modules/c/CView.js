@@ -912,9 +912,10 @@ export default class CView extends TimeRangeView {
 					this.forceLogout(this.FELID);
 				}
 			} else {
-				this.calculate_ALL();
-				this.renderChartComparison();
-				this.renderChartTimeseries();
+				if (this.calculate_ALL() === true) {
+					this.renderChartComparison();
+					this.renderChartTimeseries();
+				}
 				myModels.forEach(m=>{
 					this.updateInfoModelValues(m, this.models[m].values.length); // implemented in TimeRangeView
 				});

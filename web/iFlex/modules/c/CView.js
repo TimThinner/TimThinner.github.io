@@ -251,7 +251,7 @@ export default class CView extends TimeRangeView {
 			}
 			this.calculated_ALL_emissions.forEach(v=>{
 				if (typeof factor !== 'undefined') {
-					const comparison = v.value/factor;
+					const comparison = v.value*factor;
 					this.calculated_AVE_emissions.push({timestamp: v.timestamp, value:comparison});
 				}
 				const value = v.value/NumberOfResidents;

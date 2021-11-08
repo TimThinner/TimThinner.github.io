@@ -915,10 +915,10 @@ export default class CView extends TimeRangeView {
 				if (this.calculate_ALL() === true) {
 					this.renderChartComparison();
 					this.renderChartTimeseries();
+					myModels.forEach(m=>{
+						this.updateInfoModelValues(m, this.models[m].values.length); // implemented in TimeRangeView
+					});
 				}
-				myModels.forEach(m=>{
-					this.updateInfoModelValues(m, this.models[m].values.length); // implemented in TimeRangeView
-				});
 			}
 		} else {
 			//console.log('CView => render models ARE NOT READY!!!!');

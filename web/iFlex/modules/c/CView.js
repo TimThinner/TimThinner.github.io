@@ -241,10 +241,11 @@ export default class CView extends TimeRangeView {
 	*/
 	calculate_USER_AVE_Sum() {
 		if (this.calculated_ALL_emissions.length > 0) {
-			const NumberOfResidents = 100;
 			this.calculated_USER_emissions = [];
 			this.calculated_AVE_emissions = [];
 			const interval = this.models['CControllerBuildingElectricityPL1Model'].interval;
+			const NOR = this.models['CControllerBuildingElectricityPL1Model'].numberOfResidents;
+			
 			let factor = undefined;
 			if (typeof interval !== 'undefined') {
 				factor = this.intervalMap[interval];
@@ -254,7 +255,7 @@ export default class CView extends TimeRangeView {
 					const comparison = v.value*factor;
 					this.calculated_AVE_emissions.push({timestamp: v.timestamp, value:comparison});
 				}
-				const value = v.value/NumberOfResidents;
+				const value = v.value/NOR;
 				this.calculated_USER_emissions.push({timestamp: v.timestamp, value:value});
 			});
 			
@@ -704,7 +705,7 @@ export default class CView extends TimeRangeView {
 			valueAxis.min = 0;
 			
 			var series1 = self.chart_comparison.series.push(new am4charts.LineSeries());
-			series1.data = self.calculated_EL_emissions; 
+			series1.data = self.calculated_AVE_emissions;
 			series1.dataFields.dateX = "timestamp";
 			series1.dataFields.valueY = "value";
 			series1.tooltipText = localized_string_emission_ave + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2";
@@ -716,7 +717,7 @@ export default class CView extends TimeRangeView {
 			series1.legendSettings.labelText = "{customname}";
 			
 			var series2 = self.chart_comparison.series.push(new am4charts.LineSeries());
-			series2.data = self.calculated_ALL_emissions; 
+			series2.data = self.calculated_USER_emissions; 
 			series2.dataFields.dateX = "timestamp";
 			series2.dataFields.valueY = "value";
 			series2.tooltipText = localized_string_emission_user + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2";

@@ -109,13 +109,13 @@ export default class CView extends TimeRangeView {
 		24 h =>   2100 / 365 =            2100/365   = 5,75
 		*/
 		this.intervalMap = {
-			'PT15M': 0.0599,
-			'PT30M': 0.120,
-			'PT60M': 0.240,
-			'PT1H': 0.240,
-			'PT2H': 0.479,
-			'PT12H': 2.88,
-			'PT24H': 5.75
+			'PT15M': 35040,
+			'PT30M': 17520,
+			'PT60M': 8760,
+			'PT1H': 8760,
+			'PT2H': 4380,
+			'PT12H': 730,
+			'PT24H': 365
 		};
 	}
 	
@@ -243,22 +243,27 @@ export default class CView extends TimeRangeView {
 		if (this.calculated_ALL_emissions.length > 0) {
 			this.calculated_USER_emissions = [];
 			this.calculated_AVE_emissions = [];
+			
 			const interval = this.models['CControllerBuildingElectricityPL1Model'].interval;
+			const AFHCO2 = this.models['CControllerBuildingElectricityPL1Model'].averageFinnishHousingCO2;
 			const NOR = this.models['CControllerBuildingElectricityPL1Model'].numberOfResidents;
 			
 			let factor = undefined;
-			if (typeof interval !== 'undefined') {
-				factor = this.intervalMap[interval];
-			}
-			this.calculated_ALL_emissions.forEach(v=>{
-				if (typeof factor !== 'undefined') {
-					const comparison = v.value*factor;
-					this.calculated_AVE_emissions.push({timestamp: v.timestamp, value:comparison});
-				}
-				const value = v.value/NOR;
-				this.calculated_USER_emissions.push({timestamp: v.timestamp, value:value});
-			});
+			let comparison = undefined;
 			
+			if (typeof interval !== 'undefined' && typeof AFHCO2 !== 'undefined') {
+				factor = this.intervalMap[interval];
+				if (typeof factor !== 'undefined') {
+					comparison = AFHCO2/factor;
+				}
+			}
+			if (typeof comparison !== 'undefined' && typeof NOR !== 'undefined') {
+				this.calculated_ALL_emissions.forEach(v=>{
+					this.calculated_AVE_emissions.push({timestamp: v.timestamp, value:comparison});
+					const value = v.value/NOR;
+					this.calculated_USER_emissions.push({timestamp: v.timestamp, value:value});
+				});
+			}
 		}
 	}
 	

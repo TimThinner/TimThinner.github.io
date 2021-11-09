@@ -678,18 +678,11 @@ export default class CView extends TimeRangeView {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		//const localized_string_emission_el = LM['translation'][sel]['BUILDING_EMISSION_EL'];
-		//const localized_string_emission_dh = LM['translation'][sel]['BUILDING_EMISSION_DH'];
 		const localized_string_emission_comparison_axis = LM['translation'][sel]['BUILDING_EMISSION_COMPARISON_AXIS_LABEL'];
-		//const localized_string_emission_el_legend = LM['translation'][sel]['BUILDING_EMISSION_EL_LEGEND'];
-		//const localized_string_emission_dh_legend = LM['translation'][sel]['BUILDING_EMISSION_DH_LEGEND'];
-		//const localized_string_emission_all = LM['translation'][sel]['BUILDING_EMISSION_ALL'];
-		//const localized_string_emission_all_legend = LM['translation'][sel]['BUILDING_EMISSION_ALL_LEGEND'];
-		
-		const localized_string_emission_user = 'USER';
-		const localized_string_emission_user_legend = 'USER';
-		const localized_string_emission_ave = 'KA';
-		const localized_string_emission_ave_legend = 'KA';
+		const localized_string_emission_ave = LM['translation'][sel]['BUILDING_EMISSION_AVERAGE'];
+		const localized_string_emission_ave_legend = LM['translation'][sel]['BUILDING_EMISSION_AVERAGE_LEGEND'];
+		const localized_string_emission_user = LM['translation'][sel]['BUILDING_EMISSION_USER'];
+		const localized_string_emission_user_legend = LM['translation'][sel]['BUILDING_EMISSION_USER_LEGEND'];
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -723,8 +716,8 @@ export default class CView extends TimeRangeView {
 			series1.fillOpacity = 0;
 			series1.name = "AVERAGEEMISSIONS";
 			series1.customname = localized_string_emission_ave_legend;
-			series1.stroke = am4core.color("#ff0");
-			series1.fill = "#ff0";
+			series1.stroke = am4core.color("#f80");
+			series1.fill = "#f80";
 			series1.legendSettings.labelText = "{customname}";
 			
 			var series2 = self.chart_comparison.series.push(new am4charts.ColumnSeries());

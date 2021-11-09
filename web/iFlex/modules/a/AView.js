@@ -66,10 +66,10 @@ export default class AView extends TimeRangeView {
 				//if (val > 1000) { val = val/1000; }
 				
 				if (sumbucket.hasOwnProperty(ds)) {
-					sumbucket[ds]['BuildingElectricityPL1Model'] = val; // update
+					sumbucket[ds]['PL1'] = val; // update
 				} else {
 					sumbucket[ds] = {}; // create new entry
-					sumbucket[ds]['BuildingElectricityPL1Model'] = val; // update
+					sumbucket[ds]['PL1'] = val; // update
 				}
 			});
 			
@@ -80,10 +80,10 @@ export default class AView extends TimeRangeView {
 				//if (val > 1000) { val = val/1000; }
 				
 				if (sumbucket.hasOwnProperty(ds)) {
-					sumbucket[ds]['BuildingElectricityPL2Model'] = val; // update
+					sumbucket[ds]['PL2'] = val; // update
 				} else {
 					sumbucket[ds] = {}; // create new entry
-					sumbucket[ds]['BuildingElectricityPL2Model'] = val; // update
+					sumbucket[ds]['PL2'] = val; // update
 				}
 			});
 			
@@ -94,10 +94,10 @@ export default class AView extends TimeRangeView {
 				//if (val > 1000) { val = val/1000; }
 				
 				if (sumbucket.hasOwnProperty(ds)) {
-					sumbucket[ds]['BuildingElectricityPL3Model'] = val; // update
+					sumbucket[ds]['PL3'] = val; // update
 				} else {
 					sumbucket[ds] = {}; // create new entry
-					sumbucket[ds]['BuildingElectricityPL3Model'] = val; // update
+					sumbucket[ds]['PL3'] = val; // update
 				}
 			});
 			
@@ -119,7 +119,7 @@ export default class AView extends TimeRangeView {
 				if (a.timestamp > b.timestamp) {
 					return 1;
 				}
-				return 0; // strings must be equal
+				return 0; // dates must be equal
 			});
 			console.log(['this.values=',this.values]);
 			// sort by timestamp (Date)

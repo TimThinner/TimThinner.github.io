@@ -393,6 +393,19 @@ export default class CView extends TimeRangeView {
 			sum = sum*this.findClosestFactor(key)/1000;
 			this.calculated_EL_emissions.push({timestamp: moment(key).toDate(), value:sum});
 		});
+		
+		// NEW: Sort values by the timestamp Date: oldest first.
+		// sort by string (created is a string, for example: "2021-04-21T07:40:50.965Z")
+		this.calculated_EL_emissions.sort(function(a, b) {
+			if (a.timestamp < b.timestamp) {
+				return -1;
+			}
+			if (a.timestamp > b.timestamp) {
+				return 1;
+			}
+			return 0; // dates must be equal
+		});
+		console.log(['this.values=',this.values]);
 	}
 	
 	/*

@@ -107,6 +107,9 @@ export default class CView extends TimeRangeView {
 		2 h =>    2100 / (365 * 12) =     2100/4380  = 0,479
 		12 h =>   2100 / (365 * 2) =      2100/730   = 2,88
 		24 h =>   2100 / 365 =            2100/365   = 5,75
+		
+		factor tells how many intervals are in one year.
+		So we divide YEARLY average finnish housing CO2 value with this factor.
 		*/
 		this.intervalMap = {
 			'PT15M': 35040,
@@ -724,16 +727,16 @@ export default class CView extends TimeRangeView {
 			series1.fill = "#ff0";
 			series1.legendSettings.labelText = "{customname}";
 			
-			var series2 = self.chart_comparison.series.push(new am4charts.LineSeries());
+			var series2 = self.chart_comparison.series.push(new am4charts.ColumnSeries());
 			series2.data = self.calculated_USER_emissions; 
 			series2.dataFields.dateX = "timestamp";
 			series2.dataFields.valueY = "value";
 			series2.tooltipText = localized_string_emission_user + ": [bold]{valueY.formatNumber('#.#')}[/] gCO2";
-			series2.fillOpacity = 0;
+			series2.fillOpacity = 0.25;
 			series2.name = 'USEREMISSIONS';
 			series2.customname = localized_string_emission_user_legend;
-			series2.stroke = am4core.color("#0f0");
-			series2.fill = "#0f0";
+			series2.stroke = am4core.color("#fff");
+			series2.fill = "#fff";
 			series2.legendSettings.labelText = "{customname}";
 			
 			// Legend:
@@ -748,7 +751,7 @@ export default class CView extends TimeRangeView {
 			self.chart_comparison.cursor = new am4charts.XYCursor();
 			self.chart_comparison.cursor.lineY.opacity = 0;
 			self.chart_comparison.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart_comparison.scrollbarX.series.push(series1);
+			self.chart_comparison.scrollbarX.series.push(series2);
 			
 			dateAxis.start = 0.0;
 			dateAxis.end = 1.0;

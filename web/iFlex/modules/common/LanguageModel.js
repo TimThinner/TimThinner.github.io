@@ -85,7 +85,7 @@ export default class LanguageModel {
 				'BUILDING_POWER_AXIS_LABEL':'Power (kW)',
 				'BUILDING_POWER_LEGEND':'Instantaneous power',
 				'BUILDING_CO2_TITLE':'Building CO<sub>2</sub> carbon footprint',
-				'BUILDING_CO2_DESCRIPTION':'Upper chart compares your homebuilding carbon footprint to average finnish housing carbon footprint.<br/>Lower chart displays CO<sub>2</sub> emissions for electricity and district heating.',
+				'BUILDING_CO2_DESCRIPTION':'Upper chart compares your buildings carbon footprint to average finnish housing carbon footprint (Average taken from whole year value).<br/>Lower chart displays CO<sub>2</sub> emissions for electricity and district heating.',
 				'BUILDING_CO2_CONSUMPTION':'Consumption',
 				'BUILDING_CO2_PRODUCTION':'Production',
 				'BUILDING_EMISSION_EL':'EL',
@@ -231,7 +231,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.11.09b'
+				'MENU_VERSION':'v 21.11.09c'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -315,7 +315,7 @@ export default class LanguageModel {
 				'BUILDING_POWER_AXIS_LABEL':'Teho (kW)',
 				'BUILDING_POWER_LEGEND':'Hetkellinen teho',
 				'BUILDING_CO2_TITLE':'Rakennuksen hiilijalanjälki',
-				'BUILDING_CO2_DESCRIPTION':'Ylemmässä kuvaajassa verrataan asuinrakennuksesi hiilijalanjälkeä keskivertosuomalaisen asumisen hiilijalanjälkeen.<br/>Alemmassa kuvaajassa sähkön ja kaukolämmön CO<sub>2</sub> päästöt.',
+				'BUILDING_CO2_DESCRIPTION':'Ylemmässä kuvaajassa verrataan asuinrakennuksesi hiilijalanjälkeä keskivertosuomalaisen asumisen keskiarvoon (KA laskettu koko vuoden arvosta).<br/>Alemmassa kuvaajassa on sähkön ja kaukolämmön CO<sub>2</sub> päästöt.',
 				'BUILDING_CO2_CONSUMPTION':'Kulutus',
 				'BUILDING_CO2_PRODUCTION':'Tuotanto',
 				'BUILDING_EMISSION_EL':'Sähkö',
@@ -461,7 +461,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.11.09b'
+				'MENU_VERSION':'v 21.11.09c'
 			}
 		}
 	}

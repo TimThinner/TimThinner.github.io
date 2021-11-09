@@ -1,6 +1,8 @@
 import Controller from '../common/Controller.js';
 import EnvironmentPageView from './EnvironmentPageView.js';
+
 //import obixModel from '../energydata/obixModel.js';
+/*
 import EntsoeModel from '../energydata/EntsoeModel.js';
 import RussiaModel from '../energydata/RussiaModel.js';
 import SwedenModel from '../energydata/SwedenModel.js';
@@ -8,7 +10,7 @@ import FinlandPowerPlantsModel from './FinlandPowerPlantsModel.js';
 import EmissionsSummaryModel from './EmissionsSummaryModel.js';
 import ElectricitymapEmissionsModel from './ElectricitymapEmissionsModel.js';
 import { EmissionsCHPModel, EmissionsSeparateModel, EmissionsETModel, EmissionsFingridCoeffModel } from  './EmissionsMiscModels.js';
-
+*/
 export default class EnvironmentPageController extends Controller {
 	
 	constructor(options) {
@@ -73,6 +75,9 @@ export default class EnvironmentPageController extends Controller {
 			</Reason>
 		</Acknowledgement_MarketDocument>
 		*/
+		
+		
+		/*
 		this.sources = [
 			{ type: 'A65', area_name: 'NorwayNO4', psr_type:''},
 			{ type: 'A65', area_name: 'Estonia', psr_type:''},
@@ -114,7 +119,7 @@ export default class EnvironmentPageController extends Controller {
 			{ type: 'A75', area_name: 'NorwayNO4', psr_type:'B12'}, // 'Hydro Water Reservoir'
 			{ type: 'A75', area_name: 'NorwayNO4', psr_type:'B15'}, // 'Other renewable'
 			{ type: 'A75', area_name: 'NorwayNO4', psr_type:'B19'} // 'Wind Onshore'
-		];
+		];*/
 	}
 	
 	remove() {
@@ -125,6 +130,7 @@ export default class EnvironmentPageController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		 /*'obixModel'*/
+		/*
 		const model_names = ['RussiaModel','SwedenModel',
 			'FinlandPowerPlantsModel','EmissionsSummaryModel','ElectricitymapEmissionsModel',
 			'EmissionsCHPModel','EmissionsSeparateModel','EmissionsETModel','EmissionsFingridCoeffModel'];
@@ -137,6 +143,8 @@ export default class EnvironmentPageController extends Controller {
 				this.master.modelRepo.remove(key);
 			}
 		});
+		*/
+		
 	}
 	
 	init() {
@@ -148,6 +156,7 @@ export default class EnvironmentPageController extends Controller {
 		this.models['obixModel'] = m2;
 		*/
 		
+		/*
 		this.sources.forEach(src=> {
 			const model_name = 'Entsoe'+src.type+src.area_name+src.psr_type+'Model';
 			const m = new EntsoeModel({name:model_name,src:'https://transparency.entsoe.eu/api', document_type: src.type, area_name: src.area_name, psr_type:src.psr_type});
@@ -181,7 +190,7 @@ export default class EnvironmentPageController extends Controller {
 		EMEM.subscribe(this);
 		this.master.modelRepo.add('ElectricitymapEmissionsModel',EMEM);
 		this.models['ElectricitymapEmissionsModel'] = EMEM;
-		
+		*/
 		/*
 		Energiaviraston voimalaitosrekisteri.xlsx
 		Emissions_Summary.csv
@@ -195,7 +204,7 @@ export default class EnvironmentPageController extends Controller {
 			"Emissions_ET.csv"
 			"Fingrid_coeff.csv"
 		*/
-		
+		/*
 		const eCHPm = new EmissionsCHPModel({name:'EmissionsCHPModel',src:''});
 		eCHPm.subscribe(this);
 		this.master.modelRepo.add('EmissionsCHPModel',eCHPm);
@@ -253,12 +262,14 @@ export default class EnvironmentPageController extends Controller {
 		
 		this.models['FingridPowerSystemStateModel'] = this.master.modelRepo.get('FingridPowerSystemStateModel');
 		this.models['FingridPowerSystemStateModel'].subscribe(this);
-		
+		*/
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
 		// interval 3600 s = 1 hour
 		/*'obixModel',*/
+		
+		/*
 		const model_names = ['RussiaModel','SwedenModel',
 			'FinlandPowerPlantsModel','EmissionsSummaryModel','ElectricitymapEmissionsModel',
 			'EmissionsCHPModel','EmissionsSeparateModel','EmissionsETModel','EmissionsFingridCoeffModel',
@@ -276,7 +287,7 @@ export default class EnvironmentPageController extends Controller {
 			model_names.push('Entsoe'+src.type+src.area_name+src.psr_type+'Model');
 		});
 		this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 180000, models:model_names}; // interval 1 hour
-		
+		*/
 		this.view = new EnvironmentPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 

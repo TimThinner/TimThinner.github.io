@@ -38,6 +38,7 @@ export default class EnvironmentPageView extends View {
 			this.models[key].subscribe(this);
 			//console.log(['key=',key]);
 		});
+		/*
 		this.table_labels = {
 			'EntsoeA65NorwayNO4Model':{'label':'Total Load Norway NO4','shortname':'Norway NO4'},
 			'EntsoeA65EstoniaModel':{'label':'Total Load Estonia','shortname':'Estonia'},
@@ -76,7 +77,7 @@ export default class EnvironmentPageView extends View {
 			'EntsoeA75NorwayNO4B12Model':{'label':'Norway NO4 Hydro Water Reservoir','shortname':''},
 			'EntsoeA75NorwayNO4B15Model':{'label':'Norway NO4 Other renewable','shortname':''},
 			'EntsoeA75NorwayNO4B19Model':{'label':'Norway NO4 Wind Onshore','shortname':''}
-		};
+		};*/
 /*
 RussiaModel (5)
 P_AES		nuclear power
@@ -97,7 +98,7 @@ SwedenModel (7)
 //'RussiaModel':{'label':'','shortname':''},
 //'SwedenModel':{'label':'','shortname':''}
 		
-		
+		/*
 		// The emission factor [unit/MWh] is taken from the 
 		// Emissions_Summary.csv which 
 		// compiles data for EcoInvent, characterised with the ReCiPe 2016 midpoint I method.
@@ -133,7 +134,7 @@ SwedenModel (7)
 		this.EMISSIONS_SEP = {'total':0,'coal':0,'oil':0,'gas':0,'peat':0,'biomass':0,'others':0};
 		// Fingrid_coeff.csv
 		this.FINGRID_COEFF = {'Hydro':0,'Nuclear':0,'Wind':0,'Solar':0,'DH_CHP':0,'Ind_CHP':0,'Other':0,'Reserve':0};
-		
+		*/
 		this.rendered = false;
 		this.FELID = 'environment-page-view-failure';
 	}
@@ -157,6 +158,7 @@ SwedenModel (7)
 	/*
 	{ resolution: "PT60M", timeInterval: {start:'',end:''}, Point: [{ position: "1", quantity: "19"}, ...]
 ​​​	*/
+	/*
 	updateTable(mname) {
 		let last_quantity = 'NOT AVAILABLE';
 		const ts = this.models[mname].timeseries; // timeseries is an array
@@ -169,7 +171,8 @@ SwedenModel (7)
 		});
 		$('#'+mname+'-quantity').empty().append(last_quantity);
 	}
-	
+	*/
+	/*
 	createTable(fid) {
 		let html = '<h3>ENTSOE</h3>'+
 		'<table class="striped">'+
@@ -190,9 +193,9 @@ SwedenModel (7)
 		html += '</tbody></table>';
 		$(html).appendTo(fid);
 	}
+	*/
 	
-	updateSweden() {
-		const values = this.models['SwedenModel'].values;
+	
 		/*
 		self.values.push({
 				'technology': tech,
@@ -200,6 +203,9 @@ SwedenModel (7)
 				'value': i.y
 		});
 		*/
+	/*
+	updateSweden() {
+		const values = this.models['SwedenModel'].values;
 		let html = '<h3>Sweden</h3>';
 		values.forEach(v=>{
 			html += '<p>technology: ' + v.technology + 
@@ -209,14 +215,7 @@ SwedenModel (7)
 		
 		$('#sweden-wrapper').empty().append(html);
 	}
-	
-	updateRussia() {
-		//self.averages['nuclear'] = SUM_P_AES/count;
-		//self.averages['solar'] = SUM_P_REN/count;
-		//self.averages['stock'] = SUM_P_BS/count;
-		//self.averages['chp'] = SUM_P_TES/count;
-		//self.averages['hydropower'] = SUM_P_GES/count;
-		const aves = this.models['RussiaModel'].averages;
+	*/
 		/*
 			self.values.push({
 				'nuclear': i.P_AES,
@@ -226,13 +225,21 @@ SwedenModel (7)
 				'hydropower': i.P_GES
 			});
 		*/
+	/*
+	updateRussia() {
+		//self.averages['nuclear'] = SUM_P_AES/count;
+		//self.averages['solar'] = SUM_P_REN/count;
+		//self.averages['stock'] = SUM_P_BS/count;
+		//self.averages['chp'] = SUM_P_TES/count;
+		//self.averages['hydropower'] = SUM_P_GES/count;
+		const aves = this.models['RussiaModel'].averages;
 		//console.log(['updateRussia values=',values]);
 		let html = '<h3>Russia</h3>';
 		Object.keys(aves).forEach(key => {
 			html += '<p>' + key + ': ' + aves[key] + '</p>';
 		});
 		$('#russia-wrapper').empty().append(html);
-	}
+	}*/
 /*
 
 
@@ -291,6 +298,7 @@ MAPPING:
 ​​​​21: "Industrial wood residues"
 ​​​​22: "Natural gas"
 ​​​​*/
+/*
 	updateFinlandPowerPlants() {
 		
 		// values is an array of arrays.
@@ -320,11 +328,11 @@ MAPPING:
 		console.log('================================================================');
 		console.log(['values=',values]);
 		console.log('================================================================');
-		
+		*/
 		// index 0 is name, index 7 is type, index 17 is Maximum total MW and index 18 is Hour total MW.
 		// index 20 is the Main Fuel.
 		//let type_hash = {};
-		
+		/*
 		values.forEach(v=>{
 			let fuel = '';
 			const name = v[0]; // Name
@@ -335,23 +343,23 @@ MAPPING:
 				energy = v[17];
 			}
 			const mf = v[20]; // Main fuel
-			/*
-			if (typeof type_hash[type] === 'undefined') {
-				type_hash[type] = type;
-			}*/
-			/*
-			"Wind power"
-			"Hydro power"
-			"Nuclear energy"
-			"Solar"
-			*/
+			
+			//if (typeof type_hash[type] === 'undefined') {
+			//	type_hash[type] = type;
+			//}
+			
+			//"Wind power"
+			//"Hydro power"
+			//"Nuclear energy"
+			//"Solar"
+			
 			if (mf) { // IF main fuel is listed.
-				/*
-				All power plants are gathered in 3 categories:
-					"District heating CHP"
-					"Separate electricity production"
-					"Industry CHP"
-				*/
+				
+				//All power plants are gathered in 3 categories:
+				//	"District heating CHP"
+				//	"Separate electricity production"
+				//	"Industry CHP"
+				
 				if (mf === 'Peat') { fuel = 'peat'; }
 				else if (mf === 'Industrial wood residues') { fuel = 'biomass'; }
 				else if (mf === 'Natural gas') { fuel = 'gas'; }
@@ -372,7 +380,7 @@ MAPPING:
 				else if (mf === 'Mixed fuels') { fuel = 'others'; }
 				else if (mf === 'Gasified waste') { fuel = 'others'; }
 				else if (mf === 'Nuclear energy') { fuel = 'nuclear energy'; }
-			}
+			}*/
 			/*
 				"Peat"
 				"Industrial wood residues"
@@ -404,8 +412,8 @@ MAPPING:
 				'Wind power':[],
 				'Solar':[]
 			};*/
-			this.finpower[type].push({'name':name,'energy':energy,'fuel':fuel});
-		});
+			//this.finpower[type].push({'name':name,'energy':energy,'fuel':fuel});
+		//});
 		/*
 		const types = Object.keys(type_hash);
 		console.log('==========================================================');
@@ -416,7 +424,7 @@ MAPPING:
 		});*/
 		
 		// Type clusters:
-		
+		/*
 		const fuels = Object.keys(this.POWER_CHP_DH);
 		
 		this.finpower["District heating CHP"].forEach(v => {
@@ -474,7 +482,7 @@ MAPPING:
 		
 		html += '<h4>Solar</h4>';
 		html += '<p>Total='+this.SOLAR_TOTAL.toFixed(0)+'MW</p>';
-		
+		*/
 		
 		/*
 		let html = '';
@@ -513,8 +521,10 @@ MAPPING:
 			html += '<p>Name=' + v.name + ' Energy=' + v.energy + ' Fuel='+v.fuel+'</p>';
 		});
 		*/
-		$('#finpower-wrapper').empty().append(html);
-	}
+		
+		
+		//$('#finpower-wrapper').empty().append(html);
+	//}
 	
 	/*
 	5.1.3. Load Emissions data
@@ -529,11 +539,8 @@ MAPPING:
 		"other_biogas;NO;345.37598;0.00129608;7.379338814;0.651773879;0.08656705;0.660963345;9.008573734;0.402944846;0.084247227;138.3859614;36.46999029;10.67224709;0.106596896;4.925282142;44.29541411;0.455656374;32.9793508;3.52948134"
 	}
 	*/
-	updateEmissionsSummary() {
-		const values = this.models['EmissionsSummaryModel'].values;
-		//console.log(['values LENGTH = ',values.length]);
-		this.emission_factors = [];
-		values.forEach(v=>{
+	
+	
 			/*
 			v is an object with key value pair.
 			Key is always the same: "\ufeffTechnology;Country;Global warming;Stratospheric ozone depletion;Ionizing radiation;Ozone formation": 
@@ -546,6 +553,12 @@ MAPPING:
 				coal_chp;EE;1285.968615;
 				...
 			*/
+	/*
+	updateEmissionsSummary() {
+		const values = this.models['EmissionsSummaryModel'].values;
+		//console.log(['values LENGTH = ',values.length]);
+		this.emission_factors = [];
+		values.forEach(v=>{
 			Object.keys(v).forEach(key => {
 				const arr = v[key].split(';');
 				if (typeof arr !== 'undefined' && Array.isArray(arr)) {
@@ -560,8 +573,8 @@ MAPPING:
 			html += '<p>Technology=' + f.technology + ' Country=' + f.country + ' Factor=' + f.factor + '</p>';
 		});
 		$('#factor-wrapper').empty().append(html);
-	}
-	
+	}*/
+	/*
 	updateElemapEmissions() {
 		const values = this.models['ElectricitymapEmissionsModel'].values;
 		this.elemap_factors = [];
@@ -587,8 +600,17 @@ MAPPING:
 			html += '<p>Technology=' + f.technology + ' Country=' + f.country + ' Factor=' + f.factor + '</p>';
 		});
 		$('#elemap-wrapper').empty().append(html);
-	}
-	
+	}*/
+	/*
+		biomass: "4624"​​​
+		coal: "1401"
+		gas: "3016"
+		oil: "75"
+		others: "283"
+		peat: "1218"
+		total: "10617"
+	*/
+	/*
 	updateEmissionsCHP() {
 		
 		this.EMISSIONS_CHP = {'total':0,'coal':0,'oil':0,'gas':0,'peat':0,'biomass':0,'others':0};
@@ -603,14 +625,6 @@ MAPPING:
 		const lastitem = tail[0];
 		let year = '';
 		let month = '';
-		/*
-		biomass: "4624"​​​
-		coal: "1401"
-		gas: "3016"
-		oil: "75"
-		others: "283"
-		peat: "1218"
-		total: "10617"*/
 		
 		Object.keys(lastitem).forEach(k=>{
 			if (k.indexOf('Year') >= 0) {
@@ -627,8 +641,8 @@ MAPPING:
 			html += '<p>'+k+': '+this.EMISSIONS_CHP[k]+'</p>';
 		});
 		$('#emissions-chp-wrapper').empty().append(html);
-	}
-	
+	}*/
+	/*
 	updateEmissionsSeparate() {
 		
 		this.EMISSIONS_SEP = {'total':0,'coal':0,'oil':0,'gas':0,'peat':0,'biomass':0,'others':0};
@@ -663,19 +677,20 @@ MAPPING:
 			html += '<p>'+k+': '+this.EMISSIONS_SEP[k]+'</p>';
 		});
 		$('#emissions-separate-wrapper').empty().append(html);
-	}
+	}*/
 	
-	updateEmissionsET() {
-		
-		this.EMISSIONS_ET = {'coal':0,'oil':0,'gas':0,'peat':0,'other_biogas':0,'biomass':0,'coal_chp':0,'oil_chp':0,'gas_chp':0};
-		/*
+	/*
 		hydro_runof		0
 		nuclear_BWR		0
 		nuclear_PWR		0
 		waste			0
 		solar			0
 		windon			0
-		*/
+	*/
+	/*
+	updateEmissionsET() {
+		
+		this.EMISSIONS_ET = {'coal':0,'oil':0,'gas':0,'peat':0,'other_biogas':0,'biomass':0,'coal_chp':0,'oil_chp':0,'gas_chp':0};
 		const values = this.models['EmissionsETModel'].values;
 		console.log('========================================');
 		console.log(['EmissionsETModel values=',values]);
@@ -706,8 +721,18 @@ MAPPING:
 			html += '<p>'+k+': '+ this.EMISSIONS_ET[k]+'</p>';
 		});
 		$('#emissions-et-wrapper').empty().append(html);
-	}
-	
+	}*/
+	/*
+		DH_CHP: "340"
+		​​​Ind_CHP: "180"
+		​​​Nuclear: "0"
+		​​​Other: "114"
+		​​​Reserve: "814"
+		​​​Solar: "0"
+		​​​Wind: "0"
+		​​​"\ufeffHydro": "0"
+	*/
+	/*
 	updateEmissionsFingridCoeff() {
 		
 		this.FINGRID_COEFF = {'Hydro':0,'Nuclear':0,'Wind':0,'Solar':0,'DH_CHP':0,'Ind_CHP':0,'Other':0,'Reserve':0};
@@ -716,16 +741,6 @@ MAPPING:
 		console.log('========================================');
 		console.log(['EmissionsFingridCoeffModel values=',values]);
 		console.log('========================================');
-/*
-DH_CHP: "340"
-​​​Ind_CHP: "180"
-​​​Nuclear: "0"
-​​​Other: "114"
-​​​Reserve: "814"
-​​​Solar: "0"
-​​​Wind: "0"
-​​​"\ufeffHydro": "0"
-*/
 		if (typeof values !== 'undefined' && Array.isArray(values)) {
 			values.forEach(v => {
 				Object.keys(v).forEach(k=>{
@@ -744,7 +759,7 @@ DH_CHP: "340"
 			html += '<p>'+k+': '+ this.FINGRID_COEFF[k]+'</p>';
 		});
 		$('#emissions-fingrid-coeff-wrapper').empty().append(html);
-	}
+	}*/
 	
 	notifyError(options) {
 		console.log(['ERROR IN FETCHING ',options.model]);
@@ -765,6 +780,9 @@ DH_CHP: "340"
 	
 	notify(options) {
 		if (this.controller.visible) {
+			
+			/*
+			
 			if (options.model.indexOf('Entsoe')===0 && options.method==='fetched') {
 				if (options.status === 200) {
 					//console.log('EnvironmentPageView => ' + options.model + ' fetched!');
@@ -887,6 +905,7 @@ DH_CHP: "340"
 					this.notifyError(options);
 				}
 			}
+			*/
 		}
 	}
 	
@@ -910,6 +929,8 @@ DH_CHP: "340"
 				'</div>'+
 			'</div>'+
 			
+			
+			/*
 			'<div class="row">'+
 				'<div class="col s12" id="table-wrapper"></div>'+
 			'</div>'+
@@ -940,6 +961,8 @@ DH_CHP: "340"
 			'<div class="row">'+
 				'<div class="col s12" id="emissions-fingrid-coeff-wrapper"></div>'+
 			'</div>'+
+			
+			*/
 			'<div class="row">'+
 				'<div class="col s12 center">'+
 					'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
@@ -956,7 +979,7 @@ DH_CHP: "340"
 		$('#back').on('click',function() {
 			self.models['MenuModel'].setSelected('menu');
 		});
-		this.createTable('#table-wrapper');
+		//this.createTable('#table-wrapper');
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {

@@ -1,10 +1,14 @@
 export default class Configuration {
 	constructor() {
-		this.MOCKUP = false;
+		this.MOCKUP = true;
 		this.backend = 'https://makingcity.vtt.fi';
 		this.mongoBackend = 'http://localhost:3000';
 		// NOTE: When this is copied to server, use following setting:
-		//this.mongoBackend = 'https://makingcity.vtt.fi/authtest/data';
+		// this.mongoBackend = 'https://makingcity.vtt.fi/authtest/data';
+		// 
+		// webpage is accessed from:
+		// https://makingcity.vtt.fi/authtest/auth/index.html
+		//
 		this.DEFAULTS = {
 			'price_energy_monthly'  : 10.0,
 			'price_energy_basic'    :  4.5,

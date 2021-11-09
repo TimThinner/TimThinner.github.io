@@ -405,7 +405,7 @@ export default class CView extends TimeRangeView {
 			}
 			return 0; // dates must be equal
 		});
-		console.log(['this.values=',this.values]);
+		console.log(['this.calculated_EL_emissions=',this.calculated_EL_emissions]);
 	}
 	
 	/*

@@ -109,6 +109,23 @@ export default class AView extends TimeRangeView {
 				this.values.push({timestamp: moment(key).toDate(), value:sum});
 			});
 			
+			
+			// NEW: Sort values by the timestamp Date: oldest first.
+			// sort by string (created is a string, for example: "2021-04-21T07:40:50.965Z")
+			this.values.sort(function(a, b) {
+				if (a.timestamp < b.timestamp) {
+					return -1;
+				}
+				if (a.timestamp > b.timestamp) {
+					return 1;
+				}
+				return 0; // strings must be equal
+			});
+			console.log(['this.values=',this.values]);
+			// sort by timestamp (Date)
+			//this.values.sort(function(a,b){
+				//return b.timestamp - a.timestamp;
+			//});
 		}
 	}
 	

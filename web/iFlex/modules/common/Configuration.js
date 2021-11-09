@@ -13,7 +13,7 @@ export default class Configuration {
 				timeranges: [
 					{
 						name: 'TR1D',
-						interval: undefined, // undefined or 'PT15M'
+						interval: 'PT15M', // undefined or 'PT15M'
 						timerange: {begin:{value:1,unit:'days'},end:{value:0,unit:'days'}}
 					},
 					{
@@ -46,6 +46,7 @@ export default class Configuration {
 			{
 				// To calculate emissions we need factor and 3 phases of building electricity + building district heating (heating factor is CONSTANT).
 				// These models cover VIEW C.
+				// NOTE: Use always rollup (interval), we need it to calculate comparison value in View C.
 				model_names: ['BuildingEmissionFactorForElectricityConsumedInFinlandModel',
 					'CControllerBuildingElectricityPL1Model','CControllerBuildingElectricityPL2Model','CControllerBuildingElectricityPL3Model',
 					'CControllerBuildingHeatingQE01Model'],
@@ -89,7 +90,7 @@ export default class Configuration {
 				timeranges: [
 					{
 						name: 'TR1D',
-						interval: undefined, // undefined or 'PT15M'
+						interval: 'PT15M', // undefined or 'PT15M'
 						timerange: {begin:{value:1,unit:'days'},end:{value:0,unit:'days'}}
 					},
 					{

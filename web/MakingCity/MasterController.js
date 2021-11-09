@@ -53,6 +53,7 @@ import DistrictAFController from './modules/districtaf/DistrictAFController.js';
 import DistrictAGController from './modules/districtag/DistrictAGController.js';
 import DistrictAIController from './modules/districtai/DistrictAIController.js';
 
+import DistrictBController from './modules/districtb/DistrictBController.js';
 import BackgroundPeriodicPoller from './modules/common/BackgroundPeriodicPoller.js';
 
 
@@ -284,6 +285,12 @@ class MasterController {
 		
 		this.controllers['DAI'] = new DistrictAIController({name:'DAI', master:this, el:'#content', visible:false});
 		this.controllers['DAI'].init();
+		
+		this.controllers['DB'] = new DistrictBController({name:'DB', master:this, el:'#content', visible:false});
+		this.controllers['DB'].init();
+		
+		
+		
 		
 		console.log('ALL Controllers are now created!');
 	}

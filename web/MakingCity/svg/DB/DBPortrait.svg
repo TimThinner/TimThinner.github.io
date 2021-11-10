@@ -78,7 +78,7 @@
 		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
 		<text class="section-title" id="db-other-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Other</text>
 	</svg>
-	<svg x="330" y="520" width="180px" height="40px">
+	<svg x="300" y="520" width="180px" height="40px">
 		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
 		<text class="section-title" id="db-heating-system-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Heating system</text>
 	</svg>
@@ -109,7 +109,7 @@
 	<rect class="target" id="target-b-d" x="-50" y="-50" width="100" height="100" transform="translate(160,700) scale(1.0)" /><!-- Apartments -->
 	<rect class="target" id="target-b-e" x="-50" y="-50" width="100" height="100" transform="translate(280,700) scale(1.0)" /><!-- Other: ventilation -->
 	
-	<rect class="target" id="target-b-f" x="-50" y="-50" width="100" height="100" transform="translate(420,470) scale(1.0)" /><!-- Heating system -->
+	<rect class="target" id="target-b-f" x="-50" y="-50" width="100" height="100" transform="translate(390,470) scale(1.0)" /><!-- Heating system -->
 	<rect class="target" id="target-b-g" x="-50" y="-50" width="100" height="100" transform="translate(400,260) scale(1.0)" /><!-- Exthaus air recovery -->
 	<rect class="target" id="target-b-h" x="-50" y="-50" width="100" height="100" transform="translate(520,260) scale(1.0)" /><!-- Wastewater recovery -->
 	<rect class="target" id="target-b-i" x="-50" y="-50" width="100" height="100" transform="translate(540,470) scale(1.0)" /><!-- District Heating Network -->

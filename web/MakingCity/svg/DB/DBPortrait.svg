@@ -50,6 +50,73 @@
 <text x="90" y="100" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="82px" fill="#fff">Making City</text>
 <path class="grid-head" d="M0 43 H94" />
 <path class="grid-head" d="M350 100 H600" />
-<text x="360" y="134" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff">S-Market Kaukovainio</text>
+<text x="360" y="140" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff">Sivakka 1 - Vaskitie</text>
+
+<g>
+	<image x="40" y="410" width="80" height="120" xlink:href="powerline.svg" />
+	<image x="120" y="220" width="88" height="80" xlink:href="solarpanel.svg" />
+	<image x="240" y="220" width="88" height="80" xlink:href="solarpanel.svg" />
+	
+	
+	<svg x="0" y="520" width="160px" height="40px">
+		<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-grid-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Grid</text>
+	</svg>
+	<svg x="70" y="310" width="180px" height="40px">
+		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-solar-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Solar energy</text>
+	</svg>
+	<svg x="190" y="310" width="180px" height="40px">
+		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-solar-title-2" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Solar energy</text>
+	</svg>
+	<svg x="70" y="750" width="180px" height="40px">
+		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-apartments-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Apartments</text>
+	</svg>
+	<svg x="190" y="750" width="180px" height="40px">
+		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-other-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Other</text>
+	</svg>
+	<svg x="330" y="520" width="180px" height="40px">
+		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-heating-system-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Heating system</text>
+	</svg>
+	<svg x="310" y="310" width="180px" height="40px">
+		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-exthaus-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Exthaus air</text>
+	</svg>
+	<svg x="430" y="310" width="180px" height="40px">
+		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-wastewater-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Wastewater</text>
+	</svg>
+	<svg x="450" y="520" width="180px" height="40px">
+		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-dhn-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">DHN</text>
+	</svg>
+	<svg x="310" y="750" width="180px" height="40px">
+		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-dhn-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Heating devices</text>
+	</svg>
+	<svg x="430" y="750" width="180px" height="40px">
+		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-dhn-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Hot water</text>
+	</svg>
+	
+	<rect class="target" id="target-b-a" x="-50" y="-50" width="100" height="100" transform="translate(80,470) scale(1.0)" /><!-- Grid: powerline -->
+	<rect class="target" id="target-b-b" x="-50" y="-50" width="100" height="100" transform="translate(160,260) scale(1.0)" /><!-- Left solarpanel -->
+	<rect class="target" id="target-b-c" x="-50" y="-50" width="100" height="100" transform="translate(280,260) scale(1.0)" /><!-- Right solarpanel -->
+	<rect class="target" id="target-b-d" x="-50" y="-50" width="100" height="100" transform="translate(160,700) scale(1.0)" /><!-- Apartments -->
+	<rect class="target" id="target-b-e" x="-50" y="-50" width="100" height="100" transform="translate(280,700) scale(1.0)" /><!-- Other: ventilation -->
+	
+	<rect class="target" id="target-b-f" x="-50" y="-50" width="100" height="100" transform="translate(420,470) scale(1.0)" /><!-- Heating system -->
+	<rect class="target" id="target-b-g" x="-50" y="-50" width="100" height="100" transform="translate(400,260) scale(1.0)" /><!-- Exthaus air recovery -->
+	<rect class="target" id="target-b-h" x="-50" y="-50" width="100" height="100" transform="translate(520,260) scale(1.0)" /><!-- Wastewater recovery -->
+	<rect class="target" id="target-b-i" x="-50" y="-50" width="100" height="100" transform="translate(540,470) scale(1.0)" /><!-- District Heating Network -->
+	
+	<rect class="target" id="target-b-j" x="-50" y="-50" width="100" height="100" transform="translate(400,700) scale(1.0)" /><!-- Heating devices -->
+	<rect class="target" id="target-b-k" x="-50" y="-50" width="100" height="100" transform="translate(520,700) scale(1.0)" /><!-- Hot water -->
+</g>
+
 <image id="back" class="back-button" x="10" y="50" width="75" height="50" xlink:href="backbutton.svg" />
 </svg>

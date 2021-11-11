@@ -545,7 +545,7 @@ meterId
 			this.fillSVGTextElement(svgObject, 'db-apartments-title', localized_apartments_title);
 			this.fillSVGTextElement(svgObject, 'db-other-title-1', localized_other_title_1);
 			this.fillSVGTextElement(svgObject, 'db-other-title-2', localized_other_title_2);
-			this.fillSVGTextElement(svgObject, 'db-other-title-3', localized_other_title_3;
+			this.fillSVGTextElement(svgObject, 'db-other-title-3', localized_other_title_3);
 			this.fillSVGTextElement(svgObject, 'db-heating-system-title-1', localized_heating_system_title_1);
 			this.fillSVGTextElement(svgObject, 'db-heating-system-title-2', localized_heating_system_title_2);
 			this.fillSVGTextElement(svgObject, 'db-exthaus-air-reco-title-1', localized_exthaus_air_reco_title_1);

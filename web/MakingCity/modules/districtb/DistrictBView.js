@@ -534,10 +534,10 @@ meterId
 			const localized_dhn_title_1 = LM['translation'][sel]['DBI_TITLE_1'];
 			const localized_dhn_title_2 = LM['translation'][sel]['DBI_TITLE_2'];
 			const localized_dhn_title_3 = LM['translation'][sel]['DBI_TITLE_3'];
-			const localized_heating_dev_title_1 = LM['translation'][sel]['DBJ_TITLE'];
-			const localized_heating_dev_title_2 = LM['translation'][sel]['DBJ_TITLE'];
-			const localized_hot_water_title_1 = LM['translation'][sel]['DBK_TITLE'];
-			const localized_hot_water_title_2 = LM['translation'][sel]['DBK_TITLE'];
+			const localized_heating_dev_title_1 = LM['translation'][sel]['DBJ_TITLE_1'];
+			const localized_heating_dev_title_2 = LM['translation'][sel]['DBJ_TITLE_2'];
+			const localized_hot_water_title_1 = LM['translation'][sel]['DBK_TITLE_1'];
+			const localized_hot_water_title_2 = LM['translation'][sel]['DBK_TITLE_2'];
 			
 			this.fillSVGTextElement(svgObject, 'db-grid-title', localized_grid_title);
 			this.fillSVGTextElement(svgObject, 'db-solar-title', localized_solar_title);

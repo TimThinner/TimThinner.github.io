@@ -519,47 +519,46 @@ meterId
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			
-			/*
-			const localized_grid_title = LM['translation'][sel]['DAA_TITLE'];
-			const localized_solar_title = LM['translation'][sel]['DAB_TITLE'];
-			const localized_geothermal_title = LM['translation'][sel]['DAI_TITLE'];
-			const localized_light_title = LM['translation'][sel]['DAC_TITLE'];
-			const localized_kitchen_title = LM['translation'][sel]['DAD_TITLE'];
-			const localized_hpac_title = LM['translation'][sel]['DAE_TITLE'];
-			const localized_other_title = LM['translation'][sel]['DAF_TITLE'];
-			const localized_cooler_machines_title = LM['translation'][sel]['DAHA_TITLE'];
-			const localized_cooler_equipment_title = LM['translation'][sel]['DAHB_TITLE'];
-			const localized_cooling_title = LM['translation'][sel]['DAHC_TITLE'];
-			const localized_heating_title = LM['translation'][sel]['DAHD_TITLE'];
-			const localized_dhn_title_a = LM['translation'][sel]['DAP_TITLE_A'];
-			const localized_dhn_title_b = LM['translation'][sel]['DAP_TITLE_B'];
-			const localized_dhn_title_c = LM['translation'][sel]['DAP_TITLE_C'];
-			*/
+			const localized_grid_title = LM['translation'][sel]['DBA_TITLE'];
 			const localized_solar_title = LM['translation'][sel]['DBB_TITLE'];
-			const localized_dhn_title_a = LM['translation'][sel]['DBI_TITLE_A'];
-			const localized_dhn_title_b = LM['translation'][sel]['DBI_TITLE_B'];
-			const localized_dhn_title_c = LM['translation'][sel]['DBI_TITLE_C'];
-			/*
-			this.fillSVGTextElement(svgObject, 'da-grid-title', localized_grid_title);
-			this.fillSVGTextElement(svgObject, 'da-solar-title', localized_solar_title);
-			this.fillSVGTextElement(svgObject, 'da-geothermal-title', localized_geothermal_title);
-			this.fillSVGTextElement(svgObject, 'da-light-title', localized_light_title);
-			this.fillSVGTextElement(svgObject, 'da-kitchen-title', localized_kitchen_title);
-			this.fillSVGTextElement(svgObject, 'da-hpac-title', localized_hpac_title);
-			this.fillSVGTextElement(svgObject, 'da-other-title', localized_other_title);
-			this.fillSVGTextElement(svgObject, 'da-cooler-machines-title', localized_cooler_machines_title);
-			this.fillSVGTextElement(svgObject, 'da-cooler-equipment-title', localized_cooler_equipment_title);
-			this.fillSVGTextElement(svgObject, 'da-cooling-title', localized_cooling_title);
-			this.fillSVGTextElement(svgObject, 'da-heating-title', localized_heating_title);
-			this.fillSVGTextElement(svgObject, 'da-dhn-district-title', localized_dhn_title_a);
-			this.fillSVGTextElement(svgObject, 'da-dhn-heating-title', localized_dhn_title_b);
-			this.fillSVGTextElement(svgObject, 'da-dhn-network-title', localized_dhn_title_c);
-			*/
+			const localized_apartments_title = LM['translation'][sel]['DBD_TITLE'];
+			const localized_other_title_1 = LM['translation'][sel]['DBE_TITLE_1'];
+			const localized_other_title_2 = LM['translation'][sel]['DBE_TITLE_2'];
+			const localized_other_title_3 = LM['translation'][sel]['DBE_TITLE_3'];
+			const localized_heating_system_title_1 = LM['translation'][sel]['DBF_TITLE_1'];
+			const localized_heating_system_title_2 = LM['translation'][sel]['DBF_TITLE_2'];
+			const localized_exthaus_air_reco_title_1 = LM['translation'][sel]['DBG_TITLE_1'];
+			const localized_exthaus_air_reco_title_2 = LM['translation'][sel]['DBG_TITLE_2'];
+			const localized_wastewater_reco_title_1 = LM['translation'][sel]['DBH_TITLE_1'];
+			const localized_wastewater_reco_title_2 = LM['translation'][sel]['DBH_TITLE_2'];
+			const localized_dhn_title_1 = LM['translation'][sel]['DBI_TITLE_1'];
+			const localized_dhn_title_2 = LM['translation'][sel]['DBI_TITLE_2'];
+			const localized_dhn_title_3 = LM['translation'][sel]['DBI_TITLE_3'];
+			const localized_heating_dev_title_1 = LM['translation'][sel]['DBJ_TITLE'];
+			const localized_heating_dev_title_2 = LM['translation'][sel]['DBJ_TITLE'];
+			const localized_hot_water_title_1 = LM['translation'][sel]['DBK_TITLE'];
+			const localized_hot_water_title_2 = LM['translation'][sel]['DBK_TITLE'];
+			
+			this.fillSVGTextElement(svgObject, 'db-grid-title', localized_grid_title);
 			this.fillSVGTextElement(svgObject, 'db-solar-title', localized_solar_title);
 			this.fillSVGTextElement(svgObject, 'db-solar-title-2', localized_solar_title);
-			this.fillSVGTextElement(svgObject, 'db-dhn-district-title', localized_dhn_title_a);
-			this.fillSVGTextElement(svgObject, 'db-dhn-heating-title', localized_dhn_title_b);
-			this.fillSVGTextElement(svgObject, 'db-dhn-network-title', localized_dhn_title_c);
+			this.fillSVGTextElement(svgObject, 'db-apartments-title', localized_apartments_title);
+			this.fillSVGTextElement(svgObject, 'db-other-title-1', localized_other_title_1);
+			this.fillSVGTextElement(svgObject, 'db-other-title-2', localized_other_title_2);
+			this.fillSVGTextElement(svgObject, 'db-other-title-3', localized_other_title_3;
+			this.fillSVGTextElement(svgObject, 'db-heating-system-title-1', localized_heating_system_title_1);
+			this.fillSVGTextElement(svgObject, 'db-heating-system-title-2', localized_heating_system_title_2);
+			this.fillSVGTextElement(svgObject, 'db-exthaus-air-reco-title-1', localized_exthaus_air_reco_title_1);
+			this.fillSVGTextElement(svgObject, 'db-exthaus-air-reco-title-2', localized_exthaus_air_reco_title_2);
+			this.fillSVGTextElement(svgObject, 'db-wastewater-reco-title-1', localized_wastewater_reco_title_1);
+			this.fillSVGTextElement(svgObject, 'db-wastewater-reco-title-2', localized_wastewater_reco_title_2);
+			this.fillSVGTextElement(svgObject, 'db-dhn-title-1', localized_dhn_title_1);
+			this.fillSVGTextElement(svgObject, 'db-dhn-title-2', localized_dhn_title_2);
+			this.fillSVGTextElement(svgObject, 'db-dhn-title-3', localized_dhn_title_3);
+			this.fillSVGTextElement(svgObject, 'db-heating-dev-title-1', localized_heating_dev_title_1);
+			this.fillSVGTextElement(svgObject, 'db-heating-dev-title-2', localized_heating_dev_title_2);
+			this.fillSVGTextElement(svgObject, 'db-hot-water-title-1', localized_hot_water_title_1);
+			this.fillSVGTextElement(svgObject, 'db-hot-water-title-2', localized_hot_water_title_2);
 		}
 	}
 	

@@ -110,46 +110,96 @@
 		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-solar-title-2" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Solar energy</text>
 	</svg>
+	<!--
 	<svg x="70" y="770" width="240px" height="40px">
-		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-apartments-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Apartments</text>
+	</svg>-->
+	<svg x="80" y="680" width="240px" height="40px">
 		<text class="section-title" id="db-apartments-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Apartments</text>
 	</svg>
+	<!--
 	<svg x="310" y="770" width="240px" height="40px">
-		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
 		<text class="section-title" id="db-other-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Other</text>
+	</svg>-->
+	<svg x="320" y="650" width="240px" height="40px">
+		<text class="section-title" id="db-other-title-1" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">SAUNA,</text>
 	</svg>
+	<svg x="320" y="680" width="240px" height="40px">
+		<text class="section-title" id="db-other-title-2" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">lights,</text>
+	</svg>
+	<svg x="320" y="710" width="240px" height="40px">
+		<text class="section-title" id="db-other-title-3" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">etc.</text>
+	</svg>
+	<!--
 	<svg x="580" y="540" width="240px" height="40px">
-		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
 		<text class="section-title" id="db-heating-system-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Heating system</text>
 	</svg>
-	<svg x="560" y="330" width="240px" height="40px">
-		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text class="section-title" id="db-exthaus-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Exthaus air</text>
+	-->
+	<svg x="580" y="440" width="240px" height="40px">
+		<text class="section-title" id="db-heating-system-title-1" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Heating</text>
 	</svg>
+	<svg x="580" y="470" width="240px" height="40px">
+		<text class="section-title" id="db-heating-system-title-2" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">system</text>
+	</svg>
+	<!--
+	<svg x="560" y="330" width="240px" height="40px">
+		<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text class="section-title" id="db-exthaus-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Exthaus air</text>
+	</svg>-->
+	<svg x="560" y="230" width="240px" height="40px">
+		<text class="section-title" id="db-exthaus-air-reco-title-1" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Exthaus air</text>
+	</svg>
+	<svg x="560" y="260" width="240px" height="40px">
+		<text class="section-title" id="db-exthaus-air-reco-title-2" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">recovery</text>
+	</svg>
+	<!--
 	<svg x="740" y="330" width="240px" height="40px">
-		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
 		<text class="section-title" id="db-wastewater-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Wastewater</text>
+	</svg>-->
+	<svg x="740" y="230" width="240px" height="40px">
+		<text class="section-title" id="db-wastewater-reco-title-1" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Wastewater</text>
+	</svg>
+	<svg x="740" y="260" width="240px" height="40px">
+		<text class="section-title" id="db-wastewater-reco-title-2" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">recovery</text>
 	</svg>
 	<!--<svg x="780" y="540" width="240px" height="40px">
 		<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
 		<text class="section-title" id="db-dhn-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">DHN</text>
 	</svg>-->
 	<svg x="780" y="420" width="240px" height="40px">
-		<text class="section-title" id="db-dhn-district-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District</text>
+		<text class="section-title" id="db-dhn-title-1" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District</text>
 	</svg>
 	<svg x="780" y="450" width="240px" height="40px">
-		<text class="section-title" id="db-dhn-heating-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">heating</text>
+		<text class="section-title" id="db-dhn-title-2" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">heating</text>
 	</svg>
 	<svg x="780" y="480" width="240px" height="40px">
-		<text class="section-title" id="db-dhn-network-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">network</text>
+		<text class="section-title" id="db-dhn-title-3" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">network</text>
 	</svg>
+	<!--
 	<svg x="560" y="770" width="240px" height="40px">
-		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
 		<text class="section-title" id="db-dhn-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Heating devices</text>
+	</svg>-->
+	<svg x="560" y="670" width="240px" height="40px">
+		<text class="section-title" id="db-heating-dev-title-1" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Heating</text>
 	</svg>
+	<svg x="560" y="700" width="240px" height="40px">
+		<text class="section-title" id="db-heating-dev-title-2" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">devices</text>
+	</svg>
+	<!--
 	<svg x="740" y="770" width="240px" height="40px">
-		<!--<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<rect x="1" y="1" width="238" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
 		<text class="section-title" id="db-dhn-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Hot water</text>
+	</svg>-->
+	<svg x="740" y="670" width="240px" height="40px">
+		<text class="section-title" id="db-hot-water-title-1" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Hot</text>
+	</svg>
+	<svg x="740" y="700" width="240px" height="40px">
+		<text class="section-title" id="db-hot-water-title-2" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">water</text>
 	</svg>
 	
 	<rect class="target" id="target-b-a" x="-60" y="-60" width="120" height="120" transform="translate(120,470) scale(1.0)" /><!-- Grid: powerline -->

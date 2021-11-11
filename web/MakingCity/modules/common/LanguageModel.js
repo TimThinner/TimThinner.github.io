@@ -126,7 +126,7 @@ export default class LanguageModel {
 				'DBA_TITLE':'Grid',
 				'DBB_TITLE':'Solar power',
 				'DBD_TITLE':'Apartments',
-				'DBE_TITLE_1':'SAUNA,'
+				'DBE_TITLE_1':'SAUNA,',
 				'DBE_TITLE_2':'lights,',
 				'DBE_TITLE_3':'etc.',
 				'DBF_TITLE_1':'Heating',
@@ -273,7 +273,7 @@ export default class LanguageModel {
 				'DBA_TITLE':'Grid',
 				'DBB_TITLE':'Aurinkoenergia',
 				'DBD_TITLE':'Asunnot',
-				'DBE_TITLE_1':'SAUNA,'
+				'DBE_TITLE_1':'SAUNA,',
 				'DBE_TITLE_2':'valot,',
 				'DBE_TITLE_3':'yms.',
 				'DBF_TITLE_1':'Heating',

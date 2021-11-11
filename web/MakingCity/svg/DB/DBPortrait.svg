@@ -18,7 +18,7 @@
 .grid-head {
 	opacity: 0.75;
 	stroke-width: 1;
-	stroke: #fff;
+	stroke: #444;
 }
 .back-button {
 	cursor: pointer;
@@ -26,31 +26,23 @@
 }
 </style>
 <!--
-<rect fill="#fff" stroke="#eee" stroke-width="10" x="5" y="5" width="1790" height="890"/>
-#e0f2f1 teal lighten-5
-#b2dfdb teal lighten-4
-#80cbc4 teal lighten-3
-#4db6ac teal lighten-2
-#26a69a teal lighten-1
-#009688 teal
-#00897b teal darken-1
-#00796b teal darken-2
-#00695c teal darken-3
-#004d40 teal darken-4
+#fff3e0 orange lighten-5
+#ffe0b2 orange lighten-4
+#ffcc80 orange lighten-3
 -->
 <defs>
 	<radialGradient id="grad" cx="50%" cy="50%" r="75%"><!-- fx="50%" fy="50%">-->
-		<stop offset="10%" style="stop-color:#e0f2f1; stop-opacity:1" />
-		<stop offset="50%" style="stop-color:#80cbc4; stop-opacity:1" />
-		<stop offset="90%" style="stop-color:#009688; stop-opacity:1" />
+		<stop offset="10%" style="stop-color:#fff3e0; stop-opacity:1" />
+		<stop offset="50%" style="stop-color:#ffe0b2; stop-opacity:1" />
+		<stop offset="90%" style="stop-color:#ffcc80; stop-opacity:1" />
 	</radialGradient>
 </defs>
 <rect x="0" y="0" width="600" height="900" fill="url(#grad)" stroke-width="0" stroke="#000" />
 
-<text x="90" y="100" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="82px" fill="#fff">Making City</text>
+<text x="90" y="100" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="82px" fill="#444">Making City</text>
 <path class="grid-head" d="M0 43 H94" />
 <path class="grid-head" d="M350 100 H600" />
-<text x="360" y="140" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff">Sivakka 1 - Vaskitie</text>
+<text x="360" y="140" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#444">Sivakka 1 - Vaskitie</text>
 
 <g>
 	<path id="main-pipe" d="M 130,470 L 340,470"
@@ -107,47 +99,47 @@
 	<image x="240" y="220" width="88" height="80" xlink:href="solarpanel.svg" />
 	
 	<svg x="0" y="520" width="160px" height="40px">
-		<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-grid-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Grid</text>
 	</svg>
 	<svg x="70" y="310" width="180px" height="40px">
-		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-solar-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Solar energy</text>
 	</svg>
 	<svg x="190" y="310" width="180px" height="40px">
-		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-solar-title-2" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Solar energy</text>
 	</svg>
 	<svg x="70" y="750" width="180px" height="40px">
-		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-apartments-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Apartments</text>
 	</svg>
 	<svg x="190" y="750" width="180px" height="40px">
-		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-other-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Other</text>
 	</svg>
 	<svg x="300" y="520" width="180px" height="40px">
-		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-heating-system-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Heating system</text>
 	</svg>
 	<svg x="310" y="310" width="180px" height="40px">
-		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-exthaus-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Exthaus air</text>
 	</svg>
 	<svg x="430" y="310" width="180px" height="40px">
-		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-wastewater-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Wastewater</text>
 	</svg>
 	<svg x="450" y="520" width="180px" height="40px">
-		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-dhn-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">DHN</text>
 	</svg>
 	<svg x="310" y="750" width="180px" height="40px">
-		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-dhn-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Heating devices</text>
 	</svg>
 	<svg x="430" y="750" width="180px" height="40px">
-		<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<!--<rect x="1" y="1" width="178" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text class="section-title" id="db-dhn-title" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Hot water</text>
 	</svg>
 	

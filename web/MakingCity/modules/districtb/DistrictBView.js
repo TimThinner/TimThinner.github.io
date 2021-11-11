@@ -393,117 +393,120 @@ meterId
 				
 			}, false);
 			
+			/* 
+			11 targets:
+			"target-b-a"  ... "target-b-k"
+			*/
 			const targetBA = svgObject.getElementById('target-b-a');
 			targetBA.addEventListener("click", function(){
 				
-				//self.menuModel.setSelected('DBA');
 				console.log('Target B A clicked!');
+				//self.menuModel.setSelected('DBA');
 				
 			}, false);
 			targetBA.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetBA.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
-			/*
-			const targetAB = svgObject.getElementById('target-a-b');
-			targetAB.addEventListener("click", function(){
-				
-				self.menuModel.setSelected('DAB');
-				
-			}, false);
-			targetAB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetAC = svgObject.getElementById('target-a-c');
-			targetAC.addEventListener("click", function(){
+			const targetBB = svgObject.getElementById('target-b-b');
+			targetBB.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('DAC');
+				console.log('Target B B clicked!');
+				//self.menuModel.setSelected('DBB');
 				
 			}, false);
-			targetAC.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAC.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			targetBB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetBB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetAD = svgObject.getElementById('target-a-d');
-			targetAD.addEventListener("click", function(){
+			const targetBC = svgObject.getElementById('target-b-c');
+			targetBC.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('DAD');
+				console.log('Target B C clicked!');
+				//self.menuModel.setSelected('DBC');
 				
 			}, false);
-			targetAD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAD.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			targetBC.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetBC.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetAE = svgObject.getElementById('target-a-e');
-			targetAE.addEventListener("click", function(){
+			const targetBD = svgObject.getElementById('target-b-d');
+			targetBD.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('DAE');
+				console.log('Target B D clicked!');
+				//self.menuModel.setSelected('DBD');
 				
 			}, false);
-			targetAE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			targetBD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetBD.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetAF = svgObject.getElementById('target-a-f');
-			targetAF.addEventListener("click", function(){
+			const targetBE = svgObject.getElementById('target-b-e');
+			targetBE.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('DAF');
+				console.log('Target B E clicked!');
+				//self.menuModel.setSelected('DBE');
 				
 			}, false);
-			targetAF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAF.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			targetBE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetBE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetAG = svgObject.getElementById('target-a-g');
-			targetAG.addEventListener("click", function(){
+			const targetBF = svgObject.getElementById('target-b-f');
+			targetBF.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('DAG');
+				console.log('Target B F clicked!');
+				//self.menuModel.setSelected('DBF');
 				
 			}, false);
-			targetAG.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAG.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			targetBF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetBF.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetAH = svgObject.getElementById('target-a-h');
-			targetAH.addEventListener("click", function(){
+			const targetBG = svgObject.getElementById('target-b-g');
+			targetBG.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('DAG');
+				console.log('Target B G clicked!');
+				//self.menuModel.setSelected('DBG');
 				
 			}, false);
-			targetAH.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAH.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			targetBG.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetBG.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetAM = svgObject.getElementById('target-a-m');
-			targetAM.addEventListener("click", function(){
+			const targetBH = svgObject.getElementById('target-b-h');
+			targetBH.addEventListener("click", function(){
 				
-				//console.log('Cooling');
-				self.menuModel.setSelected('DAG');
+				console.log('Target B H clicked!');
+				//self.menuModel.setSelected('DBH');
 				
 			}, false);
-			targetAM.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAM.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			targetBH.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetBH.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetAN = svgObject.getElementById('target-a-n');
-			targetAN.addEventListener("click", function(){
+			const targetBI = svgObject.getElementById('target-b-i');
+			targetBI.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('DAG');
+				console.log('Target B I clicked!');
+				//self.menuModel.setSelected('DBI');
 				
 			}, false);
-			targetAN.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAN.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			targetBI.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetBI.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetAI = svgObject.getElementById('target-a-i');
-			targetAI.addEventListener("click", function(){
+			const targetBJ = svgObject.getElementById('target-b-j');
+			targetBJ.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('DAI');
+				console.log('Target B J clicked!');
+				//self.menuModel.setSelected('DBJ');
 				
 			}, false);
-			targetAI.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAI.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			targetBJ.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetBJ.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetAP = svgObject.getElementById('target-a-p');
-			targetAP.addEventListener("click", function(){
+			const targetBK = svgObject.getElementById('target-b-k');
+			targetBK.addEventListener("click", function(){
 				
-				//console.log('District Heating Network');
-				self.menuModel.setSelected('DAG');
+				console.log('Target B K clicked!');
+				//self.menuModel.setSelected('DBK');
 				
 			}, false);
-			targetAP.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAP.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
-			*/
+			targetBK.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetBK.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			
 		} else {
 			console.log("svgObject is NOT ready!");
 		}

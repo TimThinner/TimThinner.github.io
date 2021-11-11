@@ -393,19 +393,16 @@ meterId
 				
 			}, false);
 			
-			
-			
-			/*
-			
-			const targetAA = svgObject.getElementById('target-a-a');
-			targetAA.addEventListener("click", function(){
+			const targetBA = svgObject.getElementById('target-b-a');
+			targetBA.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('DAA');
+				//self.menuModel.setSelected('DBA');
+				console.log('Target B A clicked!');
 				
 			}, false);
-			targetAA.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			targetAA.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
-			
+			targetBA.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
+			targetBA.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			/*
 			const targetAB = svgObject.getElementById('target-a-b');
 			targetAB.addEventListener("click", function(){
 				
@@ -536,6 +533,9 @@ meterId
 			const localized_dhn_title_c = LM['translation'][sel]['DAP_TITLE_C'];
 			*/
 			const localized_solar_title = LM['translation'][sel]['DBB_TITLE'];
+			const localized_dhn_title_a = LM['translation'][sel]['DBI_TITLE_A'];
+			const localized_dhn_title_b = LM['translation'][sel]['DBI_TITLE_B'];
+			const localized_dhn_title_c = LM['translation'][sel]['DBI_TITLE_C'];
 			/*
 			this.fillSVGTextElement(svgObject, 'da-grid-title', localized_grid_title);
 			this.fillSVGTextElement(svgObject, 'da-solar-title', localized_solar_title);
@@ -554,6 +554,9 @@ meterId
 			*/
 			this.fillSVGTextElement(svgObject, 'db-solar-title', localized_solar_title);
 			this.fillSVGTextElement(svgObject, 'db-solar-title-2', localized_solar_title);
+			this.fillSVGTextElement(svgObject, 'db-dhn-district-title', localized_dhn_title_a);
+			this.fillSVGTextElement(svgObject, 'db-dhn-heating-title', localized_dhn_title_b);
+			this.fillSVGTextElement(svgObject, 'db-dhn-network-title', localized_dhn_title_c);
 		}
 	}
 	

@@ -97,7 +97,6 @@ export default class LanguageModel {
 				'DISTRICT_E_LABEL':'YIT 1',
 				'MENU_TITLE':'Positive Energy Districts',
 				'MENU_DESCRIPTION':'<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">THE MAKING-CITY PROJECT</a> is funded by EU’s Horizon 2020 programme and is a part of the Smart Cities and Communities (SCC) theme.',
-				'MENU_VERSION':'v 21.06.10',
 				'MENU_VISIT_COUNT':'visit count',
 				'SOLAR_PANELS':'SOLAR PANELS',
 				'GRID_TEXT':'GRID',
@@ -123,13 +122,15 @@ export default class LanguageModel {
 				'DAI_TITLE':'Geothermal power',
 				'DAA_POWER':'Power',
 				'DAA_ENERGY':'Energy',
+				'DBB_TITLE':'Solar power',
 				'DAW_SEL_TIMERANGE':'Select timerange for database query:',
 				'AUTO_UPDATE_MSG_1':'Chart is automatically updated once every',
 				'AUTO_UPDATE_MSG_1_B':'Power consumption values are automatically updated once every',
 				'AUTO_UPDATE_MSG_2':'seconds',
 				'AUTO_UPDATE_MSG_3':'Chart is NOT automatically updated',
 				'ADJUST_UPDATE_INTERVAL':'Adjust the update interval (0-60s):',
-				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!'
+				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
+				'MENU_VERSION':'v 21.11.11'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -225,7 +226,6 @@ export default class LanguageModel {
 				'DISTRICT_E_LABEL':'YIT 1',
 				'MENU_TITLE':'Energiataseeltaan positiivinen alue',
 				'MENU_DESCRIPTION':'<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">MAKING-CITY HANKE</a> saa rahoitusta EU:n Horizon 2020 -ohjelmasta. Se kuuluu Smart Cities and Communities (SCC) -teemaan.',
-				'MENU_VERSION':'v 21.06.10',
 				'MENU_VISIT_COUNT':'kävijälaskuri',
 				'SOLAR_PANELS':'AURINKOPANEELIT',
 				'GRID_TEXT':'SÄHKÖVERKKO',
@@ -252,12 +252,14 @@ export default class LanguageModel {
 				'DAA_POWER':'Teho',
 				'DAA_ENERGY':'Energia',
 				'DAW_SEL_TIMERANGE':'Valitse kuvaajan aikaikkuna:',
+				'DBB_TITLE':'Aurinkoteho',
 				'AUTO_UPDATE_MSG_1':'Kuvaaja päivittyy automaattisesti kerran',
 				'AUTO_UPDATE_MSG_1_B':'Teholukemat päivittyvät automaattisesti kerran',
 				'AUTO_UPDATE_MSG_2':'sekunnissa',
 				'AUTO_UPDATE_MSG_3':'Kuvaaja EI päivity automaattisesti',
 				'ADJUST_UPDATE_INTERVAL':'Säädä päivitystaajuutta (0-60s):',
-				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!'
+				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
+				'MENU_VERSION':'v 21.11.11'
 			}
 		}
 	}

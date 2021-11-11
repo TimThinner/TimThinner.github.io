@@ -53,10 +53,58 @@
 <text x="360" y="140" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="22px" fill="#fff">Sivakka 1 - Vaskitie</text>
 
 <g>
+	<path id="main-pipe" d="M 130,470 L 340,470"
+	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="solar-pipe-1" d="M 170,310 L 170,400 A 20,20 0 0,0 190,420 L 220,420 A 20,20 0 0,1 240,440 L 240,470"
+	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="solar-pipe-2" d="M 280,310 L 280,420 A 20,20 0 0,0 300,440 L 340,440"
+	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="sub-pipe-1" d="M 240,470 L 240,570"
+	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="apartment-pipe" d="M 240,570 L 180,570 A 20,20 0 0,0 160,590 L 160,650"
+	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="other-pipe" d="M 240,570 L 260,570 A 20,20 0 0,1 280,590 L 280,650"
+	style="opacity:0.5;stroke:#0a0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="exthaus-pipe" d="M 370,310 L 370,420" 
+	style="opacity:0.5;stroke:#f00;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="wastewater-pipe" d="M 520,310 L 520,350 A 20,20 0 0,1 500,370 L 440,370 A 20,20 0 0,0 420,390 L 420,420" 
+	style="opacity:0.5;stroke:#f00;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="heating-devices-pipe" d="M 370,520 L 370,650" 
+	style="opacity:0.5;stroke:#f00;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="hot-water-pipe" d="M 420,520 L 420,580 A 20,20 0 0,0 440,600 L 500,600 A 20,20 0 0,1 520,620 L 520,650" 
+	style="opacity:0.5;stroke:#f00;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="dh-input-pipe" d="M 490,440 L 440,440" 
+	style="opacity:0.5;stroke:#f00;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	<path id="cool-pipe" d="M 490,490 L 440,490" 
+	style="opacity:0.5;stroke:#0ff;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+	
 	<image x="40" y="410" width="80" height="120" xlink:href="powerline.svg" />
 	<image x="120" y="220" width="88" height="80" xlink:href="solarpanel.svg" />
 	<image x="240" y="220" width="88" height="80" xlink:href="solarpanel.svg" />
-	
 	
 	<svg x="0" y="520" width="160px" height="40px">
 		<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />

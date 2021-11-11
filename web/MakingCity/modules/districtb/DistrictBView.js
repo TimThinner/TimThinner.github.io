@@ -42,6 +42,27 @@ export default class DistrictBView extends View {
 		$(this.el).empty();
 	}
 	
+	/*
+	PIPE NAMES:
+	"main-pipe"
+	"solar-pipe-1"
+	"solar-pipe-2"
+	"sub-pipe-1"
+	"apartment-pipe"
+	"other-pipe"
+	"exthaus-pipe"
+	"wastewater-pipe"
+	"heating-devices-pipe"
+	"hot-water-pipe"
+	"dh-input-pipe"
+	"cool-pipe"
+	
+	Animate element:
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	when measured value is greater than zero (flowing) we use from="40" to="0".
+	We can freeze the animation by setting from="40" to="40".
+	*/
+	
 	flowCheck(svgObject, val, pipeName) {
 		if (val === 0) {
 			// If Energy Consumption equals zero => FREEZE the animation!
@@ -513,7 +534,9 @@ meterId
 			const localized_dhn_title_a = LM['translation'][sel]['DAP_TITLE_A'];
 			const localized_dhn_title_b = LM['translation'][sel]['DAP_TITLE_B'];
 			const localized_dhn_title_c = LM['translation'][sel]['DAP_TITLE_C'];
-			
+			*/
+			const localized_solar_title = LM['translation'][sel]['DBB_TITLE'];
+			/*
 			this.fillSVGTextElement(svgObject, 'da-grid-title', localized_grid_title);
 			this.fillSVGTextElement(svgObject, 'da-solar-title', localized_solar_title);
 			this.fillSVGTextElement(svgObject, 'da-geothermal-title', localized_geothermal_title);
@@ -529,6 +552,8 @@ meterId
 			this.fillSVGTextElement(svgObject, 'da-dhn-heating-title', localized_dhn_title_b);
 			this.fillSVGTextElement(svgObject, 'da-dhn-network-title', localized_dhn_title_c);
 			*/
+			this.fillSVGTextElement(svgObject, 'db-solar-title', localized_solar_title);
+			this.fillSVGTextElement(svgObject, 'db-solar-title-2', localized_solar_title);
 		}
 	}
 	

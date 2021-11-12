@@ -47,27 +47,49 @@ export default class DistrictView extends View {
 	NOTE: transform is defined as SVG property!
 	NOTE: old version used always scale(1.0) => scale(1.1. NOW we have different scales for 
 	different orientations, therefore we need to check old scale and just that as a base starting point.
-	
+	LANDSCAPE:	scale(1.3)
+	SQUARE:		scale(1.3)
+	PORTRAIT:	scale(1.0)
 	*/
 	setHoverEffect(event, scale){
-		if (scale === 'scale(1.0)') {
+		if (scale === 0) {
+			// mouseout
 			event.target.style.strokeWidth = 1;
 			event.target.style.fillOpacity = 0.05;
 		} else {
+			// mouseover
 			event.target.style.strokeWidth = 5;
 			event.target.style.fillOpacity = 0.2;
 		}
+		
+		// Check what is the old scale?
 		const oldT = event.target.getAttributeNS(null,'transform');
-		console.log(['oldT=',oldT]);
+		//console.log(['oldT=',oldT]);
 		// Tokenize it:
 		const fs = oldT.split(' ');
-		console.log(['fs=',fs]);
+		/*
+		For example:
+		"translate(1090,655)"
+		"scale(1.0)"
+		"rotate(90)"
+		*/
+		//console.log(['fs=',fs]);
 		const newA = [];
-		// Just replace the "scale()" function with scale and leave other untouched.
+		// Just replace the "scale()" function with new scale and leave other untouched.
 		fs.forEach(f => {
-			console.log(['f=',f]);
+			//console.log(['f=',f]);
 			if (f.indexOf("scale")===0) {
-				newA.push(scale);
+				let oldscale = parseFloat(f.slice(6));
+				if (scale === 0) {
+					// mouseout
+					oldscale -= 0.1;
+				} else {
+					// mouseover
+					oldscale += 0.1;
+				}
+				const newscale = 'scale('+oldscale+')';
+				console.log(['newscale=',newscale]);
+				newA.push(newscale);
 			} else {
 				newA.push(f);
 			}
@@ -94,8 +116,8 @@ export default class DistrictView extends View {
 				self.controller.models['MenuModel'].setSelected('DA');
 				
 			}, false);
-			hexA.addEventListener("mouseover", function(event){ self.setHoverEffect(event, 'scale(1.1)'); }, false);
-			hexA.addEventListener("mouseout", function(event){ self.setHoverEffect(event, 'scale(1.0)'); }, false);
+			hexA.addEventListener("mouseover", function(event){ self.setHoverEffect(event, 1); }, false);
+			hexA.addEventListener("mouseout", function(event){ self.setHoverEffect(event, 0); }, false);
 			
 			const hexB = svgObject.getElementById('hex-b');
 			hexB.addEventListener("click", function(){
@@ -104,29 +126,29 @@ export default class DistrictView extends View {
 				self.controller.models['MenuModel'].setSelected('DB');
 				
 			}, false);
-			hexB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			hexB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			hexB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,1); }, false);
+			hexB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,0); }, false);
 			
 			const hexC = svgObject.getElementById('hex-c');
 			hexC.addEventListener("click", function(){
 				console.log('HEXAGON C CLICKED!');
 			}, false);
-			hexC.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			hexC.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			hexC.addEventListener("mouseover", function(event){ self.setHoverEffect(event,1); }, false);
+			hexC.addEventListener("mouseout", function(event){ self.setHoverEffect(event,0); }, false);
 			
 			const hexD = svgObject.getElementById('hex-d');
 			hexD.addEventListener("click", function(){
 				console.log('HEXAGON D CLICKED!');
 			}, false);
-			hexD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			hexD.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			hexD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,1); }, false);
+			hexD.addEventListener("mouseout", function(event){ self.setHoverEffect(event,0); }, false);
 			
 			const hexE = svgObject.getElementById('hex-e');
 			hexE.addEventListener("click", function(){
 				console.log('HEXAGON E CLICKED!');
 			}, false);
-			hexE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
-			hexE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
+			hexE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,1); }, false);
+			hexE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,0); }, false);
 		}
 	}
 	

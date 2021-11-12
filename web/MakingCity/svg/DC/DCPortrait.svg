@@ -208,20 +208,20 @@
 	</svg>
 	
 	
-	<rect class="target" id="target-b-a" x="-50" y="-50" width="100" height="100" transform="translate(80,470) scale(1.0)" /><!-- Grid: powerline -->
+	<rect class="target" id="target-c-a" x="-50" y="-50" width="100" height="100" transform="translate(80,470) scale(1.0)" /><!-- Grid: powerline -->
 	<!--<rect class="target" id="target-b-b" x="-50" y="-50" width="100" height="100" transform="translate(160,260) scale(1.0)" />--><!-- Left solarpanel -->
 	<!--<rect class="target" id="target-b-c" x="-50" y="-50" width="100" height="100" transform="translate(280,260) scale(1.0)" />--><!-- Right solarpanel -->
-	<rect class="target" id="target-b-b" x="-50" y="-50" width="100" height="100" transform="translate(220,260) scale(1.0)" /><!-- Solarpanel -->
-	<rect class="target" id="target-b-d" x="-50" y="-50" width="100" height="100" transform="translate(160,700) scale(1.0)" /><!-- Apartments -->
-	<rect class="target" id="target-b-e" x="-50" y="-50" width="100" height="100" transform="translate(280,700) scale(1.0)" /><!-- Other: ventilation -->
+	<rect class="target" id="target-c-b" x="-50" y="-50" width="100" height="100" transform="translate(220,260) scale(1.0)" /><!-- Solarpanel -->
+	<rect class="target" id="target-c-d" x="-50" y="-50" width="100" height="100" transform="translate(160,700) scale(1.0)" /><!-- Apartments -->
+	<rect class="target" id="target-c-e" x="-50" y="-50" width="100" height="100" transform="translate(280,700) scale(1.0)" /><!-- Other: ventilation -->
 	
-	<rect class="target" id="target-b-f" x="-50" y="-50" width="100" height="100" transform="translate(390,470) scale(1.0)" /><!-- Heating system -->
-	<rect class="target" id="target-b-g" x="-50" y="-50" width="100" height="100" transform="translate(390,260) scale(1.0)" /><!-- Exthaus air recovery -->
+	<rect class="target" id="target-c-f" x="-50" y="-50" width="100" height="100" transform="translate(390,470) scale(1.0)" /><!-- Heating system -->
+	<rect class="target" id="target-c-g" x="-50" y="-50" width="100" height="100" transform="translate(390,260) scale(1.0)" /><!-- Exthaus air recovery -->
 	<!--<rect class="target" id="target-b-h" x="-50" y="-50" width="100" height="100" transform="translate(520,260) scale(1.0)" />--><!-- Wastewater recovery -->
-	<rect class="target" id="target-b-i" x="-50" y="-50" width="100" height="100" transform="translate(540,470) scale(1.0)" /><!-- District Heating Network -->
+	<rect class="target" id="target-c-i" x="-50" y="-50" width="100" height="100" transform="translate(540,470) scale(1.0)" /><!-- District Heating Network -->
 	
-	<rect class="target" id="target-b-j" x="-50" y="-50" width="100" height="100" transform="translate(400,700) scale(1.0)" /><!-- Heating devices -->
-	<rect class="target" id="target-b-k" x="-50" y="-50" width="100" height="100" transform="translate(520,700) scale(1.0)" /><!-- Hot water -->
+	<rect class="target" id="target-c-j" x="-50" y="-50" width="100" height="100" transform="translate(400,700) scale(1.0)" /><!-- Heating devices -->
+	<rect class="target" id="target-c-k" x="-50" y="-50" width="100" height="100" transform="translate(520,700) scale(1.0)" /><!-- Hot water -->
 </g>
 
 <image id="back" class="back-button" x="10" y="50" width="75" height="50" xlink:href="backbutton.svg" />

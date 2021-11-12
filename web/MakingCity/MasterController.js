@@ -54,6 +54,8 @@ import DistrictAGController from './modules/districtag/DistrictAGController.js';
 import DistrictAIController from './modules/districtai/DistrictAIController.js';
 
 import DistrictBController from './modules/districtb/DistrictBController.js';
+import DistrictCController from './modules/districtc/DistrictCController.js';
+
 import BackgroundPeriodicPoller from './modules/common/BackgroundPeriodicPoller.js';
 
 
@@ -289,7 +291,8 @@ class MasterController {
 		this.controllers['DB'] = new DistrictBController({name:'DB', master:this, el:'#content', visible:false});
 		this.controllers['DB'].init();
 		
-		
+		this.controllers['DC'] = new DistrictCController({name:'DC', master:this, el:'#content', visible:false});
+		this.controllers['DC'].init();
 		
 		
 		console.log('ALL Controllers are now created!');

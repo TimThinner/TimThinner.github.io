@@ -45,6 +45,9 @@ export default class DistrictView extends View {
 	
 	/*
 	NOTE: transform is defined as SVG property!
+	NOTE: old version used always scale(1.0) => scale(1.1. NOW we have different scales for 
+	different orientations, therefore we need to check old scale and just that as a base starting point.
+	
 	*/
 	setHoverEffect(event, scale){
 		if (scale === 'scale(1.0)') {
@@ -55,13 +58,14 @@ export default class DistrictView extends View {
 			event.target.style.fillOpacity = 0.2;
 		}
 		const oldT = event.target.getAttributeNS(null,'transform');
+		console.log(['oldT=',oldT]);
 		// Tokenize it:
 		const fs = oldT.split(' ');
-		//console.log(['fs=',fs]);
+		console.log(['fs=',fs]);
 		const newA = [];
 		// Just replace the "scale()" function with scale and leave other untouched.
 		fs.forEach(f => {
-			//console.log(['f=',f]);
+			console.log(['f=',f]);
 			if (f.indexOf("scale")===0) {
 				newA.push(scale);
 			} else {

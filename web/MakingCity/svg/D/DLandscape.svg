@@ -64,9 +64,9 @@ Changes to color:
 <image x="1250" y="160" width="100" height="150" xlink:href="windturbine.svg" />
 
 <!-- Houses in District B -->
-<image x="1010" y="380" width="50" height="65" xlink:href="house.svg" />
-<image x="1060" y="380" width="50" height="65" xlink:href="house.svg" />
-<image x="1110" y="380" width="50" height="65" xlink:href="house.svg" />
+<image x="1010" y="360" width="50" height="65" xlink:href="house.svg" />
+<image x="1060" y="360" width="50" height="65" xlink:href="house.svg" />
+<image x="1110" y="360" width="50" height="65" xlink:href="house.svg" />
 
 <!-- Houses in District C -->
 <image x="1010" y="600" width="50" height="65" xlink:href="house.svg" />
@@ -79,9 +79,9 @@ Changes to color:
 <image x="690" y="600" width="50" height="65" xlink:href="house.svg" />
 
 <!-- Houses in District E -->
-<image x="590" y="380" width="50" height="65" xlink:href="house.svg" />
-<image x="640" y="380" width="50" height="65" xlink:href="house.svg" />
-<image x="690" y="380" width="50" height="65" xlink:href="house.svg" />
+<image x="590" y="360" width="50" height="65" xlink:href="house.svg" />
+<image x="640" y="360" width="50" height="65" xlink:href="house.svg" />
+<image x="690" y="360" width="50" height="65" xlink:href="house.svg" />
 
 <g>
 	<!--
@@ -111,22 +111,22 @@ Changes to color:
 <!-- Hexagon Labels: District A - Distict E -->
 <!-- Center TEXT within given sub-svg element -->
 
-<svg x="670" y="280" width="400px" height="130px">
+<svg x="670" y="300" width="400px" height="130px">
 	<text class="district-title" id="district-a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District A</text>
 </svg>
-<svg x="870" y="400" width="420px" height="130px">
+<svg x="880" y="420" width="420px" height="130px">
 	<text class="district-title" id="district-b" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District B</text>
 </svg>
-<svg x="880" y="630" width="400px" height="130px">
+<svg x="890" y="660" width="400px" height="130px">
 	<text class="district-title" id="district-c" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District C</text>
 </svg>
-<svg x="460" y="630" width="400px" height="130px">
+<svg x="460" y="660" width="400px" height="130px">
 	<text class="district-title" id="district-d" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District D</text>
 </svg>
-<svg x="460" y="400" width="400px" height="130px">
+<svg x="460" y="420" width="400px" height="130px">
 	<text class="district-title" id="district-e" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District E</text>
 </svg>
-<svg x="670" y="770" width="400px" height="130px">
+<svg x="670" y="780" width="400px" height="130px">
 	<text class="district-title" id="district-f" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">School</text>
 </svg>
 
@@ -138,12 +138,21 @@ Changes to color:
 <polygon class="hex" id="hex-d" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(690,745) scale(1.0)" />
 <polygon class="hex" id="hex-e" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(630,460) scale(1.0)" />
 -->
+<!--
 <polygon class="hex" id="hex-a" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(870,300) scale(0.75)" />
 <polygon class="hex" id="hex-b" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(1080,420) scale(0.75)" />
 <polygon class="hex" id="hex-c" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(1080,640) scale(0.75)" />
 <polygon class="hex" id="hex-f" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(870,760) scale(0.75)" />
 <polygon class="hex" id="hex-d" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(660,640) scale(0.75)" />
 <polygon class="hex" id="hex-e" points="150,0 75,130 -75,130 -150,0 -75,-130 75,-130" transform="translate(660,420) scale(0.75)" />
+-->
+
+<polygon class="hex" id="hex-a" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,290) scale(1.3) rotate(90)" />
+<polygon class="hex" id="hex-b" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,410) scale(1.3) rotate(90)" />
+<polygon class="hex" id="hex-c" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,655) scale(1.3) rotate(90)" />
+<polygon class="hex" id="hex-f" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,770) scale(1.3) rotate(90)" />
+<polygon class="hex" id="hex-d" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(660,655) scale(1.3) rotate(90)" />
+<polygon class="hex" id="hex-e" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(660,410) scale(1.3) rotate(90)" />
 
 <image id="back" class="back-button" x="350" y="30" width="120" height="80" xlink:href="backbutton.svg" />
 </svg>

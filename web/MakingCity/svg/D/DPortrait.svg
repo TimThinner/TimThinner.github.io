@@ -56,24 +56,25 @@
 	<image x="410" y="180" width="100" height="150" xlink:href="powerline.svg" />
 	<image x="500" y="170" width="100" height="150" xlink:href="windturbine.svg" />
 	
-	<image x="400" y="400" width="50" height="65" xlink:href="house.svg" />
-	<image x="450" y="400" width="50" height="65" xlink:href="house.svg" />
-	<image x="500" y="400" width="50" height="65" xlink:href="house.svg" />
+	<!-- Houses in District B -->
+	<image x="400" y="380" width="50" height="65" xlink:href="house.svg" />
+	<image x="450" y="380" width="50" height="65" xlink:href="house.svg" />
+	<image x="500" y="380" width="50" height="65" xlink:href="house.svg" />
 	
 	<!-- Houses in District C -->
-	<image x="370" y="650" width="50" height="65" xlink:href="house.svg" />
-	<image x="420" y="650" width="50" height="65" xlink:href="house.svg" />
-	<image x="470" y="650" width="50" height="65" xlink:href="house.svg" />
+	<image x="390" y="580" width="50" height="65" xlink:href="house.svg" />
+	<image x="440" y="580" width="50" height="65" xlink:href="house.svg" />
+	<image x="490" y="580" width="50" height="65" xlink:href="house.svg" />
 	
 	<!-- Houses in District D -->
-	<image x="90" y="650" width="50" height="65" xlink:href="house.svg" />
-	<image x="140" y="650" width="50" height="65" xlink:href="house.svg" />
-	<image x="190" y="650" width="50" height="65" xlink:href="house.svg" />
+	<image x="60" y="580" width="50" height="65" xlink:href="house.svg" />
+	<image x="110" y="580" width="50" height="65" xlink:href="house.svg" />
+	<image x="160" y="580" width="50" height="65" xlink:href="house.svg" />
 	
 	<!-- Houses in District E -->
-	<image x="60" y="400" width="50" height="65" xlink:href="house.svg" />
-	<image x="110" y="400" width="50" height="65" xlink:href="house.svg" />
-	<image x="160" y="400" width="50" height="65" xlink:href="house.svg" />
+	<image x="60" y="380" width="50" height="65" xlink:href="house.svg" />
+	<image x="110" y="380" width="50" height="65" xlink:href="house.svg" />
+	<image x="160" y="380" width="50" height="65" xlink:href="house.svg" />
 	
 	<!--
 	<g id="grid">
@@ -94,7 +95,8 @@
 	</g>-->
 	
 	<!-- A rx ry x-axis-rotation large-arc-flag sweep-flag x y -->
-	<g>
+<g>
+	<!--
 	<path d="M 300,300 A 100,130 0 0,1 300,780 A 100,130 0 0,1 300,300" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />
 	<path d="M 300,340 A 70,100 0 0,1 300,740 A 70,100 0 0,1 300,340" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />
 	
@@ -106,30 +108,42 @@
 		style="opacity:0.4;stroke:#f80;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
 		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 	</path>
-	</g>
+	-->
+	<path d="M 304,380 A 120,120 0 0,1 304,670 A 120,120 0 0,1 304,380" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />
+	<path d="M 304,400 A 110,110 0 0,1 304,650 A 110,110 0 0,1 304,400" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />-->
+	<path d="M 304,390 A 115,115 0 0,1 304,660 A 115,115 0 0,1 304,390"
+		style="opacity:0.4;stroke:#cf0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+</g>
+
 	
 	<!-- Hexagon Labels: District A - Distict E -->
 	<!-- Center TEXT within given sub-svg element -->
-	<svg x="170" y="250" width="260px" height="90px">
+	<svg x="200" y="310" width="200px" height="80px">
 		<!--<rect x="1" y="1" width="258" height="88" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text class="district-title" id="district-a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District A</text>
 	</svg>
-	<svg x="340" y="460" width="260px" height="90px">
+	<svg x="370" y="450" width="200px" height="80px">
 		<!--<rect x="1" y="1" width="258" height="88" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text class="district-title" id="district-b" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District B</text>
 	</svg>
-	<svg x="310" y="720" width="260px" height="90px">
+	<svg x="370" y="650" width="200px" height="80px">
 		<!--<rect x="1" y="1" width="258" height="88" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text class="district-title" id="district-c" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District C</text>
 	</svg>
-	<svg x="30" y="720" width="260px" height="90px">
+	<svg x="30" y="650" width="200px" height="80px">
 		<!--<rect x="1" y="1" width="258" height="88" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text class="district-title" id="district-d" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District D</text>
 	</svg>
-	<svg x="0" y="460" width="260px" height="90px">
-		<!--<rect x="1" y="1" width="258" height="88" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
+	<svg x="30" y="450" width="200px" height="80px">
+		<!--<rect x="1" y="1" width="198" height="88" stroke="#fff" stroke-width="1" opacity="0.1" fill="#00f" />-->
 		<text class="district-title" id="district-e" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">District E</text>
 	</svg>
+	<svg x="200" y="770" width="200px" height="80px">
+		<text class="district-title" id="district-f" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">School</text>
+	</svg>
+	
 	<!--
 	<text id="district-a" x="220" y="300" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District A</text>
 	<text id="district-b" x="390" y="490" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District B</text>
@@ -138,13 +152,22 @@
 	<text id="district-e" x="50" y="490" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="42px" fill="#fff" stroke="#555" stroke-width="1">District E</text>
 	-->
 	<!-- Hexagons -->
+	<!--
 	<polygon class="hex" id="hex-a" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(300,260) scale(1.0)" />
 	<polygon class="hex" id="hex-b" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(470,460) scale(1.0)" />
 	<polygon class="hex" id="hex-c" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(440,720) scale(1.0)" />
 	<polygon class="hex" id="hex-d" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(160,720) scale(1.0)" />
 	<polygon class="hex" id="hex-e" points="100,0 50,87 -50,87 -100,0 -50,-87 50,-87" transform="translate(130,460) scale(1.0)" />
-	
-	<image id="back" class="back-button" x="10" y="50" width="75" height="50" xlink:href="backbutton.svg" />	
+	-->
+
+<polygon class="hex" id="hex-a" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(300,300) scale(1.0) rotate(90)" />
+<polygon class="hex" id="hex-b" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(470,430) scale(1.0) rotate(90)" />
+<polygon class="hex" id="hex-c" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(470,630) scale(1.0) rotate(90)" />
+<polygon class="hex" id="hex-f" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(300,750) scale(1.0) rotate(90)" />
+<polygon class="hex" id="hex-d" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(130,630) scale(1.0) rotate(90)" />
+<polygon class="hex" id="hex-e" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(130,430) scale(1.0) rotate(90)" />
+
+<image id="back" class="back-button" x="10" y="50" width="75" height="50" xlink:href="backbutton.svg" />	
 	<!--
 	<image x="420" y="820" width="90" height="60" xlink:href="640px-Flag_of_Europe.svg.png" />
 	<image x="520" y="820" width="60" height="60" xlink:href="MC.png" />

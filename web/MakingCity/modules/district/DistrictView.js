@@ -61,7 +61,6 @@ export default class DistrictView extends View {
 			event.target.style.strokeWidth = 5;
 			event.target.style.fillOpacity = 0.2;
 		}
-		
 		// Check what is the old scale?
 		const oldT = event.target.getAttributeNS(null,'transform');
 		//console.log(['oldT=',oldT]);
@@ -88,7 +87,7 @@ export default class DistrictView extends View {
 					oldscale += 0.1;
 				}
 				const newscale = 'scale('+oldscale+')';
-				console.log(['newscale=',newscale]);
+				//console.log(['newscale=',newscale]);
 				newA.push(newscale);
 			} else {
 				newA.push(f);
@@ -98,7 +97,7 @@ export default class DistrictView extends View {
 		event.target.setAttributeNS(null,'transform',newT);
 	}
 	
-	addSVGEventHandlers(mode) {
+	addSVGEventHandlers() {
 		const self = this;
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
@@ -149,6 +148,13 @@ export default class DistrictView extends View {
 			}, false);
 			hexE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,1); }, false);
 			hexE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,0); }, false);
+			
+			const hexF = svgObject.getElementById('hex-f');
+			hexF.addEventListener("click", function(){
+				console.log('HEXAGON F CLICKED!');
+			}, false);
+			hexF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,1); }, false);
+			hexF.addEventListener("mouseout", function(event){ self.setHoverEffect(event,0); }, false);
 		}
 	}
 	
@@ -163,12 +169,14 @@ export default class DistrictView extends View {
 			const localized_d_c = LM['translation'][sel]['DISTRICT_C_LABEL'];
 			const localized_d_d = LM['translation'][sel]['DISTRICT_D_LABEL'];
 			const localized_d_e = LM['translation'][sel]['DISTRICT_E_LABEL'];
+			const localized_d_f = LM['translation'][sel]['DISTRICT_F_LABEL'];
 			
 			this.fillSVGTextElement(svgObject, 'district-a', localized_d_a);
 			this.fillSVGTextElement(svgObject, 'district-b', localized_d_b);
 			this.fillSVGTextElement(svgObject, 'district-c', localized_d_c);
 			this.fillSVGTextElement(svgObject, 'district-d', localized_d_d);
 			this.fillSVGTextElement(svgObject, 'district-e', localized_d_e);
+			this.fillSVGTextElement(svgObject, 'district-f', localized_d_f);
 		}
 	}
 	
@@ -207,7 +215,7 @@ export default class DistrictView extends View {
 		const svgObj = document.getElementById("svg-object");
 		svgObj.addEventListener('load', function(){
 			//console.log('ADD SVG EVENT HANDLERS!');
-			self.addSVGEventHandlers(mode);
+			self.addSVGEventHandlers();
 			self.localizeSVGTexts();
 		});
 		this.rendered = true;

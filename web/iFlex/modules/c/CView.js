@@ -94,7 +94,7 @@ export default class CView extends TimeRangeView {
 		this.CHARTID_TIMESERIES = 'timeseries-chart';
 		
 		this.calculated_USER_emissions = [];
-		this.calculated_AVE_emissions = [];
+		//this.calculated_AVE_emissions = [];
 		
 		this.calculated_EL_emissions = [];
 		this.calculated_DH_emissions = [];
@@ -248,24 +248,25 @@ export default class CView extends TimeRangeView {
 	calculate_USER_AVE_Sum() {
 		if (this.calculated_ALL_emissions.length > 0) {
 			this.calculated_USER_emissions = [];
-			this.calculated_AVE_emissions = [];
+			//this.calculated_AVE_emissions = [];
 			
-			const interval = this.models['CControllerBuildingElectricityPL1Model'].interval;
-			const AFHCO2 = this.models['CControllerBuildingElectricityPL1Model'].averageFinnishHousingCO2;
+			//const interval = this.models['CControllerBuildingElectricityPL1Model'].interval;
+			//const AFHCO2 = this.models['CControllerBuildingElectricityPL1Model'].averageFinnishHousingCO2;
 			const NOR = this.models['CControllerBuildingElectricityPL1Model'].numberOfResidents;
 			
-			let factor = undefined;
-			let comparison = undefined;
-			
+			//let factor = undefined;
+			//let comparison = undefined;
+			/*
 			if (typeof interval !== 'undefined' && typeof AFHCO2 !== 'undefined') {
 				factor = this.intervalMap[interval];
 				if (typeof factor !== 'undefined') {
 					comparison = AFHCO2/factor;
 				}
-			}
-			if (typeof comparison !== 'undefined' && typeof NOR !== 'undefined') {
+			}*/
+			//if (typeof comparison !== 'undefined' && typeof NOR !== 'undefined') {
+			if (typeof NOR !== 'undefined') {
 				this.calculated_ALL_emissions.forEach(v=>{
-					this.calculated_AVE_emissions.push({timestamp: v.timestamp, value:comparison});
+					//this.calculated_AVE_emissions.push({timestamp: v.timestamp, value:comparison});
 					const value = v.value*1000/NOR;
 					this.calculated_USER_emissions.push({timestamp: v.timestamp, value:value});
 				});
@@ -482,11 +483,12 @@ export default class CView extends TimeRangeView {
 							
 							if (typeof this.chart_comparison !== 'undefined') {
 								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
-									if (s.name === 'AVERAGEEMISSIONS') {
+									/*if (s.name === 'AVERAGEEMISSIONS') {
 										s.data = self.calculated_AVE_emissions;
 									} else if (s.name === 'USEREMISSIONS') {
 										s.data = self.calculated_USER_emissions;
-									}
+									}*/
+									s.data = self.calculated_USER_emissions;
 								});
 							} else {
 								this.renderChartComparison();
@@ -527,11 +529,12 @@ export default class CView extends TimeRangeView {
 							
 							if (typeof this.chart_comparison !== 'undefined') {
 								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
-									if (s.name === 'AVERAGEEMISSIONS') {
+									/*if (s.name === 'AVERAGEEMISSIONS') {
 										s.data = self.calculated_AVE_emissions;
 									} else if (s.name === 'USEREMISSIONS') {
 										s.data = self.calculated_USER_emissions;
-									}
+									}*/
+									s.data = self.calculated_USER_emissions;
 								});
 							} else {
 								this.renderChartComparison();
@@ -568,11 +571,12 @@ export default class CView extends TimeRangeView {
 							
 							if (typeof this.chart_comparison !== 'undefined') {
 								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
-									if (s.name === 'AVERAGEEMISSIONS') {
+									/*if (s.name === 'AVERAGEEMISSIONS') {
 										s.data = self.calculated_AVE_emissions;
 									} else if (s.name === 'USEREMISSIONS') {
 										s.data = self.calculated_USER_emissions;
-									}
+									}*/
+									s.data = self.calculated_USER_emissions;
 								});
 							} else {
 								this.renderChartComparison();
@@ -609,11 +613,12 @@ export default class CView extends TimeRangeView {
 							
 							if (typeof this.chart_comparison !== 'undefined') {
 								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
-									if (s.name === 'AVERAGEEMISSIONS') {
+									/*if (s.name === 'AVERAGEEMISSIONS') {
 										s.data = self.calculated_AVE_emissions;
 									} else if (s.name === 'USEREMISSIONS') {
 										s.data = self.calculated_USER_emissions;
-									}
+									}*/
+									s.data = self.calculated_USER_emissions;
 								});
 							} else {
 								this.renderChartComparison();
@@ -652,11 +657,12 @@ export default class CView extends TimeRangeView {
 							
 							if (typeof this.chart_comparison !== 'undefined') {
 								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
-									if (s.name === 'AVERAGEEMISSIONS') {
+									/*if (s.name === 'AVERAGEEMISSIONS') {
 										s.data = self.calculated_AVE_emissions;
 									} else if (s.name === 'USEREMISSIONS') {
 										s.data = self.calculated_USER_emissions;
-									}
+									}*/
+									s.data = self.calculated_USER_emissions;
 								});
 							} else {
 								this.renderChartComparison();
@@ -721,6 +727,7 @@ export default class CView extends TimeRangeView {
 			valueAxis.title.text = localized_string_emission_comparison_axis;
 			valueAxis.min = 0;
 			
+			/*
 			var series1 = self.chart_comparison.series.push(new am4charts.LineSeries());
 			series1.data = self.calculated_AVE_emissions;
 			series1.dataFields.dateX = "timestamp";
@@ -732,7 +739,7 @@ export default class CView extends TimeRangeView {
 			series1.stroke = am4core.color("#f80");
 			series1.fill = "#f80";
 			series1.legendSettings.labelText = "{customname}";
-			
+			*/
 			var series2 = self.chart_comparison.series.push(new am4charts.ColumnSeries());
 			series2.data = self.calculated_USER_emissions; 
 			series2.dataFields.dateX = "timestamp";

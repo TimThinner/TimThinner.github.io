@@ -53,8 +53,7 @@ Proxe:
 const Proxe_Save = (po, res)
 const Proxe_Update = (po, res)
 const Proxe_HTTPS_Fetch = (po, res)
-const Proxe_Clean = (hash)
-
+const Proxe_Clean = (res)
 */
 const Proxe_Save = (po, res) => {
 	const hash = po.hash;
@@ -186,37 +185,54 @@ const Proxe_HTTPS_Fetch = (po, res) => {
 	But since CLEANING and FETCHING are both ASYNCHRONOUS operations, make sure that entry is really 
 	OBSOLETE => Use several hours, for example 3 hours.
 */
-const Proxe_Clean = (hash) => {
+const Proxe_Clean = (res) => {
 	Proxe.find()
 		.exec()
 		.then(docs=>{
-			//console.log(['Proxe has now ',docs.length,' entries.']);
+			console.log(['Proxe has now ',docs.length,' entries.']);
+			const trash = [];
 			docs.forEach(doc => {
 				// DO NOT PROCESS the one given as parameter.
-				if (doc.hash  === hash) {
+				/*if (doc.hash  === hash) {
 					// Exclude this URL.
 				} else {
-					const upd = doc.updated; // Date object
-					const exp_ms = 3*3600*1000; // Cleaning time in milliseconds (3 hours).
-					//const exp_ms = 60*1000; // Cleaning time in milliseconds (60 seconds).
-					const now = new Date();
-					const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
-					if (elapsed > exp_ms) {
-						// remove this entry from the database.
-						Proxe.deleteOne({_id:doc.id})
-							.exec()
-							.then(result => {
-								console.log('Proxe Entry Removed.');
-							})
-							.catch(err => {
-								console.log(err);
-							});
-					}
+				*/
+				const upd = doc.updated; // Date object
+				const exp_ms = 3*3600*1000; // Cleaning time in milliseconds (3 hours).
+				//const exp_ms = 60*1000; // Cleaning time in milliseconds (60 seconds).
+				const now = new Date();
+				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
+				if (elapsed > exp_ms) {
+					// add this doc.id into trash array
+					trash.push(doc.id);
 				}
 			});
+			const num = trash.length;
+			if (num > 0) {
+				Proxe.deleteMany({
+					"_id": {
+						$in:trash
+					}
+				})
+				.exec()
+				.then(result => {
+					const message = num + ' entries cleaned OK.';
+					console.log(message);
+					res.status(200).json({message:message});
+				})
+				.catch(err => {
+					console.log(err);
+					res.status(500).json({error:err});
+				});
+			} else {
+				const message = 'Nothing to clean.';
+				console.log(message);
+				res.status(200).json({message:message});
+			}
 		})
 		.catch(err=>{
 			console.log(err);
+			res.status(500).json({error:err});
 		});
 };
 
@@ -273,10 +289,6 @@ router.post('/obix', (req,res,next)=>{
 	const base64string = base64.encode(process.env.OBIX_USER+':'+process.env.OBIX_PASS);
 	const auth = 'Basic '+ base64string;
 	
-	//console.log(['auth=',auth]);
-	
-	Proxe_Clean(hash); // We must exclude requested hash from the cleaning process.
-	
 	// First check if readkey is defined
 	if (typeof readkey !== 'undefined') {
 		// Check the validity of Readkey:
@@ -312,6 +324,10 @@ router.post('/obix', (req,res,next)=>{
 		//console.log('WITHOUT READKEY');
 		Proxe_Find(type, auth, xml, hash, url, expiration, res);
 	}
+});
+
+router.get('/clean', (req,res,next)=>{
+	Proxe_Clean(res);
 });
 
 module.exports = router;

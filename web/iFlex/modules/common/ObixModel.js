@@ -415,14 +415,11 @@ export default class ObixModel extends Model {
 				});
 		}
 	}
-}
-
-						// resu.obj.$ {}
-						// resu.obj.abstime [  {$:{name:"start",val:"2021-05-26T12:00:01.900039+03:00"}}, {$:{name:"end",val:""}}  ]
-						// resu.obj.int [  {$:{name:"count", val:"456"}}   ]
-						// resu.obj.list [   { $:{}, obj:[ {abstime:[{$:{name:"timestamp", val:""}}]  , real:[{$:{name:"value", val:""}}]    }  ]   }  ]
-						
-						/*
+				// resu.obj.$ {}
+				// resu.obj.abstime [  {$:{name:"start",val:"2021-05-26T12:00:01.900039+03:00"}}, {$:{name:"end",val:""}}  ]
+				// resu.obj.int [  {$:{name:"count", val:"456"}}   ]
+				// resu.obj.list [   { $:{}, obj:[ {abstime:[{$:{name:"timestamp", val:""}}]  , real:[{$:{name:"value", val:""}}]    }  ]   }  ]
+/*
 [
 "myJson=", 
 "{"obj":{	"$":{"xmlns":"http://obix.org/ns/schema/1.0","is":"obix:HistoryRollupOut"},
@@ -458,4 +455,23 @@ export default class ObixModel extends Model {
 							]
 						},
 ]						
-						*/
+*/
+	// To remove all proxy entries that are obviously old.
+	clean() {
+		const self = this;
+		let status = 500;
+		const url = this.mongoBackend + '/proxes/clean/';
+		fetch(url)
+			.then(function(response) {
+				status = response.status;
+				return response.json();
+			})
+			.then(function(myJson) {
+				console.log(['clean myJson=',myJson]);
+				self.notifyAll({model:self.name, method:'clean', status:status, message:'OK'});
+			})
+			.catch(error => {
+				self.notifyAll({model:self.name, method:'clean', status:status, message:error});
+			});
+	}
+}

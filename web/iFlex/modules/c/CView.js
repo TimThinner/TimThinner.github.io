@@ -753,6 +753,7 @@ export default class CView extends TimeRangeView {
 			series2.legendSettings.labelText = "{customname}";
 			
 			// Legend:
+			/*
 			self.chart_comparison.legend = new am4charts.Legend();
 			self.chart_comparison.legend.useDefaultMarker = true;
 			var marker = self.chart_comparison.legend.markers.template.children.getIndex(0);
@@ -760,7 +761,7 @@ export default class CView extends TimeRangeView {
 			marker.strokeWidth = 2;
 			marker.strokeOpacity = 1;
 			marker.stroke = am4core.color("#000");
-			
+			*/
 			self.chart_comparison.cursor = new am4charts.XYCursor();
 			self.chart_comparison.cursor.lineY.opacity = 0;
 			self.chart_comparison.scrollbarX = new am4charts.XYChartScrollbar();

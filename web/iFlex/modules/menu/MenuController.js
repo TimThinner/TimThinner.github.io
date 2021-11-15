@@ -9,11 +9,6 @@ export default class MenuController extends Controller {
 		super(options);
 	}
 	
-	show() {
-		super.show();
-		this.models['ProxesCleanerModel'].clean();
-	}
-	
 	remove() {
 		super.remove();
 		// We must remove all models that were created here at the initialize-method.
@@ -43,15 +38,6 @@ export default class MenuController extends Controller {
 	clean() {
 		this.remove();
 		this.initialize();
-	}
-	
-	notify(options) {
-		super.notify(options);
-		if (options.model==='ProxesCleanerModel' && options.method==='clean') {
-			if (options.status === 200) {
-				console.log('PROXES CLEAN OK!');
-			}
-		}
 	}
 	
 	init() {

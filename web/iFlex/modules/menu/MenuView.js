@@ -19,6 +19,9 @@ export default class MenuView extends View {
 	
 	show() {
 		this.render();
+		if (typeof this.models['ProxesCleanerModel'] !== 'undefined') {
+			this.models['ProxesCleanerModel'].clean();
+		}
 	}
 	
 	hide() {
@@ -38,7 +41,11 @@ export default class MenuView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				this.render();
+				this.show();
+			} else if (options.model==='ProxesCleanerModel' && options.method==='clean') {
+				if (options.status === 200) {
+					console.log('PROXES CLEAN OK!');
+				}
 			}
 		}
 	}

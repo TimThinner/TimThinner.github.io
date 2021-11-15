@@ -1,6 +1,5 @@
 import ModelRepo from './modules/common/ModelRepo.js';
 import ConfigModel from './modules/common/ConfigModel.js';
-import ObixModel from './modules/common/ObixModel.js';
 import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import LanguageModel from './modules/common/LanguageModel.js';
 
@@ -75,9 +74,6 @@ class MasterController {
 			console.log(['ConfigModel FETCHED!!!! cm=',cm]);
 			// Now you can access configs in different parts of app!
 		}
-		/*else if (options.model==='ProxesCleanerModel' && options.method==='clean') {
-			console.log('Proxes is NOW CLEANED!');
-		}*/
 	}
 	
 	init() {
@@ -87,10 +83,6 @@ class MasterController {
 		CONFIG_MODEL.subscribe(this);
 		this.modelRepo.add('ConfigModel',CONFIG_MODEL);
 		CONFIG_MODEL.fetch();
-		
-		const proxesCleanerModel = new ObixModel({name:'ProxesCleanerModel',src:'', access:'PUBLIC'});
-		//proxesCleanerModel.subscribe(this);
-		proxesCleanerModel.clean();
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();

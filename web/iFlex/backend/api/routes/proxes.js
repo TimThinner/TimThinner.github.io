@@ -198,8 +198,8 @@ const Proxe_Clean = (res) => {
 				} else {
 				*/
 				const upd = doc.updated; // Date object
-				const exp_ms = 3*3600*1000; // Cleaning time in milliseconds (3 hours).
-				//const exp_ms = 60*1000; // Cleaning time in milliseconds (60 seconds).
+				//const exp_ms = 3*3600*1000; // Cleaning time in milliseconds (3 hours).
+				const exp_ms = 60*1000; // Cleaning time in milliseconds (60 seconds).
 				const now = new Date();
 				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
 				if (elapsed > exp_ms) {

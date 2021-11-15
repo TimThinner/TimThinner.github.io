@@ -1,5 +1,6 @@
 import Controller from '../common/Controller.js';
 import MenuModel from  './MenuModel.js';
+import ObixModel from '../common/ObixModel.js';
 import MenuView from './MenuView.js';
 
 export default class MenuController extends Controller {
@@ -8,12 +9,53 @@ export default class MenuController extends Controller {
 		super(options);
 	}
 	
-	init() {
+	show() {
+		super.show();
+		this.models['ProxesCleanerModel'].clean();
+	}
+	
+	remove() {
+		super.remove();
+		// We must remove all models that were created here at the initialize-method.
+		Object.keys(this.models).forEach(key => {
+			if (key === 'MenuModel' || key === 'ProxesCleanerModel') {
+				console.log(['remove ',key,' from the REPO']);
+				this.master.modelRepo.remove(key);
+			}
+		});
+		this.models = {};
+	}
+	
+	initialize() {
 		const model = new MenuModel({name:'MenuModel',src:'menu'});
 		model.subscribe(this);
 		this.master.modelRepo.add('MenuModel',model);
 		this.models['MenuModel'] = model;
 		
+		const m2 = new ObixModel({name:'ProxesCleanerModel',src:'',access:'PUBLIC'});
+		m2.subscribe(this);
+		this.master.modelRepo.add('ProxesCleanerModel',m2);
+		this.models['ProxesCleanerModel'] = m2;
+		
+		this.view = new MenuView(this);
+	}
+	
+	clean() {
+		this.remove();
+		this.initialize();
+	}
+	
+	notify(options) {
+		super.notify(options);
+		if (options.model==='ProxesCleanerModel' && options.method==='clean') {
+			if (options.status === 200) {
+				console.log('PROXES CLEAN OK!');
+			}
+		}
+	}
+	
+	init() {
+		this.initialize();
 		//const m = new FingridModel({name:'FingridPowerSystemStateModel',src:'https://api.fingrid.fi/v1/variable/209/event/json'});
 		//m.subscribe(this);
 		//this.master.modelRepo.add('FingridPowerSystemStateModel',m);
@@ -22,13 +64,10 @@ export default class MenuController extends Controller {
 		// 180000
 		//this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel']}; // once per 3 minutes.
 		
-		this.view = new MenuView(this);
 		
 		// At init() there is ALWAYS only one controller with visible=true, this controller.
 		// and also the ResizeEventObserver is started at init() => this controller is shown 
 		// TWICE in init() if this.show() is called here!!!
-		
-		
 		
 		//this.startPollers();
 		// If view is shown immediately and poller is used, like in this case, 

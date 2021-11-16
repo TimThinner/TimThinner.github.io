@@ -149,7 +149,7 @@ const Proxe_HTTP_Fetch = (po, res) => {
 	*/
 	http.get(po.url, po.options, (res2) => {
 		const { statusCode } = res2;
-		const contentType = res2.headers['content-type'];
+		//const contentType = res2.headers['content-type'];
 		
 		let ctype = 'application/json';
 		if (po.response_type === 'xml') {
@@ -158,9 +158,12 @@ const Proxe_HTTP_Fetch = (po, res) => {
 		let error;
 		if (statusCode !== 200) {
 			error = new Error('Request Failed. Status Code: ' + statusCode);
-		} else if (contentType.indexOf(ctype) === -1) {
+		} 
+		// NOTE: This API returns Content-Type: text/html; charset=utf-8 => do not check...
+		/*else if (contentType.indexOf(ctype) === -1) {
+			console.log('Invalid content-type. Expected ' + ctype + ' but received '+contentType);
 			error = new Error('Invalid content-type. Expected ' + ctype + ' but received '+contentType);
-		}
+		}*/
 		if (error) {
 			// Consume response data to free up memory
 			res2.resume();
@@ -179,6 +182,7 @@ const Proxe_HTTP_Fetch = (po, res) => {
 						Proxe_Update({id:po.id, json:rawData}, res);
 					} else {
 						// Save
+						console.log(['url: ',po.url,' rawData=',rawData]);
 						Proxe_Save({url:po.url, json:rawData, expiration:po.expiration}, res);
 					}
 				} else if (ctype === 'text/xml') {
@@ -667,19 +671,19 @@ router.post('/ecoinvent', (req,res,next)=>{
 				const exp_ms = proxe[0].expiration*1000; // expiration time in milliseconds
 				const now = new Date();
 				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
-				//console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
+				console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
 				if (elapsed < exp_ms) {
 					// Use CACHED version of RESPONSE
-					//console.log('NOT expired => USE Cached response!');
+					console.log('NOT expired => USE Cached response!');
 					res.status(200).json(proxe[0].response);
 				} else {
-					//console.log('Expired => FETCH a FRESH copy!');
+					console.log('Expired => FETCH a FRESH copy!');
 					// FETCH a FRESH copy from SOURCE and Update existing Proxe Entry
 					Proxe_HTTP_Fetch({url:url, id:proxe[0]._id, options:options, response_type:'json'}, res);
 				}
 			} else {
 				// Not cached yet => FETCH a FRESH copy from SOURCE and SAVE it as a new Entry.
-				//console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
+				console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
 				Proxe_HTTP_Fetch({url:url, expiration:expiration, options:options, response_type:'json'}, res);
 			}
 		})

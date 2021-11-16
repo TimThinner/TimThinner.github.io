@@ -71,7 +71,7 @@ export default class EcoInventModel extends Model {
 			})
 			.then(function(myJson) {
 				self.results = []; // Start with fresh empty data.
-				//console.log(['myJson=',myJson]);
+				console.log(['myJson=',myJson]);
 				if (typeof myJson !== 'undefined' && typeof myJson.results !== 'undefined') {
 					self.results = myJson.results;
 				}

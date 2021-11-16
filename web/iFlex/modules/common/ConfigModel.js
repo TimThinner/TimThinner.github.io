@@ -70,11 +70,16 @@ export default class ConfigModel extends Model {
 				if (status === 200) {
 					/*const data = [
 						{propName:'signup', value:true},
+						{propName:'show_fetching_info', value:true}
 					];*/
 					data.forEach(d => {
 						if (d.propName === 'signup') {
 							if (self.configs.length > 0) {
 								self.configs[0].signup = d.value;
+							}
+						} else if (d.propName === 'show_fetching_info') {
+							if (self.configs.length > 0) {
+								self.configs[0].show_fetching_info = d.value;
 							}
 						}
 					});

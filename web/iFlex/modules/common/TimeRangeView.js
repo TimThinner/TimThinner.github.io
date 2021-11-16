@@ -40,19 +40,32 @@ export default class TimeRangeView extends View {
 		//console.log('======================================================');
 		//console.log(['this.models=',this.models]);
 		//console.log('======================================================');
-		let html = '<p class="fetching-info">';
-		Object.keys(this.controller.models).forEach(key => {
-			if (models.includes(key)) {
+		
+		let show_fetching_info = false;
+		const CONFIG_MODEL = this.controller.master.modelRepo.get('ConfigModel'); // Stored at the MongoDB.
+		if (CONFIG_MODEL) {
+			// CONFIG_MODEL.configs is an array where first element contains different configuration parameters:
+			// { "_id" : ObjectId("618298bcc577f5f73eaaa0d1"), "signup" : true, "show_fetching_info" : true }
+			if (typeof CONFIG_MODEL.configs !== 'undefined' && Array.isArray(CONFIG_MODEL.configs) && CONFIG_MODEL.configs.length > 0) {
+				show_fetching_info = CONFIG_MODEL.configs[0].show_fetching_info;
+			}
+		}
+		
+		if (show_fetching_info) {
+			let html = '<p class="fetching-info">';
+			Object.keys(this.controller.models).forEach(key => {
+				if (models.includes(key)) {
 					const model = this.controller.models[key];
 					html += 'NAME: ' + model.name;
 					html += ' TIMERANGE: '  + model.timerange.begin.value + ' ' + model.timerange.begin.unit; 
 					html += ' INTERVAL: ' + model.interval;
 					html += ' RESPONSE: <span id="'+model.name+'-values-len"></span> values';
 					html += ' Fetching interval: '+ this.controller.fetching_interval_in_seconds + ' s Cache expiration: ' + model.cache_expiration_in_seconds + ' s<br/>';
-			}
-		});
-		html += '<p>';
-		$('#data-fetching-info').empty().append(html);
+				}
+			});
+			html += '<p>';
+			$('#data-fetching-info').empty().append(html);
+		}
 	}
 	
 	updateInfoModelValues(modelname, len) {

@@ -1,5 +1,6 @@
 {
 	"env":{
+		"PORT":3000,
 		"JWT_KEY":"dpm58ekf0922jkl",
 		"OBIX_USER":"timokinnunen",
 		"OBIX_PASS":"tuaxiMun0wx6ff!sBaq"

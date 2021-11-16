@@ -49,7 +49,7 @@ export default class EcoInventModel extends Model {
 		const body_url = 'latest?country=Finland&EmDB=EcoInvent';
 		
 		const url = this.mongoBackend + '/proxes/ecoinvent';
-		const url = mongo
+		
 		console.log(['fetch url=',url]);
 		
 		const myHeaders = new Headers();

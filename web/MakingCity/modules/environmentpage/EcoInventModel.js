@@ -72,8 +72,12 @@ export default class EcoInventModel extends Model {
 			.then(function(myJson) {
 				self.results = []; // Start with fresh empty data.
 				console.log(['myJson=',myJson]);
-				if (typeof myJson !== 'undefined' && typeof myJson.results !== 'undefined') {
-					self.results = myJson.results;
+				const resu = JSON.parse(myJson);
+				console.log(['resu=',resu]);
+				
+				//"{\n    \"results\": [\n        {\n            \"country\": \"FI\",\n            \"date_time\": \"2021-11-16 13:27:49\",\n            \"em_cons\": 163.735,\n            \"em_prod\": 154.7686,\n            \"emdb\": \"EcoInvent\",\n            \"id\": 159977\n        }\n    ]\n}"
+				if (typeof resu !== 'undefined' && typeof resu.results !== 'undefined') {
+					self.results = resu.results;
 				}
 				self.fetching = false;
 				self.ready = true;

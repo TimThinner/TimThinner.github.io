@@ -112,7 +112,7 @@ export default class EnvironmentPageView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="results-wrapper"></div>'+
+				'<div class="col s12 center" id="results-wrapper"></div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+

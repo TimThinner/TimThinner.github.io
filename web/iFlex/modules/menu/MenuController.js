@@ -8,7 +8,8 @@ export default class MenuController extends Controller {
 	constructor(options) {
 		super(options);
 	}
-	
+	/*
+	NOTE: Menumodel is NEVER removed!
 	remove() {
 		super.remove();
 		// We must remove all models that were created here at the initialize-method.
@@ -20,8 +21,8 @@ export default class MenuController extends Controller {
 		});
 		this.models = {};
 	}
-	
-	initialize() {
+	*/
+	init() {
 		const model = new MenuModel({name:'MenuModel',src:'menu'});
 		model.subscribe(this);
 		this.master.modelRepo.add('MenuModel',model);
@@ -33,15 +34,7 @@ export default class MenuController extends Controller {
 		this.models['ProxesCleanerModel'] = m2;
 		
 		this.view = new MenuView(this);
-	}
-	
-	clean() {
-		this.remove();
-		this.initialize();
-	}
-	
-	init() {
-		this.initialize();
+		
 		//const m = new FingridModel({name:'FingridPowerSystemStateModel',src:'https://api.fingrid.fi/v1/variable/209/event/json'});
 		//m.subscribe(this);
 		//this.master.modelRepo.add('FingridPowerSystemStateModel',m);

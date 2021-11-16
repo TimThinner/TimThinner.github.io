@@ -13,6 +13,14 @@ http://128.214.253.150/api/v1/resources/emissions/latest?country=Finland&EmDB=Ec
 
 http://128.214.253.150/api/v1/resources/emissions/findByDate?startdate="2021-11-11 00:00:00"&enddate="2021-11-12 00:00:00"&country=Finland&EmDB=EcoInvent
 
+
+This link should work for the last 24 hours.
+
+http://128.214.253.150/api/v1/resources/emissions/findByDate?startdate=2021-11-15%2015%3A00%3A00&enddate=2021-11-16%2015%3A00%3A00&EmDB=EcoInvent&country=FI
+
+The special characters have to be encoded in hex format to be passed correctly in Apache.
+
+
 RESPONSE EXAMPLE:
 
 { "results": [ { "country": "FI", "date_time": "2021-11-16 10:31:06", "em_cons": 160.305, "em_prod": 148.0854, "emdb": "EcoInvent", "id": 159293 } ] }

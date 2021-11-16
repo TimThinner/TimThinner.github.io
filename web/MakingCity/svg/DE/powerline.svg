@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">
+<style>
+polyline {
+	stroke-width: 8;
+	stroke: #000;
+	fill: none;
+}
+</style>
+<!--
+<rect x="2" y="2" width="196" height="296" fill="#fff" stroke-width="4" stroke="#eee" />
+-->
+<g opacity="0.75">
+<polyline points="20,70 20,50 60,20 140,20 180,50 180,70" />
+<polyline points="20,50 180,50" />
+<polyline points="20,150 20,130 60,100 140,100 180,130 180,150" />
+<polyline points="20,130 180,130" />
+<polyline points="60,20 60,180" />
+<polyline points="140,20 140,180" />
+<polyline points="60,180 20,260 140,180 180,260 60,180" />
+</g>
+<!--<text x="0" y="300" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#000">SÄHKÖVERKKO</text>-->
+<!--<text x="60" y="300" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#fff">GRID</text>-->
+</svg>

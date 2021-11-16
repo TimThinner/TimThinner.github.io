@@ -148,7 +148,9 @@ export default class DistrictView extends View {
 			
 			const hexE = svgObject.getElementById('hex-e');
 			hexE.addEventListener("click", function(){
-				console.log('HEXAGON E CLICKED!');
+				//console.log('HEXAGON E CLICKED!');
+				self.controller.models['MenuModel'].setSelected('DE');
+				
 			}, false);
 			hexE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,1); }, false);
 			hexE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,0); }, false);

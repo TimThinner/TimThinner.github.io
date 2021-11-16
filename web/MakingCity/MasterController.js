@@ -53,9 +53,10 @@ import DistrictAFController from './modules/districtaf/DistrictAFController.js';
 import DistrictAGController from './modules/districtag/DistrictAGController.js';
 import DistrictAIController from './modules/districtai/DistrictAIController.js';
 
-import DistrictBController from './modules/districtb/DistrictBController.js';
-import DistrictCController from './modules/districtc/DistrictCController.js';
-import DistrictDController from './modules/districtd/DistrictDController.js';
+import DistrictBController from './modules/districtb/DistrictBController.js'; // Sivakka 1
+import DistrictCController from './modules/districtc/DistrictCController.js'; // Sivakka 2
+import DistrictDController from './modules/districtd/DistrictDController.js'; // Sivakka 3
+import DistrictEController from './modules/districte/DistrictEController.js'; // YIT 1
 
 import BackgroundPeriodicPoller from './modules/common/BackgroundPeriodicPoller.js';
 
@@ -295,6 +296,8 @@ class MasterController {
 		this.controllers['DC'].init();
 		this.controllers['DD'] = new DistrictDController({name:'DD', master:this, el:'#content', visible:false});
 		this.controllers['DD'].init();
+		this.controllers['DE'] = new DistrictEController({name:'DE', master:this, el:'#content', visible:false});
+		this.controllers['DE'].init();
 		
 		console.log('ALL Controllers are now created!');
 	}

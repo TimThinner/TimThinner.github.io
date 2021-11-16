@@ -91,7 +91,7 @@ export default class ConfigsView extends View {
 				config_html += '</p></div>';*/
 				config_html = '<div class="col s6 center"><p id="signup">signup: '+CONFIG_MODEL.configs[0].signup+'</p></div>';
 				config_html += '<div class="col s6 center"><p><button class="btn waves-effect waves-light" id="toggle-signup">TOGGLE</button></p></div>';
-				config_html = '<div class="col s6 center"><p id="show-fetching-info">show fetching info: '+CONFIG_MODEL.configs[0].show_fetching_info+'</p></div>';
+				config_html += '<div class="col s6 center"><p id="show-fetching-info">show fetching info: '+CONFIG_MODEL.configs[0].show_fetching_info+'</p></div>';
 				config_html += '<div class="col s6 center"><p><button class="btn waves-effect waves-light" id="toggle-show-fetching-info">TOGGLE</button></p></div>';
 			}
 			const LM = this.controller.master.modelRepo.get('LanguageModel');

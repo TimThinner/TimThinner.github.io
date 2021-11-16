@@ -3,7 +3,7 @@
 <style>
 .target {
 	cursor: pointer;
-	fill: #ff9800; /*#009688;*/
+	fill: #ffa726;
 	stroke-width: 1;
 	stroke: #888;
 	fill-opacity: 0.05;
@@ -29,7 +29,8 @@
 #fff3e0 orange lighten-5
 #ffe0b2 orange lighten-4
 #ffcc80 orange lighten-3
-
+#ffb74d orange lighten-2
+#ffa726 orange lighten-1
 #ff9800 orange
 -->
 <defs>

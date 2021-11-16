@@ -641,4 +641,52 @@ router.post('/fingrid', (req,res,next)=>{
 		});
 });
 
+router.post('/ecoinvent', (req,res,next)=>{
+	// req.body.url
+	// req.body.expiration_in_seconds;
+	const url = 'http://128.214.253.150/api/v1/resources/emissions/' + req.body.url;
+	//console.log(['url=',url]);
+	const options = {
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	};
+	const expiration = req.body.expiration_in_seconds;
+	
+	console.log(['ecoinvent url=',url]);
+	
+	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
+	
+	// First check if this url is already in database.
+	Proxe.find({url:url})
+		.exec()
+		.then(proxe=>{
+			if (proxe.length >= 1) {
+				// FOUND! Check if it is expired.
+				const upd = proxe[0].updated; // Date object
+				const exp_ms = proxe[0].expiration*1000; // expiration time in milliseconds
+				const now = new Date();
+				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
+				//console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
+				if (elapsed < exp_ms) {
+					// Use CACHED version of RESPONSE
+					//console.log('NOT expired => USE Cached response!');
+					res.status(200).json(proxe[0].response);
+				} else {
+					//console.log('Expired => FETCH a FRESH copy!');
+					// FETCH a FRESH copy from SOURCE and Update existing Proxe Entry
+					Proxe_HTTP_Fetch({url:url, id:proxe[0]._id, options:options, response_type:'json'}, res);
+				}
+			} else {
+				// Not cached yet => FETCH a FRESH copy from SOURCE and SAVE it as a new Entry.
+				//console.log(['Not cached yet => FETCH a FRESH copy! url=',url]);
+				Proxe_HTTP_Fetch({url:url, expiration:expiration, options:options, response_type:'json'}, res);
+			}
+		})
+		.catch(err=>{
+			console.log(['err=',err]);
+			res.status(500).json({error:err});
+		});
+});
+
 module.exports = router;

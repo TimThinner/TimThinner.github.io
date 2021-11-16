@@ -10,6 +10,9 @@ https://app.swaggerhub.com/apis/jean-nicolas.louis/emission-and_power_grid_statu
 The one that we need to retrieve is:
 http://128.214.253.150/api/v1/resources/emissions/latest?country=Finland&EmDB=EcoInvent 
 
+
+http://128.214.253.150/api/v1/resources/emissions/findByDate?startdate="2021-11-11 00:00:00"&enddate="2021-11-12 00:00:00"&country=Finland&EmDB=EcoInvent
+
 RESPONSE EXAMPLE:
 
 { "results": [ { "country": "FI", "date_time": "2021-11-16 10:31:06", "em_cons": 160.305, "em_prod": 148.0854, "emdb": "EcoInvent", "id": 159293 } ] }
@@ -71,11 +74,9 @@ export default class EcoInventModel extends Model {
 			})
 			.then(function(myJson) {
 				self.results = []; // Start with fresh empty data.
-				console.log(['myJson=',myJson]);
+				//console.log(['myJson=',myJson]);
 				const resu = JSON.parse(myJson);
-				console.log(['resu=',resu]);
-				
-				//"{\n    \"results\": [\n        {\n            \"country\": \"FI\",\n            \"date_time\": \"2021-11-16 13:27:49\",\n            \"em_cons\": 163.735,\n            \"em_prod\": 154.7686,\n            \"emdb\": \"EcoInvent\",\n            \"id\": 159977\n        }\n    ]\n}"
+				//console.log(['resu=',resu]);
 				if (typeof resu !== 'undefined' && typeof resu.results !== 'undefined') {
 					self.results = resu.results;
 				}

@@ -182,7 +182,7 @@ const Proxe_HTTP_Fetch = (po, res) => {
 						Proxe_Update({id:po.id, json:rawData}, res);
 					} else {
 						// Save
-						console.log(['url: ',po.url,' rawData=',rawData]);
+						//console.log(['url: ',po.url,' rawData=',rawData]);
 						Proxe_Save({url:po.url, json:rawData, expiration:po.expiration}, res);
 					}
 				} else if (ctype === 'text/xml') {
@@ -204,7 +204,7 @@ const Proxe_HTTP_Fetch = (po, res) => {
 				}
 			} catch(e) {
 				console.log(['error message=',e.message]);
-				console.log(['rawData=',rawData]);
+				//console.log(['rawData=',rawData]);
 				res.status(500).json({error: e});
 			}
 		});

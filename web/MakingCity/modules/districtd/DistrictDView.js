@@ -4,7 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
-export default class DistrictCView extends View {
+export default class DistrictDView extends View {
 	
 	constructor(controller) {
 		super(controller);
@@ -21,7 +21,7 @@ export default class DistrictCView extends View {
 		
 		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
-		this.FELID = 'district-c-view-failure';
+		this.FELID = 'district-d-view-failure';
 	}
 	
 	show() {
@@ -394,20 +394,20 @@ meterId
 			}, false);
 			
 			
-			const targetA = svgObject.getElementById('target-c-a');
+			const targetA = svgObject.getElementById('target-d-a');
 			targetA.addEventListener("click", function(){
 				
-				console.log('Target C A clicked!');
+				console.log('Target D A clicked!');
 				//self.menuModel.setSelected('DBA');
 				
 			}, false);
 			targetA.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetA.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetB = svgObject.getElementById('target-c-b');
+			const targetB = svgObject.getElementById('target-d-b');
 			targetB.addEventListener("click", function(){
 				
-				console.log('Target C B clicked!');
+				console.log('Target D B clicked!');
 				//self.menuModel.setSelected('DBB');
 				
 			}, false);
@@ -415,40 +415,40 @@ meterId
 			targetB.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
 			
-			const targetD = svgObject.getElementById('target-c-d');
+			const targetD = svgObject.getElementById('target-d-d');
 			targetD.addEventListener("click", function(){
 				
-				console.log('Target C D clicked!');
+				console.log('Target D D clicked!');
 				//self.menuModel.setSelected('DBD');
 				
 			}, false);
 			targetD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetD.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetE = svgObject.getElementById('target-c-e');
+			const targetE = svgObject.getElementById('target-d-e');
 			targetE.addEventListener("click", function(){
 				
-				console.log('Target C E clicked!');
+				console.log('Target D E clicked!');
 				//self.menuModel.setSelected('DBE');
 				
 			}, false);
 			targetE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetE.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetF = svgObject.getElementById('target-c-f');
+			const targetF = svgObject.getElementById('target-d-f');
 			targetF.addEventListener("click", function(){
 				
-				console.log('Target C F clicked!');
+				console.log('Target D F clicked!');
 				//self.menuModel.setSelected('DBF');
 				
 			}, false);
 			targetF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetF.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetG = svgObject.getElementById('target-c-g');
+			const targetG = svgObject.getElementById('target-d-g');
 			targetG.addEventListener("click", function(){
 				
-				console.log('Target C G clicked!');
+				console.log('Target D G clicked!');
 				//self.menuModel.setSelected('DBG');
 				
 			}, false);
@@ -456,30 +456,30 @@ meterId
 			targetG.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
 			
-			const targetI = svgObject.getElementById('target-c-i');
+			const targetI = svgObject.getElementById('target-d-i');
 			targetI.addEventListener("click", function(){
 				
-				console.log('Target C I clicked!');
+				console.log('Target D I clicked!');
 				//self.menuModel.setSelected('DBI');
 				
 			}, false);
 			targetI.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetI.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetJ = svgObject.getElementById('target-c-j');
+			const targetJ = svgObject.getElementById('target-d-j');
 			targetJ.addEventListener("click", function(){
 				
-				console.log('Target C J clicked!');
+				console.log('Target D J clicked!');
 				//self.menuModel.setSelected('DBJ');
 				
 			}, false);
 			targetJ.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
 			targetJ.addEventListener("mouseout", function(event){ self.setHoverEffect(event,'scale(1.0)'); }, false);
 			
-			const targetK = svgObject.getElementById('target-c-k');
+			const targetK = svgObject.getElementById('target-d-k');
 			targetK.addEventListener("click", function(){
 				
-				console.log('Target C K clicked!');
+				console.log('Target D K clicked!');
 				//self.menuModel.setSelected('DBK');
 				
 			}, false);
@@ -520,26 +520,26 @@ meterId
 			const localized_hot_water_title_1 = LM['translation'][sel]['DBK_TITLE_1'];
 			const localized_hot_water_title_2 = LM['translation'][sel]['DBK_TITLE_2'];
 			
-			this.fillSVGTextElement(svgObject, 'dc-grid-title', localized_grid_title);
-			this.fillSVGTextElement(svgObject, 'dc-solar-title', localized_solar_title);
-			this.fillSVGTextElement(svgObject, 'dc-solar-title-2', localized_solar_title);
-			this.fillSVGTextElement(svgObject, 'dc-apartments-title', localized_apartments_title);
-			this.fillSVGTextElement(svgObject, 'dc-other-title-1', localized_other_title_1);
-			this.fillSVGTextElement(svgObject, 'dc-other-title-2', localized_other_title_2);
-			this.fillSVGTextElement(svgObject, 'dc-other-title-3', localized_other_title_3);
-			this.fillSVGTextElement(svgObject, 'dc-heating-system-title-1', localized_heating_system_title_1);
-			this.fillSVGTextElement(svgObject, 'dc-heating-system-title-2', localized_heating_system_title_2);
-			this.fillSVGTextElement(svgObject, 'dc-exthaus-air-reco-title-1', localized_exthaus_air_reco_title_1);
-			this.fillSVGTextElement(svgObject, 'dc-exthaus-air-reco-title-2', localized_exthaus_air_reco_title_2);
-			this.fillSVGTextElement(svgObject, 'dc-wastewater-reco-title-1', localized_wastewater_reco_title_1);
-			this.fillSVGTextElement(svgObject, 'dc-wastewater-reco-title-2', localized_wastewater_reco_title_2);
-			this.fillSVGTextElement(svgObject, 'dc-dhn-title-1', localized_dhn_title_1);
-			this.fillSVGTextElement(svgObject, 'dc-dhn-title-2', localized_dhn_title_2);
-			this.fillSVGTextElement(svgObject, 'dc-dhn-title-3', localized_dhn_title_3);
-			this.fillSVGTextElement(svgObject, 'dc-heating-dev-title-1', localized_heating_dev_title_1);
-			this.fillSVGTextElement(svgObject, 'dc-heating-dev-title-2', localized_heating_dev_title_2);
-			this.fillSVGTextElement(svgObject, 'dc-hot-water-title-1', localized_hot_water_title_1);
-			this.fillSVGTextElement(svgObject, 'dc-hot-water-title-2', localized_hot_water_title_2);
+			this.fillSVGTextElement(svgObject, 'dd-grid-title', localized_grid_title);
+			this.fillSVGTextElement(svgObject, 'dd-solar-title', localized_solar_title);
+			this.fillSVGTextElement(svgObject, 'dd-solar-title-2', localized_solar_title);
+			this.fillSVGTextElement(svgObject, 'dd-apartments-title', localized_apartments_title);
+			this.fillSVGTextElement(svgObject, 'dd-other-title-1', localized_other_title_1);
+			this.fillSVGTextElement(svgObject, 'dd-other-title-2', localized_other_title_2);
+			this.fillSVGTextElement(svgObject, 'dd-other-title-3', localized_other_title_3);
+			this.fillSVGTextElement(svgObject, 'dd-heating-system-title-1', localized_heating_system_title_1);
+			this.fillSVGTextElement(svgObject, 'dd-heating-system-title-2', localized_heating_system_title_2);
+			this.fillSVGTextElement(svgObject, 'dd-exthaus-air-reco-title-1', localized_exthaus_air_reco_title_1);
+			this.fillSVGTextElement(svgObject, 'dd-exthaus-air-reco-title-2', localized_exthaus_air_reco_title_2);
+			this.fillSVGTextElement(svgObject, 'dd-wastewater-reco-title-1', localized_wastewater_reco_title_1);
+			this.fillSVGTextElement(svgObject, 'dd-wastewater-reco-title-2', localized_wastewater_reco_title_2);
+			this.fillSVGTextElement(svgObject, 'dd-dhn-title-1', localized_dhn_title_1);
+			this.fillSVGTextElement(svgObject, 'dd-dhn-title-2', localized_dhn_title_2);
+			this.fillSVGTextElement(svgObject, 'dd-dhn-title-3', localized_dhn_title_3);
+			this.fillSVGTextElement(svgObject, 'dd-heating-dev-title-1', localized_heating_dev_title_1);
+			this.fillSVGTextElement(svgObject, 'dd-heating-dev-title-2', localized_heating_dev_title_2);
+			this.fillSVGTextElement(svgObject, 'dd-hot-water-title-1', localized_hot_water_title_1);
+			this.fillSVGTextElement(svgObject, 'dd-hot-water-title-2', localized_hot_water_title_2);
 			*/
 		}
 	}
@@ -561,15 +561,15 @@ meterId
 			let svgFile, svgClass;
 			if (mode === 'LANDSCAPE') {
 				//console.log('LANDSCAPE');
-				svgFile = './svg/DC/DCLandscape.svg';
+				svgFile = './svg/DD/DDLandscape.svg';
 				svgClass = 'svg-landscape-container';
 			} else if (mode === 'PORTRAIT') {
 				//console.log('PORTRAIT');
-				svgFile = './svg/DC/DCPortrait.svg';
+				svgFile = './svg/DD/DDPortrait.svg';
 				svgClass = 'svg-portrait-container';
 			} else {
 				//console.log('SQUARE');
-				svgFile = './svg/DC/DCSquare.svg';
+				svgFile = './svg/DD/DDSquare.svg';
 				svgClass = 'svg-square-container';
 			}
 			const html =
@@ -600,7 +600,7 @@ meterId
 			this.rendered = true;
 			
 		} else {
-			console.log('DistrictCView => render Models NOT READY!!!!');
+			console.log('DistrictDView => render Models NOT READY!!!!');
 			// this.el = '#content'
 			this.showSpinner(this.el);
 		}

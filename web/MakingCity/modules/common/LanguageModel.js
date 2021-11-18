@@ -22,6 +22,11 @@ export default class LanguageModel {
 				'SOLAR_PAGE_DESCRIPTION':'Solar power generation forecast for the next 36 hours. Updated hourly.',
 				'ENVIRONMENT_PAGE_TITLE':'The Environment Page',
 				'ENVIRONMENT_PAGE_DESCRIPTION':'Here you will find more information about the environmental load of the energy used.',
+				'ENVIRONMENT_PAGE_AXIS_TITLE':'Emissions gCO2/kWh',
+				'ENVIRONMENT_PAGE_CONS_TOOLTIP':'Consumed',
+				'ENVIRONMENT_PAGE_PROD_TOOLTIP':'Produced',
+				'ENVIRONMENT_PAGE_CONS_LEGEND_LABEL':'Consumed',
+				'ENVIRONMENT_PAGE_PROD_LEGEND_LABEL':'Produced',
 				'USER_PROPS_TITLE':'User Properties',
 				'USER_PROPS_DESCRIPTION':'Here you will find your information and settings.',
 				'USER_ENERGY_PRICES_TITLE':'Energy price',
@@ -149,7 +154,7 @@ export default class LanguageModel {
 				'AUTO_UPDATE_MSG_3':'Chart is NOT automatically updated',
 				'ADJUST_UPDATE_INTERVAL':'Adjust the update interval (0-60s):',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.11.18'
+				'MENU_VERSION':'v 21.11.18a'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -170,6 +175,11 @@ export default class LanguageModel {
 				'SOLAR_PAGE_DESCRIPTION':'Aurinkoenergian tuotantoennuste seuraaville 36 tunnille. Ennuste päivittyy tunnin välein.',
 				'ENVIRONMENT_PAGE_TITLE':'Ympäristövaikutus',
 				'ENVIRONMENT_PAGE_DESCRIPTION':'Täältä löytyy lisätietoa kulutetun energian vaikutuksesta ympäristöön.',
+				'ENVIRONMENT_PAGE_AXIS_TITLE':'Päästöt gCO2/kWh',
+				'ENVIRONMENT_PAGE_CONS_TOOLTIP':'Kulutus',
+				'ENVIRONMENT_PAGE_PROD_TOOLTIP':'Tuotanto',
+				'ENVIRONMENT_PAGE_CONS_LEGEND_LABEL':'Kulutus',
+				'ENVIRONMENT_PAGE_PROD_LEGEND_LABEL':'Tuotanto',
 				'USER_PROPS_TITLE':'Käyttäjätiedot',
 				'USER_PROPS_DESCRIPTION':'Täältä löytyvät kaikki sinun tietosi ja asetuksesi.',
 				'USER_ENERGY_PRICES_TITLE':'Energian hinta',
@@ -297,7 +307,7 @@ export default class LanguageModel {
 				'AUTO_UPDATE_MSG_3':'Kuvaaja EI päivity automaattisesti',
 				'ADJUST_UPDATE_INTERVAL':'Säädä päivitystaajuutta (0-60s):',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.11.18'
+				'MENU_VERSION':'v 21.11.18a'
 			}
 		}
 	}

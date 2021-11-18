@@ -66,7 +66,16 @@ export default class EnvironmentPageView extends View {
 	
 	renderChart() {
 		const self = this;
+		
 		am4core.ready(function() {
+			
+			const LM = self.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
+			const localized_string_axis_title = LM['translation'][sel]['ENVIRONMENT_PAGE_AXIS_TITLE'];
+			const localized_string_cons_tooltip = LM['translation'][sel]['ENVIRONMENT_PAGE_CONS_TOOLTIP'];
+			const localized_string_prod_tooltip = LM['translation'][sel]['ENVIRONMENT_PAGE_PROD_TOOLTIP'];
+			const localized_string_cons_legend_label = LM['translation'][sel]['ENVIRONMENT_PAGE_CONS_LEGEND_LABEL'];
+			const localized_string_prod_legend_label = LM['translation'][sel]['ENVIRONMENT_PAGE_PROD_LEGEND_LABEL'];
 			
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -95,10 +104,10 @@ export default class EnvironmentPageView extends View {
 			series1.data = resuArray;
 			series1.dataFields.dateX = "date";
 			series1.dataFields.valueY = "consumed";
-			series1.tooltipText = "Consumed: [bold]{valueY.formatNumber('#.#')}[/] gCO2";
+			series1.tooltipText = localized_string_cons_tooltip + ": [bold]{valueY.formatNumber('#.#')}[/] gCO2/kWh";
 			series1.fillOpacity = 0;
 			series1.name = "CONSUMED";
-			series1.customname = 'consumed';
+			series1.customname = localized_string_cons_legend_label;
 			series1.stroke = am4core.color("#f80");
 			series1.fill = "#f80";
 			series1.legendSettings.labelText = "{customname}";
@@ -107,10 +116,10 @@ export default class EnvironmentPageView extends View {
 			series2.data = resuArray;
 			series2.dataFields.dateX = "date";
 			series2.dataFields.valueY = "produced";
-			series2.tooltipText = "PRODUCED: [bold]{valueY.formatNumber('#.#')}[/] gCO2";
+			series2.tooltipText = localized_string_prod_tooltip + ": [bold]{valueY.formatNumber('#.#')}[/] gCO2/kWh";
 			series2.fillOpacity = 0.25;
 			series2.name = 'PRODUCED';
-			series2.customname = 'produced';
+			series2.customname = localized_string_prod_legend_label;
 			series2.stroke = am4core.color("#fff");
 			series2.fill = "#fff";
 			series2.legendSettings.labelText = "{customname}";

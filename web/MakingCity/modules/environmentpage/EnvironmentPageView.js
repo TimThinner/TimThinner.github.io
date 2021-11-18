@@ -63,29 +63,25 @@ export default class EnvironmentPageView extends View {
 		console.log(['res length=',res.length]);
 		if (res.length > 0) {
 			
+			const resuArray = [];
 			
+			// Create a Date Object from date_time:
+			res.forEach(r=>{
+				const d = new Date(r.date_time);
+				resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
+			});
 			
-			let datetime = '<p>datetime: -</p>';
-			let emcons = '<p>emissions consumed: -</p>';
-			let emprod = '<p>emissions produced: -</p>';
-			let emdb = '';
+			// Then sort array based according to time, oldest entry first.
+			resuArray.sort(function(a,b){
+				return a.date - b.date;
+			});
 			
-			if (typeof res[0].date_time !== 'undefined') {
-				datetime = '<p>datetime: ' + res[0].date_time + '</p>';
-			}
-			if (typeof res[0].em_cons !== 'undefined') {
-				emcons = '<p>emissions consumed: ' + res[0].em_cons + '</p>';
-			}
-			if (typeof res[0].em_prod !== 'undefined') {
-				emprod = '<p>emissions produced: ' + res[0].em_prod + '</p>';
-			}
-			if (typeof res[0].emdb !== 'undefined') {
-				emdb = '<h3>' + res[0].emdb + '</h3>';
-			}
-			const html = emdb + datetime + emcons + emprod;
+			let html = '';
+			resuArray.forEach(r=>{
+				const line = '<p>datetime: '+r.date+' consumed: '+r.consumed+' produced: '+r.produced+'</p>';
+				html += line;
+			});
 			$('#results-wrapper').empty().append(html);
-			
-			
 		}
 	}
 	

@@ -97,15 +97,15 @@ export default class EnvironmentPageView extends View {
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
-			valueAxis.title.text = 'axis title here';
-			valueAxis.min = 0;
+			valueAxis.title.text = localized_string_axis_title;
+			//valueAxis.min = 0;
 			
 			var series1 = self.chart.series.push(new am4charts.LineSeries());
 			series1.data = resuArray;
 			series1.dataFields.dateX = "date";
 			series1.dataFields.valueY = "consumed";
 			series1.tooltipText = localized_string_cons_tooltip + ": [bold]{valueY.formatNumber('#.#')}[/] gCO2/kWh";
-			series1.fillOpacity = 0;
+			series1.fillOpacity = 0.1;
 			series1.name = "CONSUMED";
 			series1.customname = localized_string_cons_legend_label;
 			series1.stroke = am4core.color("#f80");
@@ -117,11 +117,11 @@ export default class EnvironmentPageView extends View {
 			series2.dataFields.dateX = "date";
 			series2.dataFields.valueY = "produced";
 			series2.tooltipText = localized_string_prod_tooltip + ": [bold]{valueY.formatNumber('#.#')}[/] gCO2/kWh";
-			series2.fillOpacity = 0.25;
+			series2.fillOpacity = 0.1;
 			series2.name = 'PRODUCED';
 			series2.customname = localized_string_prod_legend_label;
-			series2.stroke = am4core.color("#fff");
-			series2.fill = "#fff";
+			series2.stroke = am4core.color("#0f0");
+			series2.fill = "#0f0";
 			series2.legendSettings.labelText = "{customname}";
 			
 			// Legend:

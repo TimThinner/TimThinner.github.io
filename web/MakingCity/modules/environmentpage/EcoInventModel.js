@@ -80,12 +80,12 @@ export default class EcoInventModel extends Model {
 		const startdate = moment();
 		startdate.subtract(24, 'hours');
 		startdate.second(0);
-		startdate.minute(0);
+		//startdate.minute(0);
 		const start = startdate.format("YYYY-MM-DD HH:mm:ss");
 		
 		const enddate = moment();
 		enddate.second(0);
-		enddate.minute(0);
+		//enddate.minute(0);
 		const end = enddate.format("YYYY-MM-DD HH:mm:ss");
 		
 		//const body_url = 'latest?country=Finland&EmDB=EcoInvent';

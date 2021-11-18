@@ -64,6 +64,16 @@ export default class MenuView extends View {
 		3 = red
 		4 = black
 		5 = blue
+		
+		https://www.fingrid.fi/en/electricity-market/power-system/different-states-of-the-power-system---traffic-lights/
+		
+		Different states of the power system - traffic lights
+		
+		1 = Green: Power system is in normal secure state.
+		2 = Yellow: Power system is in endangered state. The adequacy of the electricity is endangered (serious risk for electricity shortage) or the power system doesn't fulfill the security standards.
+		3 = Red: Power system is in disturbed state. Manual load shedding has taken placehappened in order to maintainkeep the adequacy and security of the power system (electricity shortage) or there is a serious risk to a wide black out.
+		4 = Black: An extremely serious disturbance or a wide black out in Finland.
+		5 = Blue: The network is being restored after an extremely serious disturbance or a wide blackout.
 	*/
 	getFingridPowerSystemStateColor() {
 		let color = '#fff';

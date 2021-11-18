@@ -49,10 +49,21 @@ export default class EnvironmentPageView extends View {
 		}
 	}
 	
+	/*
+{ "results": [ 
+{ "country": "FI", "date_time": "2021-11-15 15:27:49", "em_cons": 138.5389, "em_prod": 139.6106, "emdb": "EcoInvent", "id": 154805 },
+{ "country": "FI", "date_time": "2021-11-15 15:01:03", "em_cons": 140.5014, "em_prod": 141.0444, "emdb": "EcoInvent", "id": 154697 }, 
+{ "country": "FI", "date_time": "2021-11-15 15:03:51", "em_cons": 140.0652, "em_prod": 140.3119, "emdb": "EcoInvent", "id": 154709 }, 
+{ "country": "FI", "date_time": "2021-11-15 15:06:50", "em_cons": 139.1719, "em_prod": 140.0983, "emdb": "EcoInvent", "id": 154721 }, 
+*/
+	
 	updateResults() {
 		//{ "results": [ { "country": "FI", "date_time": "2021-11-16 10:31:06", "em_cons": 160.305, "em_prod": 148.0854, "emdb": "EcoInvent", "id": 159293 } ] }
 		const res = this.models['EcoInventModel'].results;
+		console.log(['res length=',res.length]);
 		if (res.length > 0) {
+			
+			
 			
 			let datetime = '<p>datetime: -</p>';
 			let emcons = '<p>emissions consumed: -</p>';
@@ -73,6 +84,8 @@ export default class EnvironmentPageView extends View {
 			}
 			const html = emdb + datetime + emcons + emprod;
 			$('#results-wrapper').empty().append(html);
+			
+			
 		}
 	}
 	

@@ -17,6 +17,7 @@ export default class EnvironmentPageView extends View {
 		});
 		this.rendered = false;
 		this.FELID = 'environment-page-view-failure';
+		this.chart = undefined;
 	}
 	
 	show() {
@@ -24,16 +25,114 @@ export default class EnvironmentPageView extends View {
 	}
 	
 	hide() {
+		if (typeof this.chart !== 'undefined') {
+			this.chart.dispose();
+			this.chart = undefined;
+		}
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		if (typeof this.chart !== 'undefined') {
+			this.chart.dispose();
+			this.chart = undefined;
+		}
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
 		this.rendered = false;
 		$(this.el).empty();
+	}
+	
+	convertResults() {
+		const resuArray = [];
+		const res = this.models['EcoInventModel'].results;
+		console.log(['res length=',res.length]);
+		if (res.length > 0) {
+			
+			// Create a Date Object from date_time:
+			res.forEach(r=>{
+				const d = new Date(r.date_time);
+				resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
+			});
+			// Then sort array based according to time, oldest entry first.
+			resuArray.sort(function(a,b){
+				return a.date - b.date;
+			});
+		}
+		return resuArray;
+	}
+	
+	renderChart() {
+		const self = this;
+		am4core.ready(function() {
+			
+			// Themes begin
+			am4core.useTheme(am4themes_dark);
+			//am4core.useTheme(am4themes_animated);
+			// Themes end
+			
+			//const res = self.models['EcoInventModel'].results;
+			//console.log(['res length=',res.length]);
+			
+			const resuArray = self.convertResults();
+			// Create chart
+			self.chart = am4core.create('emissions-chart', am4charts.XYChart);
+			self.paddingRight = 20;
+			
+			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
+			dateAxis.baseInterval = {"timeUnit": "minute","count": 3};
+			//dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
+			dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
+			
+			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.tooltip.disabled = true;
+			valueAxis.title.text = 'axis title here';
+			valueAxis.min = 0;
+			
+			var series1 = self.chart.series.push(new am4charts.LineSeries());
+			series1.data = resuArray;
+			series1.dataFields.dateX = "date";
+			series1.dataFields.valueY = "consumed";
+			series1.tooltipText = "Consumed: [bold]{valueY.formatNumber('#.#')}[/] gCO2";
+			series1.fillOpacity = 0;
+			series1.name = "CONSUMED";
+			series1.customname = 'consumed';
+			series1.stroke = am4core.color("#f80");
+			series1.fill = "#f80";
+			series1.legendSettings.labelText = "{customname}";
+			
+			var series2 = self.chart.series.push(new am4charts.LineSeries());
+			series2.data = resuArray;
+			series2.dataFields.dateX = "date";
+			series2.dataFields.valueY = "produced";
+			series2.tooltipText = "PRODUCED: [bold]{valueY.formatNumber('#.#')}[/] gCO2";
+			series2.fillOpacity = 0.25;
+			series2.name = 'PRODUCED';
+			series2.customname = 'produced';
+			series2.stroke = am4core.color("#fff");
+			series2.fill = "#fff";
+			series2.legendSettings.labelText = "{customname}";
+			
+			// Legend:
+			self.chart.legend = new am4charts.Legend();
+			self.chart.legend.useDefaultMarker = true;
+			var marker = self.chart.legend.markers.template.children.getIndex(0);
+			marker.cornerRadius(12, 12, 12, 12);
+			marker.strokeWidth = 2;
+			marker.strokeOpacity = 1;
+			marker.stroke = am4core.color("#000");
+			
+			self.chart.cursor = new am4charts.XYCursor();
+			self.chart.cursor.lineY.opacity = 0;
+			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
+			self.chart.scrollbarX.series.push(series1);
+			
+			dateAxis.start = 0.0;
+			dateAxis.end = 1.0;
+			dateAxis.keepSelection = true;
+		}); // end am4core.ready()
 	}
 	
 	notifyError(options) {
@@ -56,7 +155,7 @@ export default class EnvironmentPageView extends View {
 { "country": "FI", "date_time": "2021-11-15 15:03:51", "em_cons": 140.0652, "em_prod": 140.3119, "emdb": "EcoInvent", "id": 154709 }, 
 { "country": "FI", "date_time": "2021-11-15 15:06:50", "em_cons": 139.1719, "em_prod": 140.0983, "emdb": "EcoInvent", "id": 154721 }, 
 */
-	
+	/*
 	updateResults() {
 		//{ "results": [ { "country": "FI", "date_time": "2021-11-16 10:31:06", "em_cons": 160.305, "em_prod": 148.0854, "emdb": "EcoInvent", "id": 159293 } ] }
 		const res = this.models['EcoInventModel'].results;
@@ -83,7 +182,7 @@ export default class EnvironmentPageView extends View {
 			});
 			$('#results-wrapper').empty().append(html);
 		}
-	}
+	}*/
 	
 	notify(options) {
 		if (this.controller.visible) {
@@ -92,7 +191,20 @@ export default class EnvironmentPageView extends View {
 					//console.log('EnvironmentPageView => ' + options.model + ' fetched!');
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
-						this.updateResults();
+						//this.updateResults();
+						
+						if (typeof this.chart !== 'undefined') {
+							
+							const resuArray = this.convertResults();
+							
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								s.data = resuArray;
+							});
+						} else {
+							
+							this.renderChart();
+						}
+						
 					} else {
 						this.render();
 					}
@@ -121,7 +233,9 @@ export default class EnvironmentPageView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12 center" id="results-wrapper"></div>'+
+				'<div class="col s12 chart-wrapper dark-theme">'+
+					'<div id="emissions-chart" class="medium-chart"></div>'+
+				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+
@@ -143,7 +257,8 @@ export default class EnvironmentPageView extends View {
 		
 		if (this.areModelsReady()) {
 			this.handleErrorMessages(this.FELID);
-			this.updateResults();
+			//this.updateResults();
+			this.renderChart();
 		}
 	}
 }

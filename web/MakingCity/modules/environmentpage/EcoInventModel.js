@@ -77,11 +77,19 @@ export default class EcoInventModel extends Model {
 		this.errorMessage = '';
 		this.fetching = true;
 		
-		const startdate = moment.format("YYYY-MM-DD HH:mm:ss");
-		const enddate = moment.format("YYYY-MM-DD HH:mm:ss");
+		const startdate = moment();
+		startdate.subtract(24, 'hours');
+		startdate.second(0);
+		startdate.minute(0);
+		const start = startdate.format("YYYY-MM-DD HH:mm:ss");
+		
+		const enddate = moment();
+		enddate.second(0);
+		enddate.minute(0);
+		const end = enddate.format("YYYY-MM-DD HH:mm:ss");
 		
 		//const body_url = 'latest?country=Finland&EmDB=EcoInvent';
-		const body_url = 'findByDate?EmDB=EcoInvent&country=FI&startdate='+startdate+'&enddate='+enddate;
+		const body_url = 'findByDate?EmDB=EcoInvent&country=FI&startdate='+start+'&enddate='+end;
 		const body_url_encoded = encodeURI(body_url);
 		console.log(['body_url_encoded=',body_url_encoded]);
 		

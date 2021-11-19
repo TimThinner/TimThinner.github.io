@@ -452,8 +452,14 @@ export default class GridPageView extends View {
 			
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				
-				console.log("GridPageView resize => renderChart !!!!!!!!!!!!!!");
-				this.renderChart();
+				console.log("GridPageView resize => update all models!!!!!!!!!!!!!!");
+				
+				Object.keys(this.models).forEach(key => {
+					if (key !== 'MenuModel') {
+						this.updateChart(key);
+					}
+				});
+				//this.renderChart();
 				//this.render();
 				
 			} else if (key_array.includes(options.model) && options.method==='fetched') {

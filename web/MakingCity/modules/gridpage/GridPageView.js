@@ -531,7 +531,7 @@ export default class GridPageView extends View {
 		});
 		
 		this.createTable('#table-wrapper');
-		//this.renderChart();
+		this.renderChart();
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {

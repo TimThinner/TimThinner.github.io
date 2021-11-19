@@ -15,6 +15,11 @@ export default class GridPageView extends View {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
+		
+		// Start listening notify -messages from ResizeEventObserver:
+		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
+		this.REO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'grid-page-view-failure';
 		
@@ -66,6 +71,7 @@ export default class GridPageView extends View {
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
+		this.REO.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -443,7 +449,14 @@ export default class GridPageView extends View {
 	notify(options) {
 		const key_array = Object.keys(this.table_labels);
 		if (this.controller.visible) {
-			if (key_array.includes(options.model) && options.method==='fetched') {
+			
+			if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				
+				console.log("GridPageView resize => renderChart !!!!!!!!!!!!!!");
+				this.renderChart();
+				//this.render();
+				
+			} else if (key_array.includes(options.model) && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
@@ -518,7 +531,7 @@ export default class GridPageView extends View {
 		});
 		
 		this.createTable('#table-wrapper');
-		this.renderChart();
+		//this.renderChart();
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {

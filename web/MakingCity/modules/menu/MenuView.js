@@ -59,6 +59,7 @@ export default class MenuView extends View {
 			"start_time": "2021-05-11T11:10:00+0000",
 			"end_time": "2021-05-11T11:10:00+0000"
 		
+		Different states of the power system - traffic lights
 		1 = green
 		2 = yellow
 		3 = red

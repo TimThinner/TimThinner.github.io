@@ -48,17 +48,24 @@ export default class MenuView extends View {
 		if (svg_element) {
 			const svgObject = svg_element.contentDocument;
 			if (svgObject) {
-				const res = this.models['EmpoEmissionsLatestModel'].results;
-				if (typeof res !== 'undefined') {
-					if (Array.isArray(res) && res.length > 0) {
-						if (typeof res[0].em_cons !== 'undefined' ) {
-							// 162.4372
-							const val = res[0].em_cons.toFixed(0);
-							this.fillSVGTextElement(svgObject, 'emissions-value', val);
+				const res = this.models['EmpoEmissionsLatest30DaysModel'].results;
+				if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
+					// Calculate average value 
+					let c = 0;
+					let sum = 0;
+					res.forEach(r=>{
+						if (Number.isFinite(r.em_cons)) {
+							c++;
+							sum += r.em_cons;
 						}
-					} else if (typeof res.em_cons !== 'undefined' ) {
-						const val = res.em_cons.toFixed(0);
-						this.fillSVGTextElement(svgObject, 'emissions-value', val);
+					});
+					if (c > 0) {
+						// Get the last value:
+						const last = res[res.length-1].em_cons;
+						// Average:
+						const ave = sum/c;
+						const s = last.toFixed(0)+' ('+ave.toFixed(0)+')';
+						this.fillSVGTextElement(svgObject, 'emissions-value', s);
 					}
 				}
 			}
@@ -154,7 +161,7 @@ export default class MenuView extends View {
 				if (options.status === 200) {
 					this.insertGridSystemState();
 				}
-			} else if (options.model==='EmpoEmissionsLatestModel' && options.method==='fetched') {
+			} else if (options.model==='EmpoEmissionsLatest30DaysModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					this.updateEmissionsValue();
 				}

@@ -88,8 +88,14 @@ export default class EmpoModel extends Model {
 		
 		let body_url = this.src;
 		if (body_url.indexOf('findByDate') >= 0) {
+			
+			let timerange_in_hours = 24;
+			if (this.name.indexOf('30Days') > 0) {
+				timerange_in_hours *= 30; // 720
+			}
+			
 			const startdate = moment();
-			startdate.subtract(24, 'hours');
+			startdate.subtract(timerange_in_hours, 'hours');
 			startdate.second(0);
 			//startdate.minute(0);
 			const start = startdate.format("YYYY-MM-DD HH:mm:ss");

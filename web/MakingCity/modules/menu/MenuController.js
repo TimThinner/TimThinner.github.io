@@ -3,7 +3,20 @@ import MenuModel from  './MenuModel.js';
 import FingridModel from  '../energydata/FingridModel.js';
 import EmpoModel from  '../environmentpage/EmpoModel.js';
 import MenuView from './MenuView.js';
+/*
 
+1. make the query to get the emissions for the last 31 days
+	
+	http://128.214.253.150/api/v1/resources/emissions/findByDate?startdate=NNN&enddate=NNN&EmDB=EcoInvent&country=FI
+2.	
+	a. Calculate the mean value of the em_cons variable (excluding incorrect input such as NaN and Inf or -Inf) 
+	this gives the last point to display and to compare with
+	
+	b. Calculate the cumulative mean of the result and that gives the moving average (https://www.philippe-fournier-viger.com/spmf/TimeSeriesCumulativeMovingAverage.php) 
+	easier to display the last month to date moving average from a single query instead of storing data
+	
+	
+*/
 export default class MenuController extends Controller {
 	
 	constructor(options) {
@@ -21,14 +34,13 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('FingridPowerSystemStateModel',m);
 		this.models['FingridPowerSystemStateModel'] = m;
 		
-		// http://128.214.253.150/api/v1/resources/emissions/latest?country=FI&EmDB=EcoInvent
-		const m2 = new EmpoModel({name:'EmpoEmissionsLatestModel',src:'emissions/latest?country=FI&EmDB=EcoInvent'});
+		const m2 = new EmpoModel({name:'EmpoEmissionsLatest30DaysModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent'});
 		m2.subscribe(this);
-		this.master.modelRepo.add('EmpoEmissionsLatestModel',m2);
-		this.models['EmpoEmissionsLatestModel'] = m2;
+		this.master.modelRepo.add('EmpoEmissionsLatest30DaysModel',m2);
+		this.models['EmpoEmissionsLatest30DaysModel'] = m2;
 		
 		// 180000
-		this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel','EmpoEmissionsLatestModel']}; // once per 3 minutes.
+		this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel','EmpoEmissionsLatest30DaysModel']}; // once per 3 minutes.
 		
 		this.view = new MenuView(this);
 		

@@ -91,7 +91,8 @@ export default class EmpoModel extends Model {
 			
 			let timerange_in_hours = 24;
 			if (this.name.indexOf('30Days') > 0) {
-				timerange_in_hours *= 30; // 720
+				//timerange_in_hours *= 30; // 720
+				timerange_in_hours *= 7;
 			}
 			
 			const startdate = moment();

@@ -43,15 +43,16 @@ export default class MenuView extends View {
 		$(this.el).empty();
 	}
 	
-	
 	updateEmissionsValue() {
-		const res = this.models['EmpoEmissionsLatestModel'].results;
-		if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
-			if (typeof res[0].em_cons !== 'undefined' ) {
-				// 162.4372
-				const val = res[0].em_cons.toFixed(0);
-				const svgObject = document.getElementById('svg-object').contentDocument;
-				if (svgObject) {
+		const svg_element = document.getElementById('svg-object');
+		if (svg_element) {
+			const svgObject = svg_element.contentDocument;
+			if (svgObject) {
+				const res = this.models['EmpoEmissionsLatestModel'].results;
+				if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
+					if (typeof res[0].em_cons !== 'undefined' ) {
+					// 162.4372
+					const val = res[0].em_cons.toFixed(0);
 					this.fillSVGTextElement(svgObject, 'emissions-value', val);
 				}
 			}
@@ -59,12 +60,15 @@ export default class MenuView extends View {
 	}
 	
 	insertVisitorCount(count) {
-		const svgObject = document.getElementById('svg-object').contentDocument;
-		if (svgObject) {
-			const LM = this.controller.master.modelRepo.get('LanguageModel');
-			const sel = LM.selected;
-			const localized_visit_count = LM['translation'][sel]['MENU_VISIT_COUNT'];
-			this.fillSVGTextElement(svgObject, 'visitors', localized_visit_count+': '+count);
+		const svg_element = document.getElementById('svg-object');
+		if (svg_element) {
+			const svgObject = svg_element.contentDocument;
+			if (svgObject) {
+				const LM = this.controller.master.modelRepo.get('LanguageModel');
+				const sel = LM.selected;
+				const localized_visit_count = LM['translation'][sel]['MENU_VISIT_COUNT'];
+				this.fillSVGTextElement(svgObject, 'visitors', localized_visit_count+': '+count);
+			}
 		}
 	}
 	

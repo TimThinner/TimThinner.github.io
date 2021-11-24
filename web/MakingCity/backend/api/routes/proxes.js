@@ -130,6 +130,24 @@ const Proxe_Update = (po, res) => {
 		});
 };
 
+
+/**
+ * String.prototype.replaceAll() polyfill
+ * https://gomakethings.com/how-to-replace-a-section-of-a-string-with-another-one-with-vanilla-js/
+ * @author Chris Ferdinandi
+ * @license MIT
+ */
+if (!String.prototype.replaceAll) {
+	String.prototype.replaceAll = function(str, newStr){
+		// If a regex pattern
+		if (Object.prototype.toString.call(str).toLowerCase() === '[object regexp]') {
+			return this.replace(str, newStr);
+		}
+		// If a string
+		return this.replace(new RegExp(str, 'g'), newStr);
+	};
+}
+
 /*
 	When testing response contentType search for 'application/json' or 'text/xml'
 */
@@ -149,7 +167,7 @@ const Proxe_HTTP_Fetch = (po, res) => {
 	*/
 	http.get(po.url, po.options, (res2) => {
 		const { statusCode } = res2;
-		//const contentType = res2.headers['content-type'];
+		const contentType = res2.headers['content-type'];
 		
 		let ctype = 'application/json';
 		if (po.response_type === 'xml') {
@@ -164,6 +182,9 @@ const Proxe_HTTP_Fetch = (po, res) => {
 			console.log('Invalid content-type. Expected ' + ctype + ' but received '+contentType);
 			error = new Error('Invalid content-type. Expected ' + ctype + ' but received '+contentType);
 		}*/
+		
+		console.log(['contentType=',contentType]); // "text/html; charset=utf-8"
+		
 		if (error) {
 			// Consume response data to free up memory
 			res2.resume();
@@ -177,13 +198,27 @@ const Proxe_HTTP_Fetch = (po, res) => {
 				if (ctype === 'application/json') {
 					// rawData is a JSON string.
 					//const parsedData = JSON.parse(rawData);
-					if (typeof po.id !== 'undefined') {
-						// Update
-						Proxe_Update({id:po.id, json:rawData}, res);
+					if (contentType === "text/html; charset=utf-8") {
+						const raw = rawData.replaceAll("\\s","");
+						//const raws = raw.slice(-120);
+						//console.log(['raw SLICE=',raws]);
+						if (typeof po.id !== 'undefined') {
+							// Update
+							Proxe_Update({id:po.id, json:raw}, res);
+						} else {
+							// Save
+							//console.log(['url: ',po.url,' rawData=',rawData]);
+							Proxe_Save({url:po.url, json:raw, expiration:po.expiration}, res);
+						}
 					} else {
-						// Save
-						//console.log(['url: ',po.url,' rawData=',rawData]);
-						Proxe_Save({url:po.url, json:rawData, expiration:po.expiration}, res);
+						if (typeof po.id !== 'undefined') {
+							// Update
+							Proxe_Update({id:po.id, json:rawData}, res);
+						} else {
+							// Save
+							//console.log(['url: ',po.url,' rawData=',rawData]);
+							Proxe_Save({url:po.url, json:rawData, expiration:po.expiration}, res);
+						}
 					}
 				} else if (ctype === 'text/xml') {
 					const parser = new xml2js.Parser();

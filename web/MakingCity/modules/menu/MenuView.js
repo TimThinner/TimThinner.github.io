@@ -166,6 +166,7 @@ export default class MenuView extends View {
 				}
 			} else if (options.model==='EmpoEmissionsLatest30DaysModel' && options.method==='fetched') {
 				if (options.status === 200) {
+					console.log('NOTIFY EmpoEmissionsLatest30DaysModel !!!!!!!!!!!!!!!!!!!!!!!!');
 					this.updateEmissionsValue();
 				}
 			}

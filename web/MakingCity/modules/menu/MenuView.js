@@ -54,10 +54,10 @@ export default class MenuView extends View {
 					let c = 0;
 					let sum = 0;
 					res.forEach(r=>{
-						if (Number.isFinite(r.em_cons)) {
-							c++;
-							sum += r.em_cons;
-						}
+						//if (Number.isFinite(r.em_cons)) {
+						c++;
+						sum += r.em_cons;
+						//}
 					});
 					if (c > 0) {
 						// Get the last value:

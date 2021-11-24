@@ -127,7 +127,9 @@ export default class EmpoModel extends Model {
 				self.results = []; // Start with fresh empty data.
 				//console.log(['myJson=',myJson]);
 				const resu = JSON.parse(myJson);
-				//console.log(['resu=',resu]);
+				
+				console.log(['EmpoModel resu=',resu]);
+				
 				if (typeof resu !== 'undefined' && typeof resu.results !== 'undefined') {
 					self.results = resu.results;
 				}

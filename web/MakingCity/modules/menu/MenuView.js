@@ -652,6 +652,8 @@ These are filled with correct values in here:
 			self.addSVGSolarPanel();
 			self.addSVGGrid();
 			self.addSVGLeaf();
+			// ...and remember to update LATEST EMISSIONS CONSUMPTION value!
+			self.updateEmissionsValue();
 		});
 		this.rendered = true;
 	}

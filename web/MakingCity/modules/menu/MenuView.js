@@ -43,6 +43,23 @@ export default class MenuView extends View {
 		$(this.el).empty();
 	}
 	
+	/*
+		const resuArray = [];
+		const res = this.models['EmpoEmissionsModel'].results;
+		console.log(['res length=',res.length]);
+		if (res.length > 0) {
+			
+			// Create a Date Object from date_time:
+			res.forEach(r=>{
+				const d = new Date(r.date_time);
+				resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
+			});
+			// Then sort array based according to time, oldest entry first.
+			resuArray.sort(function(a,b){
+				return a.date - b.date;
+			});
+		}
+	*/
 	updateEmissionsValue() {
 		const svg_element = document.getElementById('svg-object');
 		if (svg_element) {

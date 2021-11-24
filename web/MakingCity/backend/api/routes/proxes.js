@@ -198,7 +198,7 @@ const Proxe_HTTP_Fetch = (po, res) => {
 				if (ctype === 'application/json') {
 					// rawData is a JSON string.
 					//const parsedData = JSON.parse(rawData);
-					if (contentType === "text/html; charset=utf-8") {
+					/*if (contentType === "text/html; charset=utf-8") {
 						const raw = rawData.replaceAll("\\s","");
 						//const rawjson = JSON.parse(raw);
 						//const raws = raw.slice(-120);
@@ -220,7 +220,17 @@ const Proxe_HTTP_Fetch = (po, res) => {
 							//console.log(['url: ',po.url,' rawData=',rawData]);
 							Proxe_Save({url:po.url, json:rawData, expiration:po.expiration}, res);
 						}
+					}*/
+					if (typeof po.id !== 'undefined') {
+						// Update
+						Proxe_Update({id:po.id, json:rawData}, res);
+					} else {
+						// Save
+						//console.log(['url: ',po.url,' rawData=',rawData]);
+						Proxe_Save({url:po.url, json:rawData, expiration:po.expiration}, res);
 					}
+					
+					
 				} else if (ctype === 'text/xml') {
 					const parser = new xml2js.Parser();
 					parser.parseStringPromise(rawData).then(function (result) {

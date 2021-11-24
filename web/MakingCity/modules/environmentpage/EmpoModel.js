@@ -132,7 +132,10 @@ export default class EmpoModel extends Model {
 			.then(function(myJson) {
 				self.results = []; // Start with fresh empty data.
 				console.log(['myJson=',myJson]);
-				const resu = JSON.parse(myJson);
+				
+				const testJson = myJson.replaceAll("\\s","");
+				const resu = JSON.parse(testJson);
+				//const resu = JSON.parse(myJson);
 				
 				console.log(['EmpoModel resu=',resu]);
 				

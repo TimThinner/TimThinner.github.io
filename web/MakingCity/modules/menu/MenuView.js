@@ -65,6 +65,9 @@ export default class MenuView extends View {
 						// Average:
 						const ave = sum/c;
 						const s = last.toFixed(0)+' ('+ave.toFixed(0)+')';
+						
+						console.log(['EMISSIONS=',s]);
+						
 						this.fillSVGTextElement(svgObject, 'emissions-value', s);
 					}
 				}

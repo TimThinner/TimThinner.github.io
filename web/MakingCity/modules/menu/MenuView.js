@@ -49,10 +49,15 @@ export default class MenuView extends View {
 			const svgObject = svg_element.contentDocument;
 			if (svgObject) {
 				const res = this.models['EmpoEmissionsLatestModel'].results;
-				if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
-					if (typeof res[0].em_cons !== 'undefined' ) {
-						// 162.4372
-						const val = res[0].em_cons.toFixed(0);
+				if (typeof res !== 'undefined') {
+					if (Array.isArray(res) && res.length > 0) {
+						if (typeof res[0].em_cons !== 'undefined' ) {
+							// 162.4372
+							const val = res[0].em_cons.toFixed(0);
+							this.fillSVGTextElement(svgObject, 'emissions-value', val);
+						}
+					} else if (typeof res.em_cons !== 'undefined' ) {
+						const val = res.em_cons.toFixed(0);
 						this.fillSVGTextElement(svgObject, 'emissions-value', val);
 					}
 				}

@@ -43,6 +43,21 @@ export default class MenuView extends View {
 		$(this.el).empty();
 	}
 	
+	
+	updateEmissionsValue() {
+		const res = this.models['EmpoEmissionsLatestModel'].results;
+		if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
+			if (typeof res[0].em_cons !== 'undefined' ) {
+				// 162.4372
+				const val = res[0].em_cons.toFixed(0);
+				const svgObject = document.getElementById('svg-object').contentDocument;
+				if (svgObject) {
+					this.fillSVGTextElement(svgObject, 'emissions-value', val);
+				}
+			}
+		}
+	}
+	
 	insertVisitorCount(count) {
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
@@ -131,8 +146,7 @@ export default class MenuView extends View {
 				}
 			} else if (options.model==='EmpoEmissionsLatestModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					const res = this.models['EmpoEmissionsLatestModel'].results;
-					console.log(['EmpoEmissionsLatestModel FETCHED results=',res]);
+					this.updateEmissionsValue();
 				}
 			}
 		}

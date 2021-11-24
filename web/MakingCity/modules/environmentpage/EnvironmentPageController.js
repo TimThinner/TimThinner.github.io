@@ -40,7 +40,6 @@ export default class EnvironmentPageController extends Controller {
 	}
 	
 	init() {
-		// Testing!
 		const m = new EmpoModel({name:'EmpoEmissionsModel',src:'emissions/findByDate?EmDB=EcoInvent&country=Finland'});
 		m.subscribe(this);
 		this.master.modelRepo.add('EmpoEmissionsModel',m);

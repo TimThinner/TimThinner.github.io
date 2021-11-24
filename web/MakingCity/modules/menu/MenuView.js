@@ -8,10 +8,10 @@ export default class MenuView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'MenuModel' || key === 'FingridPowerSystemStateModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
+			
 		});
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
@@ -128,6 +128,11 @@ export default class MenuView extends View {
 			} else if (options.model==='FingridPowerSystemStateModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					this.insertGridSystemState();
+				}
+			} else if (options.model==='EmpoEmissionsLatestModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					const res = this.models['EmpoEmissionsLatestModel'].results;
+					console.log(['EmpoEmissionsLatestModel FETCHED results=',res]);
 				}
 			}
 		}

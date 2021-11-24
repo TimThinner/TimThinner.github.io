@@ -1,6 +1,7 @@
 import Controller from '../common/Controller.js';
 import MenuModel from  './MenuModel.js';
 import FingridModel from  '../energydata/FingridModel.js';
+import EmpoModel from  '../environmentpage/EmpoModel.js';
 import MenuView from './MenuView.js';
 
 export default class MenuController extends Controller {
@@ -20,8 +21,14 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('FingridPowerSystemStateModel',m);
 		this.models['FingridPowerSystemStateModel'] = m;
 		
+		// http://128.214.253.150/api/v1/resources/emissions/latest?country=FI&EmDB=EcoInvent
+		const m2 = new EmpoModel({name:'EmpoEmissionsLatestModel',src:'emissions/latest?country=FI&EmDB=EcoInvent'});
+		m2.subscribe(this);
+		this.master.modelRepo.add('EmpoEmissionsLatestModel',m2);
+		this.models['EmpoEmissionsLatestModel'] = m2;
+		
 		// 180000
-		this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel']}; // once per 3 minutes.
+		this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel','EmpoEmissionsLatestModel']}; // once per 3 minutes.
 		
 		this.view = new MenuView(this);
 		

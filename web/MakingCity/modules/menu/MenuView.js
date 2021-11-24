@@ -49,6 +49,9 @@ export default class MenuView extends View {
 			const svgObject = svg_element.contentDocument;
 			if (svgObject) {
 				const res = this.models['EmpoEmissionsLatest30DaysModel'].results;
+				
+				console.log(['res=',res]);
+				
 				if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
 					// Calculate average value 
 					let c = 0;

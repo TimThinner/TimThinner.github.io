@@ -200,6 +200,7 @@ const Proxe_HTTP_Fetch = (po, res) => {
 					//const parsedData = JSON.parse(rawData);
 					if (contentType === "text/html; charset=utf-8") {
 						const raw = rawData.replaceAll("\\s","");
+						//const rawjson = JSON.parse(raw);
 						//const raws = raw.slice(-120);
 						//console.log(['raw SLICE=',raws]);
 						if (typeof po.id !== 'undefined') {

@@ -645,10 +645,10 @@ router.post('/fingrid', (req,res,next)=>{
 		});
 });
 
-router.post('/ecoinvent', (req,res,next)=>{
+router.post('/empo', (req,res,next)=>{
 	// req.body.url
 	// req.body.expiration_in_seconds;
-	const url = 'http://128.214.253.150/api/v1/resources/emissions/' + req.body.url;
+	const url = 'http://128.214.253.150/api/v1/resources/' + req.body.url;
 	//console.log(['url=',url]);
 	const options = {
 		headers: {
@@ -657,7 +657,7 @@ router.post('/ecoinvent', (req,res,next)=>{
 	};
 	const expiration = req.body.expiration_in_seconds;
 	
-	console.log(['ecoinvent url=',url]);
+	console.log(['empo url=',url]);
 	
 	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
 	

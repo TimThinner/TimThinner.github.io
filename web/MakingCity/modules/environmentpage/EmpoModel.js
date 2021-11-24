@@ -45,8 +45,17 @@ enddate		2021-11-16 15:00:00
 { "country": "FI", "date_time": "2021-11-15 16:06:51", "em_cons": 137.4524, "em_prod": 139.573, "emdb": "EcoInvent", "id": 154961 }, { "country": "FI", "date_time": "2021-11-15 16:09:45", "em_cons": 137.2685, "em_prod": 139.5414, "emdb": "EcoInvent", "id": 154973 }, { "country": "FI", "date_time": "2021-11-15 16:12:45", "em_cons": 136.8294, "em_prod": 139.2051, "emdb": "EcoInvent", "id": 154985 }, { "country": "FI", "date_time": "2021-11-15 16:15:50", "em_cons": 122.591, "em_prod": 138.5728, "emdb": "EcoInvent", "id": 154997 }, { "country": "FI", "date_time": "2
 
 
+
+Emission and power grid status:
+
+emissions
+GET/api/v1/resources/emissions/latest
+GET/api/v1/resources/emissions/findByDate
+Power
+GET/api/v1/resources/power/findByDate
+GET/api/v1/resources/power/latest
 */
-export default class EcoInventModel extends Model {
+export default class EmpoModel extends Model {
 	
 	constructor(options) {
 		super(options);
@@ -77,23 +86,25 @@ export default class EcoInventModel extends Model {
 		this.errorMessage = '';
 		this.fetching = true;
 		
-		const startdate = moment();
-		startdate.subtract(24, 'hours');
-		startdate.second(0);
-		//startdate.minute(0);
-		const start = startdate.format("YYYY-MM-DD HH:mm:ss");
-		
-		const enddate = moment();
-		enddate.second(0);
-		//enddate.minute(0);
-		const end = enddate.format("YYYY-MM-DD HH:mm:ss");
-		
-		//const body_url = 'latest?country=Finland&EmDB=EcoInvent';
-		const body_url = 'findByDate?EmDB=EcoInvent&country=FI&startdate='+start+'&enddate='+end;
+		let body_url = this.src;
+		if (body_url.indexOf('findByDate') >= 0) {
+			const startdate = moment();
+			startdate.subtract(24, 'hours');
+			startdate.second(0);
+			//startdate.minute(0);
+			const start = startdate.format("YYYY-MM-DD HH:mm:ss");
+			
+			const enddate = moment();
+			enddate.second(0);
+			//enddate.minute(0);
+			const end = enddate.format("YYYY-MM-DD HH:mm:ss");
+			
+			body_url += '&startdate='+start+'&enddate='+end;
+		}
 		const body_url_encoded = encodeURI(body_url);
 		console.log(['body_url_encoded=',body_url_encoded]);
 		
-		const url = this.mongoBackend + '/proxes/ecoinvent';
+		const url = this.mongoBackend + '/proxes/empo';
 		
 		const myHeaders = new Headers();
 		myHeaders.append("Content-Type", "application/json");

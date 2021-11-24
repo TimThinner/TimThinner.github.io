@@ -47,7 +47,7 @@ export default class EnvironmentPageView extends View {
 	
 	convertResults() {
 		const resuArray = [];
-		const res = this.models['EcoInventModel'].results;
+		const res = this.models['EmpoEmissionsModel'].results;
 		console.log(['res length=',res.length]);
 		if (res.length > 0) {
 			
@@ -82,7 +82,7 @@ export default class EnvironmentPageView extends View {
 			//am4core.useTheme(am4themes_animated);
 			// Themes end
 			
-			//const res = self.models['EcoInventModel'].results;
+			//const res = self.models['EmpoEmissionsModel'].results;
 			//console.log(['res length=',res.length]);
 			
 			const resuArray = self.convertResults();
@@ -167,7 +167,7 @@ export default class EnvironmentPageView extends View {
 	/*
 	updateResults() {
 		//{ "results": [ { "country": "FI", "date_time": "2021-11-16 10:31:06", "em_cons": 160.305, "em_prod": 148.0854, "emdb": "EcoInvent", "id": 159293 } ] }
-		const res = this.models['EcoInventModel'].results;
+		const res = this.models['EmpoEmissionsModel'].results;
 		console.log(['res length=',res.length]);
 		if (res.length > 0) {
 			
@@ -195,7 +195,7 @@ export default class EnvironmentPageView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model === 'EcoInventModel' && options.method==='fetched') {
+			if (options.model === 'EmpoEmissionsModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					//console.log('EnvironmentPageView => ' + options.model + ' fetched!');
 					if (this.rendered) {

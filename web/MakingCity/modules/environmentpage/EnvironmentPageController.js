@@ -1,7 +1,7 @@
 import Controller from '../common/Controller.js';
 import EnvironmentPageView from './EnvironmentPageView.js';
 
-import EcoInventModel from './EcoInventModel.js';
+import EmpoModel from './EmpoModel.js';
 
 /*
 
@@ -33,7 +33,7 @@ export default class EnvironmentPageController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key === 'EcoInventModel') {
+			if (key === 'EmpoEmissionsModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
@@ -41,15 +41,15 @@ export default class EnvironmentPageController extends Controller {
 	
 	init() {
 		// Testing!
-		const m = new EcoInventModel({name:'EcoInventModel',src:''});
+		const m = new EmpoModel({name:'EmpoEmissionsModel',src:'emissions/findByDate?EmDB=EcoInvent&country=Finland'});
 		m.subscribe(this);
-		this.master.modelRepo.add('EcoInventModel',m);
-		this.models['EcoInventModel'] = m;
+		this.master.modelRepo.add('EmpoEmissionsModel',m);
+		this.models['EmpoEmissionsModel'] = m;
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 180000, models:['EcoInventModel']}; // interval 3 minutes.
+		this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 180000, models:['EmpoEmissionsModel']}; // interval 3 minutes.
 		
 		this.view = new EnvironmentPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

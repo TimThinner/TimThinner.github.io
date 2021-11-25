@@ -34,13 +34,19 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('FingridPowerSystemStateModel',m);
 		this.models['FingridPowerSystemStateModel'] = m;
 		
-		const m2 = new EmpoModel({name:'EmpoEmissionsHistoryModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_in_hours:168}); // 8 x 24 = 168
+		const m2 = new EmpoModel({name:'EmpoEmissionsWeekOneModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:168}); // 7 x 24 = 168
 		m2.subscribe(this);
-		this.master.modelRepo.add('EmpoEmissionsHistoryModel',m2);
-		this.models['EmpoEmissionsHistoryModel'] = m2;
+		this.master.modelRepo.add('EmpoEmissionsWeekOneModel',m2);
+		this.models['EmpoEmissionsWeekOneModel'] = m2;
+		
+		const m3 = new EmpoModel({name:'EmpoEmissionsWeekTwoModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:336,timerange_end_subtract_hours:168});
+		m3.subscribe(this);
+		this.master.modelRepo.add('EmpoEmissionsWeekTwoModel',m3);
+		this.models['EmpoEmissionsWeekTwoModel'] = m3;
 		
 		// 180000
-		this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel','EmpoEmissionsHistoryModel']}; // once per 3 minutes.
+		this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel',
+			'EmpoEmissionsWeekOneModel','EmpoEmissionsWeekTwoModel']}; // once per 3 minutes.
 		
 		this.view = new MenuView(this);
 		

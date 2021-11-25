@@ -65,16 +65,28 @@ export default class MenuView extends View {
 		if (svg_element) {
 			const svgObject = svg_element.contentDocument;
 			if (svgObject) {
-				const res = this.models['EmpoEmissionsHistoryModel'].results;
 				
-				console.log(['res=',res]);
+				const res_1 = this.models['EmpoEmissionsWeekTwoModel'].results; // This is older...
+				const res_2 = this.models['EmpoEmissionsWeekOneModel'].results;
 				
-				if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
+				console.log(['res_1=',res_1]);
+				console.log(['res_2=',res_2]);
+				
+				if (typeof res_1 !== 'undefined' && Array.isArray(res_1) && res_1.length > 0 &&
+					typeof res_2 !== 'undefined' && Array.isArray(res_2) && res_2.length > 0) {
+					
 					// Calculate average value 
 					let sum = 0;
 					const resuArray = [];
 					
-					res.forEach(r=>{
+					res_1.forEach(r=>{
+						if (Number.isFinite(r.em_cons)) {
+							const d = new Date(r.date_time);
+							resuArray.push({date:d, cons:r.em_cons});
+							sum += r.em_cons;
+						}
+					});
+					res_2.forEach(r=>{
 						if (Number.isFinite(r.em_cons)) {
 							const d = new Date(r.date_time);
 							resuArray.push({date:d, cons:r.em_cons});
@@ -187,9 +199,14 @@ export default class MenuView extends View {
 				if (options.status === 200) {
 					this.insertGridSystemState();
 				}
-			} else if (options.model==='EmpoEmissionsHistoryModel' && options.method==='fetched') {
+			} else if (options.model==='EmpoEmissionsWeekOneModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('NOTIFY EmpoEmissionsHistoryModel !!!!!!!!!!!!!!!!!!!!!!!!');
+					console.log('NOTIFY EmpoEmissionsWeekOneModel!!!!!!!!!!!!!!!!!!!!!!!!');
+					this.updateEmissionsValue();
+				}
+			} else if (options.model==='EmpoEmissionsWeekTwoModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					console.log('NOTIFY EmpoEmissionsWeekTwoModel!!!!!!!!!!!!!!!!!!!!!!!!');
 					this.updateEmissionsValue();
 				}
 			}

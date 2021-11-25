@@ -70,11 +70,18 @@ export default class EmpoModel extends Model {
 		*/
 		
 		
-		if (typeof options.timerange_in_hours !== 'undefined') {
-			this.timerange_in_hours = options.timerange_in_hours;
+		if (typeof options.timerange_start_subtract_hours !== 'undefined') {
+			this.timerange_start_subtract_hours = options.timerange_start_subtract_hours;
 		} else {
-			this.timerange_in_hours = 24;
+			this.timerange_start_subtract_hours = 24;
 		}
+		if (typeof options.timerange_end_subtract_hours !== 'undefined') {
+			this.timerange_end_subtract_hours = options.timerange_end_subtract_hours;
+		} else {
+			this.timerange_end_subtract_hours = 0;
+		}
+		
+		
 		//this.value = undefined;
 		this.results = [];
 		
@@ -98,12 +105,13 @@ export default class EmpoModel extends Model {
 		if (body_url.indexOf('findByDate') >= 0) {
 			
 			const startdate = moment();
-			startdate.subtract(this.timerange_in_hours, 'hours');
+			startdate.subtract(this.timerange_start_subtract_hours, 'hours');
 			startdate.second(0);
 			//startdate.minute(0);
 			const start = startdate.format("YYYY-MM-DD HH:mm:ss");
 			
 			const enddate = moment();
+			enddate.subtract(this.timerange_end_subtract_hours, 'hours');
 			enddate.second(0);
 			//enddate.minute(0);
 			const end = enddate.format("YYYY-MM-DD HH:mm:ss");

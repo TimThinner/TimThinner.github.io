@@ -71,23 +71,26 @@ export default class MenuView extends View {
 				
 				if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
 					// Calculate average value 
-					let c = 0;
 					let sum = 0;
+					const resuArray = [];
+					
 					res.forEach(r=>{
-						//if (Number.isFinite(r.em_cons)) {
-						c++;
-						sum += r.em_cons;
-						//}
+						if (Number.isFinite(r.em_cons)) {
+							const d = new Date(r.date_time);
+							resuArray.push({date:d, cons:r.em_cons});
+							sum += r.em_cons;
+						}
 					});
-					if (c > 0) {
+					if (resuArray.length > 0) {
 						// Get the last value:
-						const last = res[res.length-1].em_cons;
+						// Then sort array based according to time, oldest entry first.
+						resuArray.sort(function(a,b){
+							return a.date - b.date;
+						});
+						const last = resuArray[resuArray.length-1].cons;
 						// Average:
-						const ave = sum/c;
+						const ave = sum/resuArray.length;
 						const s = last.toFixed(0)+' ('+ave.toFixed(0)+')';
-						
-						console.log(['EMISSIONS=',s]);
-						
 						this.fillSVGTextElement(svgObject, 'emissions-value', s);
 					}
 				}

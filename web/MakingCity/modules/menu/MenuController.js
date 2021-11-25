@@ -21,6 +21,7 @@ export default class MenuController extends Controller {
 	
 	constructor(options) {
 		super(options);
+		this.numOfEmpoModels = 14;
 	}
 	
 	init() {
@@ -34,30 +35,34 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('FingridPowerSystemStateModel',m);
 		this.models['FingridPowerSystemStateModel'] = m;
 		
-		//const m2 = new EmpoModel({name:'EmpoEmissionsWeekOneModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:168}); // 7 x 24 = 168
-		const m2 = new EmpoModel({name:'EmpoEmissionsWeekOneModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:24}); // 7 x 24 = 168
-		m2.subscribe(this);
-		this.master.modelRepo.add('EmpoEmissionsWeekOneModel',m2);
-		this.models['EmpoEmissionsWeekOneModel'] = m2;
-		
-		//const m3 = new EmpoModel({name:'EmpoEmissionsWeekTwoModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:336,timerange_end_subtract_hours:168});
-		const m3 = new EmpoModel({name:'EmpoEmissionsWeekTwoModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:48,timerange_end_subtract_hours:24});
-		m3.subscribe(this);
-		this.master.modelRepo.add('EmpoEmissionsWeekTwoModel',m3);
-		this.models['EmpoEmissionsWeekTwoModel'] = m3;
+		const model_data = [];
+		for (let i=1; i<this.numOfEmpoModels+1; i++) {
+			const sh = i*24;
+			const eh = i*24-24;
+			model_data.push({name:'EmpoEmissions'+i+'Model',sh:sh,eh:eh});
+		}
+		model_data.forEach(md => {
+			const em = new EmpoModel({
+				name: md.name,
+				src: 'emissions/findByDate?country=FI&EmDB=EcoInvent',
+				timerange_start_subtract_hours: md.sh,
+				timerange_end_subtract_hours: md.eh
+			});
+			em.subscribe(this);
+			this.master.modelRepo.add(md.name, em);
+			this.models[md.name] = em;
+		});
 		
 		// 180000
-		this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel',
-			'EmpoEmissionsWeekOneModel','EmpoEmissionsWeekTwoModel']}; // once per 3 minutes.
-		
+		const model_names = ['FingridPowerSystemStateModel'];
+		model_data.forEach(md => {
+			model_names.push(md.name);
+		});
+		this.timers['MenuView'] = {timer: undefined, interval: 180000, models: model_names}; // once per 3 minutes.
 		this.view = new MenuView(this);
-		
 		// At init() there is ALWAYS only one controller with visible=true, this controller.
 		// and also the ResizeEventObserver is started at init() => this controller is shown 
 		// TWICE in init() if this.show() is called here!!!
-		
-		
-		
 		this.startPollers();
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 

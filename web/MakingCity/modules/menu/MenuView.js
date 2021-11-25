@@ -60,39 +60,58 @@ export default class MenuView extends View {
 			});
 		}
 	*/
+	isAllEmpoEmissionModelsReady() {
+		const numOfModels = this.controller.numOfEmpoModels;
+		let retval = true;
+		/*
+		// Prints "1, 2, 3"
+		[1, 2, 3, 4, 5].every(v => {
+			if (v > 3) {
+				return false;
+			}
+			console.log(v);
+			// Make sure you return true. If you don't return a value, `every()` will stop.
+			return true;
+		});*/
+		const ear = [];
+		for (let i=1; i<numOfModels+1; i++) {
+			ear.push(i);
+		}
+		ear.every(e => {
+			const res = this.models['EmpoEmissions'+e+'Model'].results;
+			if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
+				// OK...
+			} else {
+				retval = false;
+				return false; // No need to continue, if one is not ready.
+			}
+			// Make sure you return true. If you don't return a value, `every()` will stop.
+			return true;
+		});
+		return retval;
+	}
+	
 	updateEmissionsValue() {
 		const svg_element = document.getElementById('svg-object');
 		if (svg_element) {
 			const svgObject = svg_element.contentDocument;
 			if (svgObject) {
-				
-				const res_1 = this.models['EmpoEmissionsWeekTwoModel'].results; // This is older...
-				const res_2 = this.models['EmpoEmissionsWeekOneModel'].results;
-				
-				console.log(['res_1=',res_1]);
-				console.log(['res_2=',res_2]);
-				
-				if (typeof res_1 !== 'undefined' && Array.isArray(res_1) && res_1.length > 0 &&
-					typeof res_2 !== 'undefined' && Array.isArray(res_2) && res_2.length > 0) {
-					
+				if (this.isAllEmpoEmissionModelsReady()) {
 					// Calculate average value 
 					let sum = 0;
 					const resuArray = [];
 					
-					res_1.forEach(r=>{
-						if (Number.isFinite(r.em_cons)) {
-							const d = new Date(r.date_time);
-							resuArray.push({date:d, cons:r.em_cons});
-							sum += r.em_cons;
-						}
-					});
-					res_2.forEach(r=>{
-						if (Number.isFinite(r.em_cons)) {
-							const d = new Date(r.date_time);
-							resuArray.push({date:d, cons:r.em_cons});
-							sum += r.em_cons;
-						}
-					});
+					const numOfModels = this.controller.numOfEmpoModels;
+					for (let i=1; i<numOfModels+1; i++) {
+						const res = this.models['EmpoEmissions'+i+'Model'].results;
+						res.forEach(r=>{
+							if (Number.isFinite(r.em_cons)) {
+								const d = new Date(r.date_time);
+								resuArray.push({date:d, cons:r.em_cons});
+								sum += r.em_cons;
+							}
+						});
+					}
 					if (resuArray.length > 0) {
 						// Get the last value:
 						// Then sort array based according to time, oldest entry first.
@@ -199,14 +218,8 @@ export default class MenuView extends View {
 				if (options.status === 200) {
 					this.insertGridSystemState();
 				}
-			} else if (options.model==='EmpoEmissionsWeekOneModel' && options.method==='fetched') {
+			} else if (options.model.indexOf('EmpoEmissions') === 0 && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('NOTIFY EmpoEmissionsWeekOneModel!!!!!!!!!!!!!!!!!!!!!!!!');
-					this.updateEmissionsValue();
-				}
-			} else if (options.model==='EmpoEmissionsWeekTwoModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					console.log('NOTIFY EmpoEmissionsWeekTwoModel!!!!!!!!!!!!!!!!!!!!!!!!');
 					this.updateEmissionsValue();
 				}
 			}

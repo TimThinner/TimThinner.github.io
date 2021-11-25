@@ -57,6 +57,8 @@ export default class PeriodicPoller {
 				// The READKEY has startDate and endDate, when it is valid to fetch users data. This is managed 
 				// by the administrator.
 				//
+				
+				/*
 				let timeout = 0;
 				this.timers[name].models.forEach(key => {
 					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' timeout=',timeout]);
@@ -65,6 +67,11 @@ export default class PeriodicPoller {
 						this.models[key].fetch(token, readkey);
 					}, timeout);
 					timeout += 200;
+				});
+				*/
+				this.timers[name].models.forEach(key => {
+					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey]);
+					this.models[key].fetch(token, readkey);
 				});
 				
 				this.timers[name].timer = setTimeout(()=>{

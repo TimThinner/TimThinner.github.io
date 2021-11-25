@@ -64,16 +64,18 @@ export default class MenuView extends View {
 		const numOfModels = this.controller.numOfEmpoModels;
 		let ok = 0;
 		let nok = 0;
+		const noke = [];
 		for (let i=1; i<numOfModels+1; i++) {
 			const res = this.models['EmpoEmissions'+i+'Model'].results;
 			if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
 				ok++;
 			} else {
 				nok++;
+				noke.push(i);
 			}
 		}
 		console.log(['Number of OK: ',ok]);
-		console.log(['Number of NO OK: ',nok]);
+		console.log(['Number of NO OK: ',nok,'noke=',noke]);
 		if (nok > 0) {
 			return false;
 		} else {

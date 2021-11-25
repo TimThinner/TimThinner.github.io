@@ -21,7 +21,7 @@ export default class MenuController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		this.numOfEmpoModels = 14;
+		this.numOfEmpoModels = 30;
 	}
 	
 	init() {

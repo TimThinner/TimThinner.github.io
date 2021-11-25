@@ -60,64 +60,54 @@ export default class MenuView extends View {
 			});
 		}
 	*/
-	isAllEmpoEmissionModelsReady() {
+	/*
+	empoEmissionModelsReady() {
 		const numOfModels = this.controller.numOfEmpoModels;
 		let ok = 0;
-		let nok = 0;
-		const noke = [];
 		for (let i=1; i<numOfModels+1; i++) {
 			const res = this.models['EmpoEmissions'+i+'Model'].results;
 			if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
 				ok++;
-			} else {
-				nok++;
-				noke.push(i);
 			}
 		}
 		console.log(['Number of OK: ',ok]);
-		console.log(['Number of NO OK: ',nok,'noke=',noke]);
-		if (nok > 0) {
-			return false;
-		} else {
-			return true;
-		}
-	}
+		return ok;
+	}*/
 	
 	updateEmissionsValue() {
 		const svg_element = document.getElementById('svg-object');
 		if (svg_element) {
 			const svgObject = svg_element.contentDocument;
 			if (svgObject) {
-				if (this.isAllEmpoEmissionModelsReady()) {
-					// Calculate average value 
-					let sum = 0;
-					const resuArray = [];
-					
-					console.log('ALL EmpoEmissionsModels ARE READY!!!!!!');
-					
-					const numOfModels = this.controller.numOfEmpoModels;
-					for (let i=1; i<numOfModels+1; i++) {
-						const res = this.models['EmpoEmissions'+i+'Model'].results;
-						res.forEach(r=>{
-							if (Number.isFinite(r.em_cons)) {
-								const d = new Date(r.date_time);
-								resuArray.push({date:d, cons:r.em_cons});
-								sum += r.em_cons;
-							}
-						});
-					}
-					if (resuArray.length > 0) {
-						// Get the last value:
-						// Then sort array based according to time, oldest entry first.
-						resuArray.sort(function(a,b){
-							return a.date - b.date;
-						});
-						const last = resuArray[resuArray.length-1].cons;
-						// Average:
-						const ave = sum/resuArray.length;
-						const s = last.toFixed(0)+' ('+ave.toFixed(0)+')';
-						this.fillSVGTextElement(svgObject, 'emissions-value', s);
-					}
+				//const nnn = this.empoEmissionModelsReady();
+				// Calculate average value 
+				let sum = 0;
+				const resuArray = [];
+				
+				//console.log('ALL EmpoEmissionsModels ARE READY!!!!!!');
+				
+				const numOfModels = this.controller.numOfEmpoModels;
+				for (let i=1; i<numOfModels+1; i++) {
+					const res = this.models['EmpoEmissions'+i+'Model'].results;
+					res.forEach(r=>{
+						if (Number.isFinite(r.em_cons)) {
+							const d = new Date(r.date_time);
+							resuArray.push({date:d, cons:r.em_cons});
+							sum += r.em_cons;
+						}
+					});
+				}
+				if (resuArray.length > 0) {
+					// Get the last value:
+					// Then sort array based according to time, oldest entry first.
+					resuArray.sort(function(a,b){
+						return a.date - b.date;
+					});
+					const last = resuArray[resuArray.length-1].cons;
+					// Average:
+					const ave = sum/resuArray.length;
+					const s = last.toFixed(0)+' ('+ave.toFixed(0)+')';
+					this.fillSVGTextElement(svgObject, 'emissions-value', s);
 				}
 			}
 		}

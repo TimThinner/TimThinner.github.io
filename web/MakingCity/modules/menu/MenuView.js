@@ -65,7 +65,7 @@ export default class MenuView extends View {
 		if (svg_element) {
 			const svgObject = svg_element.contentDocument;
 			if (svgObject) {
-				const res = this.models['EmpoEmissionsLatest30DaysModel'].results;
+				const res = this.models['EmpoEmissionsHistoryModel'].results;
 				
 				console.log(['res=',res]);
 				
@@ -187,9 +187,9 @@ export default class MenuView extends View {
 				if (options.status === 200) {
 					this.insertGridSystemState();
 				}
-			} else if (options.model==='EmpoEmissionsLatest30DaysModel' && options.method==='fetched') {
+			} else if (options.model==='EmpoEmissionsHistoryModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('NOTIFY EmpoEmissionsLatest30DaysModel !!!!!!!!!!!!!!!!!!!!!!!!');
+					console.log('NOTIFY EmpoEmissionsHistoryModel !!!!!!!!!!!!!!!!!!!!!!!!');
 					this.updateEmissionsValue();
 				}
 			}

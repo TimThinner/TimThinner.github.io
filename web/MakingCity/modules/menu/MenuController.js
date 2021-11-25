@@ -34,13 +34,13 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('FingridPowerSystemStateModel',m);
 		this.models['FingridPowerSystemStateModel'] = m;
 		
-		const m2 = new EmpoModel({name:'EmpoEmissionsLatest30DaysModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent'});
+		const m2 = new EmpoModel({name:'EmpoEmissionsHistoryModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_in_hours:168}); // 8 x 24 = 168
 		m2.subscribe(this);
-		this.master.modelRepo.add('EmpoEmissionsLatest30DaysModel',m2);
-		this.models['EmpoEmissionsLatest30DaysModel'] = m2;
+		this.master.modelRepo.add('EmpoEmissionsHistoryModel',m2);
+		this.models['EmpoEmissionsHistoryModel'] = m2;
 		
 		// 180000
-		this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel','EmpoEmissionsLatest30DaysModel']}; // once per 3 minutes.
+		this.timers['MenuView'] = {timer: undefined, interval: 180000, models:['FingridPowerSystemStateModel','EmpoEmissionsHistoryModel']}; // once per 3 minutes.
 		
 		this.view = new MenuView(this);
 		

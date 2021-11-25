@@ -68,8 +68,16 @@ export default class EmpoModel extends Model {
 				this.status = 500;
 				this.fetching = false;
 		*/
+		
+		
+		if (typeof options.timerange_in_hours !== 'undefined') {
+			this.timerange_in_hours = options.timerange_in_hours;
+		} else {
+			this.timerange_in_hours = 24;
+		}
 		//this.value = undefined;
 		this.results = [];
+		
 		//this.start_time = undefined;
 		//this.end_time = undefined;
 	}
@@ -89,14 +97,8 @@ export default class EmpoModel extends Model {
 		let body_url = this.src;
 		if (body_url.indexOf('findByDate') >= 0) {
 			
-			let timerange_in_hours = 24;
-			if (this.name.indexOf('30Days') > 0) {
-				//timerange_in_hours *= 30; // 720
-				timerange_in_hours *= 14;
-			}
-			
 			const startdate = moment();
-			startdate.subtract(timerange_in_hours, 'hours');
+			startdate.subtract(this.timerange_in_hours, 'hours');
 			startdate.second(0);
 			//startdate.minute(0);
 			const start = startdate.format("YYYY-MM-DD HH:mm:ss");
@@ -133,11 +135,7 @@ export default class EmpoModel extends Model {
 			.then(function(myJson) {
 				self.results = []; // Start with fresh empty data.
 				console.log(['myJson=',myJson]);
-				
-				const testJson = myJson.replaceAll("\\s","");
-				const resu = JSON.parse(testJson);
-				//const resu = JSON.parse(myJson);
-				
+				const resu = JSON.parse(myJson);
 				console.log(['EmpoModel resu=',resu]);
 				
 				if (typeof resu !== 'undefined' && typeof resu.results !== 'undefined') {

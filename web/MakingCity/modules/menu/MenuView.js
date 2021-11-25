@@ -62,34 +62,23 @@ export default class MenuView extends View {
 	*/
 	isAllEmpoEmissionModelsReady() {
 		const numOfModels = this.controller.numOfEmpoModels;
-		let retval = true;
-		/*
-		// Prints "1, 2, 3"
-		[1, 2, 3, 4, 5].every(v => {
-			if (v > 3) {
-				return false;
-			}
-			console.log(v);
-			// Make sure you return true. If you don't return a value, `every()` will stop.
-			return true;
-		});*/
-		const ear = [];
+		let ok = 0;
+		let nok = 0;
 		for (let i=1; i<numOfModels+1; i++) {
-			ear.push(i);
-		}
-		ear.every(e => {
-			const res = this.models['EmpoEmissions'+e+'Model'].results;
+			const res = this.models['EmpoEmissions'+i+'Model'].results;
 			if (typeof res !== 'undefined' && Array.isArray(res) && res.length > 0) {
-				// OK...
+				ok++;
 			} else {
-				retval = false;
-				console.log('EmpoEmissions'+e+'Model NOT READY');
-				return false; // No need to continue, if one is not ready.
+				nok++;
 			}
-			// Make sure you return true. If you don't return a value, `every()` will stop.
+		}
+		console.log(['Number of OK: ',ok]);
+		console.log(['Number of NO OK: ',nok]);
+		if (nok > 0) {
+			return false;
+		} else {
 			return true;
-		});
-		return retval;
+		}
 	}
 	
 	updateEmissionsValue() {

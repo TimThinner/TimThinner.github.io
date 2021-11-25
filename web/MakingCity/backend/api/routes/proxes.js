@@ -130,14 +130,13 @@ const Proxe_Update = (po, res) => {
 		});
 };
 
-
 /**
  * String.prototype.replaceAll() polyfill
  * https://gomakethings.com/how-to-replace-a-section-of-a-string-with-another-one-with-vanilla-js/
  * @author Chris Ferdinandi
  * @license MIT
  */
-if (!String.prototype.replaceAll) {
+/*if (!String.prototype.replaceAll) {
 	String.prototype.replaceAll = function(str, newStr){
 		// If a regex pattern
 		if (Object.prototype.toString.call(str).toLowerCase() === '[object regexp]') {
@@ -147,7 +146,7 @@ if (!String.prototype.replaceAll) {
 		return this.replace(new RegExp(str, 'g'), newStr);
 	};
 }
-
+*/
 /*
 	When testing response contentType search for 'application/json' or 'text/xml'
 */
@@ -198,8 +197,10 @@ const Proxe_HTTP_Fetch = (po, res) => {
 				if (ctype === 'application/json') {
 					// rawData is a JSON string.
 					//const parsedData = JSON.parse(rawData);
+					/*
 					if (contentType === "text/html; charset=utf-8") {
-						const raw = rawData.replaceAll("\\s","");
+						const raw = rawData.replace(/\s/g,'');//replaceAll("\\s","");
+						//const raw2 = raw.replace(/\\"/g, '"');
 						//const rawjson = JSON.parse(raw);
 						//const raws = raw.slice(-120);
 						//console.log(['raw SLICE=',raws]);
@@ -221,7 +222,8 @@ const Proxe_HTTP_Fetch = (po, res) => {
 							Proxe_Save({url:po.url, json:rawData, expiration:po.expiration}, res);
 						}
 					}
-					/*
+					*/
+					
 					if (typeof po.id !== 'undefined') {
 						// Update
 						Proxe_Update({id:po.id, json:rawData}, res);
@@ -230,7 +232,7 @@ const Proxe_HTTP_Fetch = (po, res) => {
 						//console.log(['url: ',po.url,' rawData=',rawData]);
 						Proxe_Save({url:po.url, json:rawData, expiration:po.expiration}, res);
 					}
-					*/
+					
 					
 				} else if (ctype === 'text/xml') {
 					const parser = new xml2js.Parser();

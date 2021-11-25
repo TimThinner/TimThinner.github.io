@@ -83,6 +83,7 @@ export default class MenuView extends View {
 				// OK...
 			} else {
 				retval = false;
+				console.log('EmpoEmissions'+e+'Model NOT READY');
 				return false; // No need to continue, if one is not ready.
 			}
 			// Make sure you return true. If you don't return a value, `every()` will stop.
@@ -100,6 +101,8 @@ export default class MenuView extends View {
 					// Calculate average value 
 					let sum = 0;
 					const resuArray = [];
+					
+					console.log('ALL EmpoEmissionsModels ARE READY!!!!!!');
 					
 					const numOfModels = this.controller.numOfEmpoModels;
 					for (let i=1; i<numOfModels+1; i++) {

@@ -154,7 +154,7 @@ export default class LanguageModel {
 				'AUTO_UPDATE_MSG_3':'Chart is NOT automatically updated',
 				'ADJUST_UPDATE_INTERVAL':'Adjust the update interval (0-60s):',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.11.25c'
+				'MENU_VERSION':'v 21.11.25d'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -307,7 +307,7 @@ export default class LanguageModel {
 				'AUTO_UPDATE_MSG_3':'Kuvaaja EI päivity automaattisesti',
 				'ADJUST_UPDATE_INTERVAL':'Säädä päivitystaajuutta (0-60s):',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.11.25c'
+				'MENU_VERSION':'v 21.11.25d'
 			}
 		}
 	}

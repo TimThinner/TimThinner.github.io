@@ -107,13 +107,13 @@ export default class EmpoModel extends Model {
 			const startdate = moment();
 			startdate.subtract(this.timerange_start_subtract_hours, 'hours');
 			startdate.second(0);
-			startdate.minute(0);
+			//startdate.minute(0);
 			const start = startdate.format("YYYY-MM-DD HH:mm:ss");
 			
 			const enddate = moment();
 			enddate.subtract(this.timerange_end_subtract_hours, 'hours');
 			enddate.second(0);
-			enddate.minute(0);
+			//enddate.minute(0);
 			const end = enddate.format("YYYY-MM-DD HH:mm:ss");
 			
 			body_url += '&startdate='+start+'&enddate='+end;

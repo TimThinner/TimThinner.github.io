@@ -34,12 +34,14 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('FingridPowerSystemStateModel',m);
 		this.models['FingridPowerSystemStateModel'] = m;
 		
-		const m2 = new EmpoModel({name:'EmpoEmissionsWeekOneModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:168}); // 7 x 24 = 168
+		//const m2 = new EmpoModel({name:'EmpoEmissionsWeekOneModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:168}); // 7 x 24 = 168
+		const m2 = new EmpoModel({name:'EmpoEmissionsWeekOneModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:24}); // 7 x 24 = 168
 		m2.subscribe(this);
 		this.master.modelRepo.add('EmpoEmissionsWeekOneModel',m2);
 		this.models['EmpoEmissionsWeekOneModel'] = m2;
 		
-		const m3 = new EmpoModel({name:'EmpoEmissionsWeekTwoModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:336,timerange_end_subtract_hours:168});
+		//const m3 = new EmpoModel({name:'EmpoEmissionsWeekTwoModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:336,timerange_end_subtract_hours:168});
+		const m3 = new EmpoModel({name:'EmpoEmissionsWeekTwoModel',src:'emissions/findByDate?country=FI&EmDB=EcoInvent',timerange_start_subtract_hours:48,timerange_end_subtract_hours:24});
 		m3.subscribe(this);
 		this.master.modelRepo.add('EmpoEmissionsWeekTwoModel',m3);
 		this.models['EmpoEmissionsWeekTwoModel'] = m3;

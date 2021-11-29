@@ -74,6 +74,30 @@ export default class MenuView extends View {
 		return ok;
 	}*/
 	
+	updateSVGLeafPathColor(ave, last) {
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			const path = svgObject.getElementById('leaf-path');
+			if (path) {
+				// NOTE: Set FILL and STROKE according to calculated values.
+				const margin = ave/10; // 10% margin
+				const upper_limit = ave + margin;
+				const lower_limit = ave - margin;
+				
+				if (last > upper_limit) {
+					path.style.fill = '#f88';
+					path.style.stroke = '#c00';
+				} else if (last < lower_limit) (
+					path.style.fill = '#8f8';
+					path.style.stroke = '#0c0';
+				} else {
+					path.style.fill = '#ff8';
+					path.style.stroke = '#cc0';
+				}
+			}
+		}
+	}
+	
 	updateEmissionsValue() {
 		const svg_element = document.getElementById('svg-object');
 		if (svg_element) {
@@ -108,6 +132,7 @@ export default class MenuView extends View {
 					const ave = sum/resuArray.length;
 					const s = last.toFixed(0)+' ('+ave.toFixed(0)+')';
 					this.fillSVGTextElement(svgObject, 'emissions-value', s);
+					this.updateSVGLeafPathColor(ave, last);
 				}
 			}
 		}
@@ -461,14 +486,20 @@ export default class MenuView extends View {
 				// The last set of coordinates here (x,y) specify where the line should end. 
 				// The other two are control points. (x1,y1) is the control point for the start of the curve, 
 				// and (x2,y2) is the control point for the end. 
-				
+				/*
 				let coords = "M-40,40 C0,30 30,0 30,-50 C20,-20 -10,-30 -30,-20 S-50,20 -25,25 M30,-50 C40,20 20,50 -5,35";
 				coords += " M-37,43 C0,30 30,0 30,-50";
-				
+				*/
+				const coords = "M-33,40 C0,30 30,0 30,-50 C20,-20 -10,-30 -30,-20 S-50,20 -15,30 M30,-50 C40,20 20,50 -10,30 M-22,36 C0,30 30,0 30,-50";
+				//style="fill:#f88; stroke:#f00; transform: translate(247px,247px) scale(1.0);">
 				const path = document.createElementNS('http://www.w3.org/2000/svg', "path");
 				path.setAttributeNS(null, 'd', coords);
 				path.setAttributeNS(null, 'class', 'active-menu-button-path'); // NOTE: styles for this class are defined in SVG files!
 				path.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+				
+				// NOTE: Set FILL and STROKE according to calculated values.
+				path.style.fill = '#f88';
+				path.style.stroke = '#f00';
 				
 				const ph = svgObject.getElementById('before-buttons-placeholder');
 				ph.appendChild(path);

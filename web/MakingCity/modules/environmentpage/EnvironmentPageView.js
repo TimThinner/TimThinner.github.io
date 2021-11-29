@@ -47,6 +47,8 @@ export default class EnvironmentPageView extends View {
 	
 	convertResults() {
 		const resuArray = [];
+		
+		/*
 		const res = this.models['EmpoEmissionsModel'].results;
 		console.log(['res length=',res.length]);
 		if (res.length > 0) {
@@ -60,8 +62,9 @@ export default class EnvironmentPageView extends View {
 			resuArray.sort(function(a,b){
 				return a.date - b.date;
 			});
-		}
+		}*/
 		return resuArray;
+		
 	}
 	
 	renderChart() {

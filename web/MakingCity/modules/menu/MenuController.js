@@ -1,4 +1,5 @@
 import Controller from '../common/Controller.js';
+import Model from  '../common/Model.js';
 import MenuModel from  './MenuModel.js';
 import FingridModel from  '../energydata/FingridModel.js';
 import EmpoModel from  '../environmentpage/EmpoModel.js';

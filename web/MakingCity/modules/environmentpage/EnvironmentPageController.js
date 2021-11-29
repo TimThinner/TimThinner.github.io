@@ -32,23 +32,30 @@ export default class EnvironmentPageController extends Controller {
 		// They are all created at the load and stay that way, so init() is called ONLY once.
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
+		/*
 		Object.keys(this.models).forEach(key => {
 			if (key === 'EmpoEmissionsModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
+		*/
 	}
 	
 	init() {
+		/*
 		const m = new EmpoModel({name:'EmpoEmissionsModel',src:'emissions/findByDate?EmDB=EcoInvent&country=Finland'});
 		m.subscribe(this);
 		this.master.modelRepo.add('EmpoEmissionsModel',m);
-		this.models['EmpoEmissionsModel'] = m;
+		this.models['EmpoEmissionsModel'] = m;*/
+		
+		// Get all models where name starts with 'EmpoEmissions'
+		const model_names = this.master.modelRepo.keys();
+		console.log(['EnvironmentPageController model_names=',model_names]);
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 180000, models:['EmpoEmissionsModel']}; // interval 3 minutes.
+		//this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 180000, models:['EmpoEmissionsModel']}; // interval 3 minutes.
 		
 		this.view = new EnvironmentPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

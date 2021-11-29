@@ -182,7 +182,7 @@ const Proxe_HTTP_Fetch = (po, res) => {
 			error = new Error('Invalid content-type. Expected ' + ctype + ' but received '+contentType);
 		}*/
 		
-		console.log(['contentType=',contentType]); // "text/html; charset=utf-8"
+		//console.log(['contentType=',contentType]); // "text/html; charset=utf-8"
 		
 		if (error) {
 			// Consume response data to free up memory
@@ -728,7 +728,7 @@ router.post('/empo', (req,res,next)=>{
 	};
 	const expiration = req.body.expiration_in_seconds;
 	
-	console.log(['empo url=',url]);
+	//console.log(['empo url=',url]);
 	
 	//Proxe_Clean(); // We must exclude requested url from the cleaning process.
 	

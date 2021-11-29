@@ -25,9 +25,7 @@ export default class MenuView extends View {
 	
 	show() {
 		this.render();
-		if (typeof this.models['ProxesCleanerModel'] !== 'undefined') {
-			this.models['ProxesCleanerModel'].clean();
-		}
+		this.models['MenuModel'].clean(); // Clean Proxes!
 	}
 	
 	hide() {
@@ -218,7 +216,7 @@ export default class MenuView extends View {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				console.log("MenuView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
-			} else if (options.model==='ProxesCleanerModel' && options.method==='clean') {
+			} else if (options.model==='MenuModel' && options.method==='clean') {
 				if (options.status === 200) {
 					console.log('PROXES CLEAN OK!');
 				}

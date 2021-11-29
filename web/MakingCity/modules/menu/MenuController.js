@@ -1,5 +1,4 @@
 import Controller from '../common/Controller.js';
-import Model from  '../common/Model.js';
 import MenuModel from  './MenuModel.js';
 import FingridModel from  '../energydata/FingridModel.js';
 import EmpoModel from  '../environmentpage/EmpoModel.js';
@@ -31,10 +30,7 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('MenuModel',model);
 		this.models['MenuModel'] = model;
 		
-		const m = new Model({name:'ProxesCleanerModel',src:'',access:'PUBLIC'});
-		m.subscribe(this);
-		this.master.modelRepo.add('ProxesCleanerModel',m);
-		this.models['ProxesCleanerModel'] = m;
+		this.models['MenuModel'].clean(); // Clean Proxes!
 		
 		const m2 = new FingridModel({name:'FingridPowerSystemStateModel',src:'https://api.fingrid.fi/v1/variable/209/event/json'});
 		m2.subscribe(this);

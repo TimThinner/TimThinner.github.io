@@ -87,7 +87,7 @@ export default class MenuView extends View {
 				if (last > upper_limit) {
 					path.style.fill = '#f88';
 					path.style.stroke = '#c00';
-				} else if (last < lower_limit) (
+				} else if (last < lower_limit) {
 					path.style.fill = '#8f8';
 					path.style.stroke = '#0c0';
 				} else {

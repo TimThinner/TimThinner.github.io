@@ -49,13 +49,19 @@ export default class EnvironmentPageController extends Controller {
 		this.models['EmpoEmissionsModel'] = m;*/
 		
 		// Get all models where name starts with 'EmpoEmissions'
+		const empos = [];
 		const model_names = this.master.modelRepo.keys();
-		console.log(['EnvironmentPageController model_names=',model_names]);
+		model_names.forEach(name => {
+			if (name.indexOf('EmpoEmissions') === 0) {
+				empos.push(name);
+				this.models[name] = this.master.modelRepo.get(name);
+			}
+		});
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		//this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 180000, models:['EmpoEmissionsModel']}; // interval 3 minutes.
+		this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 180000, models:empos}; // interval 3 minutes.
 		
 		this.view = new EnvironmentPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

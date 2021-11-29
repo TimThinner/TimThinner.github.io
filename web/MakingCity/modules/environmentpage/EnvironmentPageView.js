@@ -48,6 +48,25 @@ export default class EnvironmentPageView extends View {
 	convertResults() {
 		const resuArray = [];
 		
+		Object.keys(this.models).forEach(key => {
+			if (key.indexOf('EmpoEmissions') === 0) {
+				const res = this.models[key].results;
+				//console.log(['res length=',res.length]);
+				if (res.length > 0) {
+					// Create a Date Object from date_time:
+					res.forEach(r=>{
+						const d = new Date(r.date_time);
+						resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
+					});
+				}
+			}
+		});
+		if (resuArray.length > 0) {
+			// Then sort array based according to time, oldest entry first.
+			resuArray.sort(function(a,b){
+				return a.date - b.date;
+			});
+		}
 		/*
 		const res = this.models['EmpoEmissionsModel'].results;
 		console.log(['res length=',res.length]);
@@ -64,7 +83,6 @@ export default class EnvironmentPageView extends View {
 			});
 		}*/
 		return resuArray;
-		
 	}
 	
 	renderChart() {
@@ -198,25 +216,23 @@ export default class EnvironmentPageView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model === 'EmpoEmissionsModel' && options.method==='fetched') {
+			
+			
+			
+			if (options.model.indexOf('EmpoEmissions') === 0 && options.method==='fetched') {
 				if (options.status === 200) {
-					//console.log('EnvironmentPageView => ' + options.model + ' fetched!');
 					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						//this.updateResults();
 						
+						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							
 							const resuArray = this.convertResults();
-							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								s.data = resuArray;
 							});
 						} else {
-							
 							this.renderChart();
 						}
-						
 					} else {
 						this.render();
 					}
@@ -224,6 +240,29 @@ export default class EnvironmentPageView extends View {
 					this.notifyError(options);
 				}
 			}
+			/*
+			if (options.model === 'EmpoEmissionsModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					//console.log('EnvironmentPageView => ' + options.model + ' fetched!');
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						//this.updateResults();
+						if (typeof this.chart !== 'undefined') {
+							const resuArray = this.convertResults();
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								s.data = resuArray;
+							});
+						} else {
+							this.renderChart();
+						}
+					} else {
+						this.render();
+					}
+				} else { // Error in fetching.
+					this.notifyError(options);
+				}
+			}
+			*/
 		}
 	}
 	

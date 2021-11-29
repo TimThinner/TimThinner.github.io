@@ -146,9 +146,9 @@ export default class EmpoModel extends Model {
 			})
 			.then(function(myJson) {
 				
-				console.log(['myJson=',myJson]);
+				//console.log(['myJson=',myJson]);
 				const resu = JSON.parse(myJson);
-				console.log(['EmpoModel resu=',resu]);
+				//console.log(['EmpoModel resu=',resu]);
 				
 				if (typeof resu !== 'undefined' && typeof resu.results !== 'undefined') {
 					self.results = resu.results;

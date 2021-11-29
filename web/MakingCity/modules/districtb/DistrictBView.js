@@ -81,170 +81,46 @@ export default class DistrictBView extends View {
 			}
 		}
 	}
-	/*
-		Geothermal part of "flow" is:
-		
-		LANDSCAPE:
-		Giving: <path id="geothermal-pipe" d="M 1400,300 L 1400,380"
-		Taking: <path id="geothermal-pipe" d="M 1400,380 L 1400,300"
-		
-		style="opacity:0.5;stroke:#f00;stroke-width:15px;stroke-dasharray:30px 10px;fill:none;">
-		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
-		
-		SQUARE:
-		Giving: <path id="geothermal-pipe" d="M 670,260 L 670,330"
-		Taking: <path id="geothermal-pipe" d="M 670,330 L 670,260"
-		
-		style="opacity:0.5;stroke:#f00;stroke-width:12px;stroke-dasharray:30px 10px;fill:none;">
-		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
-		
-		PORTRAIT:
-		Giving: <path id="geothermal-pipe" d="M 380,260 L 380,350"
-		Taking: <path id="geothermal-pipe" d="M 380,350 L 380,260"
-		
-		style="opacity:0.5;stroke:#f00;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
-		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
-		
-		
-	*/
+	
 	updateOne(svgObject, svgId, val) {
 		const textElement = svgObject.getElementById(svgId);
 		while (textElement.firstChild) {
 			textElement.removeChild(textElement.firstChild);
 		}
-		// Check if 'geothermal-power' is giving or taking.
-		if (svgId === 'geothermal-power') {
-			const ps = {
-				'PORTRAIT':{
-					'give':'M 380,260 L 380,350',
-					'take':'M 380,350 L 380,260'
-				},
-				'SQUARE':{
-					'give':'M 670,260 L 670,330',
-					'take':'M 670,330 L 670,260'
-				},
-				'LANDSCAPE':{
-					'give':'M 1400,300 L 1400,380',
-					'take':'M 1400,380 L 1400,300'
-				}
-			};
-			const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
-			
-			if (val === 0) {
-				// Freeze the animation!
-				const pipeElement = svgObject.getElementById('geothermal-pipe');
-				if (pipeElement.firstElementChild) {
-					// from = "40" set also to = "40", this freezes the "flow".
-					pipeElement.firstElementChild.setAttributeNS(null, 'to', '40');
-				}
-				// Render power YELLOW color!
-				textElement.appendChild(document.createTextNode(Math.abs(val).toFixed(1) + " kW"));
-				textElement.setAttributeNS(null, 'fill', '#ff0');
-				
-			} else if (val < 0) {
-				const pipeElement = svgObject.getElementById('geothermal-pipe');
-				pipeElement.setAttributeNS(null, 'd', ps[mode]['take']);
-				// Remember to set flow back to normal.
-				if (pipeElement.firstElementChild) {
-					pipeElement.firstElementChild.setAttributeNS(null, 'to', '0');
-				}
-				textElement.appendChild(document.createTextNode(Math.abs(val).toFixed(1) + " kW"));
-				textElement.setAttributeNS(null, 'fill', '#f00');
-				
-			} else { // val > 0
-				const pipeElement = svgObject.getElementById('geothermal-pipe');
-				pipeElement.setAttributeNS(null, 'd', ps[mode]['give']);
-				// Remember to set flow back to normal.
-				if (pipeElement.firstElementChild) {
-					pipeElement.firstElementChild.setAttributeNS(null, 'to', '0');
-				}
-				textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
-				textElement.setAttributeNS(null, 'fill', '#0a0');
-			}
-			
-		} else if (svgId === 'district-heating-power') {
-			this.flowCheck(svgObject, val, 'district-heating-pipe');
-			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
-			
-		} else if (svgId === 'solar-power') {
-			this.flowCheck(svgObject, val, 'solar-pipe');
-			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
-			
-		} else if (svgId === 'kitchen-power') {
-			this.flowCheck(svgObject, val, 'kitchen-pipe');
-			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
-			
-		} else if (svgId === 'other-power') {
-			this.flowCheck(svgObject, val, 'others-pipe');
-			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
-			
-		} else {
-			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
-		}
+		textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
 	}
-/*
-meterId
-116		Solar energy		2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
-114		Total consumption	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
-		Lights & appliances	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
-								4 coloured values in same chart:
-103								Indoor lighting (JK_101)
-102								Outdoor lighting (JK_101)
-110								Indoor lighting (JK_102)
-104								Common spaces (JK_101)
-		Kitchen appliances	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
-								3 coloured values in same chart:
-106								R3 Owen
-107								R4 Owen
-108								Dishwasher
-		HPAC				2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
-								3 coloured values in same chart:
-101								HPAC (JK_101)
-105								HPAC (JK_102)
-		Coolers & freezers	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
-								2 coloured values in same chart:
-113								Refrigerating machines
-112								Refrigerating equipments
-		Other				2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
-								2 coloured values in same chart:
-109								Car heating
-111								VSS lighting
-115		Geothermal energy	2 charts - 1. Power [kW] (linechart) 2. Energy [kWh] (columnchart) today
+	/*
+	id="grid-power"
+	id="solar-power-left"
+	id="solar-power-right"
+	id="apartments-power"
+	id="sauna-etc-power"
+	id="heating-power"
+	id="heating-devices-power"
+	id="hot-water-power"
+	id="exthaus-power"
+	id="wastewater-power"
+	id="dh-hot-power"
+	id="dh-cool-power"
 	*/
-	updateLatestJetitekValue(modelName) {
-		let power = 0;
-		// [{"created_at":"2020-12-22T14:31:01","pointValue":132.9,"pointId":1012,"inserted":null}]
-		const svgObject = document.getElementById('svg-object').contentDocument;
-		if (svgObject) {
-			this.models[modelName].values.forEach(v => {
-				if (v.pointValue) {
-					power = v.pointValue;
-				}
-			});
-			if (modelName === 'StatusJetitek983Model') {
-				this.updateOne(svgObject, 'district-heating-power', power);
-			} else {
-				this.updateOne(svgObject, 'cooling-power', power);
-			}
-		}
-	}
-	
 	updateLatestValues() {
-		//console.log("UPDATE!");
-		let solar_power = 0;
-		let total_power = 0;
-		let geothermal_power = 0;
-		let cooler_equipment_power = 0;
-		let cooler_machines_power = 0;
-		let lights_power = 0;
-		let kitchen_power = 0;
-		let hpac_power = 0;
-		let other_power = 0;
+		
+		let grid_power = 0;
+		let solar_power_left = 0;
+		let solar_power_right = 0;
+		let apartments_power = 0;
+		let sauna_etc_power = 0;
+		let heating_power = 0;
 		let heating_devices_power = 0;
+		let hot_water_power = 0;
+		let exthaus_power = 0;
+		let wastewater_power = 0;
+		let dh_hot_power = 0;
+		let dh_cool_power = 0;
 		
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
-			this.models['StatusModel'].values.forEach(item => {
+			/*this.models['StatusModel'].values.forEach(item => {
 				if (item.avPower) {
 					if (item.meterId === 116) {
 						solar_power = item.avPower;
@@ -268,19 +144,19 @@ meterId
 						heating_devices_power = item.avPower;
 					}
 				}
-			});
-			//console.log(['total_power=',total_power,' solar_power=',solar_power,' geothermal_power=',geothermal_power]);
-			// {"meterId":114,"meterName":"SPK_sahko_paamittaus","meterType":1,"dateTime":"2020-02-05 08:13:05","energy":444978.4,"avPower":77.143,"timeDiff":70,"energyDiff":1.5},
-			this.updateOne(svgObject, 'grid-power', total_power);
-			this.updateOne(svgObject, 'solar-power', solar_power);
-			this.updateOne(svgObject, 'geothermal-power', geothermal_power);
-			this.updateOne(svgObject, 'lights-power', lights_power);
-			this.updateOne(svgObject, 'kitchen-power', kitchen_power);
-			this.updateOne(svgObject, 'ventilation-power', hpac_power);
-			this.updateOne(svgObject, 'other-power', other_power);
-			this.updateOne(svgObject, 'cooler-machines-power', cooler_machines_power);
-			this.updateOne(svgObject, 'cooler-equipments-power', cooler_equipment_power);
+			});*/
+			this.updateOne(svgObject, 'grid-power', grid_power);
+			this.updateOne(svgObject, 'solar-power-left', solar_power_left);
+			this.updateOne(svgObject, 'solar-power-right', solar_power_right);
+			this.updateOne(svgObject, 'apartments-power', apartments_power);
+			this.updateOne(svgObject, 'sauna-etc-power', sauna_etc_power);
+			this.updateOne(svgObject, 'heating-power', heating_power);
 			this.updateOne(svgObject, 'heating-devices-power', heating_devices_power);
+			this.updateOne(svgObject, 'hot-water-power', hot_water_power);
+			this.updateOne(svgObject, 'exthaus-power', exthaus_power);
+			this.updateOne(svgObject, 'wastewater-power', wastewater_power);
+			this.updateOne(svgObject, 'dh-hot-power', dh_hot_power);
+			this.updateOne(svgObject, 'dh-cool-power', dh_cool_power);
 		}
 	}
 	
@@ -608,7 +484,7 @@ meterId
 			svgObj.addEventListener('load', function() {
 				self.addSVGEventHandlers();
 				self.localizeSVGTexts();
-				//self.updateLatestValues();
+				self.updateLatestValues();
 				//self.updateLatestJetitekValue('StatusJetitek983Model');
 				//self.updateLatestJetitekValue('StatusJetitek1012Model');
 			});

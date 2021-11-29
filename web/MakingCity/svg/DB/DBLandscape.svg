@@ -96,6 +96,47 @@
 		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 	</path>
 	
+	<!-- Dynamically inserted POWER CONSUMPTION VALUES: -->
+	<text id="grid-power" x="280" y="440" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#f00">30.5 kW</text>
+	<text id="solar-power-left" x="590" y="410" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#0a0">31.3 kW</text>
+	<text id="solar-power-right" x="890" y="410" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#0a0">32.3 kW</text>
+	<svg x="380" y="580" width="160px" height="40px">
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text id="apartments-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">33.7 kW</text>
+	</svg>
+	<svg x="660" y="580" width="160px" height="40px">
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text id="sauna-etc-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">34.7 kW</text>
+	</svg>
+	<svg x="1020" y="490" width="160px" height="40px">
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text id="heating-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">35.0 kW</text>
+	</svg>
+	<svg x="1100" y="580" width="160px" height="40px">
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text id="heating-devices-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">36.0 kW</text>
+	</svg>
+	<svg x="1350" y="580" width="160px" height="40px">
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text id="hot-water-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">37.0 kW</text>
+	</svg>
+	<svg x="1100" y="340" width="160px" height="40px">
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text id="exthaus-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">38.0 kW</text>
+	</svg>
+	<svg x="1350" y="340" width="160px" height="40px">
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text id="wastewater-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">39.0 kW</text>
+	</svg>
+	<svg x="1380" y="400" width="160px" height="40px">
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text id="dh-hot-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">40.0 kW</text>
+	</svg>
+	<svg x="1380" y="500" width="160px" height="40px">
+		<!--<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
+		<text id="dh-cool-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">41.0 kW</text>
+	</svg>
+	
 	<image x="90" y="400" width="100" height="150" xlink:href="powerline.svg" />
 	<image x="500" y="200" width="147" height="133" xlink:href="solarpanel.svg" />
 	<image x="780" y="200" width="147" height="133" xlink:href="solarpanel.svg" />

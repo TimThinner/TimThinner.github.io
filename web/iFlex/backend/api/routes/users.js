@@ -108,13 +108,13 @@ router.post("/signup", (req,res,next)=>{
 							// Check that emails match
 							if (regcode[0].email === email_lc) {
 								// Check that current timestamp is between startdate and enddate
-								const ts = Date.now();
+								const ts = Date.now()+120000; // 
 								const sTS = new Date(regcode[0].startdate);
 								const eTS  = new Date(regcode[0].enddate);
 								//console.log(['Now=',ts]);
 								//console.log(['Start=',sTS.getTime()]);
 								//console.log(['End=',eTS.getTime()]);
-								if (ts > sTS.getTime() && ts < eTS.getTime()) {
+								if (ts >= sTS.getTime() && ts < eTS.getTime()) {
 									// Generate a ReadKey and save it
 									const readkey = new Readkey({
 										_id: new mongoose.Types.ObjectId(),

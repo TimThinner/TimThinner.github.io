@@ -30,10 +30,15 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('MenuModel',model);
 		this.models['MenuModel'] = model;
 		
-		const m = new FingridModel({name:'FingridPowerSystemStateModel',src:'https://api.fingrid.fi/v1/variable/209/event/json'});
+		const m = new Model({name:'ProxesCleanerModel',src:'',access:'PUBLIC'});
 		m.subscribe(this);
-		this.master.modelRepo.add('FingridPowerSystemStateModel',m);
-		this.models['FingridPowerSystemStateModel'] = m;
+		this.master.modelRepo.add('ProxesCleanerModel',m);
+		this.models['ProxesCleanerModel'] = m;
+		
+		const m2 = new FingridModel({name:'FingridPowerSystemStateModel',src:'https://api.fingrid.fi/v1/variable/209/event/json'});
+		m2.subscribe(this);
+		this.master.modelRepo.add('FingridPowerSystemStateModel',m2);
+		this.models['FingridPowerSystemStateModel'] = m2;
 		
 		const model_data = [];
 		for (let i=1; i<this.numOfEmpoModels+1; i++) {

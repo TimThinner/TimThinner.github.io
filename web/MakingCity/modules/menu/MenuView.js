@@ -25,6 +25,9 @@ export default class MenuView extends View {
 	
 	show() {
 		this.render();
+		if (typeof this.models['ProxesCleanerModel'] !== 'undefined') {
+			this.models['ProxesCleanerModel'].clean();
+		}
 	}
 	
 	hide() {
@@ -213,16 +216,16 @@ export default class MenuView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				
 				console.log("MenuView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
-				
+			} else if (options.model==='ProxesCleanerModel' && options.method==='clean') {
+				if (options.status === 200) {
+					console.log('PROXES CLEAN OK!');
+				}
 			} else if (options.model==='VisitorCountModel' && options.method==='get') {
-				
 				if (options.status === 200) {
 					this.insertVisitorCount(options.count);
 				}
-				
 			} else if (options.model==='FingridPowerSystemStateModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					this.insertGridSystemState();

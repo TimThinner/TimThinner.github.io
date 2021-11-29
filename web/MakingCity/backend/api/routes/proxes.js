@@ -348,38 +348,60 @@ const Proxe_HTTPS_Fetch = (po, res) => {
 	But since CLEANING and FETCHING are both ASYNCHRONOUS operations, make sure that entry is really 
 	OBSOLETE => Use several hours, for example 3 hours.
 */
-const Proxe_Clean = (url) => {
+const Proxe_Clean = (res) => {
 	Proxe.find()
 		.exec()
 		.then(docs=>{
 			console.log(['Proxe has now ',docs.length,' entries.']);
+			const trash = [];
 			docs.forEach(doc => {
 				// DO NOT PROCESS the one given as parameter.
-				if (doc.url === url) {
+				/*if (doc.hash  === hash) {
 					// Exclude this URL.
 				} else {
-					const upd = doc.updated; // Date object
-					const exp_ms = 3*3600*1000; // Cleaning time in milliseconds (3 hours).
-					const now = new Date();
-					const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
-					if (elapsed > exp_ms) {
-						// remove this entry from the database.
-						Proxe.deleteOne({_id:doc.id})
-							.exec()
-							.then(result => {
-								console.log('Proxe Entry Removed.');
-							})
-							.catch(err => {
-								console.log(err);
-							});
-					}
+				*/
+				const upd = doc.updated; // Date object
+				const exp_ms = 3*3600*1000; // Cleaning time in milliseconds (3 hours).
+				//const exp_ms = 60*1000; // Cleaning time in milliseconds (60 seconds).
+				const now = new Date();
+				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
+				if (elapsed > exp_ms) {
+					// add this doc.id into trash array
+					trash.push(doc.id);
 				}
 			});
+			const num = trash.length;
+			if (num > 0) {
+				Proxe.deleteMany({
+					"_id": {
+						$in:trash
+					}
+				})
+				.exec()
+				.then(result => {
+					const message = num + ' entries cleaned OK.';
+					console.log(message);
+					res.status(200).json({message:message});
+				})
+				.catch(err => {
+					console.log(err);
+					res.status(500).json({error:err});
+				});
+			} else {
+				const message = 'Nothing to clean.';
+				console.log(message);
+				res.status(200).json({message:message});
+			}
 		})
 		.catch(err=>{
 			console.log(err);
+			res.status(500).json({error:err});
 		});
 };
+
+
+
+
 
 router.post('/entsoe', (req,res,next)=>{
 	// 'https://transparency.entsoe.eu/api
@@ -416,7 +438,7 @@ router.post('/entsoe', (req,res,next)=>{
 	
 	const expiration = req.body.expiration_in_seconds;
 	
-	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
+	//Proxe_Clean(); // We must exclude requested url from the cleaning process.
 	
 	// First check if this url is already in database.
 	Proxe.find({url:url})
@@ -512,7 +534,7 @@ router.post('/russia', (req,res,next)=>{
 	
 	console.log(['russia url=',url]);
 	
-	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
+	//Proxe_Clean(); // We must exclude requested url from the cleaning process.
 	
 	// First check if this url is already in database.
 	Proxe.find({url:url})
@@ -606,7 +628,7 @@ router.post('/sweden', (req,res,next)=>{
 	
 	const expiration = req.body.expiration_in_seconds;
 	
-	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
+	//Proxe_Clean(); // We must exclude requested url from the cleaning process.
 	
 	// First check if this url is already in database.
 	Proxe.find({url:url})
@@ -660,7 +682,7 @@ router.post('/fingrid', (req,res,next)=>{
 	
 	const expiration = req.body.expiration_in_seconds;
 	
-	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
+	//Proxe_Clean(); // We must exclude requested url from the cleaning process.
 	
 	// First check if this url is already in database.
 	Proxe.find({url:url})
@@ -708,7 +730,7 @@ router.post('/empo', (req,res,next)=>{
 	
 	console.log(['empo url=',url]);
 	
-	Proxe_Clean(url); // We must exclude requested url from the cleaning process.
+	//Proxe_Clean(); // We must exclude requested url from the cleaning process.
 	
 	// First check if this url is already in database.
 	Proxe.find({url:url})
@@ -740,6 +762,10 @@ router.post('/empo', (req,res,next)=>{
 			console.log(['err=',err]);
 			res.status(500).json({error:err});
 		});
+});
+
+router.get('/clean', (req,res,next)=>{
+	Proxe_Clean(res);
 });
 
 module.exports = router;

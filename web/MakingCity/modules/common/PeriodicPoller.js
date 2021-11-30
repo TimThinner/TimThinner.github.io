@@ -46,8 +46,8 @@ export default class PeriodicPoller {
 		if (this.timers.hasOwnProperty(name)) {
 			
 			// Call the Proxy cleaning ONLY for the FIRST model in the set of models for this timer.
-			const m_key_array = Object.keys(this.timers[name].models);
-			const m_key = m_key_array[0];
+			
+			const m_key = this.timers[name].models[0];
 			this.models[m_key].cleanProxy(); // Clean Proxes!
 			
 			if (this.timers[name].interval > 0) {

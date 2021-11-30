@@ -146,11 +146,11 @@
 		<!--<rect x="1" y="1" width="118" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text id="heating-devices-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
-	<svg x="710" y="345" width="120px" height="40px">
+	<svg x="730" y="345" width="120px" height="40px">
 		<!--<rect x="1" y="1" width="118" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text id="district-heating-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
-	<svg x="680" y="730" width="120px" height="40px">
+	<svg x="700" y="730" width="120px" height="40px">
 		<!--<rect x="1" y="1" width="118" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
 		<text id="cooling-power" font-family="Arial, Helvetica, sans-serif" font-size="26px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>

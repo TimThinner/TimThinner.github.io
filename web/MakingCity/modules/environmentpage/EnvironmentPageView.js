@@ -51,21 +51,20 @@ export default class EnvironmentPageView extends View {
 	convertResults() {
 		const resuArray = [];
 		
-		if (this.areModelsReady()) {
-			Object.keys(this.models).forEach(key => {
-				if (key.indexOf('EmpoEmissions') === 0) {
-					const res = this.models[key].results;
-					//console.log(['res length=',res.length]);
-					if (res.length > 0) {
-						// Create a Date Object from date_time:
-						res.forEach(r=>{
-							const d = new Date(r.date_time);
-							resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
-						});
-					}
+		Object.keys(this.models).forEach(key => {
+			if (key.indexOf('EmpoEmissions') === 0) {
+				const res = this.models[key].results;
+				//console.log(['res length=',res.length]);
+				if (res.length > 0) {
+					// Create a Date Object from date_time:
+					res.forEach(r=>{
+						const d = new Date(r.date_time);
+						resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
+					});
 				}
-			});
-		}
+			}
+		});
+		
 		if (resuArray.length > 0) {
 			// Then sort array based according to time, oldest entry first.
 			resuArray.sort(function(a,b){
@@ -209,20 +208,21 @@ export default class EnvironmentPageView extends View {
 			
 			if (options.model.indexOf('EmpoEmissions') === 0 && options.method==='fetched') {
 				if (options.status === 200) {
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							const resuArray = this.convertResults();
-							if (resuArray.length > 0) {
+					if (this.areModelsReady()) {
+						if (this.rendered) {
+							
+							$('#'+this.FELID).empty();
+							if (typeof this.chart !== 'undefined') {
+								const resuArray = this.convertResults();
 								am4core.iter.each(this.chart.series.iterator(), function (s) {
 									s.data = resuArray;
 								});
+							} else {
+								this.renderChart();
 							}
 						} else {
-							this.renderChart();
+							this.render();
 						}
-					} else {
-						this.render();
 					}
 				} else { // Error in fetching.
 					this.notifyError(options);

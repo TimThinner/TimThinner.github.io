@@ -176,7 +176,7 @@ third  = #1fac78
 </svg>
 <svg x="150" y="250" width="100px" height="30px">
 	<!--<rect x="1" y="1" width="98" height="28" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-	<text class="emissions-average" id="emissions-average" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	<text class="emissions-average" id="emissions-ave" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 </svg>
 
 <svg x="-280" y="310" width="140px" height="60px">

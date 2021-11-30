@@ -133,7 +133,7 @@ export default class MenuView extends View {
 					const vals = last.toFixed(0);
 					const aves = '('+ave.toFixed(0)+')';
 					this.fillSVGTextElement(svgObject, 'emissions-value', vals);
-					this.fillSVGTextElement(svgObject, 'emissions-average', aves);
+					this.fillSVGTextElement(svgObject, 'emissions-ave', aves);
 					this.updateSVGLeafPathColor(ave, last);
 				}
 			}

@@ -44,6 +44,12 @@ export default class PeriodicPoller {
 	
 	poller(name) {
 		if (this.timers.hasOwnProperty(name)) {
+			
+			// Call the Proxy cleaning ONLY for the FIRST model in the set of models for this timer.
+			const m_key_array = Object.keys(this.timers[name].models);
+			const m_key = m_key_array[0];
+			this.models[m_key].cleanProxy(); // Clean Proxes!
+			
 			if (this.timers[name].interval > 0) {
 				// Feed the UserModel auth-token into fetch call.
 				// We also need to know whether REST-API call will be using token or not?
@@ -57,23 +63,6 @@ export default class PeriodicPoller {
 				// The READKEY has startDate and endDate, when it is valid to fetch users data. This is managed 
 				// by the administrator.
 				//
-				
-				
-				if (this.timers[name].models.length > 0) {
-					this.timers[name].models[0].cleanProxy(); // Clean Proxes!
-				}
-				
-				/*
-				let timeout = 0;
-				this.timers[name].models.forEach(key => {
-					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' timeout=',timeout]);
-					setTimeout(()=>{
-						// Try with short delay between fetch calls...
-						this.models[key].fetch(token, readkey);
-					}, timeout);
-					timeout += 200;
-				});
-				*/
 				this.timers[name].models.forEach(key => {
 					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey]);
 					this.models[key].fetch(token, readkey);

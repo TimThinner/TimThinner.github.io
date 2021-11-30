@@ -47,9 +47,41 @@ export default class EnvironmentPageView extends View {
 	
 	/*
 		Try to reduce the CHART doing repaint 30 times when result come one-by-one.
+		
+		
+				let sum = 0;
+				const resuArray = [];
+				
+				const numOfModels = this.controller.numOfEmpoModels;
+				for (let i=1; i<numOfModels+1; i++) {
+					const res = this.models['EmpoEmissions'+i+'Model'].results;
+					res.forEach(r=>{
+						if (Number.isFinite(r.em_cons)) {
+							const d = new Date(r.date_time);
+							resuArray.push({date:d, cons:r.em_cons});
+							sum += r.em_cons;
+						}
+					});
+				}
+				if (resuArray.length > 0) {
+					// Get the last value:
+					// Then sort array based according to time, oldest entry first.
+					resuArray.sort(function(a,b){
+						return a.date - b.date;
+					});
+					const last = resuArray[resuArray.length-1].cons;
+					// Average:
+					const ave = sum/resuArray.length;
+					const s = last.toFixed(0)+' ('+ave.toFixed(0)+')';
+					this.fillSVGTextElement(svgObject, 'emissions-value', s);
+					this.updateSVGLeafPathColor(ave, last);
+				}
+		
+		
 	*/
 	convertResults() {
 		const resuArray = [];
+		const aveArray = [];
 		
 		Object.keys(this.models).forEach(key => {
 			if (key.indexOf('EmpoEmissions') === 0) {
@@ -58,20 +90,57 @@ export default class EnvironmentPageView extends View {
 				if (res.length > 0) {
 					// Create a Date Object from date_time:
 					res.forEach(r=>{
-						const d = new Date(r.date_time);
-						resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
+						if (Number.isFinite(r.em_cons) && Number.isFinite(r.em_prod)) {
+							const d = new Date(r.date_time);
+							resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
+						}
 					});
 				}
 			}
 		});
-		
 		if (resuArray.length > 0) {
 			// Then sort array based according to time, oldest entry first.
 			resuArray.sort(function(a,b){
 				return a.date - b.date;
 			});
+			// Currently "EmpoEmissions" values are produced with 3 minute interval => resample to 1 hour averages:
+			// 20 values grouped so that date is taken from the middle (10th element).
+			// shift()  Remove an item from the beginning of an array
+			const nBATCH = 20;
+			let batches = [];
+			let counter = 0;
+			let batch = 0;
+			while (resuArray.length > 0) {
+				if (counter === 0) {
+					batches[batch] = {count:0,items:[]};
+				}
+				const e = resuArray.shift();
+				counter++;
+				batches[batch].count = counter;
+				batches[batch].items.push(e);
+				if (counter === nBATCH) {
+					batch++;
+					counter = 0;
+				}
+			}
+			batches.forEach(b=>{
+				if (b.count > 0) {
+					let c_sum = 0;
+					let p_sum = 0;
+					
+					b.items.forEach(i=>{
+						c_sum += i.consumed;
+						p_sum += i.produced;
+					});
+					const c_ave = c_sum/b.count;
+					const p_ave = p_sum/b.count;
+					const half = Math.floor(b.items.length/2);
+					const date = b.items[half].date;
+					aveArray.push({date:date, consumed:c_ave, produced:p_ave});
+				}
+			});
 		}
-		return resuArray;
+		return aveArray;
 	}
 	
 	renderChart() {

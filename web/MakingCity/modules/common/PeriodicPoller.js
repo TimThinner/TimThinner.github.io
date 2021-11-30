@@ -64,7 +64,7 @@ export default class PeriodicPoller {
 				// by the administrator.
 				//
 				this.timers[name].models.forEach(key => {
-					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey]);
+					//console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey]);
 					this.models[key].fetch(token, readkey);
 				});
 				
@@ -79,7 +79,7 @@ export default class PeriodicPoller {
 				const readkey = um ? um.readkey : undefined;
 				
 				this.timers[name].models.forEach(key => {
-					console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey]);
+					//console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey]);
 					this.models[key].fetch(token, readkey);
 				});
 			}

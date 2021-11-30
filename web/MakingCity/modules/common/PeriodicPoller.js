@@ -58,6 +58,11 @@ export default class PeriodicPoller {
 				// by the administrator.
 				//
 				
+				
+				if (this.timers[name].models.length > 0) {
+					this.timers[name].models[0].cleanProxy(); // Clean Proxes!
+				}
+				
 				/*
 				let timeout = 0;
 				this.timers[name].models.forEach(key => {

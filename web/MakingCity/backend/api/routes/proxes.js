@@ -346,7 +346,7 @@ const Proxe_HTTPS_Fetch = (po, res) => {
 /*
 	Cleaning must be done to make sure database will not be filled with old obsolete cache entries.
 	But since CLEANING and FETCHING are both ASYNCHRONOUS operations, make sure that entry is really 
-	OBSOLETE => Use several hours, for example 3 hours.
+	OBSOLETE => Use for example 10 minutes.
 */
 const Proxe_Clean = (res) => {
 	Proxe.find()
@@ -362,7 +362,6 @@ const Proxe_Clean = (res) => {
 				*/
 				const upd = doc.updated; // Date object
 				const exp_ms = 600*1000; // Cleaning time in milliseconds (10 minutes).
-				//const exp_ms = 60*1000; // Cleaning time in milliseconds (60 seconds).
 				const now = new Date();
 				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
 				if (elapsed > exp_ms) {

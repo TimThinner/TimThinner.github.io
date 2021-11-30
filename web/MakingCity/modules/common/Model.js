@@ -23,7 +23,7 @@ export default class Model extends EventObserver {
 		this.ready = true;
 	}
 	// To remove all proxy entries that are obviously old.
-	clean() {
+	cleanProxy() {
 		const self = this;
 		let status = 500;
 		const url = this.mongoBackend + '/proxes/clean/';

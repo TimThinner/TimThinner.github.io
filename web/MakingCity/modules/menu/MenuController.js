@@ -30,8 +30,6 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('MenuModel',model);
 		this.models['MenuModel'] = model;
 		
-		this.models['MenuModel'].clean(); // Clean Proxes!
-		
 		const m2 = new FingridModel({name:'FingridPowerSystemStateModel',src:'https://api.fingrid.fi/v1/variable/209/event/json'});
 		m2.subscribe(this);
 		this.master.modelRepo.add('FingridPowerSystemStateModel',m2);

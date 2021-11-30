@@ -214,6 +214,9 @@ export default class EnvironmentPageView extends View {
 							$('#'+this.FELID).empty();
 							if (typeof this.chart !== 'undefined') {
 								const resuArray = this.convertResults();
+								
+								console.log(['resuArray.length = ',resuArray.length, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!']);
+								
 								am4core.iter.each(this.chart.series.iterator(), function (s) {
 									s.data = resuArray;
 								});

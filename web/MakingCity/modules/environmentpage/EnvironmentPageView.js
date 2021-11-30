@@ -274,18 +274,14 @@ export default class EnvironmentPageView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			
 			if (options.model.indexOf('EmpoEmissions') === 0 && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.areModelsReady()) {
 						if (this.rendered) {
-							
 							$('#'+this.FELID).empty();
 							if (typeof this.chart !== 'undefined') {
 								const resuArray = this.convertResults();
-								
-								console.log(['resuArray.length = ',resuArray.length, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!']);
-								
+								//console.log(['resuArray.length = ',resuArray.length, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!']);
 								am4core.iter.each(this.chart.series.iterator(), function (s) {
 									s.data = resuArray;
 								});
@@ -295,36 +291,11 @@ export default class EnvironmentPageView extends View {
 						} else {
 							this.render();
 						}
-					} else {
-						console.log('EmpoModels are fetched... NOT ALL READY!');
 					}
 				} else { // Error in fetching.
 					this.notifyError(options);
 				}
 			}
-			/*
-			if (options.model === 'EmpoEmissionsModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					//console.log('EnvironmentPageView => ' + options.model + ' fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						//this.updateResults();
-						if (typeof this.chart !== 'undefined') {
-							const resuArray = this.convertResults();
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = resuArray;
-							});
-						} else {
-							this.renderChart();
-						}
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					this.notifyError(options);
-				}
-			}
-			*/
 		}
 	}
 	

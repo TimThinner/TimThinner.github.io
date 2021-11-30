@@ -130,8 +130,10 @@ export default class MenuView extends View {
 					const last = resuArray[resuArray.length-1].cons;
 					// Average:
 					const ave = sum/resuArray.length;
-					const s = last.toFixed(0)+' ('+ave.toFixed(0)+')';
-					this.fillSVGTextElement(svgObject, 'emissions-value', s);
+					const vals = last.toFixed(0);
+					const aves = '('+ave.toFixed(0)+')';
+					this.fillSVGTextElement(svgObject, 'emissions-value', vals);
+					this.fillSVGTextElement(svgObject, 'emissions-average', aves);
 					this.updateSVGLeafPathColor(ave, last);
 				}
 			}

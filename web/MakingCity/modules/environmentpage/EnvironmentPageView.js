@@ -45,43 +45,33 @@ export default class EnvironmentPageView extends View {
 		$(this.el).empty();
 	}
 	
+	/*
+		Try to reduce the CHART doing repaint 30 times when result come one-by-one.
+	*/
 	convertResults() {
 		const resuArray = [];
 		
-		Object.keys(this.models).forEach(key => {
-			if (key.indexOf('EmpoEmissions') === 0) {
-				const res = this.models[key].results;
-				//console.log(['res length=',res.length]);
-				if (res.length > 0) {
-					// Create a Date Object from date_time:
-					res.forEach(r=>{
-						const d = new Date(r.date_time);
-						resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
-					});
+		if (this.areModelsReady()) {
+			Object.keys(this.models).forEach(key => {
+				if (key.indexOf('EmpoEmissions') === 0) {
+					const res = this.models[key].results;
+					//console.log(['res length=',res.length]);
+					if (res.length > 0) {
+						// Create a Date Object from date_time:
+						res.forEach(r=>{
+							const d = new Date(r.date_time);
+							resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
+						});
+					}
 				}
-			}
-		});
+			});
+		}
 		if (resuArray.length > 0) {
 			// Then sort array based according to time, oldest entry first.
 			resuArray.sort(function(a,b){
 				return a.date - b.date;
 			});
 		}
-		/*
-		const res = this.models['EmpoEmissionsModel'].results;
-		console.log(['res length=',res.length]);
-		if (res.length > 0) {
-			
-			// Create a Date Object from date_time:
-			res.forEach(r=>{
-				const d = new Date(r.date_time);
-				resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
-			});
-			// Then sort array based according to time, oldest entry first.
-			resuArray.sort(function(a,b){
-				return a.date - b.date;
-			});
-		}*/
 		return resuArray;
 	}
 	
@@ -217,19 +207,17 @@ export default class EnvironmentPageView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			
-			
-			
 			if (options.model.indexOf('EmpoEmissions') === 0 && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.rendered) {
-						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
-							
 							const resuArray = this.convertResults();
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = resuArray;
-							});
+							if (resuArray.length > 0) {
+								am4core.iter.each(this.chart.series.iterator(), function (s) {
+									s.data = resuArray;
+								});
+							}
 						} else {
 							this.renderChart();
 						}

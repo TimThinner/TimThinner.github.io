@@ -416,8 +416,8 @@ router.post('/entsoe', (req,res,next)=>{
 	// documentType = 'A75' Actual generation per type	domainzone = 'In_Domain'
 	// documentType = 'A65' System total load			domainzone = ‘outBiddingZone_Domain’
 	
-	url += '&documentType=' + req.body.document_type; // A65 or A75
-	url += '&processType=A16';
+	url += '&documentType=' + req.body.document_type; // A44 or A65 or A75
+	//url += '&processType=A16';
 	
 	if (req.body.document_type === 'A75') {
 		url += '&psrType=' + req.body.psr_type;
@@ -431,7 +431,6 @@ router.post('/entsoe', (req,res,next)=>{
 	url += domainzone;
 	url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm
 	url += '&periodEnd=' + req.body.period_end;       // yyyyMMddHHmm
-	
 	
 	console.log(['entsoe url=',url]);
 	

@@ -76,8 +76,18 @@ Data Period 3 min
 Transmission between Finland and Norway
 Variable Id 187
 Data Period 3 min
+
+NEW: Use EntsoeModel to get electricity price forecast.
+
+
+
+case 'Finland'		idomain = '10YFI-1--------U'	Finland, Fingrid BZ / CA / MBA
+
+
 */
 import FingridModel from  '../energydata/FingridModel.js';
+import EntsoeModel from '../energydata/EntsoeModel.js';
+
 export default class GridPageController extends Controller {
 	
 	constructor(options) {
@@ -99,7 +109,7 @@ export default class GridPageController extends Controller {
 				key === 'Fingrid202Model' || key === 'Fingrid201Model' ||
 				key === 'Fingrid89Model' || key === 'Fingrid180Model' ||
 				key === 'Fingrid87Model' || key === 'Fingrid195Model' ||
-				key === 'Fingrid187Model') {
+				key === 'Fingrid187Model' || key === 'EntsoeEnergyPrice') {
 				this.master.modelRepo.remove(key);
 			}
 		});
@@ -113,6 +123,11 @@ export default class GridPageController extends Controller {
 			this.master.modelRepo.add(model_name,m);
 			this.models[model_name] = m;
 		});
+		
+		const entsoe_model = new EntsoeModel({name:'EntsoeEnergyPrice',src:'https://transparency.entsoe.eu/api', document_type:'A44', area_name:'Finland'});
+		entsoe_model.subscribe(this);
+		this.master.modelRepo.add('EntsoeEnergyPrice',entsoe_model);
+		this.models['EntsoeEnergyPrice'] = entsoe_model;
 		
 		this.models['FingridPowerSystemStateModel'] = this.master.modelRepo.get('FingridPowerSystemStateModel');
 		this.models['FingridPowerSystemStateModel'].subscribe(this);

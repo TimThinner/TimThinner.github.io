@@ -105,7 +105,6 @@ export default class UserModel extends Model {
 		this.is_superuser = false;
 	}
 	
-	/* For safety reasons the "is_superuser"-flag is never stored or restored automatically. */
 	store() {
 		const status = localStorage.getItem(this.localStorageLabel);
 		const new_status = {
@@ -133,9 +132,6 @@ export default class UserModel extends Model {
 			'energy_lower':  this.energy_lower
 		};
 		
-		// EXCEPT HERE FOR TEST PURPOSES:
-		new_status.is_superuser = this.is_superuser;
-		
 		if (status == null) {
 			// no previous status.
 			const encoded = JSON.stringify(new_status);
@@ -149,7 +145,6 @@ export default class UserModel extends Model {
 		}
 	}
 	
-	/* For safety reasons the "is_superuser"-flag is never stored or restored automatically. */
 	restore() {
 		const status = localStorage.getItem(this.localStorageLabel);
 		if (status == null) {
@@ -185,12 +180,6 @@ export default class UserModel extends Model {
 			if (typeof stat.energy_upper !== 'undefined') { this.energy_upper = stat.energy_upper; }
 			if (typeof stat.energy_target !== 'undefined') { this.energy_target = stat.energy_target; }
 			if (typeof stat.energy_lower !== 'undefined') { this.energy_lower = stat.energy_lower; }
-			
-			//if (typeof stat.readkeystartdate !== 'undefined') { this.readkeystartdate = stat.readkeystartdate; }
-			//if (typeof stat.readkeyenddate !== 'undefined')   { this.readkeyenddate = stat.readkeyenddate; }
-			
-			// EXCEPT HERE FOR TEST PURPOSES:
-			if (typeof stat.is_superuser !== 'undefined') { this.is_superuser = stat.is_superuser; }
 		}
 		
 		if (this.isLoggedIn()) {
@@ -226,7 +215,7 @@ export default class UserModel extends Model {
 			this.id = 'nodatabaseid';
 			this.email = data.email;
 			this.token = 'nodatabasetoken';
-			this.is_superuser = true;
+			this.is_superuser = false;
 			
 			// this.DEFAULTS is defined in Configuration.js
 			this.price_energy_monthly  = this.DEFAULTS.price_energy_monthly;

@@ -100,15 +100,9 @@ export default class EntsoeModel extends Model {
 				this.errorMessage = '';
 				this.status = 500;
 				this.fetching = false;
-				
-				+
-				
-				this.document_type	'A44'
-				this.domain			'10YFI-1--------U'
-				this.domainzone		'in_Domain'
 		*/
-		this.document_type = options.document_type; //'A44'
-		//this.psr_type = options.psr_type;
+		this.document_type = options.document_type; //'A65'or 'A75'
+		this.psr_type = options.psr_type;
 		switch (options.area_name) {
 			case 'NorwayNO4': 
 				this.domain = '10YNO-4--------9';
@@ -132,11 +126,37 @@ export default class EntsoeModel extends Model {
 				this.domain = undefined;
 				break;
 		}
-		this.domainzone = 'in_Domain';
+		
+		/*
+		<Period>
+			<timeInterval>
+				<start>2015-12-31T23:00Z</start>
+				<end>2016-01-01T23:00Z</end>
+			</timeInterval>
+			<resolution>PT60M</resolution>
+			<Point>
+				<position>1</position>
+				<quantity>6363</quantity>
+			</Point>
+			<Point>
+				<position>2</position>
+				<quantity>6288</quantity>
+			</Point>
+			<Point>
+				<position>3</position>
+				<quantity>6182</quantity>
+			</Point>
+			<Point>
+				<position>4</position>
+				<quantity>6100</quantity>
+			</Point>
+		*/
 		
 		// Response is a TimeSeries, where we have Period
 		this.timeseries = [];
 		this.created = undefined;
+		
+		
 	}
 	/*
 	fetch() {
@@ -289,9 +309,9 @@ export default class EntsoeModel extends Model {
 		const body_url = this.src; // URL will be appended in backend.
 		
 		// NOTE: Times are given always in UTC time!!!
-		const body_period_start = moment.utc().subtract(1, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
-		const body_period_end = moment.utc()add(23,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
-		console.log(['body_period_start=',body_period_start,' body_period_end=',body_period_end]);
+		const body_period_start = moment.utc().subtract(2, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
+		const body_period_end = moment.utc().format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
+		//console.log(['body_period_start=',body_period_start,' body_period_end=',body_period_end]);
 		
 		//EntsoeA65NorwayNO4Model: SyntaxError: JSON.parse: unexpected character at line 1 column 2 of the JSON data
 		
@@ -325,17 +345,51 @@ export default class EntsoeModel extends Model {
 		
 		/*
 		Fetching:
+		
+		Number of document types: 2 => 
+			'A65'		System total load
+			'A75'		Actual generation per type
+		
+		A.10. Areas
+		BZ—Bidding Zone
+		BZA—Bidding Zone Aggregation
+		CA—Control Area
+		MBA—Market Balance Area
+		
+		Number of areas: 5 => 
 		case 'NorwayNO4'		idomain = '10YNO-4--------9'		NO4 BZ / MBA
 		case 'Estonia'			idomain = '10Y1001A1001A39I'		Estonia, Elering BZ / CA / MBA
 		case 'Finland'			idomain = '10YFI-1--------U'		Finland, Fingrid BZ / CA / MBA
 		case 'SwedenSE1'		idomain = '10Y1001A1001A44P'		SE1 BZ / MBA
 		case 'SwedenSE3'		idomain = '10Y1001A1001A46L'		SE3 BZ / MBA
 		case 'Russia'			idomain = '10Y1001A1001A49F'		Russia BZ / CA / MBA
+		
+		Number of technologies: 20 => (psrType used only when document type = 'A75')
+		'B01' 'Biomass'
+		'B02' 'Fossil Brown coal/Lignite'
+		'B03' 'Fossil Coal-derived gas'
+		'B04' 'Fossil Gas'
+		'B05' 'Fossil Hard coal'
+		'B06' 'Fossil Oil'
+		'B07' 'Fossil Oil shale'
+		'B08' 'Fossil Peat'
+		'B09' 'Geothermal'
+		'B10' 'Hydro Pumped Storage'
+		'B11' 'Hydro Run-of-river and poundage'
+		'B12' 'Hydro Water Reservoir'
+		'B13' 'Marine'
+		'B14' 'Nuclear'
+		'B15' 'Other renewable'
+		'B16' 'Solar'
+		'B17' 'Waste'
+		'B18' 'Wind Offshore'
+		'B19' 'Wind Onshore'
+		'B20' 'Other'
 		*/
 		const data = {
 			url: body_url,
-			document_type: this.document_type, //'A44'
-			//psr_type: this.psr_type,
+			document_type: this.document_type, //'A65'or 'A75'
+			psr_type: this.psr_type,
 			domain:  this.domain,
 			period_start: body_period_start, // '202105231000'
 			period_end: body_period_end,     // '202105241000'

@@ -347,6 +347,11 @@ export default class GridPageView extends View {
 	
 	
 	updateChart(model_name) {
+		if (typeof this.models[model_name].end_time !== 'undefined') {
+			// Update the timestamp:
+			const mom = moment(this.models[model_name].end_time);
+			$("#update-timestamp").empty().append(mom.format('DD.MM.YYYY HH:mm:ss'));
+		}
 		// 'category': 'Prod':
 		//'Fingrid188Model':{'label':'Nuclear power production','shortname':'Nuclear'},
 		//'Fingrid191Model':{'label':'Hydro power production','shortname':'Hydro'},
@@ -520,6 +525,7 @@ export default class GridPageView extends View {
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					'<div id="fingrid-chart" class="extra-large-chart"></div>'+
 				'</div>'+
+				'<div class="col s12"><p class="grid-timestamp" id="update-timestamp"></p></div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12" id="table-wrapper"></div>'+

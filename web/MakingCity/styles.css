@@ -353,3 +353,8 @@ table.striped > tbody > tr > td {
 	font-size: 14px;
 	color: #888;
 }
+.grid-timestamp {
+	font-size: 14px;
+	color: #888;
+	float: right;
+}

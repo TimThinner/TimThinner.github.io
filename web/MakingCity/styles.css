@@ -329,3 +329,27 @@ table.striped > tbody > tr > td {
 .alarm-count-description {
 	color: #a00;
 }
+.value-now-box {
+	border-top: 1px solid #fff;
+	border-right: 1px solid #888;
+	border-bottom: 1px solid #888;
+	border-left: 1px solid #fff;
+}
+.consumption-now {
+	background-color: rgba(255, 128, 0, 0.1);
+}
+.production-now {
+	background-color: rgba(0, 255, 0, 0.1);
+}
+.value-now-title {
+	font-size: 16px;
+	color: #888;
+}
+.value-now-text {
+	font-size: 24px;
+	color: #000;
+}
+.timestamp-now-text {
+	font-size: 14px;
+	color: #888;
+}

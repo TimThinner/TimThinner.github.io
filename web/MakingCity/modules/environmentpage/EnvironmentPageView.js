@@ -18,6 +18,9 @@ export default class EnvironmentPageView extends View {
 		this.rendered = false;
 		this.FELID = 'environment-page-view-failure';
 		this.chart = undefined;
+		this.timestamp_latest = undefined;
+		this.consumption_latest = undefined;
+		this.production_latest = undefined;
 	}
 	
 	show() {
@@ -43,6 +46,25 @@ export default class EnvironmentPageView extends View {
 		});
 		this.rendered = false;
 		$(this.el).empty();
+	}
+	
+	updateConsumptionNow() {
+		if (typeof this.consumption_latest !== 'undefined') {
+			// The Number.EPSILON property represents the difference between 1 and the smallest floating point number greater than 1.
+			const val = Math.round((this.consumption_latest + Number.EPSILON) * 100) / 100;
+			$("#consumption-now-value").empty().append(val);
+			if (typeof this.timestamp_latest !== 'undefined') {
+				$("#timestamp-now-value").empty().append(this.timestamp_latest);
+			}
+		}
+	}
+	//const aves = '('+ave.toFixed(0)+')';
+	updateProductionNow() {
+		if (typeof this.production_latest !== 'undefined') {
+			// The Number.EPSILON property represents the difference between 1 and the smallest floating point number greater than 1.
+			const val = Math.round((this.production_latest + Number.EPSILON) * 100) / 100;
+			$("#production-now-value").empty().append(val);
+		}
 	}
 	
 	/*
@@ -106,6 +128,12 @@ export default class EnvironmentPageView extends View {
 			// Currently "EmpoEmissions" values are produced with 3 minute interval => resample to 1 hour averages:
 			// 20 values grouped so that date is taken from the middle (10th element).
 			// shift()  Remove an item from the beginning of an array
+			
+			// Save the lastest values and timestamp in member variables
+			this.timestamp_latest = resuArray[resuArray.length-1].date;
+			this.consumption_latest = resuArray[resuArray.length-1].consumed;
+			this.production_latest = resuArray[resuArray.length-1].produced;
+			
 			const nBATCH = 20;
 			let batches = [];
 			let counter = 0;
@@ -152,9 +180,9 @@ export default class EnvironmentPageView extends View {
 			const sel = LM.selected;
 			const localized_string_axis_title = LM['translation'][sel]['ENVIRONMENT_PAGE_AXIS_TITLE'];
 			const localized_string_cons_tooltip = LM['translation'][sel]['ENVIRONMENT_PAGE_CONS_TOOLTIP'];
-			const localized_string_prod_tooltip = LM['translation'][sel]['ENVIRONMENT_PAGE_PROD_TOOLTIP'];
+			//const localized_string_prod_tooltip = LM['translation'][sel]['ENVIRONMENT_PAGE_PROD_TOOLTIP'];
 			const localized_string_cons_legend_label = LM['translation'][sel]['ENVIRONMENT_PAGE_CONS_LEGEND_LABEL'];
-			const localized_string_prod_legend_label = LM['translation'][sel]['ENVIRONMENT_PAGE_PROD_LEGEND_LABEL'];
+			//const localized_string_prod_legend_label = LM['translation'][sel]['ENVIRONMENT_PAGE_PROD_LEGEND_LABEL'];
 			
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -191,6 +219,7 @@ export default class EnvironmentPageView extends View {
 			series1.fill = "#f80";
 			series1.legendSettings.labelText = "{customname}";
 			
+			/*
 			var series2 = self.chart.series.push(new am4charts.LineSeries());
 			series2.data = resuArray;
 			series2.dataFields.dateX = "date";
@@ -202,7 +231,7 @@ export default class EnvironmentPageView extends View {
 			series2.stroke = am4core.color("#0f0");
 			series2.fill = "#0f0";
 			series2.legendSettings.labelText = "{customname}";
-			
+			*/
 			// Legend:
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;
@@ -309,11 +338,31 @@ export default class EnvironmentPageView extends View {
 		const localized_string_title = LM['translation'][sel]['ENVIRONMENT_PAGE_TITLE'];
 		const localized_string_description = LM['translation'][sel]['ENVIRONMENT_PAGE_DESCRIPTION'];
 		
+		const localized_string_consumption_now_title = 'Consumption';
+		//const localized_string_production_now_title = 'Production';
+		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
 					'<p style="text-align:center;">'+localized_string_description+'</p>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					'<div class="col s12 center">'+
+						'<div class="value-now-box consumption-now">'+
+							'<p><span class="value-now-title">'+localized_string_consumption_now_title+'</span><br/>'+
+							'<span class="value-now-text" id="consumption-now-value">&nbsp;-&nbsp;</span><br/>'+
+							'<span class="timestamp-now-text" id="timestamp-now-value">&nbsp;-&nbsp;</span></p>'+
+						'</div>'+
+					'</div>'+
+					//'<div class="col s6 center">'+
+					//	'<div class="value-now-box production-now">'+
+					//		'<p><span class="value-now-title">'+localized_string_production_now_title+'</span><br/>'+
+					//		'<span class="value-now-text" id="production-now-value">&nbsp;-&nbsp;</span></p>'+
+					//	'</div>'+
+					//'</div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

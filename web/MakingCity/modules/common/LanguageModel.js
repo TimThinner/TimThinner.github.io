@@ -27,6 +27,7 @@ export default class LanguageModel {
 				'ENVIRONMENT_PAGE_PROD_TOOLTIP':'Produced',
 				'ENVIRONMENT_PAGE_CONS_LEGEND_LABEL':'Consumed',
 				'ENVIRONMENT_PAGE_PROD_LEGEND_LABEL':'Produced',
+				'ENVIRONMENT_PAGE_LATEST_CONSUMPTION':'Latest consumption',
 				'USER_PROPS_TITLE':'User Properties',
 				'USER_PROPS_DESCRIPTION':'Here you will find your information and settings.',
 				'USER_ENERGY_PRICES_TITLE':'Energy price',
@@ -154,7 +155,7 @@ export default class LanguageModel {
 				'AUTO_UPDATE_MSG_3':'Chart is NOT automatically updated',
 				'ADJUST_UPDATE_INTERVAL':'Adjust the update interval (0-60s):',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.12.01'
+				'MENU_VERSION':'v 21.12.01a'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -180,6 +181,7 @@ export default class LanguageModel {
 				'ENVIRONMENT_PAGE_PROD_TOOLTIP':'Tuotanto',
 				'ENVIRONMENT_PAGE_CONS_LEGEND_LABEL':'Kulutus',
 				'ENVIRONMENT_PAGE_PROD_LEGEND_LABEL':'Tuotanto',
+				'ENVIRONMENT_PAGE_LATEST_CONSUMPTION':'Viimeisin kulutus',
 				'USER_PROPS_TITLE':'Käyttäjätiedot',
 				'USER_PROPS_DESCRIPTION':'Täältä löytyvät kaikki sinun tietosi ja asetuksesi.',
 				'USER_ENERGY_PRICES_TITLE':'Energian hinta',
@@ -307,7 +309,7 @@ export default class LanguageModel {
 				'AUTO_UPDATE_MSG_3':'Kuvaaja EI päivity automaattisesti',
 				'ADJUST_UPDATE_INTERVAL':'Säädä päivitystaajuutta (0-60s):',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.12.01'
+				'MENU_VERSION':'v 21.12.01a'
 			}
 		}
 	}

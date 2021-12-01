@@ -51,10 +51,13 @@ export default class EnvironmentPageView extends View {
 	updateConsumptionNow() {
 		if (typeof this.consumption_latest !== 'undefined') {
 			// The Number.EPSILON property represents the difference between 1 and the smallest floating point number greater than 1.
-			const val = Math.round((this.consumption_latest + Number.EPSILON) * 100) / 100;
+			//const val = Math.round((this.consumption_latest + Number.EPSILON) * 100) / 100;
+			const val = this.consumption_latest.toFixed(0);
 			$("#consumption-now-value").empty().append(val + ' gCO2/kWh');
 			if (typeof this.timestamp_latest !== 'undefined') {
-				$("#timestamp-now-value").empty().append(this.timestamp_latest);
+				// Format the timestamp:
+				const mom = moment(this.timestamp_latest);
+				$("#timestamp-now-value").empty().append(mom.format());
 			}
 		}
 	}
@@ -338,8 +341,7 @@ export default class EnvironmentPageView extends View {
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_title = LM['translation'][sel]['ENVIRONMENT_PAGE_TITLE'];
 		const localized_string_description = LM['translation'][sel]['ENVIRONMENT_PAGE_DESCRIPTION'];
-		
-		const localized_string_consumption_now_title = 'Consumption';
+		const localized_string_consumption_now_title = LM['translation'][sel]['ENVIRONMENT_PAGE_LATEST_CONSUMPTION'];
 		//const localized_string_production_now_title = 'Production';
 		
 		const html =

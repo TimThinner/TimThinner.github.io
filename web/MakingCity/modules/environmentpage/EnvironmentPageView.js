@@ -52,7 +52,7 @@ export default class EnvironmentPageView extends View {
 		if (typeof this.consumption_latest !== 'undefined') {
 			// The Number.EPSILON property represents the difference between 1 and the smallest floating point number greater than 1.
 			const val = Math.round((this.consumption_latest + Number.EPSILON) * 100) / 100;
-			$("#consumption-now-value").empty().append(val);
+			$("#consumption-now-value").empty().append(val + ' gCO2/kWh');
 			if (typeof this.timestamp_latest !== 'undefined') {
 				$("#timestamp-now-value").empty().append(this.timestamp_latest);
 			}
@@ -314,6 +314,7 @@ export default class EnvironmentPageView extends View {
 								am4core.iter.each(this.chart.series.iterator(), function (s) {
 									s.data = resuArray;
 								});
+								this.updateConsumptionNow();
 							} else {
 								this.renderChart();
 							}
@@ -390,8 +391,8 @@ export default class EnvironmentPageView extends View {
 		
 		if (this.areModelsReady()) {
 			this.handleErrorMessages(this.FELID);
-			//this.updateResults();
 			this.renderChart();
+			this.updateConsumptionNow();
 		}
 	}
 }

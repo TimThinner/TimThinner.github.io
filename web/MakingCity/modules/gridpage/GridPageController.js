@@ -150,7 +150,8 @@ export default class GridPageController extends Controller {
 				'Fingrid180Model',
 				'Fingrid87Model',
 				'Fingrid195Model',
-				'Fingrid187Model'
+				'Fingrid187Model',
+				'EntsoeEnergyPrice'
 			]};
 		this.view = new GridPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

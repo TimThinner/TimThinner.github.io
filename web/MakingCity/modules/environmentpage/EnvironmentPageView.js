@@ -57,7 +57,7 @@ export default class EnvironmentPageView extends View {
 			if (typeof this.timestamp_latest !== 'undefined') {
 				// Format the timestamp:
 				const mom = moment(this.timestamp_latest);
-				$("#timestamp-now-value").empty().append(mom.format());
+				$("#timestamp-now-value").empty().append(mom.format('DD.MM.YYYY HH:mm:ss'));
 			}
 		}
 	}

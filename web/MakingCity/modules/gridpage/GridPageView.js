@@ -251,7 +251,7 @@ export default class GridPageView extends View {
 			totalBullet.label.padding(5, 10, 5, 10);
 		}); // end am4core.ready()
 	}
-	
+	/*
 	updateTable(mname) {
 		const value = this.models[mname].value;
 		// Use Moment.js to automatically change Zulu-timestamp to local time.
@@ -266,7 +266,8 @@ export default class GridPageView extends View {
 			$('#'+mname+'-timestamp').empty().append(local_start_time);
 		}
 	}
-	
+	*/
+	/*
 	createTable(fid) {
 		let html = '<table class="striped">'+
 			'<thead>'+
@@ -303,7 +304,7 @@ export default class GridPageView extends View {
 		});
 		html += '</tbody></table>';
 		$(html).appendTo(fid);
-	}
+	}*/
 	
 	/*
 		Transmission can be either in to the country (import) or out of the country (export).
@@ -374,6 +375,7 @@ export default class GridPageView extends View {
 				});
 				this.chart.invalidateRawData();
 			}
+			
 		// category': 'Prod+import':
 		//'Fingrid192Model':{'label':'Electricity production in Finland','shortname':'Electricity Production'},
 		} else if (model_name === 'Fingrid192Model') {
@@ -393,6 +395,7 @@ export default class GridPageView extends View {
 				});
 				this.chart.invalidateRawData();
 			}
+			
 		// category': 'Cons+export':
 		//'Fingrid193Model':{'label':'Electricity consumption in Finland','shortname':'Electricity Consumption'},
 		} else if (model_name === 'Fingrid193Model') {
@@ -411,6 +414,7 @@ export default class GridPageView extends View {
 				});
 				this.chart.invalidateRawData();
 			}
+			
 		//'Fingrid89Model':{'label':'Transmission between Finland and Central Sweden','shortname':'Fin Central Swe'},
 		//'Fingrid180Model':{'label':'Transmission between Finland and Estonia','shortname':'Fin Estonia'},
 		//'Fingrid87Model':{'label':'Transmission between Finland and Northern Sweden','shortname':'Fin Northern Swe'},
@@ -453,13 +457,13 @@ export default class GridPageView extends View {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				
 				console.log("GridPageView resize => update all models!!!!!!!!!!!!!!");
-				this.render();
-				/*
+				//this.render();
+				
 				Object.keys(this.models).forEach(key => {
 					if (key !== 'MenuModel') {
 						this.updateChart(key);
 					}
-				});*/
+				});
 				
 				//this.renderChart();
 				//this.render();
@@ -469,7 +473,7 @@ export default class GridPageView extends View {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						
-						this.updateTable(options.model);
+						//this.updateTable(options.model);
 						this.updateChart(options.model);
 						
 					} else {
@@ -504,13 +508,11 @@ export default class GridPageView extends View {
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_title = LM['translation'][sel]['GRID_PAGE_TITLE'];
 		const localized_string_description = LM['translation'][sel]['GRID_PAGE_DESCRIPTION'];
-		//const localized_string_coming_soon = LM['translation'][sel]['COMING_SOON'];
 		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-					//'<p class="coming-soon">'+localized_string_coming_soon+'</p>'+
 					'<p style="text-align:center;">'+localized_string_description+'</p>'+
 				'</div>'+
 			'</div>'+
@@ -538,7 +540,7 @@ export default class GridPageView extends View {
 			self.models['MenuModel'].setSelected('menu');
 		});
 		
-		this.createTable('#table-wrapper');
+		//this.createTable('#table-wrapper');
 		this.renderChart();
 		this.rendered = true;
 		
@@ -546,10 +548,9 @@ export default class GridPageView extends View {
 			this.handleErrorMessages(this.FELID);
 			Object.keys(this.models).forEach(key => {
 				if (key !== 'MenuModel') {
-					this.updateTable(key);
+					this.updateChart(key);
 				}
 			});
-			this.renderChart();
 		}
 	}
 }

@@ -87,6 +87,26 @@ url = ['https://transparency.entsoe.eu/api?securityToken=' securityToken ...
 All values must be multiplied by 24% (VAT in Finland) and you get the day-ahead pricing like in the Tuntihinta application.
 (in Euro/MWh, convert it to euro cents/kWh by dividing by 10 the values)
 
+
+GET /api?documentType=A44&in_Domain=10YCZ-CEPS-----N&out_Domain=10YCZ-CEPS-----N&periodStart=201512312300&periodEnd=201612312300
+
+
+
+
+NOTE: Check out details from here:
+
+https://transparency.entsoe.eu/content/static_content/Static%20content/web%20api/Guide.html#_balancing_domain
+
+
+https://transparency.entsoe.eu/content/static_content/Static%20content/web%20api/Guide.html#_transmission_domain
+
+
+
+4.2.10. Day Ahead Prices [12.1.D]
+...
+
+
+
 */
 export default class EntsoeModel extends Model {
 	

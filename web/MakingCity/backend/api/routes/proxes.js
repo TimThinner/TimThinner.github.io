@@ -399,8 +399,20 @@ const Proxe_Clean = (res) => {
 };
 
 
+/*
 
 
+url = ['https://transparency.entsoe.eu/api?securityToken=' securityToken ...
+       '&documentType=' documentType ...
+       '&' domainzone '=' in_Domain ...
+       '&out_Domain=' in_Domain ...
+       '&periodStart=' periodStart ...
+       '&periodEnd=' periodEnd] ;
+
+
+[ 'entsoe url=',
+  'https://transparency.entsoe.eu/api?securityToken=9f2496b9-6f5e-4396-a1af-263ffccd597a&documentType=A44&in_Domain=10YFI-1--------U&periodStart=202112011300&periodEnd=202112021300' ]
+*/
 
 router.post('/entsoe', (req,res,next)=>{
 	// 'https://transparency.entsoe.eu/api
@@ -417,8 +429,10 @@ router.post('/entsoe', (req,res,next)=>{
 	// documentType = 'A65' System total load			domainzone = ‘outBiddingZone_Domain’
 	
 	url += '&documentType=' + req.body.document_type; // A44 or A65 or A75
-	//url += '&processType=A16';
 	
+	if (req.body.document_type !== 'A44') {
+		url += '&processType=A16';
+	}
 	if (req.body.document_type === 'A75') {
 		url += '&psrType=' + req.body.psr_type;
 	}
@@ -429,6 +443,10 @@ router.post('/entsoe', (req,res,next)=>{
 		domainzone = '&in_Domain=' + req.body.domain;
 	}
 	url += domainzone;
+	// GET /api?documentType=A44&in_Domain=10YCZ-CEPS-----N&out_Domain=10YCZ-CEPS-----N&periodStart=201512312300&periodEnd=201612312300
+	if (req.body.document_type === 'A44') {
+		url += '&out_Domain=' + req.body.domain;
+	}
 	url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm
 	url += '&periodEnd=' + req.body.period_end;       // yyyyMMddHHmm
 	

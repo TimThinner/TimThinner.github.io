@@ -290,7 +290,7 @@ export default class EntsoeModel extends Model {
 		
 		// NOTE: Times are given always in UTC time!!!
 		const body_period_start = moment.utc().subtract(1, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
-		const body_period_end = moment.utc()add(23,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
+		const body_period_end = moment.utc().add(23,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
 		console.log(['body_period_start=',body_period_start,' body_period_end=',body_period_end]);
 		
 		//EntsoeA65NorwayNO4Model: SyntaxError: JSON.parse: unexpected character at line 1 column 2 of the JSON data

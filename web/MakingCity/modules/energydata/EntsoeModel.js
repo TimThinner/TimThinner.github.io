@@ -293,7 +293,42 @@ export default class EntsoeModel extends Model {
 				resu.Publication_MarketDocument['TimeSeries'].forEach(ts=> {
 					if (typeof ts.Period !== 'undefined' && Array.isArray(ts.Period)) {
 						ts.Period.forEach(p=> {
-							console.log(['Publication_MarketDocument Period=',p]);
+							/*
+							p.timeInterval object with two arrays: start ["2021-12-01T23:00Z"] and end ["2021-12-02T23:00Z"]
+							p.resolution array with one item ["PT60M"]
+							p.Point array with 24 items
+								position array with one item ["1"]
+								price.amount array with one item ["99.12"]
+							*/
+							let myp = {};
+							if (typeof p.resolution !== 'undefined' && Array.isArray(p.resolution)) {
+								console.log(['resolution=',p.resolution[0]]);
+								myp['resolution'] = p.resolution[0];
+							}
+							if (typeof p.timeInterval !== 'undefined' && Array.isArray(p.timeInterval)) {
+								p.timeInterval.forEach(ti=> {
+									console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
+									myp['timeInterval'] = {'start':ti.start[0],'end':ti.end[0]};
+								});
+							}
+							if (typeof p.Point !== 'undefined' && Array.isArray(p.Point)) {
+								myp['Point'] = [];
+								p.Point.forEach(po=> {
+									let position;
+									let pa;
+									if (typeof po.position !== 'undefined' && Array.isArray(po.position)) {
+										position = po.position[0];
+										
+									}
+									if (typeof po['price.amount'] !== 'undefined' && Array.isArray(po['price.amount'])) {
+										pa = po['price.amount'][0];
+									}
+									
+									myp['Point'].push({'position':position,'price.amount':pa});
+									console.log(['position=',position,'price.amount=',pa]);
+								});
+							}
+							this.timeseries.push(myp);
 						});
 					}
 				});

@@ -166,7 +166,7 @@ export default class GridPageView extends View {
 			self.price_chart.padding(30, 15, 30, 15);
 			//self.chart.colors.step = 3;
 			
-			self.price_chart.numberFormatter.numberFormat = "#.###";
+			self.price_chart.numberFormatter.numberFormat = "#.##";
 			self.price_chart.data = self.convertPriceData();
 			
 			const dateAxis = self.price_chart.xAxes.push(new am4charts.DateAxis());
@@ -410,12 +410,6 @@ export default class GridPageView extends View {
 		'Fingrid195Model':{'label':'Transmission between Finland and Russia','shortname':'Fin Rus'},
 		'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
 	*/
-	
-	updatePriceChart() {
-		console.log('&&&&%%%%%%%%%%%% UPDATE PriceChart $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-		const ts = this.models['EntsoeEnergyPriceModel'].timeseries;
-		console.log(['TimeSeries=',ts]);
-	}
 	
 	/*
 		p.timeInterval object with two arrays: start "2021-12-01T23:00Z" and end "2021-12-02T23:00Z"

@@ -128,7 +128,7 @@ export default class EntsoeModel extends Model {
 				this.domainzone		'in_Domain'
 		*/
 		this.document_type = options.document_type; //'A44'
-		//this.psr_type = options.psr_type;
+		this.psr_type = options.psr_type;
 		switch (options.area_name) {
 			case 'NorwayNO4': 
 				this.domain = '10YNO-4--------9';
@@ -281,8 +281,19 @@ export default class EntsoeModel extends Model {
 									console.log(['position=',position,' quantity=',quantity]);
 								});
 							}
-							
 							this.timeseries.push(myp);
+						});
+					}
+				});
+			}
+		
+		} else if (typeof resu.Publication_MarketDocument !== 'undefined') {
+			
+			if (resu.Publication_MarketDocument['TimeSeries'] !== 'undefined' && Array.isArray(resu.Publication_MarketDocument['TimeSeries'])) {
+				resu.Publication_MarketDocument['TimeSeries'].forEach(ts=> {
+					if (typeof ts.Period !== 'undefined' && Array.isArray(ts.Period)) {
+						ts.Period.forEach(p=> {
+							console.log(['Publication_MarketDocument Period=',p]);
 						});
 					}
 				});
@@ -355,7 +366,7 @@ export default class EntsoeModel extends Model {
 		const data = {
 			url: body_url,
 			document_type: this.document_type, //'A44'
-			//psr_type: this.psr_type,
+			psr_type: this.psr_type,
 			domain:  this.domain,
 			period_start: body_period_start, // '202105231000'
 			period_end: body_period_end,     // '202105241000'

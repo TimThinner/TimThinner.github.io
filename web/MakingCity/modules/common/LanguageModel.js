@@ -156,7 +156,7 @@ export default class LanguageModel {
 				'ADJUST_UPDATE_INTERVAL':'Adjust the update interval (0-60s):',
 				'UPDATED_HEADER_TEXT':'Values updated: ',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.12.01'
+				'MENU_VERSION':'v 21.12.02'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -311,7 +311,7 @@ export default class LanguageModel {
 				'ADJUST_UPDATE_INTERVAL':'Säädä päivitystaajuutta (0-60s):',
 				'UPDATED_HEADER_TEXT':'Luvut päivitetty: ',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.12.01'
+				'MENU_VERSION':'v 21.12.02'
 			}
 		}
 	}

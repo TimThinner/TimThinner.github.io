@@ -142,6 +142,17 @@ export default class GridPageView extends View {
 	
 	renderPriceChart() {
 		const self = this;
+		
+		
+		let currency = 'EUR';
+		if (this.models['EntsoeEnergyPriceModel'].currency !== 'undefined') {
+			currency = this.models['EntsoeEnergyPriceModel'].currency;
+		}
+		let price_unit = 'MWh';
+		if (this.models['EntsoeEnergyPriceModel'].price_unit !== 'undefined') {
+			price_unit = this.models['EntsoeEnergyPriceModel'].price_unit;
+		}
+		
 		am4core.ready(function() {
 			
 			// Themes begin
@@ -170,7 +181,7 @@ export default class GridPageView extends View {
 			
 			var valueAxis = self.price_chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " €";
+				return text + " " + currency + '/' + price_unit;
 			});
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = "Price forecast";
@@ -178,7 +189,7 @@ export default class GridPageView extends View {
 			var series = self.price_chart.series.push(new am4charts.LineSeries());
 			series.dataFields.dateX = "date";
 			series.dataFields.valueY = "price";
-			series.tooltipText = "Price: [bold]{valueY} €";
+			series.tooltipText = "Price: [bold]{valueY} "+currency+ '/' +price_unit;
 			series.fillOpacity = 0.3;
 			
 			self.price_chart.cursor = new am4charts.XYCursor();

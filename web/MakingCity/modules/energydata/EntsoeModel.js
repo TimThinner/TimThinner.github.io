@@ -156,6 +156,8 @@ export default class EntsoeModel extends Model {
 		
 		// Response is a TimeSeries, where we have Period
 		this.timeseries = [];
+		this.currency = undefined;
+		this.price_unit = undefined;
 		this.created = undefined;
 	}
 	/*
@@ -291,6 +293,14 @@ export default class EntsoeModel extends Model {
 			
 			if (resu.Publication_MarketDocument['TimeSeries'] !== 'undefined' && Array.isArray(resu.Publication_MarketDocument['TimeSeries'])) {
 				resu.Publication_MarketDocument['TimeSeries'].forEach(ts=> {
+					
+					if (typeof ts['currency_Unit.name'] !== 'undefined' && Array.isArray(ts['currency_Unit.name'])) {
+						this.currency = ts['currency_Unit.name'][0];
+					}
+					if (typeof ts['price_Measure_Unit.name'] !== 'undefined' && Array.isArray(ts['price_Measure_Unit.name'])) {
+						this.price_unit = ts['price_Measure_Unit.name'][0];
+					}
+					
 					if (typeof ts.Period !== 'undefined' && Array.isArray(ts.Period)) {
 						ts.Period.forEach(p=> {
 							/*

@@ -181,7 +181,7 @@ export default class GridPageView extends View {
 				return text + " " + currency + '/' + price_unit;
 			});
 			valueAxis.tooltip.disabled = true;
-			valueAxis.title.text = localized_string_price + ': ' + currency '/' + price_unit;
+			valueAxis.title.text = localized_string_price + ': ' + currency + '/' + price_unit;
 			
 			var series = self.price_chart.series.push(new am4charts.LineSeries());
 			series.dataFields.dateX = "date";

@@ -143,15 +143,12 @@ export default class GridPageView extends View {
 	renderPriceChart() {
 		const self = this;
 		
+		const currency = 'snt';
+		const price_unit = 'kWh';
 		
-		let currency = 'EUR';
-		if (this.models['EntsoeEnergyPriceModel'].currency !== 'undefined') {
-			currency = this.models['EntsoeEnergyPriceModel'].currency;
-		}
-		let price_unit = 'MWh';
-		if (this.models['EntsoeEnergyPriceModel'].price_unit !== 'undefined') {
-			price_unit = this.models['EntsoeEnergyPriceModel'].price_unit;
-		}
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_price = LM['translation'][sel]['GRID_PAGE_PRICE'];
 		
 		am4core.ready(function() {
 			
@@ -184,12 +181,12 @@ export default class GridPageView extends View {
 				return text + " " + currency + '/' + price_unit;
 			});
 			valueAxis.tooltip.disabled = true;
-			valueAxis.title.text = "Price forecast";
+			valueAxis.title.text = localized_string_price + ': ' + currency '/' + price_unit;
 			
 			var series = self.price_chart.series.push(new am4charts.LineSeries());
 			series.dataFields.dateX = "date";
 			series.dataFields.valueY = "price";
-			series.tooltipText = "Price: [bold]{valueY} "+currency+ '/' +price_unit;
+			series.tooltipText = localized_string_price + ": [bold]{valueY} "+currency+ '/' +price_unit;
 			series.fillOpacity = 0.3;
 			
 			self.price_chart.cursor = new am4charts.XYCursor();
@@ -432,13 +429,19 @@ export default class GridPageView extends View {
 		// array of {date:..., price: ... } objects.
 		const ts = this.models['EntsoeEnergyPriceModel'].timeseries;
 		
+		// At ENTSOE price_unit is 'MWH' and currency is 'EUR', we want to convert this to snt/kWh (c/kWh)
+		// 'EUR' => 'snt' and 'MWH' => 'kWh' multiply with 100 and divide by 1000 => MULTIPLY BY 0.1!
+		let currency = 'EUR';
+		if (this.models['EntsoeEnergyPriceModel'].currency !== 'undefined') {
+			currency = this.models['EntsoeEnergyPriceModel'].currency;
+		}
 		let price_unit = 'MWH';
 		if (this.models['EntsoeEnergyPriceModel'].price_unit !== 'undefined') {
 			price_unit = this.models['EntsoeEnergyPriceModel'].price_unit;
 		}
 		let factor = 1;
 		if (price_unit === 'MWH') {
-			factor = 0.001; // 300 EUR/MWH => 0,300EUR/kWh
+			factor = 0.1; // 300 EUR/MWH => 30 snt/kWh
 		}
 		
 		const newdata = [];

@@ -323,7 +323,6 @@ export default class EntsoeModel extends Model {
 									if (typeof po['price.amount'] !== 'undefined' && Array.isArray(po['price.amount'])) {
 										pa = po['price.amount'][0];
 									}
-									
 									myp['Point'].push({'position':position,'price.amount':pa});
 									console.log(['position=',position,'price.amount=',pa]);
 								});

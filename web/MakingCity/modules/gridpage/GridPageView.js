@@ -25,6 +25,7 @@ export default class GridPageView extends View {
 		
 		this.chart = undefined; // We have a chart!
 		
+		
 		this.table_labels = {
 			'FingridPowerSystemStateModel':{'label':'Power system state','shortname':'Power State'},
 			'Fingrid192Model':{'label':'Electricity production in Finland','shortname':'Production'},
@@ -344,7 +345,12 @@ export default class GridPageView extends View {
 		'Fingrid187Model':{'label':'Transmission between Finland and Norway','shortname':'Fin Norway'}
 	*/
 	
-	
+	updatePriceChart() {
+		console.log('&&&&%%%%%%%%%%%% UPDATE PriceChart $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+		
+		const ts = this.models['EntsoeEnergyPrice'].timeseries;
+		console.log(['TimeSeries=',ts]);
+	}
 	
 	updateChart(model_name) {
 		if (typeof this.models[model_name].end_time !== 'undefined') {
@@ -477,30 +483,38 @@ export default class GridPageView extends View {
 				if (options.status === 200) {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
-						
 						//this.updateTable(options.model);
 						this.updateChart(options.model);
-						
 					} else {
 						this.render();
 					}
 				} else { // Error in fetching.
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#'+this.FELID);
 					} else {
 						this.render();
 					}
 				}
-			} 
+			} else if (options.model === 'EntsoeEnergyPrice' && options.method==='fetched') {
+				if (options.status === 200) {
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						this.updatePriceChart();
+					} else {
+						this.render();
+					}
+				} else { // Error in fetching.
+					if (this.rendered) {
+						$('#'+this.FELID).empty();
+						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+						$(html).appendTo('#'+this.FELID);
+					} else {
+						this.render();
+					}
+				}
+			}
 		}
 	}
 	

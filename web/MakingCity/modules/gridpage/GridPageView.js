@@ -480,7 +480,6 @@ export default class GridPageView extends View {
 			if (typeof this.chart !== 'undefined') {
 				this.chart.data.forEach(d=>{
 					if (this.models[model_name].value == 0) {
-						
 						// Not included.
 						delete d[model_name];
 						

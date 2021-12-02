@@ -109,7 +109,7 @@ export default class GridPageController extends Controller {
 				key === 'Fingrid202Model' || key === 'Fingrid201Model' ||
 				key === 'Fingrid89Model' || key === 'Fingrid180Model' ||
 				key === 'Fingrid87Model' || key === 'Fingrid195Model' ||
-				key === 'Fingrid187Model' || key === 'EntsoeEnergyPrice') {
+				key === 'Fingrid187Model' || key === 'EntsoeEnergyPriceModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
@@ -124,10 +124,10 @@ export default class GridPageController extends Controller {
 			this.models[model_name] = m;
 		});
 		
-		const entsoe_model = new EntsoeModel({name:'EntsoeEnergyPrice',src:'https://transparency.entsoe.eu/api', document_type:'A44', area_name:'Finland'});
+		const entsoe_model = new EntsoeModel({name:'EntsoeEnergyPriceModel',src:'https://transparency.entsoe.eu/api', document_type:'A44', area_name:'Finland'});
 		entsoe_model.subscribe(this);
-		this.master.modelRepo.add('EntsoeEnergyPrice',entsoe_model);
-		this.models['EntsoeEnergyPrice'] = entsoe_model;
+		this.master.modelRepo.add('EntsoeEnergyPriceModel',entsoe_model);
+		this.models['EntsoeEnergyPriceModel'] = entsoe_model;
 		
 		this.models['FingridPowerSystemStateModel'] = this.master.modelRepo.get('FingridPowerSystemStateModel');
 		this.models['FingridPowerSystemStateModel'].subscribe(this);
@@ -151,7 +151,7 @@ export default class GridPageController extends Controller {
 				'Fingrid87Model',
 				'Fingrid195Model',
 				'Fingrid187Model',
-				'EntsoeEnergyPrice'
+				'EntsoeEnergyPriceModel'
 			]};
 		this.view = new GridPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 

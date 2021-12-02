@@ -48,8 +48,12 @@ export default class SolarPageView extends View {
 	
 	renderChart() {
 		const self = this;
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_solar_energy = LM['translation'][sel]['SOLAR_ENERGY']; //"Solar power", "Aurinkoenergia"
+		const localized_string_solar_energy_power = LM['translation'][sel]['SOLAR_ENERGY_POWER'];
 		am4core.ready(function() {
-			
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
 			//am4core.useTheme(am4themes_animated);
@@ -96,14 +100,13 @@ export default class SolarPageView extends View {
 				return text + " MW";
 			});
 			valueAxis.tooltip.disabled = true;
-			valueAxis.title.text = "Solar power";
+			valueAxis.title.text = localized_string_solar_energy;
 			
 			var series = self.chart.series.push(new am4charts.LineSeries());
 			series.dataFields.dateX = "date";
 			series.dataFields.valueY = "value";
-			series.tooltipText = "Power: [bold]{valueY}[/]";
+			series.tooltipText = localized_string_solar_energy_power + ": [bold]{valueY.value} MW";
 			series.fillOpacity = 0.3;
-			
 			
 			self.chart.cursor = new am4charts.XYCursor();
 			self.chart.cursor.lineY.opacity = 0;

@@ -20,6 +20,8 @@ export default class LanguageModel {
 				'GRID_PAGE_DESCRIPTION':'Here you will find more information about the aggregated load (from Fingrid open data). Values are updated once every 3 minutes.',
 				'SOLAR_PAGE_TITLE':'The Solar Page',
 				'SOLAR_PAGE_DESCRIPTION':'Solar power generation forecast for the next 36 hours. Updated hourly.',
+				'SOLAR_ENERGY':'Solar power',
+				'SOLAR_ENERGY_POWER':'Power',
 				'ENVIRONMENT_PAGE_TITLE':'The Environment Page',
 				'ENVIRONMENT_PAGE_DESCRIPTION':'Here you will find more information about the environmental load of the energy used.',
 				'ENVIRONMENT_PAGE_AXIS_TITLE':'Emissions gCO2/kWh',
@@ -156,7 +158,7 @@ export default class LanguageModel {
 				'ADJUST_UPDATE_INTERVAL':'Adjust the update interval (0-60s):',
 				'UPDATED_HEADER_TEXT':'Values updated: ',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.12.02'
+				'MENU_VERSION':'v 21.12.02a'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -175,6 +177,8 @@ export default class LanguageModel {
 				'GRID_PAGE_DESCRIPTION':'Täältä löytyy lisätietoa sähköverkon kuormituksesta (Fingridin avoin data). Kaikki lukuarvot päivittyvät 3 minuutin välein.',
 				'SOLAR_PAGE_TITLE':'Aurinkoenergia',
 				'SOLAR_PAGE_DESCRIPTION':'Aurinkoenergian tuotantoennuste seuraaville 36 tunnille. Ennuste päivittyy tunnin välein.',
+				'SOLAR_ENERGY':'Aurinkoenergia',
+				'SOLAR_ENERGY_POWER':'Teho',
 				'ENVIRONMENT_PAGE_TITLE':'Ympäristövaikutus',
 				'ENVIRONMENT_PAGE_DESCRIPTION':'Täältä löytyy lisätietoa kulutetun energian vaikutuksesta ympäristöön.',
 				'ENVIRONMENT_PAGE_AXIS_TITLE':'Päästöt gCO2/kWh',
@@ -311,7 +315,7 @@ export default class LanguageModel {
 				'ADJUST_UPDATE_INTERVAL':'Säädä päivitystaajuutta (0-60s):',
 				'UPDATED_HEADER_TEXT':'Luvut päivitetty: ',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.12.02'
+				'MENU_VERSION':'v 21.12.02a'
 			}
 		}
 	}

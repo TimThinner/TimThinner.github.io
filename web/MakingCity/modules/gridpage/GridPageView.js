@@ -24,7 +24,7 @@ export default class GridPageView extends View {
 		this.FELID = 'grid-page-view-failure';
 		
 		this.chart = undefined; // We have a chart!
-		
+		this.price_chart = undefined; // We have also second chart!
 		
 		this.table_labels = {
 			'FingridPowerSystemStateModel':{'label':'Power system state','shortname':'Power State'},
@@ -60,6 +60,10 @@ export default class GridPageView extends View {
 			this.chart.dispose();
 			this.chart = undefined;
 		}
+		if (typeof this.price_chart !== 'undefined') {
+			this.price_chart.dispose();
+			this.price_chart = undefined;
+		}
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -68,6 +72,10 @@ export default class GridPageView extends View {
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
+		}
+		if (typeof this.price_chart !== 'undefined') {
+			this.price_chart.dispose();
+			this.price_chart = undefined;
 		}
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
@@ -130,6 +138,56 @@ export default class GridPageView extends View {
 		bullet.label.text = "{valueY.formatNumber('#.')}";
 		bullet.label.fill = am4core.color("#ffffff");
 		bullet.locationY = 0.5;
+	}
+	
+	renderPriceChart() {
+		const self = this;
+		am4core.ready(function() {
+			
+			// Themes begin
+			am4core.useTheme(am4themes_dark);
+			//am4core.useTheme(am4themes_animated);
+			// Themes end
+			
+			am4core.options.autoSetClassName = true;
+			am4core.options.autoDispose = true;
+			
+			//am4core.options.autoSetClassName = true;
+			// Create chart
+			self.price_chart = am4core.create("price-chart", am4charts.XYChart);
+			self.price_chart.padding(30, 15, 30, 15);
+			//self.chart.colors.step = 3;
+			
+			self.price_chart.numberFormatter.numberFormat = "#.##";
+			self.price_chart.data = self.convertPriceData();
+			
+			const dateAxis = self.price_chart.xAxes.push(new am4charts.DateAxis());
+			dateAxis.baseInterval = {
+				"timeUnit": "hour",
+				"count": 1
+			};
+			dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
+			
+			var valueAxis = self.price_chart.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
+				return text + " €";
+			});
+			valueAxis.tooltip.disabled = true;
+			valueAxis.title.text = "Price forecast";
+			
+			var series = self.chart.series.push(new am4charts.LineSeries());
+			series.dataFields.dateX = "date";
+			series.dataFields.valueY = "price";
+			series.tooltipText = "Price: [bold]{valueY} €";
+			series.fillOpacity = 0.3;
+			
+			self.price_chart.cursor = new am4charts.XYCursor();
+			self.price_chart.cursor.lineY.opacity = 0;
+			self.price_chart.scrollbarX = new am4charts.XYChartScrollbar();
+			self.price_chart.scrollbarX.series.push(series);
+			//dateAxis.start = 0.8;
+			dateAxis.keepSelection = true;
+		}); // end am4core.ready()
 	}
 	
 	renderChart() {
@@ -347,9 +405,32 @@ export default class GridPageView extends View {
 	
 	updatePriceChart() {
 		console.log('&&&&%%%%%%%%%%%% UPDATE PriceChart $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-		
-		const ts = this.models['EntsoeEnergyPrice'].timeseries;
+		const ts = this.models['EntsoeEnergyPriceModel'].timeseries;
 		console.log(['TimeSeries=',ts]);
+	}
+	
+	/*
+		p.timeInterval object with two arrays: start "2021-12-01T23:00Z" and end "2021-12-02T23:00Z"
+		p.resolution array with one item "PT60M"
+		
+		p.Point array with 24 items
+		position "1"
+		price "99.12"
+	*/
+	convertPriceData() {
+		// array of {date:..., price: ... } objects.
+		const ts = this.models['EntsoeEnergyPriceModel'].timeseries;
+		const newdata = [];
+		ts.forEach(t=>{
+			let timestamp = moment(t.timeInterval.start);
+			const reso = moment.duration(t.resolution);
+			t.Point.forEach(p=>{
+				newdata.push({date: timestamp.toDate(), price: p.price});
+				// Do we need to handle the +p.position when stepping from start to end.
+				timestamp.add(reso);
+			});
+		});
+		return newdata;
 	}
 	
 	updateChart(model_name) {
@@ -497,11 +578,30 @@ export default class GridPageView extends View {
 						this.render();
 					}
 				}
-			} else if (options.model === 'EntsoeEnergyPrice' && options.method==='fetched') {
+			} else if (options.model === 'EntsoeEnergyPriceModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
-						this.updatePriceChart();
+						if (typeof this.price_chart !== 'undefined') {
+							// SEE: https://www.amcharts.com/docs/v4/concepts/data/
+							// Manipulating existing data points
+							/*const name = options.model;
+							this.chart.data.forEach(d=>{
+								if (d.name === name) {
+									Here we have an array of values instead of one value
+									this.values = [];
+									d.value = this.models[name].value;
+								}
+							});
+							*/
+							const newdata = this.convertPriceData();
+							this.price_chart.data = newdata;
+							this.price_chart.invalidateRawData();
+						} else {
+							console.log('RENDER CHART!');
+							this.renderPriceChart();
+						}
+						
 					} else {
 						this.render();
 					}
@@ -538,12 +638,17 @@ export default class GridPageView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					'<div id="fingrid-chart" class="extra-large-chart"></div>'+
+					'<div id="fingrid-chart" class="extra-large-chart"></div>'+ // height = 600px
 				'</div>'+
 				'<div class="col s12"><p class="grid-timestamp">'+localized_string_updated_header+'<span id="update-timestamp"></span></p></div>'+
 			'</div>'+
+			//'<div class="row">'+
+			//	'<div class="col s12" id="table-wrapper"></div>'+
+			//'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="table-wrapper"></div>'+
+				'<div class="col s12 chart-wrapper dark-theme">'+
+					'<div id="price-chart" class="medium-chart"></div>'+ // height = 400px
+				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+
@@ -572,6 +677,7 @@ export default class GridPageView extends View {
 					this.updateChart(key);
 				}
 			});
+			this.renderPriceChart();
 		}
 	}
 }

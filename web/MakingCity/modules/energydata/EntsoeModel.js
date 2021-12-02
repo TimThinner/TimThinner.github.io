@@ -323,8 +323,8 @@ export default class EntsoeModel extends Model {
 									if (typeof po['price.amount'] !== 'undefined' && Array.isArray(po['price.amount'])) {
 										pa = po['price.amount'][0];
 									}
-									myp['Point'].push({'position':position,'price.amount':pa});
-									console.log(['position=',position,'price.amount=',pa]);
+									myp['Point'].push({'position':position,'price':pa});
+									console.log(['position=',position,'price=',pa]);
 								});
 							}
 							this.timeseries.push(myp);
@@ -412,6 +412,9 @@ export default class EntsoeModel extends Model {
 			body: JSON.stringify(data)
 		};
 		const myRequest = new Request(url, myPost);
+		
+		// Remember ALWAYS start with empty array!
+		this.timeseries = [];
 		
 		fetch(myRequest)
 			.then(function(response) {

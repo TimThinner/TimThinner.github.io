@@ -175,7 +175,7 @@ export default class GridPageView extends View {
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = "Price forecast";
 			
-			var series = self.chart.series.push(new am4charts.LineSeries());
+			var series = self.price_chart.series.push(new am4charts.LineSeries());
 			series.dataFields.dateX = "date";
 			series.dataFields.valueY = "price";
 			series.tooltipText = "Price: [bold]{valueY} €";

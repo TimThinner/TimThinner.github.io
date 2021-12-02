@@ -169,7 +169,7 @@ export default class GridPageView extends View {
 			self.price_chart.padding(30, 15, 30, 15);
 			//self.chart.colors.step = 3;
 			
-			self.price_chart.numberFormatter.numberFormat = "#.##";
+			self.price_chart.numberFormatter.numberFormat = "#.###";
 			self.price_chart.data = self.convertPriceData();
 			
 			const dateAxis = self.price_chart.xAxes.push(new am4charts.DateAxis());
@@ -431,13 +431,24 @@ export default class GridPageView extends View {
 	convertPriceData() {
 		// array of {date:..., price: ... } objects.
 		const ts = this.models['EntsoeEnergyPriceModel'].timeseries;
+		
+		let price_unit = 'MWH';
+		if (this.models['EntsoeEnergyPriceModel'].price_unit !== 'undefined') {
+			price_unit = this.models['EntsoeEnergyPriceModel'].price_unit;
+		}
+		let factor = 1;
+		if (price_unit === 'MWH') {
+			factor = 0.001; // 300 EUR/MWH => 0,300EUR/kWh
+		}
+		
 		const newdata = [];
 		ts.forEach(t=>{
 			let timestamp = moment(t.timeInterval.start);
 			const reso = moment.duration(t.resolution);
 			t.Point.forEach(p=>{
-				newdata.push({date: timestamp.toDate(), price: p.price});
-				// Do we need to handle the +p.position when stepping from start to end.
+				const price = p.price*factor;
+				newdata.push({date: timestamp.toDate(), price: price});
+				// Do we need to handle the +p.position when stepping from start to end?
 				timestamp.add(reso);
 			});
 		});

@@ -38,11 +38,7 @@ export default class SivakkaStatusModel extends Model {
 			console.log(this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
 		}
-		/*status = 200;
-		setTimeout(()=>{
-			console.log('FETCH FINGRID!');
-			self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
-		},1000);*/
+		
 		this.fetching = true;
 		
 		const url = this.mongoBackend + '/proxes/sivakkastatus';
@@ -61,6 +57,8 @@ export default class SivakkaStatusModel extends Model {
 		};
 		const myRequest = new Request(url, myPost);
 		
+		this.values = []; // Start with fresh EMPTY array.
+		
 		fetch(myRequest)
 		//fetch(url, {headers: myHeaders})
 			.then(function(response) {
@@ -69,21 +67,21 @@ export default class SivakkaStatusModel extends Model {
 			})
 			.then(function(myJson) {
 				const resu = JSON.parse(myJson);
-				
 				console.log(['resu=',resu]);
-				
-				/*
+				/* 
+				resu is an array with 131 items (currently):
+				[{
+					"pointName":"Ulkolampotila (101TE00)",
+					"pointId":11051263,
+					"timestamp":"2021-12-03 14:02:33",
+					"created_at":"2021-12-03 14:02:37",
+					"value":-9.1
+				}, ... ]
+				*/
 				if (Array.isArray(resu)) {
 					self.values = resu;
 					console.log(['self.values=',self.values]);
-				} else {
-					self.value = resu.value;
-					self.start_time = resu.start_time;
-					self.end_time = resu.end_time;
-					console.log(['self.value=',self.value,'self.start_time=',self.start_time,'self.end_time=',self.end_time]);
 				}
-				*/
-				
 				self.fetching = false;
 				self.ready = true;
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});

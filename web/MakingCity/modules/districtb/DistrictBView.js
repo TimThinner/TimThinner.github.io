@@ -119,31 +119,40 @@ export default class DistrictBView extends View {
 		
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
-			/*this.models['StatusModel'].values.forEach(item => {
-				if (item.avPower) {
-					if (item.meterId === 116) {
-						solar_power = item.avPower;
-					} else if (item.meterId === 114) {
-						total_power = item.avPower;
-					} else if (item.meterId === 115) {
-						geothermal_power = item.avPower;
-					} else if (item.meterId === 112) {
-						cooler_equipment_power = item.avPower;
-					} else if (item.meterId === 113) {
-						cooler_machines_power = item.avPower;
-					} else if (item.meterId === 102 || item.meterId === 103 || item.meterId === 104 || item.meterId === 110) {
-						lights_power += item.avPower;
-					} else if (item.meterId === 106 || item.meterId === 107 || item.meterId === 108) {
-						kitchen_power += item.avPower;
-					} else if (item.meterId === 101 || item.meterId === 105) {
-						hpac_power += item.avPower;
-					} else if (item.meterId === 109 || item.meterId === 111) {
-						other_power += item.avPower;
-					} else if (item.meterId === 117) {
-						heating_devices_power = item.avPower;
+			if (this.models['SivakkaStatusModel'].values.length > 0) {
+			/* 
+				values is an array with 131 items (currently):
+				[{
+					"pointName":"Ulkolampotila (101TE00)",
+					"pointId":11051263,
+					"timestamp":"2021-12-03 14:02:33",
+					"created_at":"2021-12-03 14:02:37",
+					"value":-9.1
+				}, ... ]
+1.2		11099378	Exthaus air recovery
+1.3		
+1.4		11793375	DHN hot
+1.5		11099156	DHN Cool
+1.6		
+1.7		
+1.8		
+1.9		11050758	Heating Devices
+			*/
+				this.models['SivakkaStatusModel'].values.forEach(item => {
+					if (item.pointId === 11099378) {
+						exthaus_power = item.value;
+						
+					} else if (item.pointId === 11793375) {
+						dh_hot_power = item.value;
+						
+					} else if (item.pointId === 11099156) {
+						dh_cool_power = item.value;
+						
+					} else if (item.pointId === 11050758) {
+						heating_devices_power = item.value;
 					}
-				}
-			});*/
+				});
+			}
 			this.updateOne(svgObject, 'grid-power', grid_power);
 			this.updateOne(svgObject, 'solar-power-left', solar_power_left);
 			this.updateOne(svgObject, 'solar-power-right', solar_power_right);
@@ -168,7 +177,7 @@ export default class DistrictBView extends View {
 						$('#'+this.FELID).empty();
 						
 						
-						//this.updateLatestValues();
+						this.updateLatestValues();
 						
 						
 					} else {

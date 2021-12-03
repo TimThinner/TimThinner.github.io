@@ -10,16 +10,15 @@ export default class DistrictBView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			/*if (key === 'StatusModel'||key==='StatusJetitek983Model'||key==='StatusJetitek1012Model') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}*/
+			
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
+			
 		});
 		// Start listening notify -messages from ResizeEventObserver:
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
 		this.FELID = 'district-b-view-failure';
 	}
@@ -163,43 +162,15 @@ export default class DistrictBView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			
-			
-			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log("DistrictAView ResizeEventObserver resize!!!!!!!!!!!!!!");
-				this.render();
-			}
-			
-			/*
-			if (options.model==='StatusModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					//console.log('DistrictAView => StatusModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateLatestValues();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
-				}
-			} else if ((options.model==='StatusJetitek983Model'||options.model==='StatusJetitek1012Model') && options.method==='fetched') {
+			if (options.model==='SivakkaStatusModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
-						this.updateLatestJetitekValue(options.model);
+						
+						
+						//this.updateLatestValues();
+						
+						
 					} else {
 						this.render();
 					}
@@ -220,10 +191,9 @@ export default class DistrictBView extends View {
 					}
 				}
 			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log("DistrictAView ResizeEventObserver resize!!!!!!!!!!!!!!");
+				console.log("DistrictBView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
 			}
-			*/
 		}
 	}
 	
@@ -265,7 +235,7 @@ export default class DistrictBView extends View {
 			const back = svgObject.getElementById('back');
 			back.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('D');
+				self.models['MenuModel'].setSelected('D');
 				
 			}, false);
 			
@@ -277,7 +247,7 @@ export default class DistrictBView extends View {
 			targetBA.addEventListener("click", function(){
 				
 				console.log('Target B A clicked!');
-				//self.menuModel.setSelected('DBA');
+				//self.models['MenuModel'].setSelected('DBA');
 				
 			}, false);
 			targetBA.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -287,7 +257,7 @@ export default class DistrictBView extends View {
 			targetBB.addEventListener("click", function(){
 				
 				console.log('Target B B clicked!');
-				//self.menuModel.setSelected('DBB');
+				//self.models['MenuModel'].setSelected('DBB');
 				
 			}, false);
 			targetBB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -297,7 +267,7 @@ export default class DistrictBView extends View {
 			targetBC.addEventListener("click", function(){
 				
 				console.log('Target B C clicked!');
-				//self.menuModel.setSelected('DBC');
+				//self.models['MenuModel'].setSelected('DBC');
 				
 			}, false);
 			targetBC.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -307,7 +277,7 @@ export default class DistrictBView extends View {
 			targetBD.addEventListener("click", function(){
 				
 				console.log('Target B D clicked!');
-				//self.menuModel.setSelected('DBD');
+				//self.models['MenuModel'].setSelected('DBD');
 				
 			}, false);
 			targetBD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -317,7 +287,7 @@ export default class DistrictBView extends View {
 			targetBE.addEventListener("click", function(){
 				
 				console.log('Target B E clicked!');
-				//self.menuModel.setSelected('DBE');
+				//self.models['MenuModel'].setSelected('DBE');
 				
 			}, false);
 			targetBE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -327,7 +297,7 @@ export default class DistrictBView extends View {
 			targetBF.addEventListener("click", function(){
 				
 				console.log('Target B F clicked!');
-				//self.menuModel.setSelected('DBF');
+				//self.models['MenuModel'].setSelected('DBF');
 				
 			}, false);
 			targetBF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -337,7 +307,7 @@ export default class DistrictBView extends View {
 			targetBG.addEventListener("click", function(){
 				
 				console.log('Target B G clicked!');
-				//self.menuModel.setSelected('DBG');
+				//self.models['MenuModel'].setSelected('DBG');
 				
 			}, false);
 			targetBG.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -347,7 +317,7 @@ export default class DistrictBView extends View {
 			targetBH.addEventListener("click", function(){
 				
 				console.log('Target B H clicked!');
-				//self.menuModel.setSelected('DBH');
+				//self.models['MenuModel'].setSelected('DBH');
 				
 			}, false);
 			targetBH.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -357,7 +327,7 @@ export default class DistrictBView extends View {
 			targetBI.addEventListener("click", function(){
 				
 				console.log('Target B I clicked!');
-				//self.menuModel.setSelected('DBI');
+				//self.models['MenuModel'].setSelected('DBI');
 				
 			}, false);
 			targetBI.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -367,7 +337,7 @@ export default class DistrictBView extends View {
 			targetBJ.addEventListener("click", function(){
 				
 				console.log('Target B J clicked!');
-				//self.menuModel.setSelected('DBJ');
+				//self.models['MenuModel'].setSelected('DBJ');
 				
 			}, false);
 			targetBJ.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -377,7 +347,7 @@ export default class DistrictBView extends View {
 			targetBK.addEventListener("click", function(){
 				
 				console.log('Target B K clicked!');
-				//self.menuModel.setSelected('DBK');
+				//self.models['MenuModel'].setSelected('DBK');
 				
 			}, false);
 			targetBK.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

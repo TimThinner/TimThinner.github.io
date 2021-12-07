@@ -744,7 +744,7 @@ export default class CView extends TimeRangeView {
 			series2.data = self.calculated_USER_emissions; 
 			series2.dataFields.dateX = "timestamp";
 			series2.dataFields.valueY = "value";
-			series2.tooltipText = localized_string_emission_user + ": [bold]{valueY.formatNumber('#.#')}[/] gCO2";
+			series2.tooltipText = localized_string_emission_user + ": [bold]{valueY.formatNumber('#.#')}[/] gCO2/h";
 			series2.fillOpacity = 0.25;
 			series2.name = 'USEREMISSIONS';
 			series2.customname = localized_string_emission_user_legend;
@@ -814,7 +814,7 @@ export default class CView extends TimeRangeView {
 			series1.data = self.calculated_EL_emissions; 
 			series1.dataFields.dateX = "timestamp";
 			series1.dataFields.valueY = "value";
-			series1.tooltipText = localized_string_emission_el + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2";
+			series1.tooltipText = localized_string_emission_el + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2/h";
 			series1.fillOpacity = 0;
 			series1.name = "ELEMISSIONS";
 			series1.customname = localized_string_emission_el_legend;
@@ -826,7 +826,7 @@ export default class CView extends TimeRangeView {
 			series2.data = self.calculated_DH_emissions; 
 			series2.dataFields.dateX = "timestamp";
 			series2.dataFields.valueY = "value";
-			series2.tooltipText = localized_string_emission_dh + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2";
+			series2.tooltipText = localized_string_emission_dh + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2/h";
 			series2.fillOpacity = 0;
 			series2.name = 'DHEMISSIONS';
 			series2.customname = localized_string_emission_dh_legend;
@@ -838,7 +838,7 @@ export default class CView extends TimeRangeView {
 			series3.data = self.calculated_ALL_emissions; 
 			series3.dataFields.dateX = "timestamp";
 			series3.dataFields.valueY = "value";
-			series3.tooltipText = localized_string_emission_all + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2";
+			series3.tooltipText = localized_string_emission_all + ": [bold]{valueY.formatNumber('#.#')}[/] kgCO2/h";
 			series3.fillOpacity = 0.25;
 			series3.name = 'ALLEMISSIONS';
 			series3.customname = localized_string_emission_all_legend;

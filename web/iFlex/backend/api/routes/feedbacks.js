@@ -45,6 +45,7 @@ router.post("/", (req,res,next)=>{
 	
 	const refToUser = req.body.refToUser;
 	const fbType = req.body.feedbackType;
+	const fbCreated = req.body.feedbackCreated;
 	const fb = req.body.feedback;
 	const fbText = req.body.feedbackText;
 	
@@ -52,6 +53,7 @@ router.post("/", (req,res,next)=>{
 		_id: new mongoose.Types.ObjectId(),
 		userId: refToUser,
 		feedbackType: fbType,
+		created: fbCreated,
 		feedback: fb,
 		feedbackText: fbText
 	});

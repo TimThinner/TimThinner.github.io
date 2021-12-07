@@ -18,6 +18,7 @@ export default class DView extends View {
 		this.FBM = this.controller.master.modelRepo.get('FeedbackModel');
 		this.FBM.subscribe(this);
 		
+		this.feedbackTimestamp = undefined;
 		this.isFreeText = false;
 		this.isSmileySelected = false;
 		this.rendered = false;
@@ -46,6 +47,56 @@ export default class DView extends View {
 		this.isSmileySelected = false;
 		this.rendered = false;
 		$(this.el).empty();
+	}
+	
+	dateTimeWithTimezoneOffset(dt) {
+		// See: http://usefulangle.com/post/30/javascript-get-date-time-with-offset-hours-minutes
+		var timezone_offset_min = new Date().getTimezoneOffset(),
+			offset_hrs = parseInt(Math.abs(timezone_offset_min/60)),
+			offset_min = Math.abs(timezone_offset_min%60),
+			timezone_standard;
+		
+		if(offset_hrs < 10)
+			offset_hrs = '0' + offset_hrs;
+		if(offset_min < 10)
+			offset_min = '0' + offset_min;
+		
+		// Add an opposite sign to the offset
+		// If offset is 0, it means timezone is UTC
+		if(timezone_offset_min < 0)
+			timezone_standard = '+' + offset_hrs + ':' + offset_min;
+		else if(timezone_offset_min > 0)
+			timezone_standard = '-' + offset_hrs + ':' + offset_min;
+		else if(timezone_offset_min == 0)
+			timezone_standard = 'Z';
+		// Timezone difference in hours and minutes
+		// String such as +5:30 or -6:00 or Z
+		//console.log(timezone_standard);
+		var current_date = dt.getDate(),
+			current_month = dt.getMonth() + 1,
+			current_year = dt.getFullYear(),
+			current_hrs = dt.getHours(),
+			current_mins = dt.getMinutes(),
+			current_secs = dt.getSeconds(),
+			current_datetime;
+		
+		// Add 0 before date, month, hrs, mins or secs if they are less than 0
+		current_date = current_date < 10 ? '0' + current_date : current_date;
+		current_month = current_month < 10 ? '0' + current_month : current_month;
+		current_hrs = current_hrs < 10 ? '0' + current_hrs : current_hrs;
+		current_mins = current_mins < 10 ? '0' + current_mins : current_mins;
+		current_secs = current_secs < 10 ? '0' + current_secs : current_secs;
+		
+		// Current datetime
+		// String such as 2016-07-16T19:20:30
+		current_datetime = current_year + '-' + current_month + '-' + current_date + 'T' + current_hrs + ':' + current_mins + ':' + current_secs;
+		
+		return current_datetime + timezone_standard;
+	}
+	
+	changeActivePeriod(dp) {
+		this.feedbackTimestamp = dp;
+		console.log(['this.feedbackTimestamp=',this.feedbackTimestamp]);
 	}
 	
 	submitState() {
@@ -80,11 +131,11 @@ export default class DView extends View {
 					// Show Toast: Saved OK!
 					const LM = this.controller.master.modelRepo.get('LanguageModel');
 					const sel = LM.selected;
-					const localized_string_feedback_ok = LM['translation'][sel]['FEEDBACK_SENT_OK'];
+					const feedback_ok = LM['translation'][sel]['FEEDBACK_SENT_OK'];
 					
 					M.toast({
 						displayLength:1000, 
-						html: localized_string_feedback_ok,
+						html: feedback_ok,
 						classes: 'green darken-1'
 					});
 					/*
@@ -119,26 +170,29 @@ export default class DView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_title = LM['translation'][sel]['FEEDBACK_BUILDING_TITLE'];
-		const localized_string_description_1 = LM['translation'][sel]['FEEDBACK_BUILDING_DESCRIPTION_1'];
-		const localized_string_description_2 = LM['translation'][sel]['FEEDBACK_BUILDING_DESCRIPTION_2'];
-		const localized_string_text_cold = LM['translation'][sel]['FEEDBACK_TEXT_COLD'];
-		const localized_string_text_cool = LM['translation'][sel]['FEEDBACK_TEXT_COOL'];
-		const localized_string_text_slightly_cool = LM['translation'][sel]['FEEDBACK_TEXT_SLIGHTLY_COOL'];
-		const localized_string_text_happy = LM['translation'][sel]['FEEDBACK_TEXT_HAPPY'];
-		const localized_string_text_slightly_warm = LM['translation'][sel]['FEEDBACK_TEXT_SLIGHTLY_WARM'];
-		const localized_string_text_warm = LM['translation'][sel]['FEEDBACK_TEXT_WARM'];
-		const localized_string_text_hot = LM['translation'][sel]['FEEDBACK_TEXT_HOT'];
-		const localized_string_free_text_label = LM['translation'][sel]['FEEDBACK_FREE_TEXT_LABEL'];
-		const localized_string_cancel = LM['translation'][sel]['CANCEL'];
-		const localized_string_send_feedback = LM['translation'][sel]['FEEDBACK_SEND_FEEDBACK'];
+		const title = LM['translation'][sel]['FEEDBACK_BUILDING_TITLE'];
+		const description_1 = LM['translation'][sel]['FEEDBACK_BUILDING_DESCRIPTION_1'];
+		const description_2 = LM['translation'][sel]['FEEDBACK_BUILDING_DESCRIPTION_2'];
+		const text_cold = LM['translation'][sel]['FEEDBACK_TEXT_COLD'];
+		const text_cool = LM['translation'][sel]['FEEDBACK_TEXT_COOL'];
+		const text_slightly_cool = LM['translation'][sel]['FEEDBACK_TEXT_SLIGHTLY_COOL'];
+		const text_happy = LM['translation'][sel]['FEEDBACK_TEXT_HAPPY'];
+		const text_slightly_warm = LM['translation'][sel]['FEEDBACK_TEXT_SLIGHTLY_WARM'];
+		const text_warm = LM['translation'][sel]['FEEDBACK_TEXT_WARM'];
+		const text_hot = LM['translation'][sel]['FEEDBACK_TEXT_HOT'];
+		const free_text_label = LM['translation'][sel]['FEEDBACK_FREE_TEXT_LABEL'];
+		const active_period_start = LM['translation'][sel]['FEEDBACK_ACTIVE_PERIOD_START'];
+		const cancel = LM['translation'][sel]['CANCEL'];
+		const send_feedback = LM['translation'][sel]['FEEDBACK_SEND_FEEDBACK'];
+		
+		const display_start_datetime = this.dateTimeWithTimezoneOffset(new Date.now());
 		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h4>'+localized_string_title+'</h4>'+
+					'<h4>'+title+'</h4>'+
 					'<p style="text-align:center;"><img src="./svg/feedback.svg" height="80"/></p>'+
-					'<p style="text-align:center;">'+localized_string_description_1+'<br/>'+localized_string_description_2+'</p>'+
+					'<p style="text-align:center;">'+description_1+'<br/>'+description_2+'</p>'+
 					'<a href="javascript:void(0);" id="fb-smiley-1" class="feedback-smiley"><img src="./svg/smiley-1.svg" height="50"/></a>'+
 					'<a href="javascript:void(0);" id="fb-smiley-2" class="feedback-smiley"><img src="./svg/smiley-2.svg" height="50"/></a>'+
 					'<a href="javascript:void(0);" id="fb-smiley-3" class="feedback-smiley"><img src="./svg/smiley-3.svg" height="50"/></a>'+
@@ -153,14 +207,20 @@ export default class DView extends View {
 				'<div class="col s12 center">'+
 					'<div class="input-field col s12">'+
 						'<textarea id="free-text" class="materialize-textarea"></textarea>'+
-						'<label for="free-text">'+localized_string_free_text_label+'</label>'+
+						'<label for="free-text">'+free_text_label+'</label>'+
+					'</div>'+
+				'</div>'+
+				'<div class="col s12 center">'+
+					'<div class="input-field col s12">'+
+						'<input id="active-period-start" type="text" value="'+display_start_datetime+'">'+
+						'<label class="active" for="active-period-start">'+active_period_start+'</label>'+
 					'</div>'+
 				'</div>'+
 				'<div class="col s6 center" style="margin-top:16px;margin-bottom:16px;">'+
-					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_cancel+'</button>'+
+					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+cancel+'</button>'+
 				'</div>'+
 				'<div class="col s6 center" style="margin-top:16px;margin-bottom:16px;">'+
-					'<button class="btn waves-effect waves-light disabled" id="submit-feedback">'+localized_string_send_feedback+
+					'<button class="btn waves-effect waves-light disabled" id="submit-feedback">'+send_feedback+
 						//'<i class="material-icons">send</i>'+
 					'</button>'+
 				'</div>'+
@@ -169,6 +229,10 @@ export default class DView extends View {
 				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
+		
+		$("#cancel").on('click', function() {
+			self.models['MenuModel'].setSelected('menu');
+		});
 		
 		$('#free-text').on('keyup', function(){
 			const v = $('#free-text').val();
@@ -181,9 +245,20 @@ export default class DView extends View {
 			self.submitState();
 		});
 		
-		$("#cancel").on('click', function() {
-			self.models['MenuModel'].setSelected('menu');
+		$('#active-period-start').datetimepicker({
+			format:'Y-m-d H',
+			//format:'Y-m-d',
+			onShow:function( ct ){
+				this.setOptions({
+					maxDate: 0 // today
+				})
+			},
+			//timepicker:false,
+			onChangeDateTime:function(dp,$input){
+				self.changeActivePeriod(dp);
+			}
 		});
+		
 		
 		// Smileys act like radio buttons, only one can be selected at any one time.
 		// The last selection is shown. Can user just de-select?
@@ -206,19 +281,19 @@ export default class DView extends View {
 					self.submitState();
 					
 					if (i===1) {
-						$('#feedback-text-placeholder').empty().append(localized_string_text_cold);
+						$('#feedback-text-placeholder').empty().append(text_cold);
 					} else if (i===2) {
-						$('#feedback-text-placeholder').empty().append(localized_string_text_cool);
+						$('#feedback-text-placeholder').empty().append(text_cool);
 					} else if (i===3) {
-						$('#feedback-text-placeholder').empty().append(localized_string_text_slightly_cool);
+						$('#feedback-text-placeholder').empty().append(text_slightly_cool);
 					} else if (i===4) {
-						$('#feedback-text-placeholder').empty().append(localized_string_text_happy);
+						$('#feedback-text-placeholder').empty().append(text_happy);
 					} else if (i===5) {
-						$('#feedback-text-placeholder').empty().append(localized_string_text_slightly_warm);
+						$('#feedback-text-placeholder').empty().append(text_slightly_warm);
 					} else if (i===6) {
-						$('#feedback-text-placeholder').empty().append(localized_string_text_warm);
+						$('#feedback-text-placeholder').empty().append(text_warm);
 					} else {
-						$('#feedback-text-placeholder').empty().append(localized_string_text_hot);
+						$('#feedback-text-placeholder').empty().append(text_hot);
 					}
 				}
 			});
@@ -227,6 +302,11 @@ export default class DView extends View {
 		$('#submit-feedback').on('click',function() {
 			
 			$('#submit-feedback').addClass('disabled');
+			
+			let created = this.feedbackTimestamp;
+			if (typeof created === 'undefined') {
+				created = moment.toDate();
+			}
 			
 			const ft = $('#free-text').val();
 			let selected = -1;
@@ -242,6 +322,7 @@ export default class DView extends View {
 				const data = {
 					refToUser: UM.id, // UserModel id
 					feedbackType: 'Building',
+					feedbackCreated: created,
 					feedback: selected,
 					feedbackText: ft
 				}

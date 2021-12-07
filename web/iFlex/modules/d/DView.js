@@ -214,9 +214,9 @@ export default class DView extends View {
 				'</div>'+
 				
 				'<div class="col s12 center">'+
-					'<div class="input-field col s12" id="exdate-wrapper">'+
+					'<div class="input-field col s12">'+
 						'<input id="exdate" type="text" class="datepicker">'+
-						'<label class="active" for="startdate">Feedback date&nbsp;</label>'+
+						'<label class="active" for="exdate">'+active_period_start+'</label>'+
 					'</div>'+
 				'</div>'+
 				/*

@@ -89,9 +89,9 @@ export default class DView extends View {
 		
 		// Current datetime
 		// String such as 2016-07-16T19:20:30
-		current_datetime = current_year + '-' + current_month + '-' + current_date + 'T' + current_hrs + ':' + current_mins + ':' + current_secs;
-		
-		return current_datetime + timezone_standard;
+		//current_datetime = current_year + '-' + current_month + '-' + current_date + 'T' + current_hrs + ':' + current_mins + ':' + current_secs;
+		current_datetime = current_date+'.'+current_month+'.'+current_year+' '+current_hrs+':00';
+		return current_datetime;// + timezone_standard;
 	}
 	
 	changeActivePeriod(dp) {
@@ -246,11 +246,12 @@ export default class DView extends View {
 		});
 		
 		$('#active-period-start').datetimepicker({
-			format:'Y-m-d H',
+			format:'Y-m-d H:00',
 			//format:'Y-m-d',
 			onShow:function( ct ){
 				this.setOptions({
-					maxDate: 0 // today
+					maxDate: 0, // today
+					maxTime: 0 // this hour
 				})
 			},
 			//timepicker:false,

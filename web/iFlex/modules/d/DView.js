@@ -342,7 +342,7 @@ export default class DView extends View {
 			
 			let created = this.feedbackTimestamp;
 			if (typeof created === 'undefined') {
-				created = moment.toDate();
+				created = moment().toDate();
 			}
 			
 			const ft = $('#free-text').val();

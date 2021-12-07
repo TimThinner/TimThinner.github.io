@@ -185,7 +185,7 @@ export default class DView extends View {
 		const cancel = LM['translation'][sel]['CANCEL'];
 		const send_feedback = LM['translation'][sel]['FEEDBACK_SEND_FEEDBACK'];
 		
-		const display_start_datetime = this.dateTimeWithTimezoneOffset(new Date.now());
+		const display_start_datetime = this.dateTimeWithTimezoneOffset(Date.now());
 		
 		const html =
 			'<div class="row">'+

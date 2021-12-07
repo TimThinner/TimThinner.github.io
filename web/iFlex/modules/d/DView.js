@@ -30,6 +30,7 @@ export default class DView extends View {
 	}
 	
 	hide() {
+		this.feedbackTimestamp = undefined;
 		this.isFreeText = false;
 		this.isSmileySelected = false;
 		this.rendered = false;
@@ -43,12 +44,13 @@ export default class DView extends View {
 		//this.REO.unsubscribe(this);
 		this.FBM.unsubscribe(this);
 		
+		this.feedbackTimestamp = undefined;
 		this.isFreeText = false;
 		this.isSmileySelected = false;
 		this.rendered = false;
 		$(this.el).empty();
 	}
-	
+	/*
 	dateTimeWithTimezoneOffset(dt) {
 		// See: http://usefulangle.com/post/30/javascript-get-date-time-with-offset-hours-minutes
 		var timezone_offset_min = new Date().getTimezoneOffset(),
@@ -97,7 +99,7 @@ export default class DView extends View {
 	changeActivePeriod(dp) {
 		this.feedbackTimestamp = dp;
 		console.log(['this.feedbackTimestamp=',this.feedbackTimestamp]);
-	}
+	}*/
 	
 	submitState() {
 		if (this.isSmileySelected || this.isFreeText) {
@@ -210,12 +212,21 @@ export default class DView extends View {
 						'<label for="free-text">'+free_text_label+'</label>'+
 					'</div>'+
 				'</div>'+
+				
+				'<div class="col s12 center">'+
+					'<div class="input-field col s12" id="exdate-wrapper">'+
+						'<input id="exdate" type="text" class="datepicker">'+
+						'<label class="active" for="startdate">Feedback date&nbsp;</label>'+
+					'</div>'+
+				'</div>'+
+				/*
 				'<div class="col s12 center">'+
 					'<div class="input-field col s12">'+
 						'<input id="active-period-start" type="text" value="'+display_start_datetime+'">'+
 						'<label class="active" for="active-period-start">'+active_period_start+'</label>'+
 					'</div>'+
 				'</div>'+
+				*/
 				'<div class="col s6 center" style="margin-top:16px;margin-bottom:16px;">'+
 					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+cancel+'</button>'+
 				'</div>'+
@@ -229,6 +240,30 @@ export default class DView extends View {
 				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
+		
+		// Initialize Picker plugins:
+		$('#exdate').datepicker({
+			autoClose: true,
+			firstDay:1,
+			defaultDate: new Date(), // The initial date to view when first opened.
+			setDefaultDate: true,
+			format: 'dddd dd.mm.yyyy',
+			i18n: {
+				cancel:'Cancel',
+				clear:'Clear',
+				done:'Ok'
+				months:['Tammikuu','Helmikuu','Maaliskuu','Huhtikuu','Toukokuu','Kesäkuu','Heinäkuu','Elokuu','Syyskuu','Lokakuu','Marraskuu','Joulukuu'],
+				monthsShort:['Tammi','Helmi','Maalis','Huhti','Touko','Kesä','Heinä','Elo','Syys','Loka','Marras','Joulu'],
+				weekdays:['Sunnuntai','Maanantai','Tiistai','Keskiviikko','Torstai','Perjantai','Lauantai'],
+				weekdaysShort:['Su','Ma','Ti','Ke','To','Pe','La'],
+				weekdaysAbbrev:['Su','Ma','Ti','Ke','To','Pe','La']
+			},
+			onSelect: function(date){
+				self.feedbackTimestamp = date;
+				console.log(['self.feedbackTimestamp=',self.feedbackTimestamp]);
+				//formGenerateMailToLink();
+			}
+		});
 		
 		$("#cancel").on('click', function() {
 			self.models['MenuModel'].setSelected('menu');
@@ -244,7 +279,7 @@ export default class DView extends View {
 			}
 			self.submitState();
 		});
-		
+		/*
 		$('#active-period-start').datetimepicker({
 			format:'Y-m-d H:00',
 			//format:'Y-m-d',
@@ -259,7 +294,7 @@ export default class DView extends View {
 				self.changeActivePeriod(dp);
 			}
 		});
-		
+		*/
 		
 		// Smileys act like radio buttons, only one can be selected at any one time.
 		// The last selection is shown. Can user just de-select?

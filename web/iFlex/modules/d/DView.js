@@ -245,6 +245,7 @@ export default class DView extends View {
 		$('#exdate').datepicker({
 			autoClose: true,
 			firstDay:1,
+			maxDate: new Date(), // The latest date that can be selected.
 			defaultDate: new Date(), // The initial date to view when first opened.
 			setDefaultDate: true,
 			format: 'dddd dd.mm.yyyy',

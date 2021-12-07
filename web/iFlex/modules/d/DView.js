@@ -340,7 +340,7 @@ export default class DView extends View {
 			
 			$('#submit-feedback').addClass('disabled');
 			
-			let created = this.feedbackTimestamp;
+			let created = self.feedbackTimestamp;
 			if (typeof created === 'undefined') {
 				created = moment().toDate();
 			}

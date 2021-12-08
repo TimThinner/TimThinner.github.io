@@ -383,8 +383,10 @@ export default class DView extends View {
 			if (typeof refTime === 'undefined') {
 				refTime = moment().toDate(); // Now!
 			} else {
-				// Date is already set, add hour and minute values set by timepicker:
-				refTime.setHours(self.feedbackRefTimeHour, self.feedbackRefTimeMinute);
+				// Date is already set, add hour and minute values set by timepicker (if set):
+				if (typeof self.feedbackRefTimeHour !== 'undefined' && typeof self.feedbackRefTimeMinute !== 'undefined') {
+					refTime.setHours(self.feedbackRefTimeHour, self.feedbackRefTimeMinute);
+				}
 			}
 			const ft = $('#free-text').val();
 			let selected = -1;

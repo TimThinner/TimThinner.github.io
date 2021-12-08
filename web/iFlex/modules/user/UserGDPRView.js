@@ -56,17 +56,29 @@ export default class UserGDPRView extends View {
 		const gdpr_chapter_2abc  = LM['translation'][sel]['GDPR_CHAPTER_2ABC'];
 		const gdpr_chapter_2b  = LM['translation'][sel]['GDPR_CHAPTER_2B'];
 		const gdpr_chapter_2ba = LM['translation'][sel]['GDPR_CHAPTER_2BA'];
+		const gdpr_chapter_2ba_email = LM['translation'][sel]['GDPR_CHAPTER_2BA_EMAIL'];
 		const gdpr_chapter_2bb = LM['translation'][sel]['GDPR_CHAPTER_2BB'];
+		const gdpr_chapter_2bb_email = LM['translation'][sel]['GDPR_CHAPTER_2BB_EMAIL'];
 		const gdpr_chapter_2bc = LM['translation'][sel]['GDPR_CHAPTER_2BC'];
+		const gdpr_chapter_2bc_email = LM['translation'][sel]['GDPR_CHAPTER_2BC_EMAIL'];
 		const gdpr_chapter_2bd = LM['translation'][sel]['GDPR_CHAPTER_2BD'];
+		const gdpr_chapter_2bd_email = LM['translation'][sel]['GDPR_CHAPTER_2BD_EMAIL'];
 		const gdpr_chapter_2be = LM['translation'][sel]['GDPR_CHAPTER_2BE'];
+		const gdpr_chapter_2be_email = LM['translation'][sel]['GDPR_CHAPTER_2BE_EMAIL'];
 		const gdpr_chapter_2bf = LM['translation'][sel]['GDPR_CHAPTER_2BF'];
+		const gdpr_chapter_2bf_email = LM['translation'][sel]['GDPR_CHAPTER_2BF_EMAIL'];
 		const gdpr_chapter_2bg = LM['translation'][sel]['GDPR_CHAPTER_2BG'];
+		const gdpr_chapter_2bg_email = LM['translation'][sel]['GDPR_CHAPTER_2BG_EMAIL'];
 		const gdpr_chapter_2bh = LM['translation'][sel]['GDPR_CHAPTER_2BH'];
+		const gdpr_chapter_2bh_email = LM['translation'][sel]['GDPR_CHAPTER_2BH_EMAIL'];
 		const gdpr_chapter_2bi = LM['translation'][sel]['GDPR_CHAPTER_2BI'];
+		const gdpr_chapter_2bi_email = LM['translation'][sel]['GDPR_CHAPTER_2BI_EMAIL'];
 		const gdpr_chapter_2bj = LM['translation'][sel]['GDPR_CHAPTER_2BJ'];
+		const gdpr_chapter_2bj_email = LM['translation'][sel]['GDPR_CHAPTER_2BJ_EMAIL'];
 		const gdpr_chapter_2bk = LM['translation'][sel]['GDPR_CHAPTER_2BK'];
+		const gdpr_chapter_2bk_email = LM['translation'][sel]['GDPR_CHAPTER_2BK_EMAIL'];
 		const gdpr_chapter_2bl = LM['translation'][sel]['GDPR_CHAPTER_2BL'];
+		const gdpr_chapter_2bl_email = LM['translation'][sel]['GDPR_CHAPTER_2BL_EMAIL'];
 		const gdpr_chapter_3 = LM['translation'][sel]['GDPR_CHAPTER_3'];
 		const gdpr_chapter_3a = LM['translation'][sel]['GDPR_CHAPTER_3A'];
 		const gdpr_chapter_4 = LM['translation'][sel]['GDPR_CHAPTER_4'];
@@ -201,17 +213,29 @@ export default class UserGDPRView extends View {
 							'<div class="col s1">&nbsp;</div>'+
 							'<div class="col s11">'+
 								'<p>'+gdpr_chapter_2ba+'<br/>'+
+								gdpr_chapter_2ba_email+'<br/>'+
 								gdpr_chapter_2bb+'<br/>'+
+								gdpr_chapter_2bb_email+'<br/>'+
 								gdpr_chapter_2bc+'<br/>'+
+								gdpr_chapter_2bc_email+'<br/>'+
 								gdpr_chapter_2bd+'<br/>'+
+								gdpr_chapter_2bd_email+'<br/>'+
 								gdpr_chapter_2be+'<br/>'+
+								gdpr_chapter_2be_email+'<br/>'+
 								gdpr_chapter_2bf+'<br/>'+
+								gdpr_chapter_2bf_email+'<br/>'+
 								gdpr_chapter_2bg+'<br/>'+
+								gdpr_chapter_2bg_email+'<br/>'+
 								gdpr_chapter_2bh+'<br/>'+
+								gdpr_chapter_2bh_email+'<br/>'+
 								gdpr_chapter_2bi+'<br/>'+
+								gdpr_chapter_2bi_email+'<br/>'+
 								gdpr_chapter_2bj+'<br/>'+
+								gdpr_chapter_2bj_email+'<br/>'+
 								gdpr_chapter_2bk+'<br/>'+
-								gdpr_chapter_2bl+'</p>'+
+								gdpr_chapter_2bk_email+'<br/>'+
+								gdpr_chapter_2bl+'<br/>'+
+								gdpr_chapter_2bl_email+'</p>'+
 							'</div>'+
 						'</div>'+
 					'</div>'+

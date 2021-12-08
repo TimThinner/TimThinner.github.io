@@ -77,7 +77,8 @@ export default class LanguageModel {
 				'FEEDBACK_TEXT_WARM':'Warm',
 				'FEEDBACK_TEXT_HOT':'Hot',
 				'FEEDBACK_FREE_TEXT_LABEL':'Free text feedback',
-				'FEEDBACK_ACTIVE_PERIOD_START':'You can change the date of your feedback, if it is not about current date.',
+				'FEEDBACK_ACTIVE_PERIOD_DATE':'You can change the date of your feedback, if it is not about current date.',
+				'FEEDBACK_ACTIVE_PERIOD_TIME':'You can change the time of your feedback, if it is not about current time.',
 				'FEEDBACK_SEND_FEEDBACK':'Send',
 				'FEEDBACK_SENT_OK':'Thank you for your feedback!',
 				'BUILDING_ELECTRICITY_TITLE':'Building electricity consumption',
@@ -232,7 +233,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.12.07b'
+				'MENU_VERSION':'v 21.12.08'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -308,7 +309,8 @@ export default class LanguageModel {
 				'FEEDBACK_TEXT_WARM':'Lämmin',
 				'FEEDBACK_TEXT_HOT':'Kuuma',
 				'FEEDBACK_FREE_TEXT_LABEL':'Vapaamuotoinen palaute',
-				'FEEDBACK_ACTIVE_PERIOD_START':'Voit vaihtaa palautteen päivämäärän, mikäli palaute ei koske tätä päivää.',
+				'FEEDBACK_ACTIVE_PERIOD_DATE':'Voit vaihtaa palautteen päivämäärän, mikäli palaute ei koske tätä päivää.',
+				'FEEDBACK_ACTIVE_PERIOD_TIME':'Voit vaihtaa palautteen kellonajan, mikäli palaute ei koske tätä hetkeä.',
 				'FEEDBACK_SEND_FEEDBACK':'Lähetä',
 				'FEEDBACK_SENT_OK':'Kiitos palautteestasi!',
 				'BUILDING_ELECTRICITY_TITLE':'Rakennuksen sähkönkulutus',
@@ -463,7 +465,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.12.07b'
+				'MENU_VERSION':'v 21.12.08'
 			}
 		}
 	}

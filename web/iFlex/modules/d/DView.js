@@ -30,6 +30,8 @@ export default class DView extends View {
 	}
 	
 	hide() {
+		$('#refdate').datepicker('destroy');
+		$('#reftime').datepicker('destroy');
 		this.feedbackTimestamp = undefined;
 		this.isFreeText = false;
 		this.isSmileySelected = false;
@@ -44,6 +46,8 @@ export default class DView extends View {
 		//this.REO.unsubscribe(this);
 		this.FBM.unsubscribe(this);
 		
+		$('#refdate').datepicker('destroy');
+		$('#reftime').datepicker('destroy');
 		this.feedbackTimestamp = undefined;
 		this.isFreeText = false;
 		this.isSmileySelected = false;
@@ -183,7 +187,8 @@ export default class DView extends View {
 		const text_warm = LM['translation'][sel]['FEEDBACK_TEXT_WARM'];
 		const text_hot = LM['translation'][sel]['FEEDBACK_TEXT_HOT'];
 		const free_text_label = LM['translation'][sel]['FEEDBACK_FREE_TEXT_LABEL'];
-		const active_period_start = LM['translation'][sel]['FEEDBACK_ACTIVE_PERIOD_START'];
+		const active_period_date = LM['translation'][sel]['FEEDBACK_ACTIVE_PERIOD_DATE'];
+		const active_period_time = LM['translation'][sel]['FEEDBACK_ACTIVE_PERIOD_TIME'];
 		const cancel = LM['translation'][sel]['CANCEL'];
 		const send_feedback = LM['translation'][sel]['FEEDBACK_SEND_FEEDBACK'];
 		
@@ -213,12 +218,19 @@ export default class DView extends View {
 					'</div>'+
 				'</div>'+
 				
-				'<div class="col s12 center">'+
+				'<div class="col s6 center">'+
 					'<div class="input-field col s12">'+
-						'<input id="exdate" type="text" class="datepicker">'+
-						'<label class="active" for="exdate">'+active_period_start+'</label>'+
+						'<input id="refdate" type="text" class="datepicker">'+
+						'<label class="active" for="refdate">'+active_period_date+'</label>'+
 					'</div>'+
 				'</div>'+
+				'<div class="col s6 center">'+
+					'<div class="input-field col s12">'+
+						'<input id="reftime" type="text" class="timepicker">'+
+						'<label class="active" for="reftime">'+active_period_time+'</label>'+
+					'</div>'+
+				'</div>'+
+				
 				/*
 				'<div class="col s12 center">'+
 					'<div class="input-field col s12">'+
@@ -242,7 +254,7 @@ export default class DView extends View {
 		$(html).appendTo(this.el);
 		
 		// Initialize Picker plugins:
-		$('#exdate').datepicker({
+		$('#refdate').datepicker({
 			autoClose: true,
 			firstDay:1,
 			maxDate: new Date(), // The latest date that can be selected.
@@ -261,10 +273,28 @@ export default class DView extends View {
 			},
 			onSelect: function(date){
 				self.feedbackTimestamp = date;
+				// NOTE: self.feedbackTimestamp is now just a Date object with local timezone:
+				// and when it is converted in DATABASE to Zulu-timezone it will be actually 
+				// two hours before midnight (=yesterday)!!!
+				
+				// Date Tue Dec 07 2021 00:00:00 GMT+0200 (Eastern European Standard Time) => 
+				// "refTime" : ISODate("2021-12-06T22:00:00Z")
 				console.log(['self.feedbackTimestamp=',self.feedbackTimestamp]);
 				//formGenerateMailToLink();
 			}
 		});
+		
+		// Initialize Picker plugins:
+		$('#reftime').timepicker({
+			autoClose: true,
+			twelveHour: false,
+			onSelect: function(hour, minute){
+				console.log(['hour=',hour,' minute=',minute]);
+			}
+		});
+		
+		$('.datepicker').datepicker();
+		$('.timepicker').timepicker();
 		
 		$("#cancel").on('click', function() {
 			self.models['MenuModel'].setSelected('menu');
@@ -340,11 +370,10 @@ export default class DView extends View {
 			
 			$('#submit-feedback').addClass('disabled');
 			
-			let created = self.feedbackTimestamp;
-			if (typeof created === 'undefined') {
-				created = moment().toDate();
+			let refTime = self.feedbackTimestamp;
+			if (typeof refTime === 'undefined') {
+				refTime = moment().toDate();
 			}
-			
 			const ft = $('#free-text').val();
 			let selected = -1;
 			for (let i=1; i<8; i++) {
@@ -359,7 +388,7 @@ export default class DView extends View {
 				const data = {
 					refToUser: UM.id, // UserModel id
 					feedbackType: 'Building',
-					feedbackCreated: created,
+					refTime: refTime,
 					feedback: selected,
 					feedbackText: ft
 				}

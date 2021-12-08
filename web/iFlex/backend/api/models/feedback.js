@@ -7,6 +7,7 @@ const feedbackSchema = mongoose.Schema({
 	userId: { type: mongoose.Schema.Types.ObjectId, ref:'User' },
 	feedbackType: { type:String },
 	created: { type: Date, default: Date.now },
+	refTime: { type: Date },
 	feedback: { type:Number },
 	feedbackText: { type:String }
 });

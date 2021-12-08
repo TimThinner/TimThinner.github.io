@@ -304,7 +304,7 @@ export default class DView extends View {
 		$('#reftime').timepicker({
 			autoClose: true,
 			twelveHour: false,
-			defaultTime: timepicker_def_now_string,
+			defaultTime: timepicker_def_string,
 			setDefaultTime: true,
 			onSelect: function(hour, minute){
 				self.feedbackRefTimeHour = hour;

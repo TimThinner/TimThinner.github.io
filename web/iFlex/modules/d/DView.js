@@ -295,10 +295,13 @@ export default class DView extends View {
 			}
 		});
 		
+		const timepicker_def = moment();
+		const timepicker_def_string = timepicker_def.hours()+':'+timepicker_def.minutes();
 		// Initialize Picker plugins:
 		$('#reftime').timepicker({
 			autoClose: true,
 			twelveHour: false,
+			defaultTime: timepicker_def_now_string,
 			onSelect: function(hour, minute){
 				self.feedbackRefTimeHour = hour;
 				self.feedbackRefTimeMinute = minute;
@@ -378,10 +381,15 @@ export default class DView extends View {
 		$('#submit-feedback').on('click',function() {
 			
 			$('#submit-feedback').addClass('disabled');
-			
+			// Note: user can set date and time independently, so we must check that in both cases.
 			let refTime = self.feedbackRefTimeDate;
 			if (typeof refTime === 'undefined') {
-				refTime = moment().toDate(); // Now!
+				let refMom = moment(); // DateTime now!
+				if (typeof self.feedbackRefTimeHour !== 'undefined' && typeof self.feedbackRefTimeMinute !== 'undefined') {
+					refMom.hours(self.feedbackRefTimeHour);
+					refMom.minutes(self.feedbackRefTimeMinute);
+				}
+				refTime = refMom.toDate();
 			} else {
 				// Date is already set, add hour and minute values set by timepicker (if set):
 				if (typeof self.feedbackRefTimeHour !== 'undefined' && typeof self.feedbackRefTimeMinute !== 'undefined') {

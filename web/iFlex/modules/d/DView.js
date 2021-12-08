@@ -198,6 +198,7 @@ export default class DView extends View {
 		const text_warm = LM['translation'][sel]['FEEDBACK_TEXT_WARM'];
 		const text_hot = LM['translation'][sel]['FEEDBACK_TEXT_HOT'];
 		const free_text_label = LM['translation'][sel]['FEEDBACK_FREE_TEXT_LABEL'];
+		const active_period = LM['translation'][sel]['FEEDBACK_ACTIVE_PERIOD'];
 		const active_period_date = LM['translation'][sel]['FEEDBACK_ACTIVE_PERIOD_DATE'];
 		const active_period_time = LM['translation'][sel]['FEEDBACK_ACTIVE_PERIOD_TIME'];
 		const cancel = LM['translation'][sel]['CANCEL'];
@@ -228,7 +229,9 @@ export default class DView extends View {
 						'<label for="free-text">'+free_text_label+'</label>'+
 					'</div>'+
 				'</div>'+
-				
+				'<div class="col s12 center">'+
+					'<p class="note">'+active_period+'</p>'+
+				'</div>'+
 				'<div class="col s6 center">'+
 					'<div class="input-field col s12">'+
 						'<input id="refdate" type="text" class="datepicker">'+
@@ -302,6 +305,7 @@ export default class DView extends View {
 			autoClose: true,
 			twelveHour: false,
 			defaultTime: timepicker_def_now_string,
+			setDefaultTime: true,
 			onSelect: function(hour, minute){
 				self.feedbackRefTimeHour = hour;
 				self.feedbackRefTimeMinute = minute;

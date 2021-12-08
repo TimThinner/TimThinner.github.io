@@ -18,7 +18,10 @@ export default class DView extends View {
 		this.FBM = this.controller.master.modelRepo.get('FeedbackModel');
 		this.FBM.subscribe(this);
 		
-		this.feedbackTimestamp = undefined;
+		this.feedbackRefTimeDate = undefined;
+		this.feedbackRefTimeHour = undefined;
+		this.feedbackRefTimeMinute = undefined;
+		
 		this.isFreeText = false;
 		this.isSmileySelected = false;
 		this.rendered = false;
@@ -32,7 +35,11 @@ export default class DView extends View {
 	hide() {
 		$('#refdate').datepicker('destroy');
 		$('#reftime').datepicker('destroy');
-		this.feedbackTimestamp = undefined;
+		
+		this.feedbackRefTimeDate = undefined;
+		this.feedbackRefTimeHour = undefined;
+		this.feedbackRefTimeMinute = undefined;
+		
 		this.isFreeText = false;
 		this.isSmileySelected = false;
 		this.rendered = false;
@@ -48,7 +55,11 @@ export default class DView extends View {
 		
 		$('#refdate').datepicker('destroy');
 		$('#reftime').datepicker('destroy');
-		this.feedbackTimestamp = undefined;
+		
+		this.feedbackRefTimeDate = undefined;
+		this.feedbackRefTimeHour = undefined;
+		this.feedbackRefTimeMinute = undefined;
+		
 		this.isFreeText = false;
 		this.isSmileySelected = false;
 		this.rendered = false;
@@ -272,15 +283,15 @@ export default class DView extends View {
 				weekdaysAbbrev:['Su','Ma','Ti','Ke','To','Pe','La']
 			},
 			onSelect: function(date){
-				self.feedbackTimestamp = date;
-				// NOTE: self.feedbackTimestamp is now just a Date object with local timezone:
+				self.feedbackRefTimeDate = date;
+				
+				
+				// NOTE: self.feedbackRefTimeDate is now just a Date object with local timezone:
 				// and when it is converted in DATABASE to Zulu-timezone it will be actually 
 				// two hours before midnight (=yesterday)!!!
 				
 				// Date Tue Dec 07 2021 00:00:00 GMT+0200 (Eastern European Standard Time) => 
 				// "refTime" : ISODate("2021-12-06T22:00:00Z")
-				console.log(['self.feedbackTimestamp=',self.feedbackTimestamp]);
-				//formGenerateMailToLink();
 			}
 		});
 		
@@ -289,7 +300,8 @@ export default class DView extends View {
 			autoClose: true,
 			twelveHour: false,
 			onSelect: function(hour, minute){
-				console.log(['hour=',hour,' minute=',minute]);
+				self.feedbackRefTimeHour = hour;
+				self.feedbackRefTimeMinute = minute;
 			}
 		});
 		
@@ -367,9 +379,12 @@ export default class DView extends View {
 			
 			$('#submit-feedback').addClass('disabled');
 			
-			let refTime = self.feedbackTimestamp;
+			let refTime = self.feedbackRefTimeDate;
 			if (typeof refTime === 'undefined') {
-				refTime = moment().toDate();
+				refTime = moment().toDate(); // Now!
+			} else {
+				// Date is already set, add hour and minute values set by timepicker:
+				refTime.setHours(self.feedbackRefTimeHour, self.feedbackRefTimeMinute);
 			}
 			const ft = $('#free-text').val();
 			let selected = -1;

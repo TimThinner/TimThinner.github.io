@@ -258,7 +258,8 @@ router.post("/login", (req,res,next)=>{
 							// Eg: 60, "2 days", "10h", "7d". A numeric value is interpreted as a seconds count. 
 							// If you use a string be sure you provide the time units (days, hours, etc), 
 							// otherwise milliseconds unit is used by default ("120" is equal to "120ms").
-							expiresIn: "24h"
+							//expiresIn: "24h"
+							expiresIn: "365 days"
 						}
 					)
 					const rkey = user[0].readkey ? user[0].readkey._id : undefined;

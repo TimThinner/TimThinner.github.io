@@ -65,56 +65,6 @@ export default class DView extends View {
 		this.rendered = false;
 		$(this.el).empty();
 	}
-	/*
-	dateTimeWithTimezoneOffset(dt) {
-		// See: http://usefulangle.com/post/30/javascript-get-date-time-with-offset-hours-minutes
-		var timezone_offset_min = new Date().getTimezoneOffset(),
-			offset_hrs = parseInt(Math.abs(timezone_offset_min/60)),
-			offset_min = Math.abs(timezone_offset_min%60),
-			timezone_standard;
-		
-		if(offset_hrs < 10)
-			offset_hrs = '0' + offset_hrs;
-		if(offset_min < 10)
-			offset_min = '0' + offset_min;
-		
-		// Add an opposite sign to the offset
-		// If offset is 0, it means timezone is UTC
-		if(timezone_offset_min < 0)
-			timezone_standard = '+' + offset_hrs + ':' + offset_min;
-		else if(timezone_offset_min > 0)
-			timezone_standard = '-' + offset_hrs + ':' + offset_min;
-		else if(timezone_offset_min == 0)
-			timezone_standard = 'Z';
-		// Timezone difference in hours and minutes
-		// String such as +5:30 or -6:00 or Z
-		//console.log(timezone_standard);
-		var current_date = dt.getDate(),
-			current_month = dt.getMonth() + 1,
-			current_year = dt.getFullYear(),
-			current_hrs = dt.getHours(),
-			current_mins = dt.getMinutes(),
-			current_secs = dt.getSeconds(),
-			current_datetime;
-		
-		// Add 0 before date, month, hrs, mins or secs if they are less than 0
-		current_date = current_date < 10 ? '0' + current_date : current_date;
-		current_month = current_month < 10 ? '0' + current_month : current_month;
-		current_hrs = current_hrs < 10 ? '0' + current_hrs : current_hrs;
-		current_mins = current_mins < 10 ? '0' + current_mins : current_mins;
-		current_secs = current_secs < 10 ? '0' + current_secs : current_secs;
-		
-		// Current datetime
-		// String such as 2016-07-16T19:20:30
-		//current_datetime = current_year + '-' + current_month + '-' + current_date + 'T' + current_hrs + ':' + current_mins + ':' + current_secs;
-		current_datetime = current_date+'.'+current_month+'.'+current_year+' '+current_hrs+':00';
-		return current_datetime;// + timezone_standard;
-	}
-	
-	changeActivePeriod(dp) {
-		this.feedbackTimestamp = dp;
-		console.log(['this.feedbackTimestamp=',this.feedbackTimestamp]);
-	}*/
 	
 	submitState() {
 		if (this.isSmileySelected || this.isFreeText) {
@@ -204,8 +154,6 @@ export default class DView extends View {
 		const cancel = LM['translation'][sel]['CANCEL'];
 		const send_feedback = LM['translation'][sel]['FEEDBACK_SEND_FEEDBACK'];
 		
-		//const display_start_datetime = this.dateTimeWithTimezoneOffset(new Date());
-		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 center">'+
@@ -244,15 +192,6 @@ export default class DView extends View {
 						'<label class="active" for="reftime">'+active_period_time+'</label>'+
 					'</div>'+
 				'</div>'+
-				
-				/*
-				'<div class="col s12 center">'+
-					'<div class="input-field col s12">'+
-						'<input id="active-period-start" type="text" value="'+display_start_datetime+'">'+
-						'<label class="active" for="active-period-start">'+active_period_start+'</label>'+
-					'</div>'+
-				'</div>'+
-				*/
 				'<div class="col s6 center" style="margin-top:16px;margin-bottom:16px;">'+
 					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+cancel+'</button>'+
 				'</div>'+
@@ -287,7 +226,6 @@ export default class DView extends View {
 			},
 			onSelect: function(date){
 				self.feedbackRefTimeDate = date;
-				
 				
 				// NOTE: self.feedbackRefTimeDate is now just a Date object with local timezone:
 				// and when it is converted in DATABASE to Zulu-timezone it will be actually 
@@ -326,22 +264,6 @@ export default class DView extends View {
 			}
 			self.submitState();
 		});
-		/*
-		$('#active-period-start').datetimepicker({
-			format:'Y-m-d H:00',
-			//format:'Y-m-d',
-			onShow:function( ct ){
-				this.setOptions({
-					maxDate: 0, // today
-					maxTime: 0 // this hour
-				})
-			},
-			//timepicker:false,
-			onChangeDateTime:function(dp,$input){
-				self.changeActivePeriod(dp);
-			}
-		});
-		*/
 		
 		// Smileys act like radio buttons, only one can be selected at any one time.
 		// The last selection is shown. Can user just de-select?
@@ -385,6 +307,7 @@ export default class DView extends View {
 		$('#submit-feedback').on('click',function() {
 			
 			$('#submit-feedback').addClass('disabled');
+			
 			// Note: user can set date and time independently, so we must check that in both cases.
 			let refTime = self.feedbackRefTimeDate;
 			if (typeof refTime === 'undefined') {
@@ -400,6 +323,7 @@ export default class DView extends View {
 					refTime.setHours(self.feedbackRefTimeHour, self.feedbackRefTimeMinute);
 				}
 			}
+			
 			const ft = $('#free-text').val();
 			let selected = -1;
 			for (let i=1; i<8; i++) {

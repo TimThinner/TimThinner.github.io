@@ -272,8 +272,8 @@ export default class DView extends View {
 			autoClose: true,
 			firstDay:1,
 			maxDate: new Date(), // The latest date that can be selected.
-			defaultDate: new Date(), // The initial date to view when first opened.
-			setDefaultDate: true,
+			//defaultDate: new Date(), // The initial date to view when first opened.
+			//setDefaultDate: true,
 			format: 'dddd dd.mm.yyyy',
 			i18n: {
 				cancel:'Cancel',
@@ -297,14 +297,14 @@ export default class DView extends View {
 				// "refTime" : ISODate("2021-12-06T22:00:00Z")
 			}
 		});
-		
-		const timepicker_def = moment();
-		const timepicker_def_string = timepicker_def.hours()+':'+timepicker_def.minutes();
+		// It seems that default time cannot be set in timepicker!
+		//const timepicker_def = moment();
+		//const timepicker_def_string = timepicker_def.hours()+':'+timepicker_def.minutes();
 		// Initialize Picker plugins:
 		$('#reftime').timepicker({
 			autoClose: true,
 			twelveHour: false,
-			defaultTime: timepicker_def_string,
+			//defaultTime: timepicker_def_string,
 			setDefaultTime: true,
 			onSelect: function(hour, minute){
 				self.feedbackRefTimeHour = hour;

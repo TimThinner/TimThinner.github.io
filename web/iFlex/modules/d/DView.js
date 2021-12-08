@@ -293,9 +293,6 @@ export default class DView extends View {
 			}
 		});
 		
-		$('.datepicker').datepicker();
-		$('.timepicker').timepicker();
-		
 		$("#cancel").on('click', function() {
 			self.models['MenuModel'].setSelected('menu');
 		});

@@ -882,15 +882,29 @@ export default class CView extends TimeRangeView {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_title = LM['translation'][sel]['BUILDING_CO2_TITLE'];
-		const localized_string_descr = LM['translation'][sel]['BUILDING_CO2_DESCRIPTION'];
+		const localized_string_descr_1 = LM['translation'][sel]['BUILDING_CO2_DESCRIPTION_1'];
+		const localized_string_descr_2 = LM['translation'][sel]['BUILDING_CO2_DESCRIPTION_2'];
+		const localized_string_descr_3 = LM['translation'][sel]['BUILDING_CO2_DESCRIPTION_3'];
 		const localized_string_back = LM['translation'][sel]['BACK'];
+		
+		let NOR = 100; //this.models['CControllerBuildingElectricityPL1Model'].numberOfResidents;
+		
+		// New IMPLEMENTATION: Number of Residents is stored into Mongo DATABASE.
+		const CONFIG_MODEL = this.controller.master.modelRepo.get('ConfigModel'); // Stored at the MongoDB.
+		if (CONFIG_MODEL) {
+			// CONFIG_MODEL.configs is an array where first element contains different configuration parameters:
+			// { "_id" : ObjectId("618298bcc577f5f73eaaa0d1"), "signup" : true, "show_fetching_info" : true }
+			if (typeof CONFIG_MODEL.configs !== 'undefined' && Array.isArray(CONFIG_MODEL.configs) && CONFIG_MODEL.configs.length > 0) {
+				NOR = CONFIG_MODEL.configs[0].number_of_residents;
+			}
+		}
 		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 center">'+
 					'<h4>'+localized_string_title+'</h4>'+
 					'<p style="text-align:center;"><img src="./svg/leaf.svg" height="80"/></p>'+
-					'<p style="text-align:center;">'+localized_string_descr+'</p>'+
+					'<p style="text-align:center;">'+localized_string_descr_1+' '+localized_string_descr_2+NOR+'. '+localized_string_descr_3+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

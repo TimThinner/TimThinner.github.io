@@ -73,6 +73,10 @@ export default class ConfigModel extends Model {
 						{propName:'show_fetching_info', value:true}
 					];*/
 					data.forEach(d => {
+						if (self.configs.length > 0) {
+							self.configs[0][d.propName] = d.value;
+						}
+						/*
 						if (d.propName === 'signup') {
 							if (self.configs.length > 0) {
 								self.configs[0].signup = d.value;
@@ -81,7 +85,11 @@ export default class ConfigModel extends Model {
 							if (self.configs.length > 0) {
 								self.configs[0].show_fetching_info = d.value;
 							}
-						}
+						} else if (d.propName === 'number_of_residents') {
+							if (self.configs.length > 0) {
+								self.configs[0].number_of_residents = d.value;
+							}
+						}*/
 					});
 				}
 				self.notifyAll({model:self.name, method:'updateConfig', status:status, message:myJson.message});

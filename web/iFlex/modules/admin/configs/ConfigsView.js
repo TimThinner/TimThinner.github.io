@@ -52,6 +52,7 @@ export default class ConfigsView extends View {
 					const show_fetching_info_value = this.models['ConfigModel'].configs[0].show_fetching_info;
 					$("#show-fetching-info").empty().append('show fetching info: '+show_fetching_info_value);
 					
+					document.getElementById('number-of-residents').value = this.models['ConfigModel'].configs[0].number_of_residents;
 					
 					setTimeout(() => {
 						this.models['MenuModel'].setSelected('USERPROPS');
@@ -91,11 +92,11 @@ export default class ConfigsView extends View {
 				config_html = '<div class="col s12"><p>';
 				config_html += props.join('<br/>');
 				config_html += '</p></div>';*/
-				config_html = '<div class="col s6 center"><p id="signup">signup: '+CONFIG_MODEL.configs[0].signup+'</p></div>';
+				config_html = '<div class="col s6"><p id="signup">signup: '+CONFIG_MODEL.configs[0].signup+'</p></div>';
 				config_html += '<div class="col s6 center"><p><button class="btn waves-effect waves-light" id="toggle-signup">TOGGLE</button></p></div>';
-				config_html += '<div class="col s6 center"><p id="show-fetching-info">show fetching info: '+CONFIG_MODEL.configs[0].show_fetching_info+'</p></div>';
+				config_html += '<div class="col s6"><p id="show-fetching-info">show fetching info: '+CONFIG_MODEL.configs[0].show_fetching_info+'</p></div>';
 				config_html += '<div class="col s6 center"><p><button class="btn waves-effect waves-light" id="toggle-show-fetching-info">TOGGLE</button></p></div>';
-				config_html += '<div class="input-field col s6 center"><input value="'+CONFIG_MODEL.configs[0].number_of_residents+'" id="number-of-residents" type="text"><label for="number-of-residents">Number of Residents</label></div>';
+				config_html += '<div class="input-field col s6"><input value="'+CONFIG_MODEL.configs[0].number_of_residents+'" id="number-of-residents" type="text"><label class="active" for="number-of-residents">Number of Residents</label></div>';
 				config_html += '<div class="col s6 center"><p><button class="btn waves-effect waves-light" id="update-number-of-residents">UPDATE</button></p></div>';
 			}
 			const LM = this.controller.master.modelRepo.get('LanguageModel');

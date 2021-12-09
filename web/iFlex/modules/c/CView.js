@@ -263,7 +263,10 @@ export default class CView extends TimeRangeView {
 					NOR = CONFIG_MODEL.configs[0].number_of_residents;
 				}
 			}
-			
+			// Make sure that it is NOT POSSIBLE to use zero residents here!
+			if (NOR === 0) {
+				NOR = 100;
+			}
 			//let factor = undefined;
 			//let comparison = undefined;
 			/*
@@ -897,6 +900,10 @@ export default class CView extends TimeRangeView {
 			if (typeof CONFIG_MODEL.configs !== 'undefined' && Array.isArray(CONFIG_MODEL.configs) && CONFIG_MODEL.configs.length > 0) {
 				NOR = CONFIG_MODEL.configs[0].number_of_residents;
 			}
+		}
+		// Make sure that it is NOT POSSIBLE to use zero residents here!
+		if (NOR === 0) {
+			NOR = 100;
 		}
 		
 		const html =

@@ -146,7 +146,11 @@ export default class ConfigsView extends View {
 				$('#update-number-of-residents').on('click',function() {
 					const authToken = self.controller.master.modelRepo.get('UserModel').token;
 					const id = CONFIG_MODEL.configs[0]._id;
-					const nor = parseInt(document.getElementById('number-of-residents').value);
+					let nor = parseInt(document.getElementById('number-of-residents').value);
+					// Make sure that it is NOT POSSIBLE to use zero residents!
+					if (nor === 0) {
+						nor = 100;
+					}
 					const data = [
 						{propName:'number_of_residents', value:nor}
 					];

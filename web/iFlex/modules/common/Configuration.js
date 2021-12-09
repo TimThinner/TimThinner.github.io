@@ -1,8 +1,7 @@
 export default class Configuration {
 	constructor() {
 		this.mongoBackend = 'http://localhost:3000';
-		this.numberOfResidents = 100;
-		this.averageFinnishHousingCO2 = 2100000; // kg => g
+		//this.averageFinnishHousingCO2 = 2100000; // kg => g
 		// Should we define different models with timeranges and intervals here?
 		// query (interval = undefined) or rollup (interval = 'PTNNN')
 		this.defaults = [

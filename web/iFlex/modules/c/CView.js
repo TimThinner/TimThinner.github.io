@@ -252,7 +252,17 @@ export default class CView extends TimeRangeView {
 			
 			//const interval = this.models['CControllerBuildingElectricityPL1Model'].interval;
 			//const AFHCO2 = this.models['CControllerBuildingElectricityPL1Model'].averageFinnishHousingCO2;
-			const NOR = this.models['CControllerBuildingElectricityPL1Model'].numberOfResidents;
+			let NOR = 100; //this.models['CControllerBuildingElectricityPL1Model'].numberOfResidents;
+			
+			// New IMPLEMENTATION: Number of Residents is stored into Mongo DATABASE.
+			const CONFIG_MODEL = this.controller.master.modelRepo.get('ConfigModel'); // Stored at the MongoDB.
+			if (CONFIG_MODEL) {
+				// CONFIG_MODEL.configs is an array where first element contains different configuration parameters:
+				// { "_id" : ObjectId("618298bcc577f5f73eaaa0d1"), "signup" : true, "show_fetching_info" : true }
+				if (typeof CONFIG_MODEL.configs !== 'undefined' && Array.isArray(CONFIG_MODEL.configs) && CONFIG_MODEL.configs.length > 0) {
+					NOR = CONFIG_MODEL.configs[0].number_of_residents;
+				}
+			}
 			
 			//let factor = undefined;
 			//let comparison = undefined;
@@ -263,14 +273,11 @@ export default class CView extends TimeRangeView {
 					comparison = AFHCO2/factor;
 				}
 			}*/
-			//if (typeof comparison !== 'undefined' && typeof NOR !== 'undefined') {
-			if (typeof NOR !== 'undefined') {
-				this.calculated_ALL_emissions.forEach(v=>{
-					//this.calculated_AVE_emissions.push({timestamp: v.timestamp, value:comparison});
-					const value = v.value*1000/NOR;
-					this.calculated_USER_emissions.push({timestamp: v.timestamp, value:value});
-				});
-			}
+			this.calculated_ALL_emissions.forEach(v=>{
+				//this.calculated_AVE_emissions.push({timestamp: v.timestamp, value:comparison});
+				const value = v.value*1000/NOR;
+				this.calculated_USER_emissions.push({timestamp: v.timestamp, value:value});
+			});
 		}
 	}
 	

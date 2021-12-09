@@ -51,6 +51,8 @@ export default class ConfigsView extends View {
 					
 					const show_fetching_info_value = this.models['ConfigModel'].configs[0].show_fetching_info;
 					$("#show-fetching-info").empty().append('show fetching info: '+show_fetching_info_value);
+					
+					
 					setTimeout(() => {
 						this.models['MenuModel'].setSelected('USERPROPS');
 					}, 1000);
@@ -93,6 +95,8 @@ export default class ConfigsView extends View {
 				config_html += '<div class="col s6 center"><p><button class="btn waves-effect waves-light" id="toggle-signup">TOGGLE</button></p></div>';
 				config_html += '<div class="col s6 center"><p id="show-fetching-info">show fetching info: '+CONFIG_MODEL.configs[0].show_fetching_info+'</p></div>';
 				config_html += '<div class="col s6 center"><p><button class="btn waves-effect waves-light" id="toggle-show-fetching-info">TOGGLE</button></p></div>';
+				config_html += 'div class="input-field col s6 center"><input value="'+CONFIG_MODEL.configs[0].number_of_residents+'" id="number-of-residents" type="text"><label for="number-of-residents">Number of Residents</label></div>';
+				config_html += '<div class="col s6 center"><p><button class="btn waves-effect waves-light" id="update-number-of-residents">UPDATE</button></p></div>';
 			}
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
@@ -116,16 +120,11 @@ export default class ConfigsView extends View {
 			$(html).appendTo(this.el);
 			
 			if (CONFIG_MODEL && typeof CONFIG_MODEL.configs !== 'undefined' && Array.isArray(CONFIG_MODEL.configs) && CONFIG_MODEL.configs.length > 0) {
-				
 				$('#toggle-signup').on('click',function() {
-					const UM = self.controller.master.modelRepo.get('UserModel')
-					
+					const authToken = self.controller.master.modelRepo.get('UserModel').token;
 					const id = CONFIG_MODEL.configs[0]._id;
 					let signup = CONFIG_MODEL.configs[0].signup;
-					
 					signup = !signup; // Toggle
-					
-					const authToken = UM.token;
 					const data = [
 						{propName:'signup', value:signup}
 					];
@@ -133,20 +132,25 @@ export default class ConfigsView extends View {
 				});
 				
 				$('#toggle-show-fetching-info').on('click',function() {
-					const UM = self.controller.master.modelRepo.get('UserModel')
-					
+					const authToken = self.controller.master.modelRepo.get('UserModel').token;
 					const id = CONFIG_MODEL.configs[0]._id;
 					let show_fetching_info = CONFIG_MODEL.configs[0].show_fetching_info;
-					
 					show_fetching_info = !show_fetching_info; // Toggle
-					
-					const authToken = UM.token;
 					const data = [
 						{propName:'show_fetching_info', value:show_fetching_info}
 					];
 					CONFIG_MODEL.updateConfig(id, data, authToken);
 				});
 				
+				$('#update-number-of-residents').on('click',function() {
+					const authToken = self.controller.master.modelRepo.get('UserModel').token;
+					const id = CONFIG_MODEL.configs[0]._id;
+					const nor = parseInt(document.getElementById('number-of-residents').value);
+					const data = [
+						{propName:'number_of_residents', value:nor}
+					];
+					CONFIG_MODEL.updateConfig(id, data, authToken);
+				});
 			}
 			
 			$('#back').on('click',function() {

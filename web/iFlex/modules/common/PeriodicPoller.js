@@ -62,8 +62,18 @@ export default class PeriodicPoller {
 				// by the administrator.
 				//
 				const now = moment();
-				const sync_minute = now.minutes();
+				const sync_minute = now.minutes(); // Returns a number from 0 to 59
 				const sync_hour = now.hours();
+				
+				// New: SYNC moment should always be same intervals, like "HH:00", "HH:15", "HH:30", "HH:45", ...
+				// Floor down to closest "QUARTER-HOUR"?
+				const m1 = (parseInt((sync_minute + 7.5)/15) * 15) % 60;
+				//var h = minutes > 52 ? (hours === 23 ? 0 : ++hours) : hours;
+				//minutes can as well be calculated by using Math.round():
+				const m2 = (Math.round(sync_minute/15) * 15) % 60;
+				console.log(['m1=',m1,' m2=',m2]);
+				
+				
 				this.timers[name].models.forEach(key => {
 					//console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
 					this.models[key].fetch({
@@ -92,6 +102,16 @@ export default class PeriodicPoller {
 				const now = moment();
 				const sync_minute = now.minutes();
 				const sync_hour = now.hours();
+				
+				// New: SYNC moment should always be same intervals, like "HH:00", "HH:15", "HH:30", "HH:45", ...
+				// Floor down to closest "QUARTER-HOUR"?
+				const m1 = (parseInt((sync_minute + 7.5)/15) * 15) % 60;
+				//var h = minutes > 52 ? (hours === 23 ? 0 : ++hours) : hours;
+				//minutes can as well be calculated by using Math.round():
+				const m2 = (Math.round(sync_minute/15) * 15) % 60;
+				console.log(['m1=',m1,' m2=',m2]);
+				
+				
 				this.timers[name].models.forEach(key => {
 					//console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
 					this.models[key].fetch({

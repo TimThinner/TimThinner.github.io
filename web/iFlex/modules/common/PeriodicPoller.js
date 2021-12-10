@@ -70,7 +70,7 @@ export default class PeriodicPoller {
 				const m1 = (parseInt((sync_minute + 7.5)/15) * 15) % 60;
 				//var h = minutes > 52 ? (hours === 23 ? 0 : ++hours) : hours;
 				//minutes can as well be calculated by using Math.round():
-				const m2 = (Math.round(sync_minute/15) * 15) % 60;
+				const m2 = (Math.floor(sync_minute/15) * 15) % 60;
 				console.log(['m1=',m1,' m2=',m2]);
 				
 				
@@ -108,7 +108,7 @@ export default class PeriodicPoller {
 				const m1 = (parseInt((sync_minute + 7.5)/15) * 15) % 60;
 				//var h = minutes > 52 ? (hours === 23 ? 0 : ++hours) : hours;
 				//minutes can as well be calculated by using Math.round():
-				const m2 = (Math.round(sync_minute/15) * 15) % 60;
+				const m2 = (Math.floor(sync_minute/15) * 15) % 60;
 				console.log(['m1=',m1,' m2=',m2]);
 				
 				

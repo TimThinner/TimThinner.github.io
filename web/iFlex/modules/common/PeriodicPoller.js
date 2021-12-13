@@ -42,8 +42,57 @@ export default class PeriodicPoller {
 		return 0;
 	}
 	
+	/*
+		interval: 'PT15M'	1D
+		interval: 'PT30M'	1W
+		interval: 'PT60M'	2W
+		interval: 'PT2H'	1M
+		interval: 'PT12H'	6M
+		interval: 'PT24H'	13M
+	*/
+	adjustSyncMinute(interval, sm) {
+		// New: SYNC moment should always be have same intervals, like "HH:00", "HH:15", "HH:30", "HH:45", ...
+		// Floor down to closest "QUARTER-HOUR"? OR HALF-HOUR OR FULL-HOUR, depending on MODELS interval.
+		//const m1 = (parseInt((sync_minute + 7.5)/15) * 15) % 60;
+		//var h = minutes > 52 ? (hours === 23 ? 0 : ++hours) : hours;
+		//minutes can as well be calculated by using Math.round():
+		let m = sm;
+		if (interval==='PT15M') {
+			m = (Math.floor(sm/15) * 15) % 60;
+		} else if(interval==='PT30M') {
+			m = (Math.floor(sm/30) * 30) % 60;
+		} else if(interval==='PT60M') {
+			m = 0;
+		} else if(interval==='PT2H') {
+			m = 0;
+		} else if(interval==='PT12H') {
+			m = 0;
+		} else if(interval==='PT24H') {
+			m = 0;
+		}
+		console.log(['SYNC MINUTE m=',m]);
+		return m;
+	}
+	adjustSyncHour(interval, sh) {
+		let h = sh;
+		if (interval==='PT15M') {
+			h = sh;
+		} else if(interval==='PT30M') {
+			h = sh;
+		} else if(interval==='PT60M') {
+			h = sh;
+		} else if(interval==='PT2H') {
+			h = (Math.floor(sh/2) * 2) % 24;
+		} else if(interval==='PT12H') {
+			h = (Math.floor(sh/12) * 12) % 24;
+		} else if(interval==='PT24H') {
+			h = 0;
+		}
+		console.log(['SYNC HOUR h=',h]);
+		return h;
+	}
+	
 	poller(name) {
-		
 		if (this.timers.hasOwnProperty(name)) {
 			if (this.timers[name].interval > 0) {
 				// Feed the UserModel auth-token into fetch call.
@@ -62,20 +111,15 @@ export default class PeriodicPoller {
 				// by the administrator.
 				//
 				const now = moment();
-				const sync_minute = now.minutes(); // Returns a number from 0 to 59
-				const sync_hour = now.hours();
-				
-				// New: SYNC moment should always be same intervals, like "HH:00", "HH:15", "HH:30", "HH:45", ...
-				// Floor down to closest "QUARTER-HOUR"?
-				const m1 = (parseInt((sync_minute + 7.5)/15) * 15) % 60;
-				//var h = minutes > 52 ? (hours === 23 ? 0 : ++hours) : hours;
-				//minutes can as well be calculated by using Math.round():
-				const m2 = (Math.floor(sync_minute/15) * 15) % 60;
-				console.log(['m1=',m1,' m2=',m2]);
-				
+				let sync_minute = now.minutes(); // Returns a number from 0 to 59
+				let sync_hour = now.hours();
 				
 				this.timers[name].models.forEach(key => {
 					//console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
+					if (typeof this.models[key].interval !== 'undefined') {
+						sync_minute = this.adjustSyncMinute(this.models[key].interval, sync_minute);
+						sync_hour = this.adjustSyncHour(this.models[key].interval, sync_hour);
+					}
 					this.models[key].fetch({
 						token: token,
 						readkey: readkey,
@@ -100,19 +144,15 @@ export default class PeriodicPoller {
 				// When there are multiple models to be fetched, there is usually need to call fetch with THE SAME start time!
 				// That is to make sure response has SAME TIMESTAMPS in returned values.
 				const now = moment();
-				const sync_minute = now.minutes();
-				const sync_hour = now.hours();
-				
-				// New: SYNC moment should always be same intervals, like "HH:00", "HH:15", "HH:30", "HH:45", ...
-				// Floor down to closest "QUARTER-HOUR"?
-				const m1 = (parseInt((sync_minute + 7.5)/15) * 15) % 60;
-				//var h = minutes > 52 ? (hours === 23 ? 0 : ++hours) : hours;
-				//minutes can as well be calculated by using Math.round():
-				const m2 = (Math.floor(sync_minute/15) * 15) % 60;
-				console.log(['m1=',m1,' m2=',m2]);
+				let sync_minute = now.minutes();
+				let sync_hour = now.hours();
 				
 				this.timers[name].models.forEach(key => {
 					//console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
+					if (typeof this.models[key].interval !== 'undefined') {
+						sync_minute = this.adjustSyncMinute(this.models[key].interval, sync_minute);
+						sync_hour = this.adjustSyncHour(this.models[key].interval, sync_hour);
+					}
 					this.models[key].fetch({
 						token: token,
 						readkey: readkey,

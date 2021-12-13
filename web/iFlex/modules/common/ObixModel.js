@@ -213,15 +213,6 @@ export default class ObixModel extends Model {
 				end_mom.hours(sync_hour);
 			}
 			
-			/*
-			interval: 'PT15M'	1D
-			interval: 'PT30M'	1W
-			interval: 'PT60M'	2W
-			interval: 'PT2H'	1M
-			interval: 'PT12H'	6M
-			interval: 'PT24H'	13M
-			*/
-			
 			let start = start_mom.format();
 			let end = end_mom.format();
 			
@@ -259,10 +250,6 @@ export default class ObixModel extends Model {
 					end = end_limit_mom.format();
 				}
 			}
-			
-			
-			
-			
 			
 			console.log('=====================================================');
 			console.log(['start=',start,' end=',end]);

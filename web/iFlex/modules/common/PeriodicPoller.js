@@ -111,7 +111,6 @@ export default class PeriodicPoller {
 				const m2 = (Math.floor(sync_minute/15) * 15) % 60;
 				console.log(['m1=',m1,' m2=',m2]);
 				
-				
 				this.timers[name].models.forEach(key => {
 					//console.log(['Poller fetch model key=',key,' token=',token,' readkey=',readkey,' obix_code=',obix_code]);
 					this.models[key].fetch({

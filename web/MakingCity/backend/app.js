@@ -15,8 +15,8 @@ const visitorcountRoutes = require('./api/routes/visitorcounts');
 const feedbackRoutes = require('./api/routes/feedbacks');
 const alarmRoutes = require('./api/routes/alarms');
 const proxeRoutes = require('./api/routes/proxes');
-const csvRoutes = require('./api/routes/csvs');
-const xlsxRoutes = require('./api/routes/xlsxs');
+//const csvRoutes = require('./api/routes/csvs');
+//const xlsxRoutes = require('./api/routes/xlsxs');
 
 mongoose.connect('mongodb://localhost:27017/makingcity', {
 	useNewUrlParser: true,
@@ -62,8 +62,8 @@ app.use('/visitorcounts', visitorcountRoutes);
 app.use('/feedbacks', feedbackRoutes);
 app.use('/alarms', alarmRoutes);
 app.use('/proxes', proxeRoutes);
-app.use('/csvs', csvRoutes);
-app.use('/xlsxs', xlsxRoutes);
+//app.use('/csvs', csvRoutes);
+//app.use('/xlsxs', xlsxRoutes);
 
 // If we reach this line we have to report an error.
 app.use((req,res,next)=>{

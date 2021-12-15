@@ -81,34 +81,34 @@
 	</path>
 	
 	<!-- Dynamically inserted POWER CONSUMPTION VALUES: -->
-	<text id="grid-power" x="140" y="360" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#f00">30.5 kW</text>
+	<text id="grid-power" x="140" y="360" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#f00"></text>
 	<svg x="110" y="510" width="100px" height="40px">
 		<!--<rect x="1" y="1" width="98" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="apartments-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">33.7 kW</text>
+		<text id="apartments-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	<svg x="230" y="510" width="100px" height="40px">
 		<!--<rect x="1" y="1" width="98" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="sauna-etc-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">34.7 kW</text>
+		<text id="sauna-etc-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	<svg x="250" y="370" width="100px" height="40px">
 		<!--<rect x="1" y="1" width="98" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="heating-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">35.0 kW</text>
+		<text id="heating-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	<svg x="350" y="510" width="100px" height="40px">
 		<!--<rect x="1" y="1" width="98" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="heating-devices-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">36.0 kW</text>
+		<text id="heating-devices-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	<svg x="470" y="510" width="100px" height="40px">
 		<!--<rect x="1" y="1" width="98" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="hot-water-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">37.0 kW</text>
+		<text id="hot-water-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	<svg x="420" y="310" width="100px" height="40px">
 		<!--<rect x="1" y="1" width="98" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="dh-hot-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">40.0 kW</text>
+		<text id="dh-hot-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	<svg x="420" y="380" width="100px" height="40px">
 		<!--<rect x="1" y="1" width="98" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />-->
-		<text id="dh-cool-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">41.0 kW</text>
+		<text id="dh-cool-power" font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
 	</svg>
 	
 	<image x="40" y="310" width="80" height="120" xlink:href="powerline.svg" />

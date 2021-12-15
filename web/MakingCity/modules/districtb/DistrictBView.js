@@ -153,16 +153,16 @@ export default class DistrictBView extends View {
 					}
 				});
 			}
-			this.updateOne(svgObject, 'grid-power', grid_power);
-			this.updateOne(svgObject, 'solar-power-left', solar_power_left);
-			this.updateOne(svgObject, 'solar-power-right', solar_power_right);
-			this.updateOne(svgObject, 'apartments-power', apartments_power);
-			this.updateOne(svgObject, 'sauna-etc-power', sauna_etc_power);
-			this.updateOne(svgObject, 'heating-power', heating_power);
+			//this.updateOne(svgObject, 'grid-power', grid_power);
+			//this.updateOne(svgObject, 'solar-power-left', solar_power_left);
+			//this.updateOne(svgObject, 'solar-power-right', solar_power_right);
+			//this.updateOne(svgObject, 'apartments-power', apartments_power);
+			//this.updateOne(svgObject, 'sauna-etc-power', sauna_etc_power);
+			//this.updateOne(svgObject, 'heating-power', heating_power);
 			this.updateOne(svgObject, 'heating-devices-power', heating_devices_power);
-			this.updateOne(svgObject, 'hot-water-power', hot_water_power);
+			//this.updateOne(svgObject, 'hot-water-power', hot_water_power);
 			this.updateOne(svgObject, 'exthaus-power', exthaus_power);
-			this.updateOne(svgObject, 'wastewater-power', wastewater_power);
+			//this.updateOne(svgObject, 'wastewater-power', wastewater_power);
 			this.updateOne(svgObject, 'dh-hot-power', dh_hot_power);
 			this.updateOne(svgObject, 'dh-cool-power', dh_cool_power);
 		}

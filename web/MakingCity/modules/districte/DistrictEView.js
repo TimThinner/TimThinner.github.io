@@ -135,6 +135,7 @@ export default class DistrictEView extends View {
 					}
 				}
 			});*/
+			/*
 			this.updateOne(svgObject, 'grid-power', grid_power);
 			this.updateOne(svgObject, 'apartments-power', apartments_power);
 			this.updateOne(svgObject, 'sauna-etc-power', sauna_etc_power);
@@ -143,6 +144,7 @@ export default class DistrictEView extends View {
 			this.updateOne(svgObject, 'hot-water-power', hot_water_power);
 			this.updateOne(svgObject, 'dh-hot-power', dh_hot_power);
 			this.updateOne(svgObject, 'dh-cool-power', dh_cool_power);
+			*/
 		}
 	}
 	

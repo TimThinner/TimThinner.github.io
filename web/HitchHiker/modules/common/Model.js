@@ -18,7 +18,7 @@ export default class Model extends EventObserver {
 	}
 	
 	/* Dummy fetch. */
-	fetch() {
+	fetch(context) {
 		console.log('DUMMY FETCH!');
 		this.ready = true;
 	}

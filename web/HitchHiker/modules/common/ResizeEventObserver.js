@@ -57,8 +57,9 @@ export default class ResizeEventObserver extends EventObserver {
 		}
 	}
 	
-	setResizeHandler() {
+	start() {
 		const self = this;
+		this.mode = undefined;
 		// First remove handler if already set.
 		if (this.resize_handler_set) {
 			$(window).off('resize');
@@ -69,23 +70,13 @@ export default class ResizeEventObserver extends EventObserver {
 			self.resizeThrottler();
 		});
 		this.resize_handler_set = true;
-	}
-	
-	unsetResizeHandler() {
-		if (this.resize_handler_set) {
-			//console.log('unsetResizeHandler');
-			$(window).off('resize');
-		}
-		this.resize_handler_set = false;
-	}
-	
-	start() {
-		this.mode = undefined;
-		this.setResizeHandler();
 		this.resize(); // resize now!
 	}
 	
 	stop() {
-		this.unsetResizeHandler();
+		if (this.resize_handler_set) {
+			$(window).off('resize');
+		}
+		this.resize_handler_set = false;
 	}
 }

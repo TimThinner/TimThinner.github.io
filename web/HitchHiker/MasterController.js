@@ -1,6 +1,13 @@
 import ModelRepo from './modules/common/ModelRepo.js';
 import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
-
+import MenuController from './modules/menu/MenuController.js';
+/*
+EventObserver	Model		ConfigurationModel
+				ResizeEventObserver
+ModelRepo		
+PeriodicPoller	Controller
+View
+*/
 class MasterController {
 	
 	constructor() {
@@ -20,6 +27,14 @@ class MasterController {
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
 		this.modelRepo.add('ResizeEventObserver',REO);
+		
+		console.log('Create Controllers...');
+		// Menu controller MUST be first!
+		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
+		this.controllers['menu'].init();
+		
+		
+		
 		REO.start(); // Start tracking resize events => will also do the initial "resize" for MenuView (View which is visible).
 	}
 	

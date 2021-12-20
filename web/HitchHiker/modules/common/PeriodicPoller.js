@@ -21,10 +21,20 @@ export default class PeriodicPoller {
 	poller(name) {
 		if (this.timers.hasOwnProperty(name)) {
 			if (this.timers[name].interval > 0) {
-				
+				// Fetch periodically until stop() is called.
+				// Here we need a synchronization timestamp (to synch all models), this is important if we need to 
+				// combine data from multiple sources and synchronize timestamps.
+				const now = moment();
+				const sync_minute = now.minutes();
+				const sync_hour = now.hours();
+				const context = {
+					sync_minute: sync_minute,
+					sync_hour: sync_hour,
+					master: this.master
+				};
 				this.timers[name].models.forEach(key => {
 					console.log(['Poller fetch model key=',key]);
-					this.models[key].fetch();
+					this.models[key].fetch(context);
 				});
 				this.timers[name].timer = setTimeout(()=>{
 					this.poller(name);
@@ -32,9 +42,19 @@ export default class PeriodicPoller {
 				
 			} else if (this.timers[name].interval == -1) {
 				// Fetch only ONCE!
+				// Here we need a synchronization timestamp (to synch all models), this is important if we need to 
+				// combine data from multiple sources and synchronize timestamps.
+				const now = moment();
+				const sync_minute = now.minutes();
+				const sync_hour = now.hours();
+				const context = {
+					sync_minute: sync_minute,
+					sync_hour: sync_hour,
+					master: this.master
+				};
 				this.timers[name].models.forEach(key => {
 					console.log(['Poller fetch ONCE model key=',key]);
-					this.models[key].fetch();
+					this.models[key].fetch(context);
 				});
 			}
 		}
@@ -42,7 +62,7 @@ export default class PeriodicPoller {
 	
 	start() {
 		Object.keys(this.timers).forEach(key => {
-			console.log(['start key=',key]);
+			//console.log(['start key=',key]);
 			this.poller(key);
 		});
 	}
@@ -61,7 +81,7 @@ export default class PeriodicPoller {
 	restart(name, interval) {
 		if (this.timers.hasOwnProperty(name)) {
 			if (this.timers[name].timer) {
-				console.log('Clear old timer...');
+				//console.log('Clear old timer...');
 				clearTimeout(this.timers[name].timer);
 				this.timers[name].timer = undefined;
 			}

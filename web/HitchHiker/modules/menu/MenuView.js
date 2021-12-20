@@ -62,6 +62,8 @@ export default class MenuView extends View {
 		svg.setAttributeNS(null,'height',h);
 		svg.setAttributeNS(null,'viewBox',vb);
 		
+		console.log('CREATE FOOTBALL!!!!!');
+		
 		/*var rect = document.createElementNS(svgNS,'rect');
 		rect.setAttribute('x',5);
 		rect.setAttribute('y',5);
@@ -84,11 +86,12 @@ export default class MenuView extends View {
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#000'; 
 		c.style.fill = '#fff';
+		svg.appendChild(c);
 		
 		const BALLWRAPPER = document.getElementById(this.BALLID);
 		if (BALLWRAPPER) {
 			BALLWRAPPER.appendChild(svg);
-			svg.appendChild(c);
+			
 		}
 	}
 	

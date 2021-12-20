@@ -78,16 +78,17 @@ export default class MenuView extends View {
 		document.body.appendChild(h);*/
 		const r = Math.min(wp2, hp2);
 		
-		const uc = document.createElementNS(svgNS, "circle");
-		uc.setAttributeNS(null, 'cx', 0);
-		uc.setAttributeNS(null, 'cy', 0);
-		uc.setAttributeNS(null, 'r', r);
-		uc.style.stroke = '#000'; 
-		uc.style.fill = '#fff';
-		svg.appendChild(uc);
+		const c = document.createElementNS(svgNS, "circle");
+		c.setAttributeNS(null, 'cx', 0);
+		c.setAttributeNS(null, 'cy', 0);
+		c.setAttributeNS(null, 'r', r);
+		c.style.stroke = '#000'; 
+		c.style.fill = '#fff';
+		
 		const BALLWRAPPER = document.getElementById(this.BALLID);
 		if (BALLWRAPPER) {
 			BALLWRAPPER.appendChild(svg);
+			svg.appendChild(c);
 		}
 	}
 	

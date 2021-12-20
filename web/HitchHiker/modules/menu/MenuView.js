@@ -40,7 +40,11 @@ export default class MenuView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				this.createBall();
+				if (this.rendered===true) {
+					this.createBall();
+				} else {
+					this.render();
+				}
 			}
 		}
 	}
@@ -61,8 +65,6 @@ export default class MenuView extends View {
 		svg.setAttributeNS(null,'width',w);
 		svg.setAttributeNS(null,'height',h);
 		svg.setAttributeNS(null,'viewBox',vb);
-		
-		console.log('CREATE FOOTBALL!!!!!');
 		
 		/*var rect = document.createElementNS(svgNS,'rect');
 		rect.setAttribute('x',5);
@@ -90,8 +92,8 @@ export default class MenuView extends View {
 		
 		const BALLWRAPPER = document.getElementById(this.BALLID);
 		if (BALLWRAPPER) {
+			console.log('APPEND SVG AND BALL!!!!!');
 			BALLWRAPPER.appendChild(svg);
-			
 		}
 	}
 	

@@ -16,6 +16,7 @@ export default class MenuView extends View {
 		
 		this.rendered = false;
 		this.FELID = 'menuview-message';
+		this.BALLID = 'svg-ball-wrapper';
 	}
 	
 	show() {
@@ -45,7 +46,7 @@ export default class MenuView extends View {
 	}
 	
 	createBall() {
-		$(this.el).empty();
+		$('#'+this.BALLID).empty();
 		
 		console.log('CREATE SVG BALL!');
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -84,9 +85,9 @@ export default class MenuView extends View {
 		uc.style.stroke = '#000'; 
 		uc.style.fill = '#fff';
 		svg.appendChild(uc);
-		const BW = document.getElementById('svg-ball-wrapper');
-		if (BW) {
-			BW.appendChild(svg);
+		const BALLWRAPPER = document.getElementById(this.BALLID);
+		if (BALLWRAPPER) {
+			BALLWRAPPER.appendChild(svg);
 		}
 	}
 	
@@ -96,7 +97,7 @@ export default class MenuView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="row">'+
-						'<div class="col s12 center" id="svg-ball-wrapper"></div>'+
+						'<div class="col s12 center" id="'+this.BALLID+'"></div>'+
 						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 					'</div>'+
 				'</div>'+
@@ -118,7 +119,7 @@ export default class MenuView extends View {
 			}
 		} else {
 			console.log('MenuView => render models ARE NOT READY!!!!');
-			this.showSpinner('#svg-ball-wrapper');
+			this.showSpinner('#'+this.BALLID);
 		}
 	}
 }

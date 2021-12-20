@@ -39,19 +39,20 @@ export default class MenuView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				this.show();
+				this.createBall();
 			}
 		}
 	}
 	
 	createBall() {
+		$(this.el).empty();
 		
 		console.log('CREATE SVG BALL!');
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const svg = document.createElementNS(svgNS, "svg");
 		
-		const w = this.REO.width;
-		const h = this.REO.height;
+		const w = this.REO.width-10;
+		const h = this.REO.height-10;
 		const wp2 = Math.round(w/2);
 		const hp2 = Math.round(h/2);
 		
@@ -113,9 +114,7 @@ export default class MenuView extends View {
 					this.forceLogout(this.FELID);
 				}
 			} else {
-				
 				this.createBall();
-				
 			}
 		} else {
 			console.log('MenuView => render models ARE NOT READY!!!!');

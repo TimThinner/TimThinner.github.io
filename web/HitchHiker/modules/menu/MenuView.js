@@ -45,6 +45,8 @@ export default class MenuView extends View {
 	}
 	
 	createBall() {
+		
+		console.log('CREATE SVG BALL!');
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const svg = document.createElementNS(svgNS, "svg");
 		

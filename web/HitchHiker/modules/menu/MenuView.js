@@ -15,8 +15,8 @@ export default class MenuView extends View {
 		this.REO.subscribe(this);
 		
 		this.rendered = false;
-		this.FELID = 'menuview-message';
-		this.BALLID = 'svg-ball-wrapper';
+		//this.FELID = 'menuview-message';
+		//this.BALLID = 'svg-ball-wrapper';
 	}
 	
 	show() {
@@ -50,7 +50,7 @@ export default class MenuView extends View {
 	}
 	
 	createBall() {
-		$('#'+this.BALLID).empty();
+		//$('#'+this.BALLID).empty();
 		
 		console.log('CREATE SVG BALL!');
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -90,16 +90,19 @@ export default class MenuView extends View {
 		c.style.fill = '#fff';
 		svg.appendChild(c);
 		
+		/*
 		const BALLWRAPPER = document.getElementById(this.BALLID);
 		if (BALLWRAPPER) {
 			console.log('APPEND SVG AND BALL!!!!!');
 			BALLWRAPPER.appendChild(svg);
 		}
+		*/
+		$(this.el).empty().appendChild(svg);
 	}
 	
 	render() {
-		$(this.el).empty();
-		const html =
+		//$(this.el).empty();
+		/*const html =
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="row">'+
@@ -109,9 +112,10 @@ export default class MenuView extends View {
 				'</div>'+
 			'</div>';
 		$(html).appendTo(this.el);
-		
+		*/
 		this.rendered = true;
-		
+		this.createBall();
+		/*
 		if (this.areModelsReady()) {
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
@@ -127,5 +131,6 @@ export default class MenuView extends View {
 			console.log('MenuView => render models ARE NOT READY!!!!');
 			this.showSpinner('#'+this.BALLID);
 		}
+		*/
 	}
 }

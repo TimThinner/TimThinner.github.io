@@ -156,6 +156,7 @@ export default class MenuView extends View {
 		
 		const group = document.createElementNS(svgNS, "g");
 		
+		
 		//<path d="M-150,150 A150,150 0 0,1 150,150 Z" style="stroke:#aaa;stroke-width:12;fill:#ccc;opacity:1;" />
 		//<circle cx="0" cy="-60" r="80" style="stroke:#aaa;stroke-width:10;fill:#fff;opacity:1;"/>
 		//const d = 'M-'+hp2+',0 A150,150 0 0,1 150,140 Z';
@@ -197,7 +198,7 @@ export default class MenuView extends View {
 		const rot = document.createElementNS(svgNS, 'animateTransform');
 		rot.setAttribute('attributeName', 'transform');
 		rot.setAttribute('attributeType', 'XML');
-		rot.setAttribute('dur', '60s');
+		rot.setAttribute('dur', '50s');
 		rot.setAttribute('repeatCount', 'indefinite');
 		rot.setAttribute('type', 'rotate');
 		rot.setAttribute('from', '0');
@@ -205,6 +206,59 @@ export default class MenuView extends View {
 		group.appendChild(rot);
 		
 		$('#space').append(group);
+		
+		
+		
+		const group2 = document.createElementNS(svgNS, "g");
+		const r22 = r+r*0.7;
+		const d2 = 'M-'+r22+',0 L'+r22+',0';
+		const r33 = r*0.13;
+		
+		const path2 = document.createElementNS(svgNS, "path");
+		path2.setAttributeNS(null, 'd', d2);
+		path2.style.stroke = '#000';
+		path2.style.strokeWidth = '1';
+		path2.style.fill = 'none';
+		path2.style.opacity = '0';
+		//path.style.transform = 'scale(0.25,0.25)';
+		group2.appendChild(path2);
+		
+		//	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
+		const c3 = document.createElementNS(svgNS, "circle");
+		c3.setAttribute('cx', -r22);
+		c3.setAttribute('cy', 0);
+		c3.setAttribute('r', r33);
+		c3.setAttribute('stroke', '#aaa');
+		c3.setAttribute('stroke-width', 1);
+		c3.setAttribute('fill', '#ccc');
+		c3.setAttribute('opacity', 1);
+		group2.appendChild(c3);
+		
+		const c4 = document.createElementNS(svgNS, "circle");
+		c4.setAttribute('cx', r22);
+		c4.setAttribute('cy', 0);
+		c4.setAttribute('r', r33);
+		c4.setAttribute('stroke', '#aa0');
+		c4.setAttribute('stroke-width', 1);
+		c4.setAttribute('fill', '#ff0');
+		c4.setAttribute('opacity', 1);
+		group2.appendChild(c4);
+		
+		const rot2 = document.createElementNS(svgNS, 'animateTransform');
+		rot2.setAttribute('attributeName', 'transform');
+		rot2.setAttribute('attributeType', 'XML');
+		rot2.setAttribute('dur', '60s');
+		rot2.setAttribute('repeatCount', 'indefinite');
+		rot2.setAttribute('type', 'rotate');
+		rot2.setAttribute('from', '0');
+		rot2.setAttribute('to', '360');
+		group2.appendChild(rot2);
+		
+		$('#space').append(group2);
+		
+		
+		
+		
 	}
 	
 	render() {

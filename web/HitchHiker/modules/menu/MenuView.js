@@ -205,7 +205,7 @@ export default class MenuView extends View {
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#000'; 
 		c.style.fill = '#fff';
-		$('#space').appendChild(c);
+		$('#space').append(c);
 		
 		/*
 		const BALLWRAPPER = document.getElementById(this.BALLID);

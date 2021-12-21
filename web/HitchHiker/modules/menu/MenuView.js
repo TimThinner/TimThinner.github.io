@@ -57,17 +57,14 @@ export default class MenuView extends View {
 		const h = this.REO.height;
 		const wp2 = Math.round(w*0.5);
 		const hp2 = Math.round(h*0.5);
-		
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
-		svg.setAttributeNS(null,'width',w);
-		svg.setAttributeNS(null,'height',h);
-		svg.setAttributeNS(null,'viewBox',vb);
-		
 		
 		console.log('CREATE SVG CIRCLE!');
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const svg = document.createElementNS(svgNS, "svg");
-		
+		svg.setAttributeNS(null,'width',w);
+		svg.setAttributeNS(null,'height',h);
+		svg.setAttributeNS(null,'viewBox',vb);
 		
 		
 		/*var rect = document.createElementNS(svgNS,'rect');

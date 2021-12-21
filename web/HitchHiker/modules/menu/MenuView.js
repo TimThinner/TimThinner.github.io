@@ -4,19 +4,13 @@ export default class MenuView extends View {
 	
 	constructor(controller) {
 		super(controller);
-		
 		Object.keys(this.controller.models).forEach(key => {
-			
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
-			
 		});
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
-		
 		this.rendered = false;
-		//this.FELID = 'menuview-message';
-		//this.BALLID = 'svg-ball-wrapper';
 	}
 	
 	show() {
@@ -40,19 +34,9 @@ export default class MenuView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				
 				this.createSpace();
 				this.appendMoon();
-				/*
-				if (this.rendered===true) {
-					
-					this.createSpace();
-					this.appendMoon();
-					
-				} else {
-					this.render();
-				}
-				*/
+				this.appendSun();
 			}
 		}
 	}
@@ -70,8 +54,8 @@ export default class MenuView extends View {
 	createSpace() {
 		$(this.el).empty();
 		
-		const w = this.REO.width-2; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height-2;
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
@@ -85,18 +69,9 @@ export default class MenuView extends View {
 		
 		// Store an array of stop information for the <linearGradient>
 		const stops = [
-			{
-				"style": "stop-color:#fff; stop-opacity:1",
-				"offset": "10%"
-			},
-			{
-				"style": "#stop-color:#eee; stop-opacity:1",
-				"offset": "50%"
-			},
-			{
-				"style": "#stop-color:#ddd; stop-opacity:1",
-				"offset": "90%"
-			}
+			{"style": "stop-color:#fff; stop-opacity:1","offset": "10%"},
+			{"style": "#stop-color:#eee; stop-opacity:1","offset": "50%"},
+			{"style": "#stop-color:#ddd; stop-opacity:1","offset": "90%"}
 		];
 		const defs = document.createElementNS(svgNS, 'defs');
 		const gradient = document.createElementNS(svgNS, 'radialGradient');
@@ -125,80 +100,19 @@ export default class MenuView extends View {
 		rect.setAttribute('height',h);
 		rect.setAttribute('fill', 'url(#grad)');
 		
-		//rect.setAttribute('width', '100%');
-		//rect.setAttribute('height', '100%');
-		
-		// Assign an id, classname, width and height
-		//svg.setAttribute('width', '100%');
-		//svg.setAttribute('height', '100%')
-		//svg.setAttribute('version', '1.1');
-		//svg.setAttribute('xmlns', svgNS);
-		
-		// Add the <defs> and <rect> elements to <svg>
 		svg.appendChild(defs);
 		svg.appendChild(rect);
 		
-		// Add the <svg> element to <body>
-		//document.body.appendChild(svg);
-		/*
-		const defs = document.createElementNS(svgNS,'defs');
-		svg.appendChild(defs);
-		
-		pathdef = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-		pathdef.id = "conn1";
-		pathdef.setAttributeNS(null, "d", "M264 133 L396 132");
-		defs.appendChild(pathdef);
-		
-		const rect = document.createElementNS(svgNS,'rect');
-		rect.setAttribute('x',-wp2);
-		rect.setAttribute('y',-hp2);
-		rect.setAttribute('width',w);
-		rect.setAttribute('height',h);
-		rect.setAttribute('fill','url(#grad)');
-		svg.appendChild(rect);
-		//document.body.appendChild(svg);
-		*/
 		$(this.el).append(svg);
 	}
 	
-	appendMoon() {
-		//$('#'+this.BALLID).empty();
-		//$(this.el).empty();
-		
-		const w = this.REO.width-2; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height-2;
+	appendSun() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
-		
-		const svgNS = 'http://www.w3.org/2000/svg';
-		/*
-		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
-		
-		console.log('CREATE SVG CIRCLE!');
-		const svgNS = 'http://www.w3.org/2000/svg';
-		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttributeNS(null,'width',w);
-		svg.setAttributeNS(null,'height',h);
-		svg.setAttributeNS(null,'viewBox',vb);
-		*/
-		
-		
-		/*var rect = document.createElementNS(svgNS,'rect');
-		rect.setAttribute('x',5);
-		rect.setAttribute('y',5);
-		rect.setAttribute('width',500);
-		rect.setAttribute('height',500);
-		rect.setAttribute('fill','#95B3D7');
-		svg.appendChild(rect);
-		document.body.appendChild(svg);
-		
-		var h = document.createElement('a');
-		h.setAttribute('href', 'http://www.google.com');
-		var t=document.createTextNode('Hello World');
-		h.appendChild(t);
-		document.body.appendChild(h);*/
 		const r = Math.min(wp2, hp2)*0.5;
-		
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
@@ -206,49 +120,97 @@ export default class MenuView extends View {
 		c.style.stroke = '#000'; 
 		c.style.fill = '#fff';
 		$('#space').append(c);
+	}
+/*
+<g opacity="0.75">
+	<!-- A rx ry x-axis-rotation large-arc-flag sweep-flag x y -->
+	<path class="compressor" d="M 80,0 L 80,-10 A 40 40 0 0 0 57,-15 M 80,0 L 80,10 A 40 40 0 0 1 57,15 A 80 80 0 0 0 57,-15" />
+	<path class="compressor" d="M 80,0 L 80,-10 A 40 40 0 0 0 57,-15 M 80,0 L 80,10 A 40 40 0 0 1 57,15 A 80 80 0 0 0 57,-15" transform="rotate(-45)" />
+	<path class="compressor" d="M 80,0 L 80,-10 A 40 40 0 0 0 57,-15 M 80,0 L 80,10 A 40 40 0 0 1 57,15 A 80 80 0 0 0 57,-15" transform="rotate(-90)" />
+	<path class="compressor" d="M 80,0 L 80,-10 A 40 40 0 0 0 57,-15 M 80,0 L 80,10 A 40 40 0 0 1 57,15 A 80 80 0 0 0 57,-15" transform="rotate(-135)" />
+	<path class="compressor" d="M 80,0 L 80,-10 A 40 40 0 0 0 57,-15 M 80,0 L 80,10 A 40 40 0 0 1 57,15 A 80 80 0 0 0 57,-15" transform="rotate(-180)" />
+	<path class="compressor" d="M 80,0 L 80,-10 A 40 40 0 0 0 57,-15 M 80,0 L 80,10 A 40 40 0 0 1 57,15 A 80 80 0 0 0 57,-15" transform="rotate(-225)" />
+	<path class="compressor" d="M 80,0 L 80,-10 A 40 40 0 0 0 57,-15 M 80,0 L 80,10 A 40 40 0 0 1 57,15 A 80 80 0 0 0 57,-15" transform="rotate(-270)" />
+	<path class="compressor" d="M 80,0 L 80,-10 A 40 40 0 0 0 57,-15 M 80,0 L 80,10 A 40 40 0 0 1 57,15 A 80 80 0 0 0 57,-15" transform="rotate(-315)" />
+	<circle cx="0" cy="0" r="60" stroke-width="3" stroke="#888" fill="#fff" />
+	<!--<circle cx="0" cy="0" r="30" stroke-width="3" stroke="#888" fill="#80cbc4" />-->
+	<circle cx="0" cy="0" r="30" stroke-width="3" stroke="#888" fill="#c1e5e3" />
+	<animateTransform attributeName="transform" 
+					attributeType="XML" 
+					dur="8s" 
+					repeatCount="indefinite" 
+					type="rotate" 
+					from="0" 
+					to="360" >
+	</animateTransform>
+</g>
+*/
+	appendMoon() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
+		const wp2 = w*0.5;
+		const hp2 = h*0.5;
+		const r = Math.min(wp2, hp2)*0.2;
 		
-		/*
-		const BALLWRAPPER = document.getElementById(this.BALLID);
-		if (BALLWRAPPER) {
-			console.log('APPEND SVG AND BALL!!!!!');
-			BALLWRAPPER.appendChild(svg);
-		}
-		*/
-		//$(this.el).append(svg);
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		//<path d="M-150,150 A150,150 0 0,1 150,150 Z" style="stroke:#aaa;stroke-width:12;fill:#ccc;opacity:1;" />
+		//<circle cx="0" cy="-60" r="80" style="stroke:#aaa;stroke-width:10;fill:#fff;opacity:1;"/>
+		//const d = 'M-'+hp2+',0 A150,150 0 0,1 150,140 Z';
+		
+		const r2 = r*2;
+		const d = 'M0,-'+r2+' L0,'+r2;
+		
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttributeNS(null, 'd', d);
+		path.style.stroke = '#000';
+		path.style.strokeWidth = '1';
+		path.style.fill = 'none';
+		path.style.opacity = '1';
+		//path.style.transform = 'scale(0.25,0.25)';
+		group.appendChild(path);
+		
+		//	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
+		const c = document.createElementNS(svgNS, "circle");
+		c.setAttribute('cx', 0);
+		c.setAttribute('cy', -r2);
+		c.setAttribute('r', r);
+		c.setAttribute('stroke', '#f00');
+		c.setAttribute('stroke-width', 2);
+		c.setAttribute('fill', '#f80');
+		c.setAttribute('opacity', 1);
+		group.appendChild(c);
+		
+		const c2 = document.createElementNS(svgNS, "circle");
+		c2.setAttribute('cx', 0);
+		c2.setAttribute('cy', r2);
+		c2.setAttribute('r', r);
+		c2.setAttribute('stroke', '#f00');
+		c2.setAttribute('stroke-width', 2);
+		c2.setAttribute('fill', '#0f0');
+		c2.setAttribute('opacity', 1);
+		group.appendChild(c2);
+		
+		const rot = document.createElementNS(svgNS, 'animateTransform');
+		rot.setAttribute('attributeName', 'transform');
+		rot.setAttribute('attributeType', 'XML');
+		rot.setAttribute('dur', '60s');
+		rot.setAttribute('repeatCount', 'indefinite');
+		rot.setAttribute('type', 'rotate');
+		rot.setAttribute('from', '0');
+		rot.setAttribute('to', '360');
+		group.appendChild(rot);
+		
+		$('#space').append(group);
 	}
 	
 	render() {
-		//$(this.el).empty();
-		/*const html =
-			'<div class="row">'+
-				'<div class="col s12">'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.BALLID+'"></div>'+
-						'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-					'</div>'+
-				'</div>'+
-			'</div>';
-		$(html).appendTo(this.el);
-		*/
+		$(this.el).empty();
 		this.rendered = true;
 		this.createSpace();
 		this.appendMoon();
-		/*
-		if (this.areModelsReady()) {
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html = '<div class="error-message"><p>'+errorMessages+'</p></div>';
-				$(html).appendTo('#'+this.FELID);
-				if (errorMessages.indexOf('Auth failed') >= 0) {
-					this.forceLogout(this.FELID);
-				}
-			} else {
-				this.createBall();
-			}
-		} else {
-			console.log('MenuView => render models ARE NOT READY!!!!');
-			this.showSpinner('#'+this.BALLID);
-		}
-		*/
+		this.appendSun();
 	}
 }

@@ -70,8 +70,8 @@ export default class MenuView extends View {
 	createSpace() {
 		$(this.el).empty();
 		
-		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height-18;
+		const w = this.REO.width-2; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-2;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
@@ -165,8 +165,8 @@ export default class MenuView extends View {
 		//$('#'+this.BALLID).empty();
 		//$(this.el).empty();
 		
-		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height-18;
+		const w = this.REO.width-2; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-2;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
 		

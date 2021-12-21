@@ -40,12 +40,19 @@ export default class MenuView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				
+				this.createSpace();
+				this.appendMoon();
+				/*
 				if (this.rendered===true) {
-					//this.createBall();
-					this.createBackground();
+					
+					this.createSpace();
+					this.appendMoon();
+					
 				} else {
 					this.render();
 				}
+				*/
 			}
 		}
 	}
@@ -60,7 +67,7 @@ export default class MenuView extends View {
 	</defs>
 	<rect x="-900" y="-500" width="1800" height="900" fill="url(#grad)" stroke-width="0" stroke="#000" />
 	*/
-	createBackground() {
+	createSpace() {
 		$(this.el).empty();
 		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
@@ -74,6 +81,7 @@ export default class MenuView extends View {
 		svg.setAttributeNS(null,'width',w);
 		svg.setAttributeNS(null,'height',h);
 		svg.setAttributeNS(null,'viewBox',vb);
+		svg.id = 'space';
 		
 		// Store an array of stop information for the <linearGradient>
 		const stops = [
@@ -153,7 +161,7 @@ export default class MenuView extends View {
 		$(this.el).append(svg);
 	}
 	
-	createBall() {
+	appendMoon() {
 		//$('#'+this.BALLID).empty();
 		//$(this.el).empty();
 		
@@ -161,6 +169,8 @@ export default class MenuView extends View {
 		const h = this.REO.height-18;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
+		
+		/*
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
 		
 		console.log('CREATE SVG CIRCLE!');
@@ -169,6 +179,7 @@ export default class MenuView extends View {
 		svg.setAttributeNS(null,'width',w);
 		svg.setAttributeNS(null,'height',h);
 		svg.setAttributeNS(null,'viewBox',vb);
+		*/
 		
 		
 		/*var rect = document.createElementNS(svgNS,'rect');
@@ -185,15 +196,15 @@ export default class MenuView extends View {
 		var t=document.createTextNode('Hello World');
 		h.appendChild(t);
 		document.body.appendChild(h);*/
-		const r = Math.min(wp2, hp2)*0.9;
+		const r = Math.min(wp2, hp2)*0.5;
 		
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#000'; 
-		c.style.fill = '#8ff';
-		svg.appendChild(c);
+		c.style.fill = '#fff';
+		$('#space').appendChild(c);
 		
 		/*
 		const BALLWRAPPER = document.getElementById(this.BALLID);
@@ -202,7 +213,7 @@ export default class MenuView extends View {
 			BALLWRAPPER.appendChild(svg);
 		}
 		*/
-		$(this.el).append(svg);
+		//$(this.el).append(svg);
 	}
 	
 	render() {
@@ -219,8 +230,8 @@ export default class MenuView extends View {
 		$(html).appendTo(this.el);
 		*/
 		this.rendered = true;
-		this.createBackground();
-		//this.createBall();
+		this.createSpace();
+		this.appendMoon();
 		/*
 		if (this.areModelsReady()) {
 			const errorMessages = this.modelsErrorMessages();

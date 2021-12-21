@@ -51,6 +51,7 @@ export default class MenuView extends View {
 	
 	createBall() {
 		//$('#'+this.BALLID).empty();
+		$(this.el).empty();
 		
 		console.log('CREATE SVG BALL!');
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -97,7 +98,7 @@ export default class MenuView extends View {
 			BALLWRAPPER.appendChild(svg);
 		}
 		*/
-		$(this.el).empty().appendChild(svg);
+		$(this.el).append(svg);
 	}
 	
 	render() {

@@ -169,7 +169,7 @@ export default class MenuView extends View {
 		path.style.stroke = '#000';
 		path.style.strokeWidth = '1';
 		path.style.fill = 'none';
-		path.style.opacity = '1';
+		path.style.opacity = '0';
 		//path.style.transform = 'scale(0.25,0.25)';
 		group.appendChild(path);
 		
@@ -178,7 +178,7 @@ export default class MenuView extends View {
 		c.setAttribute('cx', 0);
 		c.setAttribute('cy', -r2);
 		c.setAttribute('r', r3);
-		c.setAttribute('stroke', '#f00');
+		c.setAttribute('stroke', '#a50');
 		c.setAttribute('stroke-width', 1);
 		c.setAttribute('fill', '#f80');
 		c.setAttribute('opacity', 1);
@@ -188,9 +188,9 @@ export default class MenuView extends View {
 		c2.setAttribute('cx', 0);
 		c2.setAttribute('cy', r2);
 		c2.setAttribute('r', r3);
-		c2.setAttribute('stroke', '#f00');
+		c2.setAttribute('stroke', '#a00');
 		c2.setAttribute('stroke-width', 1);
-		c2.setAttribute('fill', '#0f0');
+		c2.setAttribute('fill', '#f00');
 		c2.setAttribute('opacity', 1);
 		group.appendChild(c2);
 		

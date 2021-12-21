@@ -35,7 +35,7 @@ export default class MenuView extends View {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				this.createSpace();
-				this.appendMoon();
+				this.appendMoons();
 				this.appendSun();
 			}
 		}
@@ -145,13 +145,13 @@ export default class MenuView extends View {
 	</animateTransform>
 </g>
 */
-	appendMoon() {
+	appendMoons() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
-		const r = Math.min(wp2, hp2)*0.2;
+		const r = Math.min(wp2, hp2)*0.5;
 		
 		
 		const group = document.createElementNS(svgNS, "g");
@@ -160,8 +160,9 @@ export default class MenuView extends View {
 		//<circle cx="0" cy="-60" r="80" style="stroke:#aaa;stroke-width:10;fill:#fff;opacity:1;"/>
 		//const d = 'M-'+hp2+',0 A150,150 0 0,1 150,140 Z';
 		
-		const r2 = r*2;
+		const r2 = r+r*0.5;
 		const d = 'M0,-'+r2+' L0,'+r2;
+		const r3 = r*0.1;
 		
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
@@ -176,9 +177,9 @@ export default class MenuView extends View {
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttribute('cx', 0);
 		c.setAttribute('cy', -r2);
-		c.setAttribute('r', r);
+		c.setAttribute('r', r3);
 		c.setAttribute('stroke', '#f00');
-		c.setAttribute('stroke-width', 2);
+		c.setAttribute('stroke-width', 1);
 		c.setAttribute('fill', '#f80');
 		c.setAttribute('opacity', 1);
 		group.appendChild(c);
@@ -186,9 +187,9 @@ export default class MenuView extends View {
 		const c2 = document.createElementNS(svgNS, "circle");
 		c2.setAttribute('cx', 0);
 		c2.setAttribute('cy', r2);
-		c2.setAttribute('r', r);
+		c2.setAttribute('r', r3);
 		c2.setAttribute('stroke', '#f00');
-		c2.setAttribute('stroke-width', 2);
+		c2.setAttribute('stroke-width', 1);
 		c2.setAttribute('fill', '#0f0');
 		c2.setAttribute('opacity', 1);
 		group.appendChild(c2);
@@ -210,7 +211,7 @@ export default class MenuView extends View {
 		$(this.el).empty();
 		this.rendered = true;
 		this.createSpace();
-		this.appendMoon();
+		this.appendMoons();
 		this.appendSun();
 	}
 }

@@ -170,6 +170,7 @@ export default class MenuView extends View {
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
 		
+		const svgNS = 'http://www.w3.org/2000/svg';
 		/*
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
 		

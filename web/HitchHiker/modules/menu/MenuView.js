@@ -56,10 +56,10 @@ export default class MenuView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const svg = document.createElementNS(svgNS, "svg");
 		
-		const w = this.REO.width-10;
-		const h = this.REO.height-10;
-		const wp2 = Math.round(w/2);
-		const hp2 = Math.round(h/2);
+		const w = Math.round(this.REO.width*0.75);
+		const h = Math.round(this.REO.height*0.75);
+		const wp2 = Math.round(w*0.5);
+		const hp2 = Math.round(h*0.5);
 		
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
 		svg.setAttributeNS(null,'width',w);

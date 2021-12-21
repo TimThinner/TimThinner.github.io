@@ -81,14 +81,14 @@ export default class MenuView extends View {
 		var t=document.createTextNode('Hello World');
 		h.appendChild(t);
 		document.body.appendChild(h);*/
-		const r = Math.min(wp2, hp2) - 18;
+		const r = Math.min(wp2, hp2)*0.9;
 		
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#000'; 
-		c.style.fill = '#f80';
+		c.style.fill = '#8ff';
 		svg.appendChild(c);
 		
 		/*

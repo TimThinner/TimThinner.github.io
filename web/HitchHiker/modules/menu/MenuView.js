@@ -53,12 +53,8 @@ export default class MenuView extends View {
 		//$('#'+this.BALLID).empty();
 		$(this.el).empty();
 		
-		console.log('CREATE SVG BALL!');
-		const svgNS = 'http://www.w3.org/2000/svg';
-		const svg = document.createElementNS(svgNS, "svg");
-		
-		const w = Math.round(this.REO.width*0.75);
-		const h = Math.round(this.REO.height*0.75);
+		const w = this.REO.width;
+		const h = this.REO.height;
 		const wp2 = Math.round(w*0.5);
 		const hp2 = Math.round(h*0.5);
 		
@@ -66,6 +62,13 @@ export default class MenuView extends View {
 		svg.setAttributeNS(null,'width',w);
 		svg.setAttributeNS(null,'height',h);
 		svg.setAttributeNS(null,'viewBox',vb);
+		
+		
+		console.log('CREATE SVG CIRCLE!');
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(svgNS, "svg");
+		
+		
 		
 		/*var rect = document.createElementNS(svgNS,'rect');
 		rect.setAttribute('x',5);
@@ -81,7 +84,7 @@ export default class MenuView extends View {
 		var t=document.createTextNode('Hello World');
 		h.appendChild(t);
 		document.body.appendChild(h);*/
-		const r = Math.min(wp2, hp2);
+		const r = Math.min(wp2, hp2) - 20;
 		
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', 0);

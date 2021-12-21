@@ -31,11 +31,21 @@ export default class MenuView extends View {
 		$(this.el).empty();
 	}
 	
+	sunRadius() {
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
+		const wp2 = w*0.5;
+		const hp2 = h*0.5;
+		const r = Math.min(wp2, hp2)*0.5;
+		return r;
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				this.createSpace();
-				this.appendMoons();
+				this.appendMoon();
+				this.appendMoon();
 				this.appendSun();
 			}
 		}
@@ -108,11 +118,7 @@ export default class MenuView extends View {
 	
 	appendSun() {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height-18;
-		const wp2 = w*0.5;
-		const hp2 = h*0.5;
-		const r = Math.min(wp2, hp2)*0.5;
+		const r = this.sunRadius();
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
@@ -145,25 +151,14 @@ export default class MenuView extends View {
 	</animateTransform>
 </g>
 */
-	appendMoons() {
+	appendMoon(df, rf, fillcolor, dur) {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height-18;
-		const wp2 = w*0.5;
-		const hp2 = h*0.5;
-		const r = Math.min(wp2, hp2)*0.5;
-		
-		
+		const r = this.sunRadius();
 		const group = document.createElementNS(svgNS, "g");
 		
-		
-		//<path d="M-150,150 A150,150 0 0,1 150,150 Z" style="stroke:#aaa;stroke-width:12;fill:#ccc;opacity:1;" />
-		//<circle cx="0" cy="-60" r="80" style="stroke:#aaa;stroke-width:10;fill:#fff;opacity:1;"/>
-		//const d = 'M-'+hp2+',0 A150,150 0 0,1 150,140 Z';
-		
-		const r2 = r+r*0.5;
+		const r2 = r+r*df; //0.5;
 		const d = 'M0,-'+r2+' L0,'+r2;
-		const r3 = r*0.1;
+		const r3 = r*rf;//0.1;
 		
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
@@ -179,26 +174,16 @@ export default class MenuView extends View {
 		c.setAttribute('cx', 0);
 		c.setAttribute('cy', -r2);
 		c.setAttribute('r', r3);
-		c.setAttribute('stroke', '#a50');
+		c.setAttribute('stroke', '#aaa');
 		c.setAttribute('stroke-width', 1);
-		c.setAttribute('fill', '#f80');
+		c.setAttribute('fill', fillcolor);
 		c.setAttribute('opacity', 1);
 		group.appendChild(c);
-		
-		const c2 = document.createElementNS(svgNS, "circle");
-		c2.setAttribute('cx', 0);
-		c2.setAttribute('cy', r2);
-		c2.setAttribute('r', r3);
-		c2.setAttribute('stroke', '#a00');
-		c2.setAttribute('stroke-width', 1);
-		c2.setAttribute('fill', '#f00');
-		c2.setAttribute('opacity', 1);
-		group.appendChild(c2);
 		
 		const rot = document.createElementNS(svgNS, 'animateTransform');
 		rot.setAttribute('attributeName', 'transform');
 		rot.setAttribute('attributeType', 'XML');
-		rot.setAttribute('dur', '50s');
+		rot.setAttribute('dur', dur);
 		rot.setAttribute('repeatCount', 'indefinite');
 		rot.setAttribute('type', 'rotate');
 		rot.setAttribute('from', '0');
@@ -206,66 +191,16 @@ export default class MenuView extends View {
 		group.appendChild(rot);
 		
 		$('#space').append(group);
-		
-		
-		
-		const group2 = document.createElementNS(svgNS, "g");
-		const r22 = r+r*0.7;
-		const d2 = 'M-'+r22+',0 L'+r22+',0';
-		const r33 = r*0.13;
-		
-		const path2 = document.createElementNS(svgNS, "path");
-		path2.setAttributeNS(null, 'd', d2);
-		path2.style.stroke = '#000';
-		path2.style.strokeWidth = '1';
-		path2.style.fill = 'none';
-		path2.style.opacity = '0';
-		//path.style.transform = 'scale(0.25,0.25)';
-		group2.appendChild(path2);
-		
-		//	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
-		const c3 = document.createElementNS(svgNS, "circle");
-		c3.setAttribute('cx', -r22);
-		c3.setAttribute('cy', 0);
-		c3.setAttribute('r', r33);
-		c3.setAttribute('stroke', '#aaa');
-		c3.setAttribute('stroke-width', 1);
-		c3.setAttribute('fill', '#ccc');
-		c3.setAttribute('opacity', 1);
-		group2.appendChild(c3);
-		
-		const c4 = document.createElementNS(svgNS, "circle");
-		c4.setAttribute('cx', r22);
-		c4.setAttribute('cy', 0);
-		c4.setAttribute('r', r33);
-		c4.setAttribute('stroke', '#aa0');
-		c4.setAttribute('stroke-width', 1);
-		c4.setAttribute('fill', '#ff0');
-		c4.setAttribute('opacity', 1);
-		group2.appendChild(c4);
-		
-		const rot2 = document.createElementNS(svgNS, 'animateTransform');
-		rot2.setAttribute('attributeName', 'transform');
-		rot2.setAttribute('attributeType', 'XML');
-		rot2.setAttribute('dur', '60s');
-		rot2.setAttribute('repeatCount', 'indefinite');
-		rot2.setAttribute('type', 'rotate');
-		rot2.setAttribute('from', '0');
-		rot2.setAttribute('to', '360');
-		group2.appendChild(rot2);
-		
-		$('#space').append(group2);
-		
-		
-		
-		
 	}
 	
 	render() {
 		$(this.el).empty();
 		this.rendered = true;
 		this.createSpace();
-		this.appendMoons();
+		this.appendMoon(0.3, 0.1, '#8cf', '10s');
+		this.appendMoon(0.4, 0.12, '#f88', '20s');
+		this.appendMoon(0.5, 0.14, '#ff8', '30s');
+		this.appendMoon(0.6, 0.16, '#f80', '40s');
 		this.appendSun();
 	}
 }

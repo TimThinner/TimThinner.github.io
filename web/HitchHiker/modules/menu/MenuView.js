@@ -117,7 +117,18 @@ export default class MenuView extends View {
 		
 		$(this.el).append(svg);
 	}
-	
+/*
+#fbe9e7 deep-orange lighten-5
+#ffccbc deep-orange lighten-4
+#ffab91 deep-orange lighten-3
+#ff8a65 deep-orange lighten-2
+#ff7043 deep-orange lighten-1
+#ff5722 deep-orange
+#f4511e deep-orange darken-1
+#e64a19 deep-orange darken-2
+#d84315 deep-orange darken-3
+#bf360c deep-orange darken-4
+*/
 	appendSun() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
@@ -125,8 +136,8 @@ export default class MenuView extends View {
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
-		c.style.stroke = '#000'; 
-		c.style.fill = '#fff';
+		c.style.stroke = '#333'; 
+		c.style.fill = '#bf360c';
 		$('#space').append(c);
 	}
 /*
@@ -176,7 +187,7 @@ export default class MenuView extends View {
 		c.setAttribute('cx', 0);
 		c.setAttribute('cy', -r2);
 		c.setAttribute('r', r3);
-		c.setAttribute('stroke', '#aaa');
+		c.setAttribute('stroke', '#333');
 		c.setAttribute('stroke-width', 1);
 		c.setAttribute('fill', fillcolor);
 		c.setAttribute('opacity', 1);
@@ -194,15 +205,28 @@ export default class MenuView extends View {
 		
 		$('#space').append(group);
 	}
-	
+/*
+#fbe9e7 deep-orange lighten-5
+#ffccbc deep-orange lighten-4
+#ffab91 deep-orange lighten-3
+#ff8a65 deep-orange lighten-2
+#ff7043 deep-orange lighten-1
+#ff5722 deep-orange
+#f4511e deep-orange darken-1
+#e64a19 deep-orange darken-2
+#d84315 deep-orange darken-3
+#bf360c deep-orange darken-4
+*/
 	render() {
 		$(this.el).empty();
 		this.rendered = true;
 		this.createSpace();
-		this.appendMoon(0.3, 0.1, '#8cf', '10s');
-		this.appendMoon(0.4, 0.12, '#f88', '20s');
-		this.appendMoon(0.5, 0.14, '#ff8', '30s');
-		this.appendMoon(0.6, 0.16, '#f80', '40s');
+		this.appendMoon(0.3, 0.10, '#ff5722', '10s');
+		this.appendMoon(0.4, 0.12, '#ff7043', '15s');
+		this.appendMoon(0.5, 0.14, '#ff8a65', '20s');
+		this.appendMoon(0.6, 0.16, '#ffab91', '25s');
+		this.appendMoon(0.7, 0.18, '#ffccbc', '30s');
+		this.appendMoon(0.8, 0.20, '#fbe9e7', '35s');
 		this.appendSun();
 	}
 }

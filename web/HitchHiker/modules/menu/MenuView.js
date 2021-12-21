@@ -44,8 +44,10 @@ export default class MenuView extends View {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				this.createSpace();
-				this.appendMoon();
-				this.appendMoon();
+				this.appendMoon(0.3, 0.1, '#8cf', '10s');
+				this.appendMoon(0.4, 0.12, '#f88', '20s');
+				this.appendMoon(0.5, 0.14, '#ff8', '30s');
+				this.appendMoon(0.6, 0.16, '#f80', '40s');
 				this.appendSun();
 			}
 		}

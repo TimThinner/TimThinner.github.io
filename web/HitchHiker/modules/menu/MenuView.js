@@ -53,10 +53,10 @@ export default class MenuView extends View {
 		//$('#'+this.BALLID).empty();
 		$(this.el).empty();
 		
-		const w = this.REO.width;
-		const h = this.REO.height;
-		const wp2 = Math.round(w*0.5);
-		const hp2 = Math.round(h*0.5);
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
+		const wp2 = w*0.5;
+		const hp2 = h*0.5;
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
 		
 		console.log('CREATE SVG CIRCLE!');
@@ -81,14 +81,14 @@ export default class MenuView extends View {
 		var t=document.createTextNode('Hello World');
 		h.appendChild(t);
 		document.body.appendChild(h);*/
-		const r = Math.min(wp2, hp2) - 20;
+		const r = Math.min(wp2, hp2) - 18;
 		
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#000'; 
-		c.style.fill = '#fff';
+		c.style.fill = '#f80';
 		svg.appendChild(c);
 		
 		/*

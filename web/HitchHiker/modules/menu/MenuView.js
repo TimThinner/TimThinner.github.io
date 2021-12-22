@@ -48,7 +48,7 @@ export default class MenuView extends View {
 		const y_shift = h*0.5-100;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		
-		console.log('BACK BUTTON TRANSLATE Y');
+		console.log('BACK BUTTON SCALE');
 		
 		const group = document.createElementNS(svgNS, "g");
 		group.id = 'backbutton';
@@ -63,11 +63,12 @@ export default class MenuView extends View {
 		const d_b = 'M-40,0 L0,-30 L0,-10 L50,-10 L50,10 L0,10 L0,30 L-40,0 Z';
 		const path_b = document.createElementNS(svgNS, "path");
 		path_b.setAttributeNS(null, 'd', d_b);
-		path_b.setAttributeNS(null,'transform','translateY('+y_shift+'px)');
 		path_b.style.stroke = '#444';
 		path_b.style.strokeWidth = 5;
 		path_b.style.fill = '#444';
 		group.appendChild(path_b);
+		
+		group.setAttributeNS(null,'transform','scale(0.5)');
 		
 		$('#space').append(group);
 	}

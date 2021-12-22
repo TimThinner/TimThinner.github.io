@@ -40,39 +40,6 @@ export default class MenuView extends View {
 		return r;
 	}
 	
-	appendBackButton() {
-		//const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height-18;
-		//const wp2 = w*0.5;
-		//const hp2 = h*0.5;
-		const y_shift = h*0.5-52;
-		const svgNS = 'http://www.w3.org/2000/svg';
-		
-		console.log('BACK BUTTON SCALE TRANSLATEY');
-		
-		const group = document.createElementNS(svgNS, "g");
-		group.id = 'backbutton';
-		const d_a = 'M0,-45 L50,-45 A20,20 0 0,1 70,-25 L70,25 A20,20 0 0,1 50,45 L-50,45 A20,20 0 0,1 -70,25 L-70,-25 A20,20 0 0,1 -50,-45 L0,-45';
-		const path_a = document.createElementNS(svgNS, "path");
-		path_a.setAttributeNS(null, 'd', d_a);
-		path_a.style.stroke = '#ccc';
-		path_a.style.strokeWidth = 5;
-		path_a.style.fill = '#fff';
-		group.appendChild(path_a);
-		
-		const d_b = 'M-40,0 L0,-30 L0,-10 L50,-10 L50,10 L0,10 L0,30 L-40,0 Z';
-		const path_b = document.createElementNS(svgNS, "path");
-		path_b.setAttributeNS(null, 'd', d_b);
-		path_b.style.stroke = '#444';
-		path_b.style.strokeWidth = 5;
-		path_b.style.fill = '#444';
-		group.appendChild(path_b);
-		
-		group.setAttributeNS(null,'transform','scale(0.5) translateY('+y_shift+'px)');
-		
-		$('#space').append(group);
-	}
-	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -84,7 +51,7 @@ export default class MenuView extends View {
 				this.appendMoon(0.7, 0.18, '#ffccbc', '30s');
 				this.appendMoon(0.8, 0.20, '#fbe9e7', '35s');
 				this.appendSun();
-				this.appendBackButton();
+				
 			}
 		}
 	}
@@ -107,8 +74,6 @@ export default class MenuView extends View {
 	*/
 	createSpace() {
 		$(this.el).empty();
-		
-		console.log('SET SPACE');
 		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
@@ -165,8 +130,6 @@ export default class MenuView extends View {
 		svg.appendChild(defs);
 		svg.appendChild(rect);
 		
-		console.log('SET SPACE DONE!');
-		
 		$(this.el).append(svg);
 	}
 /*
@@ -190,6 +153,10 @@ export default class MenuView extends View {
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#333'; 
 		c.style.fill = '#bf360c';
+		c.style.cursor = 'pointer';
+		c.addEventListener("click", function(){
+			console.log('SUN CLICKED!');
+		}, false);
 		$('#space').append(c);
 	}
 /*
@@ -280,6 +247,6 @@ export default class MenuView extends View {
 		this.appendMoon(0.7, 0.18, '#ffccbc', '30s');
 		this.appendMoon(0.8, 0.20, '#fbe9e7', '35s');
 		this.appendSun();
-		this.appendBackButton();
+		
 	}
 }

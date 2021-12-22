@@ -101,7 +101,7 @@ export default class MenuView extends View {
 	createSpace() {
 		$(this.el).empty();
 		
-		console.log('SET SPACE HUU HAA!');
+		console.log('SET SPACE HUU HAA HOO OJOJO!');
 		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
@@ -117,22 +117,38 @@ export default class MenuView extends View {
 		svg.id = 'space';
 		
 		// Store an array of stop information for the gradient
+		var stops = [
+			{"color":"#fff","offset": "10%"},
+			{"color":"#aaa","offset": "50%"},
+			{"color":"#555","offset": "90%"}
+		];
+		/*
 		const stops = [
 			{"style":"stop-color:#fff; stop-opacity:1","offset": "10%"}
 			//{"style":"#stop-color:#eee; stop-opacity:1","offset": "50%"},
 			//{"style":"#stop-color:#ddd; stop-opacity:1","offset": "90%"}
-		];
+		];*/
 		const defs = document.createElementNS(svgNS, 'defs');
 		const gradient = document.createElementNS(svgNS, 'radialGradient');
 		const rect = document.createElementNS(svgNS, 'rect');
-		
+		/*
 		// Parses an array of stop information and appends <stop> elements to the gradient
 		for (let i = 0, length = stops.length; i < length; i++) {
 			// Create a <stop> element and set its offset based on the position of the for loop.
 			const stop = document.createElementNS(svgNS, 'stop');
 			stop.setAttribute('offset', stops[i].offset);
-			stop.setAttribute('style', stops[i].style);
+			stop.setAttribute('stop-color', stops[i].color);
 			// Add the stop to the gradient element.
+			gradient.appendChild(stop);
+		}*/
+		
+		// Parses an array of stop information and appends <stop> elements to the <linearGradient>
+		for (let i=0, length=stops.length; i < length; i++) {
+			// Create a <stop> element and set its offset based on the position of the for loop.
+			var stop = document.createElementNS(svgns, 'stop');
+			stop.setAttribute('offset', stops[i].offset);
+			stop.setAttribute('stop-color', stops[i].color);
+			// Add the stop to the <lineargradient> element.
 			gradient.appendChild(stop);
 		}
 		// Apply the gradient to <defs>

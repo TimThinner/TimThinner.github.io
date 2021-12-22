@@ -40,6 +40,43 @@ export default class MenuView extends View {
 		return r;
 	}
 	
+	appendBackButton() {
+		//const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
+		//const wp2 = w*0.5;
+		//const hp2 = h*0.5;
+		
+		const y_pos = h-100;
+		
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttributeNS(null,'width',150);
+		svg.setAttributeNS(null,'height',100);
+		svg.setAttributeNS(null,'viewBox','-75 -50 150 100');
+		svg.id = 'backbutton';
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const d_a = 'M0,-45 L50,-45 A20,20 0 0,1 70,-25 L70,25 A20,20 0 0,1 50,45 L-50,45 A20,20 0 0,1 -70,25 L-70,-25 A20,20 0 0,1 -50,-45 L0,-45';
+		const path_a = document.createElementNS(svgNS, "path");
+		path_a.setAttributeNS(null, 'd', d_a);
+		path_a.style.stroke = '#ccc';
+		path_a.style.strokeWidth = 5;
+		path_a.style.fill = '#fff';
+		group.appendChild(path_a);
+		
+		const d_b = 'M-40,0 L0,-30 L0,-10 L50,-10 L50,10 L0,10 L0,30 L-40,0 Z';
+		const path_b = document.createElementNS(svgNS, "path");
+		path_b.setAttributeNS(null, 'd', d_b);
+		path_b.style.stroke = '#444';
+		path_b.style.strokeWidth = 5;
+		path_b.style.fill = '#444';
+		group.appendChild(path_b);
+		
+		group.style.transform = 'translateY('+y_pos+'px)';
+		$('#space').append(group);
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -84,8 +121,8 @@ export default class MenuView extends View {
 		// Store an array of stop information for the <linearGradient>
 		const stops = [
 			{"style": "stop-color:#fff; stop-opacity:1","offset": "10%"},
-			{"style": "#stop-color:#eee; stop-opacity:1","offset": "50%"},
-			{"style": "#stop-color:#ddd; stop-opacity:1","offset": "90%"}
+			{"style": "stop-color:#eee; stop-opacity:1","offset": "50%"},
+			{"style": "stop-color:#ddd; stop-opacity:1","offset": "90%"}
 		];
 		const defs = document.createElementNS(svgNS, 'defs');
 		const gradient = document.createElementNS(svgNS, 'radialGradient');
@@ -230,5 +267,6 @@ export default class MenuView extends View {
 		this.appendMoon(0.7, 0.18, '#ffccbc', '30s');
 		this.appendMoon(0.8, 0.20, '#fbe9e7', '35s');
 		this.appendSun();
+		this.appendBackButton();
 	}
 }

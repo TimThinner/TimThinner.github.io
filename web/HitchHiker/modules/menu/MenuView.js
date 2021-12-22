@@ -45,10 +45,10 @@ export default class MenuView extends View {
 		const h = this.REO.height-18;
 		//const wp2 = w*0.5;
 		//const hp2 = h*0.5;
-		const y_shift = h*0.5-100;
+		const y_shift = h*0.5-52;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		
-		console.log('BACK BUTTON SCALE');
+		console.log('BACK BUTTON SCALE TRANSLATEY');
 		
 		const group = document.createElementNS(svgNS, "g");
 		group.id = 'backbutton';
@@ -68,7 +68,7 @@ export default class MenuView extends View {
 		path_b.style.fill = '#444';
 		group.appendChild(path_b);
 		
-		group.setAttributeNS(null,'transform','scale(0.5)');
+		group.setAttributeNS(null,'transform','scale(0.5) translateY('+y_shift+'px)');
 		
 		$('#space').append(group);
 	}

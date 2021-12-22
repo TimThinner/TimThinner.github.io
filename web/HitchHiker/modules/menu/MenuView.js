@@ -68,7 +68,7 @@ export default class MenuView extends View {
 		path_b.style.fill = '#444';
 		group.appendChild(path_b);
 		
-		group.style.transform = 'translateY('+y_pos+'px)';
+		//group.style.transform = 'translateY('+y_pos+'px)';
 		$('#space').append(group);
 	}
 	

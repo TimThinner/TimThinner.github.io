@@ -147,17 +147,19 @@ export default class MenuView extends View {
 	appendSun() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
+		// <a href="../index.html#HitchHiker"></a>
+		const a = document.createElementNS(svgNS, "a");
+		a.setAttributeNS(null,'href','../index.html#HitchHiker');
+		console.log('Sun with a LINK!');
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#333'; 
 		c.style.fill = '#bf360c';
-		c.style.cursor = 'pointer';
-		c.addEventListener("click", function(){
-			console.log('SUN CLICKED!');
-		}, false);
-		$('#space').append(c);
+		a.appendChild(c);
+		
+		$('#space').append(a);
 	}
 /*
 <g opacity="0.75">

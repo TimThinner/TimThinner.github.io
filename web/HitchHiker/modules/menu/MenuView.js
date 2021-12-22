@@ -39,7 +39,7 @@ export default class MenuView extends View {
 		const r = Math.min(wp2, hp2)*0.5;
 		return r;
 	}
-	/*
+	
 	appendBackButton() {
 		//const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
@@ -71,7 +71,7 @@ export default class MenuView extends View {
 		group.style.transform = 'translateY('+y_pos+'px)';
 		$('#space').append(group);
 	}
-	*/
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -83,7 +83,7 @@ export default class MenuView extends View {
 				this.appendMoon(0.7, 0.18, '#ffccbc', '30s');
 				this.appendMoon(0.8, 0.20, '#fbe9e7', '35s');
 				this.appendSun();
-				//this.appendBackButton();
+				this.appendBackButton();
 			}
 		}
 	}
@@ -124,9 +124,9 @@ export default class MenuView extends View {
 		
 		// Store an array of stop information for the gradient
 		var stops = [
-			{"color":"#fff","offset": "10%"},
-			{"color":"#aaa","offset": "50%"},
-			{"color":"#555","offset": "90%"}
+			{"color":"#eee","offset": "10%"},
+			{"color":"#777","offset": "50%"},
+			{"color":"#000","offset": "90%"}
 		];
 		/*
 		const stops = [
@@ -279,6 +279,6 @@ export default class MenuView extends View {
 		this.appendMoon(0.7, 0.18, '#ffccbc', '30s');
 		this.appendMoon(0.8, 0.20, '#fbe9e7', '35s');
 		this.appendSun();
-		//this.appendBackButton();
+		this.appendBackButton();
 	}
 }

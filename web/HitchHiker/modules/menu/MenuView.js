@@ -39,7 +39,7 @@ export default class MenuView extends View {
 		const r = Math.min(wp2, hp2)*0.5;
 		return r;
 	}
-	
+	/*
 	appendBackButton() {
 		//const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
@@ -49,13 +49,6 @@ export default class MenuView extends View {
 		const y_pos = h-100;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
-		
-		/*
-		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttributeNS(null,'width',150);
-		svg.setAttributeNS(null,'height',100);
-		svg.setAttributeNS(null,'viewBox','-75 -50 150 100');
-		svg.id = 'backbutton';*/
 		
 		const group = document.createElementNS(svgNS, "g");
 		group.id = 'backbutton';
@@ -78,7 +71,7 @@ export default class MenuView extends View {
 		group.style.transform = 'translateY('+y_pos+'px)';
 		$('#space').append(group);
 	}
-	
+	*/
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -158,6 +151,8 @@ export default class MenuView extends View {
 		
 		svg.appendChild(defs);
 		svg.appendChild(rect);
+		
+		console.log('SET SPACE DONE!');
 		
 		$(this.el).append(svg);
 	}

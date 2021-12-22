@@ -101,7 +101,7 @@ export default class MenuView extends View {
 	createSpace() {
 		$(this.el).empty();
 		
-		console.log('SET SPACE HUU!');
+		console.log('SET SPACE HUU HAA!');
 		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
@@ -118,9 +118,9 @@ export default class MenuView extends View {
 		
 		// Store an array of stop information for the gradient
 		const stops = [
-			{"style":"stop-color:#fff; stop-opacity:1","offset": "10%"},
-			{"style":"#stop-color:#eee; stop-opacity:1","offset": "50%"},
-			{"style":"#stop-color:#ddd; stop-opacity:1","offset": "90%"}
+			{"style":"stop-color:#fff; stop-opacity:1","offset": "10%"}
+			//{"style":"#stop-color:#eee; stop-opacity:1","offset": "50%"},
+			//{"style":"#stop-color:#ddd; stop-opacity:1","offset": "90%"}
 		];
 		const defs = document.createElementNS(svgNS, 'defs');
 		const gradient = document.createElementNS(svgNS, 'radialGradient');

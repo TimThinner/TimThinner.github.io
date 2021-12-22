@@ -269,6 +269,6 @@ export default class MenuView extends View {
 		this.appendMoon(0.7, 0.18, '#ffccbc', '30s');
 		this.appendMoon(0.8, 0.20, '#fbe9e7', '35s');
 		this.appendSun();
-		this.appendBackButton();
+		//this.appendBackButton();
 	}
 }

@@ -45,9 +45,7 @@ export default class MenuView extends View {
 		const h = this.REO.height-18;
 		//const wp2 = w*0.5;
 		//const hp2 = h*0.5;
-		
-		const y_pos = h-100;
-		
+		const y_shift = h*0.5-50;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		
 		const group = document.createElementNS(svgNS, "g");
@@ -63,12 +61,12 @@ export default class MenuView extends View {
 		const d_b = 'M-40,0 L0,-30 L0,-10 L50,-10 L50,10 L0,10 L0,30 L-40,0 Z';
 		const path_b = document.createElementNS(svgNS, "path");
 		path_b.setAttributeNS(null, 'd', d_b);
+		path_b.setAttributeNS(null,'transform','scale(0.5) translateY('+y_shift+'px)');
 		path_b.style.stroke = '#444';
 		path_b.style.strokeWidth = 5;
 		path_b.style.fill = '#444';
 		group.appendChild(path_b);
 		
-		//group.style.transform = 'translateY('+y_pos+'px)';
 		$('#space').append(group);
 	}
 	
@@ -107,7 +105,7 @@ export default class MenuView extends View {
 	createSpace() {
 		$(this.el).empty();
 		
-		console.log('SET SPACE HUU HAA HOO OJOJO!');
+		console.log('SET SPACE');
 		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;

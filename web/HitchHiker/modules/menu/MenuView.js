@@ -91,8 +91,7 @@ export default class MenuView extends View {
 		// Store an array of stop information for the gradient
 		var stops = [
 			{"color":"#fff","offset": "10%"},
-			{"color":"#444","offset": "50%"},
-			{"color":"#000","offset": "90%"}
+			{"color":"#000","offset": "50%"}
 		];
 		/*
 		const stops = [
@@ -200,10 +199,8 @@ export default class MenuView extends View {
 		path.style.strokeWidth = '1';
 		path.style.fill = 'none';
 		path.style.opacity = '0';
-		//path.style.transform = 'scale(0.25,0.25)';
 		group.appendChild(path);
 		
-		//	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttribute('cx', 0);
 		c.setAttribute('cy', -r2);

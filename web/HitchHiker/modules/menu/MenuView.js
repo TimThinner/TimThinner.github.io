@@ -44,13 +44,15 @@ export default class MenuView extends View {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				this.createSpace();
-				this.appendMoon(0.2, 0.10, '#ffff00', '10s', true); // true = counter clockwise
-				this.appendMoon(0.3, 0.12, '#ff5722', '15s');
-				this.appendMoon(0.4, 0.14, '#ff7043', '20s');
-				this.appendMoon(0.5, 0.16, '#ff8a65', '25s');
-				this.appendMoon(0.6, 0.18, '#ffab91', '30s');
-				this.appendMoon(0.7, 0.20, '#ffccbc', '35s');
-				this.appendMoon(0.8, 0.22, '#fbe9e7', '40s');
+				this.appendMoon(0.2, 0.10, '#d84315', '10s', true); // true = counter clockwise
+				this.appendMoon(0.3, 0.12, '#e64a19', '15s');
+				this.appendMoon(0.4, 0.14, '#f4511e', '20s');
+				this.appendMoon(0.5, 0.16, '#ff5722', '25s');
+				this.appendMoon(0.6, 0.18, '#ff7043', '30s');
+				this.appendMoon(0.7, 0.20, '#ff8a65', '35s');
+				this.appendMoon(0.8, 0.22, '#ffab91', '40s');
+				this.appendMoon(0.9, 0.24, '#ffccbc', '45s');
+				this.appendMoon(1.0, 0.26, '#fbe9e7', '50s');
 				this.appendSun();
 			}
 		}
@@ -250,13 +252,15 @@ export default class MenuView extends View {
 		$(this.el).empty();
 		this.rendered = true;
 		this.createSpace();
-		this.appendMoon(0.2, 0.10, '#ffff00', '10s', true); // true = counter clockwise
-		this.appendMoon(0.3, 0.12, '#ff5722', '15s');
-		this.appendMoon(0.4, 0.14, '#ff7043', '20s');
-		this.appendMoon(0.5, 0.16, '#ff8a65', '25s');
-		this.appendMoon(0.6, 0.18, '#ffab91', '30s');
-		this.appendMoon(0.7, 0.20, '#ffccbc', '35s');
-		this.appendMoon(0.8, 0.22, '#fbe9e7', '40s');
+		this.appendMoon(0.2, 0.10, '#d84315', '10s', true); // true = counter clockwise
+		this.appendMoon(0.3, 0.12, '#e64a19', '15s');
+		this.appendMoon(0.4, 0.14, '#f4511e', '20s');
+		this.appendMoon(0.5, 0.16, '#ff5722', '25s');
+		this.appendMoon(0.6, 0.18, '#ff7043', '30s');
+		this.appendMoon(0.7, 0.20, '#ff8a65', '35s');
+		this.appendMoon(0.8, 0.22, '#ffab91', '40s');
+		this.appendMoon(0.9, 0.24, '#ffccbc', '45s');
+		this.appendMoon(1.0, 0.26, '#fbe9e7', '50s');
 		this.appendSun();
 	}
 }

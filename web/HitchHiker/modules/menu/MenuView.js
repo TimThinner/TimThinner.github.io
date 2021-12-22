@@ -49,14 +49,16 @@ export default class MenuView extends View {
 		const y_pos = h-100;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		/*
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttributeNS(null,'width',150);
 		svg.setAttributeNS(null,'height',100);
 		svg.setAttributeNS(null,'viewBox','-75 -50 150 100');
-		svg.id = 'backbutton';
+		svg.id = 'backbutton';*/
 		
 		const group = document.createElementNS(svgNS, "g");
-		
+		group.id = 'backbutton';
 		const d_a = 'M0,-45 L50,-45 A20,20 0 0,1 70,-25 L70,25 A20,20 0 0,1 50,45 L-50,45 A20,20 0 0,1 -70,25 L-70,-25 A20,20 0 0,1 -50,-45 L0,-45';
 		const path_a = document.createElementNS(svgNS, "path");
 		path_a.setAttributeNS(null, 'd', d_a);

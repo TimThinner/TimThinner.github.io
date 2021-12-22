@@ -44,14 +44,14 @@ export default class MenuView extends View {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				this.createSpace();
-				this.appendMoon(0.3, 0.10, '#ff5722', '10s');
-				this.appendMoon(0.4, 0.12, '#ff7043', '15s', true); // true = counter clockwise
-				this.appendMoon(0.5, 0.14, '#ff8a65', '20s');
-				this.appendMoon(0.6, 0.16, '#ffab91', '25s');
-				this.appendMoon(0.7, 0.18, '#ffccbc', '30s');
-				this.appendMoon(0.8, 0.20, '#fbe9e7', '35s');
+				this.appendMoon(0.2, 0.10, '#ffff00', '10s', true); // true = counter clockwise
+				this.appendMoon(0.3, 0.12, '#ff5722', '15s');
+				this.appendMoon(0.4, 0.14, '#ff7043', '20s');
+				this.appendMoon(0.5, 0.16, '#ff8a65', '25s');
+				this.appendMoon(0.6, 0.18, '#ffab91', '30s');
+				this.appendMoon(0.7, 0.20, '#ffccbc', '35s');
+				this.appendMoon(0.8, 0.22, '#fbe9e7', '40s');
 				this.appendSun();
-				
 			}
 		}
 	}
@@ -250,14 +250,13 @@ export default class MenuView extends View {
 		$(this.el).empty();
 		this.rendered = true;
 		this.createSpace();
-		this.appendMoon(0.3, 0.10, '#ff5722', '10s');
-		this.appendMoon(0.4, 0.12, '#ff7043', '15s', true); // true = counter clockwise
-		this.appendMoon(0.4, 0.12, '#ff7043', '15s');
-		this.appendMoon(0.5, 0.14, '#ff8a65', '20s');
-		this.appendMoon(0.6, 0.16, '#ffab91', '25s');
-		this.appendMoon(0.7, 0.18, '#ffccbc', '30s');
-		this.appendMoon(0.8, 0.20, '#fbe9e7', '35s');
+		this.appendMoon(0.2, 0.10, '#ffff00', '10s', true); // true = counter clockwise
+		this.appendMoon(0.3, 0.12, '#ff5722', '15s');
+		this.appendMoon(0.4, 0.14, '#ff7043', '20s');
+		this.appendMoon(0.5, 0.16, '#ff8a65', '25s');
+		this.appendMoon(0.6, 0.18, '#ffab91', '30s');
+		this.appendMoon(0.7, 0.20, '#ffccbc', '35s');
+		this.appendMoon(0.8, 0.22, '#fbe9e7', '40s');
 		this.appendSun();
-		
 	}
 }

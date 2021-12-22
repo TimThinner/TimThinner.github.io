@@ -211,7 +211,7 @@ export default class MenuView extends View {
 		c.setAttribute('opacity', 1);
 		group.appendChild(c);
 		
-		if (typeof cc !== 'undefined) {
+		if (typeof cc !== 'undefined') {
 			const rot = document.createElementNS(svgNS, 'animateTransform');
 			rot.setAttribute('attributeName', 'transform');
 			rot.setAttribute('attributeType', 'XML');

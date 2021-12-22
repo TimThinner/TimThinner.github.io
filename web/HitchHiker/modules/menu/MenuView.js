@@ -45,7 +45,7 @@ export default class MenuView extends View {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				this.createSpace();
 				this.appendMoon(0.3, 0.10, '#ff5722', '10s');
-				this.appendMoon(0.4, 0.12, '#ff7043', '15s');
+				this.appendMoon(0.4, 0.12, '#ff7043', '15s', true); // true = counter clockwise
 				this.appendMoon(0.5, 0.14, '#ff8a65', '20s');
 				this.appendMoon(0.6, 0.16, '#ffab91', '25s');
 				this.appendMoon(0.7, 0.18, '#ffccbc', '30s');
@@ -184,7 +184,7 @@ export default class MenuView extends View {
 	</animateTransform>
 </g>
 */
-	appendMoon(df, rf, fillcolor, dur) {
+	appendMoon(df, rf, fillcolor, dur, cc) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
 		const group = document.createElementNS(svgNS, "g");
@@ -211,16 +211,27 @@ export default class MenuView extends View {
 		c.setAttribute('opacity', 1);
 		group.appendChild(c);
 		
-		const rot = document.createElementNS(svgNS, 'animateTransform');
-		rot.setAttribute('attributeName', 'transform');
-		rot.setAttribute('attributeType', 'XML');
-		rot.setAttribute('dur', dur);
-		rot.setAttribute('repeatCount', 'indefinite');
-		rot.setAttribute('type', 'rotate');
-		rot.setAttribute('from', '0');
-		rot.setAttribute('to', '360');
-		group.appendChild(rot);
-		
+		if (typeof cc !== 'undefined) {
+			const rot = document.createElementNS(svgNS, 'animateTransform');
+			rot.setAttribute('attributeName', 'transform');
+			rot.setAttribute('attributeType', 'XML');
+			rot.setAttribute('dur', dur);
+			rot.setAttribute('repeatCount', 'indefinite');
+			rot.setAttribute('type', 'rotate');
+			rot.setAttribute('from', '360');
+			rot.setAttribute('to', '0');
+			group.appendChild(rot);
+		} else {
+			const rot = document.createElementNS(svgNS, 'animateTransform');
+			rot.setAttribute('attributeName', 'transform');
+			rot.setAttribute('attributeType', 'XML');
+			rot.setAttribute('dur', dur);
+			rot.setAttribute('repeatCount', 'indefinite');
+			rot.setAttribute('type', 'rotate');
+			rot.setAttribute('from', '0');
+			rot.setAttribute('to', '360');
+			group.appendChild(rot);
+		}
 		$('#space').append(group);
 	}
 /*
@@ -240,6 +251,7 @@ export default class MenuView extends View {
 		this.rendered = true;
 		this.createSpace();
 		this.appendMoon(0.3, 0.10, '#ff5722', '10s');
+		this.appendMoon(0.4, 0.12, '#ff7043', '15s', true); // true = counter clockwise
 		this.appendMoon(0.4, 0.12, '#ff7043', '15s');
 		this.appendMoon(0.5, 0.14, '#ff8a65', '20s');
 		this.appendMoon(0.6, 0.16, '#ffab91', '25s');

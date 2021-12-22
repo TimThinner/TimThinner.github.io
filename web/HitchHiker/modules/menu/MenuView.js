@@ -90,8 +90,8 @@ export default class MenuView extends View {
 		
 		// Store an array of stop information for the gradient
 		var stops = [
-			{"color":"#eee","offset": "10%"},
-			{"color":"#777","offset": "50%"},
+			{"color":"#fff","offset": "10%"},
+			{"color":"#444","offset": "50%"},
 			{"color":"#000","offset": "90%"}
 		];
 		/*

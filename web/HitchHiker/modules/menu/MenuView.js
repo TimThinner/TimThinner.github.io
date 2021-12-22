@@ -118,7 +118,7 @@ export default class MenuView extends View {
 		
 		// Store an array of stop information for the gradient
 		const stops = [
-			{"style":"stop-color:#fff; stop-opacity:1","offset": "10%"}
+			{"style":"stop-color:#fff; stop-opacity:1","offset": "10%"},
 			{"style":"#stop-color:#eee; stop-opacity:1","offset": "50%"},
 			{"style":"#stop-color:#ddd; stop-opacity:1","offset": "90%"}
 		];

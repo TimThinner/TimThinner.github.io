@@ -90,6 +90,7 @@ export default class MenuView extends View {
 				this.appendMoon(0.7, 0.18, '#ffccbc', '30s');
 				this.appendMoon(0.8, 0.20, '#fbe9e7', '35s');
 				this.appendSun();
+				//this.appendBackButton();
 			}
 		}
 	}
@@ -107,6 +108,8 @@ export default class MenuView extends View {
 	createSpace() {
 		$(this.el).empty();
 		
+		console.log('SET SPACE!');
+		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
 		const wp2 = w*0.5;
@@ -120,26 +123,26 @@ export default class MenuView extends View {
 		svg.setAttributeNS(null,'viewBox',vb);
 		svg.id = 'space';
 		
-		// Store an array of stop information for the <linearGradient>
+		// Store an array of stop information for the gradient
 		const stops = [
-			{"style": "stop-color:#fff; stop-opacity:1","offset": "10%"},
-			{"style": "stop-color:#eee; stop-opacity:1","offset": "50%"},
-			{"style": "stop-color:#ddd; stop-opacity:1","offset": "90%"}
+			{"style":"stop-color:#fff; stop-opacity:1","offset": "10%"},
+			{"style":"stop-color:#eee; stop-opacity:1","offset": "50%"},
+			{"style":"stop-color:#ddd; stop-opacity:1","offset": "90%"}
 		];
 		const defs = document.createElementNS(svgNS, 'defs');
 		const gradient = document.createElementNS(svgNS, 'radialGradient');
 		const rect = document.createElementNS(svgNS, 'rect');
 		
-		// Parses an array of stop information and appends <stop> elements to the <linearGradient>
+		// Parses an array of stop information and appends <stop> elements to the gradient
 		for (let i = 0, length = stops.length; i < length; i++) {
 			// Create a <stop> element and set its offset based on the position of the for loop.
 			const stop = document.createElementNS(svgNS, 'stop');
 			stop.setAttribute('offset', stops[i].offset);
 			stop.setAttribute('style', stops[i].style);
-			// Add the stop to the <lineargradient> element.
+			// Add the stop to the gradient element.
 			gradient.appendChild(stop);
 		}
-		// Apply the <lineargradient> to <defs>
+		// Apply the gradient to <defs>
 		gradient.id = 'grad';
 		gradient.setAttribute('cx', '50%');
 		gradient.setAttribute('cy', '50%');

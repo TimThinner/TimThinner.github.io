@@ -97,6 +97,12 @@ export default class MenuView extends View {
 	</radialGradient>
 	</defs>
 	<rect x="-900" y="-500" width="1800" height="900" fill="url(#grad)" stroke-width="0" stroke="#000" />
+	
+	
+	https://stackoverflow.com/questions/13760299/dynamic-svg-linear-gradient-when-using-javascript
+	
+	
+	
 	*/
 	createSpace() {
 		$(this.el).empty();
@@ -131,24 +137,14 @@ export default class MenuView extends View {
 		const defs = document.createElementNS(svgNS, 'defs');
 		const gradient = document.createElementNS(svgNS, 'radialGradient');
 		const rect = document.createElementNS(svgNS, 'rect');
-		/*
+		
 		// Parses an array of stop information and appends <stop> elements to the gradient
-		for (let i = 0, length = stops.length; i < length; i++) {
+		for (let i=0, length=stops.length; i < length; i++) {
 			// Create a <stop> element and set its offset based on the position of the for loop.
-			const stop = document.createElementNS(svgNS, 'stop');
+			var stop = document.createElementNS(svgNS, 'stop');
 			stop.setAttribute('offset', stops[i].offset);
 			stop.setAttribute('stop-color', stops[i].color);
 			// Add the stop to the gradient element.
-			gradient.appendChild(stop);
-		}*/
-		
-		// Parses an array of stop information and appends <stop> elements to the <linearGradient>
-		for (let i=0, length=stops.length; i < length; i++) {
-			// Create a <stop> element and set its offset based on the position of the for loop.
-			var stop = document.createElementNS(svgns, 'stop');
-			stop.setAttribute('offset', stops[i].offset);
-			stop.setAttribute('stop-color', stops[i].color);
-			// Add the stop to the <lineargradient> element.
 			gradient.appendChild(stop);
 		}
 		// Apply the gradient to <defs>

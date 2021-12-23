@@ -1,5 +1,51 @@
 import View from '../common/View.js';
 
+/*
+#f3e5f5 purple lighten-5
+#e1bee7 purple lighten-4
+#ce93d8 purple lighten-3
+#ba68c8 purple lighten-2
+#ab47bc purple lighten-1
+#9c27b0 purple
+#8e24aa purple darken-1
+#7b1fa2 purple darken-2
+#6a1b9a purple darken-3
+#4a148c purple darken-4
+
+#e8f5e9 green lighten-5
+#c8e6c9 green lighten-4
+#a5d6a7 green lighten-3
+#81c784 green lighten-2
+#66bb6a green lighten-1
+#4caf50 green
+#43a047 green darken-1
+#388e3c green darken-2
+#2e7d32 green darken-3
+#1b5e20 green darken-4
+
+#fbe9e7 deep-orange lighten-5
+#ffccbc deep-orange lighten-4
+#ffab91 deep-orange lighten-3
+#ff8a65 deep-orange lighten-2
+#ff7043 deep-orange lighten-1
+#ff5722 deep-orange
+#f4511e deep-orange darken-1
+#e64a19 deep-orange darken-2
+#d84315 deep-orange darken-3
+#bf360c deep-orange darken-4
+
+#e1f5fe light-blue lighten-5
+#b3e5fc light-blue lighten-4
+#81d4fa light-blue lighten-3
+#4fc3f7 light-blue lighten-2
+#29b6f6 light-blue lighten-1
+#03a9f4 light-blue
+#039be5 light-blue darken-1
+#0288d1 light-blue darken-2
+#0277bd light-blue darken-3
+#01579b light-blue darken-4
+*/
+
 export default class MenuView extends View {
 	
 	constructor(controller) {
@@ -11,6 +57,7 @@ export default class MenuView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		this.rendered = false;
+		this.selectedColor = 'deep-orange';
 	}
 	
 	show() {
@@ -40,22 +87,42 @@ export default class MenuView extends View {
 		return r;
 	}
 	
-	notify(options) {
-		if (this.controller.visible) {
-			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				this.createSpace();
-				this.appendMoon(0.2, 0.10, '#d84315', '10s', true); // true = counter clockwise
-				this.appendMoon(0.3, 0.12, '#e64a19', '15s');
-				this.appendMoon(0.4, 0.14, '#f4511e', '20s');
-				this.appendMoon(0.5, 0.16, '#ff5722', '25s');
-				this.appendMoon(0.6, 0.18, '#ff7043', '30s');
-				this.appendMoon(0.7, 0.20, '#ff8a65', '35s');
-				this.appendMoon(0.8, 0.22, '#ffab91', '40s');
-				this.appendMoon(0.9, 0.24, '#ffccbc', '45s');
-				this.appendMoon(1.0, 0.26, '#fbe9e7', '50s');
-				this.appendSun();
-			}
-		}
+	appendButtons() {
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
+		const bw = w/9;
+		const bh = h/9;
+		
+		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		//<rect x="120" width="100" height="100" rx="15" />
+		
+		// NOTE: origo is at the center of the view!
+		const r_a = document.createElementNS(svgNS, "rect");
+		r_a.setAttributeNS(null, 'x', -3.5*bw);
+		r_a.setAttributeNS(null, 'y', h/2-bh);
+		r_a.setAttributeNS(null, 'width', bw);
+		r_a.setAttributeNS(null, 'height', bh);
+		r_a.setAttributeNS(null, 'rx', 10);
+		
+		r_a.style.stroke = '#444';
+		r_a.style.strokeWidth = 3;
+		r_a_b.style.fill = '#eee';
+		
+		r_a.addEventListener("click", function(){
+			console.log('CLICKED A!');
+		}, false);
+		
+		$('#space').append(r_a);
+		/*
+		const ba = svgObject.getElementById('hex-a');
+		hexA.addEventListener("click", function(){
+			self.controller.models['MenuModel'].setSelected('DA');
+		
+		}, false);
+		hexA.addEventListener("mouseover", function(event){ self.setHoverEffect(event, 1); }, false);
+		hexA.addEventListener("mouseout", function(event){ self.setHoverEffect(event, 0); }, false);
+		*/
 	}
 	
 	/*
@@ -68,10 +135,7 @@ export default class MenuView extends View {
 	</defs>
 	<rect x="-900" y="-500" width="1800" height="900" fill="url(#grad)" stroke-width="0" stroke="#000" />
 	
-	
 	https://stackoverflow.com/questions/13760299/dynamic-svg-linear-gradient-when-using-javascript
-	
-	
 	
 	*/
 	createSpace() {
@@ -133,20 +197,25 @@ export default class MenuView extends View {
 		
 		$(this.el).append(svg);
 	}
-/*
-#fbe9e7 deep-orange lighten-5
-#ffccbc deep-orange lighten-4
-#ffab91 deep-orange lighten-3
-#ff8a65 deep-orange lighten-2
-#ff7043 deep-orange lighten-1
-#ff5722 deep-orange
-#f4511e deep-orange darken-1
-#e64a19 deep-orange darken-2
-#d84315 deep-orange darken-3
-#bf360c deep-orange darken-4
-*/
+	
 	appendSun() {
 		const svgNS = 'http://www.w3.org/2000/svg';
+		/*
+			#4a148c purple darken-4
+			#1b5e20 green darken-4
+			#bf360c deep-orange darken-4
+			#01579b light-blue darken-4
+		*/
+		let fill = '#ffffff';
+		if (this.selectedColor === 'purple') {
+			fill = '#4a148c';
+		} else if (this.selectedColor === 'green') {
+			fill = '#1b5e20';
+		} else if  (this.selectedColor === 'deep-orange') {
+			fill = '#bf360c';
+		} else { // light-blue
+			fill = '#01579b';
+		}
 		const r = this.sunRadius();
 		// <a href="../index.html#HitchHiker"></a>
 		const a = document.createElementNS(svgNS, "a");
@@ -157,9 +226,8 @@ export default class MenuView extends View {
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#333'; 
-		c.style.fill = '#bf360c';
+		c.style.fill = fill;
 		a.appendChild(c);
-		
 		$('#space').append(a);
 	}
 /*
@@ -236,31 +304,76 @@ export default class MenuView extends View {
 		}
 		$('#space').append(group);
 	}
-/*
-#fbe9e7 deep-orange lighten-5
-#ffccbc deep-orange lighten-4
-#ffab91 deep-orange lighten-3
-#ff8a65 deep-orange lighten-2
-#ff7043 deep-orange lighten-1
-#ff5722 deep-orange
-#f4511e deep-orange darken-1
-#e64a19 deep-orange darken-2
-#d84315 deep-orange darken-3
-#bf360c deep-orange darken-4
-*/
+	/*
+		purple
+		green
+		deep-orange
+		light-blue
+	*/
+	appendMoons() {
+		if (this.selectedColor === 'purple') {
+			this.appendMoon(0.2, 0.10, '#6a1b9a', '10s');
+			this.appendMoon(0.3, 0.12, '#7b1fa2', '15s', true); // true = counter clockwise
+			this.appendMoon(0.4, 0.14, '#8e24aa', '20s');
+			this.appendMoon(0.5, 0.16, '#9c27b0', '25s', true);
+			this.appendMoon(0.6, 0.18, '#ab47bc', '30s');
+			this.appendMoon(0.7, 0.20, '#ba68c8', '35s', true);
+			this.appendMoon(0.8, 0.22, '#ce93d8', '40s');
+			this.appendMoon(0.9, 0.24, '#e1bee7', '45s', true);
+			this.appendMoon(1.0, 0.26, '#f3e5f5', '50s');
+			
+		} else if (this.selectedColor === 'green') {
+			this.appendMoon(0.2, 0.10, '#2e7d32', '10s', true);
+			this.appendMoon(0.3, 0.12, '#388e3c', '15s');
+			this.appendMoon(0.4, 0.14, '#43a047', '20s');
+			this.appendMoon(0.5, 0.16, '#4caf50', '25s');
+			this.appendMoon(0.6, 0.18, '#66bb6a', '30s');
+			this.appendMoon(0.7, 0.20, '#81c784', '35s');
+			this.appendMoon(0.8, 0.22, '#a5d6a7', '40s');
+			this.appendMoon(0.9, 0.24, '#c8e6c9', '45s');
+			this.appendMoon(1.0, 0.26, '#e8f5e9', '50s');
+			
+		} else if  (this.selectedColor === 'deep-orange') {
+			this.appendMoon(0.2, 0.10, '#d84315', '10s');
+			this.appendMoon(0.3, 0.12, '#e64a19', '15s');
+			this.appendMoon(0.4, 0.14, '#f4511e', '20s');
+			this.appendMoon(0.5, 0.16, '#ff5722', '25s');
+			this.appendMoon(0.6, 0.18, '#ff7043', '30s');
+			this.appendMoon(0.7, 0.20, '#ff8a65', '35s');
+			this.appendMoon(0.8, 0.22, '#ffab91', '40s');
+			this.appendMoon(0.9, 0.24, '#ffccbc', '45s');
+			this.appendMoon(1.0, 0.26, '#fbe9e7', '50s');
+			
+		} else { // light-blue
+			this.appendMoon(0.2, 0.10, '#0277bd', '10s');
+			this.appendMoon(0.3, 0.12, '#0288d1', '15s');
+			this.appendMoon(0.4, 0.14, '#039be5', '20s');
+			this.appendMoon(0.5, 0.16, '#03a9f4', '25s');
+			this.appendMoon(0.6, 0.18, '#29b6f6', '30s', true);
+			this.appendMoon(0.7, 0.20, '#4fc3f7', '35s');
+			this.appendMoon(0.8, 0.22, '#81d4fa', '40s');
+			this.appendMoon(0.9, 0.24, '#b3e5fc', '45s');
+			this.appendMoon(1.0, 0.26, '#e1f5fe', '50s', true);
+		}
+	}
+	
+	notify(options) {
+		if (this.controller.visible) {
+			if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				this.createSpace();
+				this.appendButtons();
+				this.appendMoons();
+				this.appendSun();
+			}
+		}
+	}
+	
 	render() {
 		$(this.el).empty();
 		this.rendered = true;
 		this.createSpace();
-		this.appendMoon(0.2, 0.10, '#d84315', '10s', true); // true = counter clockwise
-		this.appendMoon(0.3, 0.12, '#e64a19', '15s');
-		this.appendMoon(0.4, 0.14, '#f4511e', '20s');
-		this.appendMoon(0.5, 0.16, '#ff5722', '25s');
-		this.appendMoon(0.6, 0.18, '#ff7043', '30s');
-		this.appendMoon(0.7, 0.20, '#ff8a65', '35s');
-		this.appendMoon(0.8, 0.22, '#ffab91', '40s');
-		this.appendMoon(0.9, 0.24, '#ffccbc', '45s');
-		this.appendMoon(1.0, 0.26, '#fbe9e7', '50s');
+		this.appendButtons();
+		this.appendMoons();
 		this.appendSun();
 	}
 }

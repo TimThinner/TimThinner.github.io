@@ -101,7 +101,7 @@ export default class MenuView extends View {
 		// NOTE: origo is at the center of the view!
 		const r_a = document.createElementNS(svgNS, "rect");
 		r_a.setAttributeNS(null, 'x', bw);
-		r_a.setAttributeNS(null, 'y', h/2-bh);
+		r_a.setAttributeNS(null, 'y', h/2-bh-4);
 		r_a.setAttributeNS(null, 'width', bw);
 		r_a.setAttributeNS(null, 'height', bh);
 		r_a.setAttributeNS(null, 'rx', 10);
@@ -124,7 +124,7 @@ export default class MenuView extends View {
 		
 		const r_b = document.createElementNS(svgNS, "rect");
 		r_b.setAttributeNS(null, 'x', 3*bw);
-		r_b.setAttributeNS(null, 'y', h/2-bh);
+		r_b.setAttributeNS(null, 'y', h/2-bh-4);
 		r_b.setAttributeNS(null, 'width', bw);
 		r_b.setAttributeNS(null, 'height', bh);
 		r_b.setAttributeNS(null, 'rx', 10);
@@ -147,7 +147,7 @@ export default class MenuView extends View {
 		
 		const r_c = document.createElementNS(svgNS, "rect");
 		r_c.setAttributeNS(null, 'x', 5*bw);
-		r_c.setAttributeNS(null, 'y', h/2-bh);
+		r_c.setAttributeNS(null, 'y', h/2-bh-4);
 		r_c.setAttributeNS(null, 'width', bw);
 		r_c.setAttributeNS(null, 'height', bh);
 		r_c.setAttributeNS(null, 'rx', 10);
@@ -170,7 +170,7 @@ export default class MenuView extends View {
 		
 		const r_d = document.createElementNS(svgNS, "rect");
 		r_d.setAttributeNS(null, 'x', 7*bw);
-		r_d.setAttributeNS(null, 'y', h/2-bh);
+		r_d.setAttributeNS(null, 'y', h/2-bh-4);
 		r_d.setAttributeNS(null, 'width', bw);
 		r_d.setAttributeNS(null, 'height', bh);
 		r_d.setAttributeNS(null, 'rx', 10);

@@ -378,7 +378,7 @@ export default class MenuView extends View {
 		light-blue
 	*/
 	appendMoons() {
-		if  (this.selectedColor === 'deep-orange') {
+		if (this.selectedColor === 'deep-orange') {
 			this.appendMoon(0.2, 0.10, '#d84315', '10s');
 			this.appendMoon(0.3, 0.12, '#e64a19', '15s');
 			this.appendMoon(0.4, 0.14, '#f4511e', '20s');
@@ -400,7 +400,7 @@ export default class MenuView extends View {
 			this.appendMoon(0.9, 0.24, '#c8e6c9', '45s');
 			this.appendMoon(1.0, 0.26, '#e8f5e9', '50s');
 			
-		} else this.selectedColor === 'light-blue') {
+		} else if (this.selectedColor === 'light-blue') {
 			this.appendMoon(0.2, 0.10, '#0277bd', '10s', true);
 			this.appendMoon(0.3, 0.12, '#0288d1', '15s');
 			this.appendMoon(0.4, 0.14, '#039be5', '20s', true);

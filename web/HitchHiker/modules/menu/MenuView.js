@@ -378,16 +378,16 @@ export default class MenuView extends View {
 		light-blue
 	*/
 	appendMoons() {
-		if (this.selectedColor === 'purple') {
-			this.appendMoon(0.2, 0.10, '#6a1b9a', '10s');
-			this.appendMoon(0.3, 0.12, '#7b1fa2', '15s', true); // true = counter clockwise
-			this.appendMoon(0.4, 0.14, '#8e24aa', '20s');
-			this.appendMoon(0.5, 0.16, '#9c27b0', '25s', true);
-			this.appendMoon(0.6, 0.18, '#ab47bc', '30s');
-			this.appendMoon(0.7, 0.20, '#ba68c8', '35s', true);
-			this.appendMoon(0.8, 0.22, '#ce93d8', '40s');
-			this.appendMoon(0.9, 0.24, '#e1bee7', '45s', true);
-			this.appendMoon(1.0, 0.26, '#f3e5f5', '50s');
+		if  (this.selectedColor === 'deep-orange') {
+			this.appendMoon(0.2, 0.10, '#d84315', '10s');
+			this.appendMoon(0.3, 0.12, '#e64a19', '15s');
+			this.appendMoon(0.4, 0.14, '#f4511e', '20s');
+			this.appendMoon(0.5, 0.16, '#ff5722', '25s');
+			this.appendMoon(0.6, 0.18, '#ff7043', '30s');
+			this.appendMoon(0.7, 0.20, '#ff8a65', '35s');
+			this.appendMoon(0.8, 0.22, '#ffab91', '40s');
+			this.appendMoon(0.9, 0.24, '#ffccbc', '45s');
+			this.appendMoon(1.0, 0.26, '#fbe9e7', '50s');
 			
 		} else if (this.selectedColor === 'green') {
 			this.appendMoon(0.2, 0.10, '#2e7d32', '10s', true);
@@ -400,27 +400,27 @@ export default class MenuView extends View {
 			this.appendMoon(0.9, 0.24, '#c8e6c9', '45s');
 			this.appendMoon(1.0, 0.26, '#e8f5e9', '50s');
 			
-		} else if  (this.selectedColor === 'deep-orange') {
-			this.appendMoon(0.2, 0.10, '#d84315', '10s');
-			this.appendMoon(0.3, 0.12, '#e64a19', '15s');
-			this.appendMoon(0.4, 0.14, '#f4511e', '20s');
-			this.appendMoon(0.5, 0.16, '#ff5722', '25s');
-			this.appendMoon(0.6, 0.18, '#ff7043', '30s');
-			this.appendMoon(0.7, 0.20, '#ff8a65', '35s');
-			this.appendMoon(0.8, 0.22, '#ffab91', '40s');
-			this.appendMoon(0.9, 0.24, '#ffccbc', '45s');
-			this.appendMoon(1.0, 0.26, '#fbe9e7', '50s');
-			
-		} else { // light-blue
-			this.appendMoon(0.2, 0.10, '#0277bd', '10s');
+		} else this.selectedColor === 'light-blue') {
+			this.appendMoon(0.2, 0.10, '#0277bd', '10s', true);
 			this.appendMoon(0.3, 0.12, '#0288d1', '15s');
-			this.appendMoon(0.4, 0.14, '#039be5', '20s');
+			this.appendMoon(0.4, 0.14, '#039be5', '20s', true);
 			this.appendMoon(0.5, 0.16, '#03a9f4', '25s');
-			this.appendMoon(0.6, 0.18, '#29b6f6', '30s', true);
+			this.appendMoon(0.6, 0.18, '#29b6f6', '30s');
 			this.appendMoon(0.7, 0.20, '#4fc3f7', '35s');
 			this.appendMoon(0.8, 0.22, '#81d4fa', '40s');
 			this.appendMoon(0.9, 0.24, '#b3e5fc', '45s');
-			this.appendMoon(1.0, 0.26, '#e1f5fe', '50s', true);
+			this.appendMoon(1.0, 0.26, '#e1f5fe', '50s');
+			
+		} else { //'purple' => GO CRAZY!
+			this.appendMoon(0.2, 0.10, '#6a1b9a', '10s');
+			this.appendMoon(0.3, 0.12, '#7b1fa2', '15s', true); // true = counter clockwise
+			this.appendMoon(0.4, 0.14, '#8e24aa', '20s');
+			this.appendMoon(0.5, 0.16, '#9c27b0', '25s', true);
+			this.appendMoon(0.6, 0.18, '#ab47bc', '30s');
+			this.appendMoon(0.7, 0.20, '#ba68c8', '35s', true);
+			this.appendMoon(0.8, 0.22, '#ce93d8', '40s');
+			this.appendMoon(0.9, 0.24, '#e1bee7', '45s', true);
+			this.appendMoon(1.0, 0.26, '#f3e5f5', '50s');
 		}
 	}
 	

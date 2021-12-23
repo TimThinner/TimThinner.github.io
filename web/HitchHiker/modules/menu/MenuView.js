@@ -107,7 +107,7 @@ export default class MenuView extends View {
 		
 		r_a.style.stroke = '#444';
 		r_a.style.strokeWidth = 3;
-		r_a_b.style.fill = '#eee';
+		r_a.style.fill = '#eee';
 		
 		r_a.addEventListener("click", function(){
 			console.log('CLICKED A!');

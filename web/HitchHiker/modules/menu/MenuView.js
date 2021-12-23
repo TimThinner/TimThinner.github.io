@@ -105,9 +105,14 @@ export default class MenuView extends View {
 		r_a.setAttributeNS(null, 'width', bw);
 		r_a.setAttributeNS(null, 'height', bh);
 		r_a.setAttributeNS(null, 'rx', 10);
-		r_a.style.stroke = '#444';
+		if (this.selectedColor = 'deep-orange') {
+			r_a.style.stroke = '#fff';
+		} else {
+			r_a.style.stroke = '#444';
+		}
 		r_a.style.strokeWidth = 3;
-		r_a.style.fill = '#ff5722';
+		r_a.style.cursor = 'pointer';
+		r_a.style.fill = '#ff5722'; // 'deep-orange'
 		r_a.addEventListener("click", function(){
 			self.selectedColor = 'deep-orange';
 			self.createSpace();
@@ -123,9 +128,14 @@ export default class MenuView extends View {
 		r_b.setAttributeNS(null, 'width', bw);
 		r_b.setAttributeNS(null, 'height', bh);
 		r_b.setAttributeNS(null, 'rx', 10);
-		r_b.style.stroke = '#444';
+		if (this.selectedColor = 'green') {
+			r_b.style.stroke = '#fff';
+		} else {
+			r_b.style.stroke = '#444';
+		}
 		r_b.style.strokeWidth = 3;
-		r_b.style.fill = '#4caf50';
+		r_b.style.cursor = 'pointer';
+		r_b.style.fill = '#4caf50'; //'green'
 		r_b.addEventListener("click", function(){
 			self.selectedColor = 'green';
 			self.createSpace();
@@ -135,19 +145,51 @@ export default class MenuView extends View {
 		}, false);
 		$('#space').append(r_b);
 		
-		
-		//light-blue
-		
-		
-		/*
-		const ba = svgObject.getElementById('hex-a');
-		hexA.addEventListener("click", function(){
-			self.controller.models['MenuModel'].setSelected('DA');
-		
+		const r_c = document.createElementNS(svgNS, "rect");
+		r_c.setAttributeNS(null, 'x', 5*bw);
+		r_c.setAttributeNS(null, 'y', h/2-bh);
+		r_c.setAttributeNS(null, 'width', bw);
+		r_c.setAttributeNS(null, 'height', bh);
+		r_c.setAttributeNS(null, 'rx', 10);
+		if (this.selectedColor = 'light-blue') {
+			r_c.style.stroke = '#fff';
+		} else {
+			r_c.style.stroke = '#444';
+		}
+		r_c.style.strokeWidth = 3;
+		r_c.style.cursor = 'pointer';
+		r_c.style.fill = '#03a9f4'; //'light-blue'
+		r_c.addEventListener("click", function(){
+			self.selectedColor = 'light-blue';
+			self.createSpace();
+			self.appendButtons();
+			self.appendMoons();
+			self.appendSun();
 		}, false);
-		hexA.addEventListener("mouseover", function(event){ self.setHoverEffect(event, 1); }, false);
-		hexA.addEventListener("mouseout", function(event){ self.setHoverEffect(event, 0); }, false);
-		*/
+		$('#space').append(r_c);
+		
+		const r_d = document.createElementNS(svgNS, "rect");
+		r_d.setAttributeNS(null, 'x', 5*bw);
+		r_d.setAttributeNS(null, 'y', h/2-bh);
+		r_d.setAttributeNS(null, 'width', bw);
+		r_d.setAttributeNS(null, 'height', bh);
+		r_d.setAttributeNS(null, 'rx', 10);
+		if (this.selectedColor = 'purple') {
+			r_d.style.stroke = '#fff';
+		} else {
+			r_d.style.stroke = '#444';
+		}
+		r_d.style.strokeWidth = 3;
+		r_d.style.cursor = 'pointer';
+		r_d.style.fill = '#9c27b0'; //'purple'
+		r_d.addEventListener("click", function(){
+			self.selectedColor = 'purple';
+			self.createSpace();
+			self.appendButtons();
+			self.appendMoons();
+			self.appendSun();
+		}, false);
+		$('#space').append(r_d);
 	}
 	
 	/*

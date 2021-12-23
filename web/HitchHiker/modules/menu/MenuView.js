@@ -88,6 +88,7 @@ export default class MenuView extends View {
 	}
 	
 	appendButtons() {
+		const self = this;
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
 		const bw = w/9;
@@ -104,16 +105,32 @@ export default class MenuView extends View {
 		r_a.setAttributeNS(null, 'width', bw);
 		r_a.setAttributeNS(null, 'height', bh);
 		r_a.setAttributeNS(null, 'rx', 10);
-		
 		r_a.style.stroke = '#444';
 		r_a.style.strokeWidth = 3;
-		r_a.style.fill = '#eee';
-		
+		r_a.style.fill = '#ff5722';
 		r_a.addEventListener("click", function(){
-			console.log('CLICKED A!');
+			self.selectedColor = 'deep-orange';
 		}, false);
-		
 		$('#space').append(r_a);
+		
+		const r_b = document.createElementNS(svgNS, "rect");
+		r_b.setAttributeNS(null, 'x', -1.5*bw);
+		r_b.setAttributeNS(null, 'y', h/2-bh);
+		r_b.setAttributeNS(null, 'width', bw);
+		r_b.setAttributeNS(null, 'height', bh);
+		r_b.setAttributeNS(null, 'rx', 10);
+		r_b.style.stroke = '#444';
+		r_b.style.strokeWidth = 3;
+		r_b.style.fill = '#4caf50';
+		r_b.addEventListener("click", function(){
+			self.selectedColor = 'green';
+		}, false);
+		$('#space').append(r_b);
+		
+		
+		//light-blue
+		
+		
 		/*
 		const ba = svgObject.getElementById('hex-a');
 		hexA.addEventListener("click", function(){

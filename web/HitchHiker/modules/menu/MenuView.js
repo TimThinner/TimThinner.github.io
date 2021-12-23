@@ -91,8 +91,8 @@ export default class MenuView extends View {
 		const self = this;
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
-		const bw = w/9;
-		const bh = h/9;
+		const bw = w/18;
+		const bh = h/18;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
 		
@@ -100,7 +100,7 @@ export default class MenuView extends View {
 		
 		// NOTE: origo is at the center of the view!
 		const r_a = document.createElementNS(svgNS, "rect");
-		r_a.setAttributeNS(null, 'x', -3.5*bw);
+		r_a.setAttributeNS(null, 'x', bw);
 		r_a.setAttributeNS(null, 'y', h/2-bh);
 		r_a.setAttributeNS(null, 'width', bw);
 		r_a.setAttributeNS(null, 'height', bh);
@@ -110,11 +110,15 @@ export default class MenuView extends View {
 		r_a.style.fill = '#ff5722';
 		r_a.addEventListener("click", function(){
 			self.selectedColor = 'deep-orange';
+			self.createSpace();
+			self.appendButtons();
+			self.appendMoons();
+			self.appendSun();
 		}, false);
 		$('#space').append(r_a);
 		
 		const r_b = document.createElementNS(svgNS, "rect");
-		r_b.setAttributeNS(null, 'x', -1.5*bw);
+		r_b.setAttributeNS(null, 'x', 3*bw);
 		r_b.setAttributeNS(null, 'y', h/2-bh);
 		r_b.setAttributeNS(null, 'width', bw);
 		r_b.setAttributeNS(null, 'height', bh);
@@ -124,6 +128,10 @@ export default class MenuView extends View {
 		r_b.style.fill = '#4caf50';
 		r_b.addEventListener("click", function(){
 			self.selectedColor = 'green';
+			self.createSpace();
+			self.appendButtons();
+			self.appendMoons();
+			self.appendSun();
 		}, false);
 		$('#space').append(r_b);
 		
@@ -386,7 +394,7 @@ export default class MenuView extends View {
 	}
 	
 	render() {
-		$(this.el).empty();
+		//$(this.el).empty(); NOTE: this.createSpace(); empties the view!
 		this.rendered = true;
 		this.createSpace();
 		this.appendButtons();

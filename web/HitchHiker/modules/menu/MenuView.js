@@ -105,7 +105,7 @@ export default class MenuView extends View {
 		r_a.setAttributeNS(null, 'width', bw);
 		r_a.setAttributeNS(null, 'height', bh);
 		r_a.setAttributeNS(null, 'rx', 10);
-		if (this.selectedColor = 'deep-orange') {
+		if (this.selectedColor === 'deep-orange') {
 			r_a.style.stroke = '#fff';
 		} else {
 			r_a.style.stroke = '#444';
@@ -128,7 +128,7 @@ export default class MenuView extends View {
 		r_b.setAttributeNS(null, 'width', bw);
 		r_b.setAttributeNS(null, 'height', bh);
 		r_b.setAttributeNS(null, 'rx', 10);
-		if (this.selectedColor = 'green') {
+		if (this.selectedColor === 'green') {
 			r_b.style.stroke = '#fff';
 		} else {
 			r_b.style.stroke = '#444';
@@ -151,7 +151,7 @@ export default class MenuView extends View {
 		r_c.setAttributeNS(null, 'width', bw);
 		r_c.setAttributeNS(null, 'height', bh);
 		r_c.setAttributeNS(null, 'rx', 10);
-		if (this.selectedColor = 'light-blue') {
+		if (this.selectedColor === 'light-blue') {
 			r_c.style.stroke = '#fff';
 		} else {
 			r_c.style.stroke = '#444';
@@ -169,12 +169,12 @@ export default class MenuView extends View {
 		$('#space').append(r_c);
 		
 		const r_d = document.createElementNS(svgNS, "rect");
-		r_d.setAttributeNS(null, 'x', 5*bw);
+		r_d.setAttributeNS(null, 'x', 7*bw);
 		r_d.setAttributeNS(null, 'y', h/2-bh);
 		r_d.setAttributeNS(null, 'width', bw);
 		r_d.setAttributeNS(null, 'height', bh);
 		r_d.setAttributeNS(null, 'rx', 10);
-		if (this.selectedColor = 'purple') {
+		if (this.selectedColor === 'purple') {
 			r_d.style.stroke = '#fff';
 		} else {
 			r_d.style.stroke = '#444';

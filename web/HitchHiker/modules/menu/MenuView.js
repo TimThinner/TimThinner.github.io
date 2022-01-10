@@ -146,6 +146,7 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
+			self.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_a);
 		
@@ -169,6 +170,7 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
+			self.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_b);
 		
@@ -192,6 +194,7 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
+			self.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_c);
 		
@@ -215,6 +218,7 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
+			self.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_d);
 	}
@@ -338,7 +342,7 @@ export default class MenuView extends View {
 		const r = this.sunRadius();
 		const group = document.createElementNS(svgNS, "g");
 		
-		console.log('MOON WITH ELLIPTICAL ORBIT!');
+		console.log('MOON WITH ELLIPTICAL ORBIT VER 2!');
 		
 		/*
 		<path class="a" d="M-300,0 
@@ -382,7 +386,7 @@ export default class MenuView extends View {
 		am.setAttribute('dur', dur);
 		am.setAttribute('repeatCount', 'indefinite');
 		const mp = document.createElementNS(svgNS, 'mpath');
-		mp.setAttributeNS(xlinkNS, 'href', '#orbit' ); // Check if this works!
+		mp.setAttributeNS(xlinkNS, 'href', '#orbit'); // Check if this works!
 		am.appendChild(mp);
 		c.appendChild(am);
 		
@@ -515,8 +519,6 @@ export default class MenuView extends View {
 			this.appendMoon(0.9, 0.24, '#e1bee7', '45s', true);
 			this.appendMoon(1.0, 0.26, '#f3e5f5', '50s');
 		}
-		
-		this.appendEllipticalMoon(1.1, 0.10, '#ff0000', '60s');
 	}
 	
 	notify(options) {
@@ -526,6 +528,7 @@ export default class MenuView extends View {
 				this.appendButtons();
 				this.appendMoons();
 				this.appendSun();
+				this.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
 			}
 		}
 	}
@@ -537,5 +540,6 @@ export default class MenuView extends View {
 		this.appendButtons();
 		this.appendMoons();
 		this.appendSun();
+		this.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
 	}
 }

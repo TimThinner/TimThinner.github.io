@@ -351,7 +351,7 @@ export default class MenuView extends View {
 		A300,200 0 0,1 -300,0"  />
 		*/
 		const rx = r+r*df; //0.5;
-		const ry = r+r*df*0.5;
+		const ry = r+r*df*0.1;
 		const d = 'M-'+rx+',0'+
 		' A'+rx+','+ry+' 0 0,1 0,-'+ry+
 		' A'+rx+','+ry+' 0 0,1 0,'+ry+
@@ -368,8 +368,8 @@ export default class MenuView extends View {
 		group.appendChild(path);
 		
 		const c = document.createElementNS(svgNS, "circle");
-		c.setAttribute('cx', 0);
-		c.setAttribute('cy', -ry);
+		c.setAttribute('cx', -rx);
+		c.setAttribute('cy', 0);
 		c.setAttribute('r', r3);
 		c.setAttribute('stroke', '#333');
 		c.setAttribute('stroke-width', 1);
@@ -387,10 +387,11 @@ export default class MenuView extends View {
 		am.setAttribute('repeatCount', 'indefinite');
 		const mp = document.createElementNS(svgNS, 'mpath');
 		mp.setAttributeNS(xlinkNS, 'href', '#orbit'); // Check if this works!
+		
 		am.appendChild(mp);
 		c.appendChild(am);
-		
 		group.appendChild(c);
+		
 		$('#space').append(group);
 	}
 /*

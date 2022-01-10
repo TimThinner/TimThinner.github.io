@@ -338,6 +338,8 @@ export default class MenuView extends View {
 		const r = this.sunRadius();
 		const group = document.createElementNS(svgNS, "g");
 		
+		console.log('MOON WITH ELLIPTICAL ORBIT!');
+		
 		/*
 		<path class="a" d="M-300,0 
 		A300,200 0 0,1 0,-200 
@@ -385,6 +387,7 @@ export default class MenuView extends View {
 		c.appendChild(am);
 		
 		group.appendChild(c);
+		$('#space').append(group);
 	}
 /*
 <g opacity="0.75">

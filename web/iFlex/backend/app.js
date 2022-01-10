@@ -4,21 +4,19 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-//const feedsRoutes = require('./api/routes/feeds');
 const usersRoutes = require('./api/routes/users');
 const regcodesRoutes = require('./api/routes/regcodes');
 const readkeysRoutes = require('./api/routes/readkeys');
-//const bindingsRoutes = require('./api/routes/bindings');
-//const apartmentsRoutes = require('./api/routes/apartments');
-//const logsRoutes = require('./api/routes/logs');
-//const visitorcountRoutes = require('./api/routes/visitorcounts');
 const feedbackRoutes = require('./api/routes/feedbacks');
-//const alarmRoutes = require('./api/routes/alarms');
 const proxeRoutes = require('./api/routes/proxes');
-//const csvRoutes = require('./api/routes/csvs');
-//const xlsxRoutes = require('./api/routes/xlsxs');
 const configurationRoutes = require('./api/routes/configurations');
 
+/*
+mongoose.connect('mongodb://192.168.122.134:27017/iflex', {
+	useNewUrlParser: true,
+	useCreateIndex: true,
+	useUnifiedTopology: true
+});*/
 mongoose.connect('mongodb://localhost:27017/iflex', {
 	useNewUrlParser: true,
 	useCreateIndex: true,
@@ -52,19 +50,12 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-//app.use('/feeds', feedsRoutes);
+
 app.use('/users', usersRoutes);
 app.use('/regcodes', regcodesRoutes);
 app.use('/readkeys', readkeysRoutes);
-//app.use('/bindings', bindingsRoutes);
-//app.use('/apartments', apartmentsRoutes);
-//app.use('/logs', logsRoutes);
-//app.use('/visitorcounts', visitorcountRoutes);
 app.use('/feedbacks', feedbackRoutes);
-//app.use('/alarms', alarmRoutes);
 app.use('/proxes', proxeRoutes);
-//app.use('/csvs', csvRoutes);
-//app.use('/xlsxs', xlsxRoutes);
 app.use('/configurations', configurationRoutes);
 
 // If we reach this line we have to report an error.

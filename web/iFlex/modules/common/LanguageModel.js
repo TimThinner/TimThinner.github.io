@@ -35,8 +35,8 @@ export default class LanguageModel {
 				'USER_NEW_PASSWORD':'New password',
 				'USER_CONSENT_TXT':'You can also view your ',
 				'USER_CONSENT_LINK_TXT':'consent form.',
-				'USER_GDPR_TXT':'You can also view ',
-				'USER_GDPR_LINK_TXT':'GDPR text.',
+				'USER_GDPR_TXT':'You can also view the ',
+				'USER_GDPR_LINK_TXT':'informed consent (GDPR).',
 				'ADMIN_START_LABEL':'Start',
 				'ADMIN_END_LABEL':'End',
 				'ADMIN_CREATE_NEW_REGCODE_TITLE':'Create a new RegCode',
@@ -166,7 +166,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_4A':'Käsiteltävät henkilötiedot ovat: Asunnon lämpötila, kosteus, CO2, VOC-yhdisteet, käyttäjäpalaute, käyttäjän sähköpostiosoite, asunnon numero.',
 				'GDPR_CHAPTER_4B':'Henkilöt edustavat seuraavia ryhmiä: HOAS-opiskelija-asunnossa asuvia tutkimukseen osallistuvia henkilöitä.',
 				'GDPR_CHAPTER_5':'5. Käsittelytarkoitus ja oikeusperuste',
-				'GDPR_CHAPTER_5A':'Henkilötietojen käsittelyn tarkoitus on: VTT käsittelee kerättyjä tietoja suostumuksellasi projektissa tehtävään energia-aiheiseen tutkimukseen asuntojen olosuhteista ja energiankulutuksesta. Tietoja käytetään ainoastaan tutkimustarkoituksiin. Tietoja ei yhdistetä yksittäiseen henkilöön.',
+				'GDPR_CHAPTER_5A':'Henkilötietojen käsittelyn tarkoitus on: VTT käsittelee kerättyjä tietoja suostumuksellasi projektissa tehtävään energia-aiheiseen tutkimukseen asuntojen olosuhteista ja energiankulutuksesta. Tietoja käytetään ainoastaan tutkimustarkoituksiin.',
 				'GDPR_CHAPTER_5B':'Henkilötietojen käsittelyn oikeusperuste<sup>1</sup>:',
 				'GDPR_CHAPTER_5BA':'Yleistä etua koskeva tehtävä',
 				'GDPR_CHAPTER_5BAA':'tieteellinen tai historiallinen tutkimus tai tilastointi',
@@ -248,7 +248,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.12.13'
+				'MENU_VERSION':'v 22.01.10'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -282,8 +282,8 @@ export default class LanguageModel {
 				'USER_NEW_PASSWORD':'Uusi salasana',
 				'USER_CONSENT_TXT':'Täältä voit katsella ',
 				'USER_CONSENT_LINK_TXT':'suostumuslomakettasi.',
-				'USER_GDPR_TXT':'Täältä voit katsella ',
-				'USER_GDPR_LINK_TXT':'GDPR tekstiä.',
+				'USER_GDPR_TXT':'Täältä voit lukea ',
+				'USER_GDPR_LINK_TXT':'tietosuojaselosteen (GDPR).',
 				'ADMIN_START_LABEL':'Alkaa',
 				'ADMIN_END_LABEL':'Loppuu',
 				'ADMIN_CREATE_NEW_REGCODE_TITLE':'Uusi rekisteröintikoodi',
@@ -413,7 +413,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_4A':'Käsiteltävät henkilötiedot ovat: Asunnon lämpötila, kosteus, CO2, VOC-yhdisteet, käyttäjäpalaute, käyttäjän sähköpostiosoite, asunnon numero.',
 				'GDPR_CHAPTER_4B':'Henkilöt edustavat seuraavia ryhmiä: HOAS-opiskelija-asunnossa asuvia tutkimukseen osallistuvia henkilöitä.',
 				'GDPR_CHAPTER_5':'5. Käsittelytarkoitus ja oikeusperuste',
-				'GDPR_CHAPTER_5A':'Henkilötietojen käsittelyn tarkoitus on: VTT käsittelee kerättyjä tietoja suostumuksellasi projektissa tehtävään energia-aiheiseen tutkimukseen asuntojen olosuhteista ja energiankulutuksesta. Tietoja käytetään ainoastaan tutkimustarkoituksiin. Tietoja ei yhdistetä yksittäiseen henkilöön.',
+				'GDPR_CHAPTER_5A':'Henkilötietojen käsittelyn tarkoitus on: VTT käsittelee kerättyjä tietoja suostumuksellasi projektissa tehtävään energia-aiheiseen tutkimukseen asuntojen olosuhteista ja energiankulutuksesta. Tietoja käytetään ainoastaan tutkimustarkoituksiin.',
 				'GDPR_CHAPTER_5B':'Henkilötietojen käsittelyn oikeusperuste<sup>1</sup>:',
 				'GDPR_CHAPTER_5BA':'Yleistä etua koskeva tehtävä',
 				'GDPR_CHAPTER_5BAA':'tieteellinen tai historiallinen tutkimus tai tilastointi',
@@ -495,7 +495,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.12.13'
+				'MENU_VERSION':'v 22.01.10'
 			}
 		}
 	}

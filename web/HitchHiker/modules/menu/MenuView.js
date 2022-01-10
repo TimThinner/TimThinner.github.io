@@ -360,10 +360,10 @@ export default class MenuView extends View {
 		
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
-		path.style.stroke = '#000';
+		path.style.stroke = '#888';
 		path.style.strokeWidth = '1';
 		path.style.fill = 'none';
-		path.style.opacity = '0';
+		path.style.opacity = '1';
 		path.id = 'orbit';
 		group.appendChild(path);
 		

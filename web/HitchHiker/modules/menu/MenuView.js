@@ -362,20 +362,22 @@ export default class MenuView extends View {
 		' A'+rx+','+ry+' 0 0,1 -'+rx+',0';
 		const r3 = r*rf;//0.1;
 		
-		/*const path = document.createElementNS(svgNS, "path");
+		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = '#888';
 		path.style.strokeWidth = '1';
 		path.style.fill = 'none';
 		path.style.opacity = '1';
-		*/
+		$('#space').append(path);
+		
+		
 		//path.id = 'orbit';
 		//$('#space').append(path);
 		//group.appendChild(path);
 		
 		const c = document.createElementNS(svgNS, "circle");
-		c.setAttribute('cx', -rx);
-		c.setAttribute('cy', 0);
+		//c.setAttribute('cx', -rx);
+		//c.setAttribute('cy', 0);
 		c.setAttribute('r', r3);
 		c.setAttribute('stroke', '#333');
 		c.setAttribute('stroke-width', 1);
@@ -394,7 +396,7 @@ export default class MenuView extends View {
 		</circle>*/
 		
 		const am = document.createElementNS(svgNS, 'animateMotion');
-		am.setAttribute('begin', '0s');
+		//am.setAttribute('begin', '0s');
 		am.setAttribute('dur', dur);
 		am.setAttribute('repeatCount', 'indefinite');
 		am.setAttribute('path', d);

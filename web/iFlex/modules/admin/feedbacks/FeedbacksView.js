@@ -49,7 +49,7 @@ export default class FeedbacksView extends View {
 	feedback: { type:Number },
 	feedbackText: { type:String }
 	
-	'<th>UserId</th>'+
+	'<th>User</th>'+
 	'<th>Type</th>'+
 	'<th>Created</th>'+
 	'<th>RefTime</th>'+
@@ -62,24 +62,20 @@ export default class FeedbacksView extends View {
 		if (typeof this.models['FeedbacksModel'].feedbacks !== 'undefined') {
 			
 			this.models['FeedbacksModel'].feedbacks.forEach(fb => {
-				
-				console.log(['fb=',fb]);
-				/*
+				//console.log(['fb=',fb]);
+				let email = '-';
+				if (fb.feedbackType === 'Apartment') {
+					email = fb.userId.email;
+				}
 				const html = '<tr>'+
-					'<td>'+user.email+'</td>'+
-					'<td>'+user.created+'</td>'+
-					'<td>'+regcode_apaid+'</td>'+
-					'<td>'+obix_code_link+'</td>'+
-					'<td>'+user.request_for_sensors+'</td>'+
-					'<td>'+consent_a_validity+'</td>'+
-					'<td>'+consent_b_validity+'</td>'+
-					'<td>'+regcode_code+'</td>'+
-					'<td>'+regcode_validity+'</td>'+
-					'<td>'+readkey+'</td>'+
-					'<td>'+readkey_validity+'</td>'+
+					'<td>'+email+'</td>'+
+					'<td>'+fb.feedbackType+'</td>'+
+					'<td>'+fb.created+'</td>'+
+					'<td>'+fb.refTime+'</td>'+
+					'<td>'+fb.feedback+'</td>'+
+					'<td>'+fb.feedbackText+'</td>'+
 					'</tr>';
 				$(html).appendTo("#feedbacks-body");
-				*/
 			});
 		}
 	}
@@ -147,7 +143,7 @@ export default class FeedbacksView extends View {
 						'<table class="striped">'+
 							'<thead>'+
 								'<tr>'+
-									'<th>UserId</th>'+
+									'<th>User</th>'+
 									'<th>Type</th>'+
 									'<th>Created</th>'+
 									'<th>RefTime</th>'+

@@ -246,10 +246,10 @@ export default class MenuView extends View {
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const xlinkNS = "http://www.w3.org/1999/xlink";
+		//const xlinkNS = "http://www.w3.org/1999/xlink";
 		
 		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttribute('xmlns:xlink',xlinkNS); //TRY THIS!
+		//svg.setAttribute('xmlns:xlink',xlinkNS); //TRY THIS!
 		
 		svg.setAttributeNS(null,'width',w);
 		svg.setAttributeNS(null,'height',h);
@@ -342,11 +342,11 @@ export default class MenuView extends View {
 */
 	appendEllipticalMoon(df, rf, fillcolor, dur) {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const xlinkNS = "http://www.w3.org/1999/xlink";
+		//const xlinkNS = "http://www.w3.org/1999/xlink";
 		const r = this.sunRadius();
 		//const group = document.createElementNS(svgNS, "g");
 		
-		console.log('MOON WITH ELLIPTICAL ORBIT VER 5!');
+		console.log('MOON WITH ELLIPTICAL ORBIT VER 6!');
 		
 		/*
 		<path class="a" d="M-300,0 
@@ -362,14 +362,15 @@ export default class MenuView extends View {
 		' A'+rx+','+ry+' 0 0,1 -'+rx+',0';
 		const r3 = r*rf;//0.1;
 		
-		const path = document.createElementNS(svgNS, "path");
+		/*const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = '#888';
 		path.style.strokeWidth = '1';
 		path.style.fill = 'none';
 		path.style.opacity = '1';
-		path.id = 'orbit';
-		$('#space').append(path);
+		*/
+		//path.id = 'orbit';
+		//$('#space').append(path);
 		//group.appendChild(path);
 		
 		const c = document.createElementNS(svgNS, "circle");
@@ -386,14 +387,23 @@ export default class MenuView extends View {
 			<mpath xlink:href="#orbit"/>
 		</animateMotion>
 		*/
+		/*
+		<circle r="5" fill="red">
+			<animateMotion dur="10s" repeatCount="indefinite"
+				path="M20,50 C20,-50 180,150 180,50 C180-50 20,150 20,50 z" />
+		</circle>*/
+		
 		const am = document.createElementNS(svgNS, 'animateMotion');
 		am.setAttribute('begin', '0s');
 		am.setAttribute('dur', dur);
 		am.setAttribute('repeatCount', 'indefinite');
-		const mp = document.createElementNS(svgNS, 'mpath');
-		mp.setAttributeNS(xlinkNS, 'xlink:href', '#orbit'); // Check if this works!
+		am.setAttribute('path', d);
+		//const mp = document.createElementNS(svgNS, 'mpath');
+		//mp.setAttributeNS(xlinkNS, 'xlink:href', '#orbit'); // Check if this works!
 		
-		am.appendChild(mp);
+		
+		
+		//am.appendChild(mp);
 		c.appendChild(am);
 		//group.appendChild(c);
 		//$('#space').append(group);

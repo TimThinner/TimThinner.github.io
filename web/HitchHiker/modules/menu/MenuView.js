@@ -340,9 +340,9 @@ export default class MenuView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const xlinkNS = "http://www.w3.org/1999/xlink";
 		const r = this.sunRadius();
-		const group = document.createElementNS(svgNS, "g");
+		//const group = document.createElementNS(svgNS, "g");
 		
-		console.log('MOON WITH ELLIPTICAL ORBIT VER 2!');
+		console.log('MOON WITH ELLIPTICAL ORBIT VER 3!');
 		
 		/*
 		<path class="a" d="M-300,0 
@@ -365,7 +365,8 @@ export default class MenuView extends View {
 		path.style.fill = 'none';
 		path.style.opacity = '1';
 		path.id = 'orbit';
-		group.appendChild(path);
+		$('#space').append(path);
+		//group.appendChild(path);
 		
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttribute('cx', -rx);
@@ -390,9 +391,10 @@ export default class MenuView extends View {
 		
 		am.appendChild(mp);
 		c.appendChild(am);
-		group.appendChild(c);
+		//group.appendChild(c);
+		//$('#space').append(group);
 		
-		$('#space').append(group);
+		$('#space').append(c);
 	}
 /*
 <g opacity="0.75">

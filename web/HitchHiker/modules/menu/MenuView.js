@@ -119,7 +119,7 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
-			self.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
+			self.appendEllipticalMoon(0.5, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_a);
 		
@@ -143,7 +143,7 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
-			self.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
+			self.appendEllipticalMoon(0.5, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_b);
 		
@@ -167,7 +167,7 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
-			self.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
+			self.appendEllipticalMoon(0.5, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_c);
 		
@@ -191,7 +191,7 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
-			self.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
+			self.appendEllipticalMoon(0.5, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_d);
 	}
@@ -309,6 +309,8 @@ export default class MenuView extends View {
 			repeatCount="indefinite" 
 			path="M20,50 C20,-50 180,150 180,50 C180-50 20,150 20,50 z" />
 	</circle>
+	
+	SEE: https://developer.mozilla.org/en-US/docs/Web/SVG/Element/animateMotion
 */
 	appendEllipticalMoon(df, rf, fillcolor, dur) {
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -487,7 +489,7 @@ export default class MenuView extends View {
 				this.appendButtons();
 				this.appendMoons();
 				this.appendSun();
-				this.appendEllipticalMoon(0.3, 0.08, '#ff0000', '7s');
+				this.appendEllipticalMoon(0.5, 0.08, '#ff0000', '7s');
 			}
 		}
 	}

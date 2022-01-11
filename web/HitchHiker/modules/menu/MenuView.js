@@ -119,7 +119,6 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
-			self.appendEllipticalMoon(0.5, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_a);
 		
@@ -143,7 +142,6 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
-			self.appendEllipticalMoon(0.5, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_b);
 		
@@ -167,7 +165,6 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
-			self.appendEllipticalMoon(0.5, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_c);
 		
@@ -191,7 +188,6 @@ export default class MenuView extends View {
 			self.appendButtons();
 			self.appendMoons();
 			self.appendSun();
-			self.appendEllipticalMoon(0.5, 0.08, '#ff0000', '7s');
 		}, false);
 		$('#space').append(r_d);
 	}
@@ -322,8 +318,8 @@ export default class MenuView extends View {
 		A300,200 0 0,1 0,200 
 		A300,200 0 0,1 -300,0"  />
 		*/
-		const rx = r+r*df; //0.5;
-		const ry = r+r*df*0.1;
+		const rx = r+r*df; //0.9;
+		const ry = r+r*df*0.2;
 		const d = 'M-'+rx+',0'+
 		' A'+rx+','+ry+' 0 0,1 0,-'+ry+
 		' A'+rx+','+ry+' 0 0,1 0,'+ry+
@@ -436,6 +432,8 @@ export default class MenuView extends View {
 	*/
 	appendMoons() {
 		
+		this.appendEllipticalMoon(0.9, 0.08, '#aaaaaa', '7s');
+		
 		if (this.selectedColor === 'deep-orange') {
 			this.appendMoon(0.2, 0.10, '#d84315', '10s');
 			this.appendMoon(0.3, 0.12, '#e64a19', '15s');
@@ -489,7 +487,6 @@ export default class MenuView extends View {
 				this.appendButtons();
 				this.appendMoons();
 				this.appendSun();
-				this.appendEllipticalMoon(0.5, 0.08, '#ff0000', '7s');
 			}
 		}
 	}
@@ -501,6 +498,5 @@ export default class MenuView extends View {
 		this.appendButtons();
 		this.appendMoons();
 		this.appendSun();
-		this.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
 	}
 }

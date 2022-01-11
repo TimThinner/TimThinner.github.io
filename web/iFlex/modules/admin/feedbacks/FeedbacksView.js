@@ -64,15 +64,19 @@ export default class FeedbacksView extends View {
 			this.models['FeedbacksModel'].feedbacks.forEach(fb => {
 				//console.log(['fb=',fb]);
 				let email = '-';
+				let fedback = '-';
 				if (fb.feedbackType === 'Apartment') {
 					email = fb.userId.email;
+				}
+				if (fb.feedback > 0) {
+					fedback = '<img src="./svg/smiley-'+fb.feedback+'.svg" height="40"/>';
 				}
 				const html = '<tr>'+
 					'<td>'+email+'</td>'+
 					'<td>'+fb.feedbackType+'</td>'+
 					'<td>'+fb.created+'</td>'+
 					'<td>'+fb.refTime+'</td>'+
-					'<td>'+fb.feedback+'</td>'+
+					'<td>'+fedback+'</td>'+
 					'<td>'+fb.feedbackText+'</td>'+
 					'</tr>';
 				$(html).appendTo("#feedbacks-body");

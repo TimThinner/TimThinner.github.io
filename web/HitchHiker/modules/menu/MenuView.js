@@ -46,33 +46,6 @@ import View from '../common/View.js';
 #01579b light-blue darken-4
 */
 
-/*
-Here is an example to animate moon using elliptical path:
-<html>
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="600">
-	<path id="orbit" d="M200 400 A200,200 0 1,1 600,400 A200,200 0 1,1 200,400" fill = "salmon" stroke = "black" stroke-width = "3" />
-	<circle r = "20" fill = "yellow" stroke = "black" stroke-width = "3">
-		<animateMotion begin="0s" dur="12s" repeatCount="indefinite" >
-			<mpath xlink:href="#orbit"/>
-		</animateMotion>
-	</circle>
-</svg>
-</html>
-
-NOTE: 
-In simple rotation we used "animateTransform"-element, now with path we use "animateMotion"-element.
-AND we must include xlink-namespace into svg, like this: xmlns:xlink="http://www.w3.org/1999/xlink".
-
-
-var svgNS   = "http://www.w3.org/2000/svg";
-var xlinkNS = "http://www.w3.org/1999/xlink";
-var circle = document.createElementNS( svgNS, 'circle' );
-circle.setAttributeNS( xlinkNS, 'href', '#orbit' ); // Check if this works!
-
-
-
-
-*/
 export default class MenuView extends View {
 	
 	constructor(controller) {
@@ -246,10 +219,7 @@ export default class MenuView extends View {
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
-		//const xlinkNS = "http://www.w3.org/1999/xlink";
-		
 		const svg = document.createElementNS(svgNS, "svg");
-		//svg.setAttribute('xmlns:xlink',xlinkNS); //TRY THIS!
 		
 		svg.setAttributeNS(null,'width',w);
 		svg.setAttributeNS(null,'height',h);
@@ -333,21 +303,17 @@ export default class MenuView extends View {
 		$('#space').append(a);
 	}
 /*
-	<path id="orbit" d="M200 400 A200,200 0 1,1 600,400 A200,200 0 1,1 200,400" fill = "salmon" stroke = "black" stroke-width = "3" />
-	<circle r = "20" fill = "yellow" stroke = "black" stroke-width = "3">
-		<animateMotion begin="0s" dur="12s" repeatCount="indefinite" >
-			<mpath xlink:href="#orbit"/>
-		</animateMotion>
+	<circle r="5" fill="red">
+		<animateMotion 
+			dur="10s" 
+			repeatCount="indefinite" 
+			path="M20,50 C20,-50 180,150 180,50 C180-50 20,150 20,50 z" />
 	</circle>
 */
 	appendEllipticalMoon(df, rf, fillcolor, dur) {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		//const xlinkNS = "http://www.w3.org/1999/xlink";
 		const r = this.sunRadius();
 		//const group = document.createElementNS(svgNS, "g");
-		
-		console.log('MOON WITH ELLIPTICAL ORBIT VER 6!');
-		
 		/*
 		<path class="a" d="M-300,0 
 		A300,200 0 0,1 0,-200 
@@ -362,6 +328,7 @@ export default class MenuView extends View {
 		' A'+rx+','+ry+' 0 0,1 -'+rx+',0';
 		const r3 = r*rf;//0.1;
 		
+		/*
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = '#888';
@@ -369,47 +336,20 @@ export default class MenuView extends View {
 		path.style.fill = 'none';
 		path.style.opacity = '1';
 		$('#space').append(path);
-		
-		
-		//path.id = 'orbit';
-		//$('#space').append(path);
-		//group.appendChild(path);
+		*/
 		
 		const c = document.createElementNS(svgNS, "circle");
-		//c.setAttribute('cx', -rx);
-		//c.setAttribute('cy', 0);
 		c.setAttribute('r', r3);
 		c.setAttribute('stroke', '#333');
 		c.setAttribute('stroke-width', 1);
 		c.setAttribute('fill', fillcolor);
 		c.setAttribute('opacity', 1);
 		
-		/*
-		<animateMotion begin="0s" dur="12s" repeatCount="indefinite" >
-			<mpath xlink:href="#orbit"/>
-		</animateMotion>
-		*/
-		/*
-		<circle r="5" fill="red">
-			<animateMotion dur="10s" repeatCount="indefinite"
-				path="M20,50 C20,-50 180,150 180,50 C180-50 20,150 20,50 z" />
-		</circle>*/
-		
 		const am = document.createElementNS(svgNS, 'animateMotion');
-		//am.setAttribute('begin', '0s');
 		am.setAttribute('dur', dur);
 		am.setAttribute('repeatCount', 'indefinite');
 		am.setAttribute('path', d);
-		//const mp = document.createElementNS(svgNS, 'mpath');
-		//mp.setAttributeNS(xlinkNS, 'xlink:href', '#orbit'); // Check if this works!
-		
-		
-		
-		//am.appendChild(mp);
 		c.appendChild(am);
-		//group.appendChild(c);
-		//$('#space').append(group);
-		
 		$('#space').append(c);
 	}
 /*
@@ -547,7 +487,7 @@ export default class MenuView extends View {
 				this.appendButtons();
 				this.appendMoons();
 				this.appendSun();
-				this.appendEllipticalMoon(0.1, 0.08, '#ff0000', '7s');
+				this.appendEllipticalMoon(0.3, 0.08, '#ff0000', '7s');
 			}
 		}
 	}

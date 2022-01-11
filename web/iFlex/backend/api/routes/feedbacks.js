@@ -17,7 +17,36 @@ const Feedback = require('../models/feedback');
 */
 
 /*
-	Get all feedback for current user.
+	Get all feedbacks.
+*/
+router.get('/admin', checkAuth, (req,res,next)=>{
+	Feedback.find()
+		.select('_id userId feedbackType created refTime feedback feedbackText')
+		.populate('userId')
+		.exec()
+		.then(docs=>{
+			res.status(200).json({
+				count: docs.length,
+				feedbacks: docs.map(doc=>{
+					return {
+						_id: doc._id,
+						userId: doc.userId,
+						feedbackType: doc.feedbackType,
+						created: doc.created,
+						refTime: doc.refTime,
+						feedback: doc.feedback,
+						feedbackText: doc.feedbackText
+					}
+				})
+			});
+		})
+		.catch(err=>{
+			res.status(500).json({error: err});
+		});
+});
+
+/*
+	Get all feedbacks for current user.
 */
 router.get('/', checkAuth, (req,res,next)=>{
 	

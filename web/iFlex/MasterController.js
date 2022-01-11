@@ -32,6 +32,7 @@ import ReadKeyEditController from './modules/admin/readkeys/ReadKeyEditControlle
 import ObixCodeEditController from './modules/admin/users/ObixCodeEditController.js';
 import UsersController from './modules/admin/users/UsersController.js';
 import ConfigsController from './modules/admin/configs/ConfigsController.js';
+import FeedbacksController from './modules/admin/feedbacks/FeedbacksController.js';
 
 class MasterController {
 	
@@ -162,6 +163,9 @@ class MasterController {
 		
 		this.controllers['CONFIGS'] = new ConfigsController({name:'CONFIGS', master:this, el:'#content', visible:false});
 		this.controllers['CONFIGS'].init();
+		
+		this.controllers['FEEDBACKS'] = new FeedbacksController({name:'FEEDBACKS', master:this, el:'#content', visible:false});
+		this.controllers['FEEDBACKS'].init();
 		// <------------- Admin stuff end.
 		
 		REO.start(); // Start tracking resize events => will also do the initial "resize" for MenuView (View which is visible).

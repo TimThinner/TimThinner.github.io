@@ -342,7 +342,7 @@ export default class MenuView extends View {
 */
 	appendEllipticalMoon(df, rf, fillcolor, dur) {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		//const xlinkNS = "http://www.w3.org/1999/xlink";
+		const xlinkNS = "http://www.w3.org/1999/xlink";
 		const r = this.sunRadius();
 		//const group = document.createElementNS(svgNS, "g");
 		
@@ -391,7 +391,7 @@ export default class MenuView extends View {
 		am.setAttribute('dur', dur);
 		am.setAttribute('repeatCount', 'indefinite');
 		const mp = document.createElementNS(svgNS, 'mpath');
-		mp.setAttributeNS(null, 'xlink:href', '#orbit'); // Check if this works!
+		mp.setAttributeNS(xlinkNS, 'href', '#orbit'); // Check if this works!
 		
 		am.appendChild(mp);
 		c.appendChild(am);

@@ -391,7 +391,7 @@ export default class MenuView extends View {
 		am.setAttribute('dur', dur);
 		am.setAttribute('repeatCount', 'indefinite');
 		const mp = document.createElementNS(svgNS, 'mpath');
-		mp.setAttributeNS(xlinkNS, 'href', '#orbit'); // Check if this works!
+		mp.setAttributeNS(xlinkNS, 'xlink:href', '#orbit'); // Check if this works!
 		
 		am.appendChild(mp);
 		c.appendChild(am);

@@ -109,8 +109,8 @@ export default class UserPropsView extends View {
 			
 			const localized_string_admin_regcodes = LM['translation'][sel]['USER_PROPS_ADMIN_REGCODES'];
 			const localized_string_admin_users = LM['translation'][sel]['USER_PROPS_ADMIN_USERS'];
-			const localized_string_admin_configs = 'Configs';//LM['translation'][sel]['USER_PROPS_ADMIN_USERS'];
-			const localized_string_admin_feedbacks = 'Feedbacks';
+			const localized_string_admin_configs = LM['translation'][sel]['USER_PROPS_ADMIN_CONFIGS'];
+			const localized_string_admin_feedbacks = LM['translation'][sel]['USER_PROPS_ADMIN_FEEDBACKS'];
 			
 			//const consent_text = LM['translation'][sel]['USER_PROPS_CONSENT'];
 			//const consent_link_text = LM['translation'][sel]['USER_SIGNUP_CONSENT_LINK_TXT'];

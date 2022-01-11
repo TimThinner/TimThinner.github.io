@@ -247,6 +247,8 @@ export default class MenuView extends View {
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('xmlns:xlink','http://www.w3.org/1999/xlink'); //TRY THIS!
+		
 		svg.setAttributeNS(null,'width',w);
 		svg.setAttributeNS(null,'height',h);
 		svg.setAttributeNS(null,'viewBox',vb);
@@ -342,7 +344,7 @@ export default class MenuView extends View {
 		const r = this.sunRadius();
 		//const group = document.createElementNS(svgNS, "g");
 		
-		console.log('MOON WITH ELLIPTICAL ORBIT VER 3!');
+		console.log('MOON WITH ELLIPTICAL ORBIT VER 4!');
 		
 		/*
 		<path class="a" d="M-300,0 

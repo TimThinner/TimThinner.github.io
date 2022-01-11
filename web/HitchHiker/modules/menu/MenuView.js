@@ -246,8 +246,10 @@ export default class MenuView extends View {
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
+		const xlinkNS = "http://www.w3.org/1999/xlink";
+		
 		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttribute('xmlns:xlink','http://www.w3.org/1999/xlink'); //TRY THIS!
+		svg.setAttribute('xmlns:xlink',xlinkNS); //TRY THIS!
 		
 		svg.setAttributeNS(null,'width',w);
 		svg.setAttributeNS(null,'height',h);
@@ -340,11 +342,11 @@ export default class MenuView extends View {
 */
 	appendEllipticalMoon(df, rf, fillcolor, dur) {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const xlinkNS = "http://www.w3.org/1999/xlink";
+		//const xlinkNS = "http://www.w3.org/1999/xlink";
 		const r = this.sunRadius();
 		//const group = document.createElementNS(svgNS, "g");
 		
-		console.log('MOON WITH ELLIPTICAL ORBIT VER 4!');
+		console.log('MOON WITH ELLIPTICAL ORBIT VER 5!');
 		
 		/*
 		<path class="a" d="M-300,0 
@@ -389,7 +391,7 @@ export default class MenuView extends View {
 		am.setAttribute('dur', dur);
 		am.setAttribute('repeatCount', 'indefinite');
 		const mp = document.createElementNS(svgNS, 'mpath');
-		mp.setAttributeNS(xlinkNS, 'href', '#orbit'); // Check if this works!
+		mp.setAttributeNS(null, 'xlink:href', '#orbit'); // Check if this works!
 		
 		am.appendChild(mp);
 		c.appendChild(am);

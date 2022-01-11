@@ -65,7 +65,7 @@ export default class FeedbacksView extends View {
 				//console.log(['fb=',fb]);
 				let email = '-';
 				let fedback = '-';
-				if (fb.feedbackType === 'Apartment') {
+				if (typeof fb.userId !== 'undefined') {
 					email = fb.userId.email;
 				}
 				if (fb.feedback > 0) {

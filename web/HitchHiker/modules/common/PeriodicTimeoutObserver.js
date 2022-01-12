@@ -27,11 +27,13 @@ export default class PeriodicTimeoutObserver extends EventObserver {
 	}
 	
 	start() {
+		console.log('PeriodicTimeoutObserver start');
 		this.poller();
 	}
 	
 	stop() {
 		if (this.timer) {
+			console.log('PeriodicTimeoutObserver stop');
 			clearTimeout(this.timer);
 			this.timer = undefined;
 		}

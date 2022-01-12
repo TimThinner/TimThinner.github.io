@@ -60,7 +60,17 @@ export default class FeedbacksView extends View {
 		const self = this;
 		$('#feedbacks-body').empty();
 		if (typeof this.models['FeedbacksModel'].feedbacks !== 'undefined') {
-			
+			// NEW: Sort feedbacks by the created date: newest first.
+			// sort by string (created is a string, for example: "2021-04-21T07:40:50.965Z")
+			this.models['FeedbacksModel'].feedbacks.sort(function(a, b) {
+				if (a.created < b.created) {
+					return 1;
+				}
+				if (a.created > b.created) {
+					return -1;
+				}
+				return 0; // dates are equal
+			});
 			this.models['FeedbacksModel'].feedbacks.forEach(fb => {
 				//console.log(['fb=',fb]);
 				let email = '-';

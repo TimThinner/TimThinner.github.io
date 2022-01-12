@@ -264,7 +264,7 @@ export default class CView extends TimeRangeView {
 				}
 			}
 			// Make sure that it is NOT POSSIBLE to use zero residents here!
-			if (NOR === 0) {
+			if (typeof NOR === 'undefined' || NOR === 0) {
 				NOR = 100;
 			}
 			//let factor = undefined;

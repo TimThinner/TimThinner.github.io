@@ -60,7 +60,7 @@ class MasterController {
 			}
 			/*
 				cleaning removes all user specific data from app. 
-				Default implemetation does nothing.
+				Default implementation does nothing.
 			*/
 			Object.keys(this.controllers).forEach(key => {
 				this.controllers[key].clean();

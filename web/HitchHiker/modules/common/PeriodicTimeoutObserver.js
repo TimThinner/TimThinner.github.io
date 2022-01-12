@@ -15,18 +15,14 @@ export default class PeriodicTimeoutObserver extends EventObserver {
 	poller() {
 		if (this.interval > 0) {
 			// Notify all observers.
-			setTimeout(()=>{
-				this.notifyAll({model:'PeriodicTimeoutObserver',method:'timeout',status:200,message:'OK'});
-			},100);
+			setTimeout(() => this.notifyAll({model:'PeriodicTimeoutObserver',method:'timeout',status:200,message:'OK'}), 100);
 			// Set timer to do "timeout" again.
 			this.timer = setTimeout(()=>{
 				this.poller();
 			}, this.interval);
 		} else if (this.interval == -1) {
 			// Notify all observers ONLY once.
-			setTimeout(()=>{
-				this.notifyAll({model:'PeriodicTimeoutObserver',method:'timeout',status:200,message:'OK'});
-			},100);
+			setTimeout(() => this.notifyAll({model:'PeriodicTimeoutObserver',method:'timeout',status:200,message:'OK'}), 100);
 		}
 	}
 	

@@ -30,13 +30,14 @@ class MasterController {
 		const REO = new ResizeEventObserver();
 		this.modelRepo.add('ResizeEventObserver',REO);
 		
+		// Start tracking resize events => will also notify initial "resize" (with small delay) 
+		// for MenuView (View which is visible after delay timeout).
+		REO.start();
 		
 		console.log('Create Controllers...');
 		// Menu controller MUST be first!
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
-		
-		REO.start(); // Start tracking resize events => will also do the initial "resize" for MenuView (View which is visible).
 	}
 	
 	forceLogout() {

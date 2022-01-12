@@ -494,7 +494,8 @@ export default class MenuView extends View {
 				this.appendSun();
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Do something with each TICK!
-				this.appendMoon(0.6, 0.11, '#000000', '35s');
+				console.log('TICK');
+				this.appendMoon(0.6, 0.11, '#000000', '22s');
 			}
 		}
 	}

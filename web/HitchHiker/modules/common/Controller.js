@@ -1,9 +1,7 @@
-import PeriodicPoller from './PeriodicPoller.js';
-
-export default class Controller extends PeriodicPoller {
+export default class Controller {
 	
 	constructor(options) {
-		super(options); // options.master;
+		
 		this.name    = options.name;
 		this.master  = options.master;
 		this.visible = options.visible;
@@ -16,7 +14,6 @@ export default class Controller extends PeriodicPoller {
 	
 	remove() {
 		console.log(['REMOVE CONTROLLER ',this.name]);
-		super.stop();
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -28,7 +25,6 @@ export default class Controller extends PeriodicPoller {
 	
 	hide() {
 		console.log(['HIDE CONTROLLER ',this.name]);
-		super.stop();
 		if (this.view) {
 			this.view.hide();
 		}
@@ -39,10 +35,6 @@ export default class Controller extends PeriodicPoller {
 	show() {
 		console.log(['SHOW CONTROLLER ',this.name]);
 		if (this.visible && this.view) {
-			//console.log('... and after that Start THE POLLERS!');
-			// Start polling all timers for THIS CONTROLLER.
-			// If there are no timers => start() does nothing.
-			this.start(); // Defined in PeriodicPoller
 			//console.log('Show the VIEW...');
 			this.view.show();
 		}

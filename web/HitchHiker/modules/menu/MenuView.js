@@ -56,6 +56,10 @@ export default class MenuView extends View {
 		});
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
+		
+		this.PTO = this.controller.PTO;
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 		this.selectedColor = 'deep-orange';
 	}
@@ -74,6 +78,7 @@ export default class MenuView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
+		this.PTO.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -487,6 +492,9 @@ export default class MenuView extends View {
 				this.appendButtons();
 				this.appendMoons();
 				this.appendSun();
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Do something with each TICK!
+				this.appendMoon(0.6, 0.11, '#000000', '35s');
 			}
 		}
 	}

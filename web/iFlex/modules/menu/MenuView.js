@@ -212,6 +212,21 @@ iFLEX Light green #78c51b (120, 197,  27)
 				//svgObject.getElementById('target-d-border').style.stroke = STROKE_COLOR;
 				svgObject.getElementById('target-d-border').style.fill = FILL_COLOR;
 			}, false);
+			
+			
+			const targetInfo = svgObject.getElementById('target-info');
+			targetInfo.addEventListener("click", function(){
+				
+				self.models['MenuModel'].setSelected('HELP');
+				
+			}, false);
+			targetInfo.addEventListener("mouseover", function(event){ 
+				svgObject.getElementById('target-info-border').style.fill = FILL_COLOR_HOVER;
+			}, false);
+			targetInfo.addEventListener("mouseout", function(event){ 
+				svgObject.getElementById('target-info-border').style.fill = FILL_COLOR;
+			}, false);
+			
 		}
 	}
 	

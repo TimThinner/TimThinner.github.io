@@ -151,82 +151,69 @@ iFLEX Light green #78c51b (120, 197,  27)
 			}, false);
 			
 			const targetA = svgObject.getElementById('target-a');
-			targetA.addEventListener("click", function(){
-				
-				self.models['MenuModel'].setSelected('A');
-				
-			}, false);
-			targetA.addEventListener("mouseover", function(event){ 
-				//svgObject.getElementById('target-a-border').style.stroke = STROKE_COLOR_HOVER;
-				svgObject.getElementById('target-a-border').style.fill = FILL_COLOR_HOVER;
-			}, false);
-			targetA.addEventListener("mouseout", function(event){ 
-				//svgObject.getElementById('target-a-border').style.stroke = STROKE_COLOR;
-				svgObject.getElementById('target-a-border').style.fill = FILL_COLOR;
-			}, false);
-			
+			if (targetA) {
+				targetA.addEventListener("click", function(){
+					self.models['MenuModel'].setSelected('A');
+				}, false);
+				targetA.addEventListener("mouseover", function(event){ 
+					svgObject.getElementById('target-a-border').style.fill = FILL_COLOR_HOVER;
+				}, false);
+				targetA.addEventListener("mouseout", function(event){ 
+					svgObject.getElementById('target-a-border').style.fill = FILL_COLOR;
+				}, false);
+			}
 			
 			const targetB = svgObject.getElementById('target-b');
-			targetB.addEventListener("click", function(){
-				
-				self.models['MenuModel'].setSelected('B');
-				
-			}, false);
-			targetB.addEventListener("mouseover", function(event){ 
-				//svgObject.getElementById('target-b-border').style.stroke = STROKE_COLOR_HOVER;
-				svgObject.getElementById('target-b-border').style.fill = FILL_COLOR_HOVER;
-			}, false);
-			targetB.addEventListener("mouseout", function(event){ 
-				//svgObject.getElementById('target-b-border').style.stroke = STROKE_COLOR;
-				svgObject.getElementById('target-b-border').style.fill = FILL_COLOR;
-			}, false);
-			
+			if (targetB) {
+				targetB.addEventListener("click", function(){
+					self.models['MenuModel'].setSelected('B');
+				}, false);
+				targetB.addEventListener("mouseover", function(event){ 
+					svgObject.getElementById('target-b-border').style.fill = FILL_COLOR_HOVER;
+				}, false);
+				targetB.addEventListener("mouseout", function(event){ 
+					svgObject.getElementById('target-b-border').style.fill = FILL_COLOR;
+				}, false);
+			}
 			
 			const targetC = svgObject.getElementById('target-c');
-			targetC.addEventListener("click", function(){
-				
-				self.models['MenuModel'].setSelected('C');
-				
-			}, false);
-			targetC.addEventListener("mouseover", function(event){ 
-				//svgObject.getElementById('target-c-border').style.stroke = STROKE_COLOR_HOVER;
-				svgObject.getElementById('target-c-border').style.fill = FILL_COLOR_HOVER;
-			}, false);
-			targetC.addEventListener("mouseout", function(event){ 
-				//svgObject.getElementById('target-c-border').style.stroke = STROKE_COLOR;
-				svgObject.getElementById('target-c-border').style.fill = FILL_COLOR;
-			}, false);
-			
+			if (targetC) {
+				targetC.addEventListener("click", function(){
+					self.models['MenuModel'].setSelected('C');
+				}, false);
+				targetC.addEventListener("mouseover", function(event){ 
+					svgObject.getElementById('target-c-border').style.fill = FILL_COLOR_HOVER;
+				}, false);
+				targetC.addEventListener("mouseout", function(event){ 
+					svgObject.getElementById('target-c-border').style.fill = FILL_COLOR;
+				}, false);
+			}
 			
 			const targetD = svgObject.getElementById('target-d');
-			targetD.addEventListener("click", function(){
-				
-				self.models['MenuModel'].setSelected('D');
-				
-			}, false);
-			targetD.addEventListener("mouseover", function(event){ 
-				//svgObject.getElementById('target-d-border').style.stroke = STROKE_COLOR_HOVER;
-				svgObject.getElementById('target-d-border').style.fill = FILL_COLOR_HOVER;
-			}, false);
-			targetD.addEventListener("mouseout", function(event){ 
-				//svgObject.getElementById('target-d-border').style.stroke = STROKE_COLOR;
-				svgObject.getElementById('target-d-border').style.fill = FILL_COLOR;
-			}, false);
-			
+			if (targetD) {
+				targetD.addEventListener("click", function(){
+					self.models['MenuModel'].setSelected('D');
+				}, false);
+				targetD.addEventListener("mouseover", function(event){ 
+					svgObject.getElementById('target-d-border').style.fill = FILL_COLOR_HOVER;
+				}, false);
+				targetD.addEventListener("mouseout", function(event){ 
+					svgObject.getElementById('target-d-border').style.fill = FILL_COLOR;
+				}, false);
+			}
 			
 			const targetInfo = svgObject.getElementById('target-info');
-			targetInfo.addEventListener("click", function(){
-				
-				self.models['MenuModel'].setSelected('HELP');
-				
-			}, false);
-			targetInfo.addEventListener("mouseover", function(event){ 
-				svgObject.getElementById('target-info-border').style.fill = FILL_COLOR_HOVER;
-			}, false);
-			targetInfo.addEventListener("mouseout", function(event){ 
-				svgObject.getElementById('target-info-border').style.fill = FILL_COLOR;
-			}, false);
-			
+			if (targetInfo) {
+				targetInfo.addEventListener("click", function(){
+					self.models['MenuModel'].setSelected('HELP');
+				}, false);
+				targetInfo.addEventListener("mouseover", function(event){ 
+					svgObject.getElementById('target-info-border').style.fill = FILL_COLOR_HOVER;
+				}, false);
+				targetInfo.addEventListener("mouseout", function(event){ 
+					svgObject.getElementById('target-info-border').style.fill = FILL_COLOR;
+				}, false);
+			}
 		}
 	}
 	

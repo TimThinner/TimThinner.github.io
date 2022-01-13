@@ -77,7 +77,6 @@ export default class HelpView extends View {
 		this.rendered = true;
 		
 		$("#back").on('click', function() {
-			//const caller = self.controller.models['HelpModel'].caller;
 			self.controller.models['MenuModel'].setSelected('menu');
 		});
 	}

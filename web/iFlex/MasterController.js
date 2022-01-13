@@ -11,6 +11,7 @@ import UserLoginController from './modules/user/UserLoginController.js';
 import UserSignupController from './modules/user/UserSignupController.js';
 import UserGDPRController from './modules/user/UserGDPRController.js';
 import UserConsentController from './modules/user/UserConsentController.js';
+import HelpController from './modules/help/HelpController.js';
 
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';
@@ -108,6 +109,8 @@ class MasterController {
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
 		
+		this.controllers['HELP'] = new HelpController({name:'HELP', master:this, el:'#content', visible:false});
+		this.controllers['HELP'].init();
 		this.controllers['userGDPR'] = new UserGDPRController({name:'userGDPR', master:this, el:'#content', visible:false});
 		this.controllers['userGDPR'].init();
 		this.controllers['userConsent'] = new UserConsentController({name:'userConsent', master:this, el:'#content', visible:false});

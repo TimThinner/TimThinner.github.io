@@ -169,9 +169,11 @@ export default class UserSignupApaView extends UserView {
 					this.apa_tens = 0;
 					this.apa_ones = 0;
 					this.apartment = 'A0';
-					
+					// We set HelpModel to know we are calling it froom successful signup process!
+					const HM = this.controller.master.modelRepo.get('HelpModel');
+					HM.caller = 'signup';
 					setTimeout(() => {
-						this.controller.models['MenuModel'].setSelected('menu');
+						this.controller.models['MenuModel'].setSelected('HELP');
 						//$("#signup-submit").prop("disabled", false);
 						//$("#cancel").prop("disabled", false);
 					}, 1000);

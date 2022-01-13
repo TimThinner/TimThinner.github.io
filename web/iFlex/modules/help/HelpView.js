@@ -36,6 +36,11 @@ export default class HelpView extends View {
 		const self = this;
 		$(this.el).empty();
 		
+		
+		
+		
+		
+		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const help_title = LM['translation'][sel]['HELP_INFO_TITLE'];
@@ -49,13 +54,14 @@ export default class HelpView extends View {
 		const HM = this.controller.master.modelRepo.get('HelpModel');
 		if (HM) {
 			if (HM.caller === 'signup') {
-				thanks_message = '<p>'+help_thanks+'</p>';
+				thanks_message = '<div class="success-message"><p>'+help_thanks+'</p></div>';
 			}
 		}
 		const html =
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
+						'<img src="../img/iFLEX.png" width="100" height="100" />'+
 						'<h4>'+help_title+'</h4>'+
 						thanks_message+
 						'<p>'+help_1+'</p>'+
@@ -77,6 +83,8 @@ export default class HelpView extends View {
 		this.rendered = true;
 		
 		$("#back").on('click', function() {
+			// Safe to reset HelpModel caller => This is set to 'signup' in signup -phase.
+			HM.caller = undefined;
 			self.controller.models['MenuModel'].setSelected('menu');
 		});
 	}

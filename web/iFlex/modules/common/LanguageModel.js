@@ -282,7 +282,7 @@ export default class LanguageModel {
 				'HELP_INFO_1':'Voit tarkastella talokohtaisia mittauksia ja antaa palautetta ilman kirjautumista.',
 				'HELP_INFO_2':'Voit tarkastella omaa asuntoasi koskevia mittauksia ja antaa asuntokohtaista palautetta kirjautumalla sisään.',
 				'HELP_INFO_3':'Jos valitsit rekisteröinnin yhteydessä mittareiden asennuksen, ne tullaan asentamaan mahdollisimman nopeasti (noin kuukauden kuluessa).',
-				'HELP_INFO_4':'Ohjeita ja apua saat sähköpostiosoitteesta: <a href="mailto:iFLEX-Info@vtt.fi">iFLEX-Info@vtt.fi</a>',
+				'HELP_INFO_4':'Ohjeita ja apua saat lähettämällä meille sähköpostia: <a href="mailto:iFLEX-Info@vtt.fi">iFLEX-Info@vtt.fi</a>',
 				'USER_PROPS_TITLE':'Omat tiedot',
 				'USER_PROPS_DESCRIPTION':'Tällä sivulla käyttäjä voi katsoa ja muokata omia tietojaan.',
 				'USER_PROPS_CHANGE_PASSWORD_BTN_TXT':'Vaihda salasanasi',

@@ -61,6 +61,9 @@ export default class MenuView extends View {
 		this.PTO = new PeriodicTimeoutObserver({interval:10000}); // interval 10 seconds
 		this.PTO.subscribe(this);
 		
+		this.whitedwarf = undefined;
+		
+		
 		this.rendered = false;
 		this.selectedColor = 'deep-orange';
 	}
@@ -517,7 +520,11 @@ export default class MenuView extends View {
 					
 					console.log('PeriodicTimeoutObserver timeout => rendered OK');
 					console.log('TICK!');
-					//this.appendMoon(0.6, 0.11, '#000000', '22s');
+					if (typeof this.whitedwarf === 'undefined') {
+						this.whitedwarf = true;
+						this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '3s');
+					}
+					
 					
 				} else {
 					console.log('PeriodicTimeoutObserver timeout => NOT rendered yet => render');

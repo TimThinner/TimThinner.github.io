@@ -23,6 +23,6 @@ export default class MenuController extends Controller {
 		this.models['MenuModel'] = model;
 		
 		this.view = new MenuView(this);
-		//this.show(); // IF this controller is visible => show it... and start periodic timer with 10 s interval.
+		this.show(); // IF this controller is visible => show it... and start periodic timer with 10 s interval.
 	}
 }

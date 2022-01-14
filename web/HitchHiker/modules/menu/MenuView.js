@@ -1,5 +1,5 @@
 import View from '../common/View.js';
-
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
 /*
 #f3e5f5 purple lighten-5
 #e1bee7 purple lighten-4
@@ -57,7 +57,8 @@ export default class MenuView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		this.PTO = this.controller.PTO;
+		console.log('MenuView Create PeriodicTimeoutObserver!');
+		this.PTO = new PeriodicTimeoutObserver({interval:10000}); // interval 10 seconds
 		this.PTO.subscribe(this);
 		
 		this.rendered = false;
@@ -66,19 +67,28 @@ export default class MenuView extends View {
 	
 	show() {
 		this.render();
+		if (this.PTO) {
+			this.PTO.start();
+		}
 	}
 	
 	hide() {
+		if (this.PTO) {
+			this.PTO.stop();
+		}
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		if (this.PTO) {
+			this.PTO.stop();
+			this.PTO.unsubscribe(this);
+		}
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
-		this.PTO.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}

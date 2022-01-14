@@ -29,14 +29,16 @@ export default class Controller {
 		if (this.view) {
 			this.view.hide();
 		}
+		this.visible = false;
 	}
 	// NOTE: Views can share models, which can hold data from different timeranges.
 	// So it is important to make sure that before polling starts we have right parameters 
 	// set at the models.
 	show() {
 		console.log(['SHOW CONTROLLER ',this.name]);
-		if (this.visible && this.view) {
+		if (this.view) {
 			//console.log('Show the VIEW...');
+			this.visible = true;
 			this.view.show();
 		}
 	}
@@ -59,11 +61,9 @@ export default class Controller {
 			//console.log(['In ',this.name,' selected = ',options.selected]);
 			if (this.name === options.selected) {
 				setTimeout(() => {
-					this.visible = true;
 					this.show();
 				}, 100);
 			} else {
-				this.visible = false;
 				this.hide();
 			}
 		}

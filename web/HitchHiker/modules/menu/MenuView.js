@@ -69,24 +69,18 @@ export default class MenuView extends View {
 	
 	show() {
 		this.render();
-		if (this.PTO) {
-			this.PTO.start();
-		}
+		this.PTO.start();
 	}
 	
 	hide() {
-		if (this.PTO) {
-			this.PTO.stop();
-		}
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		if (this.PTO) {
-			this.PTO.stop();
-			this.PTO.unsubscribe(this);
-		}
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -500,7 +494,7 @@ export default class MenuView extends View {
 		this.appendSun();
 		console.log('NEW renderALL()!!!!');
 		if (this.tickcount >= 2) {
-			setTimeout(() => this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '5s'), 2000);
+			setTimeout(() => this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '7s'), 10000);
 		}
 	}
 	
@@ -525,7 +519,7 @@ export default class MenuView extends View {
 					//console.log('TICK!');
 					this.tickcount++;
 					if (this.tickcount === 2) {
-						this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '5s');
+						this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '7s');
 					}
 					
 				} else {

@@ -63,8 +63,6 @@ export default class MenuView extends View {
 		
 		this.tickcount = 0;
 		
-		
-		
 		this.rendered = false;
 		this.selectedColor = 'deep-orange';
 	}
@@ -134,10 +132,9 @@ export default class MenuView extends View {
 		r_a.style.fill = '#ff5722'; // 'deep-orange'
 		r_a.addEventListener("click", function(){
 			self.selectedColor = 'deep-orange';
-			self.createSpace();
-			self.appendButtons();
-			self.appendMoons();
-			self.appendSun();
+			
+			self.renderALL();
+			
 		}, false);
 		$('#space').append(r_a);
 		
@@ -157,10 +154,9 @@ export default class MenuView extends View {
 		r_b.style.fill = '#4caf50'; //'green'
 		r_b.addEventListener("click", function(){
 			self.selectedColor = 'green';
-			self.createSpace();
-			self.appendButtons();
-			self.appendMoons();
-			self.appendSun();
+			
+			self.renderALL();
+			
 		}, false);
 		$('#space').append(r_b);
 		
@@ -180,10 +176,9 @@ export default class MenuView extends View {
 		r_c.style.fill = '#03a9f4'; //'light-blue'
 		r_c.addEventListener("click", function(){
 			self.selectedColor = 'light-blue';
-			self.createSpace();
-			self.appendButtons();
-			self.appendMoons();
-			self.appendSun();
+			
+			self.renderALL();
+			
 		}, false);
 		$('#space').append(r_c);
 		
@@ -203,10 +198,9 @@ export default class MenuView extends View {
 		r_d.style.fill = '#9c27b0'; //'purple'
 		r_d.addEventListener("click", function(){
 			self.selectedColor = 'purple';
-			self.createSpace();
-			self.appendButtons();
-			self.appendMoons();
-			self.appendSun();
+			
+			self.renderALL();
+			
 		}, false);
 		$('#space').append(r_d);
 	}
@@ -499,6 +493,15 @@ export default class MenuView extends View {
 		}
 	}
 	
+	
+	renderALL() {
+		this.createSpace();
+		this.appendButtons();
+		this.appendMoons();
+		this.appendSun();
+		this.tickcount = 0; // RESTART counter.
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -506,11 +509,8 @@ export default class MenuView extends View {
 				if (this.rendered) {
 					
 					console.log('ResizeEventObserver resize => rendered OK');
+					this.renderALL();
 					
-					this.createSpace();
-					this.appendButtons();
-					this.appendMoons();
-					this.appendSun();
 				} else {
 					console.log('ResizeEventObserver resize => NOT rendered yet => render');
 					this.render();
@@ -526,7 +526,6 @@ export default class MenuView extends View {
 						this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '3s');
 					}
 					
-					
 				} else {
 					console.log('PeriodicTimeoutObserver timeout => NOT rendered yet => render');
 					this.render();
@@ -538,10 +537,7 @@ export default class MenuView extends View {
 	render() {
 		//$(this.el).empty(); NOTE: this.createSpace(); empties the view!
 		console.log('MenuView render()');
+		this.renderALL();
 		this.rendered = true;
-		this.createSpace();
-		this.appendButtons();
-		this.appendMoons();
-		this.appendSun();
 	}
 }

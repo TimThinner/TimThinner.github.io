@@ -498,7 +498,7 @@ export default class MenuView extends View {
 					this.appendMoons();
 					this.appendSun();
 				} else {
-					console.log('ResizeEventObserver resize => NOT rendered yet => render()');
+					console.log('ResizeEventObserver resize => NOT rendered yet => render');
 					this.render();
 				}
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
@@ -510,7 +510,7 @@ export default class MenuView extends View {
 					//this.appendMoon(0.6, 0.11, '#000000', '22s');
 					
 				} else {
-					console.log('PeriodicTimeoutObserver timeout => NOT rendered yet => render()');
+					console.log('PeriodicTimeoutObserver timeout => NOT rendered yet => render');
 					this.render();
 				}
 			}
@@ -519,6 +519,7 @@ export default class MenuView extends View {
 	
 	render() {
 		//$(this.el).empty(); NOTE: this.createSpace(); empties the view!
+		console.log('MenuView render()');
 		this.rendered = true;
 		this.createSpace();
 		this.appendButtons();

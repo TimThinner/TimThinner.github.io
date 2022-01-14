@@ -488,7 +488,11 @@ export default class MenuView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				
 				if (this.rendered) {
+					
+					console.log('ResizeEventObserver resize => rendered OK');
+					
 					this.createSpace();
 					this.appendButtons();
 					this.appendMoons();
@@ -501,6 +505,7 @@ export default class MenuView extends View {
 				// Do something with each TICK!
 				if (this.rendered) {
 					
+					console.log('PeriodicTimeoutObserver timeout => rendered OK');
 					console.log('TICK!');
 					//this.appendMoon(0.6, 0.11, '#000000', '22s');
 					

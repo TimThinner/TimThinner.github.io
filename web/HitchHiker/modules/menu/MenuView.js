@@ -493,13 +493,15 @@ export default class MenuView extends View {
 		}
 	}
 	
-	
 	renderALL() {
 		this.createSpace();
 		this.appendButtons();
 		this.appendMoons();
 		this.appendSun();
-		this.tickcount = 0; // RESTART counter.
+		console.log('NEW renderALL()!!!!');
+		if (this.tickcount >= 2) {
+			setTimeout(() => this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '5s'), 2000);
+		}
 	}
 	
 	notify(options) {
@@ -523,7 +525,7 @@ export default class MenuView extends View {
 					//console.log('TICK!');
 					this.tickcount++;
 					if (this.tickcount === 2) {
-						this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '3s');
+						this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '5s');
 					}
 					
 				} else {

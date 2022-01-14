@@ -61,7 +61,8 @@ export default class MenuView extends View {
 		this.PTO = new PeriodicTimeoutObserver({interval:10000}); // interval 10 seconds
 		this.PTO.subscribe(this);
 		
-		this.whitedwarf = undefined;
+		this.tickcount = 0;
+		
 		
 		
 		this.rendered = false;
@@ -518,10 +519,10 @@ export default class MenuView extends View {
 				// Do something with each TICK!
 				if (this.rendered) {
 					
-					console.log('PeriodicTimeoutObserver timeout => rendered OK');
-					console.log('TICK!');
-					if (typeof this.whitedwarf === 'undefined') {
-						this.whitedwarf = true;
+					//console.log('PeriodicTimeoutObserver timeout => rendered OK');
+					//console.log('TICK!');
+					this.tickcount++;
+					if (this.tickcount === 2) {
 						this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '3s');
 					}
 					

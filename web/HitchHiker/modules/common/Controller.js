@@ -21,6 +21,7 @@ export default class Controller {
 			this.view.remove();
 			this.view = undefined;
 		}
+		this.visible = false;
 	}
 	
 	hide() {

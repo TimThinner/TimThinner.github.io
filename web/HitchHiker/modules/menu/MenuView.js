@@ -488,15 +488,26 @@ export default class MenuView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log('RESIZE!');
-				this.createSpace();
-				this.appendButtons();
-				this.appendMoons();
-				this.appendSun();
+				if (this.rendered) {
+					this.createSpace();
+					this.appendButtons();
+					this.appendMoons();
+					this.appendSun();
+				} else {
+					console.log('ResizeEventObserver resize => NOT rendered yet => render()');
+					this.render();
+				}
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Do something with each TICK!
-				console.log('TICK!');
-				//this.appendMoon(0.6, 0.11, '#000000', '22s');
+				if (this.rendered) {
+					
+					console.log('TICK!');
+					//this.appendMoon(0.6, 0.11, '#000000', '22s');
+					
+				} else {
+					console.log('PeriodicTimeoutObserver timeout => NOT rendered yet => render()');
+					this.render();
+				}
 			}
 		}
 	}

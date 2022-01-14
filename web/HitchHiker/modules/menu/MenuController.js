@@ -25,12 +25,12 @@ export default class MenuController extends Controller {
 	}
 	
 	show() {
+		super.show();
 		if (this.visible && this.view) {
 			if (this.PTO) {
 				this.PTO.start();
 			}
 		}
-		super.show();
 	}
 	
 	init() {
@@ -42,6 +42,6 @@ export default class MenuController extends Controller {
 		console.log('Create PeriodicTimeoutObserver!');
 		this.PTO = new PeriodicTimeoutObserver({interval:10000}); // interval 10 seconds
 		this.view = new MenuView(this);
-		this.PTO.start();
+		this.show();
 	}
 }

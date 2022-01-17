@@ -155,7 +155,7 @@ export default class GalaxyView extends View {
 		const h = r*0.75;
 		const hper2 = h*0.5;
 		
-		let tx = 0; ty = 0;
+		let tx = 0, ty = 0;
 		if (type === 'FEEDBACK') {
 			tx = r*2; 
 			ty = r*2;

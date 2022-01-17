@@ -146,34 +146,39 @@ export default class GalaxyView extends View {
 		border.setAttributeNS(null, 'cx', 0);
 		border.setAttributeNS(null, 'cy', 0);
 		border.setAttributeNS(null, 'r', r);
+		border.style.fill = WHITE;
 		border.style.fillOpacity = 0.5;
 		border.style.stroke = DARK_BLUE;
 		border.style.strokeWidth = 2;
-		border.style.fill = WHITE;
-		
 		$('#space').append(border);
 		
 		const ca = document.createElementNS(svgNS, "circle");
 		ca.setAttributeNS(null, 'cx', 0);
 		ca.setAttributeNS(null, 'cy', 0);
 		ca.setAttributeNS(null, 'r', r-10);
+		ca.style.fill = WHITE;
 		ca.style.fillOpacity = 0.5;
 		ca.style.stroke = DARK_BLUE;
 		ca.style.strokeWidth = 1;
-		ca.style.fill = WHITE;
-		
 		$('#space').append(ca);
 		
 		const cb = document.createElementNS(svgNS, "circle");
-		cb.setAttributeNS(null, 'cx', 0);
-		cb.setAttributeNS(null, 'cy', 0);
-		cb.setAttributeNS(null, 'r', r-40);
+		cb.setAttribute('cx', 0);
+		cb.setAttribute('cy', 0);
+		cb.setAttribute('r', r-30);
+		cb.style.fill = WHITE;
 		cb.style.fillOpacity = 1;
 		cb.style.stroke = DARK_BLUE;
 		cb.style.strokeWidth = 0.5;
-		cb.style.fill = WHITE;
-		
 		$('#space').append(cb);
+		
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', -50);
+		img.setAttribute('y', -37.5);
+		img.setAttributeNS('width', 100);
+		img.setAttributeNS('height', 75);
+		img.setAttribute('href', './svg/feedback.svg');
+		$('#space').append(img);
 		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
@@ -192,7 +197,6 @@ export default class GalaxyView extends View {
 		surface.addEventListener("mouseout", function(event){ 
 			border.style.fill = WHITE;
 		}, false);
-		
 		$('#space').append(surface);
 	}
 	

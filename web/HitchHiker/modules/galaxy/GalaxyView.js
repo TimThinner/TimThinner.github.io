@@ -58,6 +58,10 @@ export default class GalaxyView extends View {
 	
 	*/
 	createSpace() {
+		$('html').css('background-color','#ccc');
+		$('body').css('background-color','#ccc');
+		$('.container').css('background-color','#ccc');
+		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
 		const wp2 = w*0.5;

@@ -68,17 +68,21 @@ export default class MenuView extends View {
 	}
 	
 	show() {
+		console.log('MenuView show()');
 		this.render();
-		this.PTO.start();
+		this.tickcount = 0;
+		this.PTO.restart();
 	}
 	
 	hide() {
+		console.log('MenuView hide()');
 		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		console.log('MenuView remove()');
 		this.PTO.stop();
 		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
@@ -125,9 +129,9 @@ export default class MenuView extends View {
 		r_a.style.cursor = 'pointer';
 		r_a.style.fill = '#ff5722'; // 'deep-orange'
 		r_a.addEventListener("click", function(){
-			self.selectedColor = 'deep-orange';
 			
-			self.renderALL();
+			self.selectedColor = 'deep-orange';
+			self.show();
 			
 		}, false);
 		$('#space').append(r_a);
@@ -147,9 +151,9 @@ export default class MenuView extends View {
 		r_b.style.cursor = 'pointer';
 		r_b.style.fill = '#4caf50'; //'green'
 		r_b.addEventListener("click", function(){
-			self.selectedColor = 'green';
 			
-			self.renderALL();
+			self.selectedColor = 'green';
+			self.show();
 			
 		}, false);
 		$('#space').append(r_b);
@@ -169,9 +173,9 @@ export default class MenuView extends View {
 		r_c.style.cursor = 'pointer';
 		r_c.style.fill = '#03a9f4'; //'light-blue'
 		r_c.addEventListener("click", function(){
-			self.selectedColor = 'light-blue';
 			
-			self.renderALL();
+			self.selectedColor = 'light-blue';
+			self.show();
 			
 		}, false);
 		$('#space').append(r_c);
@@ -191,9 +195,9 @@ export default class MenuView extends View {
 		r_d.style.cursor = 'pointer';
 		r_d.style.fill = '#9c27b0'; //'purple'
 		r_d.addEventListener("click", function(){
-			self.selectedColor = 'purple';
 			
-			self.renderALL();
+			self.selectedColor = 'purple';
+			self.show();
 			
 		}, false);
 		$('#space').append(r_d);
@@ -488,36 +492,27 @@ export default class MenuView extends View {
 	}
 	
 	renderALL() {
+		console.log('renderALL()!!!!');
 		this.createSpace();
 		this.appendButtons();
 		this.appendMoons();
 		this.appendSun();
-		console.log('NEW renderALL()!!!!');
-		if (this.tickcount >= 2) {
-			setTimeout(() => this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '7s'), 10000);
-		}
 	}
 	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				
-				if (this.rendered) {
-					
-					console.log('ResizeEventObserver resize => rendered OK');
-					this.renderALL();
-					
-				} else {
-					console.log('ResizeEventObserver resize => NOT rendered yet => render');
-					this.render();
-				}
+				console.log('ResizeEventObserver resize => SHOW()!');
+				this.show();
+				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Do something with each TICK!
 				if (this.rendered) {
 					
-					//console.log('PeriodicTimeoutObserver timeout => rendered OK');
-					//console.log('TICK!');
+					console.log('PeriodicTimeoutObserver timeout => rendered OK');
 					this.tickcount++;
+					console.log(['TICK! tickcount = ',this.tickcount]);
 					if (this.tickcount === 2) {
 						this.appendEllipticalMoon(0.35, 0.04, '#ffffff', '7s');
 					}

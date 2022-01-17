@@ -8,14 +8,6 @@ export default class MenuController extends Controller {
 		super(options);
 	}
 	
-	remove() {
-		super.remove();
-	}
-	
-	hide() {
-		super.hide();
-	}
-	
 	init() {
 		const model = new MenuModel({name:'MenuModel',src:'menu'});
 		model.subscribe(this);
@@ -23,6 +15,11 @@ export default class MenuController extends Controller {
 		this.models['MenuModel'] = model;
 		
 		this.view = new MenuView(this);
-		this.show(); // IF this controller is visible => show it... and start periodic timer with 10 s interval.
+		
+		// NOTE: If View does NOT have ResizeEventObserver, we try to show it.
+		// If view is listening to ResizeEventObserver, initial resize event will trigger "show()".
+		if (typeof this.view.REO === 'undefined') {
+			this.show(); // IF this controller is visible => show it... and start periodic timer with 10 s interval.
+		}
 	}
 }

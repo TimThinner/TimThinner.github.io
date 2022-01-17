@@ -36,9 +36,8 @@ export default class Controller {
 	// set at the models.
 	show() {
 		console.log(['SHOW CONTROLLER ',this.name]);
-		if (this.view) {
-			//console.log('Show the VIEW...');
-			this.visible = true;
+		if (this.visible && this.view) {
+			console.log('Show the VIEW...');
 			this.view.show();
 		}
 	}
@@ -61,6 +60,7 @@ export default class Controller {
 			//console.log(['In ',this.name,' selected = ',options.selected]);
 			if (this.name === options.selected) {
 				setTimeout(() => {
+					this.visible = true;
 					this.show();
 				}, 100);
 			} else {

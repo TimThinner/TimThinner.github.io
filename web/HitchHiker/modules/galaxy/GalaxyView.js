@@ -131,8 +131,15 @@ export default class GalaxyView extends View {
 	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
 	<image x="-50" y="-37.5" width="100" height="75" xlink:href="feedback.svg" />
 	<circle id="target-d" class="surface" x="0" y="0" r="100" />
+	
+	
+	
+	<g transform="translate(0,0)">
+	<g transform="translate(250,250)">
+	...
+	
 	*/
-	appendSun() {
+	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
@@ -148,6 +155,14 @@ export default class GalaxyView extends View {
 		const h = r*0.75;
 		const hper2 = h*0.5;
 		
+		let tx = 0; ty = 0;
+		if (type === 'FEEDBACK') {
+			tx = r*2; 
+			ty = r*2;
+		}
+		
+		const group = document.createElementNS(svgNS, "g");
+		
 		const border = document.createElementNS(svgNS, "circle");
 		border.setAttributeNS(null, 'cx', 0);
 		border.setAttributeNS(null, 'cy', 0);
@@ -156,7 +171,7 @@ export default class GalaxyView extends View {
 		border.style.fillOpacity = 0.5;
 		border.style.stroke = DARK_BLUE;
 		border.style.strokeWidth = 2;
-		$('#space').append(border);
+		group.appendChild(border);
 		
 		const ca = document.createElementNS(svgNS, "circle");
 		ca.setAttributeNS(null, 'cx', 0);
@@ -166,7 +181,7 @@ export default class GalaxyView extends View {
 		ca.style.fillOpacity = 0.5;
 		ca.style.stroke = DARK_BLUE;
 		ca.style.strokeWidth = 1;
-		$('#space').append(ca);
+		group.appendChild(ca);
 		
 		const cb = document.createElementNS(svgNS, "circle");
 		cb.setAttribute('cx', 0);
@@ -176,15 +191,17 @@ export default class GalaxyView extends View {
 		cb.style.fillOpacity = 1;
 		cb.style.stroke = DARK_BLUE;
 		cb.style.strokeWidth = 0.5;
-		$('#space').append(cb);
+		group.appendChild(cb);
 		
-		const img = document.createElementNS(svgNS, "image");
-		img.setAttribute('x', -wper2);
-		img.setAttribute('y', -hper2);
-		img.setAttribute('width', w);
-		img.setAttribute('height', h);
-		img.setAttribute('href', './svg/feedback.svg');
-		$('#space').append(img);
+		if (type === 'FEEDBACK') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', -wper2);
+			img.setAttribute('y', -hper2);
+			img.setAttribute('width', w);
+			img.setAttribute('height', h);
+			img.setAttribute('href', './svg/feedback.svg');
+			group.appendChild(img);
+		}
 		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
@@ -203,14 +220,18 @@ export default class GalaxyView extends View {
 		surface.addEventListener("mouseout", function(event){ 
 			border.style.fill = WHITE;
 		}, false);
-		$('#space').append(surface);
+		
+		group.appendChild(surface);
+		group.setAttribute('transform', 'translate('+tx','+ty+')');
+		$('#space').append(group);
 	}
 	
 	renderALL() {
 		console.log('renderALL()!!!!');
 		$(this.el).empty();
 		this.createSpace();
-		this.appendSun();
+		this.appendSun('USER');
+		this.appendSun('FEEDBACK');
 	}
 	
 	notify(options) {

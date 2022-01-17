@@ -217,8 +217,6 @@ export default class MenuView extends View {
 	
 	*/
 	createSpace() {
-		$(this.el).empty();
-		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
 		const wp2 = w*0.5;
@@ -386,6 +384,7 @@ export default class MenuView extends View {
 </g>
 */
 	appendMoon(df, rf, fillcolor, dur, cc) {
+		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
 		const group = document.createElementNS(svgNS, "g");
@@ -434,6 +433,13 @@ export default class MenuView extends View {
 			group.appendChild(rot);
 		}
 		$('#space').append(group);
+		
+		// Add event handler to biggest and slowest moon!
+		if (dur === '50s') {
+			c.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('galaxy');
+			}, false);
+		}
 	}
 	/*
 		purple
@@ -493,6 +499,7 @@ export default class MenuView extends View {
 	
 	renderALL() {
 		console.log('renderALL()!!!!');
+		$(this.el).empty();
 		this.createSpace();
 		this.appendButtons();
 		this.appendMoons();
@@ -526,7 +533,6 @@ export default class MenuView extends View {
 	}
 	
 	render() {
-		//$(this.el).empty(); NOTE: this.createSpace(); empties the view!
 		console.log('MenuView render()');
 		this.renderALL();
 		this.rendered = true;

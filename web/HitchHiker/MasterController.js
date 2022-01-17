@@ -1,6 +1,7 @@
 import ModelRepo from './modules/common/ModelRepo.js';
 import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import MenuController from './modules/menu/MenuController.js';
+import GalaxyController from './modules/galaxy/GalaxyController.js';
 /*
 EventObserver	Model					ConfigurationModel
 										MenuModel
@@ -24,7 +25,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init!');
+		console.log('MasterController init! Version 22.01.17A');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -38,6 +39,10 @@ class MasterController {
 		// Menu controller MUST be first!
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
+		
+		this.controllers['galaxy'] = new GalaxyController({name:'galaxy', master:this, el:'#content', visible:false});
+		this.controllers['galaxy'].init();
+		
 	}
 	
 	forceLogout() {

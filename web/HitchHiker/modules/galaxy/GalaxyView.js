@@ -159,6 +159,7 @@ export default class GalaxyView extends View {
 	
 	renderALL() {
 		console.log('renderALL()!!!!');
+		$(this.el).empty();
 		this.createSpace();
 		this.appendSun();
 	}

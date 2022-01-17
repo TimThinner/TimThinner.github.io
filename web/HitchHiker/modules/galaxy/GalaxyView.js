@@ -222,7 +222,7 @@ export default class GalaxyView extends View {
 		}, false);
 		
 		group.appendChild(surface);
-		group.setAttribute('transform', 'translate('+tx','+ty+')');
+		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#space').append(group);
 	}
 	

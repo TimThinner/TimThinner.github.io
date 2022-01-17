@@ -1,5 +1,9 @@
 import View from '../common/View.js';
-
+/*
+iFLEX Dark blue   #1a488b ( 26,  72, 139)
+iFLEX Dark green  #008245 (  0, 130,  69)
+iFLEX Light green #78c51b (120, 197,  27)
+*/
 export default class GalaxyView extends View {
 	
 	constructor(controller) {
@@ -38,9 +42,9 @@ export default class GalaxyView extends View {
 	sunRadius() {
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
-		const wp2 = w*0.5;
-		const hp2 = h*0.5;
-		const r = Math.min(wp2, hp2)*0.5;
+		const wp2 = w*0.125;
+		const hp2 = h*0.125;
+		const r = Math.min(wp2, hp2); // r = 0,125 x W or H, whichever is smallest (d=0,25 x W or H)
 		return r;
 	}
 	
@@ -120,45 +124,64 @@ export default class GalaxyView extends View {
 		$(this.el).append(svg);
 	}
 	
+	
+	/*
+	<circle id="target-d-border" cx="0" cy="0" r="100" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="90" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
+	<image x="-50" y="-37.5" width="100" height="75" xlink:href="feedback.svg" />
+	<circle id="target-d" class="surface" x="0" y="0" r="100" />
+	
+	*/
 	appendSun() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		/*
-			#4a148c purple darken-4
-			#1b5e20 green darken-4
-			#bf360c deep-orange darken-4
-			#01579b light-blue darken-4
-		*/
-		let fill = '#ffffff';
 		const r = this.sunRadius();
-		// <a href="../index.html#HitchHiker"></a>
-		//const a = document.createElementNS(svgNS, "a");
-		//a.setAttributeNS(null,'href','javascript:void()');
+		
+		const WHITE = '#fff';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const GREEN = '#0f0';
+		
+		const border = document.createElementNS(svgNS, "circle");
+		border.setAttributeNS(null, 'cx', 0);
+		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'r', r);
+		border.style.opacity = 0.5;
+		border.style.stroke = DARK_BLUE;
+		border.style.strokeWidth = 2;
+		border.style.fill = WHITE;
+		
+		$('#space').append(border);
 		
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
-		c.setAttributeNS(null, 'r', r);
-		c.style.stroke = '#333'; 
-		c.style.fill = fill;
-		c.addEventListener("click", function(){
+		c.setAttributeNS(null, 'r', r-20);
+		c.style.stroke = DARK_BLUE;
+		c.style.strokeWidth = 1;
+		c.style.fill = WHITE;
+		
+		$('#space').append(c);
+		
+		const surface = document.createElementNS(svgNS, "circle");
+		surface.setAttributeNS(null, 'cx', 0);
+		surface.setAttributeNS(null, 'cy', 0);
+		surface.setAttributeNS(null, 'r', r);
+		surface.style.stroke = DARK_BLUE;
+		surface.style.strokeWidth = 1;
+		surface.style.fillOpacity = 0;
+		surface.style.cursor = 'pointer';
+		surface.addEventListener("click", function(){
 			self.models['MenuModel'].setSelected('menu');
 		}, false);
-		//a.appendChild(c);
-		//$('#space').append(a);
-		$('#space').append(c);
-		/*
-				targetB.addEventListener("click", function(){
-					self.models['MenuModel'].setSelected('B');
-				}, false);
-				targetB.addEventListener("mouseover", function(event){ 
-					svgObject.getElementById('target-b-border').style.fill = FILL_COLOR_HOVER;
-				}, false);
-				targetB.addEventListener("mouseout", function(event){ 
-					svgObject.getElementById('target-b-border').style.fill = FILL_COLOR;
-				}, false);
-			}
-		*/
+		surface.addEventListener("mouseover", function(event){ 
+			border.style.fill = GREEN;
+		}, false);
+		surface.addEventListener("mouseout", function(event){ 
+			border.style.fill = WHITE;
+		}, false);
+		
+		$('#space').append(surface);
 	}
 	
 	renderALL() {

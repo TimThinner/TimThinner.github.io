@@ -146,22 +146,34 @@ export default class GalaxyView extends View {
 		border.setAttributeNS(null, 'cx', 0);
 		border.setAttributeNS(null, 'cy', 0);
 		border.setAttributeNS(null, 'r', r);
-		border.style.opacity = 0.5;
+		border.style.fillOpacity = 0.5;
 		border.style.stroke = DARK_BLUE;
 		border.style.strokeWidth = 2;
 		border.style.fill = WHITE;
 		
 		$('#space').append(border);
 		
-		const c = document.createElementNS(svgNS, "circle");
-		c.setAttributeNS(null, 'cx', 0);
-		c.setAttributeNS(null, 'cy', 0);
-		c.setAttributeNS(null, 'r', r-20);
-		c.style.stroke = DARK_BLUE;
-		c.style.strokeWidth = 1;
-		c.style.fill = WHITE;
+		const ca = document.createElementNS(svgNS, "circle");
+		ca.setAttributeNS(null, 'cx', 0);
+		ca.setAttributeNS(null, 'cy', 0);
+		ca.setAttributeNS(null, 'r', r-10);
+		ca.style.fillOpacity = 0.5;
+		ca.style.stroke = DARK_BLUE;
+		ca.style.strokeWidth = 1;
+		ca.style.fill = WHITE;
 		
-		$('#space').append(c);
+		$('#space').append(ca);
+		
+		const cb = document.createElementNS(svgNS, "circle");
+		cb.setAttributeNS(null, 'cx', 0);
+		cb.setAttributeNS(null, 'cy', 0);
+		cb.setAttributeNS(null, 'r', r-40);
+		cb.style.fillOpacity = 1;
+		cb.style.stroke = DARK_BLUE;
+		cb.style.strokeWidth = 0.5;
+		cb.style.fill = WHITE;
+		
+		$('#space').append(cb);
 		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);

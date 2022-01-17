@@ -175,8 +175,8 @@ export default class GalaxyView extends View {
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', -50);
 		img.setAttribute('y', -37.5);
-		img.setAttributeNS('width', 100);
-		img.setAttributeNS('height', 75);
+		img.setAttribute('width', 100);
+		img.setAttribute('height', 75);
 		img.setAttribute('href', './svg/feedback.svg');
 		$('#space').append(img);
 		

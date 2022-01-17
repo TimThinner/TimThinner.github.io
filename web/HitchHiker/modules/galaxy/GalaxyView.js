@@ -131,7 +131,6 @@ export default class GalaxyView extends View {
 	<circle cx="0" cy="0" r="60" stroke="#1a488b" stroke-width="0.5" opacity="1" fill="#fff" />
 	<image x="-50" y="-37.5" width="100" height="75" xlink:href="feedback.svg" />
 	<circle id="target-d" class="surface" x="0" y="0" r="100" />
-	
 	*/
 	appendSun() {
 		const self = this;
@@ -141,6 +140,13 @@ export default class GalaxyView extends View {
 		const WHITE = '#fff';
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
+		
+		const r2 = r-r*0.1;
+		const r3 = r-r*0.3;
+		const w = r;
+		const wper2 = w*0.5;
+		const h = r*0.75;
+		const hper2 = h*0.5;
 		
 		const border = document.createElementNS(svgNS, "circle");
 		border.setAttributeNS(null, 'cx', 0);
@@ -155,7 +161,7 @@ export default class GalaxyView extends View {
 		const ca = document.createElementNS(svgNS, "circle");
 		ca.setAttributeNS(null, 'cx', 0);
 		ca.setAttributeNS(null, 'cy', 0);
-		ca.setAttributeNS(null, 'r', r-10);
+		ca.setAttributeNS(null, 'r', r2);
 		ca.style.fill = WHITE;
 		ca.style.fillOpacity = 0.5;
 		ca.style.stroke = DARK_BLUE;
@@ -165,7 +171,7 @@ export default class GalaxyView extends View {
 		const cb = document.createElementNS(svgNS, "circle");
 		cb.setAttribute('cx', 0);
 		cb.setAttribute('cy', 0);
-		cb.setAttribute('r', r-30);
+		cb.setAttribute('r', r3);
 		cb.style.fill = WHITE;
 		cb.style.fillOpacity = 1;
 		cb.style.stroke = DARK_BLUE;
@@ -173,10 +179,10 @@ export default class GalaxyView extends View {
 		$('#space').append(cb);
 		
 		const img = document.createElementNS(svgNS, "image");
-		img.setAttribute('x', -50);
-		img.setAttribute('y', -37.5);
-		img.setAttribute('width', 100);
-		img.setAttribute('height', 75);
+		img.setAttribute('x', -wper2);
+		img.setAttribute('y', -hper2);
+		img.setAttribute('width', w);
+		img.setAttribute('height', h);
 		img.setAttribute('href', './svg/feedback.svg');
 		$('#space').append(img);
 		

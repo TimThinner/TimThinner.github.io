@@ -39,6 +39,12 @@ export default class GalaxyView extends View {
 		$(this.el).empty();
 	}
 	
+	/*
+	The radius of circle is 12,5% of H or W (smaller dimension).
+	=> circle diameter is 25% of H or W.
+	=> Building width must be something like 30% of W and height 30% of H.
+	*/
+	
 	sunRadius() {
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
@@ -62,9 +68,9 @@ export default class GalaxyView extends View {
 	
 	*/
 	createSpace() {
-		$('html').css('background-color','#ccc');
-		$('body').css('background-color','#ccc');
-		$('.container').css('background-color','#ccc');
+		$('html').css('background-color','#ddd');
+		$('body').css('background-color','#ddd');
+		$('.container').css('background-color','#ddd');
 		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
@@ -83,7 +89,7 @@ export default class GalaxyView extends View {
 		// Store an array of stop information for the gradient
 		var stops = [
 			{"color":"#fff","offset": "10%"},
-			{"color":"#ccc","offset": "50%"}
+			{"color":"#ddd","offset": "50%"}
 		];
 		/*
 		const stops = [
@@ -124,6 +130,51 @@ export default class GalaxyView extends View {
 		$(this.el).append(svg);
 	}
 	
+	/*
+<!-- Building -->
+<path d="M-150,150 L-150,-150 L0,-200 L150,-150 L150,150 Z" stroke="#1a488b" stroke-width="12" fill="#1a488b" fill-opacity="0.25" opacity="0.3" />
+
+<!-- Door -->
+<path d="M-25,150 L-25,75 L25,75 L25,150" stroke="#1a488b" stroke-width="8" fill="none" opacity="0.5" />
+
+<!-- Windows -->
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(-100,100)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(100,100)" />
+
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(-100,0)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(100,0)" />
+
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(-100,-100)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(0,-100)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(100,-100)" />
+	*/
+	
+	/*
+	The radius of circle is 12,5% of H or W (smaller dimension).
+	=> circle diameter is 25% of H or W.
+	=> Building width must be something like 30% of W and height 30% of H.
+	*/
+	
+	appendBuilding() {
+		const w = (this.REO.width-18)*0.3;
+		const h = (this.REO.width-18)*0.3;
+		const wp2 = w*0.5;
+		const hp2 = h*0.5;
+		const hp3 = h*0.6;
+		
+		const d = 'M-'+wp2+','+hp2+' L-'+wp2+',-'+hp2+' L0,-'+hp3+' L'+wp2+',-'+hp2+' L'+wp2+','+hp2+' Z';
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttributeNS(null, 'd', d);
+		path.style.stroke = '#1a488b';
+		path.style.strokeWidth = 12;
+		path.style.fill = '#1a488b';
+		path.style.fillOpacity = 0.25
+		path.style.opacity = 0.3;
+		$('#space').append(path);
+	}
+	
+	
 	
 	/*
 	<circle id="target-d-border" cx="0" cy="0" r="100" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
@@ -155,7 +206,7 @@ export default class GalaxyView extends View {
 		const h = r*0.75;
 		const hper2 = h*0.5;
 		
-		let tx = 0, ty = 0;
+		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'FEEDBACK') {
 			tx = r*2; 
 			ty = r*2;
@@ -230,6 +281,7 @@ export default class GalaxyView extends View {
 		console.log('renderALL()!!!!');
 		$(this.el).empty();
 		this.createSpace();
+		this.appendBuilding();
 		this.appendSun('USER');
 		this.appendSun('FEEDBACK');
 	}

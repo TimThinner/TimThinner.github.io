@@ -158,13 +158,12 @@ export default class GalaxyView extends View {
 	
 	appendBuilding() {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const w = (this.REO.width-18)*0.3;
-		const h = (this.REO.height-18)*0.3;
-		const wp2 = w*0.5;
-		const hp2 = h*0.5;
-		const hp3 = h*0.6;
+		const r = this.sunRadius();
 		
-		const d = 'M-'+wp2+','+hp2+' L-'+wp2+',-'+hp2+' L0,-'+hp3+' L'+wp2+',-'+hp2+' L'+wp2+','+hp2+' Z';
+		const corner = 7*r/5;
+		const rooftop = 10*r/5;
+		
+		const d = 'M-'+corner+','+corner+' L-'+corner+',-'+corner+' L0,-'+rooftop+' L'+corner+',-'+corner+' L'+corner+','+corner+' Z';
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = '#1a488b';
@@ -209,8 +208,7 @@ export default class GalaxyView extends View {
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'FEEDBACK') {
-			tx = r*2; 
-			ty = r*2;
+			tx = ty = 12*r/5;
 		}
 		
 		const group = document.createElementNS(svgNS, "g");

@@ -245,7 +245,7 @@ export default class GalaxyView extends View {
 		this.appendWindow(wd, 4*wunit, 4*wunit);
 		
 		// DOOR:
-		const dd = 'M-'+wunit+','+1.5*wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+1.5*wunit+' Z';
+		const dd = 'M-'+wunit+','+2*wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+2*wunit+' Z';
 		const tx = 0;
 		const ty = 4*wunit;
 		const door = document.createElementNS(svgNS, "path");

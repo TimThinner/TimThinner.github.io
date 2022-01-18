@@ -157,6 +157,7 @@ export default class GalaxyView extends View {
 	*/
 	
 	appendBuilding() {
+		const svgNS = 'http://www.w3.org/2000/svg';
 		const w = (this.REO.width-18)*0.3;
 		const h = (this.REO.width-18)*0.3;
 		const wp2 = w*0.5;

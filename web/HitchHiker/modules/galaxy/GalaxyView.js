@@ -218,7 +218,7 @@ export default class GalaxyView extends View {
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = '#1a488b';
-		path.style.strokeWidth = 7;
+		path.style.strokeWidth = 9;
 		path.style.fill = '#1a488b';
 		path.style.fillOpacity = 0.25
 		path.style.opacity = 0.3;
@@ -232,9 +232,30 @@ export default class GalaxyView extends View {
 		// Windows:
 		const wunit = 14*r/60;
 		const wd = 'M-'+wunit+','+wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+wunit+' Z';
+		// Upper row:
 		this.appendWindow(wd, -4*wunit, -4*wunit);
 		this.appendWindow(wd, 0, -4*wunit);
 		this.appendWindow(wd, 4*wunit, -4*wunit);
+		// Center row:
+		this.appendWindow(wd, -4*wunit, 0);
+		this.appendWindow(wd, 0, 0);
+		this.appendWindow(wd, 4*wunit, 0);
+		// Bottom row:
+		this.appendWindow(wd, -4*wunit, 4*wunit);
+		this.appendWindow(wd, 4*wunit, 4*wunit);
+		
+		// DOOR:
+		const dd = 'M-'+wunit+','+1.5*wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+1.5*wunit+' Z';
+		const tx = 4*wunit;
+		const ty = 0;
+		const door = document.createElementNS(svgNS, "path");
+		door.setAttributeNS(null, 'd', dd);
+		door.style.stroke = '#1a488b';
+		door.style.strokeWidth = 5;
+		door.style.opacity = 0.5;
+		door.style.fill = 'none';
+		door.setAttribute('transform', 'translate('+tx+','+ty+')');
+		$('#space').append(door);
 	}
 	
 	/*

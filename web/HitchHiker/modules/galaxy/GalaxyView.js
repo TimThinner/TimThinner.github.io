@@ -333,7 +333,15 @@ export default class GalaxyView extends View {
 		cb.style.strokeWidth = 0.5;
 		group.appendChild(cb);
 		
-		if (type === 'ELECTRICITY') {
+		if (type === 'USER') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', -wper2);
+			img.setAttribute('y', -hper2);
+			img.setAttribute('width', w);
+			img.setAttribute('height', h);
+			img.setAttribute('href', './svg/anon.svg');
+			group.appendChild(img);
+		} else if (type === 'ELECTRICITY') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', -wper2);
 			img.setAttribute('y', -hper2);

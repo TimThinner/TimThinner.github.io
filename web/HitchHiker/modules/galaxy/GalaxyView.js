@@ -130,6 +130,44 @@ export default class GalaxyView extends View {
 		$(this.el).append(svg);
 	}
 	
+	appendConnector(corner, endpoint, pos) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let d, cx, cy;
+		if (pos === 0) {
+			d = 'M-'+corner+','+corner+' L-'+endpoint+','+endpoint;
+			cx = -corner;
+			cy = corner;
+		} else if (pos === 1) {
+			d = 'M-'+corner+',-'+corner+' L-'+endpoint+',-'+endpoint;
+			cx = -corner;
+			cy = -corner;
+		} else if (pos === 2) {
+			d = 'M'+corner+',-'+corner+' L'+endpoint+',-'+endpoint;
+			cx = corner;
+			cy = -corner;
+		} else {
+			d = 'M'+corner+','+corner+' L'+endpoint+','+endpoint;
+			cx = corner;
+			cy = corner;
+		}
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttributeNS(null, 'd', d);
+		path.style.stroke = '#1a488b';
+		path.style.strokeWidth = 2;
+		path.style.opacity = 0.5;
+		path.style.fill = 'none';
+		$('#space').append(path);
+		
+		const c = document.createElementNS(svgNS, "circle");
+		c.setAttributeNS(null, 'cx', cx);
+		c.setAttributeNS(null, 'cy', cy);
+		c.setAttributeNS(null, 'r', 5);
+		c.style.stroke = '#1a488b';
+		c.style.strokeWidth = 2;
+		c.style.opacity = 0.5;
+		c.style.fill = '#1a488b';
+		$('#space').append(c);
+	}
 	/*
 <!-- Building -->
 <path d="M-150,150 L-150,-150 L0,-200 L150,-150 L150,150 Z" stroke="#1a488b" stroke-width="12" fill="#1a488b" fill-opacity="0.25" opacity="0.3" />
@@ -162,19 +200,23 @@ export default class GalaxyView extends View {
 		
 		const corner = 7*r/5;
 		const rooftop = 10*r/5;
+		const endpoint = 12*r/5;
 		
 		const d = 'M-'+corner+','+corner+' L-'+corner+',-'+corner+' L0,-'+rooftop+' L'+corner+',-'+corner+' L'+corner+','+corner+' Z';
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = '#1a488b';
-		path.style.strokeWidth = 12;
+		path.style.strokeWidth = 7;
 		path.style.fill = '#1a488b';
 		path.style.fillOpacity = 0.25
 		path.style.opacity = 0.3;
 		$('#space').append(path);
+		
+		this.appendConnector(corner, endpoint, 0); // Bottom Left
+		this.appendConnector(corner, endpoint, 1); // Top Left
+		this.appendConnector(corner, endpoint, 2); // Top Right
+		this.appendConnector(corner, endpoint, 3); // Bottom Right
 	}
-	
-	
 	
 	/*
 	<circle id="target-d-border" cx="0" cy="0" r="100" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />

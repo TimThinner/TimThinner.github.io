@@ -168,6 +168,18 @@ export default class GalaxyView extends View {
 		c.style.fill = '#1a488b';
 		$('#space').append(c);
 	}
+	
+	appendWindow(d, tx, ty) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttributeNS(null, 'd', d);
+		path.style.stroke = '#1a488b';
+		path.style.strokeWidth = 5;
+		path.style.opacity = 0.5;
+		path.style.fill = '#fff';
+		path.setAttribute('transform', 'translate('+tx+','+ty+')');
+		$('#space').append(path);
+	}
 	/*
 <!-- Building -->
 <path d="M-150,150 L-150,-150 L0,-200 L150,-150 L150,150 Z" stroke="#1a488b" stroke-width="12" fill="#1a488b" fill-opacity="0.25" opacity="0.3" />
@@ -216,6 +228,13 @@ export default class GalaxyView extends View {
 		this.appendConnector(corner, endpoint, 1); // Top Left
 		this.appendConnector(corner, endpoint, 2); // Top Right
 		this.appendConnector(corner, endpoint, 3); // Bottom Right
+		
+		// Windows:
+		const wunit = 14*r/60;
+		const wd = 'M-'+wunit+','+wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+wunit+' Z';
+		this.appendWindow(wd, -4*wunit, -4*wunit);
+		this.appendWindow(wd, 0, -4*wunit);
+		this.appendWindow(wd, 4*wunit, -4*wunit);
 	}
 	
 	/*

@@ -246,8 +246,8 @@ export default class GalaxyView extends View {
 		
 		// DOOR:
 		const dd = 'M-'+wunit+','+1.5*wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+1.5*wunit+' Z';
-		const tx = 4*wunit;
-		const ty = 0;
+		const tx = 0;
+		const ty = 4*wunit;
 		const door = document.createElementNS(svgNS, "path");
 		door.setAttributeNS(null, 'd', dd);
 		door.style.stroke = '#1a488b';

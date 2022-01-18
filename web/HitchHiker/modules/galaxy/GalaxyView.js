@@ -289,7 +289,15 @@ export default class GalaxyView extends View {
 		const hper2 = h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
-		if (type === 'FEEDBACK') {
+		if (type === 'ELECTRICITY') {
+			tx = ty = -12*r/5;
+		} else if (type === 'HEATING') {
+			tx = 12*r/5;
+			ty = -12*r/5;
+		} else if (type === 'ENVIRONMENT') {
+			tx = -12*r/5;
+			ty = 12*r/5;
+		} else if (type === 'FEEDBACK') {
 			tx = ty = 12*r/5;
 		}
 		
@@ -325,7 +333,31 @@ export default class GalaxyView extends View {
 		cb.style.strokeWidth = 0.5;
 		group.appendChild(cb);
 		
-		if (type === 'FEEDBACK') {
+		if (type === 'ELECTRICITY') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', -wper2);
+			img.setAttribute('y', -hper2);
+			img.setAttribute('width', w);
+			img.setAttribute('height', h);
+			img.setAttribute('href', './svg/electricity.svg');
+			group.appendChild(img);
+		} else if (type === 'HEATING') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', -wper2);
+			img.setAttribute('y', -hper2);
+			img.setAttribute('width', w);
+			img.setAttribute('height', h);
+			img.setAttribute('href', './svg/radiator.svg');
+			group.appendChild(img);
+		} else if (type === 'ENVIRONMENT') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', -wper2);
+			img.setAttribute('y', -hper2);
+			img.setAttribute('width', w);
+			img.setAttribute('height', h);
+			img.setAttribute('href', './svg/leaf.svg');
+			group.appendChild(img);
+		} else if (type === 'FEEDBACK') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', -wper2);
 			img.setAttribute('y', -hper2);
@@ -364,6 +396,9 @@ export default class GalaxyView extends View {
 		this.createSpace();
 		this.appendBuilding();
 		this.appendSun('USER');
+		this.appendSun('ELECTRICITY');
+		this.appendSun('HEATING');
+		this.appendSun('ENVIRONMENT');
 		this.appendSun('FEEDBACK');
 	}
 	

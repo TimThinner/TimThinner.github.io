@@ -42,7 +42,6 @@ export default class GalaxyView extends View {
 	/*
 	The radius of circle is 12,5% of H or W (smaller dimension).
 	=> circle diameter is 25% of H or W.
-	=> Building width must be something like 30% of W and height 30% of H.
 	*/
 	
 	sunRadius() {
@@ -129,6 +128,24 @@ export default class GalaxyView extends View {
 		
 		$(this.el).append(svg);
 	}
+	/*
+	<image x="-120" y="-450" width="240" height="240" xlink:href="../img/iFLEX.png" />
+	*/
+	appendLogo() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const h = this.REO.height-18;
+		const r = this.sunRadius();
+		const img_dim = r*2;
+		const img_x_pos = -img_dim*0.5;
+		const img_y_pos = -h*0.5;
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', img_x_pos);
+		img.setAttribute('y', img_y_pos);
+		img.setAttribute('width', img_dim);
+		img.setAttribute('height', img_dim);
+		img.setAttribute('href', './img/iFLEX.png'); // logos original dimensions are 1000 x 1000 pixels.
+		$('#space').append(img);
+	}
 	
 	appendConnector(corner, endpoint, pos) {
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -181,31 +198,9 @@ export default class GalaxyView extends View {
 		$('#space').append(path);
 	}
 	/*
-<!-- Building -->
-<path d="M-150,150 L-150,-150 L0,-200 L150,-150 L150,150 Z" stroke="#1a488b" stroke-width="12" fill="#1a488b" fill-opacity="0.25" opacity="0.3" />
-
-<!-- Door -->
-<path d="M-25,150 L-25,75 L25,75 L25,150" stroke="#1a488b" stroke-width="8" fill="none" opacity="0.5" />
-
-<!-- Windows -->
-<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(-100,100)" />
-<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(100,100)" />
-
-<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(-100,0)" />
-<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" />
-<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(100,0)" />
-
-<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(-100,-100)" />
-<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(0,-100)" />
-<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.5" transform="translate(100,-100)" />
-	*/
-	
-	/*
 	The radius of circle is 12,5% of H or W (smaller dimension).
 	=> circle diameter is 25% of H or W.
-	=> Building width must be something like 30% of W and height 30% of H.
 	*/
-	
 	appendBuilding() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
@@ -402,6 +397,7 @@ export default class GalaxyView extends View {
 		console.log('renderALL()!!!!');
 		$(this.el).empty();
 		this.createSpace();
+		this.appendLogo();
 		this.appendBuilding();
 		this.appendSun('USER');
 		this.appendSun('ELECTRICITY');

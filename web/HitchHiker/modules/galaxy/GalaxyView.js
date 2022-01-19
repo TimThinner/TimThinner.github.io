@@ -492,7 +492,7 @@ export default class GalaxyView extends View {
 		const LIGHT_GREEN = '#78c51b';
 		
 		const w = r;
-		const h = w/3:
+		const h = w/3;
 		const y = 12*r/5;
 		
 		const svg = document.createElementNS(svgNS, "svg");

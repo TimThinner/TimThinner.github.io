@@ -491,16 +491,16 @@ export default class GalaxyView extends View {
 		const DARK_BLUE = '#1a488b';
 		const LIGHT_GREEN = '#78c51b';
 		
-		const w = r;
-		const h = w/3;
-		const y = 12*r/5;
+		const w = 120;
+		const h = 40;
+		const y = 17*r/5;
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		if (lang === 'Suomi') {
-			const x = -(w+16);
+			const x = -140;
 			svg.setAttribute('x',x);
 		} else {
-			const x = w+16; // 'English'
+			const x = 20; // 'English'
 			svg.setAttribute('x',x);
 		}
 		svg.setAttribute('y',y);

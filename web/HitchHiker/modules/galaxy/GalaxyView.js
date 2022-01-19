@@ -139,13 +139,11 @@ export default class GalaxyView extends View {
 		const img_x_pos = -img_dim*0.5;
 		let img_y_pos = -h*0.5; // Logo at the top!
 		// Center Logo vertically (if space). Note that we want Logo to be just above rooftop.
-		const rooftop = 10*r/5; // See also appendBuilding()
+		const rooftop = 9*r/5; // See also appendBuilding()
 		
 		const temp = (h*0.5-img_dim-rooftop)*0.5;
 		if (temp > 0) {
 			img_y_pos = -(temp+img_dim+rooftop);
-		} else {
-			console.log('LOGO NOW AT TOP!');
 		}
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', img_x_pos);
@@ -289,7 +287,7 @@ export default class GalaxyView extends View {
 		const r3 = r-r*0.3;
 		const w = r;
 		const wper2 = w*0.5;
-		const h = r*0.75;
+		const h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		const hper2 = h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
@@ -401,6 +399,77 @@ export default class GalaxyView extends View {
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#space').append(group);
 	}
+	/*
+	<g transform="translate(0,250)">
+		<circle id="target-info-border" cx="0" cy="0" r="30" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
+		<image x="-25" y="-25" width="50" height="50" xlink:href="info.svg" />
+		<circle id="target-info" class="surface" cx="0" cy="0" r="30" />
+	</g>
+	*/
+	appendInfoButton() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		const rr = r*0.25;
+		const r2 = rr-rr*0.1;
+		const w = rr;
+		const wper2 = w*0.5;
+		
+		 // 'transform' => 'translate('+tx+','+ty+')'
+		const tx = 0;
+		const ty = 12*r/5;
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const border = document.createElementNS(svgNS, "circle");
+		border.setAttributeNS(null, 'cx', 0);
+		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'r', rr);
+		border.style.fill = WHITE;
+		border.style.fillOpacity = 0.5;
+		border.style.stroke = DARK_BLUE;
+		border.style.strokeWidth = 2;
+		group.appendChild(border);
+		
+		const ca = document.createElementNS(svgNS, "circle");
+		ca.setAttributeNS(null, 'cx', 0);
+		ca.setAttributeNS(null, 'cy', 0);
+		ca.setAttributeNS(null, 'r', r2);
+		ca.style.fill = WHITE;
+		ca.style.fillOpacity = 0.5;
+		ca.style.stroke = DARK_BLUE;
+		ca.style.strokeWidth = 1;
+		group.appendChild(ca);
+		
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', -wper2);
+		img.setAttribute('y', -wper2);
+		img.setAttribute('width', w);
+		img.setAttribute('height', w);
+		img.setAttribute('href', './svg/info.svg');
+		group.appendChild(img);
+		
+		const surface = document.createElementNS(svgNS, "circle");
+		surface.setAttributeNS(null, 'cx', 0);
+		surface.setAttributeNS(null, 'cy', 0);
+		surface.setAttributeNS(null, 'r', rr);
+		surface.style.stroke = DARK_BLUE;
+		surface.style.strokeWidth = 1;
+		surface.style.fillOpacity = 0;
+		surface.style.cursor = 'pointer';
+		surface.addEventListener("click", function(){
+			self.models['MenuModel'].setSelected('menu');
+		}, false);
+		surface.addEventListener("mouseover", function(event){ 
+			border.style.fill = GREEN;
+		}, false);
+		surface.addEventListener("mouseout", function(event){ 
+			border.style.fill = WHITE;
+		}, false);
+		
+		group.appendChild(surface);
+		group.setAttribute('transform', 'translate('+tx+','+ty+')');
+		$('#space').append(group);
+	}
 	
 	renderALL() {
 		console.log('renderALL()!!!!');
@@ -413,6 +482,7 @@ export default class GalaxyView extends View {
 		this.appendSun('HEATING');
 		this.appendSun('ENVIRONMENT');
 		this.appendSun('FEEDBACK');
+		this.appendInfoButton();
 	}
 	
 	notify(options) {

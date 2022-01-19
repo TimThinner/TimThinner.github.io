@@ -137,11 +137,13 @@ export default class GalaxyView extends View {
 		const r = this.sunRadius();
 		const img_dim = r*2;
 		const img_x_pos = -img_dim*0.5;
-		let img_y_pos = -h*0.5;
-		// Center Logo vertically:
-		const temp = (h*0.5-img_dim)*0.5;
+		let img_y_pos = -h*0.5; // Logo at the top!
+		// Center Logo vertically (if space):
+		const temp = (h*0.5-img_dim-r)*0.5;
 		if (temp > 0) {
-			img_y_pos = -(temp+img_dim);
+			img_y_pos = -(temp+img_dim+r);
+		} else {
+			console.log('LOGO NOW AT TOP!');
 		}
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', img_x_pos);

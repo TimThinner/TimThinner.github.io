@@ -138,10 +138,12 @@ export default class GalaxyView extends View {
 		const img_dim = r*2;
 		const img_x_pos = -img_dim*0.5;
 		let img_y_pos = -h*0.5; // Logo at the top!
-		// Center Logo vertically (if space):
-		const temp = (h*0.5-img_dim-r)*0.5;
+		// Center Logo vertically (if space). Note that we want Logo to be just above rooftop.
+		const rooftop = 10*r/5; // See also appendBuilding()
+		
+		const temp = (h*0.5-img_dim-rooftop)*0.5;
 		if (temp > 0) {
-			img_y_pos = -(temp+img_dim+r);
+			img_y_pos = -(temp+img_dim+rooftop);
 		} else {
 			console.log('LOGO NOW AT TOP!');
 		}

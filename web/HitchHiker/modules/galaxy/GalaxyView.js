@@ -415,7 +415,7 @@ export default class GalaxyView extends View {
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
-		const rr = r*0.33;
+		const rr = r*0.4;
 		const r2 = rr-rr*0.2;
 		const w = r2*2;
 		const wper2 = w*0.5;

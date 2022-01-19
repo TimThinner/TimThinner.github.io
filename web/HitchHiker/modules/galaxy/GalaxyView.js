@@ -407,6 +407,7 @@ export default class GalaxyView extends View {
 	</g>
 	*/
 	appendInfoButton() {
+		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
 		
@@ -414,9 +415,9 @@ export default class GalaxyView extends View {
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
-		const rr = r*0.25;
-		const r2 = rr-rr*0.1;
-		const w = rr;
+		const rr = r*0.3;
+		const r2 = rr-rr*0.2;
+		const w = r2;
 		const wper2 = w*0.5;
 		
 		 // 'transform' => 'translate('+tx+','+ty+')'
@@ -435,15 +436,15 @@ export default class GalaxyView extends View {
 		border.style.strokeWidth = 2;
 		group.appendChild(border);
 		
-		const ca = document.createElementNS(svgNS, "circle");
-		ca.setAttributeNS(null, 'cx', 0);
-		ca.setAttributeNS(null, 'cy', 0);
-		ca.setAttributeNS(null, 'r', r2);
-		ca.style.fill = WHITE;
-		ca.style.fillOpacity = 0.5;
-		ca.style.stroke = DARK_BLUE;
-		ca.style.strokeWidth = 1;
-		group.appendChild(ca);
+		const cb = document.createElementNS(svgNS, "circle");
+		cb.setAttribute('cx', 0);
+		cb.setAttribute('cy', 0);
+		cb.setAttribute('r', r2);
+		cb.style.fill = WHITE;
+		cb.style.fillOpacity = 1;
+		cb.style.stroke = DARK_BLUE;
+		cb.style.strokeWidth = 0.5;
+		group.appendChild(cb);
 		
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', -wper2);

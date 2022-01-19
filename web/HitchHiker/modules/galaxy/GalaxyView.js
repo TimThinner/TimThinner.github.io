@@ -409,6 +409,11 @@ export default class GalaxyView extends View {
 	appendInfoButton() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
+		
+		const WHITE = '#fff';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const GREEN = '#0f0';
+		
 		const rr = r*0.25;
 		const r2 = rr-rr*0.1;
 		const w = rr;

@@ -156,6 +156,7 @@ export default class GalaxyView extends View {
 	
 	appendConnector(corner, endpoint, pos) {
 		const svgNS = 'http://www.w3.org/2000/svg';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		let d, cx, cy;
 		if (pos === 0) {
 			d = 'M-'+corner+','+corner+' L-'+endpoint+','+endpoint;
@@ -176,7 +177,7 @@ export default class GalaxyView extends View {
 		}
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
-		path.style.stroke = '#1a488b';
+		path.style.stroke = DARK_BLUE;
 		path.style.strokeWidth = 2;
 		path.style.opacity = 0.5;
 		path.style.fill = 'none';
@@ -186,10 +187,10 @@ export default class GalaxyView extends View {
 		c.setAttributeNS(null, 'cx', cx);
 		c.setAttributeNS(null, 'cy', cy);
 		c.setAttributeNS(null, 'r', 5);
-		c.style.stroke = '#1a488b';
+		c.style.stroke = DARK_BLUE;
 		c.style.strokeWidth = 2;
 		c.style.opacity = 0.5;
-		c.style.fill = '#1a488b';
+		c.style.fill = DARK_BLUE;
 		$('#space').append(c);
 	}
 	
@@ -211,6 +212,7 @@ export default class GalaxyView extends View {
 	appendBuilding() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		
 		const corner = 7*r/5;
 		const rooftop = 9*r/5;
@@ -219,9 +221,9 @@ export default class GalaxyView extends View {
 		const d = 'M-'+corner+','+corner+' L-'+corner+',-'+corner+' L0,-'+rooftop+' L'+corner+',-'+corner+' L'+corner+','+corner+' Z';
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
-		path.style.stroke = '#1a488b';
+		path.style.stroke = DARK_BLUE;
 		path.style.strokeWidth = 9;
-		path.style.fill = '#1a488b';
+		path.style.fill = DARK_BLUE;
 		path.style.fillOpacity = 0.25
 		path.style.opacity = 0.3;
 		$('#space').append(path);
@@ -252,7 +254,7 @@ export default class GalaxyView extends View {
 		const ty = 4*wunit;
 		const door = document.createElementNS(svgNS, "path");
 		door.setAttributeNS(null, 'd', dd);
-		door.style.stroke = '#1a488b';
+		door.style.stroke = DARK_BLUE;
 		door.style.strokeWidth = 5;
 		door.style.opacity = 0.5;
 		door.style.fill = 'none';
@@ -399,13 +401,7 @@ export default class GalaxyView extends View {
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#space').append(group);
 	}
-	/*
-	<g transform="translate(0,250)">
-		<circle id="target-info-border" cx="0" cy="0" r="30" stroke="#1a488b" stroke-width="2" opacity="0.5" fill="#fff" />
-		<image x="-25" y="-25" width="50" height="50" xlink:href="info.svg" />
-		<circle id="target-info" class="surface" cx="0" cy="0" r="30" />
-	</g>
-	*/
+	
 	appendInfoButton() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -466,6 +462,102 @@ export default class GalaxyView extends View {
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#space').append(group);
 	}
+	/*
+<svg x="-150" y="350" width="130px" height="50px">
+	<rect id="language-fi-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
+	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Suomi</text>
+	<rect id="language-fi" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#000" stroke-width="2" opacity="0" fill="#fff" />
+</svg>
+<svg x="20" y="350" width="130px" height="50px">
+	<rect id="language-en-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
+	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">English</text>
+	<rect id="language-en" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#1fac78" stroke-width="2" opacity="0" fill="#fff" />
+</svg>
+						lang_en_bg.style.fill = '#eee'; // Set fill to #eee
+						lang_en_bg.style.stroke = '#1a488b'; // Stroke Dark Blue
+						lang_en_bg.style.strokeWidth = 1;
+					}
+					const lang_fi_bg = svgObject.getElementById('language-fi-background');
+					if (lang_fi_bg) {
+						lang_fi_bg.style.fill = '#fff'; // Set fill to #fff
+						lang_fi_bg.style.stroke = '#78c51b'; // Set stroke to light green
+						lang_fi_bg.style.strokeWidth = 3;
+	*/
+	appendLanguageSelection(lang) {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		const DARK_BLUE = '#1a488b';
+		const LIGHT_GREEN = '#78c51b';
+		
+		const w = r;
+		const h = w/3:
+		const y = 12*r/5;
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		if (lang === 'Suomi') {
+			const x = -(w+16);
+			svg.setAttribute('x',x);
+		} else {
+			const x = w+16; // 'English'
+			svg.setAttribute('x',x);
+		}
+		svg.setAttribute('y',y);
+		svg.setAttributeNS(null,'width',w);
+		svg.setAttributeNS(null,'height',h);
+		
+		//<rect id="language-fi-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
+		const rect_bg = document.createElementNS(svgNS, 'rect');
+		rect_bg.setAttribute('x',1);
+		rect_bg.setAttribute('y',1);
+		rect_bg.setAttribute('width',w-2);
+		rect_bg.setAttribute('height',h-2);
+		if (lang === 'Suomi') {
+			rect_bg.style.stroke = LIGHT_GREEN;
+			rect_bg.style.strokeWidth = 3;
+			rect_bg.style.fill = '#fff';
+		} else {
+			rect_bg.style.stroke = DARK_BLUE;
+			rect_bg.style.strokeWidth = 1;
+			rect_bg.style.fill = '#eee';
+		}
+		svg.appendChild(rect_bg);
+		
+		//<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Suomi</text>
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','50%');
+		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.setAttribute('font-size','20px');
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.setAttribute('fill','#00a');
+		
+		if (lang === 'Suomi') {
+			const text_node = document.createTextNode('Suomi');
+			txt.appendChild(text_node);
+		} else {
+			const text_node = document.createTextNode('English');
+			txt.appendChild(text_node);
+		}
+		svg.appendChild(txt);
+		
+		//<rect id="language-fi" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#000" stroke-width="2" opacity="0" fill="#fff" />
+		const rect_fg = document.createElementNS(svgNS, 'rect');
+		rect_fg.setAttribute('x',0);
+		rect_fg.setAttribute('y',0);
+		rect_fg.setAttribute('width',w);
+		rect_fg.setAttribute('height',h);
+		rect_fg.style.stroke = '#000';
+		rect_fg.style.strokeWidth = 2;
+		rect_fg.style.fill = '#fff';
+		rect_fg.style.opacity = 0;
+		rect_fg.style.cursor = 'pointer';
+		svg.appendChild(rect_fg);
+		
+		$('#space').append(svg);
+	}
 	
 	renderALL() {
 		console.log('renderALL()!!!!');
@@ -479,6 +571,8 @@ export default class GalaxyView extends View {
 		this.appendSun('ENVIRONMENT');
 		this.appendSun('FEEDBACK');
 		this.appendInfoButton();
+		this.appendLanguageSelection('Suomi');
+		this.appendLanguageSelection('English');
 	}
 	
 	notify(options) {

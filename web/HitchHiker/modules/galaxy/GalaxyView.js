@@ -137,13 +137,18 @@ export default class GalaxyView extends View {
 		const r = this.sunRadius();
 		const img_dim = r*2;
 		const img_x_pos = -img_dim*0.5;
-		const img_y_pos = -h*0.5;
+		let img_y_pos = -h*0.5;
+		// Center Logo vertically:
+		const temp = (h*0.5-img_dim)*0.5;
+		if (temp > 0) {
+			img_y_pos = -(temp+img_dim);
+		}
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', img_x_pos);
 		img.setAttribute('y', img_y_pos);
 		img.setAttribute('width', img_dim);
 		img.setAttribute('height', img_dim);
-		img.setAttribute('href', './img/iFLEX.png'); // logos original dimensions are 1000 x 1000 pixels.
+		img.setAttribute('href', './img/iFLEX.png'); // Logo original dimensions are 1000 x 1000 pixels.
 		$('#space').append(img);
 	}
 	
@@ -206,7 +211,7 @@ export default class GalaxyView extends View {
 		const r = this.sunRadius();
 		
 		const corner = 7*r/5;
-		const rooftop = 10*r/5;
+		const rooftop = 9*r/5;
 		const endpoint = 12*r/5;
 		
 		const d = 'M-'+corner+','+corner+' L-'+corner+',-'+corner+' L0,-'+rooftop+' L'+corner+',-'+corner+' L'+corner+','+corner+' Z';

@@ -441,6 +441,14 @@ export default class MenuView extends View {
 		// Add event handler to biggest and slowest moon!
 		if (dur === '50s') {
 			c.addEventListener("click", function(){
+				const UM = self.controller.master.modelRepo.get('UserModel');
+				UM.token = 'token';
+				self.models['MenuModel'].setSelected('galaxy');
+			}, false);
+		} else if (dur === '45s') {
+			c.addEventListener("click", function(){
+				const UM = self.controller.master.modelRepo.get('UserModel');
+				UM.token = undefined;
 				self.models['MenuModel'].setSelected('galaxy');
 			}, false);
 		}

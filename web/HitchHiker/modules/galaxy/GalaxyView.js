@@ -15,6 +15,7 @@ export default class GalaxyView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		this.LANGUAGE_MODEL = this.controller.master.modelRepo.get('LanguageModel');
+		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		this.rendered = false;
 	}
 	
@@ -338,13 +339,23 @@ export default class GalaxyView extends View {
 		group.appendChild(cb);
 		
 		if (type === 'USER') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -wper2);
-			img.setAttribute('y', -hper2);
-			img.setAttribute('width', w);
-			img.setAttribute('height', h);
-			img.setAttribute('href', './svg/anon.svg');
-			group.appendChild(img);
+			if (this.USER_MODEL.isLoggedIn()) {
+				const img = document.createElementNS(svgNS, "image");
+				img.setAttribute('x', -wper2);
+				img.setAttribute('y', -hper2);
+				img.setAttribute('width', w);
+				img.setAttribute('height', h);
+				img.setAttribute('href', './svg/user.svg');
+				group.appendChild(img);
+			} else {
+				const img = document.createElementNS(svgNS, "image");
+				img.setAttribute('x', -wper2);
+				img.setAttribute('y', -hper2);
+				img.setAttribute('width', w);
+				img.setAttribute('height', h);
+				img.setAttribute('href', './svg/anon.svg');
+				group.appendChild(img);
+			}
 		} else if (type === 'ELECTRICITY') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', -wper2);
@@ -600,11 +611,13 @@ export default class GalaxyView extends View {
 		this.createSpace();
 		this.appendLogo();
 		this.appendBuilding();
+		
 		this.appendSun('USER');
 		this.appendSun('ELECTRICITY');
 		this.appendSun('HEATING');
 		this.appendSun('ENVIRONMENT');
 		this.appendSun('FEEDBACK');
+		
 		this.appendInfoButton();
 		this.appendLanguageSelections();
 	}

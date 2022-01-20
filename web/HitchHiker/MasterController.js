@@ -1,6 +1,7 @@
 import ModelRepo from './modules/common/ModelRepo.js';
 import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import LanguageModel from './modules/common/LanguageModel.js';
+import UserModel from './modules/common/UserModel.js';
 import MenuController from './modules/menu/MenuController.js';
 import GalaxyController from './modules/galaxy/GalaxyController.js';
 /*
@@ -26,7 +27,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init! Version 22.01.20');
+		console.log('MasterController init! Version 22.01.20A');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -39,6 +40,11 @@ class MasterController {
 		console.log('Create LanguageModel!');
 		const LM = new LanguageModel();
 		this.modelRepo.add('LanguageModel',LM);
+		
+		console.log('Create UserModel!');
+		const UM = new UserModel({name:'UserModel',src:''});
+		this.modelRepo.add('UserModel',UM);
+		
 		
 		console.log('Create Controllers...');
 		// Menu controller MUST be first!

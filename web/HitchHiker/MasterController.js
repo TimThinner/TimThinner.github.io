@@ -4,6 +4,8 @@ import LanguageModel from './modules/common/LanguageModel.js';
 import UserModel from './modules/common/UserModel.js';
 import MenuController from './modules/menu/MenuController.js';
 import GalaxyController from './modules/galaxy/GalaxyController.js';
+import UserPageController from './modules/userpage/UserPageController.js';
+
 /*
 EventObserver	Model					ConfigurationModel
 										MenuModel
@@ -27,7 +29,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init! Version 22.01.20A');
+		console.log('MasterController init! Version 22.01.20B');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -53,6 +55,9 @@ class MasterController {
 		
 		this.controllers['galaxy'] = new GalaxyController({name:'galaxy', master:this, el:'#content', visible:false});
 		this.controllers['galaxy'].init();
+		
+		this.controllers['userpage'] = new UserPageController({name:'userpage', master:this, el:'#content', visible:false});
+		this.controllers['userpage'].init();
 	}
 	
 	forceLogout() {

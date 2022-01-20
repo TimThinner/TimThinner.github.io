@@ -398,9 +398,23 @@ export default class GalaxyView extends View {
 		surface.style.strokeWidth = 1;
 		surface.style.fillOpacity = 0;
 		surface.style.cursor = 'pointer';
-		surface.addEventListener("click", function(){
-			self.models['MenuModel'].setSelected('menu');
-		}, false);
+		
+		// Select which pages open...
+		if (type === 'USER') {
+			if (this.USER_MODEL.isLoggedIn()) {
+				surface.addEventListener("click", function(){
+					self.models['MenuModel'].setSelected('userpage');
+				}, false);
+			} else {
+				surface.addEventListener("click", function(){
+					self.models['MenuModel'].setSelected('menu');
+				}, false);
+			}
+		} else {
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('menu');
+			}, false);
+		}
 		surface.addEventListener("mouseover", function(event){ 
 			border.style.fill = GREEN;
 		}, false);
@@ -625,7 +639,6 @@ export default class GalaxyView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log('ResizeEventObserver resize => SHOW()!');
 				this.show();
 			}
 		}

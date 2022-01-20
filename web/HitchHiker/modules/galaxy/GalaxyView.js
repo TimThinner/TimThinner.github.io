@@ -463,93 +463,22 @@ export default class GalaxyView extends View {
 		$('#space').append(group);
 	}
 	
-	/*
-	setLanguageSelection(sel) {
-		const svgObject = document.getElementById('svg-object').contentDocument;
-		if (svgObject) {
-			if (sel === 'fi') {
-				const lang_en_bg = svgObject.getElementById('language-en-background');
-				if (lang_en_bg) {
-					lang_en_bg.style.fill = '#eee'; // Set fill to #eee
-					lang_en_bg.style.stroke = '#1a488b'; // Set stroke to #aaa
-					lang_en_bg.style.strokeWidth = 1;
-				}
-				const lang_fi_bg = svgObject.getElementById('language-fi-background');
-				if (lang_fi_bg) {
-					lang_fi_bg.style.fill = '#fff'; // Set fill to #fff
-					lang_fi_bg.style.stroke = '#78c51b'; // Set stroke to light green
-					lang_fi_bg.style.strokeWidth = 3;
-				}
-			} else {
-				const lang_fi_bg = svgObject.getElementById('language-fi-background');
-				if (lang_fi_bg) {
-					lang_fi_bg.style.fill = '#eee'; // Set fill to #eee
-					lang_fi_bg.style.stroke = '#1a488b'; // Set stroke to #aaa
-					lang_fi_bg.style.strokeWidth = 1;
-				}
-				const lang_en_bg = svgObject.getElementById('language-en-background');
-				if (lang_en_bg) {
-					lang_en_bg.style.fill = '#fff'; // Set fill to #fff
-					lang_en_bg.style.stroke = '#78c51b'; // Set stroke to light green
-					lang_en_bg.style.strokeWidth = 3;
-				}
-			}
-		}
-	}*/
-	
 	setSelectedLanguage(lang) {
 		this.LANGUAGE_MODEL.selected = lang;
 		// and redraw the whole view!
 		this.show();
 	}
 	
-	/*
-<svg x="-150" y="350" width="130px" height="50px">
-	<rect id="language-fi-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
-	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Suomi</text>
-	<rect id="language-fi" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#000" stroke-width="2" opacity="0" fill="#fff" />
-</svg>
-<svg x="20" y="350" width="130px" height="50px">
-	<rect id="language-en-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
-	<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">English</text>
-	<rect id="language-en" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#1fac78" stroke-width="2" opacity="0" fill="#fff" />
-</svg>
-						lang_en_bg.style.fill = '#eee'; // Set fill to #eee
-						lang_en_bg.style.stroke = '#1a488b'; // Stroke Dark Blue
-						lang_en_bg.style.strokeWidth = 1;
-					}
-					const lang_fi_bg = svgObject.getElementById('language-fi-background');
-					if (lang_fi_bg) {
-						lang_fi_bg.style.fill = '#fff'; // Set fill to #fff
-						lang_fi_bg.style.stroke = '#78c51b'; // Set stroke to light green
-						lang_fi_bg.style.strokeWidth = 3;
-	*/
-	
-/*
-<svg x="-150" y="350" width="130px" height="50px">
-	<rect id="language-fi-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
-	<text font-family="Arial, Helvetica, sans-serif" font-size="18px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Suomi</text>
-	<rect id="language-fi" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#000" stroke-width="2" opacity="0" fill="#fff" />
-</svg>
-<svg x="20" y="350" width="130px" height="50px">
-	<rect id="language-en-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
-	<text font-family="Arial, Helvetica, sans-serif" font-size="18px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">English</text>
-	<rect id="language-en" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#1fac78" stroke-width="2" opacity="0" fill="#fff" />
-</svg>
-*/
-	
-	
 	appendLangButton(lang, bx, by, bw, bh, fontsize, selected) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		
 		const DARK_BLUE = '#1a488b';
-		const LIGHT_GREEN = '#78c51b';
+		//const LIGHT_GREEN = '#78c51b';
+		const DARK_GREEN = '#008245';
 		const language_label = {
 			'en':'English',
 			'fi':'Suomi'
 		};
-		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',bx);
 		svg.setAttribute('y',by);
@@ -564,7 +493,7 @@ export default class GalaxyView extends View {
 		rect_bg.setAttribute('height',bh-2);
 		rect_bg.setAttribute('rx',rounding);
 		if (selected) {
-			rect_bg.style.stroke = LIGHT_GREEN;
+			rect_bg.style.stroke = DARK_GREEN;
 			rect_bg.style.strokeWidth = 1;
 			rect_bg.style.fill = '#fff';
 		} else {

@@ -497,6 +497,11 @@ export default class GalaxyView extends View {
 		}
 	}*/
 	
+	setSelectedLanguage(lang) {
+		this.LANGUAGE_MODEL.selected = lang;
+		// and redraw the whole view!
+		this.show();
+	}
 	
 	/*
 <svg x="-150" y="350" width="130px" height="50px">
@@ -540,6 +545,10 @@ export default class GalaxyView extends View {
 		
 		const DARK_BLUE = '#1a488b';
 		const LIGHT_GREEN = '#78c51b';
+		const language_label = {
+			'en':'English',
+			'fi':'Suomi'
+		};
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',bx);
@@ -573,7 +582,7 @@ export default class GalaxyView extends View {
 		txt.setAttribute('dominant-baseline','middle');
 		txt.setAttribute('text-anchor','middle');
 		txt.setAttribute('fill','#00a');
-		const text_node = document.createTextNode(lang);
+		const text_node = document.createTextNode(language_label[lang]);
 		txt.appendChild(text_node);
 		svg.appendChild(txt);
 		
@@ -587,8 +596,18 @@ export default class GalaxyView extends View {
 		rect_fg.style.fill = '#fff';
 		rect_fg.style.opacity = 0;
 		rect_fg.style.cursor = 'pointer';
+		rect_fg.addEventListener("click", function(){
+			if (!selected) {
+				self.setSelectedLanguage(lang);
+			}
+		}, false);
+		/*
+		rect_fg.addEventListener("mouseover", function(event){ 
+		}, false);
+		rect_fg.addEventListener("mouseout", function(event){ 
+		}, false);
+		*/
 		svg.appendChild(rect_fg);
-		
 		$('#space').append(svg);
 	}
 	
@@ -598,10 +617,7 @@ export default class GalaxyView extends View {
 		
 		//this.languages = ['en','fi'];
 		//this.selected = 'fi';
-		const language_label = {
-			'en':'English',
-			'fi':'Suomi'
-		};
+		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
 		/*
@@ -618,22 +634,22 @@ export default class GalaxyView extends View {
 			if (w <= 600) {
 				console.log('Mobile Device.');
 				fontsize = '14px';
-				bw = 100;
+				bw = 82;
 				bh = 34;
 			} else if (w > 600 && w <= 992) {
 				console.log('Tablet Device.');
-				fontsize = '16px';
-				bw = 110;
+				fontsize = '14px';
+				bw = 88;
 				bh = 36;
 			} else if (w > 992 && w <= 1200) {
 				console.log('Desktop Device.');
-				fontsize = '18px';
-				bw = 120;
+				fontsize = '16px';
+				bw = 94;
 				bh = 38;
 			} else {
 				console.log('Large Desktop Device.');
-				fontsize = '20px';
-				bw = 130;
+				fontsize = '18px';
+				bw = 100;
 				bh = 40;
 			}
 			const gap = 6;
@@ -645,7 +661,7 @@ export default class GalaxyView extends View {
 			//const baseh = h*0.5;
 			const bx = basew-(index+1)*bw-index*gap;
 			const by = baseh-bh;
-			this.appendLangButton(language_label[lang], bx, by, bw, bh, fontsize, selected);
+			this.appendLangButton(lang, bx, by, bw, bh, fontsize, selected);
 		});
 	}
 	

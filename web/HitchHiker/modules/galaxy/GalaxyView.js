@@ -556,7 +556,7 @@ export default class GalaxyView extends View {
 		rect_bg.setAttribute('rx',rounding);
 		if (selected) {
 			rect_bg.style.stroke = LIGHT_GREEN;
-			rect_bg.style.strokeWidth = 3;
+			rect_bg.style.strokeWidth = 1;
 			rect_bg.style.fill = '#fff';
 		} else {
 			rect_bg.style.stroke = DARK_BLUE;
@@ -583,7 +583,7 @@ export default class GalaxyView extends View {
 		rect_fg.setAttribute('width',bw);
 		rect_fg.setAttribute('height',bh);
 		rect_fg.style.stroke = '#000';
-		rect_fg.style.strokeWidth = 2;
+		rect_fg.style.strokeWidth = 1;
 		rect_fg.style.fill = '#fff';
 		rect_fg.style.opacity = 0;
 		rect_fg.style.cursor = 'pointer';
@@ -636,9 +636,15 @@ export default class GalaxyView extends View {
 				bw = 130;
 				bh = 40;
 			}
-			const gap = 5;
-			const bx = w*0.5-(index+1)*bw-index*gap;
-			const by = h*0.5-bh;
+			const gap = 6;
+			// Adjusted to the bottom right:
+			//const basew = w*0.5;
+			//const baseh = h*0.5;
+			// or adjusted to the center:
+			const basew = gap*0.5+bw;
+			const baseh = h*0.5;
+			const bx = basew-(index+1)*bw-index*gap;
+			const by = baseh-bh;
 			this.appendLangButton(language_label[lang], bx, by, bw, bh, fontsize, selected);
 		});
 	}

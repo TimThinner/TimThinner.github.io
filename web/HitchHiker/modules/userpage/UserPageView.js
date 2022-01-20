@@ -87,7 +87,7 @@ export default class UserPageView extends View {
 	
 	appendConnectors() {
 		const r = this.sunRadius();
-		const corner = 5*r/5;
+		const corner = Math.sin(45*Math.PI/180) * r; // sin(45) * r;   45*PI/180
 		const endpoint = 12*r/5;
 		this.appendConnector(corner, endpoint, 0); // Bottom Left
 		this.appendConnector(corner, endpoint, 1); // Top Left

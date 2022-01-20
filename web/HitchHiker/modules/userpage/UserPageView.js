@@ -45,6 +45,56 @@ export default class UserPageView extends View {
 		return r;
 	}
 	
+	appendConnector(corner, endpoint, pos) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		let d, cx, cy;
+		if (pos === 0) {
+			d = 'M-'+corner+','+corner+' L-'+endpoint+','+endpoint;
+			cx = -corner;
+			cy = corner;
+		} else if (pos === 1) {
+			d = 'M-'+corner+',-'+corner+' L-'+endpoint+',-'+endpoint;
+			cx = -corner;
+			cy = -corner;
+		} else if (pos === 2) {
+			d = 'M'+corner+',-'+corner+' L'+endpoint+',-'+endpoint;
+			cx = corner;
+			cy = -corner;
+		} else {
+			d = 'M'+corner+','+corner+' L'+endpoint+','+endpoint;
+			cx = corner;
+			cy = corner;
+		}
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttributeNS(null, 'd', d);
+		path.style.stroke = DARK_BLUE;
+		path.style.strokeWidth = 2;
+		path.style.opacity = 0.5;
+		path.style.fill = 'none';
+		$('#space').append(path);
+		
+		const c = document.createElementNS(svgNS, "circle");
+		c.setAttributeNS(null, 'cx', cx);
+		c.setAttributeNS(null, 'cy', cy);
+		c.setAttributeNS(null, 'r', 5);
+		c.style.stroke = DARK_BLUE;
+		c.style.strokeWidth = 2;
+		c.style.opacity = 0.5;
+		c.style.fill = DARK_BLUE;
+		$('#space').append(c);
+	}
+	
+	appendConnectors() {
+		const r = this.sunRadius();
+		const corner = 7*r/5;
+		const endpoint = 12*r/5;
+		this.appendConnector(corner, endpoint, 0); // Bottom Left
+		this.appendConnector(corner, endpoint, 1); // Top Left
+		this.appendConnector(corner, endpoint, 2); // Top Right
+		this.appendConnector(corner, endpoint, 3); // Bottom Right
+	}
+	
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -240,6 +290,7 @@ export default class UserPageView extends View {
 		console.log('renderALL()!!!!');
 		$(this.el).empty();
 		this.createSpace();
+		this.appendConnectors();
 		this.appendSun('USER');
 		this.appendSun('BUILDING');
 		this.appendSun('LOGOUT');

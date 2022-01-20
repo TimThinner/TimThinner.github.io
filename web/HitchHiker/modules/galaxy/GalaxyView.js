@@ -638,11 +638,11 @@ export default class GalaxyView extends View {
 			}
 			const gap = 6;
 			// Adjusted to the bottom right:
-			//const basew = w*0.5;
-			//const baseh = h*0.5;
-			// or adjusted to the center:
-			const basew = gap*0.5+bw;
+			const basew = w*0.5;
 			const baseh = h*0.5;
+			// or adjusted to the center:
+			//const basew = gap*0.5+bw;
+			//const baseh = h*0.5;
 			const bx = basew-(index+1)*bw-index*gap;
 			const by = baseh-bh;
 			this.appendLangButton(language_label[lang], bx, by, bw, bh, fontsize, selected);

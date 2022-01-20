@@ -615,30 +615,30 @@ export default class GalaxyView extends View {
 				selected = true;
 			}
 			let bw, bh, fontsize;
-			const gap = 7; // Gap between buttons is 7 pixels.
 			if (w <= 600) {
 				console.log('Mobile Device.');
 				fontsize = '14px';
 				bw = 100;
-				bh = 24;
+				bh = 34;
 			} else if (w > 600 && w <= 992) {
 				console.log('Tablet Device.');
 				fontsize = '16px';
 				bw = 110;
-				bh = 26;
+				bh = 36;
 			} else if (w > 992 && w <= 1200) {
 				console.log('Desktop Device.');
 				fontsize = '18px';
 				bw = 120;
-				bh = 28;
+				bh = 38;
 			} else {
 				console.log('Large Desktop Device.');
 				fontsize = '20px';
 				bw = 130;
-				bh = 30;
+				bh = 40;
 			}
-			const bx = w*0.5-(index+1)*bw-gap;
-			const by = h*0.5-bh-gap;
+			const gap = 5;
+			const bx = w*0.5-(index+1)*bw-index*gap;
+			const by = h*0.5-bh;
 			this.appendLangButton(language_label[lang], bx, by, bw, bh, fontsize, selected);
 		});
 	}

@@ -106,9 +106,11 @@ export default class UserPageView extends View {
 		
 		const r2 = r-r*0.1;
 		const r3 = r-r*0.3;
+		
+		// All SVG images are 400 x 300 => w=r, h=r*0.75
 		const w = r;
 		const wper2 = w*0.5;
-		const h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		const h = r*0.75; 
 		const hper2 = h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'

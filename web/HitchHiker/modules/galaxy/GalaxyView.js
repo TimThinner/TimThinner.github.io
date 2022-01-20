@@ -14,7 +14,7 @@ export default class GalaxyView extends View {
 		});
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
-		
+		this.LANGUAGE_MODEL = this.controller.master.modelRepo.get('LanguageModel');
 		this.rendered = false;
 	}
 	
@@ -462,6 +462,42 @@ export default class GalaxyView extends View {
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#space').append(group);
 	}
+	
+	/*
+	setLanguageSelection(sel) {
+		const svgObject = document.getElementById('svg-object').contentDocument;
+		if (svgObject) {
+			if (sel === 'fi') {
+				const lang_en_bg = svgObject.getElementById('language-en-background');
+				if (lang_en_bg) {
+					lang_en_bg.style.fill = '#eee'; // Set fill to #eee
+					lang_en_bg.style.stroke = '#1a488b'; // Set stroke to #aaa
+					lang_en_bg.style.strokeWidth = 1;
+				}
+				const lang_fi_bg = svgObject.getElementById('language-fi-background');
+				if (lang_fi_bg) {
+					lang_fi_bg.style.fill = '#fff'; // Set fill to #fff
+					lang_fi_bg.style.stroke = '#78c51b'; // Set stroke to light green
+					lang_fi_bg.style.strokeWidth = 3;
+				}
+			} else {
+				const lang_fi_bg = svgObject.getElementById('language-fi-background');
+				if (lang_fi_bg) {
+					lang_fi_bg.style.fill = '#eee'; // Set fill to #eee
+					lang_fi_bg.style.stroke = '#1a488b'; // Set stroke to #aaa
+					lang_fi_bg.style.strokeWidth = 1;
+				}
+				const lang_en_bg = svgObject.getElementById('language-en-background');
+				if (lang_en_bg) {
+					lang_en_bg.style.fill = '#fff'; // Set fill to #fff
+					lang_en_bg.style.stroke = '#78c51b'; // Set stroke to light green
+					lang_en_bg.style.strokeWidth = 3;
+				}
+			}
+		}
+	}*/
+	
+	
 	/*
 <svg x="-150" y="350" width="130px" height="50px">
 	<rect id="language-fi-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
@@ -483,37 +519,42 @@ export default class GalaxyView extends View {
 						lang_fi_bg.style.stroke = '#78c51b'; // Set stroke to light green
 						lang_fi_bg.style.strokeWidth = 3;
 	*/
-	appendLanguageSelection(lang) {
+	
+/*
+<svg x="-150" y="350" width="130px" height="50px">
+	<rect id="language-fi-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
+	<text font-family="Arial, Helvetica, sans-serif" font-size="18px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Suomi</text>
+	<rect id="language-fi" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#000" stroke-width="2" opacity="0" fill="#fff" />
+</svg>
+<svg x="20" y="350" width="130px" height="50px">
+	<rect id="language-en-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
+	<text font-family="Arial, Helvetica, sans-serif" font-size="18px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">English</text>
+	<rect id="language-en" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#1fac78" stroke-width="2" opacity="0" fill="#fff" />
+</svg>
+*/
+	
+	
+	appendLangButton(lang, bx, by, bw, bh, fontsize, selected) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.sunRadius();
 		
 		const DARK_BLUE = '#1a488b';
 		const LIGHT_GREEN = '#78c51b';
 		
-		const w = 120;
-		const h = 40;
-		const y = 17*r/5;
-		
 		const svg = document.createElementNS(svgNS, "svg");
-		if (lang === 'Suomi') {
-			const x = -140;
-			svg.setAttribute('x',x);
-		} else {
-			const x = 20; // 'English'
-			svg.setAttribute('x',x);
-		}
-		svg.setAttribute('y',y);
-		svg.setAttributeNS(null,'width',w);
-		svg.setAttributeNS(null,'height',h);
+		svg.setAttribute('x',bx);
+		svg.setAttribute('y',by);
+		svg.setAttributeNS(null,'width',bw);
+		svg.setAttributeNS(null,'height',bh);
 		
-		//<rect id="language-fi-background" x="1" y="1" width="128" height="48" style="stroke:#aaa;stroke-width:5px;fill:#eee;" />
+		const rounding = bw*0.1; // 10% rounded corners.
 		const rect_bg = document.createElementNS(svgNS, 'rect');
 		rect_bg.setAttribute('x',1);
 		rect_bg.setAttribute('y',1);
-		rect_bg.setAttribute('width',w-2);
-		rect_bg.setAttribute('height',h-2);
-		if (lang === 'Suomi') {
+		rect_bg.setAttribute('width',bw-2);
+		rect_bg.setAttribute('height',bh-2);
+		rect_bg.setAttribute('rx',rounding);
+		if (selected) {
 			rect_bg.style.stroke = LIGHT_GREEN;
 			rect_bg.style.strokeWidth = 3;
 			rect_bg.style.fill = '#fff';
@@ -524,31 +565,23 @@ export default class GalaxyView extends View {
 		}
 		svg.appendChild(rect_bg);
 		
-		//<text font-family="Arial, Helvetica, sans-serif" font-size="20px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Suomi</text>
 		const txt = document.createElementNS(svgNS, 'text');
 		txt.setAttribute('x','50%');
 		txt.setAttribute('y','50%');
 		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		txt.setAttribute('font-size','20px');
+		txt.setAttribute('font-size',fontsize);
 		txt.setAttribute('dominant-baseline','middle');
 		txt.setAttribute('text-anchor','middle');
 		txt.setAttribute('fill','#00a');
-		
-		if (lang === 'Suomi') {
-			const text_node = document.createTextNode('Suomi');
-			txt.appendChild(text_node);
-		} else {
-			const text_node = document.createTextNode('English');
-			txt.appendChild(text_node);
-		}
+		const text_node = document.createTextNode(lang);
+		txt.appendChild(text_node);
 		svg.appendChild(txt);
 		
-		//<rect id="language-fi" class="language-selection-box" x="0" y="0" width="130" height="50" stroke="#000" stroke-width="2" opacity="0" fill="#fff" />
 		const rect_fg = document.createElementNS(svgNS, 'rect');
 		rect_fg.setAttribute('x',0);
 		rect_fg.setAttribute('y',0);
-		rect_fg.setAttribute('width',w);
-		rect_fg.setAttribute('height',h);
+		rect_fg.setAttribute('width',bw);
+		rect_fg.setAttribute('height',bh);
 		rect_fg.style.stroke = '#000';
 		rect_fg.style.strokeWidth = 2;
 		rect_fg.style.fill = '#fff';
@@ -557,6 +590,57 @@ export default class GalaxyView extends View {
 		svg.appendChild(rect_fg);
 		
 		$('#space').append(svg);
+	}
+	
+	appendLanguageSelections() {
+		const lang_array = this.LANGUAGE_MODEL.languages;
+		const sel = this.LANGUAGE_MODEL.selected;
+		
+		//this.languages = ['en','fi'];
+		//this.selected = 'fi';
+		const language_label = {
+			'en':'English',
+			'fi':'Suomi'
+		};
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
+		/*
+		Screen Sizes (in Materialize CSS)
+		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+		<= 600px 			> 600px 			> 992px 				> 1200px
+		*/
+		lang_array.forEach((lang,index)=>{
+			let selected = false;
+			if (lang === sel) {
+				selected = true;
+			}
+			let bw, bh, fontsize;
+			const gap = 7; // Gap between buttons is 7 pixels.
+			if (w <= 600) {
+				console.log('Mobile Device.');
+				fontsize = '14px';
+				bw = 100;
+				bh = 24;
+			} else if (w > 600 && w <= 992) {
+				console.log('Tablet Device.');
+				fontsize = '16px';
+				bw = 110;
+				bh = 26;
+			} else if (w > 992 && w <= 1200) {
+				console.log('Desktop Device.');
+				fontsize = '18px';
+				bw = 120;
+				bh = 28;
+			} else {
+				console.log('Large Desktop Device.');
+				fontsize = '20px';
+				bw = 130;
+				bh = 30;
+			}
+			const bx = w*0.5-(index+1)*bw-gap;
+			const by = h*0.5-bh-gap;
+			this.appendLangButton(language_label[lang], bx, by, bw, bh, fontsize, selected);
+		});
 	}
 	
 	renderALL() {
@@ -571,8 +655,7 @@ export default class GalaxyView extends View {
 		this.appendSun('ENVIRONMENT');
 		this.appendSun('FEEDBACK');
 		this.appendInfoButton();
-		this.appendLanguageSelection('Suomi');
-		this.appendLanguageSelection('English');
+		this.appendLanguageSelections();
 	}
 	
 	notify(options) {

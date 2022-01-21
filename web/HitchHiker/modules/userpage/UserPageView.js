@@ -106,22 +106,33 @@ export default class UserPageView extends View {
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		
 		const corner = 7*r/5;
+		const framer = 8*r/5;
 		const endpoint = 12*r/5;
 		
 		const d = 'M-'+corner+','+corner+' L-'+corner+',-'+corner+' L'+corner+',-'+corner+' L'+corner+','+corner+' Z';
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = DARK_BLUE;
-		path.style.strokeWidth = 9;
+		path.style.strokeWidth = 6;
 		path.style.fill = '#ffffcc';//DARK_BLUE;
 		path.style.fillOpacity = 1;
 		path.style.opacity = 0.3;
 		$('#space').append(path);
 		
-		this.appendConnector(corner, endpoint, 0); // Bottom Left
-		this.appendConnector(corner, endpoint, 1); // Top Left
-		this.appendConnector(corner, endpoint, 2); // Top Right
-		this.appendConnector(corner, endpoint, 3); // Bottom Right
+		const dF = 'M-'+framer+','+framer+' L-'+framer+',-'+framer+' L'+framer+',-'+framer+' L'+framer+','+framer+' Z';
+		const pathF = document.createElementNS(svgNS, "path");
+		pathF.setAttributeNS(null, 'd', dF);
+		pathF.style.stroke = DARK_BLUE;
+		pathF.style.strokeWidth = 6;
+		pathF.style.fill = '#ffffcc';//DARK_BLUE;
+		pathF.style.fillOpacity = 1;
+		pathF.style.opacity = 0.3;
+		$('#space').append(pathF);
+		
+		this.appendConnector(framer, endpoint, 0); // Bottom Left
+		this.appendConnector(framer, endpoint, 1); // Top Left
+		this.appendConnector(framer, endpoint, 2); // Top Right
+		this.appendConnector(framer, endpoint, 3); // Bottom Right
 		
 		const gap = corner*0.2;
 		const pad = corner-gap;

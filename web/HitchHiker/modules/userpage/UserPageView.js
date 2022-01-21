@@ -113,8 +113,8 @@ export default class UserPageView extends View {
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = DARK_BLUE;
 		path.style.strokeWidth = 9;
-		path.style.fill = DARK_BLUE;
-		path.style.fillOpacity = 0.25
+		path.style.fill = '#ffffcc';//DARK_BLUE;
+		path.style.fillOpacity = 1;
 		path.style.opacity = 0.3;
 		$('#space').append(path);
 		

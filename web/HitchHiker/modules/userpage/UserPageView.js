@@ -77,7 +77,7 @@ export default class UserPageView extends View {
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', cx);
 		c.setAttributeNS(null, 'cy', cy);
-		c.setAttributeNS(null, 'r', 5);
+		c.setAttributeNS(null, 'r', 3);
 		c.style.stroke = DARK_BLUE;
 		c.style.strokeWidth = 2;
 		c.style.opacity = 0.5;
@@ -113,7 +113,7 @@ export default class UserPageView extends View {
 		const pathF = document.createElementNS(svgNS, "path");
 		pathF.setAttributeNS(null, 'd', dF);
 		pathF.style.stroke = DARK_BLUE;
-		pathF.style.strokeWidth = 4;
+		pathF.style.strokeWidth = 3;
 		pathF.style.fill = '#fff';
 		pathF.style.fillOpacity = 1;
 		pathF.style.opacity = 0.5;

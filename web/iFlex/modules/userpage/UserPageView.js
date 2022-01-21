@@ -284,7 +284,6 @@ export default class UserPageView extends View {
 		surface.style.fillOpacity = 0;
 		surface.style.cursor = 'pointer';
 		
-		
 		// Select which pages open...
 		if (type === 'USER') {
 			surface.addEventListener("click", function(){
@@ -295,10 +294,12 @@ export default class UserPageView extends View {
 				self.models['MenuModel'].setSelected('menu');
 			}, false);
 		} else if (type === 'LOGOUT') {
-			const UM = self.controller.master.modelRepo.get('UserModel');
-			if (UM) {
-				UM.logout();
-			}
+			surface.addEventListener("click", function(){
+				const UM = self.controller.master.modelRepo.get('UserModel');
+				if (UM) {
+					UM.logout();
+				}
+			}, false);
 		} else if (type === 'HEATING') {
 			surface.addEventListener("click", function(){
 				self.models['MenuModel'].setSelected('USERHEATING');
@@ -391,10 +392,7 @@ export default class UserPageView extends View {
 		this.appendApartment();
 		this.appendSun('USER');
 		this.appendSun('BUILDING');
-		
-		setTimeout(() => this.appendSun('LOGOUT'), 2000);
-		
-		
+		this.appendSun('LOGOUT');
 		this.appendSun('HEATING');
 		this.appendSun('FEEDBACK');
 	}

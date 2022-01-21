@@ -65,7 +65,7 @@ export default class HelpView extends View {
 						'<p>'+help_2+'</p>'+
 						'<p>'+help_3+'</p>'+
 						'<p>'+help_4+'</p>'+
-						'<p style="color:#aaa">'+version'</p>'+
+						'<p style="color:#aaa">'+version+'</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

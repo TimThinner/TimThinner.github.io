@@ -344,7 +344,7 @@ export default class UserPageView extends View {
 		// Store an array of stop information for the gradient
 		var stops = [
 			{"color":"#fff","offset": "10%"},
-			{"color":"#ddd","offset": "50%"}
+			{"color":"#eee","offset": "50%"}
 		];
 		/*
 		const stops = [

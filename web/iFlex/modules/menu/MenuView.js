@@ -92,7 +92,7 @@ export default class MenuView extends View {
 		// Store an array of stop information for the gradient
 		var stops = [
 			{"color":"#fff","offset": "10%"},
-			{"color":"#ddd","offset": "50%"}
+			{"color":"#eee","offset": "50%"}
 		];
 		/*
 		const stops = [
@@ -541,7 +541,7 @@ export default class MenuView extends View {
 		} else {
 			rect_bg.style.stroke = DARK_BLUE;
 			rect_bg.style.strokeWidth = 1;
-			rect_bg.style.fill = '#ddd';
+			rect_bg.style.fill = '#eee';
 		}
 		svg.appendChild(rect_bg);
 		

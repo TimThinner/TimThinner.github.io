@@ -113,20 +113,20 @@ export default class UserPageView extends View {
 		const pathF = document.createElementNS(svgNS, "path");
 		pathF.setAttributeNS(null, 'd', dF);
 		pathF.style.stroke = DARK_BLUE;
-		pathF.style.strokeWidth = 3;
+		pathF.style.strokeWidth = 4;
 		pathF.style.fill = '#fff';
 		pathF.style.fillOpacity = 1;
-		pathF.style.opacity = 0.75;
+		pathF.style.opacity = 0.5;
 		$('#space').append(pathF);
 		
 		const d = 'M-'+corner+','+corner+' L-'+corner+',-'+corner+' L'+corner+',-'+corner+' L'+corner+','+corner+' Z';
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = DARK_BLUE;
-		path.style.strokeWidth = 6;
+		path.style.strokeWidth = 4;
 		path.style.fill = '#ffffcc';//DARK_BLUE;
 		path.style.fillOpacity = 1;
-		path.style.opacity = 0.3;
+		path.style.opacity = 0.5;
 		$('#space').append(path);
 		
 		this.appendConnector(framer, endpoint, 0); // Bottom Left

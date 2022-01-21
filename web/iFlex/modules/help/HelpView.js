@@ -36,11 +36,6 @@ export default class HelpView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		
-		
-		
-		
-		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const help_title = LM['translation'][sel]['HELP_INFO_TITLE'];
@@ -49,6 +44,8 @@ export default class HelpView extends View {
 		const help_2 = LM['translation'][sel]['HELP_INFO_2'];
 		const help_3 = LM['translation'][sel]['HELP_INFO_3'];
 		const help_4 = LM['translation'][sel]['HELP_INFO_4'];
+		const version = LM['translation'][sel]['MENU_VERSION'];
+		
 		const help_ok = LM['translation'][sel]['OK'];
 		let thanks_message = '';
 		const HM = this.controller.master.modelRepo.get('HelpModel');
@@ -68,6 +65,7 @@ export default class HelpView extends View {
 						'<p>'+help_2+'</p>'+
 						'<p>'+help_3+'</p>'+
 						'<p>'+help_4+'</p>'+
+						'<p style="color:#aaa">'+version'</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

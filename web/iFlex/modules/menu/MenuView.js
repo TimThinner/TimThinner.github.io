@@ -71,9 +71,9 @@ export default class MenuView extends View {
 	
 	*/
 	createSpace() {
-		$('html').css('background-color','#ddd');
-		$('body').css('background-color','#ddd');
-		$('.container').css('background-color','#ddd');
+		//$('html').css('background-color','#ddd');
+		//$('body').css('background-color','#ddd');
+		//$('.container').css('background-color','#ddd');
 		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;

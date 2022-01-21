@@ -391,7 +391,10 @@ export default class UserPageView extends View {
 		this.appendApartment();
 		this.appendSun('USER');
 		this.appendSun('BUILDING');
-		this.appendSun('LOGOUT');
+		
+		setTimeout(() => this.appendSun('LOGOUT'), 2000);
+		
+		
 		this.appendSun('HEATING');
 		this.appendSun('FEEDBACK');
 	}

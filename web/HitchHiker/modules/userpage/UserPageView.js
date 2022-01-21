@@ -85,6 +85,7 @@ export default class UserPageView extends View {
 		$('#space').append(c);
 	}
 	
+	/*
 	appendConnectors() {
 		const r = this.sunRadius();
 		const corner = Math.sin(45*Math.PI/180) * r; // sin(45) * r;   45*PI/180
@@ -94,6 +95,37 @@ export default class UserPageView extends View {
 		this.appendConnector(corner, endpoint, 2); // Top Right
 		this.appendConnector(corner, endpoint, 3); // Bottom Right
 	}
+	*/
+	/*
+	The radius of circle is 12,5% of H or W (smaller dimension).
+	=> circle diameter is 25% of H or W.
+	*/
+	appendApartment() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		
+		const corner = 7*r/5;
+		const endpoint = 12*r/5;
+		
+		const d = 'M-'+corner+','+corner+' L-'+corner+',-'+corner+' L'+corner+',-'+corner+' L'+corner+','+corner+' Z';
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttributeNS(null, 'd', d);
+		path.style.stroke = DARK_BLUE;
+		path.style.strokeWidth = 9;
+		path.style.fill = DARK_BLUE;
+		path.style.fillOpacity = 0.25
+		path.style.opacity = 0.3;
+		$('#space').append(path);
+		
+		this.appendConnector(corner, endpoint, 0); // Bottom Left
+		this.appendConnector(corner, endpoint, 1); // Top Left
+		this.appendConnector(corner, endpoint, 2); // Top Right
+		this.appendConnector(corner, endpoint, 3); // Bottom Right
+		
+		
+	}
+	
 	
 	appendSun(type) {
 		const self = this;
@@ -292,7 +324,7 @@ export default class UserPageView extends View {
 		console.log('renderALL()!!!!');
 		$(this.el).empty();
 		this.createSpace();
-		this.appendConnectors();
+		this.appendApartment();
 		this.appendSun('USER');
 		this.appendSun('BUILDING');
 		this.appendSun('LOGOUT');

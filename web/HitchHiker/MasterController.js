@@ -29,7 +29,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init! Version 22.01.20');
+		console.log('MasterController init! Version 22.01.21');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();

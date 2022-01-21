@@ -1,3 +1,4 @@
+
 import Model from '../common/Model.js';
 
 export default class MenuModel extends Model {

@@ -6,7 +6,7 @@ export default class ResizeEventObserver extends EventObserver {
 		super();
 		this.resize_handler_set = false;
 		this.resizeTimeout = null;
-		//this.mode = undefined;
+		this.mode = undefined;
 		this.width = undefined;
 		this.height = undefined;
 	}
@@ -14,9 +14,7 @@ export default class ResizeEventObserver extends EventObserver {
 	resize() {
 		this.width = $(window).width();
 		this.height = $(window).height();
-		setTimeout(() => this.notifyAll({model:'ResizeEventObserver',method:'resize',status:200,message:''}), 100);
 		
-		/*
 		let _mode = 'SQUARE';
 		// Tolerance +-25% for square
 		let diffe = 0;
@@ -45,7 +43,7 @@ export default class ResizeEventObserver extends EventObserver {
 				this.mode = _mode;
 				setTimeout(() => this.notifyAll({model:'ResizeEventObserver',method:'resize',status:200,message:''}), 100);
 			}
-		}*/
+		}
 	}
 	
 	resizeThrottler() {
@@ -59,9 +57,8 @@ export default class ResizeEventObserver extends EventObserver {
 		}
 	}
 	
-	start() {
+	setResizeHandler() {
 		const self = this;
-		//this.mode = undefined;
 		// First remove handler if already set.
 		if (this.resize_handler_set) {
 			$(window).off('resize');
@@ -72,13 +69,23 @@ export default class ResizeEventObserver extends EventObserver {
 			self.resizeThrottler();
 		});
 		this.resize_handler_set = true;
+	}
+	
+	unsetResizeHandler() {
+		if (this.resize_handler_set) {
+			//console.log('unsetResizeHandler');
+			$(window).off('resize');
+		}
+		this.resize_handler_set = false;
+	}
+	
+	start() {
+		this.mode = undefined;
+		this.setResizeHandler();
 		this.resize(); // resize now!
 	}
 	
 	stop() {
-		if (this.resize_handler_set) {
-			$(window).off('resize');
-		}
-		this.resize_handler_set = false;
+		this.unsetResizeHandler();
 	}
 }

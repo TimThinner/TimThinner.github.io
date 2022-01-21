@@ -524,7 +524,7 @@ export default class GalaxyView extends View {
 		} else {
 			rect_bg.style.stroke = DARK_BLUE;
 			rect_bg.style.strokeWidth = 1;
-			rect_bg.style.fill = '#eee';
+			rect_bg.style.fill = '#ddd';
 		}
 		svg.appendChild(rect_bg);
 		

@@ -123,10 +123,12 @@ export default class UserPageView extends View {
 		this.appendConnector(corner, endpoint, 2); // Top Right
 		this.appendConnector(corner, endpoint, 3); // Bottom Right
 		
-		const gap = corner*0.1;
+		const gap = corner*0.2;
 		const pad = corner-gap;
 		// LEFT CURTAIN FOR HOME WINDOW!
-		//<path d="M-140,-140 L-20,-140 A300,300 0 0 1 -140,0 A400,400 0 0 1 -120,140 L-140,140 Z"  
+		
+		//<path d="M-140,-140 L-28,-140 A300,300 0 0 1 -140,0 A400,400 0 0 1 -112,140 L-140,140 Z" 
+		//stroke="#000" stroke-width="3" fill="#00a" fill-opacity="0.75" opacity="0.75" />
 		const dLC = 'M-'+corner+',-'+corner+' L-'+gap+',-'+corner+
 			' A300,300 0 0 1 -'+corner+',0'+
 			' A400,400 0 0 1 -'+pad+','+corner+
@@ -141,8 +143,20 @@ export default class UserPageView extends View {
 		$('#space').append(pathLC);
 		
 		// RIGHT CURTAIN FOR HOME WINDOW!
-		
-		
+		//<path d="M140,-140 L28,-140 A300,300 0 0 0 140,0 A400,400 0 0 0 112,140 L140,140 Z" 
+		//stroke="#000" stroke-width="3" fill="#00a" fill-opacity="0.75" opacity="0.75" />
+		const dRC = 'M'+corner+',-'+corner+' L'+gap+',-'+corner+
+			' A300,300 0 0 0 '+corner+',0'+
+			' A400,400 0 0 0 '+pad+','+corner+
+			' L'+corner+','+corner+' Z';
+		const pathRC = document.createElementNS(svgNS, "path");
+		pathRC.setAttributeNS(null, 'd', dRC);
+		pathRC.style.stroke = '#000';
+		pathRC.style.strokeWidth = 3;
+		pathRC.style.fill = DARK_BLUE;
+		pathRC.style.fillOpacity = 0.75
+		pathRC.style.opacity = 0.6;
+		$('#space').append(pathRC);
 	}
 	
 	appendSun(type) {

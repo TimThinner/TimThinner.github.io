@@ -79,7 +79,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v22.01.21!');
+		console.log('MasterController init v22.01.21A!');
 		
 		const CONFIG_MODEL = new ConfigModel({name:'ConfigModel',src:''});
 		CONFIG_MODEL.subscribe(this);

@@ -123,9 +123,27 @@ export default class UserPageView extends View {
 		this.appendConnector(corner, endpoint, 2); // Top Right
 		this.appendConnector(corner, endpoint, 3); // Bottom Right
 		
+		const gap = 20;
+		const pad = corner-gap;
+		// LEFT CURTAIN FOR HOME WINDOW!
+		//<path d="M-140,-140 L-20,-140 A300,300 0 0 1 -140,0 A400,400 0 0 1 -120,140 L-140,140 Z"  
+		const dLC = 'M-'+corner+',-'+corner+' L-'+pad+',-'+corner+
+			' A300,300 0 0 1 -'+corner+',0'+
+			' A400,400 0 0 1 -'+pad+','+corner+
+			' L-'+corner+','+corner+' Z';
+		const pathLC = document.createElementNS(svgNS, "path");
+		pathLC.setAttributeNS(null, 'd', dLC);
+		pathLC.style.stroke = '#000';
+		pathLC.style.strokeWidth = 3;
+		pathLC.style.fill = DARK_BLUE;
+		pathLC.style.fillOpacity = 0.75
+		pathLC.style.opacity = 0.6;
+		$('#space').append(pathLC);
+		
+		// RIGHT CURTAIN FOR HOME WINDOW!
+		
 		
 	}
-	
 	
 	appendSun(type) {
 		const self = this;

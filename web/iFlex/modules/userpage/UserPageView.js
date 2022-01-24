@@ -140,6 +140,7 @@ export default class UserPageView extends View {
 		c.style.strokeWidth = 12;
 		c.style.opacity = 0.5;
 		c.style.fill = DARK_BLUE;
+		c.style.fillOpacity = 0.1;
 		$('#space').append(c);
 		
 		this.appendConnector(corner, endpoint, 0); // Bottom Left

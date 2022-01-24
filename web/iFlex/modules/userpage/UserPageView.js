@@ -180,7 +180,7 @@ export default class UserPageView extends View {
 			' L'+corner+','+corner+' Z';
 		const pathRC = document.createElementNS(svgNS, "path");
 		pathRC.setAttributeNS(null, 'd', dRC);
-		pathLC.style.stroke = DARK_BLUE;
+		pathRC.style.stroke = DARK_BLUE;
 		pathRC.style.strokeWidth = 3;
 		pathRC.style.opacity = 0.5;
 		pathRC.style.fill = DARK_BLUE;

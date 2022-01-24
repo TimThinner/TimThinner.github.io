@@ -115,7 +115,7 @@ export default class UserPageView extends View {
 		//const rr = 7*r/5;
 		//const corner = Math.sin(45*Math.PI/180) * rr; // sin(45) * r;   45*PI/180
 		const endpoint = 12*r/5;
-		
+		const apa_number = "D99";
 		/*
 		<svg x="-100" y="410" width="200px" height="32px">
 			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="version" class="version-info"></text>

@@ -104,11 +104,12 @@ export default class UserPageView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
-		
-		const corner = 7*r/5;
-		const framer = 8*r/5;
+		//const corner = 7*r/5;
+		//const framer = 8*r/5;
+		const rr = 7*r/5;
+		const corner = Math.sin(45*Math.PI/180) * rr; // sin(45) * r;   45*PI/180
 		const endpoint = 12*r/5;
-		
+		/*
 		const dF = 'M-'+framer+','+framer+' L-'+framer+',-'+framer+' L'+framer+',-'+framer+' L'+framer+','+framer+' Z';
 		const pathF = document.createElementNS(svgNS, "path");
 		pathF.setAttributeNS(null, 'd', dF);
@@ -118,7 +119,8 @@ export default class UserPageView extends View {
 		pathF.style.fillOpacity = 1;
 		pathF.style.opacity = 0.5;
 		$('#space').append(pathF);
-		
+		*/
+		/*
 		const d = 'M-'+corner+','+corner+' L-'+corner+',-'+corner+' L'+corner+',-'+corner+' L'+corner+','+corner+' Z';
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
@@ -127,19 +129,36 @@ export default class UserPageView extends View {
 		path.style.fill = '#ffffcc';
 		path.style.fillOpacity = 1;
 		path.style.opacity = 0.5;
-		$('#space').append(path);
+		$('#space').append(path);*/
 		
-		this.appendConnector(framer, endpoint, 0); // Bottom Left
-		this.appendConnector(framer, endpoint, 1); // Top Left
-		this.appendConnector(framer, endpoint, 2); // Top Right
-		this.appendConnector(framer, endpoint, 3); // Bottom Right
 		
-		const gap = corner*0.2;
-		const pad = corner-gap;
+		const c = document.createElementNS(svgNS, "circle");
+		c.setAttributeNS(null, 'cx', 0);
+		c.setAttributeNS(null, 'cy', 0);
+		c.setAttributeNS(null, 'r', );
+		c.style.stroke = DARK_BLUE;
+		c.style.strokeWidth = 12;
+		c.style.opacity = 0.5;
+		c.style.fill = DARK_BLUE;
+		$('#space').append(c);
+		
+		this.appendConnector(corner, endpoint, 0); // Bottom Left
+		this.appendConnector(corner, endpoint, 1); // Top Left
+		this.appendConnector(corner, endpoint, 2); // Top Right
+		this.appendConnector(corner, endpoint, 3); // Bottom Right
+		
+		//this.appendConnector(framer, endpoint, 0); // Bottom Left
+		//this.appendConnector(framer, endpoint, 1); // Top Left
+		//this.appendConnector(framer, endpoint, 2); // Top Right
+		//this.appendConnector(framer, endpoint, 3); // Bottom Right
+		
+		//const gap = corner*0.2;
+		//const pad = corner-gap;
 		// LEFT CURTAIN FOR HOME WINDOW!
 		
 		//<path d="M-140,-140 L-28,-140 A300,300 0 0 1 -140,0 A400,400 0 0 1 -112,140 L-140,140 Z" 
 		//stroke="#000" stroke-width="3" fill="#00a" fill-opacity="0.75" opacity="0.75" />
+		/*
 		const dLC = 'M-'+corner+',-'+corner+' L-'+gap+',-'+corner+
 			' A300,300 0 0 1 -'+corner+',0'+
 			' A400,400 0 0 1 -'+pad+','+corner+
@@ -152,10 +171,13 @@ export default class UserPageView extends View {
 		pathLC.style.fillOpacity = 0.75
 		pathLC.style.opacity = 0.6;
 		$('#space').append(pathLC);
+		*/
 		
 		// RIGHT CURTAIN FOR HOME WINDOW!
 		//<path d="M140,-140 L28,-140 A300,300 0 0 0 140,0 A400,400 0 0 0 112,140 L140,140 Z" 
 		//stroke="#000" stroke-width="3" fill="#00a" fill-opacity="0.75" opacity="0.75" />
+		
+		/*
 		const dRC = 'M'+corner+',-'+corner+' L'+gap+',-'+corner+
 			' A300,300 0 0 0 '+corner+',0'+
 			' A400,400 0 0 0 '+pad+','+corner+
@@ -168,6 +190,8 @@ export default class UserPageView extends View {
 		pathRC.style.fillOpacity = 0.75
 		pathRC.style.opacity = 0.6;
 		$('#space').append(pathRC);
+		*/
+		
 	}
 	
 	appendSun(type) {

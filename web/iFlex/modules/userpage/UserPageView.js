@@ -106,9 +106,39 @@ export default class UserPageView extends View {
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const framer = 7*r/5;
 		const corner = 6*r/5;
+		
+		const bx = 60;
+		const by = 8*r/5;
+		const bw = 120;
+		const bh = 32;
+		const fontsize = '24px';
 		//const rr = 7*r/5;
 		//const corner = Math.sin(45*Math.PI/180) * rr; // sin(45) * r;   45*PI/180
 		const endpoint = 12*r/5;
+		
+		/*
+		<svg x="-100" y="410" width="200px" height="32px">
+			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="version" class="version-info"></text>
+		</svg>
+		*/
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',bx);
+		svg.setAttribute('y',-by);
+		svg.setAttributeNS(null,'width',bw);
+		svg.setAttributeNS(null,'height',bh);
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','50%');
+		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.setAttribute('font-size',fontsize);
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.setAttribute('fill','#555');
+		const text_node = document.createTextNode(apa_number);
+		txt.appendChild(text_node);
+		svg.appendChild(txt);
+		$('#space').append(svg);
 		
 		const dF = 'M-'+framer+','+framer+' L-'+framer+',-'+framer+' L'+framer+',-'+framer+' L'+framer+','+framer+' Z';
 		const pathF = document.createElementNS(svgNS, "path");
@@ -169,7 +199,6 @@ export default class UserPageView extends View {
 		pathLC.style.fill = DARK_BLUE;
 		pathLC.style.fillOpacity = 0.5
 		$('#space').append(pathLC);
-		
 		
 		// RIGHT CURTAIN FOR HOME WINDOW!
 		//<path d="M140,-140 L28,-140 A300,300 0 0 0 140,0 A400,400 0 0 0 112,140 L140,140 Z" 

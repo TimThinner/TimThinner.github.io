@@ -229,9 +229,10 @@ router.post("/signup", (req,res,next)=>{
 router.post("/login", (req,res,next)=>{
 	
 	const email_lc = req.body.email.toLowerCase();
-	const selString = '_id email password created readkey obix_code request_for_sensors consent_a consent_b is_superuser';
+	const selString = '_id email password created regcode readkey obix_code request_for_sensors consent_a consent_b is_superuser';
 	User.find({email:email_lc})
 		.select(selString)
+		.populate('regcode')
 		.populate('readkey')
 		.exec()
 		.then(user=>{
@@ -265,6 +266,9 @@ router.post("/login", (req,res,next)=>{
 					const rkey = user[0].readkey ? user[0].readkey._id : undefined;
 					const rkey_startdate = user[0].readkey ? user[0].readkey.startdate : undefined;
 					const rkey_enddate = user[0].readkey ? user[0].readkey.enddate : undefined;
+					
+					const apaid = user[0].regcode ? user[0].regcode.apartmentId : undefined;
+					
 					//console.log(['rkey_startdate=',rkey_startdate,' rkey_enddate=',rkey_enddate]);
 					// LOG this login.
 					/*
@@ -287,6 +291,7 @@ router.post("/login", (req,res,next)=>{
 						token: token,
 						userId: user[0]._id,
 						created: user[0].created,
+						apartmentId: apaid,
 						readkey: rkey,
 						readkey_startdate: rkey_startdate,
 						readkey_enddate: rkey_enddate,

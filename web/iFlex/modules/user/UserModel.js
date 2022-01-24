@@ -4,6 +4,7 @@ import Model from '../common/Model.js';
 		id
 		email
 		token
+		apartmentId
 		readkey
 		readkey_startdate
 		readkey_enddate
@@ -21,6 +22,7 @@ export default class UserModel extends Model {
 		this.id = undefined;
 		this.email = undefined;
 		this.token = undefined;
+		this.apartmentId = undefined;
 		this.readkey = undefined;
 		this.readkey_startdate = undefined;
 		this.readkey_enddate = undefined;
@@ -44,6 +46,7 @@ export default class UserModel extends Model {
 		this.id = undefined;
 		this.email = undefined;
 		this.token = undefined;
+		this.apartmentId = undefined;
 		this.readkey = undefined;
 		this.readkey_startdate = undefined;
 		this.readkey_enddate = undefined;
@@ -60,6 +63,7 @@ export default class UserModel extends Model {
 			'id': this.id,
 			'email': this.email,
 			'token': this.token,
+			'apartmentId': this.apartmentId,
 			'readkey': this.readkey,
 			'readkey_startdate': this.readkey_startdate,
 			'readkey_enddate': this.readkey_enddate,
@@ -91,6 +95,7 @@ export default class UserModel extends Model {
 			if (typeof stat.id !== 'undefined')    { this.id = stat.id; }
 			if (typeof stat.email !== 'undefined') { this.email = stat.email; }
 			if (typeof stat.token !== 'undefined') { this.token = stat.token; }
+			if (typeof stat.apartmentId !== 'undefined') { this.apartmentId = stat.apartmentId; }
 			if (typeof stat.readkey !== 'undefined') { this.readkey = stat.readkey; }
 			if (typeof stat.readkey_startdate !== 'undefined') { this.readkey_startdate = stat.readkey_startdate; }
 			if (typeof stat.readkey_enddate !== 'undefined') { this.readkey_enddate = stat.readkey_enddate; }
@@ -150,6 +155,7 @@ export default class UserModel extends Model {
 				self.id = myJson.userId.toString();
 				self.email = data.email;
 				self.is_superuser = myJson.is_superuser;
+				self.apartmentId = myJson.apartmentId;
 				self.readkey = myJson.readkey;
 				self.readkey_startdate = myJson.readkey_startdate;
 				self.readkey_enddate = myJson.readkey_enddate;

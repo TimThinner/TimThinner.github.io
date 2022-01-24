@@ -117,7 +117,7 @@ export default class UserPageView extends View {
 		const endpoint = 12*r/5;
 		let apa_number = "N/A";
 		
-		const UM = self.controller.master.modelRepo.get('UserModel');
+		const UM = this.controller.master.modelRepo.get('UserModel');
 		if (UM) {
 			apa_number = UM.apartmentId;
 		}

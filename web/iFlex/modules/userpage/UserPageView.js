@@ -115,7 +115,7 @@ export default class UserPageView extends View {
 		pathF.setAttributeNS(null, 'd', dF);
 		pathF.style.stroke = DARK_BLUE;
 		pathF.style.strokeWidth = 3;
-		pathF.style.fill = '#fff';
+		pathF.style.fill = '#ffffff';
 		pathF.style.fillOpacity = 1;
 		pathF.style.opacity = 0.5;
 		$('#space').append(pathF);
@@ -125,9 +125,10 @@ export default class UserPageView extends View {
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = DARK_BLUE;
 		path.style.strokeWidth = 5;
-		path.style.fill = '#ffffcc';
-		path.style.fillOpacity = 1;
 		path.style.opacity = 0.5;
+		path.style.fill = '#ffffff';
+		path.style.fillOpacity = 1;
+		
 		$('#space').append(path);
 		
 		/*const c = document.createElementNS(svgNS, "circle");
@@ -162,11 +163,11 @@ export default class UserPageView extends View {
 			' L-'+corner+','+corner+' Z';
 		const pathLC = document.createElementNS(svgNS, "path");
 		pathLC.setAttributeNS(null, 'd', dLC);
-		pathLC.style.stroke = '#000';
+		pathLC.style.stroke = DARK_BLUE;
 		pathLC.style.strokeWidth = 3;
+		pathLC.style.opacity = 0.5;
 		pathLC.style.fill = DARK_BLUE;
 		pathLC.style.fillOpacity = 0.5
-		pathLC.style.opacity = 0.6;
 		$('#space').append(pathLC);
 		
 		
@@ -179,11 +180,11 @@ export default class UserPageView extends View {
 			' L'+corner+','+corner+' Z';
 		const pathRC = document.createElementNS(svgNS, "path");
 		pathRC.setAttributeNS(null, 'd', dRC);
-		pathRC.style.stroke = '#000';
+		pathLC.style.stroke = DARK_BLUE;
 		pathRC.style.strokeWidth = 3;
+		pathRC.style.opacity = 0.5;
 		pathRC.style.fill = DARK_BLUE;
 		pathRC.style.fillOpacity = 0.5
-		pathRC.style.opacity = 0.6;
 		$('#space').append(pathRC);
 	}
 	

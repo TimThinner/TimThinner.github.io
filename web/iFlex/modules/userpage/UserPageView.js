@@ -107,15 +107,20 @@ export default class UserPageView extends View {
 		const framer = 7*r/5;
 		const corner = 6*r/5;
 		
-		const bx = 60;
-		const by = 8*r/5;
+		const bx = -60;
+		const by = -8*r/5;
 		const bw = 120;
 		const bh = 32;
 		const fontsize = '24px';
 		//const rr = 7*r/5;
 		//const corner = Math.sin(45*Math.PI/180) * rr; // sin(45) * r;   45*PI/180
 		const endpoint = 12*r/5;
-		const apa_number = "D99";
+		let apa_number = "N/A";
+		
+		const UM = self.controller.master.modelRepo.get('UserModel');
+		if (UM) {
+			apa_number = UM.apartmentId;
+		}
 		/*
 		<svg x="-100" y="410" width="200px" height="32px">
 			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="version" class="version-info"></text>
@@ -123,7 +128,7 @@ export default class UserPageView extends View {
 		*/
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',bx);
-		svg.setAttribute('y',-by);
+		svg.setAttribute('y',by);
 		svg.setAttributeNS(null,'width',bw);
 		svg.setAttributeNS(null,'height',bh);
 		

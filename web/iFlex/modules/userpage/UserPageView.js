@@ -108,10 +108,9 @@ export default class UserPageView extends View {
 		const corner = 6*r/5;
 		
 		const bx = -60;
-		const by = -8*r/5;
+		const by = -9*r/5;
 		const bw = 120;
-		const bh = 32;
-		const fontsize = '24px';
+		const bh = 34;
 		//const rr = 7*r/5;
 		//const corner = Math.sin(45*Math.PI/180) * rr; // sin(45) * r;   45*PI/180
 		const endpoint = 12*r/5;
@@ -136,10 +135,11 @@ export default class UserPageView extends View {
 		txt.setAttribute('x','50%');
 		txt.setAttribute('y','50%');
 		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		txt.setAttribute('font-size',fontsize);
+		txt.setAttribute('font-size','32px');
+		txt.setAttribute('font-weight','bold');
 		txt.setAttribute('dominant-baseline','middle');
 		txt.setAttribute('text-anchor','middle');
-		txt.setAttribute('fill','#555');
+		txt.setAttribute('fill','#808080');
 		const text_node = document.createTextNode(apa_number);
 		txt.appendChild(text_node);
 		svg.appendChild(txt);

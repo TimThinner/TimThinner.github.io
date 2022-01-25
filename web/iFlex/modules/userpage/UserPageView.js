@@ -108,7 +108,7 @@ export default class UserPageView extends View {
 		const corner = 6*r/5;
 		
 		const bx = -60;
-		const by = -9*r/5;
+		const by = -10*r/5;
 		const bw = 120;
 		const bh = 34;
 		//const rr = 7*r/5;

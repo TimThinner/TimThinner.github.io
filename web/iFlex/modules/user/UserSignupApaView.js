@@ -26,8 +26,8 @@ export default class UserSignupApaView extends UserView {
 		this.request_for_sensors = false;
 		
 		// NEW:
-		this.letters_allowed = ['A','B','C','D','E'];
-		this.numbers_allowed = {'from':1, 'to':200};
+		this.letters_allowed = ['A','B','C','D'];
+		this.numbers_allowed = {'from':1, 'to':99};
 		
 		this.apa_tens = 0; // Always available!
 		this.apa_ones = 0; // Always available!

@@ -51,7 +51,7 @@ export default class UserSignupApaView extends UserView {
 		this.apartment = this.apa_letter + '0';
 		if (this.numbers_allowed.to > 99) {
 			this.apa_hundreds = 0;
-		} else 
+		} else {
 			this.apa_hundreds = undefined;
 		}
 	}

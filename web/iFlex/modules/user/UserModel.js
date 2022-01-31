@@ -161,6 +161,8 @@ export default class UserModel extends Model {
 			const message = myJson.message;
 			if (status === 200 && myJson.token) {
 				// Login was OK, set the Authentication-token to model.
+				console.log(['LOGIN myJson=',myJson]);
+				
 				self.token = myJson.token;
 				self.id = myJson.userId.toString();
 				self.email = data.email;

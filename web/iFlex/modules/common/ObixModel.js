@@ -285,7 +285,7 @@ export default class ObixModel extends Model {
 			
 			// Also here we append obix_code if it is defined.
 			if (typeof my_obix_code !== 'undefined') {
-				source =  this.src + my_obix_code; // + '/';
+				source =  this.src + my_obix_code + '/';
 			}
 			//console.log('===========================');
 			//console.log(['fetch token=',token]);

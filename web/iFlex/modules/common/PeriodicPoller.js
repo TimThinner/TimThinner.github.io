@@ -103,6 +103,8 @@ export default class PeriodicPoller {
 				const readkey_startdate = um ? um.readkey_startdate : undefined;
 				const readkey_enddate = um ? um.readkey_enddate : undefined;
 				const obix_code = um ? um.obix_code : undefined;
+				const obix_code_b = um ? um.obix_code_b : undefined;
+				const obix_code_c = um ? um.obix_code_c : undefined;
 				//
 				// Residents are allowed to fetch their own data. This is secured so that each resident 
 				// must be registered using a specific REGCODE, which is associated with a his/her apartment.
@@ -125,7 +127,9 @@ export default class PeriodicPoller {
 						readkey: readkey,
 						readkey_startdate: readkey_startdate,
 						readkey_enddate: readkey_enddate,
-						obix_code: obix_code
+						obix_code: obix_code,
+						obix_code_b: obix_code_b,
+						obix_code_c: obix_code_c
 					}, sync_minute, sync_hour);
 				});
 				this.timers[name].timer = setTimeout(()=>{
@@ -140,6 +144,8 @@ export default class PeriodicPoller {
 				const readkey_startdate = um ? um.readkey_startdate : undefined;
 				const readkey_enddate = um ? um.readkey_enddate : undefined;
 				const obix_code = um ? um.obix_code : undefined;
+				const obix_code_b = um ? um.obix_code_b : undefined;
+				const obix_code_c = um ? um.obix_code_c : undefined;
 				
 				// When there are multiple models to be fetched, there is usually need to call fetch with THE SAME start time!
 				// That is to make sure response has SAME TIMESTAMPS in returned values.
@@ -158,7 +164,9 @@ export default class PeriodicPoller {
 						readkey: readkey,
 						readkey_startdate: readkey_startdate,
 						readkey_enddate: readkey_enddate,
-						obix_code: obix_code
+						obix_code: obix_code,
+						obix_code_b: obix_code_b,
+						obix_code_c: obix_code_c
 					}, sync_minute, sync_hour);
 				});
 			}

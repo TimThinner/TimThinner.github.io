@@ -9,6 +9,8 @@ import Model from '../common/Model.js';
 		readkey_startdate
 		readkey_enddate
 		obix_code
+		obix_code_b
+		obix_code_c
 		request_for_sensors
 		consent_a
 		consent_b
@@ -27,6 +29,8 @@ export default class UserModel extends Model {
 		this.readkey_startdate = undefined;
 		this.readkey_enddate = undefined;
 		this.obix_code = '';
+		this.obix_code_b = '';
+		this.obix_code_c = '';
 		this.request_for_sensors = false;
 		this.consent_a = false;
 		this.consent_b = false;
@@ -51,6 +55,8 @@ export default class UserModel extends Model {
 		this.readkey_startdate = undefined;
 		this.readkey_enddate = undefined;
 		this.obix_code = '';
+		this.obix_code_b = '';
+		this.obix_code_c = '';
 		this.request_for_sensors = false;
 		this.consent_a = false;
 		this.consent_b = false;
@@ -68,6 +74,8 @@ export default class UserModel extends Model {
 			'readkey_startdate': this.readkey_startdate,
 			'readkey_enddate': this.readkey_enddate,
 			'obix_code': this.obix_code,
+			'obix_code_b': this.obix_code_b,
+			'obix_code_c': this.obix_code_c,
 			'request_for_sensors': this.request_for_sensors,
 			'consent_a': this.consent_a,
 			'consent_b': this.consent_b
@@ -100,6 +108,8 @@ export default class UserModel extends Model {
 			if (typeof stat.readkey_startdate !== 'undefined') { this.readkey_startdate = stat.readkey_startdate; }
 			if (typeof stat.readkey_enddate !== 'undefined') { this.readkey_enddate = stat.readkey_enddate; }
 			if (typeof stat.obix_code !== 'undefined') { this.obix_code = stat.obix_code; }
+			if (typeof stat.obix_code_b !== 'undefined') { this.obix_code_b = stat.obix_code_b; }
+			if (typeof stat.obix_code_c !== 'undefined') { this.obix_code_c = stat.obix_code_c; }
 			if (typeof stat.request_for_sensors !== 'undefined') { this.request_for_sensors = stat.request_for_sensors; }
 			if (typeof stat.consent_a !== 'undefined') { this.consent_a = stat.consent_a; }
 			if (typeof stat.consent_b !== 'undefined') { this.consent_b = stat.consent_b; }
@@ -160,6 +170,8 @@ export default class UserModel extends Model {
 				self.readkey_startdate = myJson.readkey_startdate;
 				self.readkey_enddate = myJson.readkey_enddate;
 				self.obix_code = myJson.obix_code;
+				self.obix_code_b = myJson.obix_code_b;
+				self.obix_code_c = myJson.obix_code_c;
 				self.request_for_sensors = myJson.request_for_sensors;
 				self.consent_a = myJson.consent_a;
 				self.consent_b = myJson.consent_b;
@@ -283,10 +295,18 @@ export default class UserModel extends Model {
 					data.forEach(d => {
 						if (d.propName === 'consent_a') {
 							self.consent_a = d.value;
+							
 						} else if (d.propName === 'consent_b') {
 							self.consent_b = d.value;
+							
 						} else if (d.propName === 'obix_code') {
 							self.obix_code = d.value;
+							
+						} else if (d.propName === 'obix_code_b') {
+							self.obix_code_b = d.value;
+							
+						} else if (d.propName === 'obix_code_c') {
+							self.obix_code_c = d.value;
 						}
 					});
 					self.store();

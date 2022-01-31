@@ -40,6 +40,13 @@ export default class UserHeatingController extends Controller {
 		FI_H_H160_PV1_QE14	Room air co2 A 4th floor
 		FI_H_H160_PV1_QE15	Room air co2 C 1st floor
 		FI_H_H160_PV1_QE16	Room air co2 C 4th floor
+		
+		
+		
+		
+		https://ba.vtt.fi/obixStore/store/VainoAuerinKatu13/SmartView/
+		
+		
 	*/
 	
 	initialize() {
@@ -53,11 +60,11 @@ export default class UserHeatingController extends Controller {
 		const UM = this.master.modelRepo.get('UserModel');
 		console.log(['UM.obix_code=',UM.obix_code]);
 		
-		
 		const UTM = new UserTemperatureModel({
 			name:'UserTemperatureModel',
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
-			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_TE', // add obix_code + '/' at fetch phase (ObixModel).
+			src:'/obixStore/store/VainoAuerinKatu13/SmartView/', // add obix_code at fetch phase (ObixModel).
+			type: 'a', // Uses obix_code
 			access:'PRIVATE'
 		});
 		UTM.subscribe(this); // Now we will receive notifications from the UserModel.
@@ -67,7 +74,8 @@ export default class UserHeatingController extends Controller {
 		const UHM = new UserHumidityModel({
 			name:'UserHumidityModel',
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
-			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_ME', // add obix_code + '/' at fetch phase (ObixModel).
+			src:'/obixStore/store/VainoAuerinKatu13/SmartView/', // add obix_code at fetch phase (ObixModel).
+			type: 'b', // Uses obix_code_b
 			access:'PRIVATE'
 		});
 		UHM.subscribe(this); // Now we will receive notifications from the UserModel.
@@ -77,7 +85,8 @@ export default class UserHeatingController extends Controller {
 		const UCO2M = new UserCO2Model({
 			name:'UserCO2Model',
 			// NOTE: host: 'ba.vtt.fi' is added at the backend
-			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_QE', // add obix_code + '/' at fetch phase (ObixModel).
+			src:'/obixStore/store/VainoAuerinKatu13/SmartView/', // add obix_code at fetch phase (ObixModel).
+			type: 'c', // Uses obix_code_c
 			access:'PRIVATE'
 		});
 		UCO2M.subscribe(this); // Now we will receive notifications from the UserModel.

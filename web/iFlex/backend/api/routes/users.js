@@ -24,6 +24,8 @@ const Readkey = require('../models/readkey');
 	regcode:  { type: mongoose.Schema.Types.ObjectId, ref:'Regcode'},
 	readkey:  { type: mongoose.Schema.Types.ObjectId, ref:'Readkey'},
 	obix_code: { type:String, default:'' },
+	obix_code_b: { type:String, default:'' },
+	obix_code_c: { type:String, default:'' },
 	request_for_sensors: { type: Boolean, default: false },
 	consent_a: { type: Boolean, default: false },
 	consent_b: { type: Boolean, default: false },
@@ -35,7 +37,7 @@ const Readkey = require('../models/readkey');
 */
 router.get('/', checkAuth, (req,res,next)=>{
 	User.find()
-		.select('_id email created regcode readkey obix_code request_for_sensors consent_a consent_b')
+		.select('_id email created regcode readkey obix_code obix_code_b obix_code_c request_for_sensors consent_a consent_b')
 		.populate('regcode')
 		.populate('readkey')
 		.exec()
@@ -50,6 +52,8 @@ router.get('/', checkAuth, (req,res,next)=>{
 						regcode: doc.regcode,
 						readkey: doc.readkey,
 						obix_code: doc.obix_code,
+						obix_code_b: doc.obix_code_b,
+						obix_code_c: doc.obix_code_c,
 						request_for_sensors: doc.request_for_sensors,
 						consent_a: doc.consent_a,
 						consent_b: doc.consent_b
@@ -229,7 +233,7 @@ router.post("/signup", (req,res,next)=>{
 router.post("/login", (req,res,next)=>{
 	
 	const email_lc = req.body.email.toLowerCase();
-	const selString = '_id email password created regcode readkey obix_code request_for_sensors consent_a consent_b is_superuser';
+	const selString = '_id email password created regcode readkey obix_code obix_code_b obix_code_c request_for_sensors consent_a consent_b is_superuser';
 	User.find({email:email_lc})
 		.select(selString)
 		.populate('regcode')
@@ -296,6 +300,8 @@ router.post("/login", (req,res,next)=>{
 						readkey_startdate: rkey_startdate,
 						readkey_enddate: rkey_enddate,
 						obix_code: user[0].obix_code,
+						obix_code_b: user[0].obix_code_b,
+						obix_code_c: user[0].obix_code_c,
 						request_for_sensors: user[0].request_for_sensors,
 						consent_a: user[0].consent_a,
 						consent_b: user[0].consent_b,

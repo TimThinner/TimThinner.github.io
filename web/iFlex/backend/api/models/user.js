@@ -15,6 +15,8 @@ const userSchema = mongoose.Schema({
 	regcode: { type: mongoose.Schema.Types.ObjectId, ref:'Regcode'},
 	readkey: { type: mongoose.Schema.Types.ObjectId, ref:'Readkey'},
 	obix_code: { type:String, default:'' },
+	obix_code_b: { type:String, default:'' },
+	obix_code_c: { type:String, default:'' },
 	request_for_sensors: { type: Boolean, default: false },
 	consent_a: { type: Boolean, default: false },
 	consent_b: { type: Boolean, default: false },

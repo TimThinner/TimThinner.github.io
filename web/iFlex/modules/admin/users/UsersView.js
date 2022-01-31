@@ -64,6 +64,18 @@ export default class UsersView extends View {
 				}
 				const obix_code_link = '<a href="javascript:void(0);" id="edit-obixcode-'+id+'">'+obix_code+'</a>';
 				
+				let obix_code_b = user.obix_code_b;
+				if (obix_code_b.length === 0) {
+					obix_code_b = 'UNDEF'; // Must be something for the link text
+				}
+				const obix_code_b_link = '<a href="javascript:void(0);" id="edit-obixcode-b-'+id+'">'+obix_code_b+'</a>';
+				
+				let obix_code_c = user.obix_code_c;
+				if (obix_code_c.length === 0) {
+					obix_code_c = 'UNDEF'; // Must be something for the link text
+				}
+				const obix_code_c_link = '<a href="javascript:void(0);" id="edit-obixcode-c-'+id+'">'+obix_code_c+'</a>';
+				
 				let regcode_apaid = '-';
 				let regcode_code = '-';
 				let regcode_validity = '&nbsp;';
@@ -116,6 +128,8 @@ export default class UsersView extends View {
 						'<td>'+user.created+'</td>'+
 						'<td>'+regcode_apaid+'</td>'+
 						'<td>'+obix_code_link+'</td>'+
+						'<td>'+obix_code_b_link+'</td>'+
+						'<td>'+obix_code_c_link+'</td>'+
 						'<td>'+user.request_for_sensors+'</td>'+
 						'<td>'+consent_a_validity+'</td>'+
 						'<td>'+consent_b_validity+'</td>'+
@@ -132,6 +146,8 @@ export default class UsersView extends View {
 							'Created: '+user.created+'<br/>'+
 							'ApartmentId: '+regcode_apaid+'<br/>'+
 							'ObixCode: '+obix_code_link+'<br/>'+
+							'ObixCodeB: '+obix_code_b_link+'<br/>'+
+							'ObixCodeC: '+obix_code_c_link+'<br/>'+
 							'Sensors: '+user.request_for_sensors+'<br/>'+
 							'Consent A: '+consent_a_validity+'<br/>'+
 							'Consent B: '+consent_b_validity+'<br/>'+
@@ -150,6 +166,14 @@ export default class UsersView extends View {
 				$('#edit-obixcode-'+uid).on('click', function(){
 					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
 					self.models['MenuModel'].setSelected('OBIXCODEEDIT');
+				});
+				$('#edit-obixcode-b-'+uid).on('click', function(){
+					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
+					self.models['MenuModel'].setSelected('OBIXCODEBEDIT');
+				});
+				$('#edit-obixcode-c-'+uid).on('click', function(){
+					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
+					self.models['MenuModel'].setSelected('OBIXCODECEDIT');
 				});
 				
 				if (typeof user.regcode !== 'undefined') {
@@ -278,6 +302,8 @@ export default class UsersView extends View {
 								'<th>Created</th>'+
 								'<th>Apartment</th>'+
 								'<th>ObixCode</th>'+
+								'<th>ObixCodeB</th>'+
+								'<th>ObixCodeC</th>'+
 								'<th>Sensors</th>'+
 								'<th>Cons A</th>'+
 								'<th>Cons B</th>'+

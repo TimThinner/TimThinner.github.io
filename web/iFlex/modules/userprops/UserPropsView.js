@@ -152,7 +152,8 @@ export default class UserPropsView extends View {
 						'<p>'+localized_string_description+'</p>'+
 						// Show user info here:
 						consent_A_state + consent_B_state +
-						'<p>Email: '+UM.email+'</p>'+'<p>ObixCode: '+UM.obix_code+'</p>'+
+						//'<p>Email: '+UM.email+'</p>'+'<p>ObixCode: '+UM.obix_code+'</p>'+
+						'<p>Email: '+UM.email+'</p>'+
 						'<p>'+consent_text+'<a href="javascript:void(0);" id="consent-text">'+consent_link_text+'</a></p>'+
 						'<p>'+gdpr_text+'<a href="javascript:void(0);" id="gdpr-text">'+gdpr_link_text+'</a></p>'+
 						//'<button class="btn waves-effect waves-light" id="changepsw">'+localized_string_change_password_btn_txt+'</button>'+

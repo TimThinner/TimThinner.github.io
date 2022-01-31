@@ -75,6 +75,12 @@ export default class ObixModel extends Model {
 	constructor(options) {
 		super(options);
 		
+		if (typeof options.type !== 'undefined') {
+			this.type = options.type;
+		} else {
+			this.type = 'a';
+		}
+		
 		this.values = [];
 		
 		if (typeof options.cache_expiration_in_seconds !== 'undefined') {
@@ -149,6 +155,8 @@ export default class ObixModel extends Model {
 		const readkey_startdate = po.readkey_startdate;
 		const readkey_enddate = po.readkey_enddate;
 		const obix_code = po.obix_code;
+		const obix_code_b = po.obix_code_b;
+		const obix_code_c = po.obix_code_c;
 		
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
@@ -178,7 +186,20 @@ export default class ObixModel extends Model {
 			// When access is PRIVATE, obix_code is added to the path.
 			// What if obix_code is not defined yet? It is an empty string by default.
 			my_readkey = readkey;
+			
+			
+			/*
+				CHOOSE WHICH OBIX CODE IS USED HERE:
+					obix_code
+					obix_code_b
+					obix_code_c
+			*/
 			my_obix_code = obix_code;
+			if (this.type === 'b') {
+				my_obix_code = obix_code_b;
+			} else if (this.type === 'c') {
+				my_obix_code = obix_code_c;
+			}
 			
 			// NOTE: xml contains timerange of the data to be fetched and returned.
 			// It must be checked (and limited) to readkey limits to make sure we are not 
@@ -264,7 +285,7 @@ export default class ObixModel extends Model {
 			
 			// Also here we append obix_code if it is defined.
 			if (typeof my_obix_code !== 'undefined') {
-				source =  this.src + my_obix_code + '/';
+				source =  this.src + my_obix_code; // + '/';
 			}
 			//console.log('===========================');
 			//console.log(['fetch token=',token]);

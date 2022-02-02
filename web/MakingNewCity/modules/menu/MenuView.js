@@ -231,12 +231,12 @@ export default class MenuView extends View {
 		console.log(['HIPHEI JEP x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 		
 		const rect_foo = document.createElementNS(svgNS, 'rect');
-		rect_foo.setAttribute('x',1);
-		rect_foo.setAttribute('y',1);
-		rect_foo.setAttribute('width',bboxGroup.width-2);
-		rect_foo.setAttribute('height',bboxGroup.height-2);
+		rect_foo.setAttribute('x',bboxGroup.x);
+		rect_foo.setAttribute('y',bboxGroup.y);
+		rect_foo.setAttribute('width',bboxGroup.width);
+		rect_foo.setAttribute('height',bboxGroup.height);
 		rect_foo.style.stroke = '#f00';
-		rect_foo.style.strokeWidth = 2;
+		rect_foo.style.strokeWidth = 4;
 		rect_foo.style.fill = 'none';
 		containerElement.appendChild(rect_foo);
 		

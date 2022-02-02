@@ -228,7 +228,7 @@ export default class MenuView extends View {
 		const textElement = document.querySelector('#logo-title');
 		const containerElement = document.querySelector('#logo-svg');
 		const bboxGroup = textElement.getBBox();
-		console.log(['HIPHEI JEPFFFF x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
+		console.log(['HIPHEI JEP JEP x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 		
 		const rect_foo = document.createElementNS(svgNS, 'rect');
 		rect_foo.setAttribute('x',bboxGroup.x);
@@ -240,24 +240,24 @@ export default class MenuView extends View {
 		rect_foo.style.fill = 'none';
 		containerElement.appendChild(rect_foo);
 		
-		const laposY = 32;
-		const laposX = bboxGroup.x+32;
+		const laposY = 0;
+		const laposX = bboxGroup.x;
 		const da = 'M0,'+laposY+' H'+laposX;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', da);
-		lineA.style.stroke = '#555';
-		lineA.style.strokeWidth = 5;
+		lineA.style.stroke = '#777';
+		lineA.style.strokeWidth = 3;
 		lineA.style.opacity = 0.75;
 		lineA.style.fill = 'none';
 		containerElement.appendChild(lineA);
 		
-		const lbposY = bboxGroup.height-32;
+		const lbposY = bboxGroup.height-bboxGroup.height*0.2;
 		const lbposX = bboxGroup.x+bboxGroup.width*0.6;
 		const db = 'M'+lbposX+','+lbposY+' H'+w;
 		const lineB = document.createElementNS(svgNS, "path");
 		lineB.setAttributeNS(null, 'd', db);
-		lineB.style.stroke = '#555';
-		lineB.style.strokeWidth = 5;
+		lineB.style.stroke = '#777';
+		lineB.style.strokeWidth = 3;
 		lineB.style.opacity = 0.75;
 		lineB.style.fill = 'none';
 		containerElement.appendChild(lineB);

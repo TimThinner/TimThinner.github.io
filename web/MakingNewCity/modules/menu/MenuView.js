@@ -238,8 +238,8 @@ export default class MenuView extends View {
 		rect_foo.style.fill = 'none';
 		containerElement.appendChild(rect_foo);
 		*/
-		const laposY = 16;
-		const laposX = bboxGroup.x+8;
+		const laposY = fontsize*0.1; // fontsize = 64, 84, 104, 124
+		const laposX = bboxGroup.x+fontsize*0.05;
 		const da = 'M0,'+laposY+' H'+laposX;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', da);
@@ -259,8 +259,6 @@ export default class MenuView extends View {
 		lineB.style.opacity = 0.75;
 		lineB.style.fill = 'none';
 		containerElement.appendChild(lineB);
-		
-		
 	}
 	
 	renderALL() {

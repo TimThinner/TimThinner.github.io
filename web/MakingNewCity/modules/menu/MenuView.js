@@ -204,7 +204,7 @@ export default class MenuView extends View {
 		title.setAttribute('font-size',fontsize);
 		title.setAttribute('dominant-baseline','middle');
 		title.setAttribute('text-anchor','middle');
-		title.setAttribute('fill','#444');
+		title.setAttribute('fill','#555');
 		title.style.opacity = 0.75;
 		title.appendChild(document.createTextNode('Making City'));
 		svg.appendChild(title);
@@ -216,7 +216,7 @@ export default class MenuView extends View {
 		descr.setAttribute('font-size',d_fontsize);
 		descr.setAttribute('dominant-baseline','middle');
 		descr.setAttribute('text-anchor','middle');
-		descr.setAttribute('fill','#444');
+		descr.setAttribute('fill','#555');
 		descr.style.opacity = 0.75;
 		descr.appendChild(document.createTextNode('Positive Energy Districts'));
 		svg.appendChild(descr);
@@ -228,7 +228,7 @@ export default class MenuView extends View {
 		const textElement = document.querySelector('#logo-title');
 		const containerElement = document.querySelector('#logo-svg');
 		const bboxGroup = textElement.getBBox();
-		console.log(['HIPHEI JEP x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
+		console.log(['HIPHEI JEPFFFF x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 		
 		const rect_foo = document.createElementNS(svgNS, 'rect');
 		rect_foo.setAttribute('x',bboxGroup.x);
@@ -240,16 +240,29 @@ export default class MenuView extends View {
 		rect_foo.style.fill = 'none';
 		containerElement.appendChild(rect_foo);
 		
-		const laposY = 0;
-		const laposX = bboxGroup.x;
-		const d = 'M0,'+laposY+' H'+laposX;
+		const laposY = 32;
+		const laposX = bboxGroup.x+32;
+		const da = 'M0,'+laposY+' H'+laposX;
 		const lineA = document.createElementNS(svgNS, "path");
-		lineA.setAttributeNS(null, 'd', d);
-		lineA.style.stroke = '#444';
-		lineA.style.strokeWidth = 2;
+		lineA.setAttributeNS(null, 'd', da);
+		lineA.style.stroke = '#555';
+		lineA.style.strokeWidth = 5;
 		lineA.style.opacity = 0.75;
 		lineA.style.fill = 'none';
 		containerElement.appendChild(lineA);
+		
+		const lbposY = bboxGroup.height-32;
+		const lbposX = bboxGroup.x+bboxGroup.width*0.6;
+		const db = 'M'+lbposX+','+lbposY+' H'+w;
+		const lineB = document.createElementNS(svgNS, "path");
+		lineB.setAttributeNS(null, 'd', db);
+		lineB.style.stroke = '#555';
+		lineB.style.strokeWidth = 5;
+		lineB.style.opacity = 0.75;
+		lineB.style.fill = 'none';
+		containerElement.appendChild(lineB);
+		
+		
 	}
 	
 	renderALL() {

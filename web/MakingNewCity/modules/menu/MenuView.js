@@ -48,11 +48,88 @@ export default class MenuView extends View {
 		}
 	}
 	
+	/*
+	<defs>
+	<radialGradient id="grad" cx="50%" cy="50%" r="100%">
+		<stop offset="10%" style="stop-color:#fff; stop-opacity:1" />
+		<stop offset="50%" style="stop-color:#eee; stop-opacity:1" />
+		<stop offset="90%" style="stop-color:#ddd; stop-opacity:1" />
+	</radialGradient>
+	</defs>
+	<rect x="-900" y="-500" width="1800" height="900" fill="url(#grad)" stroke-width="0" stroke="#000" />
+	
+	https://stackoverflow.com/questions/13760299/dynamic-svg-linear-gradient-when-using-javascript
+	
+	*/
+	createSpace() {
+		//$('html').css('background-color','#ddd');
+		//$('body').css('background-color','#ddd');
+		//$('.container').css('background-color','#ddd');
+		
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
+		const wp2 = w*0.5;
+		const hp2 = h*0.5;
+		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
+		
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(svgNS, "svg");
+		
+		svg.setAttributeNS(null,'width',w);
+		svg.setAttributeNS(null,'height',h);
+		svg.setAttributeNS(null,'viewBox',vb);
+		svg.id = 'space';
+		
+		// Store an array of stop information for the gradient
+		var stops = [
+			{"color":"#fff","offset": "10%"},
+			{"color":"#eee","offset": "50%"}
+		];
+		/*
+		const stops = [
+			{"style":"stop-color:#fff; stop-opacity:1","offset": "10%"}
+			//{"style":"#stop-color:#eee; stop-opacity:1","offset": "50%"},
+			//{"style":"#stop-color:#ddd; stop-opacity:1","offset": "90%"}
+		];*/
+		const defs = document.createElementNS(svgNS, 'defs');
+		const gradient = document.createElementNS(svgNS, 'radialGradient');
+		const rect = document.createElementNS(svgNS, 'rect');
+		
+		// Parses an array of stop information and appends <stop> elements to the gradient
+		for (let i=0, length=stops.length; i < length; i++) {
+			// Create a <stop> element and set its offset based on the position of the for loop.
+			var stop = document.createElementNS(svgNS, 'stop');
+			stop.setAttribute('offset', stops[i].offset);
+			stop.setAttribute('stop-color', stops[i].color);
+			// Add the stop to the gradient element.
+			gradient.appendChild(stop);
+		}
+		// Apply the gradient to <defs>
+		gradient.id = 'grad';
+		gradient.setAttribute('cx', '50%');
+		gradient.setAttribute('cy', '50%');
+		gradient.setAttribute('r', '100%');
+		defs.appendChild(gradient);
+		
+		// Setup the <rect> element.
+		rect.setAttribute('x',-wp2);
+		rect.setAttribute('y',-hp2);
+		rect.setAttribute('width',w);
+		rect.setAttribute('height',h);
+		rect.setAttribute('fill', 'url(#grad)');
+		
+		svg.appendChild(defs);
+		svg.appendChild(rect);
+		
+		$(this.el).append(svg);
+	}
+	
 	renderALL() {
 		console.log('renderALL()!!!!');
 		$(this.el).empty();
-		/*
+		
 		this.createSpace();
+		/*
 		this.appendLogo();
 		this.appendBuilding();
 		

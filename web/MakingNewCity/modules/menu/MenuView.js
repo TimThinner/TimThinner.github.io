@@ -54,8 +54,8 @@ export default class MenuView extends View {
 	*/
 	
 	sunRadius() {
-		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height-18;
+		const w = this.REO.width;//-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height;//-18;
 		const wp2 = w*0.125;
 		const hp2 = h*0.125;
 		const r = Math.min(wp2, hp2); // r = 0,125 x W or H, whichever is smallest (d=0,25 x W or H)
@@ -80,8 +80,8 @@ export default class MenuView extends View {
 		//$('body').css('background-color','#ddd');
 		//$('.container').css('background-color','#ddd');
 		
-		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height-18;
+		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;

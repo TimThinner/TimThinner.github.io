@@ -1,0 +1,81 @@
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	color: #777;
+	background-color: #eee;
+}
+@media screen and (min-width: 601px) {
+	html, body {
+		font-size: 18px;
+	}
+}
+/* Materialize CSS */
+.container {
+	background-color: #eee;
+	color: #777;
+	margin: 0 auto;
+	max-width: 1920px;
+	width: 100%; /* 90%; */
+	/*padding: 0 1rem 1rem 1rem;*/
+	padding: 0;
+}
+/*
+@media only screen and (min-width: 601px) {
+	.container {
+		width: 100%;
+	}
+}
+@media only screen and (min-width: 993px) {
+	.container {
+		width: 100%;
+	}
+}
+*/
+/* svg width="1000" height="900" */
+/* 900 = x/100 * 1000 => x = 90000/1000 = 90 */
+.svg-square-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 90%;
+	vertical-align: middle;
+	overflow: hidden;
+}
+/* svg width="1600" height="900" */
+/* 900 = x/100 * 1600 => x = 90000/1600 = 56.25  */
+.svg-landscape-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 56.25%;
+	vertical-align: middle;
+	overflow: hidden;
+}
+/* svg width="600" height="900" */
+/* 900 = x/100 * 600 => x = 90000/600 = 150 */
+.svg-portrait-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 150%;
+	vertical-align: middle;
+	overflow: hidden;
+}
+.svg-content { 
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.error-message {
+	border: 1px solid #f88;
+	background-color: #fee;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+.success-message {
+	border: 1px solid #8f8;
+	background-color: #efe;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}

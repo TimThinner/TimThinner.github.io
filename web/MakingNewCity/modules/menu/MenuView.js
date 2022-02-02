@@ -226,7 +226,7 @@ export default class MenuView extends View {
 		const textElement = document.querySelector('#logo-title');
 		const containerElement = document.querySelector('#logo-svg');
 		const bboxGroup = textElement.getBBox();
-		console.log(['HIPHEI YES! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
+		console.log(['HIPHEI YES BOX! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 		/*
 		const rect_foo = document.createElementNS(svgNS, 'rect');
 		rect_foo.setAttribute('x',bboxGroup.x);
@@ -238,7 +238,7 @@ export default class MenuView extends View {
 		rect_foo.style.fill = 'none';
 		containerElement.appendChild(rect_foo);
 		*/
-		const laposY = fontsize*0.1; // fontsize = 64, 84, 104, 124
+		const laposY = fontsize*0.14; // fontsize = 64, 84, 104, 124
 		const laposX = bboxGroup.x+fontsize*0.05;
 		const da = 'M0,'+laposY+' H'+laposX;
 		const lineA = document.createElementNS(svgNS, "path");

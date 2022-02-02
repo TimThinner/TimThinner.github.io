@@ -49,6 +49,20 @@ export default class MenuView extends View {
 	}
 	
 	/*
+	The radius of circle is 12,5% of H or W (smaller dimension).
+	=> circle diameter is 25% of H or W.
+	*/
+	
+	sunRadius() {
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
+		const wp2 = w*0.125;
+		const hp2 = h*0.125;
+		const r = Math.min(wp2, hp2); // r = 0,125 x W or H, whichever is smallest (d=0,25 x W or H)
+		return r;
+	}
+	
+	/*
 	<defs>
 	<radialGradient id="grad" cx="50%" cy="50%" r="100%">
 		<stop offset="10%" style="stop-color:#fff; stop-opacity:1" />
@@ -124,14 +138,98 @@ export default class MenuView extends View {
 		$(this.el).append(svg);
 	}
 	
+	appendLogo() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
+		/*
+		Screen Sizes (in Materialize CSS)
+		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+		<= 600px 			> 600px 			> 992px 				> 1200px
+		*/
+		// P: 82 22
+		// S: 128 36
+		// L: 128 36
+		//let bw, bh, fontsize;
+		
+		/*
+		if (w <= 600) {
+			console.log('Mobile Device.');
+			fontsize = 82;
+			bw = w-20;
+			bh = 36;
+		} else if (w > 600 && w <= 992) {
+			console.log('Tablet Device.');
+			fontsize = 88;
+			bw = w-40;
+			bh = 46;
+		} else if (w > 992 && w <= 1200) {
+			console.log('Desktop Device.');
+			fontsize = 110;
+			bw = w-120;
+			bh = 56;
+		} else {
+			console.log('Large Desktop Device.');
+			fontsize = 128;
+			bw = w-2*fontsize;
+			bh = 66;
+		}*/
+		const bw = w;
+		const bh = h*0.1; // 10% of Height
+		const bx = -w*0.5;
+		const by = -h*0.5;
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',bx);
+		svg.setAttribute('y',by);
+		svg.setAttributeNS(null,'width',bw);
+		svg.setAttributeNS(null,'height',bh);
+		
+		/*
+		<text x="-370" y="-390" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="128px" fill="#444">Making City</text>
+		<path class="grid-head" d="M-900 -481 H-361" />
+		<path class="grid-head" d="M36 -388 H900" />
+		<text x="65" y="-340" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#444">Positive Energy Districts</text>
+		*/
+		const fontsize = 128;
+		const d_fontsize = fontsize/4;
+		
+		const title = document.createElementNS(svgNS, 'text');
+		title.setAttribute('x','50%');
+		title.setAttribute('y','50%');
+		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		title.setAttribute('font-size',fontsize);
+		title.setAttribute('dominant-baseline','middle');
+		title.setAttribute('text-anchor','middle');
+		title.setAttribute('fill','#444');
+		title.style.opacity = 0.75;
+		const text_node = document.createTextNode('Making City');
+		title.appendChild(text_node);
+		svg.appendChild(title);
+		
+		const descr = document.createElementNS(svgNS, 'text');
+		descr.setAttribute('x','50%');
+		descr.setAttribute('y','50%');
+		descr.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		descr.setAttribute('font-size',d_fontsize);
+		descr.setAttribute('dominant-baseline','middle');
+		descr.setAttribute('text-anchor','middle');
+		descr.setAttribute('fill','#444');
+		descr.style.opacity = 0.75;
+		const text_node = document.createTextNode('Positive Energy Districts');
+		descr.appendChild(text_node);
+		svg.appendChild(descr);
+		$('#space').append(svg);
+	}
+	
 	renderALL() {
 		console.log('renderALL()!!!!');
 		$(this.el).empty();
 		
 		this.createSpace();
-		/*
 		this.appendLogo();
-		this.appendBuilding();
+		/*this.appendBuilding();
 		
 		this.appendSun('USER');
 		this.appendSun('ELECTRICITY');

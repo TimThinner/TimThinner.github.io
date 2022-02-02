@@ -140,7 +140,6 @@ export default class MenuView extends View {
 	
 	appendLogo() {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
 		/*
@@ -148,9 +147,6 @@ export default class MenuView extends View {
 		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
 		<= 600px 			> 600px 			> 992px 				> 1200px
 		*/
-		// P: 82 22
-		// S: 128 36
-		// L: 128 36
 		let fontsize;
 		if (w <= 600) {
 			console.log('Mobile Device.');
@@ -168,7 +164,6 @@ export default class MenuView extends View {
 			console.log('Large Desktop Device.');
 			fontsize = 124;
 		}
-		
 		const bw = w;
 		const bh = fontsize+fontsize*0.5;
 		const bx = -w*0.5;
@@ -180,24 +175,21 @@ export default class MenuView extends View {
 		svg.setAttributeNS(null,'width',bw);
 		svg.setAttributeNS(null,'height',bh);
 		
-		
-		
-		const rounding = bw*0.1; // 10% rounded corners.
 		const rect_bg = document.createElementNS(svgNS, 'rect');
 		rect_bg.setAttribute('x',1);
 		rect_bg.setAttribute('y',1);
 		rect_bg.setAttribute('width',bw-2);
 		rect_bg.setAttribute('height',bh-2);
-		rect_bg.setAttribute('rx',rounding);
 		rect_bg.style.stroke = '#ccc';
 		rect_bg.style.strokeWidth = 1;
 		rect_bg.style.fill = 'none';
 		svg.appendChild(rect_bg);
 		
-		
-		
-		
 		/*
+			opacity: 0.75;
+			stroke-width: 2;
+			stroke: #444;
+
 		<text x="-370" y="-390" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="128px" fill="#444">Making City</text>
 		<path class="grid-head" d="M-900 -481 H-361" />
 		<path class="grid-head" d="M36 -388 H900" />
@@ -228,6 +220,16 @@ export default class MenuView extends View {
 		descr.style.opacity = 0.75;
 		descr.appendChild(document.createTextNode('Positive Energy Districts'));
 		svg.appendChild(descr);
+		
+		const d = 'M0,32 H300';
+		const lineA = document.createElementNS(svgNS, "path");
+		lineA.setAttributeNS(null, 'd', d);
+		lineA.style.stroke = '#444';
+		lineA.style.strokeWidth = 2;
+		lineA.style.opacity = 0.75;
+		lineA.style.fill = 'none';
+		svg.appendChild(lineA);
+		
 		$('#space').append(svg);
 	}
 	

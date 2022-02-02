@@ -268,7 +268,7 @@ export default class MenuView extends View {
 		let r = this.sunRadius();
 		
 		if (type === 'CITY') {
-			r = r*2;
+			r = r*1.5;
 		}
 		const WHITE = '#fff';
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
@@ -284,15 +284,15 @@ export default class MenuView extends View {
 		const hper2 = h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
-		if (type === 'ELECTRICITY') {
+		if (type === 'USER') {
 			tx = ty = -12*r/5;
-		} else if (type === 'HEATING') {
+		} else if (type === 'SOLAR') {
 			tx = 12*r/5;
 			ty = -12*r/5;
-		} else if (type === 'ENVIRONMENT') {
+		} else if (type === 'GRID') {
 			tx = -12*r/5;
 			ty = 12*r/5;
-		} else if (type === 'FEEDBACK') {
+		} else if (type === 'ENVIRONMENT') {
 			tx = ty = 12*r/5;
 		}
 		
@@ -443,6 +443,10 @@ export default class MenuView extends View {
 		//this.appendBuilding();
 		
 		this.appendSun('CITY');
+		this.appendSun('USER');
+		this.appendSun('SOLAR');
+		this.appendSun('GRID');
+		this.appendSun('ENVIRONMENT');
 		/*
 		this.appendInfoButton();
 		this.appendLanguageSelections();

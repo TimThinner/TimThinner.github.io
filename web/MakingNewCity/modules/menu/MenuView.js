@@ -238,10 +238,6 @@ export default class MenuView extends View {
 		
 		const textElement = document.querySelector('#mc-title');
 		const bboxGroup = textElement.getBBox();
-		rectBBox.setAttribute('x', bboxGroup.x);
-		rectBBox.setAttribute('y', bboxGroup.y);
-		rectBBox.setAttribute('width', bboxGroup.width);
-		rectBBox.setAttribute('height', bboxGroup.height);
 		console.log(['x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 	}
 	

@@ -172,7 +172,7 @@ export default class MenuView extends View {
 		const bw = w;
 		const bh = fontsize+fontsize*0.5;
 		const bx = -w*0.5;
-		const by = -h*0.5+fontsize*0.5;
+		const by = -h*0.5+fontsize*0.25;
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',bx);
@@ -201,7 +201,7 @@ export default class MenuView extends View {
 		svg.appendChild(title);
 		
 		const descr = document.createElementNS(svgNS, 'text');
-		descr.setAttribute('x','75%');
+		descr.setAttribute('x','65%');
 		descr.setAttribute('y','75%');
 		descr.setAttribute('font-family','Arial, Helvetica, sans-serif');
 		descr.setAttribute('font-size',d_fontsize);

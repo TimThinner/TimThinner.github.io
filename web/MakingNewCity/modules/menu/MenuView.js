@@ -175,7 +175,7 @@ export default class MenuView extends View {
 		svg.setAttribute('y',by);
 		svg.setAttributeNS(null,'width',bw);
 		svg.setAttributeNS(null,'height',bh);
-		
+		/*
 		const rect_bg = document.createElementNS(svgNS, 'rect');
 		rect_bg.setAttribute('x',1);
 		rect_bg.setAttribute('y',1);
@@ -185,6 +185,7 @@ export default class MenuView extends View {
 		rect_bg.style.strokeWidth = 1;
 		rect_bg.style.fill = 'none';
 		svg.appendChild(rect_bg);
+		*/
 		/*
 			opacity: 0.75;
 			stroke-width: 2;
@@ -194,7 +195,7 @@ export default class MenuView extends View {
 		<path class="grid-head" d="M36 -388 H900" />
 		<text x="65" y="-340" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#444">Positive Energy Districts</text>
 		*/
-		const d_fontsize = fontsize/4;
+		const d_fontsize = fontsize/4; // 16, 21, 26, 31
 		
 		const title = document.createElementNS(svgNS, 'text');
 		title.id = 'logo-title';
@@ -261,20 +262,183 @@ export default class MenuView extends View {
 		containerElement.appendChild(lineB);
 	}
 	
+	appendSun(type) {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		const WHITE = '#fff';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const GREEN = '#0f0';
+		
+		const r2 = r-r*0.1;
+		const r3 = r-r*0.3;
+		const w = r;
+		const wper2 = w*0.5;
+		const h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		const hper2 = h*0.5;
+		
+		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
+		if (type === 'ELECTRICITY') {
+			tx = ty = -12*r/5;
+		} else if (type === 'HEATING') {
+			tx = 12*r/5;
+			ty = -12*r/5;
+		} else if (type === 'ENVIRONMENT') {
+			tx = -12*r/5;
+			ty = 12*r/5;
+		} else if (type === 'FEEDBACK') {
+			tx = ty = 12*r/5;
+		}
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const border = document.createElementNS(svgNS, "circle");
+		border.setAttributeNS(null, 'cx', 0);
+		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'r', r);
+		border.style.fill = WHITE;
+		border.style.fillOpacity = 0.5;
+		border.style.stroke = DARK_BLUE;
+		border.style.strokeWidth = 2;
+		group.appendChild(border);
+		
+		const ca = document.createElementNS(svgNS, "circle");
+		ca.setAttributeNS(null, 'cx', 0);
+		ca.setAttributeNS(null, 'cy', 0);
+		ca.setAttributeNS(null, 'r', r2);
+		ca.style.fill = WHITE;
+		ca.style.fillOpacity = 0.5;
+		ca.style.stroke = DARK_BLUE;
+		ca.style.strokeWidth = 1;
+		group.appendChild(ca);
+		
+		const cb = document.createElementNS(svgNS, "circle");
+		cb.setAttribute('cx', 0);
+		cb.setAttribute('cy', 0);
+		cb.setAttribute('r', r3);
+		cb.style.fill = WHITE;
+		cb.style.fillOpacity = 1;
+		cb.style.stroke = DARK_BLUE;
+		cb.style.strokeWidth = 0.5;
+		group.appendChild(cb);
+		
+		/*
+		if (type === 'USER') {
+			if (this.USER_MODEL.isLoggedIn()) {
+				const img = document.createElementNS(svgNS, "image");
+				img.setAttribute('x', -wper2);
+				img.setAttribute('y', -hper2);
+				img.setAttribute('width', w);
+				img.setAttribute('height', h);
+				img.setAttribute('href', './svg/user.svg');
+				group.appendChild(img);
+			} else {
+				const img = document.createElementNS(svgNS, "image");
+				img.setAttribute('x', -wper2);
+				img.setAttribute('y', -hper2);
+				img.setAttribute('width', w);
+				img.setAttribute('height', h);
+				img.setAttribute('href', './svg/anon.svg');
+				group.appendChild(img);
+			}
+		} else if (type === 'ELECTRICITY') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', -wper2);
+			img.setAttribute('y', -hper2);
+			img.setAttribute('width', w);
+			img.setAttribute('height', h);
+			img.setAttribute('href', './svg/electricity.svg');
+			group.appendChild(img);
+		} else if (type === 'HEATING') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', -wper2);
+			img.setAttribute('y', -hper2);
+			img.setAttribute('width', w);
+			img.setAttribute('height', h);
+			img.setAttribute('href', './svg/radiator.svg');
+			group.appendChild(img);
+		} else if (type === 'ENVIRONMENT') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', -wper2);
+			img.setAttribute('y', -hper2);
+			img.setAttribute('width', w);
+			img.setAttribute('height', h);
+			img.setAttribute('href', './svg/leaf.svg');
+			group.appendChild(img);
+		} else if (type === 'FEEDBACK') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', -wper2);
+			img.setAttribute('y', -hper2);
+			img.setAttribute('width', w);
+			img.setAttribute('height', h);
+			img.setAttribute('href', './svg/feedback.svg');
+			group.appendChild(img);
+		}
+		*/
+		const surface = document.createElementNS(svgNS, "circle");
+		surface.setAttributeNS(null, 'cx', 0);
+		surface.setAttributeNS(null, 'cy', 0);
+		surface.setAttributeNS(null, 'r', r);
+		surface.style.stroke = DARK_BLUE;
+		surface.style.strokeWidth = 1;
+		surface.style.fillOpacity = 0;
+		surface.style.cursor = 'pointer';
+		
+		// Select which pages open...
+		/*
+		if (type === 'USER') {
+			if (this.USER_MODEL.isLoggedIn()) {
+				surface.addEventListener("click", function(){
+					self.models['MenuModel'].setSelected('USERPAGE');
+				}, false);
+			} else {
+				surface.addEventListener("click", function(){
+					self.models['MenuModel'].setSelected('userlogin');
+				}, false);
+			}
+		} else if (type === 'ELECTRICITY') {
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('A');
+			}, false);
+		} else if (type === 'HEATING') {
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('B');
+			}, false);
+		} else if (type === 'ENVIRONMENT') {
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('C');
+			}, false);
+		} else if (type === 'FEEDBACK') {
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('D');
+			}, false);
+		}
+		*/
+		surface.addEventListener("mouseover", function(event){ 
+			border.style.fill = GREEN;
+		}, false);
+		surface.addEventListener("mouseout", function(event){ 
+			border.style.fill = WHITE;
+		}, false);
+		
+		group.appendChild(surface);
+		group.setAttribute('transform', 'translate('+tx+','+ty+')');
+		$('#space').append(group);
+	}
+	
+	
 	renderALL() {
 		console.log('renderALL()!');
 		$(this.el).empty();
 		
 		this.createSpace();
 		this.appendLogo();
-		/*this.appendBuilding();
 		
-		this.appendSun('USER');
-		this.appendSun('ELECTRICITY');
-		this.appendSun('HEATING');
-		this.appendSun('ENVIRONMENT');
-		this.appendSun('FEEDBACK');
+		//this.appendBuilding();
 		
+		this.appendSun('CITY');
+		/*
 		this.appendInfoButton();
 		this.appendLanguageSelections();
 		*/

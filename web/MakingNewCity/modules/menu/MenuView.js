@@ -54,8 +54,8 @@ export default class MenuView extends View {
 	*/
 	
 	sunRadius() {
-		const w = this.REO.width;//-18; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height;//-18;
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
 		const wp2 = w*0.125;
 		const hp2 = h*0.125;
 		const r = Math.min(wp2, hp2); // r = 0,125 x W or H, whichever is smallest (d=0,25 x W or H)
@@ -80,8 +80,8 @@ export default class MenuView extends View {
 		//$('body').css('background-color','#ddd');
 		//$('.container').css('background-color','#ddd');
 		
-		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height;
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
@@ -140,8 +140,8 @@ export default class MenuView extends View {
 	
 	appendLogo() {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const w = this.REO.width;//-18; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height;//-18;
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
 		/*
 		Screen Sizes (in Materialize CSS)
 		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
@@ -221,15 +221,13 @@ export default class MenuView extends View {
 		descr.appendChild(document.createTextNode('Positive Energy Districts'));
 		svg.appendChild(descr);
 		
-		
-		
 		$('#space').append(svg);
 		
 		const textElement = document.querySelector('#logo-title');
 		const containerElement = document.querySelector('#logo-svg');
 		const bboxGroup = textElement.getBBox();
-		console.log(['HIPHEI JEP JEP x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
-		
+		console.log(['HIPHEI YES! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
+		/*
 		const rect_foo = document.createElementNS(svgNS, 'rect');
 		rect_foo.setAttribute('x',bboxGroup.x);
 		rect_foo.setAttribute('y',bboxGroup.y);
@@ -239,14 +237,14 @@ export default class MenuView extends View {
 		rect_foo.style.strokeWidth = 4;
 		rect_foo.style.fill = 'none';
 		containerElement.appendChild(rect_foo);
-		
-		const laposY = 10;
-		const laposX = bboxGroup.x+4;
+		*/
+		const laposY = 16;
+		const laposX = bboxGroup.x+8;
 		const da = 'M0,'+laposY+' H'+laposX;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', da);
 		lineA.style.stroke = '#777';
-		lineA.style.strokeWidth = 3;
+		lineA.style.strokeWidth = 2;
 		lineA.style.opacity = 0.75;
 		lineA.style.fill = 'none';
 		containerElement.appendChild(lineA);
@@ -257,7 +255,7 @@ export default class MenuView extends View {
 		const lineB = document.createElementNS(svgNS, "path");
 		lineB.setAttributeNS(null, 'd', db);
 		lineB.style.stroke = '#777';
-		lineB.style.strokeWidth = 3;
+		lineB.style.strokeWidth = 2;
 		lineB.style.opacity = 0.75;
 		lineB.style.fill = 'none';
 		containerElement.appendChild(lineB);

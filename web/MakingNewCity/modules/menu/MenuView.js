@@ -170,6 +170,7 @@ export default class MenuView extends View {
 		const by = -h*0.5+fontsize*0.25;
 		
 		const svg = document.createElementNS(svgNS, "svg");
+		svg.id = 'logo-svg';
 		svg.setAttribute('x',bx);
 		svg.setAttribute('y',by);
 		svg.setAttributeNS(null,'width',bw);
@@ -196,7 +197,7 @@ export default class MenuView extends View {
 		const d_fontsize = fontsize/4;
 		
 		const title = document.createElementNS(svgNS, 'text');
-		title.id = 'mc-title';
+		title.id = 'logo-title';
 		title.setAttribute('x','50%');
 		title.setAttribute('y','40%');
 		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
@@ -220,9 +221,17 @@ export default class MenuView extends View {
 		descr.appendChild(document.createTextNode('Positive Energy Districts'));
 		svg.appendChild(descr);
 		
-		/*
-		const laposY = bh*0.1;
-		const laposX = // Line end x-pos.
+		
+		
+		$('#space').append(svg);
+		
+		const textElement = document.querySelector('#logo-title');
+		const containerElement = document.querySelector('#logo-svg');
+		const bboxGroup = textElement.getBBox();
+		console.log(['HIPHEI x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
+		
+		const laposY = 0;
+		const laposX = bboxGroup.x;
 		const d = 'M0,'+laposY+' H'+laposX;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', d);
@@ -230,15 +239,10 @@ export default class MenuView extends View {
 		lineA.style.strokeWidth = 2;
 		lineA.style.opacity = 0.75;
 		lineA.style.fill = 'none';
-		svg.appendChild(lineA);
-		*/
+		containerElement.appendChild(lineA);
 		
 		
-		$('#space').append(svg);
 		
-		const textElement = document.querySelector('#mc-title');
-		const bboxGroup = textElement.getBBox();
-		console.log(['x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 	}
 	
 	renderALL() {

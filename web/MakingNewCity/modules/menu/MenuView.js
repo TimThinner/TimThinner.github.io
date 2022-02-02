@@ -151,26 +151,28 @@ export default class MenuView extends View {
 		// P: 82 22
 		// S: 128 36
 		// L: 128 36
-		let bh, fontsize;
+		let fontsize;
 		if (w <= 600) {
 			console.log('Mobile Device.');
-			bh = fontsize = 64;
+			fontsize = 64;
 			
 		} else if (w > 600 && w <= 992) {
 			console.log('Tablet Device.');
-			bh = fontsize = 84;
+			fontsize = 84;
 			
 		} else if (w > 992 && w <= 1200) {
 			console.log('Desktop Device.');
-			bh = fontsize = 104;
+			fontsize = 104;
 			
 		} else {
 			console.log('Large Desktop Device.');
-			bh = fontsize = 124;
+			fontsize = 124;
 		}
+		
 		const bw = w;
+		const bh = fontsize+fontsize*0.5;
 		const bx = -w*0.5;
-		const by = -h*0.5;
+		const by = -h*0.5+fontsize*0.5;
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',bx);
@@ -188,7 +190,7 @@ export default class MenuView extends View {
 		
 		const title = document.createElementNS(svgNS, 'text');
 		title.setAttribute('x','50%');
-		title.setAttribute('y','50%');
+		title.setAttribute('y','40%');
 		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
 		title.setAttribute('font-size',fontsize);
 		title.setAttribute('dominant-baseline','middle');

@@ -226,7 +226,7 @@ export default class MenuView extends View {
 		descr.appendChild(document.createTextNode('Positive Energy Districts'));
 		svg.appendChild(descr);
 		
-		
+		/*
 		const laposY = bh*0.1;
 		const laposX = // Line end x-pos.
 		const d = 'M0,'+laposY+' H'+laposX;
@@ -237,7 +237,7 @@ export default class MenuView extends View {
 		lineA.style.opacity = 0.75;
 		lineA.style.fill = 'none';
 		svg.appendChild(lineA);
-		
+		*/
 		
 		
 		$('#space').append(svg);

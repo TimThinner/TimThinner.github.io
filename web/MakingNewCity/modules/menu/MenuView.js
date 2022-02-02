@@ -180,6 +180,23 @@ export default class MenuView extends View {
 		svg.setAttributeNS(null,'width',bw);
 		svg.setAttributeNS(null,'height',bh);
 		
+		
+		
+		const rounding = bw*0.1; // 10% rounded corners.
+		const rect_bg = document.createElementNS(svgNS, 'rect');
+		rect_bg.setAttribute('x',1);
+		rect_bg.setAttribute('y',1);
+		rect_bg.setAttribute('width',bw-2);
+		rect_bg.setAttribute('height',bh-2);
+		rect_bg.setAttribute('rx',rounding);
+		rect_bg.style.stroke = '#ccc';
+		rect_bg.style.strokeWidth = 1;
+		rect_bg.style.fill = 'none';
+		svg.appendChild(rect_bg);
+		
+		
+		
+		
 		/*
 		<text x="-370" y="-390" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="128px" fill="#444">Making City</text>
 		<path class="grid-head" d="M-900 -481 H-361" />

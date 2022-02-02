@@ -15,6 +15,11 @@ export default class ResizeEventObserver extends EventObserver {
 		this.width = $(window).width();
 		this.height = $(window).height();
 		
+		// New implementation:
+		// Notify ALWAYS, but set mode also because there are views which need to know 
+		// are we in PORTRAIT, SQUARE or LADSCAPE mode (aspect ratio).
+		setTimeout(() => this.notifyAll({model:'ResizeEventObserver',method:'resize',status:200,message:''}), 100);
+		
 		let _mode = 'SQUARE';
 		// Tolerance +-25% for square
 		let diffe = 0;
@@ -31,19 +36,7 @@ export default class ResizeEventObserver extends EventObserver {
 				_mode = 'PORTRAIT';
 			}
 		}
-		if (typeof this.mode === 'undefined') {
-			console.log('ResizeEventObserver => FIRST TIME RENDER');
-			this.mode = _mode;
-			setTimeout(() => this.notifyAll({model:'ResizeEventObserver',method:'resize',status:200,message:''}), 100);
-			
-			
-		} else {
-			if (this.mode !== _mode) {
-				console.log('ResizeEventObserver => MODE CHANGE RENDER');
-				this.mode = _mode;
-				setTimeout(() => this.notifyAll({model:'ResizeEventObserver',method:'resize',status:200,message:''}), 100);
-			}
-		}
+		this.mode = _mode;
 	}
 	
 	resizeThrottler() {
@@ -57,8 +50,9 @@ export default class ResizeEventObserver extends EventObserver {
 		}
 	}
 	
-	setResizeHandler() {
+	start() {
 		const self = this;
+		this.mode = undefined;
 		// First remove handler if already set.
 		if (this.resize_handler_set) {
 			$(window).off('resize');
@@ -69,23 +63,14 @@ export default class ResizeEventObserver extends EventObserver {
 			self.resizeThrottler();
 		});
 		this.resize_handler_set = true;
+		this.resize(); // resize now!
 	}
 	
-	unsetResizeHandler() {
+	stop() {
 		if (this.resize_handler_set) {
 			//console.log('unsetResizeHandler');
 			$(window).off('resize');
 		}
 		this.resize_handler_set = false;
-	}
-	
-	start() {
-		this.mode = undefined;
-		this.setResizeHandler();
-		this.resize(); // resize now!
-	}
-	
-	stop() {
-		this.unsetResizeHandler();
 	}
 }

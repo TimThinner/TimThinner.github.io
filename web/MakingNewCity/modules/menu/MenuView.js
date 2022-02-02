@@ -151,32 +151,24 @@ export default class MenuView extends View {
 		// P: 82 22
 		// S: 128 36
 		// L: 128 36
-		//let bw, bh, fontsize;
-		
-		/*
+		let bh, fontsize;
 		if (w <= 600) {
 			console.log('Mobile Device.');
-			fontsize = 82;
-			bw = w-20;
-			bh = 36;
+			bh = fontsize = 64;
+			
 		} else if (w > 600 && w <= 992) {
 			console.log('Tablet Device.');
-			fontsize = 88;
-			bw = w-40;
-			bh = 46;
+			bh = fontsize = 84;
+			
 		} else if (w > 992 && w <= 1200) {
 			console.log('Desktop Device.');
-			fontsize = 110;
-			bw = w-120;
-			bh = 56;
+			bh = fontsize = 104;
+			
 		} else {
 			console.log('Large Desktop Device.');
-			fontsize = 128;
-			bw = w-2*fontsize;
-			bh = 66;
-		}*/
+			bh = fontsize = 124;
+		}
 		const bw = w;
-		const bh = h*0.1; // 10% of Height
 		const bx = -w*0.5;
 		const by = -h*0.5;
 		
@@ -192,7 +184,6 @@ export default class MenuView extends View {
 		<path class="grid-head" d="M36 -388 H900" />
 		<text x="65" y="-340" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#444">Positive Energy Districts</text>
 		*/
-		const fontsize = 128;
 		const d_fontsize = fontsize/4;
 		
 		const title = document.createElementNS(svgNS, 'text');
@@ -208,8 +199,8 @@ export default class MenuView extends View {
 		svg.appendChild(title);
 		
 		const descr = document.createElementNS(svgNS, 'text');
-		descr.setAttribute('x','50%');
-		descr.setAttribute('y','50%');
+		descr.setAttribute('x','75%');
+		descr.setAttribute('y','75%');
 		descr.setAttribute('font-family','Arial, Helvetica, sans-serif');
 		descr.setAttribute('font-size',d_fontsize);
 		descr.setAttribute('dominant-baseline','middle');
@@ -222,7 +213,7 @@ export default class MenuView extends View {
 	}
 	
 	renderALL() {
-		console.log('renderALL()  v2!!!!');
+		console.log('renderALL()  v3!!!!');
 		$(this.el).empty();
 		
 		this.createSpace();

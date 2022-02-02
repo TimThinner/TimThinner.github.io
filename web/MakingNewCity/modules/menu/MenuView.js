@@ -140,8 +140,8 @@ export default class MenuView extends View {
 	
 	appendLogo() {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height-18;
+		const w = this.REO.width;//-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height;//-18;
 		/*
 		Screen Sizes (in Materialize CSS)
 		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
@@ -240,8 +240,8 @@ export default class MenuView extends View {
 		rect_foo.style.fill = 'none';
 		containerElement.appendChild(rect_foo);
 		
-		const laposY = 0;
-		const laposX = bboxGroup.x;
+		const laposY = 10;
+		const laposX = bboxGroup.x+4;
 		const da = 'M0,'+laposY+' H'+laposX;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', da);
@@ -252,7 +252,7 @@ export default class MenuView extends View {
 		containerElement.appendChild(lineA);
 		
 		const lbposY = bboxGroup.height-bboxGroup.height*0.2;
-		const lbposX = bboxGroup.x+bboxGroup.width*0.6;
+		const lbposX = bboxGroup.x+bboxGroup.width*0.61;
 		const db = 'M'+lbposX+','+lbposY+' H'+w;
 		const lineB = document.createElementNS(svgNS, "path");
 		lineB.setAttributeNS(null, 'd', db);

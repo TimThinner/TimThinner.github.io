@@ -201,8 +201,8 @@ export default class MenuView extends View {
 		svg.appendChild(title);
 		
 		const descr = document.createElementNS(svgNS, 'text');
-		descr.setAttribute('x','65%');
-		descr.setAttribute('y','75%');
+		descr.setAttribute('x','70%');
+		descr.setAttribute('y','80%');
 		descr.setAttribute('font-family','Arial, Helvetica, sans-serif');
 		descr.setAttribute('font-size',d_fontsize);
 		descr.setAttribute('dominant-baseline','middle');

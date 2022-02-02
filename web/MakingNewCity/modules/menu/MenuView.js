@@ -154,15 +154,15 @@ export default class MenuView extends View {
 			
 		} else if (w > 600 && w <= 992) {
 			console.log('Tablet Device.');
-			fontsize = 84;
+			fontsize = 74;
 			
 		} else if (w > 992 && w <= 1200) {
 			console.log('Desktop Device.');
-			fontsize = 104;
+			fontsize = 84;
 			
 		} else {
 			console.log('Large Desktop Device.');
-			fontsize = 124;
+			fontsize = 94;
 		}
 		const bw = w;
 		const bh = fontsize+fontsize*0.5;
@@ -195,7 +195,7 @@ export default class MenuView extends View {
 		<path class="grid-head" d="M36 -388 H900" />
 		<text x="65" y="-340" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#444">Positive Energy Districts</text>
 		*/
-		const d_fontsize = fontsize/4; // 16, 21, 26, 31
+		const d_fontsize = fontsize/4;
 		
 		const title = document.createElementNS(svgNS, 'text');
 		title.id = 'logo-title';
@@ -227,7 +227,7 @@ export default class MenuView extends View {
 		const textElement = document.querySelector('#logo-title');
 		const containerElement = document.querySelector('#logo-svg');
 		const bboxGroup = textElement.getBBox();
-		console.log(['HIPHEI YES BOX! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
+		console.log(['HIPHEI HOX! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 		/*
 		const rect_foo = document.createElementNS(svgNS, 'rect');
 		rect_foo.setAttribute('x',bboxGroup.x);
@@ -239,7 +239,7 @@ export default class MenuView extends View {
 		rect_foo.style.fill = 'none';
 		containerElement.appendChild(rect_foo);
 		*/
-		const laposY = fontsize*0.14; // fontsize = 64, 84, 104, 124
+		const laposY = fontsize*0.14;
 		const laposX = bboxGroup.x+fontsize*0.05;
 		const da = 'M0,'+laposY+' H'+laposX;
 		const lineA = document.createElementNS(svgNS, "path");
@@ -268,7 +268,9 @@ export default class MenuView extends View {
 		let r = this.sunRadius();
 		
 		if (type === 'CITY') {
-			r = r*1.5;
+			r = r*1.2; // 120%
+		} else {
+			r = r*0.8; // 80%
 		}
 		const WHITE = '#fff';
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)

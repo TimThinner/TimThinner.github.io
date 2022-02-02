@@ -184,12 +184,10 @@ export default class MenuView extends View {
 		rect_bg.style.strokeWidth = 1;
 		rect_bg.style.fill = 'none';
 		svg.appendChild(rect_bg);
-		
 		/*
 			opacity: 0.75;
 			stroke-width: 2;
 			stroke: #444;
-
 		<text x="-370" y="-390" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="128px" fill="#444">Making City</text>
 		<path class="grid-head" d="M-900 -481 H-361" />
 		<path class="grid-head" d="M36 -388 H900" />
@@ -209,6 +207,13 @@ export default class MenuView extends View {
 		title.appendChild(document.createTextNode('Making City'));
 		svg.appendChild(title);
 		
+		
+		const bbox = title.getBBox();
+		const bboxwidth = bbox.width;
+		const bboxheight = bbox.height;
+		
+		console.log(['bbox=',bbox,' width=',bboxwidth,' height=',bboxheight]);
+		
 		const descr = document.createElementNS(svgNS, 'text');
 		descr.setAttribute('x','70%');
 		descr.setAttribute('y','80%');
@@ -221,7 +226,10 @@ export default class MenuView extends View {
 		descr.appendChild(document.createTextNode('Positive Energy Districts'));
 		svg.appendChild(descr);
 		
-		const d = 'M0,32 H300';
+		
+		const laposY = bh*0.1;
+		const laposX = // Line end x-pos.
+		const d = 'M0,'+laposY+' H'+laposX;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', d);
 		lineA.style.stroke = '#444';
@@ -230,11 +238,13 @@ export default class MenuView extends View {
 		lineA.style.fill = 'none';
 		svg.appendChild(lineA);
 		
+		
+		
 		$('#space').append(svg);
 	}
 	
 	renderALL() {
-		console.log('renderALL()  v3!!!!');
+		console.log('renderALL()!');
 		$(this.el).empty();
 		
 		this.createSpace();

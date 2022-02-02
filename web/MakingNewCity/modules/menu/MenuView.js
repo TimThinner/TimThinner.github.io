@@ -196,6 +196,7 @@ export default class MenuView extends View {
 		const d_fontsize = fontsize/4;
 		
 		const title = document.createElementNS(svgNS, 'text');
+		title.id = 'mc-title';
 		title.setAttribute('x','50%');
 		title.setAttribute('y','40%');
 		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
@@ -206,13 +207,6 @@ export default class MenuView extends View {
 		title.style.opacity = 0.75;
 		title.appendChild(document.createTextNode('Making City'));
 		svg.appendChild(title);
-		
-		
-		const bbox = title.getBBox();
-		const bboxwidth = bbox.width;
-		const bboxheight = bbox.height;
-		
-		console.log(['bbox=',bbox,' width=',bboxwidth,' height=',bboxheight]);
 		
 		const descr = document.createElementNS(svgNS, 'text');
 		descr.setAttribute('x','70%');
@@ -241,6 +235,14 @@ export default class MenuView extends View {
 		
 		
 		$('#space').append(svg);
+		
+		const textElement = document.querySelector('#mc-title');
+		const bboxGroup = textElement.getBBox();
+		rectBBox.setAttribute('x', bboxGroup.x);
+		rectBBox.setAttribute('y', bboxGroup.y);
+		rectBBox.setAttribute('width', bboxGroup.width);
+		rectBBox.setAttribute('height', bboxGroup.height);
+		console.log(['x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 	}
 	
 	renderALL() {

@@ -265,12 +265,17 @@ export default class MenuView extends View {
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.sunRadius();
+		let r = this.sunRadius();
 		
+		if (type === 'CITY') {
+			r = r*2;
+		}
 		const WHITE = '#fff';
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
+		// Move all circles 10% down from vertical center.
+		const cy = (this.REO.height-18)*0.1;
 		const r2 = r-r*0.1;
 		const r3 = r-r*0.3;
 		const w = r;
@@ -295,7 +300,7 @@ export default class MenuView extends View {
 		
 		const border = document.createElementNS(svgNS, "circle");
 		border.setAttributeNS(null, 'cx', 0);
-		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'cy', cy);
 		border.setAttributeNS(null, 'r', r);
 		border.style.fill = WHITE;
 		border.style.fillOpacity = 0.5;
@@ -305,7 +310,7 @@ export default class MenuView extends View {
 		
 		const ca = document.createElementNS(svgNS, "circle");
 		ca.setAttributeNS(null, 'cx', 0);
-		ca.setAttributeNS(null, 'cy', 0);
+		ca.setAttributeNS(null, 'cy', cy);
 		ca.setAttributeNS(null, 'r', r2);
 		ca.style.fill = WHITE;
 		ca.style.fillOpacity = 0.5;
@@ -315,7 +320,7 @@ export default class MenuView extends View {
 		
 		const cb = document.createElementNS(svgNS, "circle");
 		cb.setAttribute('cx', 0);
-		cb.setAttribute('cy', 0);
+		cb.setAttribute('cy', cy);
 		cb.setAttribute('r', r3);
 		cb.style.fill = WHITE;
 		cb.style.fillOpacity = 1;
@@ -378,7 +383,7 @@ export default class MenuView extends View {
 		*/
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
-		surface.setAttributeNS(null, 'cy', 0);
+		surface.setAttributeNS(null, 'cy', cy);
 		surface.setAttributeNS(null, 'r', r);
 		surface.style.stroke = DARK_BLUE;
 		surface.style.strokeWidth = 1;

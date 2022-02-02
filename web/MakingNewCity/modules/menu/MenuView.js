@@ -204,8 +204,7 @@ export default class MenuView extends View {
 		title.setAttribute('text-anchor','middle');
 		title.setAttribute('fill','#444');
 		title.style.opacity = 0.75;
-		const text_node = document.createTextNode('Making City');
-		title.appendChild(text_node);
+		title.appendChild(document.createTextNode('Making City'));
 		svg.appendChild(title);
 		
 		const descr = document.createElementNS(svgNS, 'text');
@@ -217,14 +216,13 @@ export default class MenuView extends View {
 		descr.setAttribute('text-anchor','middle');
 		descr.setAttribute('fill','#444');
 		descr.style.opacity = 0.75;
-		const text_node = document.createTextNode('Positive Energy Districts');
-		descr.appendChild(text_node);
+		descr.appendChild(document.createTextNode('Positive Energy Districts'));
 		svg.appendChild(descr);
 		$('#space').append(svg);
 	}
 	
 	renderALL() {
-		console.log('renderALL()!!!!');
+		console.log('renderALL()  v2!!!!');
 		$(this.el).empty();
 		
 		this.createSpace();

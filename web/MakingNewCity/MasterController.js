@@ -3,7 +3,7 @@ import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import LanguageModel from './modules/common/LanguageModel.js';
 import UserModel from './modules/user/UserModel.js';
 
-import MenuController from './modules/menu/MenuController.js';
+//import MenuController from './modules/menu/MenuController.js';
 
 class MasterController {
 	
@@ -37,8 +37,8 @@ class MasterController {
 		
 		console.log('Create Controllers...');
 		// Menu controller MUST be first!
-		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
-		this.controllers['menu'].init();
+		//this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
+		//this.controllers['menu'].init();
 		
 		
 		console.log('ALL Controllers are now created!');

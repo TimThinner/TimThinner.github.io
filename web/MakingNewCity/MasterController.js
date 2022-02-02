@@ -16,7 +16,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init!');
+		console.log('MasterController init v2!');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();

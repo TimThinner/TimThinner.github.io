@@ -150,24 +150,24 @@ export default class MenuView extends View {
 		let fontsize;
 		if (w <= 600) {
 			console.log('Mobile Device.');
-			fontsize = 36;
+			fontsize = 36; // big font 36, small font 12
 			
 		} else if (w > 600 && w <= 992) {
 			console.log('Tablet Device.');
-			fontsize = 48;
+			fontsize = 42; // big font 42, small font 14
 			
 		} else if (w > 992 && w <= 1200) {
 			console.log('Desktop Device.');
-			fontsize = 60;
+			fontsize = 54; // big font 54, small font 18
 			
 		} else {
 			console.log('Large Desktop Device.');
-			fontsize = 72;
+			fontsize = 72; // big font 72, small font 24
 		}
 		const bw = w;
 		const bh = fontsize+fontsize*0.5;
 		const bx = -w*0.5;
-		const by = -h*0.5+fontsize;//*0.25;
+		const by = -h*0.5+fontsize*0.25;
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.id = 'logo-svg';
@@ -195,7 +195,7 @@ export default class MenuView extends View {
 		<path class="grid-head" d="M36 -388 H900" />
 		<text x="65" y="-340" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#444">Positive Energy Districts</text>
 		*/
-		const d_fontsize = fontsize/4;
+		const d_fontsize = fontsize/3;
 		
 		const title = document.createElementNS(svgNS, 'text');
 		title.id = 'logo-title';
@@ -273,7 +273,7 @@ export default class MenuView extends View {
 			r = r*0.8; // 80%
 		}
 		const WHITE = '#fff';
-		const DARK_BLUE = '#800'; // '#1a488b'; // ( 26,  72, 139)
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
 		
@@ -283,9 +283,9 @@ export default class MenuView extends View {
 		// If view is LANDSCAPE: Move all circles 10% down from vertical center.
 		if (this.REO.mode === 'LANDSCAPE') {
 			cy = (this.REO.height-18)*0.1;
-		} else if (this.REO.mode === 'PORTRAIT') {
+		}/* else if (this.REO.mode === 'PORTRAIT') {
 			cy = -(this.REO.height-18)*0.1;
-		}
+		}*/
 		
 		const r2 = r-r*0.1;
 		const r3 = r-r*0.3;

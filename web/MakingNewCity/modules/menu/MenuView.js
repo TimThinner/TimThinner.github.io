@@ -273,7 +273,7 @@ export default class MenuView extends View {
 			r = r*0.8; // 80%
 		}
 		const WHITE = '#fff';
-		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const DARK_BLUE = '#800'; // '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
 		

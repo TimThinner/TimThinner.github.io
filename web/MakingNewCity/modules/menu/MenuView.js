@@ -289,9 +289,9 @@ export default class MenuView extends View {
 		
 		const r2 = r-r*0.1;
 		const r3 = r-r*0.3;
-		const w = r;
+		const w = r*2; // Make images as big as possible.
 		const wper2 = w*0.5;
-		const h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		const h = w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		const hper2 = h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'

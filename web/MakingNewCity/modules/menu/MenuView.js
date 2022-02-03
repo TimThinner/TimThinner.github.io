@@ -273,18 +273,18 @@ export default class MenuView extends View {
 			r = r*0.8; // 80%
 		}
 		const WHITE = '#fff';
-		const DARK_BLUE = '#800'; // '#1a488b'; // ( 26,  72, 139)
+		const DARK_BLUE = '#080'; // '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
 		
 		let cy = 0;
 		// If view is SQUARE: Put all circles to vertical center.
-		// If view is PORTRAIT: Move all circles 20% up from vertical center.
-		// If view is LANDSCAPE: Move all circles 20% down from vertical center.
+		// If view is PORTRAIT: Move all circles 10% up from vertical center.
+		// If view is LANDSCAPE: Move all circles 10% down from vertical center.
 		if (this.REO.mode === 'LANDSCAPE') {
-			cy = (this.REO.height-18)*0.2;
+			cy = (this.REO.height-18)*0.1;
 		} else if (this.REO.mode === 'PORTRAIT') {
-			cy = -(this.REO.height-18)*0.2;
+			cy = -(this.REO.height-18)*0.1;
 		}
 		
 		const r2 = r-r*0.1;

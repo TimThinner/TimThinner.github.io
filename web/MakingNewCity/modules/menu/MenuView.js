@@ -167,7 +167,7 @@ export default class MenuView extends View {
 		const bw = w;
 		const bh = fontsize+fontsize*0.5;
 		const bx = -w*0.5;
-		const by = -h*0.5+fontsize*0.25;
+		const by = -h*0.5+fontsize;//*0.25;
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.id = 'logo-svg';
@@ -273,7 +273,7 @@ export default class MenuView extends View {
 			r = r*0.8; // 80%
 		}
 		const WHITE = '#fff';
-		const DARK_BLUE = '#080'; // '#1a488b'; // ( 26,  72, 139)
+		const DARK_BLUE = '#800'; // '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
 		

@@ -339,6 +339,17 @@ export default class MenuView extends View {
 		cb.style.strokeWidth = 0.5;
 		group.appendChild(cb);
 		
+		
+		if (type === 'CITY') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', -wper2);
+			img.setAttribute('y', -hper2);
+			img.setAttribute('width', w);
+			img.setAttribute('height', h);
+			img.setAttribute('href', './svg/city.svg');
+			group.appendChild(img);
+		}
+		
 		/*
 		if (type === 'USER') {
 			if (this.USER_MODEL.isLoggedIn()) {

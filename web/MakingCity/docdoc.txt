@@ -1,0 +1,169 @@
+		
+What Models are created in each Controller?
+What data is needed?
+	
+	MasterController:
+		new ResizeEventObserver();
+		new LanguageModel();
+		new LogModel({name:'LogModel',src:''});
+		new VisitorCountModel({name:'VisitorCountModel',src:''});
+		new UserModel({name:'UserModel',src:'user'});
+		
+	this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
+1		new MenuModel({name:'MenuModel',src:'menu'});
+2		new FingridModel({name:'FingridPowerSystemStateModel',src:'https://api.fingrid.fi/v1/variable/209/event/json'});
+3		30 new EmpoModel('EmpoEmissions1Model' ... 'EmpoEmissions30Model'   emissions/findByDate?country=FI&EmDB=EcoInvent 30 models to fetch 30 days of emissions from university server
+		
+	this.controllers['userlogin'] = new UserLoginController({name:'userlogin', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+		
+	this.controllers['usersignup'] = new UserSignupController({name:'usersignup', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+		
+	this.controllers['USERALARM'] = new UserAlarmController({name:'USERALARM', master:this, el:'#content', visible:false});
+4		new UserAlarmModel({name:'UserAlarmModel',src:''});
+		
+	this.controllers['USERALARMDETAILS'] = new UserAlarmDetailsController({name:'USERALARMDETAILS', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+		
+	this.controllers['USERPAGE'] = new UserPageController({name:'USERPAGE', master:this, el:'#content', visible:false});
+5		new UserApartmentModel({name:'UserWaterNowModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,range:nowTR});
+6		new UserApartmentModel({name:'UserElectricityNowModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,range:nowTR});
+7		new UserApartmentModel({name:'UserHeatingNowModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:1,range:nowTR});
+8		new UserApartmentModel({name:'UserWaterDayModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,range:dayTR});
+9		new UserApartmentModel({name:'UserElectricityDayModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,range:dayTR});
+		
+	this.controllers['USERPROPS'] = new UserPropsController({name:'USERPROPS', master:this, el:'#content', visible:false});
+10		new UserPropsModel({name:'UserPropsModel',src:'to-be-added-in-the-future'}); DUMMY FOR "bindings"
+		
+	
+	
+	
+	
+	this.controllers['USERELECTRICITY'] = new UserElectricityController({name:'USERELECTRICITY', master:this, el:'#content', visible:false});
+11		new UserApartmentModel({name:'UserElectricityWeekModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,range:weekTR});
+12		new UserApartmentModel({name:'UserElectricityMonthModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,range:monthTR});
+	this.controllers['USERHEATING'] = new UserHeatingController({name:'USERHEATING', master:this, el:'#content', visible:false});
+13		new UserApartmentModel({name:'UserHeatingMonthModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:0,range:mTR,timerange: 30});
+14		new FeedbackModel({name:'FeedbackModel',src:''});
+			Note: UserHeatingMonthModel is now scheduled to be fetched once every 60 seconds in BackgroundPeriodicPoller
+	this.controllers['USERWATER'] = new UserWaterController({name:'USERWATER', master:this, el:'#content', visible:false});
+15		new UserApartmentModel({name:'UserWaterWeekModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,range:weekTR});
+16		new UserApartmentModel({name:'UserWaterMonthModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,range:monthTR});
+	
+	
+	this.controllers['USERWATERCHARTS'] = new UserWaterChartsController({name:'USERWATERCHARTS', master:this, el:'#content', visible:false});
+17		new UserApartmentModel({name:'UserWaterALLModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:0,range:allTR});
+18		new UserApartmentTimeSeriesModel({name:'UserWaterTSModel',src:'data/sivakka/apartments/feeds.json',type:'water',limit:1,rounds:31}); // rounds 31 => 30 days
+			Note: UserWaterTSModel is now scheduled to be fetched once every 60 seconds in BackgroundPeriodicPoller
+	this.controllers['USERWATERTARGETS'] = new UserWaterTargetsController({name:'USERWATERTARGETS', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+	this.controllers['USERWATERCOMPENSATE'] = new UserWaterCompensateController({name:'USERWATERCOMPENSATE', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+		
+	this.controllers['USERHEATINGCHARTS'] = new UserHeatingChartsController({name:'USERHEATINGCHARTS', master:this, el:'#content', visible:false});
+19		new UserApartmentModel({name:'UserHeatingALLModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:0,range:allTR});
+	this.controllers['USERHEATINGTARGETS'] = new UserHeatingTargetsController({name:'USERHEATINGTARGETS', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+	this.controllers['USERHEATINGCOMPENSATE'] = new UserHeatingCompensateController({name:'USERHEATINGCOMPENSATE', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+		
+	this.controllers['USERELECTRICITYCHARTS'] = new UserElectricityChartsController({name:'USERELECTRICITYCHARTS', master:this, el:'#content', visible:false});
+20		new UserApartmentModel({name:'UserElectricityALLModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:0,range:allTR});
+21		new UserApartmentTimeSeriesModel({name:'UserElectricityTSModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,rounds:31}); // rounds 31 => 30 days
+	this.controllers['USERELECTRICITYTARGETS'] = new UserElectricityTargetsController({name:'USERELECTRICITYTARGETS', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+	this.controllers['USERELECTRICITYCOMPENSATE'] = new UserElectricityCompensateController({name:'USERELECTRICITYCOMPENSATE', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+	
+	
+	
+	
+	
+	
+	ADMIN STUFF:
+	
+	this.controllers['REGCODES'] = new RegCodeController({name:'REGCODES', master:this, el:'#content', visible:false});
+22		new RegCodeModel({name:'RegCodeModel',src:'to-be-added-in-the-future'});
+	this.controllers['REGCODECREATE'] = new RegCodeCreateController({name:'REGCODECREATE', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+	this.controllers['REGCODEEDIT'] = new RegCodeEditController({name:'REGCODEEDIT', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+	
+	this.controllers['READKEYS'] = new ReadKeyController({name:'READKEYS', master:this, el:'#content', visible:false});
+23		new ReadKeyModel({name:'ReadKeyModel',src:'to-be-added-in-the-future'});
+	this.controllers['READKEYEDIT'] = new ReadKeyEditController({name:'READKEYEDIT', master:this, el:'#content', visible:false});
+		NO NEW MODELS
+	this.controllers['USERS'] = new UsersController({name:'USERS', master:this, el:'#content', visible:false});
+24		new UsersModel({name:'UsersModel',src:'to-be-added-in-the-future'});
+	
+	
+	
+	
+	this.controllers['GRIDPAGE'] = new GridPageController({name:'GRIDPAGE', master:this, el:'#content', visible:false});
+25		new FingridModel({name:model_name,src:'https://api.fingrid.fi/v1/variable/'+id+'/event/json'});  13 x 'Fingrid'+id+'Model'
+26		new EntsoeModel({name:'EntsoeEnergyPriceModel',src:'https://transparency.entsoe.eu/api', document_type:'A44', area_name:'Finland'});
+		
+	this.controllers['SOLARPAGE'] = new SolarPageController({name:'SOLARPAGE', master:this, el:'#content', visible:false});
+27		new FingridModel({name:'FingridSolarPowerFinlandModel',src:'https://api.fingrid.fi/v1/variable/248/events/json?'});
+		
+	this.controllers['ENVIRONMENTPAGE'] = new EnvironmentPageController({name:'ENVIRONMENTPAGE', master:this, el:'#content', visible:false});
+		NO NEW MODELS    (uses 30 EmpoEmissions... models created at MenuController)
+	
+	this.controllers['D'] = new DistrictController({name:'D', master:this, el:'#content', visible:false});
+28		new DistrictModel({name:'DistrictModel',src:'district'}); (is just a MENU selection model)
+		
+		
+	
+	this.controllers['DA'] = new DistrictAController({name:'DA', master:this, el:'#content', visible:false});
+29		new StatusModel({name:'StatusModel',src:'data/arina/iss/status'});
+30		new StatusJetitek983Model({name:'StatusJetitek983Model',src:'data/arina/jetitek/feeds.json?pointId=983'});
+31		new StatusJetitek1012Model({name:'StatusJetitek1012Model',src:'data/arina/jetitek/feeds.json?pointId=1012'});
+		
+	this.controllers['DAA'] = new DistrictAAController({name:'DAA', master:this, el:'#content', visible:false});
+32		new TotalModel({name:'TotalModel',src:'data/arina/iss/feeds.json?meterId=114'});                 (extends FeedModel)
+		
+	this.controllers['DAB'] = new DistrictABController({name:'DAB', master:this, el:'#content', visible:false});
+33		new SolarModel({name:'SolarModel',src:'data/arina/iss/feeds.json?meterId=116'});                 (extends FeedModel)
+		
+	this.controllers['DAC'] = new DistrictACController({name:'DAC', master:this, el:'#content', visible:false});
+34		new Light102Model({name:'Light102Model',src:'data/arina/iss/feeds.json?meterId=102'});          (extends FeedModel)
+35		new Light103Model({name:'Light103Model',src:'data/arina/iss/feeds.json?meterId=103'});          (extends FeedModel)
+36		new Light104Model({name:'Light104Model',src:'data/arina/iss/feeds.json?meterId=104'});          (extends FeedModel)
+37		new Light110Model({name:'Light110Model',src:'data/arina/iss/feeds.json?meterId=110'});          (extends FeedModel)
+		
+	this.controllers['DAD'] = new DistrictADController({name:'DAD', master:this, el:'#content', visible:false});
+38		new Kitchen106Model({name:'Kitchen106Model',src:'data/arina/iss/feeds.json?meterId=106'});      (extends FeedModel)
+39		new Kitchen107Model({name:'Kitchen107Model',src:'data/arina/iss/feeds.json?meterId=107'});      (extends FeedModel)
+40		new Kitchen108Model({name:'Kitchen108Model',src:'data/arina/iss/feeds.json?meterId=108'});      (extends FeedModel)
+		
+	this.controllers['DAE'] = new DistrictAEController({name:'DAE', master:this, el:'#content', visible:false});
+41		new HPAC101Model({name:'HPAC101Model',src:'data/arina/iss/feeds.json?meterId=101'});          (extends FeedModel)
+42		new HPAC105Model({name:'HPAC105Model',src:'data/arina/iss/feeds.json?meterId=105'});          (extends FeedModel)
+	
+	
+	this.controllers['DAF'] = new DistrictAFController({name:'DAF', master:this, el:'#content', visible:false});
+43		new Other109Model({name:'Other109Model',src:'data/arina/iss/feeds.json?meterId=109'});          (extends FeedModel)
+44		new Other111Model({name:'Other111Model',src:'data/arina/iss/feeds.json?meterId=111'});          (extends FeedModel)
+	
+	
+	this.controllers['DAG'] = new DistrictAGController({name:'DAG', master:this, el:'#content', visible:false});
+45		new Cooler113Model({name:'Cooler113Model',src:'data/arina/iss/feeds.json?meterId=113'});                         (extends FeedModel)
+46		new Cooler112Model({name:'Cooler112Model',src:'data/arina/iss/feeds.json?meterId=112'});                         (extends FeedModel)
+47		new Cooler117Model({name:'Cooler117Model',src:'data/arina/iss/feeds.json?calc=1&meterId=117'});                  (extends FeedModel)
+48		new CoolerKLPowerModel({name:'CoolerKLPowerModel',src:'data/arina/jetitek/feeds.json?pointId=983'});             (extends FeedModel)
+49		new CoolerCoolingPowerModel({name:'CoolerCoolingPowerModel',src:'data/arina/jetitek/feeds.json?pointId=1012'});  (extends FeedModel)
+		
+	
+	this.controllers['DAI'] = new DistrictAIController({name:'DAI', master:this, el:'#content', visible:false});
+50		new GeothermalModel({name:'GeothermalModel',src:'data/arina/iss/feeds.json?calc=1&meterId=115'});                (extends FeedModel)
+	
+	
+	this.controllers['DB'] = new DistrictBController({name:'DB', master:this, el:'#content', visible:false});
+51		new SivakkaStatusModel({name:'SivakkaStatusModel',src:'data/sivakka/gstdata/status'});
+		
+	this.controllers['DC'] = new DistrictCController({name:'DC', master:this, el:'#content', visible:false});
+	this.controllers['DD'] = new DistrictDController({name:'DD', master:this, el:'#content', visible:false});
+	this.controllers['DE'] = new DistrictEController({name:'DE', master:this, el:'#content', visible:false});
+	
+

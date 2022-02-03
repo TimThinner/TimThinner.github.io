@@ -276,8 +276,17 @@ export default class MenuView extends View {
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
-		// Move all circles 10% down from vertical center.
-		const cy = (this.REO.height-18)*0.1;
+		
+		let cy = 0;
+		// If view is SQUARE: Put all circles to vertical center.
+		// If view is PORTRAIT: Move all circles 20% up from vertical center.
+		// If view is LANDSCAPE: Move all circles 20% down from vertical center.
+		if (this.REO.mode === 'LANDSCAPE') {
+			cy = (this.REO.height-18)*0.2;
+		} else if (this.REO.mode === 'PORTRAIT') {
+			cy = -(this.REO.height-18)*0.2;
+		}
+		
 		const r2 = r-r*0.1;
 		const r3 = r-r*0.3;
 		const w = r;

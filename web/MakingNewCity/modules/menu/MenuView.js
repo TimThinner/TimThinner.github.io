@@ -289,10 +289,10 @@ export default class MenuView extends View {
 		
 		const r2 = r-r*0.1;
 		const r3 = r-r*0.3;
-		const w = r*2; // Make images as big as possible.
-		const wper2 = w*0.5;
-		const h = w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
-		const hper2 = h*0.5;
+		const icon_w = r*2; // Make images as big as possible.
+		const icon_x = -icon_w*0.5;
+		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		const icon_y = cy - icon_h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'USER') {
@@ -342,10 +342,10 @@ export default class MenuView extends View {
 		
 		if (type === 'CITY') {
 			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -wper2);
-			img.setAttribute('y', -hper2);
-			img.setAttribute('width', w);
-			img.setAttribute('height', h);
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
 			img.setAttribute('href', './svg/city.svg');
 			group.appendChild(img);
 		}
@@ -413,6 +413,14 @@ export default class MenuView extends View {
 		surface.style.cursor = 'pointer';
 		
 		// Select which pages open...
+		
+		
+		if (type === 'CITY') {
+			surface.addEventListener("click", function(){
+				console.log('HEY, CITY CLICKED!');
+			}, false);
+		}
+		
 		/*
 		if (type === 'USER') {
 			if (this.USER_MODEL.isLoggedIn()) {

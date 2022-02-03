@@ -150,19 +150,19 @@ export default class MenuView extends View {
 		let fontsize;
 		if (w <= 600) {
 			console.log('Mobile Device.');
-			fontsize = 48;
+			fontsize = 36;
 			
 		} else if (w > 600 && w <= 992) {
 			console.log('Tablet Device.');
-			fontsize = 60;
+			fontsize = 48;
 			
 		} else if (w > 992 && w <= 1200) {
 			console.log('Desktop Device.');
-			fontsize = 72;
+			fontsize = 60;
 			
 		} else {
 			console.log('Large Desktop Device.');
-			fontsize = 84;
+			fontsize = 72;
 		}
 		const bw = w;
 		const bh = fontsize+fontsize*0.5;

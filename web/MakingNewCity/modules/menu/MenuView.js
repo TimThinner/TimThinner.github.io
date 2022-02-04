@@ -704,7 +704,7 @@ export default class MenuView extends View {
 		const flag_w = 66;
 		const flag_h = 44;
 		const flag_x_pos = -w*0.5+80;
-		const flag_y_pos = h*0.5-52;
+		const flag_y_pos = h*0.5-46;
 		const flag = document.createElementNS(svgNS, "image");
 		flag.setAttribute('x', flag_x_pos);
 		flag.setAttribute('y', flag_y_pos);

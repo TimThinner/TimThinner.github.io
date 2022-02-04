@@ -666,9 +666,10 @@ export default class MenuView extends View {
 	*/
 	appendMCLinkAndEUFlag() {
 		const svgNS = 'http://www.w3.org/2000/svg';
+		const h = this.REO.height-18;
 		const img_dim = 40;
 		const img_x_pos = 10;
-		const img_y_pos = h*0.5-44; // MakingCity LINK image at the bottom left.
+		const img_y_pos = h*0.5-40; // MakingCity LINK image at the bottom left.
 		
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', img_x_pos);

@@ -146,10 +146,11 @@ export default class MenuView extends View {
 		
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const LIGHTGREY = '#777';
+		const LIGHTGREY = '#ccc';
 		const r = this.sunRadius();
-		const rca = 12*r/5;
+		const rca = 13*r/5;
 		
+		const cx = 0;
 		let cy = 0;
 		// If view is SQUARE: Put all circles to vertical center.
 		// If view is PORTRAIT: Put all circles to vertical center.
@@ -157,6 +158,8 @@ export default class MenuView extends View {
 		if (this.REO.mode === 'LANDSCAPE') {
 			cy = (this.REO.height-18)*0.1;
 		}
+		
+		const group = document.createElementNS(svgNS, "g");
 		const ca = document.createElementNS(svgNS, "circle");
 		ca.setAttributeNS(null, 'cx', 0);
 		ca.setAttributeNS(null, 'cy', cy);
@@ -164,7 +167,40 @@ export default class MenuView extends View {
 		ca.style.fill = 'none';
 		ca.style.stroke = LIGHTGREY;
 		ca.style.strokeWidth = 1;
-		$('#space').append(ca);
+		group.appendChild(ca);
+		
+		
+		
+		
+		let ex = -13*r/5; let ey = cy-13*r/5;
+		let d = 'M'+cx+','+cy+' L'+ex+','+ey;
+		const lineA = document.createElementNS(svgNS, "path");
+		lineA.setAttributeNS(null, 'd', d);
+		lineA.style.stroke = LIGHTGREY;
+		lineA.style.strokeWidth = 1;
+		lineA.style.opacity = 0.75;
+		lineA.style.fill = 'none';
+		group.appendChild(lineA);
+		
+		
+		/*
+		if (type === 'USER') {
+			tx = ty = -12*r/5;
+		} else if (type === 'SOLAR') {
+			tx = 12*r/5;
+			ty = -12*r/5;
+		} else if (type === 'GRID') {
+			tx = -12*r/5;
+			ty = 12*r/5;
+		} else if (type === 'ENVIRONMENT') {
+			tx = ty = 12*r/5;
+		}
+		*/
+		
+		
+		
+		$('#space').append(group);
+		
 	}
 	
 	appendLogo() {

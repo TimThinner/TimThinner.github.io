@@ -535,9 +535,9 @@ export default class MenuView extends View {
 	appendLangButton(lang, bx, by, bw, bh, fontsize, selected) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const DARK_BLUE = '#1a488b';
-		//const LIGHT_GREEN = '#78c51b';
-		const DARK_GREEN = '#008245';
+		const DARK_BLUE = '#51b0ce';
+		const DARK_GREEN = '#1fac78';
+		
 		const language_label = {
 			'en':'English',
 			'fi':'Suomi'
@@ -573,7 +573,7 @@ export default class MenuView extends View {
 		txt.setAttribute('font-size',fontsize);
 		txt.setAttribute('dominant-baseline','middle');
 		txt.setAttribute('text-anchor','middle');
-		txt.setAttribute('fill','#00a');
+		txt.setAttribute('fill',DARK_BLUE);
 		const text_node = document.createTextNode(language_label[lang]);
 		txt.appendChild(text_node);
 		svg.appendChild(txt);

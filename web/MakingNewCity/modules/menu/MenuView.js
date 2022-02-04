@@ -287,13 +287,11 @@ export default class MenuView extends View {
 		
 		let cy = 0;
 		// If view is SQUARE: Put all circles to vertical center.
-		// If view is PORTRAIT: Move all circles 10% up from vertical center.
+		// If view is PORTRAIT: Put all circles to vertical center.
 		// If view is LANDSCAPE: Move all circles 10% down from vertical center.
 		if (this.REO.mode === 'LANDSCAPE') {
 			cy = (this.REO.height-18)*0.1;
-		}/* else if (this.REO.mode === 'PORTRAIT') {
-			cy = -(this.REO.height-18)*0.1;
-		}*/
+		}
 		
 		const r2 = r-r*0.1;
 		const r3 = r-r*0.3;
@@ -346,7 +344,6 @@ export default class MenuView extends View {
 		cb.style.strokeWidth = 0.5;
 		group.appendChild(cb);
 		
-		
 		if (type === 'CITY') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', icon_x);
@@ -355,69 +352,35 @@ export default class MenuView extends View {
 			img.setAttribute('height', icon_h);
 			img.setAttribute('href', './svg/city.svg');
 			group.appendChild(img);
+			
 		} else if (type === 'USER') {
+			if (this.USER_MODEL.isLoggedIn()) {
+				const img = document.createElementNS(svgNS, "image");
+				img.setAttribute('x', icon_x);
+				img.setAttribute('y', icon_y);
+				img.setAttribute('width', icon_w);
+				img.setAttribute('height', icon_h);
+				img.setAttribute('href', './svg/user.svg');
+				group.appendChild(img);
+			} else {
+				const img = document.createElementNS(svgNS, "image");
+				img.setAttribute('x', icon_x);
+				img.setAttribute('y', icon_y);
+				img.setAttribute('width', icon_w);
+				img.setAttribute('height', icon_h);
+				img.setAttribute('href', './svg/anon.svg');
+				group.appendChild(img);
+			}
+			
+		} else if (type === 'SOLAR') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', icon_x);
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './svg/anon.svg');
+			img.setAttribute('href', './svg/solarpanel.svg');
 			group.appendChild(img);
 		}
-		
-		/*
-		if (type === 'USER') {
-			if (this.USER_MODEL.isLoggedIn()) {
-				const img = document.createElementNS(svgNS, "image");
-				img.setAttribute('x', -wper2);
-				img.setAttribute('y', -hper2);
-				img.setAttribute('width', w);
-				img.setAttribute('height', h);
-				img.setAttribute('href', './svg/user.svg');
-				group.appendChild(img);
-			} else {
-				const img = document.createElementNS(svgNS, "image");
-				img.setAttribute('x', -wper2);
-				img.setAttribute('y', -hper2);
-				img.setAttribute('width', w);
-				img.setAttribute('height', h);
-				img.setAttribute('href', './svg/anon.svg');
-				group.appendChild(img);
-			}
-		} else if (type === 'ELECTRICITY') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -wper2);
-			img.setAttribute('y', -hper2);
-			img.setAttribute('width', w);
-			img.setAttribute('height', h);
-			img.setAttribute('href', './svg/electricity.svg');
-			group.appendChild(img);
-		} else if (type === 'HEATING') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -wper2);
-			img.setAttribute('y', -hper2);
-			img.setAttribute('width', w);
-			img.setAttribute('height', h);
-			img.setAttribute('href', './svg/radiator.svg');
-			group.appendChild(img);
-		} else if (type === 'ENVIRONMENT') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -wper2);
-			img.setAttribute('y', -hper2);
-			img.setAttribute('width', w);
-			img.setAttribute('height', h);
-			img.setAttribute('href', './svg/leaf.svg');
-			group.appendChild(img);
-		} else if (type === 'FEEDBACK') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -wper2);
-			img.setAttribute('y', -hper2);
-			img.setAttribute('width', w);
-			img.setAttribute('height', h);
-			img.setAttribute('href', './svg/feedback.svg');
-			group.appendChild(img);
-		}
-		*/
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
 		surface.setAttributeNS(null, 'cy', cy);
@@ -429,7 +392,6 @@ export default class MenuView extends View {
 		
 		// Select which pages open...
 		
-		
 		if (type === 'CITY') {
 			surface.addEventListener("click", function(){
 				console.log('HEY, CITY CLICKED!');
@@ -437,6 +399,10 @@ export default class MenuView extends View {
 		} else if (type === 'USER') {
 			surface.addEventListener("click", function(){
 				console.log('HEY, USER CLICKED!');
+			}, false);
+		} else if (type === 'SOLAR') {
+			surface.addEventListener("click", function(){
+				console.log('HEY, SOLAR CLICKED!');
 			}, false);
 		}
 		

@@ -657,6 +657,28 @@ export default class MenuView extends View {
 		});
 	}
 	
+	/*
+	640px-Flag_of_Europe.svg.png: 640 x 427
+	MC.png: 330 x 330 
+<rect x="478" y="278" width="104" height="104" style="stroke:#1fac78;stroke-width:2px;fill:none;" />
+<image id="project" class="active-district" x="480" y="280" width="100" height="100" xlink:href="MC.png" />
+<image x="610" y="280" width="149.88" height="100" xlink:href="640px-Flag_of_Europe.svg.png" />
+	*/
+	appendMCLinkAndEUFlag() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const img_dim = 40;
+		const img_x_pos = 10;
+		const img_y_pos = h*0.5-44; // MakingCity LINK image at the bottom left.
+		
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', img_x_pos);
+		img.setAttribute('y', img_y_pos);
+		img.setAttribute('width', img_dim);
+		img.setAttribute('height', img_dim);
+		img.setAttribute('href', './img/MC.png'); // Logo original dimensions are 330 x 330 pixels.
+		$('#space').append(img);
+	}
+	
 	renderALL() {
 		console.log('renderALL()!');
 		$(this.el).empty();
@@ -676,6 +698,7 @@ export default class MenuView extends View {
 		this.appendInfoButton();
 		*/
 		this.appendLanguageSelections();
+		this.appendMCLinkAndEUFlag();
 	}
 	
 	render() {

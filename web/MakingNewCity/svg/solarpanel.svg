@@ -3,17 +3,17 @@
 <style>
 .panel {
 	stroke-width: 1;
-	stroke: #333;
+	stroke: #51b0ce;
 	fill: #51b0ce;
 }
 </style>
 <!--<rect x="1" y="1" width="398" height="298" style="stroke:#51b0ce;stroke-width:1px;fill:none;" />-->
 <g transform="skewX(-20)">
-	<polyline points="100,200 100,20 380,20 380,200 100,200" stroke="#333" stroke-width="4" fill="none" />
+	<polyline points="100,200 100,20 380,20 380,200 100,200" stroke="#51b0ce" stroke-width="4" fill="none" />
 	<polyline class="panel" points="120,180 120,40 172.5,40 172.5,180 120,180" />
 	<polyline class="panel" points="182.5,180 182.5,40 235,40 235,180 182.5,180" />
 	<polyline class="panel" points="245,180 245,40 297.5,40 297.5,180 245,180" />
 	<polyline class="panel" points="307.5,180 307.5,40 360,40 360,180 307.5,180" />
 </g>
-<polyline points="200,200 140,280 260,280 200,200" stroke="#333" stroke-width="4" fill="none" />
+<polyline points="200,200 140,280 260,280 200,200" stroke="#51b0ce" stroke-width="4" fill="none" />
 </svg>

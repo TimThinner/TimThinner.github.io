@@ -380,7 +380,25 @@ export default class MenuView extends View {
 			img.setAttribute('height', icon_h);
 			img.setAttribute('href', './svg/solarpanel.svg');
 			group.appendChild(img);
+		} else if (type === 'GRID') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/grid.svg');
+			group.appendChild(img);
+		} else if (type === 'ENVIRONMENT') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/greenleaf.svg');
+			group.appendChild(img);
 		}
+		
+		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
 		surface.setAttributeNS(null, 'cy', cy);
@@ -396,45 +414,30 @@ export default class MenuView extends View {
 			surface.addEventListener("click", function(){
 				console.log('HEY, CITY CLICKED!');
 			}, false);
+			
 		} else if (type === 'USER') {
 			surface.addEventListener("click", function(){
 				console.log('HEY, USER CLICKED!');
 			}, false);
+			
 		} else if (type === 'SOLAR') {
 			surface.addEventListener("click", function(){
 				console.log('HEY, SOLAR CLICKED!');
 			}, false);
-		}
-		
-		/*
-		if (type === 'USER') {
-			if (this.USER_MODEL.isLoggedIn()) {
-				surface.addEventListener("click", function(){
-					self.models['MenuModel'].setSelected('USERPAGE');
-				}, false);
-			} else {
-				surface.addEventListener("click", function(){
-					self.models['MenuModel'].setSelected('userlogin');
-				}, false);
-			}
-		} else if (type === 'ELECTRICITY') {
+			
+		} else if (type === 'GRID') {
 			surface.addEventListener("click", function(){
-				self.models['MenuModel'].setSelected('A');
+				console.log('HEY, GRID CLICKED!');
 			}, false);
-		} else if (type === 'HEATING') {
-			surface.addEventListener("click", function(){
-				self.models['MenuModel'].setSelected('B');
-			}, false);
+			
 		} else if (type === 'ENVIRONMENT') {
 			surface.addEventListener("click", function(){
-				self.models['MenuModel'].setSelected('C');
-			}, false);
-		} else if (type === 'FEEDBACK') {
-			surface.addEventListener("click", function(){
-				self.models['MenuModel'].setSelected('D');
+				console.log('HEY, ENVIRONMENT CLICKED!');
 			}, false);
 		}
-		*/
+		
+		
+		
 		surface.addEventListener("mouseover", function(event){ 
 			border.style.fill = DARKGREEN;
 		}, false);

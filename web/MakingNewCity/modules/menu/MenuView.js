@@ -173,36 +173,47 @@ export default class MenuView extends View {
 		
 		const corner = Math.sin(45*Math.PI/180) * rca; // sin(45) * r;   45*PI/180
 		
-		
-		let ex = -corner; let ey = cy-corner;
+		let ex = -corner;
+		let ey = cy-corner;
 		let d = 'M'+cx+','+cy+' L'+ex+','+ey;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', d);
 		lineA.style.stroke = LIGHTGREY;
 		lineA.style.strokeWidth = 1;
-		lineA.style.opacity = 0.75;
 		lineA.style.fill = 'none';
 		group.appendChild(lineA);
 		
+		ex = corner;
+		ey = cy-corner;
+		d = 'M'+cx+','+cy+' L'+ex+','+ey;
+		const lineB = document.createElementNS(svgNS, "path");
+		lineB.setAttributeNS(null, 'd', d);
+		lineB.style.stroke = LIGHTGREY;
+		lineB.style.strokeWidth = 1;
+		lineB.style.fill = 'none';
+		group.appendChild(lineB);
 		
-		/*
-		if (type === 'USER') {
-			tx = ty = -12*r/5;
-		} else if (type === 'SOLAR') {
-			tx = 12*r/5;
-			ty = -12*r/5;
-		} else if (type === 'GRID') {
-			tx = -12*r/5;
-			ty = 12*r/5;
-		} else if (type === 'ENVIRONMENT') {
-			tx = ty = 12*r/5;
-		}
-		*/
+		ex = -corner;
+		ey = cy+corner;
+		d = 'M'+cx+','+cy+' L'+ex+','+ey;
+		const lineC = document.createElementNS(svgNS, "path");
+		lineC.setAttributeNS(null, 'd', d);
+		lineC.style.stroke = LIGHTGREY;
+		lineC.style.strokeWidth = 1;
+		lineC.style.fill = 'none';
+		group.appendChild(lineC);
 		
-		
+		ex = corner;
+		ey = cy+corner;
+		d = 'M'+cx+','+cy+' L'+ex+','+ey;
+		const lineD = document.createElementNS(svgNS, "path");
+		lineD.setAttributeNS(null, 'd', d);
+		lineD.style.stroke = LIGHTGREY;
+		lineD.style.strokeWidth = 1;
+		lineD.style.fill = 'none';
+		group.appendChild(lineD);
 		
 		$('#space').append(group);
-		
 	}
 	
 	appendLogo() {

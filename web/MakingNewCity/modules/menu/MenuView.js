@@ -148,7 +148,8 @@ export default class MenuView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const LIGHTGREY = '#ccc';
 		const r = this.sunRadius();
-		const rca = 13*r/5;
+		const a = b = 12*r/5;
+		const rca = Math.sqrt(a*a + b*b);
 		
 		const cx = 0;
 		let cy = 0;
@@ -169,10 +170,7 @@ export default class MenuView extends View {
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
-		
-		
-		
-		let ex = -13*r/5; let ey = cy-13*r/5;
+		let ex = -rca; let ey = cy-rca;
 		let d = 'M'+cx+','+cy+' L'+ex+','+ey;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', d);

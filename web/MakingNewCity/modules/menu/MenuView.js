@@ -525,6 +525,138 @@ export default class MenuView extends View {
 	}
 	
 	
+	setSelectedLanguage(lang) {
+		
+		this.LANGUAGE_MODEL.selected = lang;
+		// and redraw the whole view!
+		this.show();
+	}
+	
+	appendLangButton(lang, bx, by, bw, bh, fontsize, selected) {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const DARK_BLUE = '#1a488b';
+		//const LIGHT_GREEN = '#78c51b';
+		const DARK_GREEN = '#008245';
+		const language_label = {
+			'en':'English',
+			'fi':'Suomi'
+		};
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',bx);
+		svg.setAttribute('y',by);
+		svg.setAttributeNS(null,'width',bw);
+		svg.setAttributeNS(null,'height',bh);
+		
+		const rounding = bw*0.1; // 10% rounded corners.
+		const rect_bg = document.createElementNS(svgNS, 'rect');
+		rect_bg.setAttribute('x',1);
+		rect_bg.setAttribute('y',1);
+		rect_bg.setAttribute('width',bw-2);
+		rect_bg.setAttribute('height',bh-2);
+		rect_bg.setAttribute('rx',rounding);
+		if (selected) {
+			rect_bg.style.stroke = DARK_GREEN;
+			rect_bg.style.strokeWidth = 1;
+			rect_bg.style.fill = '#fff';
+		} else {
+			rect_bg.style.stroke = DARK_BLUE;
+			rect_bg.style.strokeWidth = 1;
+			rect_bg.style.fill = '#eee';
+		}
+		svg.appendChild(rect_bg);
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','50%');
+		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.setAttribute('font-size',fontsize);
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.setAttribute('fill','#00a');
+		const text_node = document.createTextNode(language_label[lang]);
+		txt.appendChild(text_node);
+		svg.appendChild(txt);
+		
+		const rect_fg = document.createElementNS(svgNS, 'rect');
+		rect_fg.setAttribute('x',0);
+		rect_fg.setAttribute('y',0);
+		rect_fg.setAttribute('width',bw);
+		rect_fg.setAttribute('height',bh);
+		rect_fg.style.stroke = '#000';
+		rect_fg.style.strokeWidth = 1;
+		rect_fg.style.fill = '#fff';
+		rect_fg.style.opacity = 0;
+		rect_fg.style.cursor = 'pointer';
+		rect_fg.addEventListener("click", function(){
+			if (!selected) {
+				self.setSelectedLanguage(lang);
+			}
+		}, false);
+		/*
+		rect_fg.addEventListener("mouseover", function(event){ 
+		}, false);
+		rect_fg.addEventListener("mouseout", function(event){ 
+		}, false);
+		*/
+		svg.appendChild(rect_fg);
+		$('#space').append(svg);
+	}
+	
+	appendLanguageSelections() {
+		const lang_array = this.LANGUAGE_MODEL.languages;
+		const sel = this.LANGUAGE_MODEL.selected;
+		
+		//this.languages = ['en','fi'];
+		//this.selected = 'fi';
+		
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height-18;
+		/*
+		Screen Sizes (in Materialize CSS)
+		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+		<= 600px 			> 600px 			> 992px 				> 1200px
+		*/
+		lang_array.forEach((lang,index)=>{
+			let selected = false;
+			if (lang === sel) {
+				selected = true;
+			}
+			let bw, bh, fontsize;
+			if (w <= 600) {
+				console.log('Mobile Device.');
+				fontsize = '14px';
+				bw = 82;
+				bh = 34;
+			} else if (w > 600 && w <= 992) {
+				console.log('Tablet Device.');
+				fontsize = '14px';
+				bw = 88;
+				bh = 36;
+			} else if (w > 992 && w <= 1200) {
+				console.log('Desktop Device.');
+				fontsize = '16px';
+				bw = 94;
+				bh = 38;
+			} else {
+				console.log('Large Desktop Device.');
+				fontsize = '18px';
+				bw = 100;
+				bh = 40;
+			}
+			const gap = 6;
+			// Adjusted to the bottom right:
+			const basew = w*0.5;
+			const baseh = h*0.5;
+			// or adjusted to the center:
+			//const basew = gap*0.5+bw;
+			//const baseh = h*0.5;
+			const bx = basew-(index+1)*bw-index*gap;
+			const by = baseh-bh;
+			this.appendLangButton(lang, bx, by, bw, bh, fontsize, selected);
+		});
+	}
+	
 	renderALL() {
 		console.log('renderALL()!');
 		$(this.el).empty();
@@ -542,8 +674,8 @@ export default class MenuView extends View {
 		this.appendSun('ENVIRONMENT');
 		/*
 		this.appendInfoButton();
-		this.appendLanguageSelections();
 		*/
+		this.appendLanguageSelections();
 	}
 	
 	render() {

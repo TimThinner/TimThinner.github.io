@@ -354,6 +354,14 @@ export default class MenuView extends View {
 			img.setAttribute('height', icon_h);
 			img.setAttribute('href', './svg/city.svg');
 			group.appendChild(img);
+		} else if (type === 'USER') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/anon.svg');
+			group.appendChild(img);
 		}
 		
 		/*
@@ -424,6 +432,10 @@ export default class MenuView extends View {
 		if (type === 'CITY') {
 			surface.addEventListener("click", function(){
 				console.log('HEY, CITY CLICKED!');
+			}, false);
+		} else if (type === 'USER') {
+			surface.addEventListener("click", function(){
+				console.log('HEY, USER CLICKED!');
 			}, false);
 		}
 		

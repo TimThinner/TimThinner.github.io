@@ -1,8 +1,12 @@
 import View from '../common/View.js';
 /*
-iFLEX Dark blue   #1a488b ( 26,  72, 139)
-iFLEX Dark green  #008245 (  0, 130,  69)
-iFLEX Light green #78c51b (120, 197,  27)
+MakingCity colors:
+
+const WHITE = '#fff';
+const BLUE = '#51b0ce';
+const LIGHTGREEN = '#73d3ae';
+const DARKGREEN = '#1fac78';
+const LIGHTGREY = '#777';
 */
 export default class MenuView extends View {
 	
@@ -142,6 +146,8 @@ export default class MenuView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
+		
+		const LIGHTGREY = '#777';
 		/*
 		Screen Sizes (in Materialize CSS)
 		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
@@ -205,7 +211,7 @@ export default class MenuView extends View {
 		title.setAttribute('font-size',fontsize);
 		title.setAttribute('dominant-baseline','middle');
 		title.setAttribute('text-anchor','middle');
-		title.setAttribute('fill','#555');
+		title.setAttribute('fill',LIGHTGREY);
 		title.style.opacity = 0.75;
 		title.appendChild(document.createTextNode('Making City'));
 		svg.appendChild(title);
@@ -217,7 +223,7 @@ export default class MenuView extends View {
 		descr.setAttribute('font-size',d_fontsize);
 		descr.setAttribute('dominant-baseline','middle');
 		descr.setAttribute('text-anchor','middle');
-		descr.setAttribute('fill','#555');
+		descr.setAttribute('fill',LIGHTGREY);
 		descr.style.opacity = 0.75;
 		descr.appendChild(document.createTextNode('Positive Energy Districts'));
 		svg.appendChild(descr);
@@ -244,7 +250,7 @@ export default class MenuView extends View {
 		const da = 'M0,'+laposY+' H'+laposX;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', da);
-		lineA.style.stroke = '#777';
+		lineA.style.stroke = LIGHTGREY;
 		lineA.style.strokeWidth = 2;
 		lineA.style.opacity = 0.75;
 		lineA.style.fill = 'none';
@@ -255,7 +261,7 @@ export default class MenuView extends View {
 		const db = 'M'+lbposX+','+lbposY+' H'+w;
 		const lineB = document.createElementNS(svgNS, "path");
 		lineB.setAttributeNS(null, 'd', db);
-		lineB.style.stroke = '#777';
+		lineB.style.stroke = LIGHTGREY;
 		lineB.style.strokeWidth = 2;
 		lineB.style.opacity = 0.75;
 		lineB.style.fill = 'none';
@@ -273,9 +279,9 @@ export default class MenuView extends View {
 			r = r*0.8; // 80%
 		}
 		const WHITE = '#fff';
-		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
-		const GREEN = '#0f0';
-		
+		const BLUE = '#51b0ce';
+		const LIGHTGREEN = '#73d3ae';
+		const DARKGREEN = '#1fac78';
 		
 		let cy = 0;
 		// If view is SQUARE: Put all circles to vertical center.
@@ -315,7 +321,7 @@ export default class MenuView extends View {
 		border.setAttributeNS(null, 'r', r);
 		border.style.fill = WHITE;
 		border.style.fillOpacity = 0.5;
-		border.style.stroke = DARK_BLUE;
+		border.style.stroke = LIGHTGREEN;
 		border.style.strokeWidth = 2;
 		group.appendChild(border);
 		
@@ -325,7 +331,7 @@ export default class MenuView extends View {
 		ca.setAttributeNS(null, 'r', r2);
 		ca.style.fill = WHITE;
 		ca.style.fillOpacity = 0.5;
-		ca.style.stroke = DARK_BLUE;
+		ca.style.stroke = LIGHTGREEN;
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
@@ -335,7 +341,7 @@ export default class MenuView extends View {
 		cb.setAttribute('r', r3);
 		cb.style.fill = WHITE;
 		cb.style.fillOpacity = 1;
-		cb.style.stroke = DARK_BLUE;
+		cb.style.stroke = LIGHTGREEN;
 		cb.style.strokeWidth = 0.5;
 		group.appendChild(cb);
 		
@@ -407,7 +413,7 @@ export default class MenuView extends View {
 		surface.setAttributeNS(null, 'cx', 0);
 		surface.setAttributeNS(null, 'cy', cy);
 		surface.setAttributeNS(null, 'r', r);
-		surface.style.stroke = DARK_BLUE;
+		surface.style.stroke = LIGHTGREEN;
 		surface.style.strokeWidth = 1;
 		surface.style.fillOpacity = 0;
 		surface.style.cursor = 'pointer';
@@ -451,7 +457,7 @@ export default class MenuView extends View {
 		}
 		*/
 		surface.addEventListener("mouseover", function(event){ 
-			border.style.fill = GREEN;
+			border.style.fill = DARKGREEN;
 		}, false);
 		surface.addEventListener("mouseout", function(event){ 
 			border.style.fill = WHITE;

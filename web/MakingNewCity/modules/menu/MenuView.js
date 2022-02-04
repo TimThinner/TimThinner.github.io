@@ -148,7 +148,7 @@ export default class MenuView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const LIGHTGREY = '#ccc';
 		const r = this.sunRadius();
-		const a = 12*r/5;
+		const a = 11*r/5;
 		const b = a;
 		const rca = Math.sqrt(a*a + b*b);
 		

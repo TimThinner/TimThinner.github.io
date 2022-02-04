@@ -272,11 +272,13 @@ export default class MenuView extends View {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
-		
+		let icon_w = 0;
 		if (type === 'CITY') {
 			r = r*1.2; // 120%
+			icon_w = r*2; // Make image bigger.
 		} else {
 			r = r*0.8; // 80%
+			icon_w = r;
 		}
 		const WHITE = '#fff';
 		const BLUE = '#51b0ce';
@@ -295,7 +297,6 @@ export default class MenuView extends View {
 		
 		const r2 = r-r*0.1;
 		const r3 = r-r*0.3;
-		const icon_w = r*2; // Make images as big as possible.
 		const icon_x = -icon_w*0.5;
 		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		const icon_y = cy - icon_h*0.5;

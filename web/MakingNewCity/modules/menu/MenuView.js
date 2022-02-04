@@ -672,9 +672,9 @@ export default class MenuView extends View {
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
 		
-		const img_dim = 42;
+		const img_dim = 44;
 		const img_x_pos = -w*0.5+20;
-		const img_y_pos = h*0.5-42; // MakingCity LINK image at the bottom left.
+		const img_y_pos = h*0.5-46; // MakingCity LINK image at the bottom left.
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -694,7 +694,23 @@ export default class MenuView extends View {
 		img.setAttribute('width', img_dim);
 		img.setAttribute('height', img_dim);
 		img.setAttribute('href', './img/MC.png'); // Logo original dimensions are 330 x 330 pixels.
+		img.addEventListener("click", function(){
+			window.open('http://makingcity.eu/', '_blank');
+		}, false);
 		group.appendChild(img);
+		
+		// Flag original dimensions are 640 x 427 pixels.
+		const flag_w = 66;
+		const flag_h = 44;
+		const flag_x_pos = -w*0.5+74;
+		const flag_y_pos = h*0.5-46;
+		const flag = document.createElementNS(svgNS, "image");
+		flag.setAttribute('x', flag_x_pos);
+		flag.setAttribute('y', flag_y_pos);
+		flag.setAttribute('width', flag_w);
+		flag.setAttribute('height', flag_h);
+		flag.setAttribute('href', './img/640px-Flag_of_Europe.svg.png');
+		group.appendChild(flag);
 		
 		$('#space').append(group);
 	}

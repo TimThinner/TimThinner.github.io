@@ -701,8 +701,8 @@ export default class MenuView extends View {
 		group.appendChild(img);
 		
 		// Flag original dimensions are 640 x 427 pixels.
-		const flag_w = 75;
-		const flag_h = 50;
+		const flag_w = 66;
+		const flag_h = 44;
 		const flag_x_pos = -w*0.5+80;
 		const flag_y_pos = h*0.5-52;
 		const flag = document.createElementNS(svgNS, "image");

@@ -142,6 +142,31 @@ export default class MenuView extends View {
 		$(this.el).append(svg);
 	}
 	
+	appendGreyLines() {
+		
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const LIGHTGREY = '#777';
+		const r = this.sunRadius();
+		const rca = 12*r/5;
+		
+		let cy = 0;
+		// If view is SQUARE: Put all circles to vertical center.
+		// If view is PORTRAIT: Put all circles to vertical center.
+		// If view is LANDSCAPE: Move all circles 10% down from vertical center.
+		if (this.REO.mode === 'LANDSCAPE') {
+			cy = (this.REO.height-18)*0.1;
+		}
+		const ca = document.createElementNS(svgNS, "circle");
+		ca.setAttributeNS(null, 'cx', 0);
+		ca.setAttributeNS(null, 'cy', cy);
+		ca.setAttributeNS(null, 'r', rca);
+		ca.style.fill = 'none';
+		ca.style.stroke = LIGHTGREY;
+		ca.style.strokeWidth = 1;
+		$('#space').append(ca);
+	}
+	
 	appendLogo() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
@@ -456,6 +481,7 @@ export default class MenuView extends View {
 		$(this.el).empty();
 		
 		this.createSpace();
+		this.appendGreyLines();
 		this.appendLogo();
 		
 		//this.appendBuilding();

@@ -666,10 +666,27 @@ export default class MenuView extends View {
 	*/
 	appendMCLinkAndEUFlag() {
 		const svgNS = 'http://www.w3.org/2000/svg';
+		const DARK_BLUE = '#51b0ce';
+		//const DARK_GREEN = '#1fac78';
+		
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height-18;
-		const img_dim = 40;
-		const img_x_pos = 10;
-		const img_y_pos = h*0.5-40; // MakingCity LINK image at the bottom left.
+		
+		const img_dim = 42;
+		const img_x_pos = -w*0.5+20;
+		const img_y_pos = h*0.5-42; // MakingCity LINK image at the bottom left.
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const rect = document.createElementNS(svgNS, 'rect');
+		rect.setAttribute('x',img_x_pos-1);
+		rect.setAttribute('y',img_y_pos-1);
+		rect.setAttribute('width',img_dim+2);
+		rect.setAttribute('height',img_dim+2);
+		rect.style.stroke = DARK_BLUE;
+		rect.style.strokeWidth = 1;
+		rect.style.fill = 'none';
+		group.appendChild(rect);
 		
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', img_x_pos);
@@ -677,7 +694,9 @@ export default class MenuView extends View {
 		img.setAttribute('width', img_dim);
 		img.setAttribute('height', img_dim);
 		img.setAttribute('href', './img/MC.png'); // Logo original dimensions are 330 x 330 pixels.
-		$('#space').append(img);
+		group.appendChild(img);
+		
+		$('#space').append(group);
 	}
 	
 	renderALL() {

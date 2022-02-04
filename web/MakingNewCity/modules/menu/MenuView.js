@@ -170,12 +170,15 @@ export default class MenuView extends View {
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
-		let ex = -rca; let ey = cy-rca;
+		const corner = Math.sin(45*Math.PI/180) * rca; // sin(45) * r;   45*PI/180
+		
+		
+		let ex = -corner; let ey = cy-corner;
 		let d = 'M'+cx+','+cy+' L'+ex+','+ey;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', d);
-		lineA.style.stroke = LIGHTGREY;
-		lineA.style.strokeWidth = 1;
+		lineA.style.stroke = '#f00';//LIGHTGREY;
+		lineA.style.strokeWidth = 3;
 		lineA.style.opacity = 0.75;
 		lineA.style.fill = 'none';
 		group.appendChild(lineA);

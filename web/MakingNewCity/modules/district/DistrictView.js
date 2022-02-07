@@ -157,7 +157,9 @@ export default class DistrictView extends View {
 		cb.style.strokeWidth = 1;
 		group.appendChild(cb);
 		
-		const d='M 0,-'+r1+' A '+r+','+r+' 0 0,1 0,'+r1+' A '+r+','+r+' 0 0,1 '+r1+','+r1;
+		const ycy = r1+cy;
+		
+		const d='M 0,-'+ycy+' A '+r+','+r+' 0 0,1 0,'+ycy+' A '+r+','+r+' 0 0,1 0,-'+ycy;
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
 		path.style.opacity = 0.4;

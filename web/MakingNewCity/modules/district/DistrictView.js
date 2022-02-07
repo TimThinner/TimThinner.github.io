@@ -254,6 +254,8 @@ export default class DistrictView extends View {
 		const r2 = r+20;
 		const r1 = r+10;
 		
+		console.log(['CENTER r=',r]);
+		
 		const cx = 0;
 		let cy = 0;
 		// If view is SQUARE: Put all circles to vertical center.

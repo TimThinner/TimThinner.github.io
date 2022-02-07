@@ -100,7 +100,7 @@ Changes to color:
 	</path>-->
 	
 	<path d="M 870,390 A 112,102 0 0,1 870,670 A 112,102 0 0,1 870,390" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />
-	<path d="M 870,410 A 108,98 0 0,1 870,650 A 108,98 0 0,1 870,410" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />-->
+	<path d="M 870,410 A 108,98 0 0,1 870,650 A 108,98 0 0,1 870,410" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />
 	
 	<path d="M 870,400 A 110,100 0 0,1 870,660 A 110,100 0 0,1 870,400"
 		style="opacity:0.4;stroke:#cf0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">

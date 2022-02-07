@@ -123,9 +123,8 @@ export default class DistrictView extends View {
 	appendCenter() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
-		const rx2 = 2*r;
-		//const b = a;
-		//const rca = Math.sqrt(a*a + b*b);
+		const r2 = r+20;
+		const r1 = r+10;
 		
 		const cx = 0;
 		let cy = 0;
@@ -141,8 +140,9 @@ export default class DistrictView extends View {
 		const ca = document.createElementNS(svgNS, "circle");
 		ca.setAttributeNS(null, 'cx', cx);
 		ca.setAttributeNS(null, 'cy', cy);
-		ca.setAttributeNS(null, 'r', rx2);
+		ca.setAttributeNS(null, 'r', r2);
 		ca.style.fill = 'none';
+		ca.style.opacity = 0.75;
 		ca.style.stroke = '#fff'
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
@@ -152,10 +152,39 @@ export default class DistrictView extends View {
 		cb.setAttributeNS(null, 'cy', cy);
 		cb.setAttributeNS(null, 'r', r);
 		cb.style.fill = 'none';
-		cb.style.stroke = '#ff0'
+		cb.style.opacity = 0.75;
+		cb.style.stroke = '#fff';
 		cb.style.strokeWidth = 1;
 		group.appendChild(cb);
 		
+		const d='M 0,-'+r1+' A '+r+','+r+' 0 0,1 0,'+r1+' A '+r+','+r+' 0 0,1 '+r1+','+r1;
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttributeNS(null, 'd', d);
+		path.style.opacity = 0.4;
+		path.style.stroke = '#cf0'
+		path.style.strokeWidth = 10;
+		path.style.strokeDasharray = '30 10';
+		path.style.fill = 'none';
+		
+		const animate = document.createElementNS(svgNS, "animate");
+		animate.setAttributeNS(null, 'attributeName' 'stroke-dashoffset');
+		animate.setAttributeNS(null, 'from' '40');
+		animate.setAttributeNS(null, 'to' '0');
+		animate.setAttributeNS(null, 'dur' '1s');
+		animate.setAttributeNS(null, 'repeatCount' 'indefinite');
+		//<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+		
+		path.appendChild(animate);
+		group.appendChild(path);
+		/*
+	<path d="M 870,390 A 112,102 0 0,1 870,670 A 112,102 0 0,1 870,390" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />
+	<path d="M 870,410 A 108,98 0 0,1 870,650 A 108,98 0 0,1 870,410" style="opacity:0.75;stroke:#fff;stroke-width:1;stroke-dasharray:none;fill:none;" />
+	
+	<path d="M 870,400 A 110,100 0 0,1 870,660 A 110,100 0 0,1 870,400"
+		style="opacity:0.4;stroke:#cf0;stroke-width:10px;stroke-dasharray:30px 10px;fill:none;">
+		<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
+	</path>
+		*/
 		$('#space').append(group);
 	}
 	
@@ -187,11 +216,10 @@ export default class DistrictView extends View {
 		poly.style.fillOpacity = 0.05;
 		poly.style.cursor = 'pointer';
 		
-		let tx = 0;
-		let ty = cy;
+		let tx, ty;
 		if (id === 'hex-a') {
 			tx = 0;
-			ty = -2 * r;
+			ty = -2 * r + cy;
 		} else if (id === 'hex-b') {
 			tx = -Math.sin(60*Math.PI/180) * 2 * r;
 			ty = -Math.cos(60*Math.PI/180) * 2 * r + cy;

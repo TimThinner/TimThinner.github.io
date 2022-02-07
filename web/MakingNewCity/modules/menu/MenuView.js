@@ -284,6 +284,10 @@ export default class MenuView extends View {
 		*/
 		const d_fontsize = fontsize/3;
 		
+		
+		const scrollbarWidth = document.body.offsetWidth - document.body.clientWidth;
+		
+		
 		const title = document.createElementNS(svgNS, 'text');
 		title.id = 'logo-title';
 		title.setAttribute('x','50%');
@@ -306,7 +310,7 @@ export default class MenuView extends View {
 		descr.setAttribute('text-anchor','middle');
 		descr.setAttribute('fill',LIGHTGREY);
 		descr.style.opacity = 0.75;
-		descr.appendChild(document.createTextNode('Positive Energy Districts'));
+		descr.appendChild(document.createTextNode('PED '+scrollbarWidth); //('Positive Energy Districts'));
 		svg.appendChild(descr);
 		
 		$('#space').append(svg);
@@ -314,7 +318,7 @@ export default class MenuView extends View {
 		const textElement = document.querySelector('#logo-title');
 		const containerElement = document.querySelector('#logo-svg');
 		const bboxGroup = textElement.getBBox();
-		console.log(['HIPHEI MONDAY  A! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
+		console.log(['HIPHEI MONDAY BEE! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 		/*
 		const rect_foo = document.createElementNS(svgNS, 'rect');
 		rect_foo.setAttribute('x',bboxGroup.x);

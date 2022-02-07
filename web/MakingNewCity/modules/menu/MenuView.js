@@ -308,7 +308,7 @@ export default class MenuView extends View {
 		const textElement = document.querySelector('#logo-title');
 		const containerElement = document.querySelector('#logo-svg');
 		const bboxGroup = textElement.getBBox();
-		console.log(['HIPHEI MONDAY BEE! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
+		//console.log(['HIPHEI MONDAY BEE! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 		/*
 		const rect_foo = document.createElementNS(svgNS, 'rect');
 		rect_foo.setAttribute('x',bboxGroup.x);

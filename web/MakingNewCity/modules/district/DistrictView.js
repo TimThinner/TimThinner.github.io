@@ -11,6 +11,8 @@ export default class DistrictView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		this.rendered = false;
+		
+		console.log('DistrictView constructor v1');
 	}
 	
 	show() {
@@ -96,13 +98,64 @@ export default class DistrictView extends View {
 		
 		$(this.el).append(svg);
 	}
-	
-	
+	/*
+	.hex {
+	cursor: pointer;
+	fill-opacity: 0.05;
+	stroke: #fff;
+	stroke-width: 1;
+	fill: #012265;
+}*/
+
+	appendPolygon(id) {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius();
+		
+		let cy = 0;
+		// If view is SQUARE: Put all circles to vertical center.
+		// If view is PORTRAIT: Put all circles to vertical center.
+		// If view is LANDSCAPE: Move all circles 10% down from vertical center.
+		if (this.REO.mode === 'LANDSCAPE') {
+			cy = this.REO.height*0.1;
+		}
+		const p = '0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50';
+		const poly = document.createElementNS(svgNS, "polygon");
+		poly.setAttributeNS(null, 'points', p);
+		poly.style.stroke = '#fff';
+		poly.style.fill = '#012265';
+		poly.style.strokeWidth = 1;
+		poly.style.fillOpacity = 0.05;
+		poly.style.cursor = 'pointer';
+		poly.id = id;
+		$('#space').append(poly);
+		
+		/*
+		<polygon class="hex" id="hex-a" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,290) scale(1.3) rotate(90)" />
+		<polygon class="hex" id="hex-b" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,410) scale(1.3) rotate(90)" />
+		<polygon class="hex" id="hex-c" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,655) scale(1.3) rotate(90)" />
+		<polygon class="hex" id="hex-f" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,770) scale(1.3) rotate(90)" />
+		<polygon class="hex" id="hex-d" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(660,655) scale(1.3) rotate(90)" />
+		<polygon class="hex" id="hex-e" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(660,410) scale(1.3) rotate(90)" />
+		*/
+	}
 	
 	renderALL() {
 		console.log('renderALL()!');
 		$(this.el).empty();
 		this.createSpace();
+		
+		this.appendPolygon("hex-a");
+		/*
+		<polygon class="hex" id="hex-a" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,290) scale(1.3) rotate(90)" />
+		<polygon class="hex" id="hex-b" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,410) scale(1.3) rotate(90)" />
+		<polygon class="hex" id="hex-c" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,655) scale(1.3) rotate(90)" />
+		<polygon class="hex" id="hex-f" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,770) scale(1.3) rotate(90)" />
+		<polygon class="hex" id="hex-d" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(660,655) scale(1.3) rotate(90)" />
+		<polygon class="hex" id="hex-e" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(660,410) scale(1.3) rotate(90)" />
+		*/
+	}
+		
 		
 		
 	}

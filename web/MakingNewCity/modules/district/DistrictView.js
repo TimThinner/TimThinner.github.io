@@ -251,9 +251,9 @@ export default class DistrictView extends View {
 	appendCenter() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
-		const r2 = r + r*0.2;
-		const r1 = r + r*0.1;
-		const stroke_w = r2 - r;
+		const r2 = r + r*0.2; // outer circle
+		const r1 = r + r*0.1; // inner circle
+		const stroke_w = (r2 - r)*0.5; // animated "flow" width = half of "pipe" diameter.
 		
 		console.log(['CENTER r=',r,' r2=',r2,' r1=',r1,' stroke_w=',stroke_w]);
 		

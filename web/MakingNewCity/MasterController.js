@@ -3,6 +3,7 @@ import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import LanguageModel from './modules/common/LanguageModel.js';
 import UserModel from './modules/user/UserModel.js';
 import MenuController from './modules/menu/MenuController.js';
+import DistrictController from './modules/district/DistrictController.js';
 
 class MasterController {
 	
@@ -39,6 +40,8 @@ class MasterController {
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
 		
+		this.controllers['district'] = new DistrictController({name:'district', master:this, el:'#content', visible:false});
+		this.controllers['district'].init();
 		
 		console.log('ALL Controllers are now created!');
 	}

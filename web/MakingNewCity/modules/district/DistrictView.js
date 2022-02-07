@@ -155,10 +155,6 @@ export default class DistrictView extends View {
 		<polygon class="hex" id="hex-e" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(660,410) scale(1.3) rotate(90)" />
 		*/
 	}
-		
-		
-		
-	}
 	
 	render() {
 		this.renderALL();

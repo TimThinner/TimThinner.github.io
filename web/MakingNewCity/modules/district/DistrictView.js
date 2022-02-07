@@ -164,6 +164,14 @@ export default class DistrictView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
 		
+		let cy = 0;
+		// If view is SQUARE: Put all circles to vertical center.
+		// If view is PORTRAIT: Put all circles to vertical center.
+		// If view is LANDSCAPE: Move all circles 10% down from vertical center.
+		if (this.REO.mode === 'LANDSCAPE') {
+			cy = this.REO.height*0.1;
+		}
+		
 		// sin(60) = 0,866
 		// cos(60) = 0,5
 		const xx = Math.sin(60*Math.PI/180) * r;
@@ -180,29 +188,29 @@ export default class DistrictView extends View {
 		poly.style.cursor = 'pointer';
 		
 		let tx = 0;
-		let ty = 0;
+		let ty = cy;
 		if (id === 'hex-a') {
 			tx = 0;
 			ty = -2 * r;
 		} else if (id === 'hex-b') {
 			tx = -Math.sin(60*Math.PI/180) * 2 * r;
-			ty = -Math.cos(60*Math.PI/180) * 2 * r;
+			ty = -Math.cos(60*Math.PI/180) * 2 * r + cy;
 			
 		} else if (id === 'hex-c') {
 			tx = -Math.sin(60*Math.PI/180) * 2 * r;
-			ty = Math.cos(60*Math.PI/180) * 2 * r;
+			ty = Math.cos(60*Math.PI/180) * 2 * r + cy;
 			
 		} else if (id === 'hex-d') {
 			tx = 0;
-			ty = 2 * r;
+			ty = 2 * r + cy;
 			
 		} else if (id === 'hex-e') {
 			tx = Math.sin(60*Math.PI/180) * 2 * r;
-			ty = Math.cos(60*Math.PI/180) * 2 * r;
+			ty = Math.cos(60*Math.PI/180) * 2 * r + cy;
 			
 		} else if (id === 'hex-f') {
 			tx = Math.sin(60*Math.PI/180) * 2 * r;
-			ty = -Math.cos(60*Math.PI/180) * 2 * r;
+			ty = -Math.cos(60*Math.PI/180) * 2 * r + cy;
 		}
 		const transformation = 'translate('+tx+','+ty+') rotate(90)';
 		poly.setAttribute('transform', transformation);

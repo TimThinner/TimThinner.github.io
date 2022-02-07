@@ -194,7 +194,7 @@ export default class DistrictView extends View {
 			
 		} else if (id === 'hex-d') {
 			tx = 0;
-			ty = Math.cos(60*Math.PI/180) * 2 * r;
+			ty = 2 * r;
 			
 		} else if (id === 'hex-e') {
 			tx = Math.sin(60*Math.PI/180) * 2 * r;

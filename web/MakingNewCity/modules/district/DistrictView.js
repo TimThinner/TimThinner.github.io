@@ -44,10 +44,7 @@ export default class DistrictView extends View {
 		//$('html').css('background-color','#012265');
 		//$('body').css('background-color','#012265');
 		//$('.container').css('background-color','#012265');
-		
-		//const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		//const h = this.REO.height-18;
-		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
+		const w = this.REO.width;
 		const h = this.REO.height;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;

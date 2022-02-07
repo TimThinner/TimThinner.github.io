@@ -58,9 +58,7 @@ export default class MenuView extends View {
 	*/
 	
 	sunRadius() {
-		//const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		//const h = this.REO.height-18;
-		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
+		const w = this.REO.width;
 		const h = this.REO.height;
 		const wp2 = w*0.125;
 		const hp2 = h*0.125;
@@ -86,9 +84,7 @@ export default class MenuView extends View {
 		//$('body').css('background-color','#ddd');
 		//$('.container').css('background-color','#ddd');
 		
-		//const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		//const h = this.REO.height-18;
-		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
+		const w = this.REO.width;
 		const h = this.REO.height;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
@@ -162,7 +158,6 @@ export default class MenuView extends View {
 		// If view is PORTRAIT: Put all circles to vertical center.
 		// If view is LANDSCAPE: Move all circles 10% down from vertical center.
 		if (this.REO.mode === 'LANDSCAPE') {
-			//cy = (this.REO.height-18)*0.1;
 			cy = this.REO.height*0.1;
 		}
 		
@@ -223,9 +218,7 @@ export default class MenuView extends View {
 	
 	appendLogo() {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		//const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		//const h = this.REO.height-18;
-		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
+		const w = this.REO.width;
 		const h = this.REO.height;
 		
 		const LIGHTGREY = '#777';
@@ -285,9 +278,6 @@ export default class MenuView extends View {
 		const d_fontsize = fontsize/3;
 		
 		
-		const scrollbarWidth = document.body.offsetWidth - document.body.clientWidth;
-		
-		
 		const title = document.createElementNS(svgNS, 'text');
 		title.id = 'logo-title';
 		title.setAttribute('x','50%');
@@ -310,7 +300,7 @@ export default class MenuView extends View {
 		descr.setAttribute('text-anchor','middle');
 		descr.setAttribute('fill',LIGHTGREY);
 		descr.style.opacity = 0.75;
-		descr.appendChild(document.createTextNode('PED '+scrollbarWidth)); //('Positive Energy Districts'));
+		descr.appendChild(document.createTextNode('Positive Energy Districts'));
 		svg.appendChild(descr);
 		
 		$('#space').append(svg);
@@ -375,7 +365,6 @@ export default class MenuView extends View {
 		// If view is PORTRAIT: Put all circles to vertical center.
 		// If view is LANDSCAPE: Move all circles 10% down from vertical center.
 		if (this.REO.mode === 'LANDSCAPE') {
-			//cy = (this.REO.height-18)*0.1;
 			cy = this.REO.height*0.1;
 		}
 		
@@ -622,9 +611,7 @@ export default class MenuView extends View {
 		//this.languages = ['en','fi'];
 		//this.selected = 'fi';
 		
-		//const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		//const h = this.REO.height-18;
-		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
+		const w = this.REO.width;
 		const h = this.REO.height;
 		/*
 		Screen Sizes (in Materialize CSS)
@@ -683,9 +670,7 @@ export default class MenuView extends View {
 		const DARK_BLUE = '#51b0ce';
 		//const DARK_GREEN = '#1fac78';
 		
-		//const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		//const h = this.REO.height-18;
-		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
+		const w = this.REO.width;
 		const h = this.REO.height;
 		
 		const img_dim = 50;

@@ -6,14 +6,15 @@ export default class ResizeEventObserver extends EventObserver {
 		super();
 		this.resize_handler_set = false;
 		this.resizeTimeout = null;
+		this.SCROLLBARWIDTH = 16;
 		this.mode = undefined;
 		this.width = undefined;
 		this.height = undefined;
 	}
 	
 	resize() {
-		this.width = $(window).width();
-		this.height = $(window).height();
+		this.width = $(window).width()-this.SCROLLBARWIDTH;
+		this.height = $(window).height()-this.SCROLLBARWIDTH;
 		
 		// New implementation:
 		// Notify ALWAYS, but set mode also because there are views which need to know 

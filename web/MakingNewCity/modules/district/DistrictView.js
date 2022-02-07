@@ -187,11 +187,26 @@ export default class DistrictView extends View {
 		} else if (id === 'hex-b') {
 			tx = -Math.sin(60*Math.PI/180) * 2 * r;
 			ty = -Math.cos(60*Math.PI/180) * 2 * r;
+			
+		} else if (id === 'hex-c') {
+			tx = -Math.sin(60*Math.PI/180) * 2 * r;
+			ty = Math.cos(60*Math.PI/180) * 2 * r;
+			
+		} else if (id === 'hex-d') {
+			tx = 0;
+			ty = Math.cos(60*Math.PI/180) * 2 * r;
+			
+		} else if (id === 'hex-e') {
+			tx = Math.sin(60*Math.PI/180) * 2 * r;
+			ty = Math.cos(60*Math.PI/180) * 2 * r;
+			
+		} else if (id === 'hex-f') {
+			tx = Math.sin(60*Math.PI/180) * 2 * r;
+			ty = -Math.cos(60*Math.PI/180) * 2 * r;
 		}
 		const transformation = 'translate('+tx+','+ty+') rotate(90)';
 		poly.setAttribute('transform', transformation);
 		$('#space').append(poly);
-		
 		/*
 		<polygon class="hex" id="hex-a" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,290) scale(1.3) rotate(90)" />
 		<polygon class="hex" id="hex-b" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,410) scale(1.3) rotate(90)" />
@@ -209,6 +224,10 @@ export default class DistrictView extends View {
 		this.appendCenter();
 		this.appendPolygon("hex-a");
 		this.appendPolygon("hex-b");
+		this.appendPolygon("hex-c");
+		this.appendPolygon("hex-d");
+		this.appendPolygon("hex-e");
+		this.appendPolygon("hex-f");
 		/*
 		<polygon class="hex" id="hex-a" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,290) scale(1.3) rotate(90)" />
 		<polygon class="hex" id="hex-b" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,410) scale(1.3) rotate(90)" />

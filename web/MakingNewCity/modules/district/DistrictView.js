@@ -167,11 +167,11 @@ export default class DistrictView extends View {
 		path.style.fill = 'none';
 		
 		const animate = document.createElementNS(svgNS, "animate");
-		animate.setAttributeNS(null, 'attributeName' 'stroke-dashoffset');
-		animate.setAttributeNS(null, 'from' '40');
-		animate.setAttributeNS(null, 'to' '0');
-		animate.setAttributeNS(null, 'dur' '1s');
-		animate.setAttributeNS(null, 'repeatCount' 'indefinite');
+		animate.setAttributeNS(null, 'attributeName', 'stroke-dashoffset');
+		animate.setAttributeNS(null, 'from', '40');
+		animate.setAttributeNS(null, 'to', '0');
+		animate.setAttributeNS(null, 'dur', '1s');
+		animate.setAttributeNS(null, 'repeatCount', 'indefinite');
 		//<animate attributeName="stroke-dashoffset" from="40" to="0" dur="1s" repeatCount="indefinite" />
 		
 		path.appendChild(animate);

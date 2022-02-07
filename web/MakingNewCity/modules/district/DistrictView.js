@@ -42,6 +42,19 @@ export default class DistrictView extends View {
 		}
 	}
 	
+	/*
+	The radius of circle is 12,5% of H or W (smaller dimension).
+	=> circle diameter is 25% of H or W.
+	*/
+	sunRadius() {
+		const w = this.REO.width;
+		const h = this.REO.height;
+		const wp2 = w*0.125;
+		const hp2 = h*0.125;
+		const r = Math.min(wp2, hp2); // r = 0,125 x W or H, whichever is smallest (d=0,25 x W or H)
+		return r;
+	}
+	
 	createSpace() {
 		//$('html').css('background-color','#012265');
 		//$('body').css('background-color','#012265');

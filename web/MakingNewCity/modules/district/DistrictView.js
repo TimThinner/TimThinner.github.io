@@ -251,10 +251,11 @@ export default class DistrictView extends View {
 	appendCenter() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
-		const r2 = r+20;
-		const r1 = r+10;
+		const r2 = r + r*0.2;
+		const r1 = r + r*0.1;
+		const stroke_w = r2 - r;
 		
-		console.log(['CENTER r=',r]);
+		console.log(['CENTER r=',r,' r2=',r2,' r1=',r1,' stroke_w=',stroke_w]);
 		
 		const cx = 0;
 		let cy = 0;
@@ -295,7 +296,7 @@ export default class DistrictView extends View {
 		path.setAttributeNS(null, 'd', d);
 		path.style.opacity = 0.4;
 		path.style.stroke = '#cf0'
-		path.style.strokeWidth = 10;
+		path.style.strokeWidth = stroke_w;
 		path.style.strokeDasharray = '30 10';
 		path.style.fill = 'none';
 		

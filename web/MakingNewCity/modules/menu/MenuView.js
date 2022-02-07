@@ -146,7 +146,7 @@ export default class MenuView extends View {
 		
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const LIGHTGREY = '#ccc';
+		const STROKECOLOR = '#ccc';
 		const r = this.sunRadius();
 		const a = 2*r;
 		const b = a;
@@ -167,7 +167,7 @@ export default class MenuView extends View {
 		ca.setAttributeNS(null, 'cy', cy);
 		ca.setAttributeNS(null, 'r', rca);
 		ca.style.fill = 'none';
-		ca.style.stroke = LIGHTGREY;
+		ca.style.stroke = STROKECOLOR;
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
@@ -178,7 +178,7 @@ export default class MenuView extends View {
 		let d = 'M'+cx+','+cy+' L'+ex+','+ey;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', d);
-		lineA.style.stroke = LIGHTGREY;
+		lineA.style.stroke = STROKECOLOR;
 		lineA.style.strokeWidth = 1;
 		lineA.style.fill = 'none';
 		group.appendChild(lineA);
@@ -188,7 +188,7 @@ export default class MenuView extends View {
 		d = 'M'+cx+','+cy+' L'+ex+','+ey;
 		const lineB = document.createElementNS(svgNS, "path");
 		lineB.setAttributeNS(null, 'd', d);
-		lineB.style.stroke = LIGHTGREY;
+		lineB.style.stroke = STROKECOLOR;
 		lineB.style.strokeWidth = 1;
 		lineB.style.fill = 'none';
 		group.appendChild(lineB);
@@ -198,7 +198,7 @@ export default class MenuView extends View {
 		d = 'M'+cx+','+cy+' L'+ex+','+ey;
 		const lineC = document.createElementNS(svgNS, "path");
 		lineC.setAttributeNS(null, 'd', d);
-		lineC.style.stroke = LIGHTGREY;
+		lineC.style.stroke = STROKECOLOR;
 		lineC.style.strokeWidth = 1;
 		lineC.style.fill = 'none';
 		group.appendChild(lineC);
@@ -208,7 +208,7 @@ export default class MenuView extends View {
 		d = 'M'+cx+','+cy+' L'+ex+','+ey;
 		const lineD = document.createElementNS(svgNS, "path");
 		lineD.setAttributeNS(null, 'd', d);
-		lineD.style.stroke = LIGHTGREY;
+		lineD.style.stroke = STROKECOLOR;
 		lineD.style.strokeWidth = 1;
 		lineD.style.fill = 'none';
 		group.appendChild(lineD);
@@ -221,7 +221,8 @@ export default class MenuView extends View {
 		const w = this.REO.width;
 		const h = this.REO.height;
 		
-		const LIGHTGREY = '#777';
+		const FILLCOLOR = '#777';
+		const STROKECOLOR = '#777';
 		/*
 		Screen Sizes (in Materialize CSS)
 		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
@@ -286,7 +287,7 @@ export default class MenuView extends View {
 		title.setAttribute('font-size',fontsize);
 		title.setAttribute('dominant-baseline','middle');
 		title.setAttribute('text-anchor','middle');
-		title.setAttribute('fill',LIGHTGREY);
+		title.setAttribute('fill',FILLCOLOR);
 		title.style.opacity = 0.75;
 		title.appendChild(document.createTextNode('Making City'));
 		svg.appendChild(title);
@@ -298,7 +299,7 @@ export default class MenuView extends View {
 		descr.setAttribute('font-size',d_fontsize);
 		descr.setAttribute('dominant-baseline','middle');
 		descr.setAttribute('text-anchor','middle');
-		descr.setAttribute('fill',LIGHTGREY);
+		descr.setAttribute('fill',FILLCOLOR);
 		descr.style.opacity = 0.75;
 		descr.appendChild(document.createTextNode('Positive Energy Districts'));
 		svg.appendChild(descr);
@@ -325,7 +326,7 @@ export default class MenuView extends View {
 		const da = 'M0,'+laposY+' H'+laposX;
 		const lineA = document.createElementNS(svgNS, "path");
 		lineA.setAttributeNS(null, 'd', da);
-		lineA.style.stroke = LIGHTGREY;
+		lineA.style.stroke = STROKECOLOR;
 		lineA.style.strokeWidth = 2;
 		lineA.style.opacity = 0.75;
 		lineA.style.fill = 'none';
@@ -336,7 +337,7 @@ export default class MenuView extends View {
 		const db = 'M'+lbposX+','+lbposY+' H'+w;
 		const lineB = document.createElementNS(svgNS, "path");
 		lineB.setAttributeNS(null, 'd', db);
-		lineB.style.stroke = LIGHTGREY;
+		lineB.style.stroke = STROKECOLOR;
 		lineB.style.strokeWidth = 2;
 		lineB.style.opacity = 0.75;
 		lineB.style.fill = 'none';

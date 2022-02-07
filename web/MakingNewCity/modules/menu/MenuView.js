@@ -657,7 +657,7 @@ export default class MenuView extends View {
 			const gap = 6;
 			// Adjusted to the bottom right:
 			const basew = w*0.5;
-			const baseh = h*0.5;
+			const baseh = h*0.5-10; // Small margin (10 px) from the bottom.
 			// or adjusted to the center:
 			//const basew = gap*0.5+bw;
 			//const baseh = h*0.5;
@@ -686,7 +686,7 @@ export default class MenuView extends View {
 		
 		const img_dim = 50;
 		const img_x_pos = -w*0.5+20;
-		const img_y_pos = h*0.5-52; // MakingCity LINK image at the bottom left.
+		const img_y_pos = h*0.5-52-10; // MakingCity LINK image at the bottom left. Small margin (10 px) from the bottom.
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -716,7 +716,7 @@ export default class MenuView extends View {
 		const flag_w = 66;
 		const flag_h = 44;
 		const flag_x_pos = -w*0.5+80;
-		const flag_y_pos = h*0.5-46;
+		const flag_y_pos = h*0.5-46-10; // Small margin (10 px) from the bottom.
 		const flag = document.createElementNS(svgNS, "image");
 		flag.setAttribute('x', flag_x_pos);
 		flag.setAttribute('y', flag_y_pos);

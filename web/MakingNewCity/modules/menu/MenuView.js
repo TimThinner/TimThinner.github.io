@@ -310,7 +310,7 @@ export default class MenuView extends View {
 		descr.setAttribute('text-anchor','middle');
 		descr.setAttribute('fill',LIGHTGREY);
 		descr.style.opacity = 0.75;
-		descr.appendChild(document.createTextNode('PED '+scrollbarWidth); //('Positive Energy Districts'));
+		descr.appendChild(document.createTextNode('PED '+scrollbarWidth)); //('Positive Energy Districts'));
 		svg.appendChild(descr);
 		
 		$('#space').append(svg);

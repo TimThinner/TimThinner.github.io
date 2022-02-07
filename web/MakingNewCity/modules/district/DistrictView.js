@@ -123,9 +123,9 @@ export default class DistrictView extends View {
 	appendCenter() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
-		const a = 2*r;
-		const b = a;
-		const rca = Math.sqrt(a*a + b*b);
+		const rx2 = 2*r;
+		//const b = a;
+		//const rca = Math.sqrt(a*a + b*b);
 		
 		const cx = 0;
 		let cy = 0;
@@ -141,10 +141,10 @@ export default class DistrictView extends View {
 		const ca = document.createElementNS(svgNS, "circle");
 		ca.setAttributeNS(null, 'cx', cx);
 		ca.setAttributeNS(null, 'cy', cy);
-		ca.setAttributeNS(null, 'r', rca);
+		ca.setAttributeNS(null, 'r', rx2);
 		ca.style.fill = 'none';
 		ca.style.stroke = '#fff'
-		ca.style.strokeWidth = 2;
+		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
 		const cb = document.createElementNS(svgNS, "circle");
@@ -153,7 +153,7 @@ export default class DistrictView extends View {
 		cb.setAttributeNS(null, 'r', r);
 		cb.style.fill = 'none';
 		cb.style.stroke = '#ff0'
-		cb.style.strokeWidth = 2;
+		cb.style.strokeWidth = 1;
 		group.appendChild(cb);
 		
 		$('#space').append(group);
@@ -180,7 +180,14 @@ export default class DistrictView extends View {
 		poly.style.cursor = 'pointer';
 		
 		let tx = 0;
-		let ty = -100;
+		let ty = 0;
+		if (id === 'hex-a') {
+			tx = 0;
+			ty = -2 * r;
+		} else if (id === 'hex-b') {
+			tx = -Math.sin(60*Math.PI/180) * 2 * r;
+			ty = -Math.cos(60*Math.PI/180) * 2 * r;
+		}
 		const transformation = 'translate('+tx+','+ty+') rotate(90)';
 		poly.setAttribute('transform', transformation);
 		$('#space').append(poly);
@@ -201,6 +208,7 @@ export default class DistrictView extends View {
 		this.createSpace();
 		this.appendCenter();
 		this.appendPolygon("hex-a");
+		this.appendPolygon("hex-b");
 		/*
 		<polygon class="hex" id="hex-a" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,290) scale(1.3) rotate(90)" />
 		<polygon class="hex" id="hex-b" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,410) scale(1.3) rotate(90)" />

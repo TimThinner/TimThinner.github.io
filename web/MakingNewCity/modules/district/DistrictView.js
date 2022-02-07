@@ -322,7 +322,7 @@ export default class DistrictView extends View {
 		$('#space').append(group);
 	}
 	
-	appendPolygon(id) {
+	appendPolygon(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
@@ -334,6 +334,9 @@ export default class DistrictView extends View {
 		if (this.REO.mode === 'LANDSCAPE') {
 			cy = this.REO.height*0.1;
 		}
+		
+		
+		const group = document.createElementNS(svgNS, "g");
 		
 		// sin(60) = 0,866
 		// cos(60) = 0,5
@@ -351,40 +354,41 @@ export default class DistrictView extends View {
 		poly.style.cursor = 'pointer';
 		
 		let tx, ty;
-		if (id === 'hex-a') {
+		if (type === 'hex-a') {
 			tx = 0;
 			ty = -2 * r + cy;
-		} else if (id === 'hex-b') {
+		} else if (type === 'hex-b') {
 			tx = -Math.sin(60*Math.PI/180) * 2 * r;
 			ty = -Math.cos(60*Math.PI/180) * 2 * r + cy;
 			
-		} else if (id === 'hex-c') {
+		} else if (type === 'hex-c') {
 			tx = -Math.sin(60*Math.PI/180) * 2 * r;
 			ty = Math.cos(60*Math.PI/180) * 2 * r + cy;
 			
-		} else if (id === 'hex-d') {
+		} else if (type === 'hex-d') {
 			tx = 0;
 			ty = 2 * r + cy;
 			
-		} else if (id === 'hex-e') {
+		} else if (type === 'hex-e') {
 			tx = Math.sin(60*Math.PI/180) * 2 * r;
 			ty = Math.cos(60*Math.PI/180) * 2 * r + cy;
 			
-		} else if (id === 'hex-f') {
+		} else if (type === 'hex-f') {
 			tx = Math.sin(60*Math.PI/180) * 2 * r;
 			ty = -Math.cos(60*Math.PI/180) * 2 * r + cy;
 		}
 		const transformation = 'translate('+tx+','+ty+') rotate(90)';
 		poly.setAttribute('transform', transformation);
-		$('#space').append(poly);
-		/*
-		<polygon class="hex" id="hex-a" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,290) scale(1.3) rotate(90)" />
-		<polygon class="hex" id="hex-b" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,410) scale(1.3) rotate(90)" />
-		<polygon class="hex" id="hex-c" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,655) scale(1.3) rotate(90)" />
-		<polygon class="hex" id="hex-f" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,770) scale(1.3) rotate(90)" />
-		<polygon class="hex" id="hex-d" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(660,655) scale(1.3) rotate(90)" />
-		<polygon class="hex" id="hex-e" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(660,410) scale(1.3) rotate(90)" />
-		*/
+		poly.addEventListener("mouseover", function(event){ 
+			poly.style.strokeWidth = 4;
+		}, false);
+		poly.addEventListener("mouseout", function(event){ 
+			poly.style.strokeWidth = 1;
+		}, false);
+		
+		group.appendChild(poly);
+		
+		$('#space').append(group);
 	}
 	
 	renderALL() {
@@ -400,14 +404,7 @@ export default class DistrictView extends View {
 		this.appendPolygon("hex-d");
 		this.appendPolygon("hex-e");
 		this.appendPolygon("hex-f");
-		/*
-		<polygon class="hex" id="hex-a" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,290) scale(1.3) rotate(90)" />
-		<polygon class="hex" id="hex-b" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,410) scale(1.3) rotate(90)" />
-		<polygon class="hex" id="hex-c" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(1090,655) scale(1.3) rotate(90)" />
-		<polygon class="hex" id="hex-f" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,770) scale(1.3) rotate(90)" />
-		<polygon class="hex" id="hex-d" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(660,655) scale(1.3) rotate(90)" />
-		<polygon class="hex" id="hex-e" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(660,410) scale(1.3) rotate(90)" />
-		*/
+		
 	}
 	
 	render() {

@@ -335,7 +335,6 @@ export default class DistrictView extends View {
 			cy = this.REO.height*0.1;
 		}
 		
-		
 		const group = document.createElementNS(svgNS, "g");
 		
 		// sin(60) = 0,866
@@ -384,6 +383,10 @@ export default class DistrictView extends View {
 		}, false);
 		poly.addEventListener("mouseout", function(event){ 
 			poly.style.strokeWidth = 1;
+		}, false);
+		// Go back to menu from ALL polygon-clicks!
+		poly.addEventListener("click", function(){
+			self.models['MenuModel'].setSelected('menu');
 		}, false);
 		
 		group.appendChild(poly);

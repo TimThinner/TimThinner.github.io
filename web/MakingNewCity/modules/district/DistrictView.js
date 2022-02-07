@@ -120,11 +120,14 @@ export default class DistrictView extends View {
 	fill: #012265;
 }*/
 
-	appendPolygon(id) {
-		const self = this;
+	appendCenter() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
+		const a = 2*r;
+		const b = a;
+		const rca = Math.sqrt(a*a + b*b);
 		
+		const cx = 0;
 		let cy = 0;
 		// If view is SQUARE: Put all circles to vertical center.
 		// If view is PORTRAIT: Put all circles to vertical center.
@@ -132,7 +135,42 @@ export default class DistrictView extends View {
 		if (this.REO.mode === 'LANDSCAPE') {
 			cy = this.REO.height*0.1;
 		}
-		const p = '0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50';
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const ca = document.createElementNS(svgNS, "circle");
+		ca.setAttributeNS(null, 'cx', cx);
+		ca.setAttributeNS(null, 'cy', cy);
+		ca.setAttributeNS(null, 'r', rca);
+		ca.style.fill = 'none';
+		ca.style.stroke = '#fff'
+		ca.style.strokeWidth = 2;
+		group.appendChild(ca);
+		
+		const cb = document.createElementNS(svgNS, "circle");
+		cb.setAttributeNS(null, 'cx', cx);
+		cb.setAttributeNS(null, 'cy', cy);
+		cb.setAttributeNS(null, 'r', r);
+		cb.style.fill = 'none';
+		cb.style.stroke = '#ff0'
+		cb.style.strokeWidth = 2;
+		group.appendChild(cb);
+		
+		$('#space').append(group);
+	}
+	
+	appendPolygon(id) {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius();
+		
+		// sin(60) = 0,866
+		// cos(60) = 0,5
+		const xx = Math.sin(60*Math.PI/180) * r;
+		const yy = Math.cos(60*Math.PI/180) * r;
+		
+		const p = '0,-'+r+' -'+xx+',-'+yy+' -'+xx+','+yy+' 0,'+r+' '+xx+','+yy+' '+xx+',-'+yy;
+		//const p = '0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50';
 		const poly = document.createElementNS(svgNS, "polygon");
 		poly.setAttributeNS(null, 'points', p);
 		poly.style.stroke = '#fff';
@@ -140,7 +178,11 @@ export default class DistrictView extends View {
 		poly.style.strokeWidth = 1;
 		poly.style.fillOpacity = 0.05;
 		poly.style.cursor = 'pointer';
-		poly.id = id;
+		
+		let tx = 0;
+		let ty = -100;
+		const transformation = 'translate('+tx+','+ty+') rotate(90)';
+		poly.setAttribute('transform', transformation);
 		$('#space').append(poly);
 		
 		/*
@@ -157,7 +199,7 @@ export default class DistrictView extends View {
 		console.log('renderALL()!');
 		$(this.el).empty();
 		this.createSpace();
-		
+		this.appendCenter();
 		this.appendPolygon("hex-a");
 		/*
 		<polygon class="hex" id="hex-a" points="0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50" transform="translate(870,290) scale(1.3) rotate(90)" />

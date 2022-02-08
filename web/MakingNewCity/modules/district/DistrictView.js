@@ -400,8 +400,8 @@ export default class DistrictView extends View {
 			
 			
 			const svg_b = document.createElementNS(svgNS, "svg");
-			svg_b.setAttribute('x',icon_x+3);
-			svg_b.setAttribute('y',r-2*titleSVGHeight+3);
+			svg_b.setAttribute('x',icon_x+1);
+			svg_b.setAttribute('y',r-2*titleSVGHeight+1);
 			svg_b.setAttributeNS(null,'width',icon_w);
 			svg_b.setAttributeNS(null,'height',titleSVGHeight);
 			

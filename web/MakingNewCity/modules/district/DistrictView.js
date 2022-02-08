@@ -343,6 +343,8 @@ export default class DistrictView extends View {
 		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		const icon_y = -icon_h*0.5;
 		
+		const fontsize = 24;
+		
 		const group = document.createElementNS(svgNS, "g");
 		
 		if (type === 'hex-a') {
@@ -363,6 +365,26 @@ export default class DistrictView extends View {
 			img_2.setAttribute('href', './svg/S-marketin_logo.svg');
 			group.appendChild(img_2);
 			
+			const svg = document.createElementNS(svgNS, "svg");
+			svg.setAttribute('x',icon_x);
+			svg.setAttribute('y',icon_y);
+			svg.setAttributeNS(null,'width',icon_w);
+			svg.setAttributeNS(null,'height',icon_h);
+			
+			const title = document.createElementNS(svgNS, 'text');
+			title.id = 'logo-title';
+			title.setAttribute('x','50%');
+			title.setAttribute('y','50%');
+			title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+			title.setAttribute('font-size',fontsize);
+			title.setAttribute('dominant-baseline','middle');
+			title.setAttribute('text-anchor','middle');
+			title.setAttribute('fill','#fff');
+			title.style.opacity = 0.75;
+			title.appendChild(document.createTextNode('S-Arina'));
+			svg.appendChild(title);
+			group.appendChild(svg);
+			
 		} else if (type === 'hex-b') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', icon_x);
@@ -371,6 +393,8 @@ export default class DistrictView extends View {
 			img.setAttribute('height', icon_h);
 			img.setAttribute('href', './svg/house.svg');
 			group.appendChild(img);
+			
+			
 		}
 		/*
 		<image x="720" y="220" width="300" height="75" xlink:href="smarket.svg" />

@@ -22,7 +22,7 @@
 <line x1="200" y1="110" x2="177" y2="110" stroke-width="4" stroke="#333" />
 <line x1="200" y1="110" x2="200" y2="78" stroke-width="4" stroke="#333" />
 <!-- Door -->
-<path d="M180,250 L180,180 L220,180 L220,250" fill="#333" stroke-width="3" stroke="#333" />
+<path d="M180,250 L180,180 L220,180 L220,250 Z" fill="#aaa" stroke-width="3" stroke="#333" />
 <!-- Windows -->
 <use x="60" y="70" xlink:href="#window" />
 <use x="100" y="70" xlink:href="#window" />

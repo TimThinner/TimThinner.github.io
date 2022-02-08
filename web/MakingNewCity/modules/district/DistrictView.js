@@ -397,27 +397,6 @@ export default class DistrictView extends View {
 			title.style.opacity = 1;
 			title.appendChild(document.createTextNode('S-Arina'));
 			svg.appendChild(title);
-			
-			
-			const svg_b = document.createElementNS(svgNS, "svg");
-			svg_b.setAttribute('x',icon_x+1);
-			svg_b.setAttribute('y',r-2*titleSVGHeight+1);
-			svg_b.setAttributeNS(null,'width',icon_w);
-			svg_b.setAttributeNS(null,'height',titleSVGHeight);
-			
-			const title_b = document.createElementNS(svgNS, 'text');
-			title_b.setAttribute('x','50%');
-			title_b.setAttribute('y','50%');
-			title_b.setAttribute('font-family','Arial, Helvetica, sans-serif');
-			title_b.setAttribute('font-size',fontsize);
-			title_b.setAttribute('dominant-baseline','middle');
-			title_b.setAttribute('text-anchor','middle');
-			title_b.setAttribute('fill','#000');
-			title_b.style.opacity = 1;
-			title_b.appendChild(document.createTextNode('S-Arina'));
-			svg_b.appendChild(title_b);
-			
-			group.appendChild(svg_b);
 			group.appendChild(svg);
 			
 		} else if (type === 'hex-b') {

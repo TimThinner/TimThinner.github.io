@@ -16,7 +16,7 @@
 <!-- Roof Shadow -->
 <path d="M36,45 L364,45" fill="none" stroke-width="8" stroke="#333" />
 <!-- Door -->
-<path d="M180,280 L180,210 L220,210 L220,280" fill="#333" stroke-width="3" stroke="#333" />
+<path d="M180,280 L180,210 L220,210 L220,280 Z" fill="#aaa" stroke-width="3" stroke="#333" />
 <!-- Windows -->
 <use x="65" y="60" xlink:href="#window" />
 <use x="65" y="110" xlink:href="#window" />

@@ -327,6 +327,8 @@ export default class DistrictView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
 		
+		let icon_w = r;
+		
 		let cy = 0;
 		// If view is SQUARE: Put all circles to vertical center.
 		// If view is PORTRAIT: Put all circles to vertical center.
@@ -337,13 +339,26 @@ export default class DistrictView extends View {
 		
 		const group = document.createElementNS(svgNS, "g");
 		
+		const icon_x = -icon_w*0.5;
+		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		const icon_y = cy - icon_h*0.5;
+		
+		if (type === 'hex-b') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/house.svg');
+			group.appendChild(img);
+		}
+		
 		// sin(60) = 0,866
 		// cos(60) = 0,5
 		const xx = Math.sin(60*Math.PI/180) * r;
 		const yy = Math.cos(60*Math.PI/180) * r;
 		
 		const p = '0,-'+r+' -'+xx+',-'+yy+' -'+xx+','+yy+' 0,'+r+' '+xx+','+yy+' '+xx+',-'+yy;
-		//const p = '0,-100 -86.6,-50.0 -86.6,50 0,100 86.6,50 86.6,-50';
 		const poly = document.createElementNS(svgNS, "polygon");
 		poly.setAttributeNS(null, 'points', p);
 		poly.style.stroke = '#fff';
@@ -351,6 +366,20 @@ export default class DistrictView extends View {
 		poly.style.strokeWidth = 1;
 		poly.style.fillOpacity = 0.05;
 		poly.style.cursor = 'pointer';
+		poly.setAttribute('transform', 'rotate(90)');
+		
+		poly.addEventListener("mouseover", function(event){ 
+			poly.style.strokeWidth = 4;
+		}, false);
+		poly.addEventListener("mouseout", function(event){ 
+			poly.style.strokeWidth = 1;
+		}, false);
+		// Go back to menu from ALL polygon-clicks!
+		poly.addEventListener("click", function(){
+			self.models['MenuModel'].setSelected('menu');
+		}, false);
+		
+		group.appendChild(poly);
 		
 		let tx, ty;
 		if (type === 'hex-a') {
@@ -376,26 +405,13 @@ export default class DistrictView extends View {
 			tx = Math.sin(60*Math.PI/180) * 2 * r;
 			ty = -Math.cos(60*Math.PI/180) * 2 * r + cy;
 		}
-		const transformation = 'translate('+tx+','+ty+') rotate(90)';
-		poly.setAttribute('transform', transformation);
-		poly.addEventListener("mouseover", function(event){ 
-			poly.style.strokeWidth = 4;
-		}, false);
-		poly.addEventListener("mouseout", function(event){ 
-			poly.style.strokeWidth = 1;
-		}, false);
-		// Go back to menu from ALL polygon-clicks!
-		poly.addEventListener("click", function(){
-			self.models['MenuModel'].setSelected('menu');
-		}, false);
-		
-		group.appendChild(poly);
-		
+		const transformation = 'translate('+tx+','+ty+')';
+		group.setAttribute('transform', transformation);
 		$('#space').append(group);
 	}
 	
 	renderALL() {
-		console.log('renderALL()!');
+		console.log('renderALL() Tuesday 8.2.2022!');
 		$(this.el).empty();
 		this.createSpace();
 		this.appendLogo();

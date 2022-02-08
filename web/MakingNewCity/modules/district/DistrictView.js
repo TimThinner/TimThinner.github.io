@@ -384,7 +384,7 @@ export default class DistrictView extends View {
 			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',icon_x);
-			svg.setAttribute('y',-10); // Put title below the icon.
+			svg.setAttribute('y',r-10); // Put title to the bottom line of hexagon.
 			svg.setAttributeNS(null,'width',icon_w);
 			svg.setAttributeNS(null,'height',icon_h);
 			
@@ -412,7 +412,7 @@ export default class DistrictView extends View {
 			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',icon_x);
-			svg.setAttribute('y',-10); // Put title below the icon.
+			svg.setAttribute('y',r-10); // Put title to the bottom line of hexagon.
 			svg.setAttributeNS(null,'width',icon_w);
 			svg.setAttributeNS(null,'height',icon_h);
 			

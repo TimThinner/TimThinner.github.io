@@ -367,7 +367,7 @@ export default class DistrictView extends View {
 			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',icon_x);
-			svg.setAttribute('y',icon_h*0.5); // Put title below the icon.
+			svg.setAttribute('y',0); // Put title below the icon.
 			svg.setAttributeNS(null,'width',icon_w);
 			svg.setAttributeNS(null,'height',icon_h);
 			

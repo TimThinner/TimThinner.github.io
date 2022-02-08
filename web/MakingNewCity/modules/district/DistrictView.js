@@ -372,7 +372,6 @@ export default class DistrictView extends View {
 			svg.setAttributeNS(null,'height',icon_h);
 			
 			const title = document.createElementNS(svgNS, 'text');
-			title.id = 'logo-title';
 			title.setAttribute('x','50%');
 			title.setAttribute('y','50%');
 			title.setAttribute('font-family','Arial, Helvetica, sans-serif');

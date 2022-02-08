@@ -335,13 +335,10 @@ export default class DistrictView extends View {
 		let fontsize;
 		if (r <= 75) {
 			fontsize = 14;
-			
 		} else if (r > 75 && r <= 124) {
 			fontsize = 18;
-			
 		} else if (r > 124 && r <= 150) {
 			fontsize = 22;
-			
 		} else {
 			fontsize = 26;
 		}
@@ -457,11 +454,91 @@ export default class DistrictView extends View {
 			title.appendChild(document.createTextNode('Sivakka 2'));
 			svg.appendChild(title);
 			group.appendChild(svg);
+			
+		} else if (type === 'hex-d') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/school.svg');
+			group.appendChild(img);
+			
+			const svg = document.createElementNS(svgNS, "svg");
+			svg.setAttribute('x',icon_x);
+			svg.setAttribute('y',r-2*titleSVGHeight); // Put title to the bottom line of hexagon.
+			svg.setAttributeNS(null,'width',icon_w);
+			svg.setAttributeNS(null,'height',titleSVGHeight);
+			
+			const title = document.createElementNS(svgNS, 'text');
+			title.setAttribute('x','50%');
+			title.setAttribute('y','50%');
+			title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+			title.setAttribute('font-size',fontsize);
+			title.setAttribute('dominant-baseline','middle');
+			title.setAttribute('text-anchor','middle');
+			title.setAttribute('fill','#fff');
+			title.style.opacity = 1;
+			title.appendChild(document.createTextNode('School'));
+			svg.appendChild(title);
+			group.appendChild(svg);
+			
+		} else if (type === 'hex-e') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/house.svg');
+			group.appendChild(img);
+			
+			const svg = document.createElementNS(svgNS, "svg");
+			svg.setAttribute('x',icon_x);
+			svg.setAttribute('y',r-2*titleSVGHeight); // Put title to the bottom line of hexagon.
+			svg.setAttributeNS(null,'width',icon_w);
+			svg.setAttributeNS(null,'height',titleSVGHeight);
+			
+			const title = document.createElementNS(svgNS, 'text');
+			title.setAttribute('x','50%');
+			title.setAttribute('y','50%');
+			title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+			title.setAttribute('font-size',fontsize);
+			title.setAttribute('dominant-baseline','middle');
+			title.setAttribute('text-anchor','middle');
+			title.setAttribute('fill','#fff');
+			title.style.opacity = 1;
+			title.appendChild(document.createTextNode('Sivakka 3'));
+			svg.appendChild(title);
+			group.appendChild(svg);
+			
+		} else if (type === 'hex-f') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/house.svg');
+			group.appendChild(img);
+			
+			const svg = document.createElementNS(svgNS, "svg");
+			svg.setAttribute('x',icon_x);
+			svg.setAttribute('y',r-2*titleSVGHeight); // Put title to the bottom line of hexagon.
+			svg.setAttributeNS(null,'width',icon_w);
+			svg.setAttributeNS(null,'height',titleSVGHeight);
+			
+			const title = document.createElementNS(svgNS, 'text');
+			title.setAttribute('x','50%');
+			title.setAttribute('y','50%');
+			title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+			title.setAttribute('font-size',fontsize);
+			title.setAttribute('dominant-baseline','middle');
+			title.setAttribute('text-anchor','middle');
+			title.setAttribute('fill','#fff');
+			title.style.opacity = 1;
+			title.appendChild(document.createTextNode('YIT 1'));
+			svg.appendChild(title);
+			group.appendChild(svg);
 		}
-		/*
-		<image x="720" y="220" width="300" height="75" xlink:href="smarket.svg" />
-		<image x="735" y="230" width="121.43" height="27.14" xlink:href="S-marketin_logo.svg" />
-		*/
 		
 		// sin(60) = 0,866
 		// cos(60) = 0,5
@@ -522,19 +599,16 @@ export default class DistrictView extends View {
 	}
 	
 	renderALL() {
-		console.log('renderALL() Tuesday 8.2.2022 A!');
 		$(this.el).empty();
 		this.createSpace();
 		this.appendLogo();
 		this.appendCenter();
-		
 		this.appendPolygon("hex-a");
 		this.appendPolygon("hex-b");
 		this.appendPolygon("hex-c");
 		this.appendPolygon("hex-d");
 		this.appendPolygon("hex-e");
 		this.appendPolygon("hex-f");
-		
 	}
 	
 	render() {

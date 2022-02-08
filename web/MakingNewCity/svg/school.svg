@@ -2,6 +2,9 @@
 <svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
 <defs>
 	<g id="window" fill="#fff" stroke="#333" stroke-width="3">
+		<path d="M0,0 L90,0 L90,30 L0,30 Z" />
+	</g>
+	<g id="window-v" fill="#fff" stroke="#333" stroke-width="3">
 		<path d="M0,0 L30,0 L30,30 L0,30 Z" />
 	</g>
 </defs>
@@ -17,19 +20,40 @@
 <path d="M36,45 L364,45" fill="none" stroke-width="8" stroke="#333" />
 <!-- Door -->
 <path d="M180,280 L180,210 L220,210 L220,280" fill="#333" stroke-width="3" stroke="#333" />
-<!-- Windows -->
+<!-- CLOCK -->
+<circle cx="200" cy="90" r="40" style="stroke:#333;stroke-width:2;fill:#fff;opacity:0.5;"/>
+<circle cx="200" cy="90" r="35" style="stroke:#333;stroke-width:4;fill:#fff;opacity:1;"/>
+<!-- center dot -->
+<circle cx="200" cy="90" r="4" style="stroke:#333;stroke-width:2;fill:#333;opacity:1;"/>
+<!-- arms -->
+<line x1="200" y1="90" x2="175" y2="90" stroke-width="4" stroke="#333" />
+<line x1="200" y1="90" x2="200" y2="60" stroke-width="4" stroke="#333" />
+
+<use x="185" y="160" xlink:href="#window-v" />
+
 <use x="65" y="60" xlink:href="#window" />
 <use x="65" y="110" xlink:href="#window" />
 <use x="65" y="160" xlink:href="#window" />
 <use x="65" y="210" xlink:href="#window" />
+
+<use x="245" y="60" xlink:href="#window" />
+<use x="245" y="110" xlink:href="#window" />
+<use x="245" y="160" xlink:href="#window" />
+<use x="245" y="210" xlink:href="#window" />
+
+<!--
 <use x="125" y="60" xlink:href="#window" />
 <use x="125" y="110" xlink:href="#window" />
 <use x="125" y="160" xlink:href="#window" />
 <use x="125" y="210" xlink:href="#window" />
+-->
+<!--
 <use x="185" y="60" xlink:href="#window" />
 <use x="185" y="110" xlink:href="#window" />
 <use x="185" y="160" xlink:href="#window" />
-<!--<use x="185" y="190" xlink:href="#window" />-->
+<use x="185" y="190" xlink:href="#window" />
+-->
+<!--
 <use x="245" y="60" xlink:href="#window" />
 <use x="245" y="110" xlink:href="#window" />
 <use x="245" y="160" xlink:href="#window" />
@@ -38,4 +62,5 @@
 <use x="305" y="110" xlink:href="#window" />
 <use x="305" y="160" xlink:href="#window" />
 <use x="305" y="210" xlink:href="#window" />
+-->
 </svg>

@@ -11,8 +11,11 @@
 <!-- Walls -->
 <!--<path d="M20,250 L20,70 L5,70 L100,10 L195,70 L180,70 L180,250 L20,250" fill="none" stroke-width="3" stroke="#333" />-->
 <path d="M35,260 L35,20 L365,20 L365,260 L35,260 Z" fill="none" stroke-width="3" stroke="#333" />
+<path d="M35,20 L25,20 L30,10 L370,10 L375,20 Z" fill="none" stroke-width="3" stroke="#333" />
+<!-- Shadow -->
+<path d="M37,25 L363,25" fill="none" stroke-width="8" stroke="#ccc" />
 <!-- Door -->
-<path d="M180,260 L180,190 L220,190 L220,260" fill="none" stroke-width="3" stroke="#333" />
+<path d="M180,260 L180,190 L220,190 L220,260" fill="#ccc" stroke-width="3" stroke="#333" />
 <!--
 <path d="M80,250 L80,170 L120,170 L120,250" fill="none" stroke-width="3" stroke="#333" />
 -->

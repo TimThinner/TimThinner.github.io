@@ -361,6 +361,7 @@ export default class DistrictView extends View {
 		const icon_x = -icon_w*0.5;
 		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		const icon_y = -icon_h*0.5;
+		const titleSVGHeight = fontsize;
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -384,9 +385,9 @@ export default class DistrictView extends View {
 			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',icon_x);
-			svg.setAttribute('y',0); // Put title to the bottom line of hexagon.
+			svg.setAttribute('y',r-titleSVGHeight); // Put title to the bottom line of hexagon.
 			svg.setAttributeNS(null,'width',icon_w);
-			svg.setAttributeNS(null,'height',fontsize+10);
+			svg.setAttributeNS(null,'height',titleSVGHeight);
 			
 			const title = document.createElementNS(svgNS, 'text');
 			title.setAttribute('x','50%');
@@ -412,9 +413,9 @@ export default class DistrictView extends View {
 			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',icon_x);
-			svg.setAttribute('y',0); // Put title to the bottom line of hexagon.
+			svg.setAttribute('y',r-titleSVGHeight); // Put title to the bottom line of hexagon.
 			svg.setAttributeNS(null,'width',icon_w);
-			svg.setAttributeNS(null,'height',fontsize+10);
+			svg.setAttributeNS(null,'height',titleSVGHeight);
 			
 			const title = document.createElementNS(svgNS, 'text');
 			title.setAttribute('x','50%');
@@ -440,9 +441,9 @@ export default class DistrictView extends View {
 			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',icon_x);
-			svg.setAttribute('y',0); // Put title to the bottom line of hexagon.
+			svg.setAttribute('y',r-titleSVGHeight); // Put title to the bottom line of hexagon.
 			svg.setAttributeNS(null,'width',icon_w);
-			svg.setAttributeNS(null,'height',fontsize+10);
+			svg.setAttributeNS(null,'height',titleSVGHeight);
 			
 			const title = document.createElementNS(svgNS, 'text');
 			title.setAttribute('x','50%');

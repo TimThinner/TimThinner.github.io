@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
+<defs>
+	<g id="window" fill="#fff" stroke="#333" stroke-width="2">
+		<path d="M0,0 L120,0 L120,60 L0,60 Z" />
+	</g>
+</defs>
 <!--
 <rect x="1" y="1" width="398" height="298" style="stroke:#51b0ce;stroke-width:1px;fill:none;" />
 -->
@@ -18,4 +23,6 @@
 <path d="M250,200 L250,130 L270,130 L270,200 Z" opacity="0.5" fill="#fff" stroke-width="2" stroke="#333" />
 <!-- Front door shadow -->
 <path d="M230,133 L270,133" opacity="1" fill="none" stroke-width="6" stroke="#333" />
+<!-- window -->
+<use x="60" y="120" xlink:href="#window" />
 </svg>

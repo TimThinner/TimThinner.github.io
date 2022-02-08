@@ -341,7 +341,7 @@ export default class DistrictView extends View {
 		}
 		const icon_x = -icon_w*0.5;
 		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
-		const icon_y = cy - icon_h*0.5;
+		const icon_y = icon_h*0.5;
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -356,7 +356,7 @@ export default class DistrictView extends View {
 			group.appendChild(img);
 			
 			const img_2 = document.createElementNS(svgNS, "image");
-			img_2.setAttribute('x', icon_x);
+			img_2.setAttribute('x', icon_x+icon_w*0.2);
 			img_2.setAttribute('y', icon_y);
 			img_2.setAttribute('width', icon_w*0.5);
 			img_2.setAttribute('height', icon_h*0.5);

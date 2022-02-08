@@ -385,7 +385,7 @@ export default class DistrictView extends View {
 			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',icon_x);
-			svg.setAttribute('y',r-titleSVGHeight-10); // Put title to the bottom line of hexagon.
+			svg.setAttribute('y',r-2*titleSVGHeight); // Put title to the bottom line of hexagon.
 			svg.setAttributeNS(null,'width',icon_w);
 			svg.setAttributeNS(null,'height',titleSVGHeight);
 			
@@ -413,7 +413,7 @@ export default class DistrictView extends View {
 			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',icon_x);
-			svg.setAttribute('y',r-titleSVGHeight-10); // Put title to the bottom line of hexagon.
+			svg.setAttribute('y',r-2*titleSVGHeight); // Put title to the bottom line of hexagon.
 			svg.setAttributeNS(null,'width',icon_w);
 			svg.setAttributeNS(null,'height',titleSVGHeight);
 			
@@ -441,7 +441,7 @@ export default class DistrictView extends View {
 			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',icon_x);
-			svg.setAttribute('y',r-titleSVGHeight-10); // Put title to the bottom line of hexagon.
+			svg.setAttribute('y',r-2*titleSVGHeight); // Put title to the bottom line of hexagon.
 			svg.setAttributeNS(null,'width',icon_w);
 			svg.setAttributeNS(null,'height',titleSVGHeight);
 			
@@ -522,7 +522,7 @@ export default class DistrictView extends View {
 	}
 	
 	renderALL() {
-		console.log('renderALL() Tuesday 8.2.2022!');
+		console.log('renderALL() Tuesday 8.2.2022 A!');
 		$(this.el).empty();
 		this.createSpace();
 		this.appendLogo();

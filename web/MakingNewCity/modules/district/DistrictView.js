@@ -326,22 +326,20 @@ export default class DistrictView extends View {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
-		
-		
-		const w = this.REO.width;
 		/*
-		Screen Sizes (in Materialize CSS)
-		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
-		<= 600px 			> 600px 			> 992px 				> 1200px
+		The radius of circle is 12,5% of H or W (smaller dimension).
+		0,125 x 600 = 75
+		0,125 x 992 = 124
+		0,125 x 1200 = 150
 		*/
 		let fontsize;
-		if (w <= 600) {
+		if (r <= 75) {
 			fontsize = 14;
 			
-		} else if (w > 600 && w <= 992) {
+		} else if (r > 75 && r <= 124) {
 			fontsize = 18;
 			
-		} else if (w > 992 && w <= 1200) {
+		} else if (r > 124 && r <= 150) {
 			fontsize = 22;
 			
 		} else {
@@ -378,7 +376,7 @@ export default class DistrictView extends View {
 			
 			const img_2 = document.createElementNS(svgNS, "image");
 			img_2.setAttribute('x', icon_x+icon_w*0.2);
-			img_2.setAttribute('y', icon_y);
+			img_2.setAttribute('y', icon_y-10); // Lift text a little bit higher.
 			img_2.setAttribute('width', icon_w*0.5);
 			img_2.setAttribute('height', icon_h*0.5);
 			img_2.setAttribute('href', './svg/S-marketin_logo.svg');

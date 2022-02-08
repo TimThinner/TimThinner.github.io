@@ -327,6 +327,27 @@ export default class DistrictView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
 		
+		
+		const w = this.REO.width;
+		/*
+		Screen Sizes (in Materialize CSS)
+		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+		<= 600px 			> 600px 			> 992px 				> 1200px
+		*/
+		let fontsize;
+		if (w <= 600) {
+			fontsize = 14;
+			
+		} else if (w > 600 && w <= 992) {
+			fontsize = 18;
+			
+		} else if (w > 992 && w <= 1200) {
+			fontsize = 22;
+			
+		} else {
+			fontsize = 26;
+		}
+		
 		let cy = 0;
 		// If view is SQUARE: Put all circles to vertical center.
 		// If view is PORTRAIT: Put all circles to vertical center.
@@ -342,8 +363,6 @@ export default class DistrictView extends View {
 		const icon_x = -icon_w*0.5;
 		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		const icon_y = -icon_h*0.5;
-		
-		const fontsize = 24;
 		
 		const group = document.createElementNS(svgNS, "g");
 		

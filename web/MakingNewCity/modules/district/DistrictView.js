@@ -327,8 +327,6 @@ export default class DistrictView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
 		
-		let icon_w = r*1.4;
-		
 		let cy = 0;
 		// If view is SQUARE: Put all circles to vertical center.
 		// If view is PORTRAIT: Put all circles to vertical center.
@@ -337,11 +335,15 @@ export default class DistrictView extends View {
 			cy = this.REO.height*0.1;
 		}
 		
-		const group = document.createElementNS(svgNS, "g");
-		
+		let icon_w = r*1.5;
+		if (type === 'hex-a') {
+			icon_w = r*2;
+		}
 		const icon_x = -icon_w*0.5;
 		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		const icon_y = cy - icon_h*0.5;
+		
+		const group = document.createElementNS(svgNS, "g");
 		
 		if (type === 'hex-a') {
 			
@@ -354,8 +356,8 @@ export default class DistrictView extends View {
 			group.appendChild(img);
 			
 			const img_2 = document.createElementNS(svgNS, "image");
-			img_2.setAttribute('x', icon_x*0.5);
-			img_2.setAttribute('y', icon_y*0.5);
+			img_2.setAttribute('x', icon_x);
+			img_2.setAttribute('y', icon_y);
 			img_2.setAttribute('width', icon_w*0.5);
 			img_2.setAttribute('height', icon_h*0.5);
 			img_2.setAttribute('href', './svg/S-marketin_logo.svg');

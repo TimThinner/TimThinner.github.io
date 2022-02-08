@@ -384,7 +384,7 @@ export default class DistrictView extends View {
 			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',icon_x);
-			svg.setAttribute('y',0); // Put title below the icon.
+			svg.setAttribute('y',-10); // Put title below the icon.
 			svg.setAttributeNS(null,'width',icon_w);
 			svg.setAttributeNS(null,'height',icon_h);
 			
@@ -410,6 +410,24 @@ export default class DistrictView extends View {
 			img.setAttribute('href', './svg/house.svg');
 			group.appendChild(img);
 			
+			const svg = document.createElementNS(svgNS, "svg");
+			svg.setAttribute('x',icon_x);
+			svg.setAttribute('y',-10); // Put title below the icon.
+			svg.setAttributeNS(null,'width',icon_w);
+			svg.setAttributeNS(null,'height',icon_h);
+			
+			const title = document.createElementNS(svgNS, 'text');
+			title.setAttribute('x','50%');
+			title.setAttribute('y','50%');
+			title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+			title.setAttribute('font-size',fontsize);
+			title.setAttribute('dominant-baseline','middle');
+			title.setAttribute('text-anchor','middle');
+			title.setAttribute('fill','#fff');
+			title.style.opacity = 1;
+			title.appendChild(document.createTextNode('Sivakka 1'));
+			svg.appendChild(title);
+			group.appendChild(svg);
 			
 		}
 		/*

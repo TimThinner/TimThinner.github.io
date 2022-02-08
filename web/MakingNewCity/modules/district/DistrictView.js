@@ -327,7 +327,7 @@ export default class DistrictView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
 		
-		let icon_w = r;
+		let icon_w = r*1.4;
 		
 		let cy = 0;
 		// If view is SQUARE: Put all circles to vertical center.
@@ -386,11 +386,11 @@ export default class DistrictView extends View {
 			tx = 0;
 			ty = -2 * r + cy;
 		} else if (type === 'hex-b') {
-			tx = -Math.sin(60*Math.PI/180) * 2 * r;
+			tx = Math.sin(60*Math.PI/180) * 2 * r;
 			ty = -Math.cos(60*Math.PI/180) * 2 * r + cy;
 			
 		} else if (type === 'hex-c') {
-			tx = -Math.sin(60*Math.PI/180) * 2 * r;
+			tx = Math.sin(60*Math.PI/180) * 2 * r;
 			ty = Math.cos(60*Math.PI/180) * 2 * r + cy;
 			
 		} else if (type === 'hex-d') {
@@ -398,11 +398,11 @@ export default class DistrictView extends View {
 			ty = 2 * r + cy;
 			
 		} else if (type === 'hex-e') {
-			tx = Math.sin(60*Math.PI/180) * 2 * r;
+			tx = -Math.sin(60*Math.PI/180) * 2 * r;
 			ty = Math.cos(60*Math.PI/180) * 2 * r + cy;
 			
 		} else if (type === 'hex-f') {
-			tx = Math.sin(60*Math.PI/180) * 2 * r;
+			tx = -Math.sin(60*Math.PI/180) * 2 * r;
 			ty = -Math.cos(60*Math.PI/180) * 2 * r + cy;
 		}
 		const transformation = 'translate('+tx+','+ty+')';

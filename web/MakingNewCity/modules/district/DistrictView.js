@@ -343,7 +343,25 @@ export default class DistrictView extends View {
 		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		const icon_y = cy - icon_h*0.5;
 		
-		if (type === 'hex-b') {
+		if (type === 'hex-a') {
+			
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/smarket.svg');
+			group.appendChild(img);
+			
+			const img_2 = document.createElementNS(svgNS, "image");
+			img_2.setAttribute('x', icon_x*0.5);
+			img_2.setAttribute('y', icon_y*0.5);
+			img_2.setAttribute('width', icon_w*0.5);
+			img_2.setAttribute('height', icon_h*0.5);
+			img_2.setAttribute('href', './svg/S-marketin_logo.svg');
+			group.appendChild(img_2);
+			
+		} else if (type === 'hex-b') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', icon_x);
 			img.setAttribute('y', icon_y);
@@ -352,6 +370,10 @@ export default class DistrictView extends View {
 			img.setAttribute('href', './svg/house.svg');
 			group.appendChild(img);
 		}
+		/*
+		<image x="720" y="220" width="300" height="75" xlink:href="smarket.svg" />
+		<image x="735" y="230" width="121.43" height="27.14" xlink:href="S-marketin_logo.svg" />
+		*/
 		
 		// sin(60) = 0,866
 		// cos(60) = 0,5
@@ -385,6 +407,7 @@ export default class DistrictView extends View {
 		if (type === 'hex-a') {
 			tx = 0;
 			ty = -2 * r + cy;
+			
 		} else if (type === 'hex-b') {
 			tx = Math.sin(60*Math.PI/180) * 2 * r;
 			ty = -Math.cos(60*Math.PI/180) * 2 * r + cy;

@@ -5,23 +5,18 @@
 		<path d="M0,0 L30,0 L30,30 L0,30 L0,0 Z" />
 	</g>
 </defs>
-
+<!--
 <rect x="1" y="1" width="398" height="298" style="stroke:#51b0ce;stroke-width:1px;fill:none;" />
-
+-->
 <!-- Walls -->
 <!--<path d="M20,250 L20,70 L5,70 L100,10 L195,70 L180,70 L180,250 L20,250" fill="none" stroke-width="3" stroke="#333" />-->
 <path d="M35,280 L35,40 L365,40 L365,280 L35,280 Z" fill="none" stroke-width="3" stroke="#333" />
-
+<!-- Roof -->
 <path d="M35,40 L25,40 L35,20 L365,20 L375,40 Z" fill="none" stroke-width="3" stroke="#333" />
-
-
-<!-- Shadow -->
+<!-- Roof Shadow -->
 <path d="M36,45 L364,45" fill="none" stroke-width="8" stroke="#333" />
 <!-- Door -->
 <path d="M180,280 L180,210 L220,210 L220,280" fill="#333" stroke-width="3" stroke="#333" />
-<!--
-<path d="M80,250 L80,170 L120,170 L120,250" fill="none" stroke-width="3" stroke="#333" />
--->
 <!-- Windows -->
 <use x="65" y="60" xlink:href="#window" />
 <use x="65" y="110" xlink:href="#window" />
@@ -43,14 +38,4 @@
 <use x="305" y="110" xlink:href="#window" />
 <use x="305" y="160" xlink:href="#window" />
 <use x="305" y="210" xlink:href="#window" />
-<!--
-<use x="40" y="90" xlink:href="#window" />
-<use x="40" y="130" xlink:href="#window" />
-<use x="40" y="170" xlink:href="#window" />
-<use x="85" y="90" xlink:href="#window" />
-<use x="85" y="130" xlink:href="#window" />
-<use x="130" y="90" xlink:href="#window" />
-<use x="130" y="130" xlink:href="#window" />
-<use x="130" y="170" xlink:href="#window" />
--->
 </svg>

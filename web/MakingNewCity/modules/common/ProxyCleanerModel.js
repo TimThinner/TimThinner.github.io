@@ -23,7 +23,7 @@ export default class ProxyCleanerModel extends Model {
 				return response.json();
 			})
 			.then(function(myJson) {
-				//console.log(['clean myJson=',myJson]);
+				console.log(['ProxyCleanerModel fetch myJson=',myJson]);
 				self.fetching = false;
 				self.ready = true;
 				self.notifyAll({model:self.name, method:'fetch', status:status, message:'OK'});

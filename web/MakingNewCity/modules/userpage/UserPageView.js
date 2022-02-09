@@ -328,7 +328,7 @@ export default class UserPageView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './svg/user.svg');
+			img.setAttribute('href', './svg/settings.svg');
 			group.appendChild(img);
 			
 		} else if (type === 'WATER') {

@@ -3,16 +3,19 @@
 <!--
 <rect x="1" y="1" width="398" height="298" style="stroke:#51b0ce;stroke-width:1px;fill:none;" />
 -->
-<circle cx="200" cy="150" r="96" style="stroke:#333;stroke-width:3;fill:#ccc;opacity:1;"/>
-<path d="M180,150 L180,30 L220,30 L220,150 Z" fill="#ccc" stroke-width="3" stroke="#333" />
-<path d="M180,150 L180,30 L220,30 L220,150 Z" fill="#ccc" stroke-width="3" stroke="#333" transform="rotate(45, 200, 150)" />
-<path d="M180,150 L180,30 L220,30 L220,150 Z" fill="#ccc" stroke-width="3" stroke="#333" transform="rotate(90, 200, 150)" />
-<path d="M180,150 L180,30 L220,30 L220,150 Z" fill="#ccc" stroke-width="3" stroke="#333" transform="rotate(135, 200, 150)" />
-<path d="M180,150 L180,30 L220,30 L220,150 Z" fill="#ccc" stroke-width="3" stroke="#333" transform="rotate(180, 200, 150)" />
-<path d="M180,150 L180,30 L220,30 L220,150 Z" fill="#ccc" stroke-width="3" stroke="#333" transform="rotate(225, 200, 150)" />
-<path d="M180,150 L180,30 L220,30 L220,150 Z" fill="#ccc" stroke-width="3" stroke="#333" transform="rotate(270, 200, 150)" />
-<path d="M180,150 L180,30 L220,30 L220,150 Z" fill="#ccc" stroke-width="3" stroke="#333" transform="rotate(315, 200, 150)" />
-<circle cx="200" cy="150" r="93" style="stroke:#ccc;stroke-width:3;fill:#ccc;opacity:1;"/>
-<circle cx="200" cy="150" r="48" style="stroke:#333;stroke-width:3;fill:#fff;opacity:1;"/>
-<circle cx="200" cy="150" r="40" style="stroke:#333;stroke-width:3;fill:#fff;opacity:1;"/>
+<circle cx="200" cy="150" r="110" style="stroke:#333;stroke-width:8;fill:#ccc;opacity:1;"/>
+
+<path d="M180,150 L180,10 L220,10 L220,150 Z" fill="#ccc" stroke-width="8" stroke="#333" />
+<path d="M180,150 L180,10 L220,10 L220,150 Z" fill="#ccc" stroke-width="8" stroke="#333" transform="rotate(45, 200, 150)" />
+<path d="M180,150 L180,10 L220,10 L220,150 Z" fill="#ccc" stroke-width="8" stroke="#333" transform="rotate(90, 200, 150)" />
+<path d="M180,150 L180,10 L220,10 L220,150 Z" fill="#ccc" stroke-width="8" stroke="#333" transform="rotate(135, 200, 150)" />
+<path d="M180,150 L180,10 L220,10 L220,150 Z" fill="#ccc" stroke-width="8" stroke="#333" transform="rotate(180, 200, 150)" />
+<path d="M180,150 L180,10 L220,10 L220,150 Z" fill="#ccc" stroke-width="8" stroke="#333" transform="rotate(225, 200, 150)" />
+<path d="M180,150 L180,10 L220,10 L220,150 Z" fill="#ccc" stroke-width="8" stroke="#333" transform="rotate(270, 200, 150)" />
+<path d="M180,150 L180,10 L220,10 L220,150 Z" fill="#ccc" stroke-width="8" stroke="#333" transform="rotate(315, 200, 150)" />
+
+<circle cx="200" cy="150" r="102" style="stroke:#ccc;stroke-width:8;fill:#ccc;opacity:1;"/>
+
+<circle cx="200" cy="150" r="50" style="stroke:#333;stroke-width:8;fill:#fff;opacity:1;"/>
+<!--<circle cx="200" cy="150" r="40" style="stroke:#333;stroke-width:3;fill:#fff;opacity:1;"/>-->
 </svg>

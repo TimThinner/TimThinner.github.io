@@ -264,31 +264,18 @@ export default class UserPageView extends View {
 		const LIGHTGREEN = '#73d3ae';
 		const DARKGREEN = '#1fac78';
 		
-		const framer = 6*r/5;
-		const corner = r;
-		
-		let cy = 0;
+		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		// If view is SQUARE: Put all circles to vertical center.
 		// If view is PORTRAIT: Put all circles to vertical center.
 		// If view is LANDSCAPE: Move all circles 10% down from vertical center.
 		if (this.REO.mode === 'LANDSCAPE') {
-			cy = this.REO.height*0.1;
+			ty = this.REO.height*0.1;
 		}
 		
-		const icon_w = r;
-		const icon_x = -icon_w*0.5;
-		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
-		const icon_y = cy - icon_h*0.5;
+		const framer = 6*r/5;
+		const corner = r;
 		
 		const group = document.createElementNS(svgNS, "g");
-		
-		const img = document.createElementNS(svgNS, "image");
-		img.setAttribute('x', icon_x);
-		img.setAttribute('y', icon_y);
-		img.setAttribute('width', icon_w);
-		img.setAttribute('height', icon_h);
-		img.setAttribute('href', './svg/user.svg');
-		group.appendChild(img);
 		
 		const dF = 'M-'+framer+','+framer+' L-'+framer+',-'+framer+' L'+framer+',-'+framer+' L'+framer+','+framer+' Z';
 		const pathF = document.createElementNS(svgNS, "path");
@@ -347,6 +334,21 @@ export default class UserPageView extends View {
 		pathRC.style.fillOpacity = 0.5
 		//$('#space').append(pathRC);
 		group.appendChild(pathRC);
+		
+		const icon_w = r;
+		const icon_x = -icon_w*0.5;
+		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		const icon_y = -icon_h*0.5;
+		
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', icon_x);
+		img.setAttribute('y', icon_y);
+		img.setAttribute('width', icon_w);
+		img.setAttribute('height', icon_h);
+		img.setAttribute('href', './svg/user.svg');
+		group.appendChild(img);
+		
+		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		
 		$('#space').append(group);
 	}

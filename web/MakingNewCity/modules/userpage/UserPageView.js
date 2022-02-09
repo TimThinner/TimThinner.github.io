@@ -150,15 +150,17 @@ export default class UserPageView extends View {
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'SETTINGS') {
-			tx = ty = -12*r/5;
+			tx = 0;
+			ty = -2*r;
 		} else if (type === 'WATER') {
-			tx = 12*r/5;
-			ty = -12*r/5;
+			tx = 2*r;
+			ty = 0;
 		} else if (type === 'TEMPERATURE') {
-			tx = -12*r/5;
-			ty = 12*r/5;
+			tx = 0;
+			ty = 2*r;
 		} else if (type === 'ELECTRICITY') {
-			tx = ty = 12*r/5;
+			tx = -2*r;
+			ty = 0;
 		}
 		
 		const group = document.createElementNS(svgNS, "g");

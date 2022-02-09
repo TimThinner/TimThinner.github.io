@@ -453,7 +453,7 @@ export default class MenuView extends View {
 			group.appendChild(img);
 			
 		} else if (type === 'USER') {
-			if (this.USER_MODEL.isLoggedIn()) {
+			//if (this.USER_MODEL.isLoggedIn()) {
 				const img = document.createElementNS(svgNS, "image");
 				img.setAttribute('x', icon_x);
 				img.setAttribute('y', icon_y);
@@ -461,15 +461,15 @@ export default class MenuView extends View {
 				img.setAttribute('height', icon_h);
 				img.setAttribute('href', './svg/user.svg');
 				group.appendChild(img);
-			} else {
-				const img = document.createElementNS(svgNS, "image");
+			//} else {
+				/*const img = document.createElementNS(svgNS, "image");
 				img.setAttribute('x', icon_x);
 				img.setAttribute('y', icon_y);
 				img.setAttribute('width', icon_w);
 				img.setAttribute('height', icon_h);
 				img.setAttribute('href', './svg/anon.svg');
-				group.appendChild(img);
-			}
+				group.appendChild(img);*/
+			//}
 			
 		} else if (type === 'SOLAR') {
 			const img = document.createElementNS(svgNS, "image");
@@ -515,16 +515,16 @@ export default class MenuView extends View {
 			}, false);
 			
 		} else if (type === 'USER') {
-			if (this.USER_MODEL.isLoggedIn()) {
+			//if (this.USER_MODEL.isLoggedIn()) {
 				surface.addEventListener("click", function(){
 					self.models['MenuModel'].setSelected('userpage');
 				}, false);
-			} else {
-				console.log('NOT LOGGED IN!');
+			//} else {
+				/*console.log('NOT LOGGED IN!');
 				surface.addEventListener("click", function(){
 					console.log('HEY, USER CLICKED!');
-				}, false);
-			}
+				}, false);*/
+			//}
 			
 		} else if (type === 'SOLAR') {
 			surface.addEventListener("click", function(){

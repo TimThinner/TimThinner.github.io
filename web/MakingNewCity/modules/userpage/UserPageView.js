@@ -60,6 +60,46 @@ export default class UserPageView extends View {
 		return r;
 	}
 	
+	appendConnector(corner, endpoint, pos) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		let d, cx, cy;
+		if (pos === 0) {
+			d = 'M-'+corner+','+corner+' L-'+endpoint+','+endpoint;
+			cx = -corner;
+			cy = corner;
+		} else if (pos === 1) {
+			d = 'M-'+corner+',-'+corner+' L-'+endpoint+',-'+endpoint;
+			cx = -corner;
+			cy = -corner;
+		} else if (pos === 2) {
+			d = 'M'+corner+',-'+corner+' L'+endpoint+',-'+endpoint;
+			cx = corner;
+			cy = -corner;
+		} else {
+			d = 'M'+corner+','+corner+' L'+endpoint+','+endpoint;
+			cx = corner;
+			cy = corner;
+		}
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttributeNS(null, 'd', d);
+		path.style.stroke = DARK_BLUE;
+		path.style.strokeWidth = 2;
+		path.style.opacity = 0.5;
+		path.style.fill = 'none';
+		$('#space').append(path);
+		
+		const c = document.createElementNS(svgNS, "circle");
+		c.setAttributeNS(null, 'cx', cx);
+		c.setAttributeNS(null, 'cy', cy);
+		c.setAttributeNS(null, 'r', 3);
+		c.style.stroke = DARK_BLUE;
+		c.style.strokeWidth = 2;
+		c.style.opacity = 0.5;
+		c.style.fill = DARK_BLUE;
+		$('#space').append(c);
+	}
+	
 	createSpace() {
 		//$('html').css('background-color','#012265');
 		//$('body').css('background-color','#012265');
@@ -250,6 +290,103 @@ export default class UserPageView extends View {
 		containerElement.appendChild(lineB);
 	}
 	
+	
+	/*
+	The radius of circle is 12,5% of H or W (smaller dimension).
+	=> circle diameter is 25% of H or W.
+	*/
+	appendApartment() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const framer = 7*r/5;
+		const corner = 6*r/5;
+		
+		const bx = -60;
+		const by = -10*r/5;
+		const bw = 120;
+		const bh = 34;
+		//const rr = 7*r/5;
+		//const corner = Math.sin(45*Math.PI/180) * rr; // sin(45) * r;   45*PI/180
+		const endpoint = 12*r/5;
+		
+		const dF = 'M-'+framer+','+framer+' L-'+framer+',-'+framer+' L'+framer+',-'+framer+' L'+framer+','+framer+' Z';
+		const pathF = document.createElementNS(svgNS, "path");
+		pathF.setAttributeNS(null, 'd', dF);
+		pathF.style.stroke = DARK_BLUE;
+		pathF.style.strokeWidth = 3;
+		pathF.style.fill = '#ffffff';
+		pathF.style.fillOpacity = 1;
+		pathF.style.opacity = 0.5;
+		$('#space').append(pathF);
+		
+		const d = 'M-'+corner+','+corner+' L-'+corner+',-'+corner+' L'+corner+',-'+corner+' L'+corner+','+corner+' Z';
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttributeNS(null, 'd', d);
+		path.style.stroke = DARK_BLUE;
+		path.style.strokeWidth = 5;
+		path.style.opacity = 0.5;
+		path.style.fill = '#ffffff';
+		path.style.fillOpacity = 1;
+		
+		$('#space').append(path);
+		
+		/*const c = document.createElementNS(svgNS, "circle");
+		c.setAttributeNS(null, 'cx', 0);
+		c.setAttributeNS(null, 'cy', 0);
+		c.setAttributeNS(null, 'r', rr);
+		c.style.stroke = DARK_BLUE;
+		c.style.strokeWidth = 12;
+		c.style.opacity = 0.5;
+		c.style.fill = DARK_BLUE;
+		c.style.fillOpacity = 0.1;
+		$('#space').append(c);
+		
+		this.appendConnector(corner, endpoint, 0); // Bottom Left
+		this.appendConnector(corner, endpoint, 1); // Top Left
+		this.appendConnector(corner, endpoint, 2); // Top Right
+		this.appendConnector(corner, endpoint, 3); // Bottom Right
+		*/
+		this.appendConnector(framer, endpoint, 0); // Bottom Left
+		this.appendConnector(framer, endpoint, 1); // Top Left
+		this.appendConnector(framer, endpoint, 2); // Top Right
+		this.appendConnector(framer, endpoint, 3); // Bottom Right
+		
+		const gap = corner*0.2;
+		const pad = corner-gap;
+		// LEFT CURTAIN FOR HOME WINDOW!
+		//<path d="M-140,-140 L-28,-140 A300,300 0 0 1 -140,0 A400,400 0 0 1 -112,140 L-140,140 Z" 
+		//stroke="#000" stroke-width="3" fill="#00a" fill-opacity="0.75" opacity="0.75" />
+		const dLC = 'M-'+corner+',-'+corner+' L-'+gap+',-'+corner+
+			' A300,300 0 0 1 -'+corner+',0'+
+			' A400,400 0 0 1 -'+pad+','+corner+
+			' L-'+corner+','+corner+' Z';
+		const pathLC = document.createElementNS(svgNS, "path");
+		pathLC.setAttributeNS(null, 'd', dLC);
+		pathLC.style.stroke = DARK_BLUE;
+		pathLC.style.strokeWidth = 3;
+		pathLC.style.opacity = 0.5;
+		pathLC.style.fill = DARK_BLUE;
+		pathLC.style.fillOpacity = 0.5
+		$('#space').append(pathLC);
+		
+		// RIGHT CURTAIN FOR HOME WINDOW!
+		//<path d="M140,-140 L28,-140 A300,300 0 0 0 140,0 A400,400 0 0 0 112,140 L140,140 Z" 
+		//stroke="#000" stroke-width="3" fill="#00a" fill-opacity="0.75" opacity="0.75" />
+		const dRC = 'M'+corner+',-'+corner+' L'+gap+',-'+corner+
+			' A300,300 0 0 0 '+corner+',0'+
+			' A400,400 0 0 0 '+pad+','+corner+
+			' L'+corner+','+corner+' Z';
+		const pathRC = document.createElementNS(svgNS, "path");
+		pathRC.setAttributeNS(null, 'd', dRC);
+		pathRC.style.stroke = DARK_BLUE;
+		pathRC.style.strokeWidth = 3;
+		pathRC.style.opacity = 0.5;
+		pathRC.style.fill = DARK_BLUE;
+		pathRC.style.fillOpacity = 0.5
+		$('#space').append(pathRC);
+	}
+	
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -408,6 +545,7 @@ export default class UserPageView extends View {
 		$(this.el).empty();
 		this.createSpace();
 		this.appendLogo();
+		this.appendApartment();
 		this.appendSun('SETTINGS');
 		this.appendSun('WATER');
 		this.appendSun('TEMPERATURE');

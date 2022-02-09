@@ -272,8 +272,8 @@ export default class UserPageView extends View {
 			ty = this.REO.height*0.1;
 		}
 		
-		const framer = r;
-		const corner = 4*r/5;
+		const framer = 7*r/5;
+		const corner = 6*r/5;
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -357,6 +357,14 @@ export default class UserPageView extends View {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
+		let icon_w = 0;
+		if (type === 'USER') {
+			r = r*1.2; // 120%
+			icon_w = r*2; // Make image bigger.
+		} else {
+			r = r*0.8; // 80%
+			icon_w = r;
+		}
 		
 		const WHITE = '#fff';
 		const BLUE = '#51b0ce';
@@ -373,7 +381,7 @@ export default class UserPageView extends View {
 		
 		const r2 = r-r*0.1;
 		const r3 = r-r*0.3;
-		const icon_w = r;
+		
 		const icon_x = -icon_w*0.5;
 		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		const icon_y = cy - icon_h*0.5;

@@ -22,22 +22,4 @@ export default class Model extends EventObserver {
 		console.log('DUMMY FETCH!');
 		this.ready = true;
 	}
-	// To remove all proxy entries that are obviously old.
-	cleanProxy() {
-		const self = this;
-		let status = 500;
-		const url = this.mongoBackend + '/proxes/clean/';
-		fetch(url)
-			.then(function(response) {
-				status = response.status;
-				return response.json();
-			})
-			.then(function(myJson) {
-				console.log(['clean myJson=',myJson]);
-				self.notifyAll({model:self.name, method:'clean', status:status, message:'OK'});
-			})
-			.catch(error => {
-				self.notifyAll({model:self.name, method:'clean', status:status, message:error});
-			});
-	}
 }

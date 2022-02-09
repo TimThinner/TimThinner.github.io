@@ -515,9 +515,16 @@ export default class MenuView extends View {
 			}, false);
 			
 		} else if (type === 'USER') {
-			surface.addEventListener("click", function(){
-				console.log('HEY, USER CLICKED!');
-			}, false);
+			if (this.USER_MODEL.isLoggedIn()) {
+				surface.addEventListener("click", function(){
+					self.models['MenuModel'].setSelected('userpage');
+				}, false);
+			} else {
+				console.log('NOT LOGGED IN!');
+				surface.addEventListener("click", function(){
+					console.log('HEY, USER CLICKED!');
+				}, false);
+			}
 			
 		} else if (type === 'SOLAR') {
 			surface.addEventListener("click", function(){

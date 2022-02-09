@@ -4,6 +4,7 @@ import LanguageModel from './modules/common/LanguageModel.js';
 import UserModel from './modules/user/UserModel.js';
 import MenuController from './modules/menu/MenuController.js';
 import DistrictController from './modules/district/DistrictController.js';
+import UserPageController from './modules/userpage/UserPageController.js';
 
 class MasterController {
 	
@@ -17,7 +18,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.09.A');
+		console.log('MasterController init v2022.02.09.B');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -42,6 +43,9 @@ class MasterController {
 		
 		this.controllers['district'] = new DistrictController({name:'district', master:this, el:'#content', visible:false});
 		this.controllers['district'].init();
+		
+		this.controllers['userpage'] = new UserPageController({name:'userpage', master:this, el:'#content', visible:false});
+		this.controllers['userpage'].init();
 		
 		console.log('ALL Controllers are now created!');
 	}

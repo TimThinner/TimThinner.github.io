@@ -11,8 +11,6 @@ export default class DistrictView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		this.rendered = false;
-		
-		console.log('DistrictView constructor v1');
 	}
 	
 	show() {

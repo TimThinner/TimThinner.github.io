@@ -9,10 +9,18 @@ What data is needed?
 		new VisitorCountModel({name:'VisitorCountModel',src:''});
 		new UserModel({name:'UserModel',src:'user'});
 		
+		
+		
+		
+		
+		
 	this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 1		new MenuModel({name:'MenuModel',src:'menu'});
 2		new FingridModel({name:'FingridPowerSystemStateModel',src:'https://api.fingrid.fi/v1/variable/209/event/json'});
 3		30 new EmpoModel('EmpoEmissions1Model' ... 'EmpoEmissions30Model'   emissions/findByDate?country=FI&EmDB=EcoInvent 30 models to fetch 30 days of emissions from university server
+		  (CHECK EnvironmentPageController => EmpoEmissions)
+		
+		
 		
 	this.controllers['userlogin'] = new UserLoginController({name:'userlogin', master:this, el:'#content', visible:false});
 		NO NEW MODELS
@@ -166,4 +174,24 @@ What data is needed?
 	this.controllers['DD'] = new DistrictDController({name:'DD', master:this, el:'#content', visible:false});
 	this.controllers['DE'] = new DistrictEController({name:'DE', master:this, el:'#content', visible:false});
 	
+
+===========================================================================================================
+NOTE: View handles the PeriodicTimeoutObserver stuff. But it is the controller, whos job is to 
+create models and push them to the modelRepo.
+So the actual model fetch is called from controller or view, depending on how it is implemented in each case.
+===========================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

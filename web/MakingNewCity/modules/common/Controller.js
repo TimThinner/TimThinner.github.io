@@ -1,18 +1,5 @@
-import PeriodicPoller from '../common/PeriodicPoller.js';
 
-export default class Controller extends PeriodicPoller {
-	
-	/*
-	Timers are used to fetch (update) data periodically.
-	Timers are owned by Controller, and any Controller can initialize one or more timers
-	using a syntax like this:
-	
-	this.timers['DistrictAView'] = {timer: undefined, interval: 30000, models:['StatusModel']};
-	
-	If there are many charts in one view, a Controller creates a WrapperView, which holds all subviews.
-	It is important to notice here that one chart can display data from multiple models, but one chart 
-	can have only one timer.
-	*/
+export default class Controller {
 	
 	constructor(options) {
 		super(options);
@@ -52,8 +39,6 @@ export default class Controller extends PeriodicPoller {
 		if (this.visible && this.view) {
 			console.log('CONTROLLER SHOW');
 			this.view.show();
-			// Start polling all timers for THIS CONTROLLER:
-			this.startPollers();
 		}
 	}
 	

@@ -13,31 +13,45 @@ export default class ResizeEventObserver extends EventObserver {
 	}
 	
 	resize() {
-		this.width = $(window).width()-this.SCROLLBARWIDTH;
-		this.height = $(window).height()-this.SCROLLBARWIDTH;
-		
+		const w = $(window).width();
+		const h = $(window).height();
+		/*
+		Screen Sizes (in Materialize CSS)
+		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+		<= 600px 			> 600px 			> 992px 				> 1200px
+		*/
 		// New implementation:
 		// Notify ALWAYS, but set mode also because there are views which need to know 
 		// are we in PORTRAIT, SQUARE or LADSCAPE mode (aspect ratio).
-		setTimeout(() => this.notifyAll({model:'ResizeEventObserver',method:'resize',status:200,message:''}), 100);
-		
 		let _mode = 'SQUARE';
 		// Tolerance +-25% for square
 		let diffe = 0;
-		if (this.width > this.height) {
+		if (w > h) {
 			// Maybe landscape?
-			diffe = this.width - this.height;
-			if (diffe > 0.25*this.width) {
+			diffe = w - h;
+			if (diffe > 0.25*w) {
 				_mode = 'LANDSCAPE';
 			}
 		} else {
 			// Maybe portrait?
-			diffe = this.height - this.width;
-			if (diffe > 0.25*this.height) {
+			diffe = h - w;
+			if (diffe > 0.25*h) {
 				_mode = 'PORTRAIT';
 			}
 		}
 		this.mode = _mode;
+		if (w <= 600) { // Mobile Devices
+			this.width = w;
+			if (_mode === 'LANDSCAPE') {
+				this.height = h;
+			} else {
+				this.height = h - this.SCROLLBARWIDTH;
+			}
+		} else {
+			this.width = w - this.SCROLLBARWIDTH;
+			this.height = h - this.SCROLLBARWIDTH;
+		}
+		setTimeout(() => this.notifyAll({model:'ResizeEventObserver',method:'resize',status:200,message:''}), 100);
 	}
 	
 	resizeThrottler() {

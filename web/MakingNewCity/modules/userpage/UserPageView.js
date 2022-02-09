@@ -272,8 +272,8 @@ export default class UserPageView extends View {
 			ty = this.REO.height*0.1;
 		}
 		
-		const framer = 6*r/5;
-		const corner = r;
+		const framer = r;
+		const corner = 4*r/5;
 		
 		const group = document.createElementNS(svgNS, "g");
 		

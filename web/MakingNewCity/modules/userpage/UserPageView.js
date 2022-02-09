@@ -122,6 +122,133 @@ export default class UserPageView extends View {
 		$(this.el).append(svg);
 	}
 	
+	appendLogo() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const w = this.REO.width;
+		const h = this.REO.height;
+		
+		const FILLCOLOR = '#777';
+		const STROKECOLOR = '#777';
+		/*
+		Screen Sizes (in Materialize CSS)
+		Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
+		<= 600px 			> 600px 			> 992px 				> 1200px
+		*/
+		let fontsize;
+		if (w <= 600) {
+			console.log('Mobile Device.');
+			fontsize = 36; // big font 36, small font 12
+			
+		} else if (w > 600 && w <= 992) {
+			console.log('Tablet Device.');
+			fontsize = 42; // big font 42, small font 14
+			
+		} else if (w > 992 && w <= 1200) {
+			console.log('Desktop Device.');
+			fontsize = 54; // big font 54, small font 18
+			
+		} else {
+			console.log('Large Desktop Device.');
+			fontsize = 72; // big font 72, small font 24
+		}
+		const bw = w;
+		const bh = fontsize+fontsize*0.5;
+		const bx = -w*0.5;
+		const by = -h*0.5+fontsize*0.25;
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.id = 'logo-svg';
+		svg.setAttribute('x',bx);
+		svg.setAttribute('y',by);
+		svg.setAttributeNS(null,'width',bw);
+		svg.setAttributeNS(null,'height',bh);
+		/*
+		const rect_bg = document.createElementNS(svgNS, 'rect');
+		rect_bg.setAttribute('x',1);
+		rect_bg.setAttribute('y',1);
+		rect_bg.setAttribute('width',bw-2);
+		rect_bg.setAttribute('height',bh-2);
+		rect_bg.style.stroke = '#ccc';
+		rect_bg.style.strokeWidth = 1;
+		rect_bg.style.fill = 'none';
+		svg.appendChild(rect_bg);
+		*/
+		/*
+			opacity: 0.75;
+			stroke-width: 2;
+			stroke: #444;
+		<text x="-370" y="-390" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="128px" fill="#444">Making City</text>
+		<path class="grid-head" d="M-900 -481 H-361" />
+		<path class="grid-head" d="M36 -388 H900" />
+		<text x="65" y="-340" opacity="0.75" font-family="Arial, Helvetica, sans-serif" font-size="36px" fill="#444">Positive Energy Districts</text>
+		*/
+		const d_fontsize = fontsize/3;
+		
+		
+		const title = document.createElementNS(svgNS, 'text');
+		title.id = 'logo-title';
+		title.setAttribute('x','50%');
+		title.setAttribute('y','40%');
+		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		title.setAttribute('font-size',fontsize);
+		title.setAttribute('dominant-baseline','middle');
+		title.setAttribute('text-anchor','middle');
+		title.setAttribute('fill',FILLCOLOR);
+		title.style.opacity = 0.75;
+		title.appendChild(document.createTextNode('Making City'));
+		svg.appendChild(title);
+		
+		const descr = document.createElementNS(svgNS, 'text');
+		descr.setAttribute('x','70%');
+		descr.setAttribute('y','80%');
+		descr.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		descr.setAttribute('font-size',d_fontsize);
+		descr.setAttribute('dominant-baseline','middle');
+		descr.setAttribute('text-anchor','middle');
+		descr.setAttribute('fill',FILLCOLOR);
+		descr.style.opacity = 0.75;
+		descr.appendChild(document.createTextNode('Positive Energy Districts'));
+		svg.appendChild(descr);
+		
+		$('#space').append(svg);
+		
+		const textElement = document.querySelector('#logo-title');
+		const containerElement = document.querySelector('#logo-svg');
+		const bboxGroup = textElement.getBBox();
+		//console.log(['HIPHEI MONDAY BEE! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
+		/*
+		const rect_foo = document.createElementNS(svgNS, 'rect');
+		rect_foo.setAttribute('x',bboxGroup.x);
+		rect_foo.setAttribute('y',bboxGroup.y);
+		rect_foo.setAttribute('width',bboxGroup.width);
+		rect_foo.setAttribute('height',bboxGroup.height);
+		rect_foo.style.stroke = '#f00';
+		rect_foo.style.strokeWidth = 4;
+		rect_foo.style.fill = 'none';
+		containerElement.appendChild(rect_foo);
+		*/
+		const laposY = fontsize*0.14;
+		const laposX = bboxGroup.x+fontsize*0.05;
+		const da = 'M0,'+laposY+' H'+laposX;
+		const lineA = document.createElementNS(svgNS, "path");
+		lineA.setAttributeNS(null, 'd', da);
+		lineA.style.stroke = STROKECOLOR;
+		lineA.style.strokeWidth = 2;
+		lineA.style.opacity = 0.75;
+		lineA.style.fill = 'none';
+		containerElement.appendChild(lineA);
+		
+		const lbposY = bboxGroup.height-bboxGroup.height*0.2;
+		const lbposX = bboxGroup.x+bboxGroup.width*0.61;
+		const db = 'M'+lbposX+','+lbposY+' H'+w;
+		const lineB = document.createElementNS(svgNS, "path");
+		lineB.setAttributeNS(null, 'd', db);
+		lineB.style.stroke = STROKECOLOR;
+		lineB.style.strokeWidth = 2;
+		lineB.style.opacity = 0.75;
+		lineB.style.fill = 'none';
+		containerElement.appendChild(lineB);
+	}
 	
 	appendSun(type) {
 		const self = this;
@@ -280,6 +407,7 @@ export default class UserPageView extends View {
 	renderALL() {
 		$(this.el).empty();
 		this.createSpace();
+		this.appendLogo();
 		this.appendSun('SETTINGS');
 		this.appendSun('WATER');
 		this.appendSun('TEMPERATURE');

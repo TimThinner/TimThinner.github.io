@@ -6,7 +6,7 @@ export default class ResizeEventObserver extends EventObserver {
 		super();
 		this.resize_handler_set = false;
 		this.resizeTimeout = null;
-		this.SCROLLBARWIDTH = 16;
+		this.SCROLLBARWIDTH = 8;
 		this.mode = undefined;
 		this.width = undefined;
 		this.height = undefined;
@@ -40,6 +40,7 @@ export default class ResizeEventObserver extends EventObserver {
 			}
 		}
 		this.mode = _mode;
+		/*
 		if (w <= 600) { // Mobile Devices
 			this.width = w;
 			if (_mode === 'LANDSCAPE') {
@@ -50,7 +51,9 @@ export default class ResizeEventObserver extends EventObserver {
 		} else {
 			this.width = w - this.SCROLLBARWIDTH;
 			this.height = h - this.SCROLLBARWIDTH;
-		}
+		}*/
+		this.width = w - this.SCROLLBARWIDTH;
+		this.height = h - this.SCROLLBARWIDTH;
 		setTimeout(() => this.notifyAll({model:'ResizeEventObserver',method:'resize',status:200,message:''}), 100);
 	}
 	

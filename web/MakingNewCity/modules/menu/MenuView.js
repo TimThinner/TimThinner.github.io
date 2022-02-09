@@ -60,7 +60,9 @@ export default class MenuView extends View {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				
-				this.show();
+				// This could be just render()
+				// BUT do we want to also restart PeriodicTimeoutObserver?
+				this.show(); 
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Do something with each TICK!

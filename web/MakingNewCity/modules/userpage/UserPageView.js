@@ -272,8 +272,8 @@ export default class UserPageView extends View {
 			ty = this.REO.height*0.1;
 		}
 		
-		const framer = 7*r/5;
-		const corner = 6*r/5;
+		const framer = 6*r/5;
+		const corner = r;
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -359,10 +359,10 @@ export default class UserPageView extends View {
 		let r = this.sunRadius();
 		let icon_w = 0;
 		if (type === 'USER') {
-			r = r*1.2; // 120%
-			icon_w = r*2; // Make image bigger.
+			r = r*1.1; // 110%
+			icon_w = r*1.1; // Make image bigger.
 		} else {
-			r = r*0.8; // 80%
+			r = r*0.9; // 90%
 			icon_w = r;
 		}
 		

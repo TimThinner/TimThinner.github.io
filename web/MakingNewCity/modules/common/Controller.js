@@ -2,7 +2,7 @@
 export default class Controller {
 	
 	constructor(options) {
-		super(options);
+		
 		this.name    = options.name;
 		this.master  = options.master;
 		this.visible = options.visible;

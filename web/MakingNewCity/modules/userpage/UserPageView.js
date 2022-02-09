@@ -335,18 +335,18 @@ export default class UserPageView extends View {
 		//$('#space').append(pathRC);
 		group.appendChild(pathRC);
 		
+		/*
 		const icon_w = r;
 		const icon_x = -icon_w*0.5;
 		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		const icon_y = -icon_h*0.5;
-		
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', icon_x);
 		img.setAttribute('y', icon_y);
 		img.setAttribute('width', icon_w);
 		img.setAttribute('height', icon_h);
 		img.setAttribute('href', './svg/user.svg');
-		group.appendChild(img);
+		group.appendChild(img);*/
 		
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		
@@ -379,18 +379,19 @@ export default class UserPageView extends View {
 		const icon_y = cy - icon_h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
-		if (type === 'SETTINGS') {
-			tx = 0;
-			ty = -2*r;
-		} else if (type === 'WATER') {
-			tx = 2*r;
-			ty = 0;
-		} else if (type === 'TEMPERATURE') {
-			tx = 0;
-			ty = 2*r;
+		if (type === 'MENU') {
+			tx = ty = -12*r/5;
+		} else if (type === 'LOGOUT') {
+			tx = 12*r/5;
+			ty = -12*r/5;
 		} else if (type === 'ELECTRICITY') {
-			tx = -2*r;
-			ty = 0;
+			tx = -12*r/5;
+			ty = 12*r/5;
+		} else if (type === 'HEATING') {
+			tx = 0;
+			ty = 12*r/5;
+		} else if (type === 'WATER') {
+			tx = ty = 12*r/5;
 		}
 		
 		const group = document.createElementNS(svgNS, "g");
@@ -425,13 +426,49 @@ export default class UserPageView extends View {
 		cb.style.strokeWidth = 0.5;
 		group.appendChild(cb);
 		
-		if (type === 'SETTINGS') {
+		if (type === 'USER') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', icon_x);
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './svg/settings.svg');
+			img.setAttribute('href', './svg/user.svg');
+			group.appendChild(img);
+			
+		} else if (type === 'MENU') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/city.svg');
+			group.appendChild(img);
+			
+		} else if (type === 'LOGOUT') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/logout.svg');
+			group.appendChild(img);
+			
+		} else if (type === 'ELECTRICITY') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/electricity.svg');
+			group.appendChild(img);
+			
+		} else if (type === 'HEATING') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './svg/radiator.svg');
 			group.appendChild(img);
 			
 		} else if (type === 'WATER') {
@@ -441,23 +478,6 @@ export default class UserPageView extends View {
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
 			img.setAttribute('href', './svg/water.svg');
-			group.appendChild(img);
-			
-		} else if (type === 'TEMPERATURE') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', icon_x);
-			img.setAttribute('y', icon_y);
-			img.setAttribute('width', icon_w);
-			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './svg/radiator.svg');
-			group.appendChild(img);
-		} else if (type === 'ELECTRICITY') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', icon_x);
-			img.setAttribute('y', icon_y);
-			img.setAttribute('width', icon_w);
-			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './svg/electricity.svg');
 			group.appendChild(img);
 		}
 		
@@ -471,26 +491,34 @@ export default class UserPageView extends View {
 		surface.style.cursor = 'pointer';
 		
 		// Select which pages open...
-		
-		if (type === 'SETTINGS') {
+		if (type === 'USER') {
 			surface.addEventListener("click", function(){
-				console.log('HEY, SETTINGS CLICKED!');
+				console.log('HEY, USER CLICKED!');
 			}, false);
 			
-		} else if (type === 'WATER') {
+		} else if (type === 'MENU') {
 			surface.addEventListener("click", function(){
-				console.log('HEY, WATER CLICKED!');
+				self.models['MenuModel'].setSelected('menu');
 			}, false);
 			
-		} else if (type === 'TEMPERATURE') {
+		} else if (type === 'LOGOUT') {
 			surface.addEventListener("click", function(){
-				console.log('HEY, TEMPERATURE CLICKED!');
+				console.log('HEY, LOGOUT CLICKED!');
 			}, false);
 			
 		} else if (type === 'ELECTRICITY') {
 			surface.addEventListener("click", function(){
 				console.log('HEY, ELECTRICITY CLICKED!');
-				self.models['MenuModel'].setSelected('menu');
+			}, false);
+			
+		} else if (type === 'HEATING') {
+			surface.addEventListener("click", function(){
+				console.log('HEY, HEATING CLICKED!');
+			}, false);
+			
+		} else if (type === 'WATER') {
+			surface.addEventListener("click", function(){
+				console.log('HEY, WATER CLICKED!');
 			}, false);
 		}
 		
@@ -512,10 +540,12 @@ export default class UserPageView extends View {
 		this.createSpace();
 		this.appendLogo();
 		this.appendApartment();
-		this.appendSun('SETTINGS');
-		this.appendSun('WATER');
-		this.appendSun('TEMPERATURE');
+		this.appendSun('USER');
+		this.appendSun('MENU');
+		this.appendSun('LOGOUT');
 		this.appendSun('ELECTRICITY');
+		this.appendSun('HEATING');
+		this.appendSun('WATER');
 	}
 	
 	render() {

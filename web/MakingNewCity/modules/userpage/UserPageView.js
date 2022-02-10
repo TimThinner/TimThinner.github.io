@@ -600,7 +600,7 @@ export default class UserPageView extends View {
 			surface.style.stroke = '#b2dfdb';
 			surface.style.strokeWidth = 2;
 			surface.style.fill = '#b2dfdb';
-			surface.style.fillOpacity = 0.9;
+			surface.style.fillOpacity = 0.8;
 			surface.style.cursor = 'default';
 		} else {
 			surface.style.fill = DARKGREEN;

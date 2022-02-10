@@ -536,8 +536,10 @@ export default class UserPageView extends View {
 		
 		// Disable water!
 		if (type === 'WATER') {
+			surface.style.stroke = '#eee';
+			surface.style.strokeWidth = 4;
 			surface.style.fill = WHITE;
-			surface.style.fillOpacity = 0.8;
+			surface.style.fillOpacity = 0.9;
 			surface.style.cursor = 'default';
 		} else {
 			surface.style.fill = DARKGREEN;

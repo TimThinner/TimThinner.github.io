@@ -582,10 +582,16 @@ export default class UserPageView extends View {
 		//surface.style.cursor = 'pointer';
 		
 		// Disable water!
+		/*
+			#e0f2f1 teal lighten-5
+			#b2dfdb teal lighten-4
+			#80cbc4 teal lighten-3
+		*/
+		
 		if (type === 'WATER') {
 			surface.style.stroke = '#eee';
 			surface.style.strokeWidth = 4;
-			surface.style.fill = WHITE;
+			surface.style.fill = '#b2dfdb';
 			surface.style.fillOpacity = 0.9;
 			surface.style.cursor = 'default';
 		} else {

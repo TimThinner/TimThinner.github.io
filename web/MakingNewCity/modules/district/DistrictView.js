@@ -266,15 +266,16 @@ export default class DistrictView extends View {
 			fontsize = 72;
 		}
 		const bw = fontsize*2;
-		const bh = fontsize*1.33333; // fontsize*2*100/150
+		const bh = fontsize*1.333; // fontsize*2*100/150
 		const bx = -w*0.5+fontsize;
-		const by = -h*0.5+fontsize;
+		const by = -h*0.5+fontsize*0.667; // = topline + bh/2;
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', bx);
 		img.setAttribute('y', by);
 		img.setAttribute('width', bw);
 		img.setAttribute('height', bh);
 		img.setAttribute('href', './svg/backbutton.svg');
+		img.style.cursor = 'pointer';
 		img.addEventListener("click", function(){
 			self.models['MenuModel'].setSelected('menu');
 		}, false);

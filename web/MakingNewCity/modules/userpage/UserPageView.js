@@ -314,8 +314,8 @@ export default class UserPageView extends View {
 			ty = this.REO.height*0.1;
 		}
 		
-		const framer = r;
-		const corner = 4*r/5;
+		const framer = 4*r/5;
+		const corner = 3*r/5;
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -376,7 +376,6 @@ export default class UserPageView extends View {
 		pathRC.style.fillOpacity = 0.5
 		//$('#space').append(pathRC);
 		group.appendChild(pathRC);
-		
 		
 		const icon_w = r;
 		const icon_x = -icon_w*0.5;

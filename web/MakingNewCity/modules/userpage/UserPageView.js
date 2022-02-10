@@ -62,7 +62,9 @@ export default class UserPageView extends View {
 	
 	appendConnector(group, corner, endpoint, pos) {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		//const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const DARKGREEN = '#1fac78';
+		
 		let d, cx, cy;
 		if (pos === 0) {
 			d = 'M-'+corner+','+corner+' L-'+endpoint+','+endpoint;
@@ -76,14 +78,20 @@ export default class UserPageView extends View {
 			d = 'M'+corner+',-'+corner+' L'+endpoint+',-'+endpoint;
 			cx = corner;
 			cy = -corner;
-		} else {
+		} else if (pos === 3) {
 			d = 'M'+corner+','+corner+' L'+endpoint+','+endpoint;
 			cx = corner;
 			cy = corner;
+		} else {
+			d = 'M0,'+corner+' L0,'+endpoint;
+			cx = 0;
+			cy = corner;
 		}
+		
+		
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
-		path.style.stroke = DARK_BLUE;
+		path.style.stroke = DARKGREEN;
 		path.style.strokeWidth = 2;
 		path.style.opacity = 0.5;
 		path.style.fill = 'none';
@@ -94,10 +102,10 @@ export default class UserPageView extends View {
 		c.setAttributeNS(null, 'cx', cx);
 		c.setAttributeNS(null, 'cy', cy);
 		c.setAttributeNS(null, 'r', 3);
-		c.style.stroke = DARK_BLUE;
+		c.style.stroke = DARKGREEN;
 		c.style.strokeWidth = 2;
 		c.style.opacity = 0.5;
-		c.style.fill = DARK_BLUE;
+		c.style.fill = DARKGREEN;
 		//$('#space').append(c);
 		group.appendChild(c);
 	}
@@ -388,6 +396,7 @@ export default class UserPageView extends View {
 		this.appendConnector(group, framer, endpoint, 1); // Top Left
 		this.appendConnector(group, framer, endpoint, 2); // Top Right
 		this.appendConnector(group, framer, endpoint, 3); // Bottom Right
+		this.appendConnector(group, framer, endpoint, 4); // Bottom CENTER
 		
 		const gap = corner*0.2;
 		const pad = corner-gap;

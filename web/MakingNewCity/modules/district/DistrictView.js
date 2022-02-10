@@ -248,10 +248,6 @@ export default class DistrictView extends View {
 	/*
 	class="back-button" x="80" y="25" width="105" height="70" xlink:href="backbutton.svg" />
 	width="150" height="100"
-	
-	
-	Lets fix the max height to 50 pixels => max width = 75 pixels. 
-	
 	NOTE:
 	Uses dimensions created in appendLogo() -method.
 	*/
@@ -271,23 +267,12 @@ export default class DistrictView extends View {
 		} else {
 			bw = 90;
 		}
-		/*
-		const bw = fontsize*2;
-		const bh = fontsize*1.333; // fontsize*2*100/150
-		const bx = -w*0.5+fontsize;
-		const by = -h*0.5+fontsize*0.667; // = topline + bh/2;
-		*/
 		const textElement = document.querySelector('#logo-title');
 		const bboxGroup = textElement.getBBox();
 		
-		//const bw = fontsize*1.75; // A little bit smaller than fontsize*2 is enough.
 		const bh = bw * 0.667 ; // bw * 100/150
 		const bx = -w*0.5 + bboxGroup.x - bw*1.3;
 		const by = -h*0.5 + bh*0.5;
-		
-		//const laposY = fontsize*0.14;
-		//const laposX = bboxGroup.x+fontsize*0.05;
-		//const da = 'M0,'+laposY+' H'+laposX;
 		
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', bx);
@@ -301,7 +286,6 @@ export default class DistrictView extends View {
 		}, false);
 		$('#space').append(img);
 	}
-	
 	
 	appendCenter() {
 		const svgNS = 'http://www.w3.org/2000/svg';

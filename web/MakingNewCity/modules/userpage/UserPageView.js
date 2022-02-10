@@ -252,6 +252,48 @@ export default class UserPageView extends View {
 	
 	
 	/*
+	class="back-button" x="80" y="25" width="105" height="70" xlink:href="backbutton.svg" />
+	width="150" height="100"
+	NOTE:
+	Uses dimensions created in appendLogo() -method.
+	*/
+	appendBackButton() {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const w = this.REO.width;
+		const h = this.REO.height;
+		// Position back-button left and below horizontal line in Making City logo.
+		let bw;
+		if (w <= 600) {
+			bw = 60;
+		} else if (w > 600 && w <= 992) {
+			bw = 70;
+		} else if (w > 992 && w <= 1200) {
+			bw = 80;
+		} else {
+			bw = 90;
+		}
+		const textElement = document.querySelector('#logo-title');
+		const bboxGroup = textElement.getBBox();
+		
+		const bh = bw * 0.667 ; // bw * 100/150
+		const bx = -w*0.5 + bboxGroup.x - bw*1.3;
+		const by = -h*0.5 + bh*0.5;
+		
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', bx);
+		img.setAttribute('y', by);
+		img.setAttribute('width', bw);
+		img.setAttribute('height', bh);
+		img.setAttribute('href', './svg/backbutton.svg');
+		img.style.cursor = 'pointer';
+		img.addEventListener("click", function(){
+			self.models['MenuModel'].setSelected('menu');
+		}, false);
+		$('#space').append(img);
+	}
+	
+	/*
 	The radius of circle is 12,5% of H or W (smaller dimension).
 	=> circle diameter is 25% of H or W.
 	*/
@@ -387,9 +429,7 @@ export default class UserPageView extends View {
 		const icon_y = cy - icon_h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
-		if (type === 'MENU') {
-			tx = ty = -12*r/5;
-		} else if (type === 'LOGOUT') {
+		if (type === 'LOGOUT') {
 			tx = 12*r/5;
 			ty = -12*r/5;
 		} else if (type === 'ELECTRICITY') {
@@ -441,15 +481,6 @@ export default class UserPageView extends View {
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
 			img.setAttribute('href', './svg/user.svg');
-			group.appendChild(img);
-			
-		} else if (type === 'MENU') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', icon_x);
-			img.setAttribute('y', icon_y);
-			img.setAttribute('width', icon_w);
-			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './svg/city.svg');
 			group.appendChild(img);
 			
 		} else if (type === 'LOGOUT') {
@@ -504,11 +535,6 @@ export default class UserPageView extends View {
 				console.log('HEY, USER CLICKED!');
 			}, false);
 			
-		} else if (type === 'MENU') {
-			surface.addEventListener("click", function(){
-				self.models['MenuModel'].setSelected('menu');
-			}, false);
-			
 		} else if (type === 'LOGOUT') {
 			surface.addEventListener("click", function(){
 				console.log('HEY, LOGOUT CLICKED!');
@@ -547,9 +573,9 @@ export default class UserPageView extends View {
 		$(this.el).empty();
 		this.createSpace();
 		this.appendLogo();
+		this.appendBackButton();
 		this.appendApartment();
 		this.appendSun('USER');
-		this.appendSun('MENU');
 		this.appendSun('LOGOUT');
 		this.appendSun('ELECTRICITY');
 		this.appendSun('HEATING');

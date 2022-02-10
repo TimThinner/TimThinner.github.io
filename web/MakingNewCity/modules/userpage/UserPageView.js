@@ -530,43 +530,30 @@ export default class UserPageView extends View {
 		surface.setAttributeNS(null, 'r', r);
 		surface.style.stroke = LIGHTGREEN;
 		surface.style.strokeWidth = 1;
-		surface.style.fillOpacity = 0;
-		surface.style.cursor = 'pointer';
+		//surface.style.fill = DARKGREEN;
+		//surface.style.fillOpacity = 0;
+		//surface.style.cursor = 'pointer';
 		
-		// Select which pages open...
-		if (type === 'SETTINGS') {
-			surface.addEventListener("click", function(){
-				console.log('HEY, SETTINGS CLICKED!');
-			}, false);
+		// Disable water!
+		if (type === 'WATER') {
+			surface.style.fill = DARKGREEN;
+			surface.style.fillOpacity = 0.5;
+			surface.style.cursor = 'default';
+		} else {
+			surface.style.fill = DARKGREEN;
+			surface.style.fillOpacity = 0;
+			surface.style.cursor = 'pointer';
 			
-		} else if (type === 'LOGOUT') {
 			surface.addEventListener("click", function(){
-				console.log('HEY, LOGOUT CLICKED!');
+				console.log('HEY, '+type+' CLICKED!');
 			}, false);
-			
-		} else if (type === 'ELECTRICITY') {
-			surface.addEventListener("click", function(){
-				console.log('HEY, ELECTRICITY CLICKED!');
+			surface.addEventListener("mouseover", function(event){ 
+				border.style.fill = DARKGREEN;
 			}, false);
-			
-		} else if (type === 'HEATING') {
-			surface.addEventListener("click", function(){
-				console.log('HEY, HEATING CLICKED!');
-			}, false);
-			
-		} else if (type === 'WATER') {
-			surface.addEventListener("click", function(){
-				console.log('HEY, WATER CLICKED!');
+			surface.addEventListener("mouseout", function(event){ 
+				border.style.fill = WHITE;
 			}, false);
 		}
-		
-		surface.addEventListener("mouseover", function(event){ 
-			border.style.fill = DARKGREEN;
-		}, false);
-		surface.addEventListener("mouseout", function(event){ 
-			border.style.fill = WHITE;
-		}, false);
-		
 		group.appendChild(surface);
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#space').append(group);

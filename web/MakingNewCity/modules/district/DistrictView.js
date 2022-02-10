@@ -278,11 +278,10 @@ export default class DistrictView extends View {
 		const textElement = document.querySelector('#logo-title');
 		const bboxGroup = textElement.getBBox();
 		
-		const bw = fontsize*2;
-		const bh = fontsize*1.333; // fontsize*2*100/150
+		const bw = fontsize*1.75; // A little bit smaller than fontsize*2 is enough.
+		const bh = bw * 0.667 ; // bw * 100/150
 		const bx = -w*0.5 + bboxGroup.x - bw*1.2;
-		//const by = -h*0.5+fontsize*0.25 + fontsize*0.14;
-		const by = -h*0.5+fontsize*0.667;
+		const by = -h*0.5 + bh*0.5;
 		
 		//const laposY = fontsize*0.14;
 		//const laposX = bboxGroup.x+fontsize*0.05;

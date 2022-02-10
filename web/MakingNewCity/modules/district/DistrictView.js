@@ -246,6 +246,42 @@ export default class DistrictView extends View {
 		containerElement.appendChild(lineB);
 	}
 	
+	// class="back-button" x="80" y="25" width="105" height="70" xlink:href="backbutton.svg" />
+	// width="150" height="100"
+	
+	appendBackButton() {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const w = this.REO.width;
+		//const h = this.REO.height;
+		// Position back-button left and below horizontal line in Making City logo.
+		let fontsize;
+		if (w <= 600) {
+			fontsize = 36;
+		} else if (w > 600 && w <= 992) {
+			fontsize = 42;
+		} else if (w > 992 && w <= 1200) {
+			fontsize = 54;
+		} else {
+			fontsize = 72;
+		}
+		const bw = fontsize*2;
+		const bh = fontsize*1.33333; // fontsize*2*100/150
+		const bx = -w*0.5+fontsize;
+		const by = -h*0.5+fontsize;
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', bx);
+		img.setAttribute('y', by);
+		img.setAttribute('width', bw);
+		img.setAttribute('height', bh);
+		img.setAttribute('href', './svg/backbutton.svg');
+		img.addEventListener("click", function(){
+			self.models['MenuModel'].setSelected('menu');
+		}, false);
+		$('#space').append(img);
+	}
+	
+	
 	appendCenter() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
@@ -600,6 +636,7 @@ export default class DistrictView extends View {
 		$(this.el).empty();
 		this.createSpace();
 		this.appendLogo();
+		this.appendBackButton();
 		this.appendCenter();
 		this.appendPolygon("hex-a");
 		this.appendPolygon("hex-b");

@@ -28,6 +28,10 @@ export default class UserModel extends Model {
 		this.price_energy_basic    = this.DEFAULTS.price_energy_basic;
 		this.price_energy_transfer = this.DEFAULTS.price_energy_transfer;
 		
+		this.point_id_a = '';
+		this.point_id_b = '';
+		this.point_id_c = '';
+		
 		// Set Heating targets and limits to some reasonable level:
 		this.heating_temperature_upper  = this.DEFAULTS.heating_temperature_upper;
 		this.heating_target_temperature = this.DEFAULTS.heating_target_temperature;
@@ -81,6 +85,10 @@ export default class UserModel extends Model {
 		this.price_energy_basic    = this.DEFAULTS.price_energy_basic;
 		this.price_energy_transfer = this.DEFAULTS.price_energy_transfer;
 		
+		this.point_id_a = '';
+		this.point_id_b = '';
+		this.point_id_c = '';
+		
 		// Set Heating targets and limits to some reasonable level:
 		this.heating_temperature_upper  = this.DEFAULTS.heating_temperature_upper;
 		this.heating_target_temperature = this.DEFAULTS.heating_target_temperature;
@@ -115,6 +123,9 @@ export default class UserModel extends Model {
 			'price_energy_monthly':  this.price_energy_monthly,
 			'price_energy_basic':    this.price_energy_basic,
 			'price_energy_transfer': this.price_energy_transfer,
+			'point_id_a':  this.point_id_a,
+			'point_id_b':  this.point_id_b,
+			'point_id_c':  this.point_id_c,
 			'heating_target_temperature': this.heating_target_temperature,
 			'heating_temperature_upper':  this.heating_temperature_upper,
 			'heating_temperature_lower':  this.heating_temperature_lower,
@@ -162,6 +173,10 @@ export default class UserModel extends Model {
 			if (typeof stat.price_energy_monthly !== 'undefined')  { this.price_energy_monthly = stat.price_energy_monthly; }
 			if (typeof stat.price_energy_basic !== 'undefined')    { this.price_energy_basic = stat.price_energy_basic; }
 			if (typeof stat.price_energy_transfer !== 'undefined') { this.price_energy_transfer = stat.price_energy_transfer; }
+			
+			if (typeof stat.point_id_a !== 'undefined') { this.point_id_a = stat.point_id_a; }
+			if (typeof stat.point_id_b !== 'undefined') { this.point_id_b = stat.point_id_b; }
+			if (typeof stat.point_id_c !== 'undefined') { this.point_id_c = stat.point_id_c; }
 			
 			if (typeof stat.heating_target_temperature !== 'undefined') { this.heating_target_temperature = stat.heating_target_temperature; }
 			if (typeof stat.heating_temperature_upper !== 'undefined')  { this.heating_temperature_upper = stat.heating_temperature_upper; }
@@ -304,6 +319,10 @@ export default class UserModel extends Model {
 					if (typeof myJson.price_energy_monthly !== 'undefined') { self.price_energy_monthly = myJson.price_energy_monthly; }
 					if (typeof myJson.price_energy_basic !== 'undefined') { self.price_energy_basic = myJson.price_energy_basic; }
 					if (typeof myJson.price_energy_transfer !== 'undefined') { self.price_energy_transfer = myJson.price_energy_transfer; }
+					
+					if (typeof myJson.point_id_a !== 'undefined') { self.point_id_a = myJson.point_id_a; }
+					if (typeof myJson.point_id_b !== 'undefined') { self.point_id_b = myJson.point_id_b; }
+					if (typeof myJson.point_id_c !== 'undefined') { self.point_id_c = myJson.point_id_c; }
 					
 					if (typeof myJson.heating_temperature_upper !== 'undefined') { self.heating_temperature_upper = myJson.heating_temperature_upper; }
 					if (typeof myJson.heating_target_temperature !== 'undefined') { self.heating_target_temperature = myJson.heating_target_temperature; }

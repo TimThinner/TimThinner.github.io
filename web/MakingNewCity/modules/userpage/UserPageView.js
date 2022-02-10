@@ -60,6 +60,48 @@ export default class UserPageView extends View {
 		return r;
 	}
 	
+	appendConnector(group, corner, endpoint, pos) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		let d, cx, cy;
+		if (pos === 0) {
+			d = 'M-'+corner+','+corner+' L-'+endpoint+','+endpoint;
+			cx = -corner;
+			cy = corner;
+		} else if (pos === 1) {
+			d = 'M-'+corner+',-'+corner+' L-'+endpoint+',-'+endpoint;
+			cx = -corner;
+			cy = -corner;
+		} else if (pos === 2) {
+			d = 'M'+corner+',-'+corner+' L'+endpoint+',-'+endpoint;
+			cx = corner;
+			cy = -corner;
+		} else {
+			d = 'M'+corner+','+corner+' L'+endpoint+','+endpoint;
+			cx = corner;
+			cy = corner;
+		}
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttributeNS(null, 'd', d);
+		path.style.stroke = DARK_BLUE;
+		path.style.strokeWidth = 2;
+		path.style.opacity = 0.5;
+		path.style.fill = 'none';
+		//$('#space').append(path);
+		group.appendChild(path);
+		
+		const c = document.createElementNS(svgNS, "circle");
+		c.setAttributeNS(null, 'cx', cx);
+		c.setAttributeNS(null, 'cy', cy);
+		c.setAttributeNS(null, 'r', 3);
+		c.style.stroke = DARK_BLUE;
+		c.style.strokeWidth = 2;
+		c.style.opacity = 0.5;
+		c.style.fill = DARK_BLUE;
+		//$('#space').append(c);
+		group.appendChild(c);
+	}
+	
 	createSpace() {
 		//$('html').css('background-color','#012265');
 		//$('body').css('background-color','#012265');
@@ -314,8 +356,9 @@ export default class UserPageView extends View {
 			ty = this.REO.height*0.1;
 		}
 		
-		const framer = 4*r/5;
-		const corner = 3*r/5;
+		const framer = r;
+		const corner = 4*r/5;
+		const endpoint = 11*r/5;
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -340,6 +383,11 @@ export default class UserPageView extends View {
 		path.style.fillOpacity = 1;
 		group.appendChild(path);
 		//$('#space').append(path);
+		
+		this.appendConnector(group, framer, endpoint, 0); // Bottom Left
+		this.appendConnector(group, framer, endpoint, 1); // Top Left
+		this.appendConnector(group, framer, endpoint, 2); // Top Right
+		this.appendConnector(group, framer, endpoint, 3); // Bottom Right
 		
 		const gap = corner*0.2;
 		const pad = corner-gap;

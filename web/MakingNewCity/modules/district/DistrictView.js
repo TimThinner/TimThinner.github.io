@@ -211,7 +211,7 @@ export default class DistrictView extends View {
 		const textElement = document.querySelector('#logo-title');
 		const containerElement = document.querySelector('#logo-svg');
 		const bboxGroup = textElement.getBBox();
-		//console.log(['HIPHEI MONDAY BEE! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
+		console.log(['HIPHEI THURSDAY! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 		/*
 		const rect_foo = document.createElementNS(svgNS, 'rect');
 		rect_foo.setAttribute('x',bboxGroup.x);
@@ -265,11 +265,11 @@ export default class DistrictView extends View {
 		if (w <= 600) {
 			bw = 60;
 		} else if (w > 600 && w <= 992) {
-			bw = 65;
-		} else if (w > 992 && w <= 1200) {
 			bw = 70;
+		} else if (w > 992 && w <= 1200) {
+			bw = 80;
 		} else {
-			bw = 75;
+			bw = 90;
 		}
 		/*
 		const bw = fontsize*2;

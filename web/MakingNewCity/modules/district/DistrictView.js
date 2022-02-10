@@ -250,6 +250,8 @@ export default class DistrictView extends View {
 	width="150" height="100"
 	
 	
+	Lets fix the max height to 50 pixels => max width = 75 pixels. 
+	
 	NOTE:
 	Uses dimensions created in appendLogo() -method.
 	*/
@@ -259,15 +261,15 @@ export default class DistrictView extends View {
 		const w = this.REO.width;
 		const h = this.REO.height;
 		// Position back-button left and below horizontal line in Making City logo.
-		let fontsize;
+		let bw;
 		if (w <= 600) {
-			fontsize = 36;
+			bw = 60;
 		} else if (w > 600 && w <= 992) {
-			fontsize = 42;
+			bw = 65;
 		} else if (w > 992 && w <= 1200) {
-			fontsize = 54;
+			bw = 70;
 		} else {
-			fontsize = 72;
+			bw = 75;
 		}
 		/*
 		const bw = fontsize*2;
@@ -278,9 +280,9 @@ export default class DistrictView extends View {
 		const textElement = document.querySelector('#logo-title');
 		const bboxGroup = textElement.getBBox();
 		
-		const bw = fontsize*1.75; // A little bit smaller than fontsize*2 is enough.
+		//const bw = fontsize*1.75; // A little bit smaller than fontsize*2 is enough.
 		const bh = bw * 0.667 ; // bw * 100/150
-		const bx = -w*0.5 + bboxGroup.x - bw*1.2;
+		const bx = -w*0.5 + bboxGroup.x - bw*1.3;
 		const by = -h*0.5 + bh*0.5;
 		
 		//const laposY = fontsize*0.14;

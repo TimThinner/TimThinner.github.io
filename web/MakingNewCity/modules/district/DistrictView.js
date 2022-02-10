@@ -594,15 +594,43 @@ export default class DistrictView extends View {
 		poly.style.cursor = 'pointer';
 		poly.setAttribute('transform', 'rotate(90)');
 		
+		// Select which pages open...
+		if (type === 'hex-a') {
+			poly.addEventListener("click", function(){
+				console.log('HEY, HEX-A CLICKED!');
+			}, false);
+			
+		} else if (type === 'hex-b') {
+			poly.addEventListener("click", function(){
+				console.log('HEY, HEX-B CLICKED!');
+			}, false);
+			
+		} else if (type === 'hex-c') {
+			poly.addEventListener("click", function(){
+				console.log('HEY, HEX-C CLICKED!');
+			}, false);
+			
+		} else if (type === 'hex-d') {
+			poly.addEventListener("click", function(){
+				console.log('HEY, HEX-D CLICKED!');
+			}, false);
+			
+		} else if (type === 'hex-e') {
+			poly.addEventListener("click", function(){
+				console.log('HEY, HEX-E CLICKED!');
+			}, false);
+			
+		} else if (type === 'hex-f') {
+			poly.addEventListener("click", function(){
+				console.log('HEY, HEX-F CLICKED!');
+			}, false);
+		}
+		
 		poly.addEventListener("mouseover", function(event){ 
 			poly.style.strokeWidth = 4;
 		}, false);
 		poly.addEventListener("mouseout", function(event){ 
 			poly.style.strokeWidth = 1;
-		}, false);
-		// Go back to menu from ALL polygon-clicks!
-		poly.addEventListener("click", function(){
-			self.models['MenuModel'].setSelected('menu');
 		}, false);
 		
 		group.appendChild(poly);

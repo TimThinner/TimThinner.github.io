@@ -377,7 +377,7 @@ export default class UserPageView extends View {
 		//$('#space').append(pathRC);
 		group.appendChild(pathRC);
 		
-		/*
+		
 		const icon_w = r;
 		const icon_x = -icon_w*0.5;
 		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
@@ -388,7 +388,7 @@ export default class UserPageView extends View {
 		img.setAttribute('width', icon_w);
 		img.setAttribute('height', icon_h);
 		img.setAttribute('href', './svg/user.svg');
-		group.appendChild(img);*/
+		group.appendChild(img);
 		
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		
@@ -398,15 +398,16 @@ export default class UserPageView extends View {
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		let r = this.sunRadius();
-		let icon_w = 0;
+		const r = this.sunRadius()*0.9; // 90%
+		const icon_w = r; // 90%
+		/*
 		if (type === 'USER') {
 			r = r*1.1; // 110%
 			icon_w = r*1.1; // Make image bigger.
 		} else {
 			r = r*0.9; // 90%
 			icon_w = r;
-		}
+		}*/
 		
 		const WHITE = '#fff';
 		const BLUE = '#51b0ce';
@@ -429,7 +430,10 @@ export default class UserPageView extends View {
 		const icon_y = cy - icon_h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
-		if (type === 'LOGOUT') {
+		if (type === 'SETTINGS') {
+			tx = -12*r/5;
+			ty = -12*r/5;
+		} else if (type === 'LOGOUT') {
 			tx = 12*r/5;
 			ty = -12*r/5;
 		} else if (type === 'ELECTRICITY') {
@@ -474,13 +478,13 @@ export default class UserPageView extends View {
 		cb.style.strokeWidth = 0.5;
 		group.appendChild(cb);
 		
-		if (type === 'USER') {
+		if (type === 'SETTINGS') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', icon_x);
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './svg/user.svg');
+			img.setAttribute('href', './svg/settings.svg');
 			group.appendChild(img);
 			
 		} else if (type === 'LOGOUT') {
@@ -530,9 +534,9 @@ export default class UserPageView extends View {
 		surface.style.cursor = 'pointer';
 		
 		// Select which pages open...
-		if (type === 'USER') {
+		if (type === 'SETTINGS') {
 			surface.addEventListener("click", function(){
-				console.log('HEY, USER CLICKED!');
+				console.log('HEY, SETTINGS CLICKED!');
 			}, false);
 			
 		} else if (type === 'LOGOUT') {
@@ -575,7 +579,8 @@ export default class UserPageView extends View {
 		this.appendLogo();
 		this.appendBackButton();
 		this.appendApartment();
-		this.appendSun('USER');
+		
+		this.appendSun('SETTINGS');
 		this.appendSun('LOGOUT');
 		this.appendSun('ELECTRICITY');
 		this.appendSun('HEATING');

@@ -253,7 +253,7 @@ export default class DistrictView extends View {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const w = this.REO.width;
-		//const h = this.REO.height;
+		const h = this.REO.height;
 		// Position back-button left and below horizontal line in Making City logo.
 		let fontsize;
 		if (w <= 600) {

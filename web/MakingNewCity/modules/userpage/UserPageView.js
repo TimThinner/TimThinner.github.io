@@ -88,7 +88,6 @@ export default class UserPageView extends View {
 			cy = corner;
 		}
 		
-		
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = DARKGREEN;
@@ -598,8 +597,8 @@ export default class UserPageView extends View {
 		*/
 		
 		if (type === 'WATER') {
-			surface.style.stroke = '#eee';
-			surface.style.strokeWidth = 4;
+			surface.style.stroke = '#b2dfdb';
+			surface.style.strokeWidth = 2;
 			surface.style.fill = '#b2dfdb';
 			surface.style.fillOpacity = 0.9;
 			surface.style.cursor = 'default';

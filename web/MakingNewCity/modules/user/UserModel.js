@@ -228,7 +228,7 @@ export default class UserModel extends Model {
 		let status = 500; // (OK: 200, AUTH FAILED: 401, error: 500)
 		
 		// To be able to test UI without user database, use a secret cookie to pass. 
-		if (data.email === 'pass' && data.password === 'pass@pass.fi') {
+		if (data.email === 'pass@pass.fi' && data.password === 'pass') {
 			// Login was OK, set the Authentication-token to model.
 			this.token = 'fake-token';
 			this.id = 'fake-id';

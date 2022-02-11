@@ -453,7 +453,7 @@ export default class UserPageView extends View {
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.sunRadius()*0.9; // 90%
+		let r = this.sunRadius()*0.9;
 		
 		const WHITE = '#fff';
 		const BLUE = '#51b0ce';

@@ -23,7 +23,7 @@ export default class MenuView extends View {
 		console.log('MenuView Create PeriodicTimeoutObserver!');
 		this.PTO = new PeriodicTimeoutObserver({interval:10000}); // interval 10 seconds
 		this.PTO.subscribe(this);
-		this.tickcount = 0;
+		
 		
 		this.LANGUAGE_MODEL = this.controller.master.modelRepo.get('LanguageModel');
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
@@ -33,7 +33,6 @@ export default class MenuView extends View {
 	show() {
 		console.log('MenuView show()');
 		this.render();
-		this.tickcount = 0;
 		this.PTO.restart();
 	}
 	
@@ -66,11 +65,13 @@ export default class MenuView extends View {
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Do something with each TICK!
+				//
 				console.log('PeriodicTimeoutObserver timeout!');
-				this.tickcount++;
-				console.log(['TICK! tickcount = ',this.tickcount]);
-				console.log('CALL DUMMY FETCH...');
-				this.models['MenuModel'].fetch();
+				this.models['FingridPowerSystemStateModel'].fetch();
+				
+			} else if (options.model==='FingridPowerSystemStateModel' && options.method==='fetched') {
+				console.log('FingridPowerSystemStateModel fetched!!!!');
+				console.log(['model value=',this.models['FingridPowerSystemStateModel'].value,' values=',this.models['FingridPowerSystemStateModel'].values]);
 			}
 		}
 	}

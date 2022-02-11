@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const checkAuth = require('../middleware/check-auth');
 
 const User = require('../models/user');
-const Log = require('../models/log');
+//const Log = require('../models/log');
 const Regcode = require('../models/regcode');
 const Readkey = require('../models/readkey');
 /*
@@ -366,6 +366,7 @@ router.post("/login", (req,res,next)=>{
 					const el = user[0].energy_lower ? user[0].energy_lower : undefined;
 					
 					// LOG this login.
+					/*
 					const logEntry = new Log({
 						_id: new mongoose.Types.ObjectId(),
 						userId: user[0]._id, // Ref to User
@@ -379,7 +380,7 @@ router.post("/login", (req,res,next)=>{
 						.catch(err=>{
 							console.log(['LOG Login err=',err]);
 						});
-					
+					*/
 					return res.status(200).json({
 						message: 'Auth successful',
 						token: token,

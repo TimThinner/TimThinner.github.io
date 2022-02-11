@@ -1,5 +1,7 @@
 import Controller from '../common/Controller.js';
 import MenuModel from  './MenuModel.js';
+import FingridModel from  '../energydata/FingridModel.js';
+//import EmpoModel from  '../environmentpage/EmpoModel.js';
 import MenuView from './MenuView.js';
 
 export default class MenuController extends Controller {
@@ -26,6 +28,11 @@ export default class MenuController extends Controller {
 		model.subscribe(this);
 		this.master.modelRepo.add('MenuModel',model);
 		this.models['MenuModel'] = model;
+		
+		const m = new FingridModel({name:'FingridPowerSystemStateModel',src:'https://api.fingrid.fi/v1/variable/209/event/json'});
+		m.subscribe(this);
+		this.master.modelRepo.add('FingridPowerSystemStateModel',m);
+		this.models['FingridPowerSystemStateModel'] = m;
 		
 		this.view = new MenuView(this);
 		// NOTE: If View does NOT have ResizeEventObserver, we try to show it.

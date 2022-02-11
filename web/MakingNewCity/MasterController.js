@@ -1,6 +1,7 @@
 import ModelRepo from './modules/common/ModelRepo.js';
 import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import LanguageModel from './modules/common/LanguageModel.js';
+//import LogModel from './modules/common/LogModel.js';
 import UserModel from './modules/user/UserModel.js';
 import ProxyCleanerModel from './modules/common/ProxyCleanerModel.js';
 
@@ -22,6 +23,17 @@ class MasterController {
 	notify(options) {
 		if (options.model==='UserModel' && options.method==='before-logout') {
 			console.log('MasterController BEFORE-LOGOUT!');
+			// Log the LOGOUT EVENT.
+			/*
+			const lm = this.modelRepo.get('LogModel');
+			if (lm) {
+				const data = {
+					refToUser: options.id,
+					eventType: 'Logout'
+				}
+				lm.addToLog(data, options.token);
+			}
+			*/
 			
 		} else if (options.model==='UserModel' && options.method==='logout') {
 			console.log('MasterController LOGOUT!');
@@ -50,6 +62,11 @@ class MasterController {
 		console.log('Create LanguageModel!');
 		const LM = new LanguageModel();
 		this.modelRepo.add('LanguageModel',LM);
+		/*
+		console.log('Create LogModel!');
+		const LOGM = new LogModel({name:'LogModel',src:''});
+		this.modelRepo.add('LogModel',LOGM);
+		*/
 		
 		console.log('Create UserModel!');
 		const UM = new UserModel({name:'UserModel',src:'user'});

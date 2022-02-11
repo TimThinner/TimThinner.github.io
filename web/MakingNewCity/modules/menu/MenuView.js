@@ -549,20 +549,17 @@ export default class MenuView extends View {
 			
 			// Draw the state of the Grid indicator:
 			// Circle with color
-			const uc = document.createElementNS('http://www.w3.org/2000/svg', "circle");
+			const uc = document.createElementNS(svgNS, "circle");
 			uc.setAttributeNS(null, 'id', 'FingridPowerSystemState');
 			uc.setAttributeNS(null, 'cx', 0);
-			uc.setAttributeNS(null, 'cy', 5);
-			uc.setAttributeNS(null, 'r', 16);
-			uc.setAttributeNS(null, 'stroke', '#333');
-			uc.setAttributeNS(null, 'stroke-width', '2');
+			uc.setAttributeNS(null, 'cy', cy);
+			uc.setAttributeNS(null, 'r', r*0.2);
+			uc.style.stroke = '#333';
+			uc.style.strokeWidth = 1;
 			uc.style.fill = '#f00'; // This will overwrite the fill: none; definition in CSS active-menu-button-path
 			//uc.style.fill = this.getFingridPowerSystemStateColor();
 			//uc.style.transform = UB.style.transform; // Use same transform as "parent" circle!
 			group.appendChild(uc);
-			
-			
-			
 			
 		} else if (type === 'ENVIRONMENT') {
 			const img = document.createElementNS(svgNS, "image");
@@ -573,12 +570,6 @@ export default class MenuView extends View {
 			img.setAttribute('href', './svg/greenleaf.svg');
 			group.appendChild(img);
 		}
-		
-		
-		
-		
-		
-		
 		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);

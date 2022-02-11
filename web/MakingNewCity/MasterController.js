@@ -3,9 +3,14 @@ import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
 import LanguageModel from './modules/common/LanguageModel.js';
 import UserModel from './modules/user/UserModel.js';
 import ProxyCleanerModel from './modules/common/ProxyCleanerModel.js';
+
 import MenuController from './modules/menu/MenuController.js';
+import UserLoginController from './modules/user/UserLoginController.js';
+import UserSignupController from './modules/user/UserSignupController.js';
+
 import DistrictController from './modules/district/DistrictController.js';
 import UserPageController from './modules/userpage/UserPageController.js';
+
 
 class MasterController {
 	
@@ -15,11 +20,27 @@ class MasterController {
 	}
 	
 	notify(options) {
-		// Nothing to do here, but this is mandatory if we have subscribed to any model.
+		if (options.model==='UserModel' && options.method==='before-logout') {
+			console.log('MasterController BEFORE-LOGOUT!');
+			
+		} else if (options.model==='UserModel' && options.method==='logout') {
+			console.log('MasterController LOGOUT!');
+			
+			const mm = this.modelRepo.get('MenuModel');
+			if (mm) {
+				mm.setSelected('menu');
+			}
+			Object.keys(this.controllers).forEach(key => {
+				this.controllers[key].clean();
+			});
+			
+		} else if (options.model==='UserModel' && options.method==='login') {
+			console.log('MasterController LOGIN!');
+		}
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.09.B');
+		console.log('MasterController init v2022.02.11.A');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -44,6 +65,11 @@ class MasterController {
 		// Menu controller MUST be first!
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
+		
+		this.controllers['userlogin'] = new UserLoginController({name:'userlogin', master:this, el:'#content', visible:false});
+		this.controllers['userlogin'].init();
+		this.controllers['usersignup'] = new UserSignupController({name:'usersignup', master:this, el:'#content', visible:false});
+		this.controllers['usersignup'].init();
 		
 		this.controllers['district'] = new DistrictController({name:'district', master:this, el:'#content', visible:false});
 		this.controllers['district'].init();

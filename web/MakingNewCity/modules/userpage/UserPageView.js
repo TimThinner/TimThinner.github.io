@@ -366,7 +366,7 @@ export default class UserPageView extends View {
 		const framer = r;
 		const corner = 4*r/5;
 		const endpoint = 11*r/5; // 11/5 = 2,2
-		const endpointTop = 1.2*r;
+		const endpointTop = 1.6*r;
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -480,7 +480,7 @@ export default class UserPageView extends View {
 		if (type === 'SETTINGS') {
 			
 			icon_w = r;
-			r = r*0.5;
+			r = r*0.6;
 			r2 = r-r*0.1;
 			r3 = r-r*0.3;
 			
@@ -494,7 +494,7 @@ export default class UserPageView extends View {
 		} else if (type === 'LOGOUT') {
 			
 			icon_w = r;
-			r = r*0.5;
+			r = r*0.6;
 			r2 = r-r*0.1;
 			r3 = r-r*0.3;
 			

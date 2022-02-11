@@ -109,6 +109,28 @@ export default class MenuView extends View {
 		$(this.el).empty();
 	}
 	
+	updateFingridPowerSystemState() {
+		const svg_element = document.getElementById('FingridPowerSystemState');
+		//const uc = document.createElementNS(svgNS, "circle");
+		//uc.setAttributeNS(null, 'id', 'FingridPowerSystemState');
+		let color = '#fff';
+		const value = this.models['FingridPowerSystemStateModel'].value;
+		if (typeof value !== 'undefined') {
+			if (value === 1) {
+				color = '#0f0';
+			} else if (value === 2) {
+				color = '#ff0';
+			} else if (value === 3) {
+				color = '#f00';
+			} else if (value === 4) {
+				color = '#000';
+			} else if (value === 5) {
+				color = '#00f';
+			}
+		}
+		svg_element.style.fill = color;
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -126,9 +148,8 @@ export default class MenuView extends View {
 			} else if (options.model==='FingridPowerSystemStateModel' && options.method==='fetched') {
 				console.log('FingridPowerSystemStateModel fetched!!!!');
 				console.log(['model value=',this.models['FingridPowerSystemStateModel'].value,' values=',this.models['FingridPowerSystemStateModel'].values]);
-				
-				// value 
-				// 1:
+				// Set the value to element with id='FingridPowerSystemState'
+				this.updateFingridPowerSystemState();
 			}
 		}
 	}
@@ -359,7 +380,6 @@ export default class MenuView extends View {
 		*/
 		const d_fontsize = fontsize/3;
 		
-		
 		const title = document.createElementNS(svgNS, 'text');
 		title.id = 'logo-title';
 		title.setAttribute('x','50%');
@@ -556,9 +576,7 @@ export default class MenuView extends View {
 			uc.setAttributeNS(null, 'r', r*0.2);
 			uc.style.stroke = '#333';
 			uc.style.strokeWidth = 1;
-			uc.style.fill = '#f00'; // This will overwrite the fill: none; definition in CSS active-menu-button-path
-			//uc.style.fill = this.getFingridPowerSystemStateColor();
-			//uc.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+			uc.style.fill = '#fff'; // This will overwrite the fill: none; definition in CSS active-menu-button-path
 			group.appendChild(uc);
 			
 		} else if (type === 'ENVIRONMENT') {
@@ -614,8 +632,6 @@ export default class MenuView extends View {
 				console.log('HEY, ENVIRONMENT CLICKED!');
 			}, false);
 		}
-		
-		
 		
 		surface.addEventListener("mouseover", function(event){ 
 			border.style.fill = DARKGREEN;

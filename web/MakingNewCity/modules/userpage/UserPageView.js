@@ -365,7 +365,8 @@ export default class UserPageView extends View {
 		
 		const framer = r;
 		const corner = 4*r/5;
-		const endpoint = 11*r/5;
+		const endpoint = 11*r/5; // 11/5 = 2,2
+		const endpointTop = 1.2*r;
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -392,8 +393,8 @@ export default class UserPageView extends View {
 		//$('#space').append(path);
 		
 		this.appendConnector(group, framer, endpoint, 0); // Bottom Left
-		this.appendConnector(group, framer, endpoint, 1); // Top Left
-		this.appendConnector(group, framer, endpoint, 2); // Top Right
+		this.appendConnector(group, framer, endpointTop, 1); // Top Left
+		this.appendConnector(group, framer, endpointTop, 2); // Top Right
 		this.appendConnector(group, framer, endpoint, 3); // Bottom Right
 		this.appendConnector(group, framer, endpoint, 4); // Bottom CENTER
 		
@@ -478,8 +479,8 @@ export default class UserPageView extends View {
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'SETTINGS') {
 			
-			r = r*0.5;
 			icon_w = r;
+			r = r*0.5;
 			r2 = r-r*0.1;
 			r3 = r-r*0.3;
 			
@@ -492,8 +493,8 @@ export default class UserPageView extends View {
 			
 		} else if (type === 'LOGOUT') {
 			
-			r = r*0.5;
 			icon_w = r;
+			r = r*0.5;
 			r2 = r-r*0.1;
 			r3 = r-r*0.3;
 			

@@ -8,6 +8,60 @@ const BLUE = '#51b0ce';
 const LIGHTGREEN = '#73d3ae';
 const DARKGREEN = '#1fac78';
 const LIGHTGREY = '#777';
+
+
+
+Different states of the power system - traffic lights
+1 = green
+2 = yellow
+3 = red
+4 = black
+5 = blue
+
+https://www.fingrid.fi/en/electricity-market/power-system/different-states-of-the-power-system---traffic-lights/
+
+Different states of the power system - traffic lights
+
+1 = Green: Power system is in normal secure state.
+2 = Yellow: Power system is in endangered state. The adequacy of the electricity is endangered (serious risk for electricity shortage) or the power system doesn't fulfill the security standards.
+3 = Red: Power system is in disturbed state. Manual load shedding has taken placehappened in order to maintainkeep the adequacy and security of the power system (electricity shortage) or there is a serious risk to a wide black out.
+4 = Black: An extremely serious disturbance or a wide black out in Finland.
+5 = Blue: The network is being restored after an extremely serious disturbance or a wide blackout.
+
+	getFingridPowerSystemStateColor() {
+		let color = '#fff';
+		Object.keys(this.models).forEach(key => {
+			if (key === 'FingridPowerSystemStateModel') {
+				const value = this.models[key].value;
+				if (typeof value !== 'undefined') {
+					if (value === 1) {
+						color = '#0f0';
+					} else if (value === 2) {
+						color = '#ff0';
+					} else if (value === 3) {
+						color = '#f00';
+					} else if (value === 4) {
+						color = '#000';
+					} else if (value === 5) {
+						color = '#00f';
+					}
+				}
+			}
+		});
+		return color;
+	}
+	insertGridSystemState() {
+		const svg_element = document.getElementById('svg-object');
+		if (svg_element) {
+			const svgObject = svg_element.contentDocument;
+			if (svgObject) {
+				const elem = svgObject.getElementById('FingridPowerSystemState');
+				if (elem) {
+					elem.style.fill = this.getFingridPowerSystemStateColor();
+				}
+			}
+		}
+	}
 */
 export default class MenuView extends View {
 	
@@ -21,7 +75,7 @@ export default class MenuView extends View {
 		this.REO.subscribe(this);
 		
 		console.log('MenuView Create PeriodicTimeoutObserver!');
-		this.PTO = new PeriodicTimeoutObserver({interval:10000}); // interval 10 seconds
+		this.PTO = new PeriodicTimeoutObserver({interval:60000}); // interval 60 seconds
 		this.PTO.subscribe(this);
 		
 		
@@ -72,6 +126,9 @@ export default class MenuView extends View {
 			} else if (options.model==='FingridPowerSystemStateModel' && options.method==='fetched') {
 				console.log('FingridPowerSystemStateModel fetched!!!!');
 				console.log(['model value=',this.models['FingridPowerSystemStateModel'].value,' values=',this.models['FingridPowerSystemStateModel'].values]);
+				
+				// value 
+				// 1:
 			}
 		}
 	}
@@ -488,6 +545,25 @@ export default class MenuView extends View {
 			img.setAttribute('height', icon_h);
 			img.setAttribute('href', './svg/grid.svg');
 			group.appendChild(img);
+			
+			
+			// Draw the state of the Grid indicator:
+			// Circle with color
+			const uc = document.createElementNS('http://www.w3.org/2000/svg', "circle");
+			uc.setAttributeNS(null, 'id', 'FingridPowerSystemState');
+			uc.setAttributeNS(null, 'cx', 0);
+			uc.setAttributeNS(null, 'cy', 5);
+			uc.setAttributeNS(null, 'r', 16);
+			uc.setAttributeNS(null, 'stroke', '#333');
+			uc.setAttributeNS(null, 'stroke-width', '2');
+			uc.style.fill = '#f00'; // This will overwrite the fill: none; definition in CSS active-menu-button-path
+			//uc.style.fill = this.getFingridPowerSystemStateColor();
+			//uc.style.transform = UB.style.transform; // Use same transform as "parent" circle!
+			group.appendChild(uc);
+			
+			
+			
+			
 		} else if (type === 'ENVIRONMENT') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', icon_x);
@@ -497,6 +573,11 @@ export default class MenuView extends View {
 			img.setAttribute('href', './svg/greenleaf.svg');
 			group.appendChild(img);
 		}
+		
+		
+		
+		
+		
 		
 		
 		const surface = document.createElementNS(svgNS, "circle");

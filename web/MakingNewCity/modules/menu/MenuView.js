@@ -431,11 +431,11 @@ export default class MenuView extends View {
 		let r = this.sunRadius();
 		let icon_w = 0;
 		if (type === 'CITY') {
-			r = r*1.2; // 120%
 			icon_w = r*2; // Make image bigger.
+			r = r*1.2; // 120%
 		} else {
-			r = r*0.8; // 80%
 			icon_w = r;
+			r = r*0.8; // 80%
 		}
 		const WHITE = '#fff';
 		const BLUE = '#51b0ce';

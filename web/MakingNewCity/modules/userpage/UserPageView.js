@@ -454,15 +454,6 @@ export default class UserPageView extends View {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius()*0.9; // 90%
-		const icon_w = r; // 90%
-		/*
-		if (type === 'USER') {
-			r = r*1.1; // 110%
-			icon_w = r*1.1; // Make image bigger.
-		} else {
-			r = r*0.9; // 90%
-			icon_w = r;
-		}*/
 		
 		const WHITE = '#fff';
 		const BLUE = '#51b0ce';
@@ -473,24 +464,46 @@ export default class UserPageView extends View {
 		// If view is SQUARE: Put all circles to vertical center.
 		// If view is PORTRAIT: Put all circles to vertical center.
 		// If view is LANDSCAPE: Move all circles 10% down from vertical center.
-		if (this.REO.mode === 'LANDSCAPE') {
+		/*if (this.REO.mode === 'LANDSCAPE') {
 			cy = this.REO.height*0.1;
-		}
+		}*/
+		let icon_w = r;
+		let r2 = r-r*0.1;
+		let r3 = r-r*0.3;
 		
-		const r2 = r-r*0.1;
-		const r3 = r-r*0.3;
-		
-		const icon_x = -icon_w*0.5;
-		const icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
-		const icon_y = cy - icon_h*0.5;
+		let icon_x = -icon_w*0.5;
+		let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		let icon_y = cy - icon_h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'SETTINGS') {
-			tx = -12*r/5;
-			ty = -12*r/5;
+			
+			r = r*0.75;
+			icon_w = r;
+			r2 = r-r*0.1;
+			r3 = r-r*0.3;
+			
+			icon_x = -icon_w*0.5;
+			icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+			icon_y = cy - icon_h*0.5;
+			
+			tx = -2*r;
+			ty = -2*r;
+			
 		} else if (type === 'LOGOUT') {
-			tx = 12*r/5;
-			ty = -12*r/5;
+			
+			r = r*0.75;
+			icon_w = r;
+			r2 = r-r*0.1;
+			r3 = r-r*0.3;
+			
+			icon_x = -icon_w*0.5;
+			icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+			icon_y = cy - icon_h*0.5;
+			
+			tx = 2*r;
+			ty = -2*r;
+			
 		} else if (type === 'ELECTRICITY') {
 			tx = -12*r/5;
 			ty = 12*r/5;
@@ -500,6 +513,7 @@ export default class UserPageView extends View {
 		} else if (type === 'WATER') {
 			tx = ty = 12*r/5;
 		}
+		
 		
 		const group = document.createElementNS(svgNS, "g");
 		

@@ -488,8 +488,8 @@ export default class UserPageView extends View {
 			icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 			icon_y = cy - icon_h*0.5;
 			
-			tx = -3.5*r;
-			ty = -3.5*r;
+			tx = -3.3*r;
+			ty = -3.3*r;
 			
 		} else if (type === 'LOGOUT') {
 			
@@ -502,8 +502,8 @@ export default class UserPageView extends View {
 			icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 			icon_y = cy - icon_h*0.5;
 			
-			tx = 3.5*r;
-			ty = -3.5*r;
+			tx = 3.3*r;
+			ty = -3.3*r;
 			
 		} else if (type === 'ELECTRICITY') {
 			tx = -12*r/5;

@@ -364,6 +364,16 @@ export default class DistrictView extends View {
 	appendPolygon(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_d_a = LM['translation'][sel]['DISTRICT_A_LABEL'];
+		const localized_d_b = LM['translation'][sel]['DISTRICT_B_LABEL'];
+		const localized_d_c = LM['translation'][sel]['DISTRICT_C_LABEL'];
+		const localized_d_d = LM['translation'][sel]['DISTRICT_D_LABEL'];
+		const localized_d_e = LM['translation'][sel]['DISTRICT_E_LABEL'];
+		const localized_d_f = LM['translation'][sel]['DISTRICT_F_LABEL'];
+		
 		let r = this.sunRadius();
 		/*
 		The radius of circle is 12,5% of H or W (smaller dimension).
@@ -434,7 +444,7 @@ export default class DistrictView extends View {
 			title.setAttribute('text-anchor','middle');
 			title.setAttribute('fill','#fff');
 			title.style.opacity = 1;
-			title.appendChild(document.createTextNode('S-Arina'));
+			title.appendChild(document.createTextNode(localized_d_a));
 			svg.appendChild(title);
 			group.appendChild(svg);
 			
@@ -462,7 +472,7 @@ export default class DistrictView extends View {
 			title.setAttribute('text-anchor','middle');
 			title.setAttribute('fill','#fff');
 			title.style.opacity = 1;
-			title.appendChild(document.createTextNode('Sivakka 1'));
+			title.appendChild(document.createTextNode(localized_d_b));
 			svg.appendChild(title);
 			group.appendChild(svg);
 			
@@ -490,7 +500,7 @@ export default class DistrictView extends View {
 			title.setAttribute('text-anchor','middle');
 			title.setAttribute('fill','#fff');
 			title.style.opacity = 1;
-			title.appendChild(document.createTextNode('Sivakka 2'));
+			title.appendChild(document.createTextNode(localized_d_c));
 			svg.appendChild(title);
 			group.appendChild(svg);
 			
@@ -518,7 +528,7 @@ export default class DistrictView extends View {
 			title.setAttribute('text-anchor','middle');
 			title.setAttribute('fill','#fff');
 			title.style.opacity = 1;
-			title.appendChild(document.createTextNode('School'));
+			title.appendChild(document.createTextNode(localized_d_d));
 			svg.appendChild(title);
 			group.appendChild(svg);
 			
@@ -546,7 +556,7 @@ export default class DistrictView extends View {
 			title.setAttribute('text-anchor','middle');
 			title.setAttribute('fill','#fff');
 			title.style.opacity = 1;
-			title.appendChild(document.createTextNode('Sivakka 3'));
+			title.appendChild(document.createTextNode(localized_d_e));
 			svg.appendChild(title);
 			group.appendChild(svg);
 			
@@ -574,7 +584,7 @@ export default class DistrictView extends View {
 			title.setAttribute('text-anchor','middle');
 			title.setAttribute('fill','#fff');
 			title.style.opacity = 1;
-			title.appendChild(document.createTextNode('YIT 1'));
+			title.appendChild(document.createTextNode(localized_d_f));
 			svg.appendChild(title);
 			group.appendChild(svg);
 		}

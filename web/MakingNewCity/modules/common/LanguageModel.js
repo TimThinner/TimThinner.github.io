@@ -102,9 +102,9 @@ export default class LanguageModel {
 				'DISTRICT_A_LABEL':'S-Arina',
 				'DISTRICT_B_LABEL':'Sivakka 1',
 				'DISTRICT_C_LABEL':'Sivakka 2',
-				'DISTRICT_D_LABEL':'Sivakka 3',
-				'DISTRICT_E_LABEL':'YIT 1',
-				'DISTRICT_F_LABEL':'School',
+				'DISTRICT_D_LABEL':'School',
+				'DISTRICT_E_LABEL':'Sivakka 3',
+				'DISTRICT_F_LABEL':'YIT 1',
 				'MENU_TITLE':'Positive Energy Districts',
 				'MENU_DESCRIPTION':'<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">THE MAKING-CITY PROJECT</a> is funded by EU’s Horizon 2020 programme and is a part of the Smart Cities and Communities (SCC) theme.',
 				'MENU_VISIT_COUNT':'visit count',
@@ -157,7 +157,7 @@ export default class LanguageModel {
 				'ADJUST_UPDATE_INTERVAL':'Adjust the update interval (0-60s):',
 				'UPDATED_HEADER_TEXT':'Values updated: ',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 21.12.15'
+				'MENU_VERSION':'v 22.02.11'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -258,9 +258,9 @@ export default class LanguageModel {
 				'DISTRICT_A_LABEL':'S-Arina',
 				'DISTRICT_B_LABEL':'Sivakka 1',
 				'DISTRICT_C_LABEL':'Sivakka 2',
-				'DISTRICT_D_LABEL':'Sivakka 3',
-				'DISTRICT_E_LABEL':'YIT 1',
-				'DISTRICT_F_LABEL':'Koulu',
+				'DISTRICT_D_LABEL':'Koulu',
+				'DISTRICT_E_LABEL':'Sivakka 3',
+				'DISTRICT_F_LABEL':'YIT 1',
 				'MENU_TITLE':'Energiataseeltaan positiivinen alue',
 				'MENU_DESCRIPTION':'<a href="http://makingcity.eu/" target="_blank" rel="noreferrer noopener" aria-label="This is an external link (opens in a new tab)">MAKING-CITY HANKE</a> saa rahoitusta EU:n Horizon 2020 -ohjelmasta. Se kuuluu Smart Cities and Communities (SCC) -teemaan.',
 				'MENU_VISIT_COUNT':'kävijälaskuri',
@@ -313,7 +313,7 @@ export default class LanguageModel {
 				'ADJUST_UPDATE_INTERVAL':'Säädä päivitystaajuutta (0-60s):',
 				'UPDATED_HEADER_TEXT':'Luvut päivitetty: ',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 21.12.15'
+				'MENU_VERSION':'v 22.02.11'
 			}
 		}
 	}

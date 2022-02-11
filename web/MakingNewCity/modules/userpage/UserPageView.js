@@ -608,7 +608,22 @@ export default class UserPageView extends View {
 			surface.style.cursor = 'pointer';
 			
 			surface.addEventListener("click", function(){
-				console.log('HEY, '+type+' CLICKED!');
+				if (type === 'LOGOUT') {
+					const UM = self.controller.master.modelRepo.get('UserModel');
+					// UM.logout() will do the following:
+					// this.notifyAll({model:'UserModel',method:'before-logout',id:this.id,token:this.token});
+					// this.reset();
+					// this.store();
+					// console.log('USER LOGOUT! Localstorage cleaned!');
+					// setTimeout(() => this.notifyAll({model:'UserModel',method:'logout',status:200,message:'Logout OK'}), 100);
+					//
+					// These notifications are handled in MasterController.
+					if (UM) {
+						UM.logout();
+					}
+				} else {
+					console.log('HEY, '+type+' CLICKED!');
+				}
 			}, false);
 			surface.addEventListener("mouseover", function(event){ 
 				border.style.fill = DARKGREEN;

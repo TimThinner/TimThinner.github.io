@@ -80,3 +80,282 @@ html, body {
 	padding-left: 1rem;
 	padding-right: 1rem;
 }
+/*.flag-wrapper {
+	background-color: #000;
+}*/
+.flag {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	float: right;
+	height: 2rem;
+	margin-left: 12px;
+	cursor: pointer;
+	border: 2px solid #404040;
+}
+.flag.selected {
+	border: 2px solid #80f080;
+}
+.user {
+	margin-top: 6px;
+	margin-bottom: 6px;
+	float: left;
+	height: 48px;
+	margin-left: 12px;
+	cursor: pointer;
+}
+.coming-soon {
+	border: 1px solid #8f8;
+	background-color: #efe;
+	text-align:center;
+	font-size: 32px;
+	padding: 16px;
+}
+.small-chart {
+	width: 100%;
+	height: 300px;
+	max-width: 100%;
+}
+.medium-chart {
+	width: 100%;
+	height: 400px;
+	max-width: 100%;
+}
+.large-chart {
+	width: 100%;
+	height: 500px;
+	max-width: 100%;
+}
+.extra-large-chart {
+	width: 100%;
+	height: 600px;
+	max-width: 100%;
+}
+.chart-wrapper {
+	padding: 16px 8px;
+	/*border: 1px solid #ccc;*/
+}
+.dark-theme {
+	background-color: #30303d;
+	color: #fff;
+}
+#subview-1-fromfield, #subview-1-tofield, 
+#subview-2-fromfield, #subview-2-tofield {
+	color: #fff;
+	/*box-sizing: border-box;*/
+}
+input[type="range"] {
+	border: none;
+}
+/*
+#009688 teal
+#00897b teal darken-1
+#00796b teal darken-2
+#00695c teal darken-3
+#004d40 teal darken-4
+*/
+.da-wrapper-title {
+	color: #00796b;
+}
+.my-range-button {
+	width: 14%;/* 7 x 14 = 98*/ /*50px;*/
+	padding: 6px 0 6px 0;
+	background-color: #eee;
+	color: #888;
+	border-top: 1px solid #fff;
+	border-right: 1px solid #888;
+	border-bottom: 1px solid #888;
+	border-left: 1px solid #fff;
+	text-align: center;
+}
+.my-range-button:hover {
+	background-color: #fff;
+}
+.my-range-button:focus {
+	background-color: #eee;
+}
+.my-range-button.selected {
+	background-color: #555;
+	border-top: 1px solid #888;
+	border-right: 1px solid #fff;
+	border-bottom: 1px solid #fff;
+	border-left: 1px solid #888;
+	color: #fff;
+}
+.mc-footer {
+	margin-top: -18px;
+	background-color: #fff;
+}
+.mc-logo {
+	margin-right: 2rem;
+	height: 60px;
+}
+.menu-view-top-bar {
+	background-color: #333;
+}
+.foobutton{
+	background-color: #3079b7;
+}
+.foobutton:hover {
+	background-color: #5699d4;
+}
+img.logout {
+	height: 50px;
+	float: right;
+	cursor: pointer;
+}
+.view-button {
+	height: 52px;
+	background-color: #eee;
+	border: 1px solid #ccc;
+	cursor: pointer;
+	border-radius: 20px;
+	box-shadow: 4px 4px 6px #aaa;
+}
+.view-button:hover {
+	background-color: #fff;
+}
+.table-button {
+	height: 42px;
+	background-color: #eee;
+	border: 1px solid #ccc;
+	cursor: pointer;
+	border-radius: 12px;
+	box-shadow: 2px 2px 3px #aaa;
+}
+.table-button:hover {
+	background-color: #fff;
+}
+
+.important-note {
+	text-align: center;
+	background-color: #ff0;
+}
+.user-item {
+	border: 1px solid #888;
+	padding: 8px 16px;
+	box-shadow: 4px 4px 4px #aaa;
+}
+.regcode-item {
+	border: 1px solid #888;
+	padding: 8px 16px;
+	box-shadow: 4px 4px 4px #aaa;
+}
+/* From materialize.css (striped) */
+table.striped tr {
+	border-bottom: none;
+}
+table.striped > tbody > tr:nth-child(odd) {
+	background-color: rgba(128, 128, 128, 0.2);
+}
+table.striped > tbody > tr > td {
+	border-radius: 0;
+}
+/*
+.price-wrapper {
+	border: 1px solid #ccc;
+}*/
+.edit-item-field {
+	font-size:20px;
+	/*color: #26a69a;*/ /* #26a69a teal lighten-1 */
+}
+.edit-item-field-postfix {
+	font-size:18px;
+	/*color: #26a69a;*/ /* #26a69a teal lighten-1 */
+}
+.edit-item-change-number {
+	font-size:32px;
+	font-weight: bold;
+}
+.edit-item-change-button a i {
+	border: 1px solid #ccc;
+	padding: 8px 8px;
+	text-align: center;
+}
+/*
+#e0f2f1 teal lighten-5
+#b2dfdb teal lighten-4
+#80cbc4 teal lighten-3
+#4db6ac teal lighten-2
+#26a69a teal lighten-1
+#009688 teal
+*/
+
+/* in UserHeationgView: */
+.feedback-smiley {
+	padding: 5px;
+}
+/* Toasts in Energy prices input and Heating feedback: */
+#toast-container {
+	top: auto !important;
+	right: auto !important;
+	bottom: 50%;
+	left: 30%;
+}
+.toast {
+	border-radius: 2px;
+	border: 1px solid #555;
+	text-shadow: 1px 1px 2px #000;
+	top: 35px;
+	width: auto;
+	margin-top: 10px;
+	position: relative;
+	max-width: 100%;
+	height: auto;
+	min-height: 48px;
+	line-height: 1.5em;
+	/*background-color: #323232;*/
+	background-color: rgba(14,158,54,0.75);
+	padding: 10px 25px;
+	font-size: 1.1rem;
+	font-weight: 300;
+	color: #fff;
+}
+/* In UserHeatingTargetsView noUiSlider */
+#temperature-slider .noUi-connect {
+	background: #f00;
+}
+#humidity-slider .noUi-connect {
+	background: #0ff;
+}
+#water-hot-slider .noUi-connect {
+	background: #f00;
+}
+#water-cold-slider .noUi-connect {
+	background: #0ff;
+}
+.alarm-count {
+	font-size: 20px;
+	color: #a00;
+}
+.alarm-count-description {
+	color: #a00;
+}
+.value-now-box {
+	border-top: 1px solid #fff;
+	border-right: 1px solid #888;
+	border-bottom: 1px solid #888;
+	border-left: 1px solid #fff;
+}
+.consumption-now {
+	background-color: rgba(255, 128, 0, 0.1);
+}
+.production-now {
+	background-color: rgba(0, 255, 0, 0.1);
+}
+.value-now-title {
+	font-size: 16px;
+	color: #888;
+}
+.value-now-text {
+	font-size: 24px;
+	color: #000;
+}
+.timestamp-now-text {
+	font-size: 14px;
+	color: #888;
+}
+.grid-timestamp {
+	font-size: 14px;
+	color: #888;
+	float: right;
+}

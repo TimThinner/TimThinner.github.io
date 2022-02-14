@@ -60,15 +60,31 @@ export default class UsersView extends View {
 			this.models['UsersModel'].users.forEach(user => {
 				//console.log(['user=',user]);
 				
+				// A way to edit Point Ids:
+				const id = user._id;
+				let point_id_a = user.point_id_a;
+				if (point_id_a.length === 0) {
+					point_id_a = 'UNDEF'; // Must be something for the link text
+				}
+				const point_id_a_link = '<a href="javascript:void(0);" id="edit-point-id-a-'+id+'">'+point_id_a+'</a>';
+				
+				let point_id_b = user.point_id_b;
+				if (point_id_b.length === 0) {
+					point_id_b = 'UNDEF'; // Must be something for the link text
+				}
+				const point_id_b_link = '<a href="javascript:void(0);" id="edit-point-id-b-'+id+'">'+point_id_b+'</a>';
+				
+				let point_id_c = user.point_id_c;
+				if (point_id_c.length === 0) {
+					point_id_c = 'UNDEF'; // Must be something for the link text
+				}
+				const point_id_c_link = '<a href="javascript:void(0);" id="edit-point-id-c-'+id+'">'+point_id_c+'</a>';
+				
 				let regcode_apaid = '-';
 				let regcode_code = '-';
 				let regcode_validity = '&nbsp;';
 				let readkey = '-';
 				let readkey_validity = '&nbsp;';
-				
-				const point_id_a = user.point_id_a;
-				const point_id_b = user.point_id_b;
-				const point_id_c = user.point_id_c;
 				
 				if (typeof user.regcode !== 'undefined') {
 					regcode_apaid = user.regcode.apartmentId;
@@ -106,9 +122,9 @@ export default class UsersView extends View {
 						'<td>'+user.email+'</td>'+
 						'<td>'+user.created+'</td>'+
 						'<td>'+regcode_apaid+'</td>'+
-						'<td>'+point_id_a+'</td>'+
-						'<td>'+point_id_b+'</td>'+
-						'<td>'+point_id_c+'</td>'+
+						'<td>'+point_id_a_link+'</td>'+
+						'<td>'+point_id_b_link+'</td>'+
+						'<td>'+point_id_c_link+'</td>'+
 						'<td>'+regcode_code+'</td>'+
 						'<td>'+regcode_validity+'</td>'+
 						'<td>'+readkey+'</td>'+
@@ -121,9 +137,9 @@ export default class UsersView extends View {
 							'<p>Email: '+user.email+'<br/>'+
 							'Created: '+user.created+'<br/>'+
 							'ApartmentId: '+regcode_apaid+'<br/>'+
-							'PointIdA: '+point_id_a+'<br/>'+
-							'PointIdB: '+point_id_b+'<br/>'+
-							'PointIdC: '+point_id_c+'<br/>'+
+							'PointIdA: '+point_id_a_link+'<br/>'+
+							'PointIdB: '+point_id_b_link+'<br/>'+
+							'PointIdC: '+point_id_c_link+'<br/>'+
 							'RegCode: '+regcode_code+' '+regcode_validity+'<br/>'+
 							'ReadKey: '+readkey+' '+readkey_validity+'</p>'+
 						'</div>'+
@@ -133,6 +149,22 @@ export default class UsersView extends View {
 			});
 			
 			this.models['UsersModel'].users.forEach(user => {
+				
+				const uid = user._id;
+				$('#edit-point-id-a-'+uid).on('click', function(){
+					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
+					self.models['MenuModel'].setSelected('POINTIDAEDIT');
+				});
+				$('#edit-point-id-b-'+uid).on('click', function(){
+					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
+					self.models['MenuModel'].setSelected('POINTIDBEDIT');
+				});
+				$('#edit-point-id-c-'+uid).on('click', function(){
+					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
+					self.models['MenuModel'].setSelected('POINTIDCEDIT');
+				});
+				
+				
 				if (typeof user.regcode !== 'undefined') {
 					const id = user.regcode._id;
 					$('#edit-regcode-'+id).on('click', function(){

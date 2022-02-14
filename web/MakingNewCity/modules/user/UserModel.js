@@ -535,4 +535,59 @@ export default class UserModel extends Model {
 			self.notifyAll({model:self.name, method:'updateEnergyTargets', status:status, message:error});
 		});
 	}
+	
+	updateUserData(id, data, token) {
+		const self = this;
+		
+		const myHeaders = new Headers();
+		const authorizationToken = 'Bearer '+token;
+		myHeaders.append("Authorization", authorizationToken);
+		myHeaders.append("Content-Type", "application/json");
+		
+		const myPut = {
+			method: 'PUT',
+			headers: myHeaders,
+			body: JSON.stringify(data)
+		};
+		const myRequest = new Request(this.mongoBackend + '/users/'+id, myPut);
+		let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+		
+		fetch(myRequest)
+			.then(function(response){
+				status = response.status;
+				return response.json();
+			})
+			.then(function(myJson){
+				if (status === 200) {
+					/*const data = [
+						{propName:'consent_a', value:   },
+						{propName:'consent_b', value:   },
+						{propName:'point_id_a', value:   },
+						...
+					];*/
+					data.forEach(d => {
+						if (d.propName === 'consent_a') {
+							self.consent_a = d.value;
+							
+						} else if (d.propName === 'consent_b') {
+							self.consent_b = d.value;
+							
+						} else if (d.propName === 'point_id_a') {
+							self.point_id_a = d.value;
+							
+						} else if (d.propName === 'point_id_b') {
+							self.point_id_b = d.value;
+							
+						} else if (d.propName === 'point_id_c') {
+							self.point_id_c = d.value;
+						}
+					});
+					self.store();
+				}
+				self.notifyAll({model:self.name, method:'updateUserData', status:status, message:myJson.message});
+			})
+			.catch(function(error){
+				self.notifyAll({model:self.name, method:'updateUserData', status:status, message:error});
+			});
+	}
 }

@@ -10,10 +10,8 @@ export default class ReadKeyEditView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'ReadKeyModel' || key === 'MenuModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
 		});
 		this.serviceDates = {'start':'','end':''};
 		this.rendered = false;

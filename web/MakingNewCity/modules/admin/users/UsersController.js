@@ -17,7 +17,7 @@ export default class UsersController extends Controller {
 		// So I just add model removal here, to enable this in the future.
 		
 		Object.keys(this.models).forEach(key => {
-			if (key === 'UsersModel') {
+			if (key === 'UsersModel' || key === 'RegCodeModel' || key === 'ReadKeyModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -31,15 +31,18 @@ export default class UsersController extends Controller {
 		this.master.modelRepo.add('UsersModel',model);
 		this.models['UsersModel'] = model;
 		
+		const m2 = new RegCodeModel({name:'RegCodeModel',src:''});
+		m2.subscribe(this);
+		this.master.modelRepo.add('RegCodeModel',m2);
+		this.models['RegCodeModel'] = m2;
+		
+		const m3 = new ReadKeyModel({name:'ReadKeyModel',src:''});
+		m3.subscribe(this);
+		this.master.modelRepo.add('ReadKeyModel',m3);
+		this.models['ReadKeyModel'] = m3;
+		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
-		
-		// Get also the RegCode and Readkey models.
-		this.models['RegCodeModel'] = this.master.modelRepo.get('RegCodeModel');
-		this.models['RegCodeModel'].subscribe(this);
-		
-		this.models['ReadKeyModel'] = this.master.modelRepo.get('ReadKeyModel');
-		this.models['ReadKeyModel'].subscribe(this);
 		
 		this.view = new UsersView(this);
 	}
@@ -65,11 +68,7 @@ export default class UsersController extends Controller {
 	
 	init() {
 		this.initialize();
-		
 		// New: Controller does not extend PeriodicPoller 
-		
 		//this.timers['UsersView'] = {timer: undefined, interval: -1, models:['UsersModel','RegCodeModel','ReadKeyModel']};
-		
-		
 	}
 }

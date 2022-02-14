@@ -24,10 +24,6 @@ export default class UsersView extends View {
 		this.layout = 'Table';
 	}
 	
-	
-	//this.timers['UsersView'] = {timer: undefined, interval: -1, models:['UsersModel','RegCodeModel','ReadKeyModel']};
-	
-	
 	show() {
 		this.render();
 		this.PTO.restart();
@@ -128,14 +124,13 @@ export default class UsersView extends View {
 				}
 			});
 			
-			
 			this.models['UsersModel'].users.forEach(user => {
 				if (typeof user.regcode !== 'undefined') {
 					const id = user.regcode._id;
 					$('#edit-regcode-'+id).on('click', function(){
 						console.log(['SET RegCodeModel selected id=',id]);
 						self.models['RegCodeModel'].setSelected({'id':id,'caller':'USERS'});
-						self.menuModel.setSelected('REGCODEEDIT');
+						self.models['MenuModel'].setSelected('REGCODEEDIT');
 					});
 				}
 				if (typeof user.readkey !== 'undefined') {
@@ -143,7 +138,7 @@ export default class UsersView extends View {
 					$('#edit-readkey-'+id).on('click', function(){
 						console.log(['SET ReadkeyModel selected id=',id]);
 						self.models['ReadKeyModel'].setSelected({'id':id,'caller':'USERS'});
-						self.menuModel.setSelected('READKEYEDIT');
+						self.models['MenuModel'].setSelected('READKEYEDIT');
 					});
 				}
 			});
@@ -155,13 +150,14 @@ export default class UsersView extends View {
 			
 			if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				
-				// Fetch ALL USERS with populated REGCODE and READKEY data.
+				//this.timers['UsersView'] = {timer: undefined, interval: -1, models:['UsersModel','RegCodeModel','ReadKeyModel']};
+				// Fetch ALL USERS with populated REGCODE and READKEY data and 
+				// when all are fetched STOP the PTO (PeriodicTimeoutObserver), see below this.PTO.stop();
 				const UM = this.controller.master.modelRepo.get('UserModel');
 				Object.keys(this.models).forEach(key => {
 					
 					console.log(['FETCH MODEL key=',key]);
 					this.models[key].fetch(UM.token);
-					
 				});
 				
 			} else if ((options.model==='UsersModel'||options.model==='RegCodeModel'||options.model==='ReadKeyModel') && options.method==='fetched') {
@@ -296,7 +292,7 @@ export default class UsersView extends View {
 			this.showUsers();
 			
 			$('#back').on('click',function() {
-				self.menuModel.setSelected('USERPROPS');
+				self.models['MenuModel'].setSelected('userprops');
 			});
 			
 			this.handleErrorMessages(this.FELID);

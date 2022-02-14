@@ -1,5 +1,5 @@
 import Controller from '../../common/Controller.js';
-import RegCodeModel from  './RegCodeModel.js';
+//import RegCodeModel from  './RegCodeModel.js';
 import RegCodeView from './RegCodeView.js';
 
 export default class RegCodeController extends Controller {
@@ -15,23 +15,19 @@ export default class RegCodeController extends Controller {
 		// They are all created at the load and stay that way, so init() is called ONLY once.
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
-		
-		Object.keys(this.models).forEach(key => {
-			if (key === 'RegCodeModel') {
-				console.log(['remove ',key,' from the REPO']);
-				this.master.modelRepo.remove(key);
-				
-			}
-		});
 		this.models = {};
 	}
 	
 	initialize() {
+		// RegCodeModel is now created at UsersController.
+		this.models['RegCodeModel'] = this.master.modelRepo.get('RegCodeModel');
+		this.models['RegCodeModel'].subscribe(this);
+		/*
 		const model = new RegCodeModel({name:'RegCodeModel',src:'to-be-added-in-the-future'});
 		model.subscribe(this);
 		this.master.modelRepo.add('RegCodeModel',model);
 		this.models['RegCodeModel'] = model;
-		
+		*/
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		

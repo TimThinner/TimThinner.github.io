@@ -64,7 +64,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.14.B');
+		console.log('MasterController init v2022.02.14.C');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -110,7 +110,16 @@ class MasterController {
 		
 		
 		// Admin stuff start ------>
-		// NOTE: RegCodeController and ReadKeyController MUST be created BEFORE UsersController! ------>
+		// New implementation:
+		// UsersController creates models for:
+		//   - Users
+		//   - Regcodes
+		//   - Readkeys
+		// and UsersView fetches all data for these models.
+		//
+		this.controllers['USERS'] = new UsersController({name:'USERS', master:this, el:'#content', visible:false});
+		this.controllers['USERS'].init();
+		
 		this.controllers['REGCODES'] = new RegCodeController({name:'REGCODES', master:this, el:'#content', visible:false});
 		this.controllers['REGCODES'].init();
 		this.controllers['REGCODECREATE'] = new RegCodeCreateController({name:'REGCODECREATE', master:this, el:'#content', visible:false});
@@ -123,8 +132,6 @@ class MasterController {
 		this.controllers['READKEYEDIT'] = new ReadKeyEditController({name:'READKEYEDIT', master:this, el:'#content', visible:false});
 		this.controllers['READKEYEDIT'].init();
 		
-		this.controllers['USERS'] = new UsersController({name:'USERS', master:this, el:'#content', visible:false});
-		this.controllers['USERS'].init();
 		// <------------- Admin stuff end.
 		
 		

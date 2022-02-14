@@ -56,17 +56,6 @@ export default class UserPropsView extends View {
 		$(this.el).empty();
 	}
 	
-	
-	updateLatestValues() {
-		console.log('UPDATE UserProps  !!!!!!!');
-		
-		let s = '';
-		this.models['UserPropsModel'].bindings.forEach(b=>{
-			s += 'apartmentId='+b.apartmentId+' readkey='+b.readkey+'<br/>';
-		});
-		$('#bindings-response-wrapper').empty().append(s);
-	}
-	
 	fillPriceFromUM() {
 		// Fill the price-object with values from UserModel.
 		const UM = this.userModel;
@@ -532,8 +521,6 @@ export default class UserPropsView extends View {
 			});
 			
 			this.handleErrorMessages(this.FELID);
-			this.updateLatestValues(); // Try if bindings array has already values
-			
 			this.rendered = true;
 			
 		} else {

@@ -13,6 +13,18 @@ import DistrictController from './modules/district/DistrictController.js';
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';
 
+
+// ADMIN stuff:
+import RegCodeController from './modules/admin/regcodes/RegCodeController.js';
+import RegCodeCreateController from './modules/admin/regcodes/RegCodeCreateController.js';
+import RegCodeEditController from './modules/admin/regcodes/RegCodeEditController.js';
+import ReadKeyController from './modules/admin/readkeys/ReadKeyController.js';
+import ReadKeyEditController from './modules/admin/readkeys/ReadKeyEditController.js';
+import UsersController from './modules/admin/users/UsersController.js';
+
+
+
+
 class MasterController {
 	
 	constructor() {
@@ -95,6 +107,25 @@ class MasterController {
 		this.controllers['userpage'].init();
 		this.controllers['userprops'] = new UserPropsController({name:'userprops', master:this, el:'#content', visible:false});
 		this.controllers['userprops'].init();
+		
+		
+		// Admin stuff start ------>
+		this.controllers['REGCODES'] = new RegCodeController({name:'REGCODES', master:this, el:'#content', visible:false});
+		this.controllers['REGCODES'].init();
+		this.controllers['REGCODECREATE'] = new RegCodeCreateController({name:'REGCODECREATE', master:this, el:'#content', visible:false});
+		this.controllers['REGCODECREATE'].init();
+		this.controllers['REGCODEEDIT'] = new RegCodeEditController({name:'REGCODEEDIT', master:this, el:'#content', visible:false});
+		this.controllers['REGCODEEDIT'].init();
+		
+		this.controllers['READKEYS'] = new ReadKeyController({name:'READKEYS', master:this, el:'#content', visible:false});
+		this.controllers['READKEYS'].init();
+		this.controllers['READKEYEDIT'] = new ReadKeyEditController({name:'READKEYEDIT', master:this, el:'#content', visible:false});
+		this.controllers['READKEYEDIT'].init();
+		
+		this.controllers['USERS'] = new UsersController({name:'USERS', master:this, el:'#content', visible:false});
+		this.controllers['USERS'].init();
+		// <------------- Admin stuff end.
+		
 		
 		console.log('ALL Controllers are now created!');
 	}

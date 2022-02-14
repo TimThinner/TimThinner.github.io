@@ -413,7 +413,7 @@ export default class UserPropsView extends View {
 				'<div class="row">'+
 					'<div class="col s12 center">'+
 						'<h4>'+localized_string_title+'</h4>'+
-						'<p><img src="./svg/userpage/user.svg" height="80"/></p>'+
+						'<p><img src="./svg/user.svg" height="80"/></p>'+
 						'<p>'+localized_string_description+'</p>'+
 					'</div>'+
 				'</div>'+

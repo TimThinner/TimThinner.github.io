@@ -65,12 +65,11 @@ export default class HelpView extends View {
 						'<p>'+help_1+'</p>'+
 						'<p>'+help_2+'</p>'+
 						'<p>'+help_3+'</p>'+
-						'<p>'+help_4+'</p>'+
 					'</div>'+
 				'</div>'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
-						'<p>'+help_5+'</p>'+
+						'<p>'+help_4+'</p>'+
 					'</div>'+
 					'<div class="col s6 center">'+
 						'<img class="responsive-img" src="./img/UserHomeUI.png" />'+
@@ -78,6 +77,7 @@ export default class HelpView extends View {
 				'</div>'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
+						'<p class="success-message">'+help_5+'</p>'+
 						'<p style="color:#aaa">'+version+'</p>'+
 					'</div>'+
 				'</div>'+

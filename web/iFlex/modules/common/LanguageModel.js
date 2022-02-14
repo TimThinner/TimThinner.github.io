@@ -27,8 +27,8 @@ export default class LanguageModel {
 				'HELP_INFO_1':'You can view <b>building</b> measurements and give <b>building</b> feedback without signup or login.',
 				'HELP_INFO_2':'You can view measurements from your <b>apartment</b> and give feedback about your <b>apartment</b> by signing and logging in.',
 				'HELP_INFO_3':'If you selected sensors in signup phase, they will be installed to your apartment as soon as possible (within one month).',
-				'HELP_INFO_4':'If you need more help, please contact us via email: <a href="mailto:iFLEX-Info@vtt.fi">iFLEX-Info@vtt.fi</a>',
-				'HELP_INFO_5':'The sensor data for your apartment can be found after login from bottom left corner, clicking the radiator icon.',
+				'HELP_INFO_4':'The sensor data for your apartment can be found after login from bottom left corner, clicking the radiator icon.',
+				'HELP_INFO_5':'If you need more help, please contact us via email: <a href="mailto:iFLEX-Info@vtt.fi">iFLEX-Info@vtt.fi</a>',
 				'USER_PROPS_TITLE':'User Properties',
 				'USER_PROPS_DESCRIPTION':'User can can view and modify own properties here.',
 				'USER_PROPS_CHANGE_PASSWORD_BTN_TXT':'Change your password',
@@ -257,7 +257,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 22.02.01'
+				'MENU_VERSION':'v 22.02.14'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -283,8 +283,8 @@ export default class LanguageModel {
 				'HELP_INFO_1':'Voit tarkastella <b>talokohtaisia</b> mittauksia ja antaa <b>talokohtaista</b> palautetta ilman rekisteröitymistä tai kirjautumista.',
 				'HELP_INFO_2':'Voit tarkastella <b>asuntoasi</b> koskevia mittauksia ja antaa <b>asuntoasi</b> koskevaa palautetta rekisteröitymällä ja kirjautumalla sisään.',
 				'HELP_INFO_3':'Jos valitsit rekisteröinnin yhteydessä mittareiden asennuksen, ne tullaan asentamaan mahdollisimman nopeasti (noin kuukauden kuluessa).',
-				'HELP_INFO_4':'Ohjeita ja apua saat lähettämällä meille sähköpostia: <a href="mailto:iFLEX-Info@vtt.fi">iFLEX-Info@vtt.fi</a>',
-				'HELP_INFO_5':'Oman asunnon mittaukset löytyvät kirjautumisen jälkeen asuntosivulta vasemmasta alareunasta, lämpöpatteri-ikonia klikkaamalla.',
+				'HELP_INFO_4':'Oman asunnon mittaukset löytyvät kirjautumisen jälkeen asuntosivulta vasemmasta alareunasta, lämpöpatteri-ikonia klikkaamalla.',
+				'HELP_INFO_5':'Ohjeita ja apua saat lähettämällä meille sähköpostia: <a href="mailto:iFLEX-Info@vtt.fi">iFLEX-Info@vtt.fi</a>',
 				'USER_PROPS_TITLE':'Omat tiedot',
 				'USER_PROPS_DESCRIPTION':'Tällä sivulla käyttäjä voi katsoa ja muokata omia tietojaan.',
 				'USER_PROPS_CHANGE_PASSWORD_BTN_TXT':'Vaihda salasanasi',
@@ -513,7 +513,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 22.02.01'
+				'MENU_VERSION':'v 22.02.14'
 			}
 		}
 	}

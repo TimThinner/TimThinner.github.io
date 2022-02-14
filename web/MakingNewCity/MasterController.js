@@ -11,7 +11,7 @@ import UserSignupController from './modules/user/UserSignupController.js';
 
 import DistrictController from './modules/district/DistrictController.js';
 import UserPageController from './modules/userpage/UserPageController.js';
-
+import UserPropsController from './modules/userprops/UserPropsController.js';
 
 class MasterController {
 	
@@ -52,7 +52,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.11.D');
+		console.log('MasterController init v2022.02.14.A');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -93,6 +93,8 @@ class MasterController {
 		
 		this.controllers['userpage'] = new UserPageController({name:'userpage', master:this, el:'#content', visible:false});
 		this.controllers['userpage'].init();
+		this.controllers['userprops'] = new UserPropsController({name:'userprops', master:this, el:'#content', visible:false});
+		this.controllers['userprops'].init();
 		
 		console.log('ALL Controllers are now created!');
 	}

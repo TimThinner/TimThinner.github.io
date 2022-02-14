@@ -59,7 +59,7 @@ export default class UserPageView extends View {
 		const r = Math.min(wp2, hp2); // r = 0,125 x W or H, whichever is smallest (d=0,25 x W or H)
 		return r;
 	}
-	
+	/*
 	appendConnector(group, corner, endpoint, pos) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		//const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
@@ -107,7 +107,7 @@ export default class UserPageView extends View {
 		c.style.fill = DARKGREEN;
 		//$('#space').append(c);
 		group.appendChild(c);
-	}
+	}*/
 	
 	createSpace() {
 		//$('html').css('background-color','#012265');
@@ -392,11 +392,11 @@ export default class UserPageView extends View {
 		group.appendChild(path);
 		//$('#space').append(path);
 		
-		this.appendConnector(group, framer, endpoint, 0); // Bottom Left
-		this.appendConnector(group, framer, endpointTop, 1); // Top Left
-		this.appendConnector(group, framer, endpointTop, 2); // Top Right
-		this.appendConnector(group, framer, endpoint, 3); // Bottom Right
-		this.appendConnector(group, framer, endpoint, 4); // Bottom CENTER
+		//this.appendConnector(group, framer, endpoint, 0); // Bottom Left
+		//this.appendConnector(group, framer, endpointTop, 1); // Top Left
+		//this.appendConnector(group, framer, endpointTop, 2); // Top Right
+		//this.appendConnector(group, framer, endpoint, 3); // Bottom Right
+		//this.appendConnector(group, framer, endpoint, 4); // Bottom CENTER
 		
 		const gap = corner*0.2;
 		const pad = corner-gap;
@@ -477,6 +477,9 @@ export default class UserPageView extends View {
 		let icon_y = cy - icon_h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
+		
+		// Make 'SETTINGS' and 'LOGOUT' smaller.
+		
 		if (type === 'SETTINGS') {
 			
 			icon_w = r;
@@ -600,45 +603,103 @@ export default class UserPageView extends View {
 		surface.setAttributeNS(null, 'r', r);
 		surface.style.stroke = LIGHTGREEN;
 		surface.style.strokeWidth = 1;
-		//surface.style.fill = DARKGREEN;
-		//surface.style.fillOpacity = 0;
-		//surface.style.cursor = 'pointer';
-		
-		// Disable water!
+		surface.style.fill = DARKGREEN;
+		surface.style.fillOpacity = 0;
+		surface.style.cursor = 'pointer';
 		/*
 			#e0f2f1 teal lighten-5
 			#b2dfdb teal lighten-4
 			#80cbc4 teal lighten-3
 		*/
-		
-		if (type === 'WATER') {
-			surface.style.stroke = '#b2dfdb';
-			surface.style.strokeWidth = 2;
-			surface.style.fill = '#b2dfdb';
-			surface.style.fillOpacity = 0.8;
-			surface.style.cursor = 'default';
-		} else {
-			surface.style.fill = DARKGREEN;
-			surface.style.fillOpacity = 0;
-			surface.style.cursor = 'pointer';
-			
+		const UM = self.controller.master.modelRepo.get('UserModel');
+		// What is the order here (heating, electricity, water)?
+		// UM.point_id_a = ''; 
+		// UM.point_id_b = '';
+		// UM.point_id_c = '';
+		if (type === 'HEATING') {
+			if (UM.point_id_a.length > 0) {
+				// HEATING is enabled
+				surface.addEventListener("click", function(){
+					console.log('HEY! '+type+' CLICKED!');
+				}, false);
+				surface.addEventListener("mouseover", function(event){ 
+					border.style.fill = DARKGREEN;
+				}, false);
+				surface.addEventListener("mouseout", function(event){ 
+					border.style.fill = WHITE;
+				}, false);
+				
+			} else { // HEATING is disabled
+				surface.style.stroke = '#b2dfdb';
+				surface.style.strokeWidth = 2;
+				surface.style.fill = '#b2dfdb';
+				surface.style.fillOpacity = 0.8;
+				surface.style.cursor = 'default';
+			}
+		} else if (type === 'ELECTRICITY') {
+			if (UM.point_id_b.length > 0) {
+				// ELECTRICITY is enabled
+				surface.addEventListener("click", function(){
+					console.log('HEY! '+type+' CLICKED!');
+				}, false);
+				surface.addEventListener("mouseover", function(event){ 
+					border.style.fill = DARKGREEN;
+				}, false);
+				surface.addEventListener("mouseout", function(event){ 
+					border.style.fill = WHITE;
+				}, false);
+				
+			} else { // ELECTRICITY is disabled
+				surface.style.stroke = '#b2dfdb';
+				surface.style.strokeWidth = 2;
+				surface.style.fill = '#b2dfdb';
+				surface.style.fillOpacity = 0.8;
+				surface.style.cursor = 'default';
+			}
+		} else if (type === 'WATER') {
+			if (UM.point_id_c.length > 0) {
+				// WATER is enabled
+				surface.addEventListener("click", function(){
+					console.log('HEY! '+type+' CLICKED!');
+				}, false);
+				surface.addEventListener("mouseover", function(event){ 
+					border.style.fill = DARKGREEN;
+				}, false);
+				surface.addEventListener("mouseout", function(event){ 
+					border.style.fill = WHITE;
+				}, false);
+				
+			} else { // WATER is disabled
+				surface.style.stroke = '#b2dfdb';
+				surface.style.strokeWidth = 2;
+				surface.style.fill = '#b2dfdb';
+				surface.style.fillOpacity = 0.8;
+				surface.style.cursor = 'default';
+			}
+		} else if (type === 'LOGOUT') {
 			surface.addEventListener("click", function(){
-				if (type === 'LOGOUT') {
-					const UM = self.controller.master.modelRepo.get('UserModel');
-					// UM.logout() will do the following:
-					// this.notifyAll({model:'UserModel',method:'before-logout',id:this.id,token:this.token});
-					// this.reset();
-					// this.store();
-					// console.log('USER LOGOUT! Localstorage cleaned!');
-					// setTimeout(() => this.notifyAll({model:'UserModel',method:'logout',status:200,message:'Logout OK'}), 100);
-					//
-					// These notifications are handled in MasterController.
-					if (UM) {
-						UM.logout();
-					}
-				} else {
-					console.log('HEY, '+type+' CLICKED!');
-				}
+				// UM.logout() will do the following:
+				// this.notifyAll({model:'UserModel',method:'before-logout',id:this.id,token:this.token});
+				// this.reset();
+				// this.store();
+				// console.log('USER LOGOUT! Localstorage cleaned!');
+				// setTimeout(() => this.notifyAll({model:'UserModel',method:'logout',status:200,message:'Logout OK'}), 100);
+				//
+				// These notifications are handled in MasterController.
+				UM.logout();
+				
+			}, false);
+			surface.addEventListener("mouseover", function(event){ 
+				border.style.fill = DARKGREEN;
+			}, false);
+			surface.addEventListener("mouseout", function(event){ 
+				border.style.fill = WHITE;
+			}, false);
+			
+			
+		} else { // type === 'SETTINGS'
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('userprops');
 			}, false);
 			surface.addEventListener("mouseover", function(event){ 
 				border.style.fill = DARKGREEN;

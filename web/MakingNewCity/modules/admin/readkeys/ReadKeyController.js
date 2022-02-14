@@ -1,5 +1,5 @@
 import Controller from '../../common/Controller.js';
-import ReadKeyModel from  './ReadKeyModel.js';
+//import ReadKeyModel from  './ReadKeyModel.js';
 import ReadKeyView from './ReadKeyView.js';
 
 export default class ReadKeyController extends Controller {

@@ -1,5 +1,7 @@
 import Controller from '../../common/Controller.js';
 import UsersModel from  './UsersModel.js';
+import RegCodeModel from  '../regcodes/RegCodeModel.js';
+import ReadKeyModel from  '../readkeys/ReadKeyModel.js';
 import UsersView from './UsersView.js';
 
 export default class UsersController extends Controller {

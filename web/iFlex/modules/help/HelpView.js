@@ -74,7 +74,7 @@ export default class HelpView extends View {
 				'</div>'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<p class="success-message">'+help_5+'</p>'+
+						'<p class="success-message" style="padding-top:8px;padding-bottom:8px">'+help_5+'</p>'+
 						'<p style="color:#aaa">'+version+'</p>'+
 					'</div>'+
 				'</div>'+

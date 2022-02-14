@@ -15,15 +15,17 @@ import UserPropsController from './modules/userprops/UserPropsController.js';
 
 
 // ADMIN stuff:
+import UsersController from './modules/admin/users/UsersController.js';
+
+import PointIdAEditController from './modules/admin/users/PointIdAEditController.js';
+import PointIdBEditController from './modules/admin/users/PointIdBEditController.js';
+import PointIdCEditController from './modules/admin/users/PointIdCEditController.js';
+
 import RegCodeController from './modules/admin/regcodes/RegCodeController.js';
 import RegCodeCreateController from './modules/admin/regcodes/RegCodeCreateController.js';
 import RegCodeEditController from './modules/admin/regcodes/RegCodeEditController.js';
 import ReadKeyController from './modules/admin/readkeys/ReadKeyController.js';
 import ReadKeyEditController from './modules/admin/readkeys/ReadKeyEditController.js';
-import UsersController from './modules/admin/users/UsersController.js';
-
-
-
 
 class MasterController {
 	
@@ -64,7 +66,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.14.F');
+		console.log('MasterController init v2022.02.14.G');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -120,6 +122,13 @@ class MasterController {
 		this.controllers['USERS'] = new UsersController({name:'USERS', master:this, el:'#content', visible:false});
 		this.controllers['USERS'].init();
 		
+		this.controllers['POINTIDAEDIT'] = new PointIdAEditController({name:'POINTIDAEDIT', master:this, el:'#content', visible:false});
+		this.controllers['POINTIDAEDIT'].init();
+		this.controllers['POINTIDBEDIT'] = new PointIdBEditController({name:'POINTIDBEDIT', master:this, el:'#content', visible:false});
+		this.controllers['POINTIDBEDIT'].init();
+		this.controllers['POINTIDCEDIT'] = new PointIdCEditController({name:'POINTIDCEDIT', master:this, el:'#content', visible:false});
+		this.controllers['POINTIDCEDIT'].init();
+		
 		this.controllers['REGCODES'] = new RegCodeController({name:'REGCODES', master:this, el:'#content', visible:false});
 		this.controllers['REGCODES'].init();
 		this.controllers['REGCODECREATE'] = new RegCodeCreateController({name:'REGCODECREATE', master:this, el:'#content', visible:false});
@@ -131,6 +140,7 @@ class MasterController {
 		this.controllers['READKEYS'].init();
 		this.controllers['READKEYEDIT'] = new ReadKeyEditController({name:'READKEYEDIT', master:this, el:'#content', visible:false});
 		this.controllers['READKEYEDIT'].init();
+		
 		
 		// <------------- Admin stuff end.
 		

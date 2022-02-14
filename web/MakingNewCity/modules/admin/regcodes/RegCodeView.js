@@ -11,10 +11,8 @@ export default class RegCodeView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'RegCodeModel' || key === 'MenuModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
 		});
 		this.rendered = false;
 		this.FELID = 'view-failure';
@@ -283,7 +281,7 @@ export default class RegCodeView extends View {
 			});
 			
 			$('#back').on('click',function() {
-				self.models['MenuModel'].setSelected('USERPROPS');
+				self.models['MenuModel'].setSelected('userprops');
 			});
 			
 			this.handleErrorMessages(this.FELID);

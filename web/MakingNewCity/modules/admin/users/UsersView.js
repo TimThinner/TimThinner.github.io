@@ -66,7 +66,9 @@ export default class UsersView extends View {
 				let readkey = '-';
 				let readkey_validity = '&nbsp;';
 				
-				
+				const point_id_a = user.point_id_a;
+				const point_id_b = user.point_id_b;
+				const point_id_c = user.point_id_c;
 				
 				if (typeof user.regcode !== 'undefined') {
 					regcode_apaid = user.regcode.apartmentId;
@@ -104,6 +106,9 @@ export default class UsersView extends View {
 						'<td>'+user.email+'</td>'+
 						'<td>'+user.created+'</td>'+
 						'<td>'+regcode_apaid+'</td>'+
+						'<td>'+point_id_a+'</td>'+
+						'<td>'+point_id_b+'</td>'+
+						'<td>'+point_id_c+'</td>'+
 						'<td>'+regcode_code+'</td>'+
 						'<td>'+regcode_validity+'</td>'+
 						'<td>'+readkey+'</td>'+
@@ -116,6 +121,9 @@ export default class UsersView extends View {
 							'<p>Email: '+user.email+'<br/>'+
 							'Created: '+user.created+'<br/>'+
 							'ApartmentId: '+regcode_apaid+'<br/>'+
+							'PointIdA: '+point_id_a+'<br/>'+
+							'PointIdB: '+point_id_b+'<br/>'+
+							'PointIdC: '+point_id_c+'<br/>'+
 							'RegCode: '+regcode_code+' '+regcode_validity+'<br/>'+
 							'ReadKey: '+readkey+' '+readkey_validity+'</p>'+
 						'</div>'+
@@ -230,6 +238,9 @@ export default class UsersView extends View {
 								'<th>Email</th>'+
 								'<th>Created</th>'+
 								'<th>ApartmentId</th>'+
+								'<th>PointIdA</th>'+
+								'<th>PointIdB</th>'+
+								'<th>PointIdC</th>'+
 								'<th>RegCode</th>'+
 								'<th>&nbsp;</th>'+
 								'<th>ReadKey</th>'+

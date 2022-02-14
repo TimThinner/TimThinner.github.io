@@ -44,6 +44,7 @@ export default class HelpView extends View {
 		const help_2 = LM['translation'][sel]['HELP_INFO_2'];
 		const help_3 = LM['translation'][sel]['HELP_INFO_3'];
 		const help_4 = LM['translation'][sel]['HELP_INFO_4'];
+		const help_5 = LM['translation'][sel]['HELP_INFO_5'];
 		const version = LM['translation'][sel]['MENU_VERSION'];
 		
 		const help_ok = LM['translation'][sel]['OK'];
@@ -65,6 +66,8 @@ export default class HelpView extends View {
 						'<p>'+help_2+'</p>'+
 						'<p>'+help_3+'</p>'+
 						'<p>'+help_4+'</p>'+
+						'<p>'+help_5+'</p>'+
+						'<img class="responsive-img" src="./img/UserHomeUI.png" />'+
 						'<p style="color:#aaa">'+version+'</p>'+
 					'</div>'+
 				'</div>'+

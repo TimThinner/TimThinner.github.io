@@ -26,7 +26,7 @@ export default class UsersController extends Controller {
 	}
 	
 	initialize() {
-		const model = new UsersModel({name:'UsersModel',src:'to-be-added-in-the-future'});
+		const model = new UsersModel({name:'UsersModel',src:''});
 		model.subscribe(this);
 		this.master.modelRepo.add('UsersModel',model);
 		this.models['UsersModel'] = model;

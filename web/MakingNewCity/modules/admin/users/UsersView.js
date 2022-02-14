@@ -4,6 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../../common/View.js';
+import PeriodicTimeoutObserver from '../../common/PeriodicTimeoutObserver.js';
 
 export default class UsersView extends View {
 	
@@ -11,29 +12,36 @@ export default class UsersView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'UsersModel' || key === 'RegCodeModel' || key === 'ReadKeyModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
 		});
-		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:60000}); // interval 60 seconds
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'view-failure';
 		this.layout = 'Table';
 	}
 	
+	
+	//this.timers['UsersView'] = {timer: undefined, interval: -1, models:['UsersModel','RegCodeModel','ReadKeyModel']};
+	
+	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
-		super.hide();
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		super.remove();
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -144,11 +152,25 @@ export default class UsersView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if ((options.model==='UsersModel'||options.model==='RegCodeModel'||options.model==='ReadKeyModel') && options.method==='fetched') {
+			
+			if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				
+				// Fetch ALL USERS with populated REGCODE and READKEY data.
+				const UM = this.controller.master.modelRepo.get('UserModel');
+				Object.keys(this.models).forEach(key => {
+					
+					console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch(UM.token);
+					
+				});
+				
+			} else if ((options.model==='UsersModel'||options.model==='RegCodeModel'||options.model==='ReadKeyModel') && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.areModelsReady()) {
 						
 						console.log('UsersView => UsersModel fetched!');
+						this.PTO.stop();
+						
 						if (this.rendered) {
 							$('#'+this.FELID).empty();
 							this.showUsers();

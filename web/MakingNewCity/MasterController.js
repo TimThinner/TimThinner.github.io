@@ -64,7 +64,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.14.A');
+		console.log('MasterController init v2022.02.14.B');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -110,6 +110,7 @@ class MasterController {
 		
 		
 		// Admin stuff start ------>
+		// NOTE: RegCodeController and ReadKeyController MUST be created BEFORE UsersController! ------>
 		this.controllers['REGCODES'] = new RegCodeController({name:'REGCODES', master:this, el:'#content', visible:false});
 		this.controllers['REGCODES'].init();
 		this.controllers['REGCODECREATE'] = new RegCodeCreateController({name:'REGCODECREATE', master:this, el:'#content', visible:false});

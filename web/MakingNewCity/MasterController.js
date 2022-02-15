@@ -13,6 +13,7 @@ import DistrictController from './modules/district/DistrictController.js';
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';
 
+import EnvironmentPageController from './modules/environmentpage/EnvironmentPageController.js';
 
 // ADMIN stuff:
 import UsersController from './modules/admin/users/UsersController.js';
@@ -22,6 +23,11 @@ import RegCodeCreateController from './modules/admin/regcodes/RegCodeCreateContr
 import RegCodeEditController from './modules/admin/regcodes/RegCodeEditController.js';
 import ReadKeyController from './modules/admin/readkeys/ReadKeyController.js';
 import ReadKeyEditController from './modules/admin/readkeys/ReadKeyEditController.js';
+
+
+
+
+
 
 class MasterController {
 	
@@ -62,7 +68,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.15.B');
+		console.log('MasterController init v2022.02.15.C');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -105,6 +111,13 @@ class MasterController {
 		this.controllers['userpage'].init();
 		this.controllers['userprops'] = new UserPropsController({name:'userprops', master:this, el:'#content', visible:false});
 		this.controllers['userprops'].init();
+		
+		
+		this.controllers['environmentpage'] = new EnvironmentPageController({name:'environmentpage', master:this, el:'#content', visible:false});
+		this.controllers['environmentpage'].init();
+		
+		
+		
 		
 		// Admin stuff start ------>
 		// New implementation:

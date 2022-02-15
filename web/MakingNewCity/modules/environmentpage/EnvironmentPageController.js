@@ -42,30 +42,16 @@ export default class EnvironmentPageController extends Controller {
 	}
 	
 	init() {
-		/*
-		const m = new EmpoModel({name:'EmpoEmissionsModel',src:'emissions/findByDate?EmDB=EcoInvent&country=Finland'});
-		m.subscribe(this);
-		this.master.modelRepo.add('EmpoEmissionsModel',m);
-		this.models['EmpoEmissionsModel'] = m;*/
-		
-		// Get all models where name starts with 'EmpoEmissions'
-		const empos = [];
+		// Get all models where name starts with 'EmpoEmissions', they were already created at MenuController.
 		const model_names = this.master.modelRepo.keys();
 		model_names.forEach(name => {
 			if (name.indexOf('EmpoEmissions') === 0) {
-				empos.push(name);
 				this.models[name] = this.master.modelRepo.get(name);
 			}
 		});
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
-		
-		//this.timers['EnvironmentPageChartView'] = {timer: undefined, interval: 180000, models:empos}; // interval 3 minutes.
-		
 		this.view = new EnvironmentPageView(this);
-		// If view is shown immediately and poller is used, like in this case, 
-		// we can just call show() and let it start fetching... 
-		this.show(); // Try if this view can be shown right now!
 	}
 }

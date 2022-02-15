@@ -664,7 +664,7 @@ export default class MenuView extends View {
 			
 		} else if (type === 'ENVIRONMENT') {
 			surface.addEventListener("click", function(){
-				console.log('HEY, ENVIRONMENT CLICKED!');
+				self.models['MenuModel'].setSelected('environmentpage');
 			}, false);
 		}
 		

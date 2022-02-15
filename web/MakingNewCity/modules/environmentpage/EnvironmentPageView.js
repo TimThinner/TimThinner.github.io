@@ -15,6 +15,10 @@ export default class EnvironmentPageView extends View {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:60000}); // interval 60 seconds
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'environment-page-view-failure';
 		this.chart = undefined;
@@ -25,9 +29,11 @@ export default class EnvironmentPageView extends View {
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
+		this.PTO.stop();
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -37,6 +43,8 @@ export default class EnvironmentPageView extends View {
 	}
 	
 	remove() {
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -306,6 +314,7 @@ export default class EnvironmentPageView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
+			
 			if (options.model.indexOf('EmpoEmissions') === 0 && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.areModelsReady()) {
@@ -328,6 +337,18 @@ export default class EnvironmentPageView extends View {
 				} else { // Error in fetching.
 					this.notifyError(options);
 				}
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Do something with each TICK!
+				//
+				// 'MenuModel'
+				// 'EmpoEmissions1Model'
+				// ...
+				// 'EmpoEmissions30Model'
+				Object.keys(this.models).forEach(key => {
+					console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch();
+				});
 			}
 		}
 	}

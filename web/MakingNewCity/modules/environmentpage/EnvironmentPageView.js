@@ -284,7 +284,7 @@ export default class EnvironmentPageView extends View {
 	}
 	
 	notifyError(options) {
-		console.log(['ERROR IN FETCHING ',options.model]);
+		console.log(['ERROR IN FETCHING model=',options.model,' message=',options.message]);
 		if (this.rendered) {
 			
 			$('#'+this.FELID).empty();
@@ -367,7 +367,7 @@ export default class EnvironmentPageView extends View {
 				// ...
 				// 'EmpoEmissions30Model'
 				Object.keys(this.models).forEach(key => {
-					console.log(['FETCH MODEL key=',key]);
+					//console.log(['FETCH MODEL key=',key]);
 					this.models[key].fetch();
 				});
 			}

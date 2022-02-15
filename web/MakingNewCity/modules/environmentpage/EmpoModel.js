@@ -119,7 +119,7 @@ export default class EmpoModel extends Model {
 			body_url += '&startdate='+start+'&enddate='+end;
 		}
 		const body_url_encoded = encodeURI(body_url);
-		//console.log(['body_url_encoded=',body_url_encoded]);
+		console.log(['body_url_encoded=',body_url_encoded]);
 		
 		const url = this.mongoBackend + '/proxes/empo';
 		

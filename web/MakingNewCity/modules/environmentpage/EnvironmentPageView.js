@@ -25,6 +25,7 @@ export default class EnvironmentPageView extends View {
 		this.chart = undefined;
 		this.timestamp_latest = undefined;
 		this.consumption_latest = undefined;
+		this.consumption_average = undefined;
 		this.production_latest = undefined;
 	}
 	
@@ -63,6 +64,12 @@ export default class EnvironmentPageView extends View {
 			//const val = Math.round((this.consumption_latest + Number.EPSILON) * 100) / 100;
 			const val = this.consumption_latest.toFixed(0);
 			$("#consumption-now-value").empty().append(val + ' gCO2/kWh');
+			
+			if (typeof this.consumption_average !== 'undefined') {
+				const val = this.consumption_average.toFixed(0);
+				$("#average-now-value").empty().append(val + ' gCO2/kWh');
+			}
+			
 			if (typeof this.timestamp_latest !== 'undefined') {
 				// Format the timestamp:
 				const mom = moment(this.timestamp_latest);
@@ -180,6 +187,15 @@ export default class EnvironmentPageView extends View {
 				}
 			});
 		}
+		
+		// CHECK THE AVERAGE of values in aveArray
+		if (aveArray.length > 0) {
+			let ave_sum = 0;
+			aveArray.forEach(v=>{
+				ave_sum += v.consumed;
+			});
+			this.consumption_average = ave_sum/aveArray.length;
+		}
 		return aveArray;
 	}
 	
@@ -205,6 +221,9 @@ export default class EnvironmentPageView extends View {
 			//console.log(['res length=',res.length]);
 			
 			const resuArray = self.convertResults();
+			
+			
+			
 			// Create chart
 			self.chart = am4core.create('emissions-chart', am4charts.XYChart);
 			self.paddingRight = 20;
@@ -323,6 +342,7 @@ export default class EnvironmentPageView extends View {
 							$('#'+this.FELID).empty();
 							if (typeof this.chart !== 'undefined') {
 								const resuArray = this.convertResults();
+								
 								//console.log(['resuArray.length = ',resuArray.length, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!']);
 								am4core.iter.each(this.chart.series.iterator(), function (s) {
 									s.data = resuArray;
@@ -379,6 +399,7 @@ export default class EnvironmentPageView extends View {
 						'<div class="value-now-box consumption-now">'+
 							'<p><span class="value-now-title">'+localized_string_consumption_now_title+'</span><br/>'+
 							'<span class="value-now-text" id="consumption-now-value">&nbsp;-&nbsp;</span><br/>'+
+							'<span class="average-now-text" id="average-now-value">&nbsp;-&nbsp;</span><br/>'+
 							'<span class="timestamp-now-text" id="timestamp-now-value">&nbsp;-&nbsp;</span></p>'+
 						'</div>'+
 					'</div>'+

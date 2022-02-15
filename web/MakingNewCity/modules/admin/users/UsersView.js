@@ -152,32 +152,30 @@ export default class UsersView extends View {
 				
 				const uid = user._id;
 				$('#edit-point-id-a-'+uid).on('click', function(){
-					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
-					self.models['MenuModel'].setSelected('POINTIDAEDIT');
+					self.models['UsersModel'].setContext({'id':uid,'caller':'USERS','pid':'point_id_a'});
+					self.models['MenuModel'].setSelected('POINTIDEDIT');
 				});
 				$('#edit-point-id-b-'+uid).on('click', function(){
-					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
-					self.models['MenuModel'].setSelected('POINTIDBEDIT');
+					self.models['UsersModel'].setContext({'id':uid,'caller':'USERS','pid':'point_id_b'});
+					self.models['MenuModel'].setSelected('POINTIDEDIT');
 				});
 				$('#edit-point-id-c-'+uid).on('click', function(){
-					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
-					self.models['MenuModel'].setSelected('POINTIDCEDIT');
+					self.models['UsersModel'].setContext({'id':uid,'caller':'USERS','pid':'point_id_c'});
+					self.models['MenuModel'].setSelected('POINTIDEDIT');
 				});
 				
 				
 				if (typeof user.regcode !== 'undefined') {
 					const id = user.regcode._id;
 					$('#edit-regcode-'+id).on('click', function(){
-						console.log(['SET RegCodeModel selected id=',id]);
-						self.models['RegCodeModel'].setSelected({'id':id,'caller':'USERS'});
+						self.models['RegCodeModel'].setContext({'id':id,'caller':'USERS'});
 						self.models['MenuModel'].setSelected('REGCODEEDIT');
 					});
 				}
 				if (typeof user.readkey !== 'undefined') {
 					const id = user.readkey._id;
 					$('#edit-readkey-'+id).on('click', function(){
-						console.log(['SET ReadkeyModel selected id=',id]);
-						self.models['ReadKeyModel'].setSelected({'id':id,'caller':'USERS'});
+						self.models['ReadKeyModel'].setContext({'id':id,'caller':'USERS'});
 						self.models['MenuModel'].setSelected('READKEYEDIT');
 					});
 				}

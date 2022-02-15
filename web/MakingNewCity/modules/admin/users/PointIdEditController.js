@@ -1,7 +1,7 @@
 import Controller from '../../common/Controller.js';
-import PointIdAEditView from './PointIdAEditView.js';
+import PointIdEditView from './PointIdEditView.js';
 
-export default class PointIdAEditController extends Controller {
+export default class PointIdEditController extends Controller {
 	
 	constructor(options) {
 		super(options);
@@ -23,7 +23,7 @@ export default class PointIdAEditController extends Controller {
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.view = new PointIdAEditView(this);
+		this.view = new PointIdEditView(this);
 	}
 	
 	clean() {

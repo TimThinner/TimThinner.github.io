@@ -26,15 +26,15 @@ export default class RegCodeModel extends Model {
 		this.startdate = undefined;
 		this.enddate = undefined;*/
 		this.regcodes = [];
-		this.selected = undefined;
+		this.context = undefined;
 	}
 	
-	setSelected(sel) {
-		this.selected = sel;
+	setContext(c) {
+		this.context = c;
 	}
 	
-	getSelected() {
-		return this.selected;
+	getContext() {
+		return this.context;
 	}
 	
 	fetch(token) {

@@ -148,9 +148,7 @@ export default class RegCodeView extends View {
 			this.models['RegCodeModel'].regcodes.forEach(code => {
 				const id = code._id;
 				$('#edit-regcode-'+id).on('click', function(){
-					console.log(['SET RegCodeModel selected id=',id]);
-					self.models['RegCodeModel'].setSelected({'id':id,'caller':'REGCODES'});
-					//console.log(['Edit code=',code]);
+					self.models['RegCodeModel'].setContext({'id':id,'caller':'REGCODES'});
 					self.models['MenuModel'].setSelected('REGCODEEDIT');
 				});
 			});

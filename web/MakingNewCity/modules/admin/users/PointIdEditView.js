@@ -4,7 +4,7 @@ import View from '../../common/View.js';
 		this.el = controller.el;
 		this.models = {};
 */
-export default class PointIdAEditView extends View {
+export default class PointIdEditView extends View {
 	constructor(controller) {
 		
 		super(controller);
@@ -41,8 +41,8 @@ export default class PointIdAEditView extends View {
 		if (this.controller.visible) {
 			if (options.model==='UserModel' && options.method==='updateUserData') {
 				
-				const selected = this.models['UsersModel'].getSelected();
-				const caller = selected.caller;
+				const context = this.models['UsersModel'].getContext();
+				const caller = context.caller;
 				
 				if (options.status === 200) {
 					// ReadKey updated OK, show OK message and go back to ReadKeyList (after 1 second delay).
@@ -75,16 +75,15 @@ export default class PointIdAEditView extends View {
 		
 		// Should we reset this everytime we render the FORM?
 		//this.serviceDates = {'start':'','end':''};
-		// Get the selected ReadKey (model) to see the old dates.
-		const selected = this.models['UsersModel'].getSelected();
-		const sid = selected.id;
-		const caller = selected.caller;
+		const context = this.models['UsersModel'].getContext();
+		const sid = context.id;
+		const caller = context.caller;
+		const pid = context.pid; // 'point_id_a', 'point_id_b' or 'point_id_c'
 		let point_id = '';
 		
 		this.models['UsersModel'].users.forEach(user=>{
 			if (user._id === sid) {
-				//console.log(['selected user=',user]);
-				point_id = user.point_id_a;
+				point_id = user[pid]; // Selects the correct property.
 			}
 		});
 		
@@ -127,13 +126,9 @@ export default class PointIdAEditView extends View {
 		
 		$('#update-point-id').on('click',function() {
 			const _code = $('#point-id').val();
-			//console.log(['_code=',_code]);
-				//$('#response').empty();
-				//const html = '<div class="error-message"><p>'+localized_message+'</p></div>';
-				//$(html).appendTo('#response');
 			const authToken = self.models['UserModel'].token;
 			const data = [
-				{propName:'point_id_a', value:_code}
+				{propName:pid, value:_code}
 			];
 			self.models['UserModel'].updateUserData(sid, data, authToken);
 		});

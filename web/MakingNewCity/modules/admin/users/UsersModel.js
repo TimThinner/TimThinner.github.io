@@ -21,15 +21,15 @@ export default class UsersModel extends Model {
 	constructor(options) {
 		super(options);
 		this.users = [];
-		this.selected = undefined;
+		this.context = undefined;
 	}
 	
-	setSelected(sel) {
-		this.selected = sel;
+	setContext(c) {
+		this.context = c;
 	}
 	
-	getSelected() {
-		return this.selected;
+	getContext() {
+		return this.context;
 	}
 	
 	fetch(token) {

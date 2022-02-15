@@ -42,8 +42,8 @@ export default class RegCodeEditView extends View {
 		if (this.controller.visible) {
 			if (options.model==='RegCodeModel' && options.method==='updateOne') {
 				
-				const selected = this.models['RegCodeModel'].getSelected();
-				const caller = selected.caller;
+				const context = this.models['RegCodeModel'].getContext();
+				const caller = context.caller;
 				
 				$('#failed').empty();
 				$('#success').empty();
@@ -168,10 +168,9 @@ export default class RegCodeEditView extends View {
 		
 		// Should we reset this everytime we render the FORM?
 		//this.serviceDates = {'start':'','end':''};
-		// Get the selected RegCode (model) to see the old dates.
-		const selected = this.models['RegCodeModel'].getSelected();
-		const sid = selected.id;
-		const caller = selected.caller;
+		const context = this.models['RegCodeModel'].getContext();
+		const sid = context.id;
+		const caller = context.caller;
 		let email = '';
 		let apaId = '';
 		this.models['RegCodeModel'].regcodes.forEach(code => {

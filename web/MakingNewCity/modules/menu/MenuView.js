@@ -92,6 +92,22 @@ export default class MenuView extends View {
 		svg_element.style.fill = color;
 	}
 	
+	updateSVGLeafColor(ave, last) {
+		const svg_element = document.getElementById('EnvironmentLeafImage');
+		// NOTE: Set FILL and STROKE according to calculated values.
+		const margin = ave/10; // 10% margin
+		const upper_limit = ave + margin;
+		const lower_limit = ave - margin;
+		
+		if (last > upper_limit) {
+			svg_element.setAttribute('href', './svg/redleaf.svg'); // RED
+		} else if (last < lower_limit) {
+			svg_element.setAttribute('href', './svg/greenleaf.svg'); // GREEN
+		} else {
+			svg_element.setAttribute('href', './svg/yellowleaf.svg'); // YELLOW
+		}
+	}
+	
 	updateEmissionsValue() {
 		// Calculate average value 
 		let sum = 0;
@@ -121,14 +137,13 @@ export default class MenuView extends View {
 			const ave = sum/resuArray.length;
 			const vals = last.toFixed(0);
 			const aves = '('+ave.toFixed(0)+')';
-			
 			console.log(['vals=',vals,' aves=',aves]);
-			
 			/*
 			this.fillSVGTextElement(svgObject, 'emissions-value', vals);
 			this.fillSVGTextElement(svgObject, 'emissions-ave', aves);
 			this.updateSVGLeafPathColor(ave, last);
 			*/
+			this.updateSVGLeafColor(ave, last);
 		}
 	}
 	
@@ -603,6 +618,7 @@ export default class MenuView extends View {
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
 			img.setAttribute('href', './svg/greenleaf.svg');
+			img.setAttributeNS(null, 'id', 'EnvironmentLeafImage');
 			group.appendChild(img);
 		}
 		

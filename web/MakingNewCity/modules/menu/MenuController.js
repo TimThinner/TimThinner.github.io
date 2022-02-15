@@ -1,13 +1,14 @@
 import Controller from '../common/Controller.js';
 import MenuModel from  './MenuModel.js';
 import FingridModel from  '../energydata/FingridModel.js';
-//import EmpoModel from  '../environmentpage/EmpoModel.js';
+import EmpoModel from  '../environmentpage/EmpoModel.js';
 import MenuView from './MenuView.js';
 
 export default class MenuController extends Controller {
 	
 	constructor(options) {
 		super(options);
+		this.numOfEmpoModels = 30;
 	}
 	/*
 	NOTE: Menumodel is NEVER removed!
@@ -33,6 +34,25 @@ export default class MenuController extends Controller {
 		m.subscribe(this);
 		this.master.modelRepo.add('FingridPowerSystemStateModel',m);
 		this.models['FingridPowerSystemStateModel'] = m;
+		
+		
+		const model_data = [];
+		for (let i=1; i<this.numOfEmpoModels+1; i++) {
+			const sh = i*24;
+			const eh = i*24-24;
+			model_data.push({name:'EmpoEmissions'+i+'Model',sh:sh,eh:eh});
+		}
+		model_data.forEach(md => {
+			const em = new EmpoModel({
+				name: md.name,
+				src: 'emissions/findByDate?country=FI&EmDB=EcoInvent',
+				timerange_start_subtract_hours: md.sh,
+				timerange_end_subtract_hours: md.eh
+			});
+			em.subscribe(this);
+			this.master.modelRepo.add(md.name, em);
+			this.models[md.name] = em;
+		});
 		
 		this.view = new MenuView(this);
 		// NOTE: If View does NOT have ResizeEventObserver, we try to show it.

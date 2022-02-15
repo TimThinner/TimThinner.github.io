@@ -92,6 +92,10 @@ export default class MenuView extends View {
 		svg_element.style.fill = color;
 	}
 	
+	updateEmissionsValue() {
+		//console.log('updateEmissionsValue');
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -104,13 +108,29 @@ export default class MenuView extends View {
 				// Do something with each TICK!
 				//
 				console.log('PeriodicTimeoutObserver timeout!');
-				this.models['FingridPowerSystemStateModel'].fetch();
+				
+				// 'FingridPowerSystemStateModel'
+				// 'EmpoEmissions1Model'
+				// ...
+				// 'EmpoEmissions30Model'
+				Object.keys(this.models).forEach(key => {
+					console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch();
+				});
 				
 			} else if (options.model==='FingridPowerSystemStateModel' && options.method==='fetched') {
-				console.log('FingridPowerSystemStateModel fetched!!!!');
-				console.log(['model value=',this.models['FingridPowerSystemStateModel'].value,' values=',this.models['FingridPowerSystemStateModel'].values]);
-				// Set the value to element with id='FingridPowerSystemState'
-				this.updateFingridPowerSystemState();
+				console.log(options.model + 'fetched!');
+				//console.log(['model value=',this.models['FingridPowerSystemStateModel'].value,' values=',this.models['FingridPowerSystemStateModel'].values]);
+				if (options.status === 200) {
+					// Set the value to element with id='FingridPowerSystemState'
+					this.updateFingridPowerSystemState();
+				}
+				
+			} else if (options.model.indexOf('EmpoEmissions') === 0 && options.method==='fetched') {
+				console.log(options.model + 'fetched!');
+				if (options.status === 200) {
+					this.updateEmissionsValue();
+				}
 			}
 		}
 	}

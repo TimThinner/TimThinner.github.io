@@ -384,6 +384,7 @@ export default class EnvironmentPageView extends View {
 		const localized_string_title = LM['translation'][sel]['ENVIRONMENT_PAGE_TITLE'];
 		const localized_string_description = LM['translation'][sel]['ENVIRONMENT_PAGE_DESCRIPTION'];
 		const localized_string_consumption_now_title = LM['translation'][sel]['ENVIRONMENT_PAGE_LATEST_CONSUMPTION'];
+		const localized_string_average_now_title = LM['translation'][sel]['ENVIRONMENT_PAGE_AVERAGE_CONSUMPTION'];
 		//const localized_string_production_now_title = 'Production';
 		
 		const html =
@@ -399,7 +400,8 @@ export default class EnvironmentPageView extends View {
 						'<div class="value-now-box consumption-now">'+
 							'<p><span class="value-now-title">'+localized_string_consumption_now_title+'</span><br/>'+
 							'<span class="value-now-text" id="consumption-now-value">&nbsp;-&nbsp;</span><br/>'+
-							'<span class="average-now-text" id="average-now-value">&nbsp;-&nbsp;</span><br/>'+
+							'<span class="average-now-text">'+localized_string_average_now_title+':</span>'+
+							'<span class="average-now-text" id="average-now-value">&nbsp;&nbsp;-&nbsp;</span><br/>'+
 							'<span class="timestamp-now-text" id="timestamp-now-value">&nbsp;-&nbsp;</span></p>'+
 						'</div>'+
 					'</div>'+

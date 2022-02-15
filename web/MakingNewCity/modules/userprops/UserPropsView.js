@@ -371,10 +371,13 @@ export default class UserPropsView extends View {
 						'<div class="col s12 center">'+
 							'<p>Admin can view and edit RegCodes, view Users and associated ReadKeys.</p>'+
 						'</div>'+
-						'<div class="col s6 center">'+
+						'<div class="col s4 center">'+
+							'<button class="btn waves-effect waves-light" id="readkeys">ReadKeys</button>'+
+						'</div>'+
+						'<div class="col s4 center">'+
 							'<button class="btn waves-effect waves-light" id="regcodes">RegCodes</button>'+
 						'</div>'+
-						'<div class="col s6 center">'+
+						'<div class="col s4 center">'+
 							'<button class="btn waves-effect waves-light" id="users">Users</button>'+
 						'</div>'+
 						'<div class="col s12 center" style="margin-top:32px;">'+
@@ -511,9 +514,9 @@ export default class UserPropsView extends View {
 				$('#users').on('click',function() {
 					self.controller.master.modelRepo.get('MenuModel').setSelected('USERS');
 				});
-				//$('#readkeys').on('click',function() {
-				//	self.controller.master.modelRepo.get('MenuModel').setSelected('READKEYS');
-				//});
+				$('#readkeys').on('click',function() {
+					self.controller.master.modelRepo.get('MenuModel').setSelected('READKEYS');
+				});
 			}
 			
 			$('#back').on('click',function() {

@@ -4,6 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../../common/View.js';
+import PeriodicTimeoutObserver from '../../common/PeriodicTimeoutObserver.js';
 
 export default class ReadKeyView extends View {
 	
@@ -11,27 +12,31 @@ export default class ReadKeyView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'ReadKeyModel' || key === 'MenuModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
 		});
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:60000}); // interval 60 seconds
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'view-failure';
 	}
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
-		super.hide();
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		super.remove();
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -119,9 +124,20 @@ export default class ReadKeyView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='ReadKeyModel' && options.method==='fetched') {
+			
+			if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Fetch ALL models (RegCodeModel and MenuModel)
+				// when all are fetched STOP the PTO (PeriodicTimeoutObserver), see below this.PTO.stop();
+				const UM = this.controller.master.modelRepo.get('UserModel');
+				Object.keys(this.models).forEach(key => {
+					console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch(UM.token);
+				});
+				
+			} else if (options.model==='ReadKeyModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					console.log('ReadKeyView => ReadKeyModel fetched!');
+					this.PTO.stop(); // We have fetched a list of all readkeys, no need to continue fetching.
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.showReadKeys();
@@ -196,7 +212,7 @@ export default class ReadKeyView extends View {
 			this.showReadKeys();
 			
 			$('#back').on('click',function() {
-				self.models['MenuModel'].setSelected('USERPROPS');
+				self.models['MenuModel'].setSelected('userprops');
 			});
 			
 			this.handleErrorMessages(this.FELID);

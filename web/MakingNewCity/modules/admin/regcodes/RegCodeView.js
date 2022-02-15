@@ -4,6 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../../common/View.js';
+import PeriodicTimeoutObserver from '../../common/PeriodicTimeoutObserver.js';
 
 export default class RegCodeView extends View {
 	
@@ -14,6 +15,10 @@ export default class RegCodeView extends View {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:60000}); // interval 60 seconds
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'view-failure';
 		this.layout = 'Table';
@@ -21,16 +26,18 @@ export default class RegCodeView extends View {
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
-		super.hide();
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		super.remove();
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -157,9 +164,20 @@ export default class RegCodeView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if (options.model==='RegCodeModel' && options.method==='fetched') {
+			if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Fetch ALL models (RegCodeModel and MenuModel)
+				// when all are fetched STOP the PTO (PeriodicTimeoutObserver), see below this.PTO.stop();
+				const UM = this.controller.master.modelRepo.get('UserModel');
+				Object.keys(this.models).forEach(key => {
+					console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch(UM.token);
+				});
+				
+			} else if (options.model==='RegCodeModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					console.log('RegCodeView => RegCodeModel fetched!');
+					console.log('RegCodeModel FETCHED!');
+					this.PTO.stop(); // We have fetched a list of all regcodes, no need to continue fetching.
+					
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						this.showRegcodes();
@@ -195,12 +213,8 @@ export default class RegCodeView extends View {
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-			//const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
-			//const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
-			
 			const localized_string_title = 'RegCodes';
 			const localized_string_description = 'Admin can list all RegCodes and generate new codes.';
-			
 			let placeholder = 
 				'<div class="col s12">'+
 					'<table class="striped">'+
@@ -218,7 +232,7 @@ export default class RegCodeView extends View {
 						'</tbody>'+
 					'</table>'+
 				'</div>';
-			
+				
 			if (this.layout !== 'Table') {
 				placeholder = '<div class="col s12" id="regcodes-placeholder" style="padding: 0 24px;"></div>';
 			}

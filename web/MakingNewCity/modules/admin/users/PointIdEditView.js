@@ -96,7 +96,7 @@ export default class PointIdEditView extends View {
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<input id="point-id" type="text" class="validate">'+
-						'<label for="point-id">'+localized_string_label+'</label>'+
+						'<label for="point-id">'+localized_string_label+': ('+pid+')</label>'+
 					'</div>'+
 					'<div class="col s12 center" id="response"></div>'+
 				'</div>'+

@@ -17,7 +17,7 @@ export default class EnvironmentPageView extends View {
 			this.models[key].subscribe(this);
 		});
 		
-		this.PTO = new PeriodicTimeoutObserver({interval:60000}); // interval 60 seconds
+		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
 		this.PTO.subscribe(this);
 		
 		this.rendered = false;

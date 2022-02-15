@@ -20,10 +20,8 @@ export default class MenuView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		console.log('MenuView Create PeriodicTimeoutObserver!');
-		this.PTO = new PeriodicTimeoutObserver({interval:60000}); // interval 60 seconds
+		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
 		this.PTO.subscribe(this);
-		
 		
 		this.LANGUAGE_MODEL = this.controller.master.modelRepo.get('LanguageModel');
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
@@ -160,8 +158,6 @@ export default class MenuView extends View {
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Do something with each TICK!
 				//
-				//console.log('PeriodicTimeoutObserver timeout!');
-				
 				// 'FingridPowerSystemStateModel'
 				// 'EmpoEmissions1Model'
 				// ...
@@ -659,7 +655,7 @@ export default class MenuView extends View {
 			
 		} else if (type === 'GRID') {
 			surface.addEventListener("click", function(){
-				console.log('HEY, GRID CLICKED!');
+				self.models['MenuModel'].setSelected('gridpage');
 			}, false);
 			
 		} else if (type === 'ENVIRONMENT') {

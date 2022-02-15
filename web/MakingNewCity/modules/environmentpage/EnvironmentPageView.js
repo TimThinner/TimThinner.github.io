@@ -4,6 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
 
 export default class EnvironmentPageView extends View {
 	

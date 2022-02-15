@@ -99,7 +99,7 @@ export default class MenuView extends View {
 		const upper_limit = ave + margin;
 		const lower_limit = ave - margin;
 		
-		console.log(['last=',last,' upper_limit=', upper_limit,' lower_limit=',lower_limit])
+		//console.log(['last=',last,' upper_limit=', upper_limit,' lower_limit=',lower_limit])
 		
 		if (last > upper_limit) {
 			svg_element.setAttribute('href', './svg/redleaf.svg'); // RED
@@ -139,7 +139,7 @@ export default class MenuView extends View {
 			const ave = sum/resuArray.length;
 			const vals = last.toFixed(0);
 			const aves = '('+ave.toFixed(0)+')';
-			console.log(['vals=',vals,' aves=',aves]);
+			//console.log(['vals=',vals,' aves=',aves]);
 			/*
 			this.fillSVGTextElement(svgObject, 'emissions-value', vals);
 			this.fillSVGTextElement(svgObject, 'emissions-ave', aves);
@@ -160,19 +160,19 @@ export default class MenuView extends View {
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Do something with each TICK!
 				//
-				console.log('PeriodicTimeoutObserver timeout!');
+				//console.log('PeriodicTimeoutObserver timeout!');
 				
 				// 'FingridPowerSystemStateModel'
 				// 'EmpoEmissions1Model'
 				// ...
 				// 'EmpoEmissions30Model'
 				Object.keys(this.models).forEach(key => {
-					console.log(['FETCH MODEL key=',key]);
+					//console.log(['FETCH MODEL key=',key]);
 					this.models[key].fetch();
 				});
 				
 			} else if (options.model==='FingridPowerSystemStateModel' && options.method==='fetched') {
-				console.log(options.model + 'fetched!');
+				//console.log(options.model + 'fetched!');
 				//console.log(['model value=',this.models['FingridPowerSystemStateModel'].value,' values=',this.models['FingridPowerSystemStateModel'].values]);
 				if (options.status === 200) {
 					// Set the value to element with id='FingridPowerSystemState'
@@ -180,7 +180,7 @@ export default class MenuView extends View {
 				}
 				
 			} else if (options.model.indexOf('EmpoEmissions') === 0 && options.method==='fetched') {
-				console.log(options.model + 'fetched!');
+				//console.log(options.model + 'fetched!');
 				if (options.status === 200) {
 					this.updateEmissionsValue();
 				}
@@ -366,19 +366,19 @@ export default class MenuView extends View {
 		*/
 		let fontsize;
 		if (w <= 600) {
-			console.log('Mobile Device.');
+			//console.log('Mobile Device.');
 			fontsize = 36; // big font 36, small font 12
 			
 		} else if (w > 600 && w <= 992) {
-			console.log('Tablet Device.');
+			//console.log('Tablet Device.');
 			fontsize = 42; // big font 42, small font 14
 			
 		} else if (w > 992 && w <= 1200) {
-			console.log('Desktop Device.');
+			//console.log('Desktop Device.');
 			fontsize = 54; // big font 54, small font 18
 			
 		} else {
-			console.log('Large Desktop Device.');
+			//console.log('Large Desktop Device.');
 			fontsize = 72; // big font 72, small font 24
 		}
 		const bw = w;
@@ -780,22 +780,22 @@ export default class MenuView extends View {
 			}
 			let bw, bh, fontsize;
 			if (w <= 600) {
-				console.log('Mobile Device.');
+				//console.log('Mobile Device.');
 				fontsize = '14px';
 				bw = 82;
 				bh = 34;
 			} else if (w > 600 && w <= 992) {
-				console.log('Tablet Device.');
+				//console.log('Tablet Device.');
 				fontsize = '14px';
 				bw = 88;
 				bh = 36;
 			} else if (w > 992 && w <= 1200) {
-				console.log('Desktop Device.');
+				//console.log('Desktop Device.');
 				fontsize = '16px';
 				bw = 94;
 				bh = 38;
 			} else {
-				console.log('Large Desktop Device.');
+				//console.log('Large Desktop Device.');
 				fontsize = '18px';
 				bw = 100;
 				bh = 40;

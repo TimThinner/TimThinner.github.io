@@ -93,7 +93,43 @@ export default class MenuView extends View {
 	}
 	
 	updateEmissionsValue() {
-		//console.log('updateEmissionsValue');
+		// Calculate average value 
+		let sum = 0;
+		const resuArray = [];
+		
+		//console.log('ALL EmpoEmissionsModels ARE READY!!!!!!');
+		
+		const numOfModels = this.controller.numOfEmpoModels;
+		for (let i=1; i<numOfModels+1; i++) {
+			const res = this.models['EmpoEmissions'+i+'Model'].results;
+			res.forEach(r=>{
+				if (Number.isFinite(r.em_cons)) {
+					const d = new Date(r.date_time);
+					resuArray.push({date:d, cons:r.em_cons});
+					sum += r.em_cons;
+				}
+			});
+		}
+		if (resuArray.length > 0) {
+			// Get the last value:
+			// Then sort array based according to time, oldest entry first.
+			resuArray.sort(function(a,b){
+				return a.date - b.date;
+			});
+			const last = resuArray[resuArray.length-1].cons;
+			// Average:
+			const ave = sum/resuArray.length;
+			const vals = last.toFixed(0);
+			const aves = '('+ave.toFixed(0)+')';
+			
+			console.log(['vals=',vals,' aves=',aves]);
+			
+			/*
+			this.fillSVGTextElement(svgObject, 'emissions-value', vals);
+			this.fillSVGTextElement(svgObject, 'emissions-ave', aves);
+			this.updateSVGLeafPathColor(ave, last);
+			*/
+		}
 	}
 	
 	notify(options) {

@@ -99,6 +99,8 @@ export default class MenuView extends View {
 		const upper_limit = ave + margin;
 		const lower_limit = ave - margin;
 		
+		console.log(['last=',last,' upper_limit=', upper_limit,' lower_limit=',lower_limit])
+		
 		if (last > upper_limit) {
 			svg_element.setAttribute('href', './svg/redleaf.svg'); // RED
 		} else if (last < lower_limit) {

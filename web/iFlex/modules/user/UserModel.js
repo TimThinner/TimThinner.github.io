@@ -327,10 +327,11 @@ export default class UserModel extends Model {
 		const authorizationToken = 'Bearer '+this.token;
 		myHeaders.append("Authorization", authorizationToken);
 		myHeaders.append("Content-Type", "application/json");
-		
+		const data = {}; // Empty object
 		const myPut = {
 			method: 'PUT',
-			headers: myHeaders
+			headers: myHeaders,
+			body: JSON.stringify(data)
 		};
 		const myRequest = new Request(this.mongoBackend + '/users/obixcodes', myPut);
 		let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)

@@ -329,11 +329,14 @@ router.post('/obixcodes', checkAuth, (req,res,next)=>{
 			if (user.length < 1) {
 				return res.status(404).json({message: 'Not Found'});
 			}
-			return res.status(200).json({
+			const obix_code = user[0].obix_code ? user[0].obix_code : undefined;
+			const obix_code_b = user[0].obix_code_b ? user[0].obix_code_b : undefined;
+			const obix_code_c = user[0].obix_code_c ? user[0].obix_code_c : undefined;
+			res.status(200).json({
 				message:'OK',
-				obix_code: user[0].obix_code,
-				obix_code_b: user[0].obix_code_b,
-				obix_code_c: user[0].obix_code_c
+				obix_code: obix_code,
+				obix_code_b: obix_code_b,
+				obix_code_c: obix_code_c
 			});
 		})
 		.catch(err => {

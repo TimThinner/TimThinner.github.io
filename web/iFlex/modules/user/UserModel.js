@@ -327,7 +327,7 @@ export default class UserModel extends Model {
 		const authorizationToken = 'Bearer '+this.token;
 		myHeaders.append("Authorization", authorizationToken);
 		myHeaders.append("Content-Type", "application/json");
-		const data = {}; // Empty object
+		const data = {[a:1,b:2]}; // Put something here!?
 		const myPut = {
 			method: 'PUT',
 			headers: myHeaders,

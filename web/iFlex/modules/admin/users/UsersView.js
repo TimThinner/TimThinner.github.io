@@ -59,19 +59,19 @@ export default class UsersView extends View {
 				// A way to edit Obix codes:
 				const id = user._id;
 				let obix_code = user.obix_code;
-				if (obix_code.length === 0) {
+				if (typeof obix_code === 'undefined' || obix_code.length === 0) {
 					obix_code = 'UNDEF'; // Must be something for the link text
 				}
 				const obix_code_link = '<a href="javascript:void(0);" id="edit-obixcode-'+id+'">'+obix_code+'</a>';
 				
 				let obix_code_b = user.obix_code_b;
-				if (obix_code_b.length === 0) {
+				if (typeof obix_code_b === 'undefined' || obix_code_b.length === 0) {
 					obix_code_b = 'UNDEF'; // Must be something for the link text
 				}
 				const obix_code_b_link = '<a href="javascript:void(0);" id="edit-obixcode-b-'+id+'">'+obix_code_b+'</a>';
 				
 				let obix_code_c = user.obix_code_c;
-				if (obix_code_c.length === 0) {
+				if (typeof obix_code_c === 'undefined' || obix_code_c.length === 0) {
 					obix_code_c = 'UNDEF'; // Must be something for the link text
 				}
 				const obix_code_c_link = '<a href="javascript:void(0);" id="edit-obixcode-c-'+id+'">'+obix_code_c+'</a>';

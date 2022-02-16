@@ -320,4 +320,38 @@ export default class UserModel extends Model {
 			});
 		
 	}
+	
+	refreshObixCodes() {
+		const self = this;
+		const myHeaders = new Headers();
+		const authorizationToken = 'Bearer '+this.token;
+		myHeaders.append("Authorization", authorizationToken);
+		myHeaders.append("Content-Type", "application/json");
+		
+		const myPut = {
+			method: 'PUT',
+			headers: myHeaders
+		};
+		const myRequest = new Request(this.mongoBackend + '/users/obixcodes', myPut);
+		let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+		
+		fetch(myRequest)
+			.then(function(response){
+				status = response.status;
+				return response.json();
+			})
+			.then(function(myJson){
+				if (status === 200) {
+					// Update the UserModel (=self) properties:
+					self.obix_code = myJson.obix_code;
+					self.obix_code_b = myJson.obix_code_b;
+					self.obix_code_c = myJson.obix_code_c;
+					console.log(['self.obix_code=',self.obix_code,' self.obix_code_b=',self.obix_code_b,' self.obix_code_c=',self.obix_code_c]);
+				}
+				self.notifyAll({model:self.name, method:'refreshObixCodes', status:status, message:myJson.message});
+			})
+			.catch(function(error){
+				self.notifyAll({model:self.name, method:'refreshObixCodes', status:status, message:error});
+			});
+	}
 }

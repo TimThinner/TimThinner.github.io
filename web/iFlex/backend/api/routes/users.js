@@ -319,6 +319,29 @@ router.post("/login", (req,res,next)=>{
 		});
 });
 /*
+	Get obix-codes for current user.
+*/
+router.post('/obixcodes', checkAuth, (req,res,next)=>{
+	User.find({_id:req.userData['userId']}) // Current User
+		.select('obix_code obix_code_b obix_code_c')
+		.exec()
+		.then(user=>{
+			if (user.length < 1) {
+				return res.status(404).json({message: 'Not Found'});
+			}
+			return res.status(200).json({
+				message:'OK',
+				obix_code: user[0].obix_code,
+				obix_code_b: user[0].obix_code_b,
+				obix_code_c: user[0].obix_code_c
+			});
+		})
+		.catch(err => {
+			res.status(500).json({error:err});
+		});
+});
+
+/*
 router.get("/verify", (req,res,next)=>{
 	try {
 		const token = req.headers.authorization.split(" ")[1]; // split "Bearer ggb78h4u3ih3r2b989yg"

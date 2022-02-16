@@ -10,11 +10,17 @@ export default class UserPageView extends View {
 		});
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
+		
+		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+		this.USER_MODEL.subscribe(this);
+		
 		this.rendered = false;
 	}
 	
 	show() {
-		this.render();
+		// Call 'UserModel' => 'refreshObixCodes'
+		this.USER_MODEL.refreshObixCodes();
+		//this.render();
 	}
 	
 	hide() {
@@ -27,6 +33,7 @@ export default class UserPageView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
+		this.USER_MODEL.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -452,7 +459,16 @@ export default class UserPageView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				this.show();
+				//this.show();
+				this.USER_MODEL.refreshObixCodes();
+				
+			} else if (options.model==='UserModel' && options.method==='refreshObixCodes') {
+				if (options.status === 200) {
+					console.log('Obix codes are now refreshed!');
+				} else {
+					console.log(['Obix codes are NOT refreshed!',options.status]);
+				}
+				this.render();
 			}
 		}
 	}

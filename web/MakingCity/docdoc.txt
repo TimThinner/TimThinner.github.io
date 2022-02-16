@@ -1,4 +1,5 @@
-		
+
+
 What Models are created in each Controller?
 What data is needed?
 	
@@ -185,6 +186,76 @@ ALSO we must now do the logic in view or controller:
 
 ===========================================================================================================
 
+
+
+
+
+
+
+NEW VERSION:
+
+
+
+MasterController:
+	this.modelRepo.add('ResizeEventObserver',REO);
+	this.modelRepo.add('LanguageModel',LM);
+	this.modelRepo.add('UserModel',UM);
+	this.modelRepo.add('ProxyCleanerModel',PCM);
+	
+MenuController
+	this.master.modelRepo.add('MenuModel',model);
+	this.master.modelRepo.add('FingridPowerSystemStateModel',m);
+	this.master.modelRepo.add('EmpoEmissions1Model' ... 'EmpoEmissions30Model');
+	
+UserLoginController
+	*USES* this.master.modelRepo.get('UserModel');
+	*USES* this.master.modelRepo.get('MenuModel');
+	
+UserSignupController
+	*USES* this.master.modelRepo.get('UserModel');
+	*USES* this.master.modelRepo.get('MenuModel');
+	
+UserPageController
+	*USES* this.master.modelRepo.get('MenuModel');
+	
+UserPropsController
+	*USES* this.master.modelRepo.get('MenuModel');
+	
+GridPageController
+	this.master.modelRepo.add('FingridNNNModel',model); NNN in ['192','193','188','191','181','205','202','201','89','180','87','195','187'];
+	this.master.modelRepo.add('EntsoeEnergyPriceModel', m);
+	*USES* this.master.modelRepo.get('FingridPowerSystemStateModel');
+	*USES* this.master.modelRepo.get('MenuModel');
+	
+EnvironmentPageController
+	
+DistrictController
+	
+DistrictAController
+	
+	
+
+
+
+		
+ADMIN:
+UsersController
+	
+PointIdEditController
+	
+RegCodeController
+	
+RegCodeCreateController
+	
+RegCodeEditController
+	
+ReadKeyController
+	
+ReadKeyEditController
+	
+	
+	
+	
 
 
 

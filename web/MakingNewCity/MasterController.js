@@ -10,6 +10,8 @@ import UserLoginController from './modules/user/UserLoginController.js';
 import UserSignupController from './modules/user/UserSignupController.js';
 
 import DistrictController from './modules/district/DistrictController.js';
+import DistrictAController from './modules/districta/DistrictAController.js';
+
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';
 
@@ -65,7 +67,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.15.C');
+		console.log('MasterController init v2022.02.16.A');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -101,9 +103,6 @@ class MasterController {
 		this.controllers['usersignup'] = new UserSignupController({name:'usersignup', master:this, el:'#content', visible:false});
 		this.controllers['usersignup'].init();
 		
-		this.controllers['district'] = new DistrictController({name:'district', master:this, el:'#content', visible:false});
-		this.controllers['district'].init();
-		
 		this.controllers['userpage'] = new UserPageController({name:'userpage', master:this, el:'#content', visible:false});
 		this.controllers['userpage'].init();
 		this.controllers['userprops'] = new UserPropsController({name:'userprops', master:this, el:'#content', visible:false});
@@ -113,6 +112,11 @@ class MasterController {
 		this.controllers['gridpage'].init();
 		this.controllers['environmentpage'] = new EnvironmentPageController({name:'environmentpage', master:this, el:'#content', visible:false});
 		this.controllers['environmentpage'].init();
+		
+		this.controllers['district'] = new DistrictController({name:'district', master:this, el:'#content', visible:false});
+		this.controllers['district'].init();
+		this.controllers['DA'] = new DistrictAController({name:'DA', master:this, el:'#content', visible:false});
+		this.controllers['DA'].init();
 		
 		
 		// Admin stuff start ------>

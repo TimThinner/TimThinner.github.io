@@ -607,7 +607,8 @@ export default class DistrictView extends View {
 		// Select which pages open...
 		if (type === 'hex-a') {
 			poly.addEventListener("click", function(){
-				console.log('HEY, HEX-A CLICKED!');
+				// S-Market Kaukovainio
+				self.models['MenuModel'].setSelected('DA');
 			}, false);
 			
 		} else if (type === 'hex-b') {

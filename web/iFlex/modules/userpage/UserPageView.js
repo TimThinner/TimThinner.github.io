@@ -20,7 +20,7 @@ export default class UserPageView extends View {
 	show() {
 		// Call 'UserModel' => 'refreshObixCodes'
 		this.USER_MODEL.refreshObixCodes();
-		//this.render();
+		this.render();
 	}
 	
 	hide() {
@@ -460,7 +460,7 @@ export default class UserPageView extends View {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				//this.show();
-				this.USER_MODEL.refreshObixCodes();
+				this.render();
 				
 			} else if (options.model==='UserModel' && options.method==='refreshObixCodes') {
 				if (options.status === 200) {
@@ -468,7 +468,6 @@ export default class UserPageView extends View {
 				} else {
 					console.log(['Obix codes are NOT refreshed!',options.status]);
 				}
-				this.render();
 			}
 		}
 	}

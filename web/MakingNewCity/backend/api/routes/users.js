@@ -421,6 +421,33 @@ router.post("/login", (req,res,next)=>{
 			res.status(500).json({error:err});
 		});
 });
+
+/*
+	Get pointids for current user.
+*/
+router.post('/pointids', checkAuth, (req,res,next)=>{
+	User.find({_id:req.userData['userId']}) // Current User
+		.select('point_id_a point_id_b point_id_c')
+		.exec()
+		.then(user=>{
+			if (user.length < 1) {
+				return res.status(404).json({message: 'Not Found'});
+			}
+			const point_id_a = user[0].point_id_a ? user[0].point_id_a : undefined;
+			const point_id_b = user[0].point_id_b ? user[0].point_id_b : undefined;
+			const point_id_c = user[0].point_id_c ? user[0].point_id_c : undefined;
+			res.status(200).json({
+				message:'OK',
+				point_id_a: point_id_a,
+				point_id_b: point_id_b,
+				point_id_c: point_id_c
+			});
+		})
+		.catch(err => {
+			res.status(500).json({error:err});
+		});
+});
+
 /*
 router.get("/verify", (req,res,next)=>{
 	try {

@@ -1,26 +1,39 @@
 import View from './View.js';
+import PeriodicTimeoutObserver from './PeriodicTimeoutObserver.js'
+
 export default class WrapperView extends View {
 	
 	constructor(controller) {
 		super(controller);
+		
 		this.subviews = [];
 		this.selected = "b1d";
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:30000}); // interval 30 seconds.
+		this.PTO.subscribe(this);
 	}
+	
+	show() {
+		console.log('NOW RENDER THE WRAPPER!');
+		this.render();
+		this.PTO.restart();
+	}
+	
 	hide() {
+		this.PTO.stop();
 		this.subviews.forEach(view => {
 			view.hide();
 		});
 		$(this.el).empty();
 	}
+	
 	remove() {
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		this.subviews.forEach(view => {
 			view.remove();
 		});
 		$(this.el).empty();
-	}
-	show() {
-		console.log('NOW RENDER THE WRAPPER!');
-		this.render();
 	}
 	
 	resetButtonClass() {
@@ -29,6 +42,25 @@ export default class WrapperView extends View {
 			$(elems[i]).removeClass("selected");
 		}
 		$('#'+this.selected).addClass("selected");
+	}
+	
+	notify(options) {
+		if (this.controller.visible) {
+			if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Do something with each TICK!
+				
+				console.log('PeriodicTimeoutObserver TICK');
+				
+				const um = this.controller.master.modelRepo.get('UserModel');
+				const token = um ? um.token : undefined;
+				console.log(['User token=',token]);
+				
+				Object.keys(this.controller.models).forEach(key => {
+					//console.log(['FETCH MODEL key=',key]);
+					this.controller.models[key].fetch(token);
+				});
+			}
+		}
 	}
 	
 	/*
@@ -51,7 +83,8 @@ export default class WrapperView extends View {
 					model.timerange = 1;
 				}
 			});
-			self.controller.refreshTimerange();
+			//self.controller.refreshTimerange(); => this.restartPollingInterval(timerName);
+			self.PTO.restart();
 		});
 		
 		$('#b2d').on('click',function() {
@@ -64,7 +97,8 @@ export default class WrapperView extends View {
 					model.timerange = 2;
 				}
 			});
-			self.controller.refreshTimerange();
+			//self.controller.refreshTimerange();
+			self.PTO.restart();
 		});
 		
 		$('#b3d').on('click',function() {
@@ -77,7 +111,8 @@ export default class WrapperView extends View {
 					model.timerange = 3;
 				}
 			});
-			self.controller.refreshTimerange();
+			//self.controller.refreshTimerange();
+			self.PTO.restart();
 		});
 		
 		$('#b4d').on('click',function() {
@@ -90,7 +125,8 @@ export default class WrapperView extends View {
 					model.timerange = 4;
 				}
 			});
-			self.controller.refreshTimerange();
+			//self.controller.refreshTimerange();
+			self.PTO.restart();
 		});
 		
 		$('#b5d').on('click',function() {
@@ -103,7 +139,8 @@ export default class WrapperView extends View {
 					model.timerange = 5;
 				}
 			});
-			self.controller.refreshTimerange();
+			//self.controller.refreshTimerange();
+			self.PTO.restart();
 		});
 		
 		$('#b6d').on('click',function() {
@@ -116,7 +153,8 @@ export default class WrapperView extends View {
 					model.timerange = 6;
 				}
 			});
-			self.controller.refreshTimerange();
+			//self.controller.refreshTimerange();
+			self.PTO.restart();
 		});
 		
 		$('#b7d').on('click',function() {
@@ -129,7 +167,42 @@ export default class WrapperView extends View {
 					model.timerange = 7;
 				}
 			});
-			self.controller.refreshTimerange();
+			//self.controller.refreshTimerange();
+			self.PTO.restart();
+		});
+	}
+	
+	/*
+		Called by View.
+	*/
+	handlePollingInterval(id, name) {
+		const self = this;
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_auto_update_msg_1 = LM['translation'][sel]['AUTO_UPDATE_MSG_1'];
+		const localized_string_auto_update_msg_2 = LM['translation'][sel]['AUTO_UPDATE_MSG_2'];
+		const localized_string_auto_update_msg_3 = LM['translation'][sel]['AUTO_UPDATE_MSG_3'];
+		
+		//const initialPollingInterval = this.controller.getPollingInterval(name)/1000;
+		const initialPollingInterval = this.PTO.interval/1000;
+		
+		$("#"+id+"-chart-refresh-interval").val(initialPollingInterval);
+		if (initialPollingInterval > 0) {
+			$("#"+id+"-chart-refresh-note").empty().append(localized_string_auto_update_msg_1+' '+initialPollingInterval+' '+localized_string_auto_update_msg_2);
+		} else {
+			$("#"+id+"-chart-refresh-note").empty().append(localized_string_auto_update_msg_3);
+		}
+		$("#"+id+"-chart-refresh-interval").change(function(){
+			const val = $(this).val(); // "20"
+			const vali = parseInt(val, 10) * 1000;
+			if (vali > 0) {
+				$("#"+id+"-chart-refresh-note").empty().append(localized_string_auto_update_msg_1+' '+val+' '+localized_string_auto_update_msg_2);
+			} else {
+				$("#"+id+"-chart-refresh-note").empty().append(localized_string_auto_update_msg_3);
+			}
+			//self.controller.restartPollingInterval(name, vali);
+			self.PTO.restart(vali);
 		});
 	}
 	

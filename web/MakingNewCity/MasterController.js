@@ -11,6 +11,7 @@ import UserSignupController from './modules/user/UserSignupController.js';
 
 import DistrictController from './modules/district/DistrictController.js';
 import DistrictAController from './modules/districta/DistrictAController.js';
+import DistrictAAController from './modules/districtaa/DistrictAAController.js';
 
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';
@@ -67,7 +68,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.16.A');
+		console.log('MasterController init v2022.02.17.A');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -117,6 +118,8 @@ class MasterController {
 		this.controllers['district'].init();
 		this.controllers['DA'] = new DistrictAController({name:'DA', master:this, el:'#content', visible:false});
 		this.controllers['DA'].init();
+		this.controllers['DAA'] = new DistrictAAController({name:'DAA', master:this, el:'#content', visible:false});
+		this.controllers['DAA'].init();
 		
 		
 		// Admin stuff start ------>

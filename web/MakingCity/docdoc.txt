@@ -228,34 +228,59 @@ GridPageController
 	*USES* this.master.modelRepo.get('MenuModel');
 	
 EnvironmentPageController
+	*USES* this.models[name] = this.master.modelRepo.get('EmpoEmissions1Model' ... 'EmpoEmissions30Model');
+	*USES* this.master.modelRepo.get('MenuModel');
 	
 DistrictController
+	*USES* this.master.modelRepo.get('MenuModel');
 	
 DistrictAController
+	this.master.modelRepo.add('StatusModel',m1);
+	this.master.modelRepo.add('StatusJetitek983Model',m2);
+	this.master.modelRepo.add('StatusJetitek1012Model',m3);
+	*USES* this.master.modelRepo.get('MenuModel');
+	
+DistrictAAController
+	this.master.modelRepo.add('TotalModel',model);
+	*USES* this.master.modelRepo.get('MenuModel');
 	
 	
-
-
-
-		
+	
+	
+	
+	
+	
 ADMIN:
 UsersController
+	this.master.modelRepo.add('UsersModel',model);
+	this.master.modelRepo.add('RegCodeModel',m2);
+	this.master.modelRepo.add('ReadKeyModel',m3);
+	*USES* this.master.modelRepo.get('MenuModel');
 	
 PointIdEditController
+	*USES* this.master.modelRepo.get('UserModel');
+	*USES* this.master.modelRepo.get('UsersModel');
+	*USES* this.master.modelRepo.get('MenuModel');
 	
 RegCodeController
+	*USES* this.master.modelRepo.get('RegCodeModel');
+	*USES* this.master.modelRepo.get('MenuModel');
 	
 RegCodeCreateController
+	*USES* this.master.modelRepo.get('RegCodeModel');
+	*USES* this.master.modelRepo.get('MenuModel');
 	
 RegCodeEditController
+	*USES* this.master.modelRepo.get('RegCodeModel');
+	*USES* this.master.modelRepo.get('MenuModel');
 	
 ReadKeyController
+	this.master.modelRepo.get('ReadKeyModel');
+	this.master.modelRepo.get('MenuModel');
 	
 ReadKeyEditController
-	
-	
-	
-	
+	this.master.modelRepo.get('ReadKeyModel');
+	this.master.modelRepo.get('MenuModel');
 
 
 

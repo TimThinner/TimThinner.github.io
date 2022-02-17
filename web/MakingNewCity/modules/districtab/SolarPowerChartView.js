@@ -167,7 +167,8 @@ export default class SolarPowerChartView extends View {
 			//valueAxis.max = 200;
 			
 			
-			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
+			//const series1 = self.chart.series.push(new am4charts.StepLineSeries());
+			const series1 = self.chart.series.push(new am4charts.LineSeries());
 			
 			series1.defaultState.transitionDuration = 0;
 			//series1.tooltipText = "{name}: {valueY.value} kW";

@@ -13,7 +13,7 @@ import DistrictController from './modules/district/DistrictController.js';
 import DistrictAController from './modules/districta/DistrictAController.js';
 import DistrictAAController from './modules/districtaa/DistrictAAController.js';
 import DistrictABController from './modules/districtab/DistrictABController.js';
-import DistrictACController from './modules/districtab/DistrictACController.js';
+import DistrictACController from './modules/districtac/DistrictACController.js';
 
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';

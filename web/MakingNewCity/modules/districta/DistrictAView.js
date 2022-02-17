@@ -368,7 +368,6 @@ meterId
 		const svgObject = document.getElementById('svg-object').contentDocument;
 		if (svgObject) {
 			
-			
 			const back = svgObject.getElementById('back');
 			back.addEventListener("click", function(){
 				
@@ -379,7 +378,6 @@ meterId
 			const targetAA = svgObject.getElementById('target-a-a');
 			targetAA.addEventListener("click", function(){
 				
-				//console.log('DAA');
 				self.models['MenuModel'].setSelected('DAA');
 				
 			}, false);
@@ -389,8 +387,7 @@ meterId
 			const targetAB = svgObject.getElementById('target-a-b');
 			targetAB.addEventListener("click", function(){
 				
-				console.log('DAB');
-				//self.models['MenuModel'].setSelected('DAB');
+				self.models['MenuModel'].setSelected('DAB');
 				
 			}, false);
 			targetAB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

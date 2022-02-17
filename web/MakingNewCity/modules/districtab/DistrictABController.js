@@ -1,8 +1,8 @@
 import Controller from '../common/Controller.js';
-import TotalModel from  './TotalModel.js';
-import DistrictAAWrapperView from './DistrictAAWrapperView.js';
+import SolarModel from  './SolarModel.js';
+import DistrictABWrapperView from './DistrictABWrapperView.js';
 
-export default class DistrictAAController extends Controller {
+export default class DistrictABController extends Controller {
 	
 	constructor(options) {
 		super(options);
@@ -16,22 +16,22 @@ export default class DistrictAAController extends Controller {
 		// BUT this is not how dynamic system should optimally behave.
 		// So I just add model removal here, to enable this in the future.
 		Object.keys(this.models).forEach(key => {
-			if (key === 'TotalModel') {
+			if (key === 'SolarModel') {
 				this.master.modelRepo.remove(key);
 			}
 		});
 	}
 	
 	init() {
-		const model = new TotalModel({name:'TotalModel',src:'data/arina/iss/feeds.json?meterId=114'});
+		const model = new SolarModel({name:'SolarModel',src:'data/arina/iss/feeds.json?meterId=116'});
 		model.subscribe(this);
-		this.master.modelRepo.add('TotalModel',model);
-		this.models['TotalModel'] = model;
+		this.master.modelRepo.add('SolarModel',model);
+		this.models['SolarModel'] = model;
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.view = new DistrictAAWrapperView(this);
+		this.view = new DistrictABWrapperView(this);
 		//this.show();
 	}
 }

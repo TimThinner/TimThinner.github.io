@@ -56,7 +56,7 @@ export default class WrapperView extends View {
 				console.log(['User token=',token]);
 				
 				Object.keys(this.controller.models).forEach(key => {
-					//console.log(['FETCH MODEL key=',key]);
+					console.log(['FETCH MODEL key=',key]);
 					this.controller.models[key].fetch(token);
 				});
 			}
@@ -83,7 +83,6 @@ export default class WrapperView extends View {
 					model.timerange = 1;
 				}
 			});
-			//self.controller.refreshTimerange(); => this.restartPollingInterval(timerName);
 			self.PTO.restart();
 		});
 		
@@ -97,7 +96,6 @@ export default class WrapperView extends View {
 					model.timerange = 2;
 				}
 			});
-			//self.controller.refreshTimerange();
 			self.PTO.restart();
 		});
 		
@@ -111,7 +109,6 @@ export default class WrapperView extends View {
 					model.timerange = 3;
 				}
 			});
-			//self.controller.refreshTimerange();
 			self.PTO.restart();
 		});
 		
@@ -125,7 +122,6 @@ export default class WrapperView extends View {
 					model.timerange = 4;
 				}
 			});
-			//self.controller.refreshTimerange();
 			self.PTO.restart();
 		});
 		
@@ -139,7 +135,6 @@ export default class WrapperView extends View {
 					model.timerange = 5;
 				}
 			});
-			//self.controller.refreshTimerange();
 			self.PTO.restart();
 		});
 		
@@ -153,7 +148,6 @@ export default class WrapperView extends View {
 					model.timerange = 6;
 				}
 			});
-			//self.controller.refreshTimerange();
 			self.PTO.restart();
 		});
 		
@@ -167,7 +161,6 @@ export default class WrapperView extends View {
 					model.timerange = 7;
 				}
 			});
-			//self.controller.refreshTimerange();
 			self.PTO.restart();
 		});
 	}
@@ -175,8 +168,10 @@ export default class WrapperView extends View {
 	/*
 		Called by View.
 	*/
-	handlePollingInterval(id, name) {
+	handlePollingInterval(id) {
 		const self = this;
+		
+		console.log(['handlePollingInterval id=',id]);
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
@@ -184,7 +179,6 @@ export default class WrapperView extends View {
 		const localized_string_auto_update_msg_2 = LM['translation'][sel]['AUTO_UPDATE_MSG_2'];
 		const localized_string_auto_update_msg_3 = LM['translation'][sel]['AUTO_UPDATE_MSG_3'];
 		
-		//const initialPollingInterval = this.controller.getPollingInterval(name)/1000;
 		const initialPollingInterval = this.PTO.interval/1000;
 		
 		$("#"+id+"-chart-refresh-interval").val(initialPollingInterval);
@@ -201,7 +195,6 @@ export default class WrapperView extends View {
 			} else {
 				$("#"+id+"-chart-refresh-note").empty().append(localized_string_auto_update_msg_3);
 			}
-			//self.controller.restartPollingInterval(name, vali);
 			self.PTO.restart(vali);
 		});
 	}

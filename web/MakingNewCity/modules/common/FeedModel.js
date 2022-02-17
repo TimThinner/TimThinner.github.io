@@ -146,7 +146,7 @@ export default class FeedModel extends Model {
 		// append start and end date
 		const url = this.backend + '/' + this.src + '&start='+start_date+'&end='+end_date;
 		
-		//console.log (['fetch url=',url]);
+		console.log (['fetch url=',url]);
 		fetch(url)
 			.then(function(response) {
 				status = response.status;
@@ -181,11 +181,7 @@ export default class FeedModel extends Model {
 			return;
 		}
 		
-		if (this.MOCKUP) {
-			
-			this.fetch_d();
-			
-		} else if (typeof token !== 'undefined') {
+		if (typeof token !== 'undefined') {
 			
 			let status = 500; // error: 500
 			this.errorMessage = '';

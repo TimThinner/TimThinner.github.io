@@ -244,6 +244,10 @@ DistrictAAController
 	this.master.modelRepo.add('TotalModel',model);
 	*USES* this.master.modelRepo.get('MenuModel');
 	
+DistrictABController
+	this.master.modelRepo.add('SolarModel',model);
+	*USES* this.master.modelRepo.get('MenuModel');
+	
 	
 	
 	

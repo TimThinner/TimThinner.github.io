@@ -1,18 +1,18 @@
 
 import WrapperView from '../common/WrapperView.js';
-import TotalPowerChartView from './TotalPowerChartView.js';
-import TotalEnergyChartView from './TotalEnergyChartView.js';
+import SolarPowerChartView from './SolarPowerChartView.js';
+import SolarEnergyChartView from './SolarEnergyChartView.js';
 
-export default class DistrictAAWrapperView extends WrapperView {
+export default class DistrictABWrapperView extends WrapperView {
 	
 	constructor(controller) {
 		super(controller);
 		
 		// This is a wrapper for two different "subviews":
-		//   - Chart which contains TOTAL POWER for current day
-		//   - Chart which contains TOTAL ENERGY for current day
-		this.subviews.push(new TotalPowerChartView(this, '#subview-1'));
-		this.subviews.push(new TotalEnergyChartView(this, '#subview-2'));
+		//   - Chart which contains SOLAR POWER for current day
+		//   - Chart which contains SOLAR ENERGY for current day
+		this.subviews.push(new SolarPowerChartView(this, '#subview-1'));
+		this.subviews.push(new SolarEnergyChartView(this, '#subview-2'));
 	}
 	
 	render() {
@@ -21,7 +21,7 @@ export default class DistrictAAWrapperView extends WrapperView {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_daa_title = LM['translation'][sel]['DAA_TITLE'];
+		const localized_string_dab_title = LM['translation'][sel]['DAB_TITLE'];
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_daw_sel_timerange = LM['translation'][sel]['DAW_SEL_TIMERANGE']; // Select timerange for database query:
 		
@@ -42,13 +42,13 @@ export default class DistrictAAWrapperView extends WrapperView {
 			'</div>';
 		} else {
 			// If we are not logged in make sure that model timerange is one day.
-			this.controller.models['TotalModel'].timerange = 1;
+			this.controller.models['SolarModel'].timerange = 1;
 		}
 		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h3 class="da-wrapper-title">'+localized_string_daa_title+'</h3>'+
+					'<h3 class="da-wrapper-title">'+localized_string_dab_title+'</h3>'+
 				'</div>'+
 			'</div>'+ extra +
 			'<div class="row">'+
@@ -68,7 +68,7 @@ export default class DistrictAAWrapperView extends WrapperView {
 			'</div>';
 		$(html).appendTo(this.el);
 		
-		this.setTimerangeHandlers(['TotalModel']); // implemented in WrapperView
+		this.setTimerangeHandlers(['SolarModel']); // implemented in WrapperView
 		
 		// Assign back-button handler.
 		$('#back').on('click',function() {

@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../common/View.js';
-export default class TotalPowerChartView extends View {
+export default class SolarPowerChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -22,12 +22,14 @@ export default class TotalPowerChartView extends View {
 		
 		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
-			this.models[key] = this.controller.models[key];
-			this.models[key].subscribe(this);
+			if (key === 'SolarModel') {
+				this.models[key] = this.controller.models[key];
+				this.models[key].subscribe(this);
+			}
 		});
 		this.chart = undefined;
 		this.rendered = false;
-		this.FELID = 'total-power-chart-view-failure';
+		this.FELID = 'solar-power-chart-view-failure';
 	}
 	
 	show() {
@@ -60,17 +62,17 @@ export default class TotalPowerChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if (options.model==='TotalModel' && options.method==='fetched') {
+			if (options.model==='SolarModel' && options.method==='fetched') {
 				if (this.rendered) {
 					if (options.status === 200) {
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... TotalPowerChartView CHART UPDATED!');
+							console.log('fetched ..... SolarPowerChartView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['TotalModel'].values;
+								s.data = self.models['SolarModel'].values;
 							});
 						} else {
-							console.log('fetched ..... TotalPowerChartView renderChart()');
+							console.log('fetched ..... SolarPowerChartView renderChart()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
@@ -111,7 +113,7 @@ export default class TotalPowerChartView extends View {
 			//console.log(['energyValues=',self.model.energyValues]);
 			
 			// Create chart
-			self.chart = am4core.create("total-power-chart", am4charts.XYChart);
+			self.chart = am4core.create("solar-power-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -140,14 +142,6 @@ export default class TotalPowerChartView extends View {
 			dateAxis.keepSelection = true;
 			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
 			
-			// Axis for 
-			//			this.influxModel.dealsBidsAppKey.forEach(item => {
-			//				this.sumBids += item.totalprice;
-			//			});
-			// and 
-			//			this.influxModel.dealsAsksAppKey.forEach(item => {
-			//				this.sumAsks += item.totalprice;
-			//			});
 			const valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
 			valueAxis.zIndex = 1;
@@ -176,7 +170,9 @@ export default class TotalPowerChartView extends View {
 			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
 			
 			series1.defaultState.transitionDuration = 0;
+			//series1.tooltipText = "{name}: {valueY.value} kW";
 			series1.tooltipText = localized_string_power + ": {valueY.value} kW";
+			
 			
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
@@ -188,7 +184,7 @@ export default class TotalPowerChartView extends View {
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
 			
-			series1.data = self.models['TotalModel'].values;
+			series1.data = self.models['SolarModel'].values;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "averagePower";
 			series1.name = "POWER";
@@ -234,7 +230,6 @@ export default class TotalPowerChartView extends View {
 					clearTimeout(zoomTimeout);
 				}
 				zoomTimeout = setTimeout(function() {
-					
 					const start = document.getElementById(refreshId+"-fromfield").value;
 					const end = document.getElementById(refreshId+"-tofield").value;
 					if ((start.length < inputFieldFormat.length) || (end.length < inputFieldFormat.length)) {
@@ -248,7 +243,8 @@ export default class TotalPowerChartView extends View {
 					}
 				}, 500);
 			}
-			console.log('TOTAL POWER RENDER CHART END =====================');
+			
+			console.log('SOLAR POWER RENDER CHART END =====================');
 			
 		}); // end am4core.ready()
 	}
@@ -276,7 +272,7 @@ export default class TotalPowerChartView extends View {
 						'</div>'+
 					'</div>'+
 					
-					'<div id="total-power-chart" class="small-chart"></div>'+
+					'<div id="solar-power-chart" class="small-chart"></div>'+
 					
 					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
 					'<p style="font-size:14px;text-align:left;" class="range-field">'+localized_string_adjust_interval+
@@ -294,7 +290,7 @@ export default class TotalPowerChartView extends View {
 		this.wrapper.handlePollingInterval(refreshId);
 		
 		if (this.areModelsReady()) {
-			console.log('TotalPowerChartView => render models READY!!!!');
+			console.log('SolarPowerChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
@@ -311,8 +307,8 @@ export default class TotalPowerChartView extends View {
 				this.renderChart();
 			}
 		} else {
-			console.log('TotalPowerChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#total-power-chart');
+			console.log('SolarPowerChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#solar-power-chart');
 		}
 	}
 }

@@ -192,6 +192,8 @@ ALSO we must now do the logic in view or controller:
 
 
 
+
+
 NEW VERSION:
 
 
@@ -248,12 +250,16 @@ DistrictABController
 	this.master.modelRepo.add('SolarModel',model);
 	*USES* this.master.modelRepo.get('MenuModel');
 	
-	
-	
-	
-	
-	
-	
+DistrictACController
+	this.master.modelRepo.add('Light102Model',model_102);
+	this.master.modelRepo.add('Light103Model',model_103);
+	this.master.modelRepo.add('Light104Model',model_104);
+	this.master.modelRepo.add('Light110Model',model_110);
+	*USES* this.master.modelRepo.get('MenuModel');
+
+
+
+
 ADMIN:
 UsersController
 	this.master.modelRepo.add('UsersModel',model);

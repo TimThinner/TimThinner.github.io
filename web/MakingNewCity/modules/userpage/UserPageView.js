@@ -17,10 +17,16 @@ export default class UserPageView extends View {
 		// Start listening notify -messages from ResizeEventObserver:
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
+		
+		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+		this.USER_MODEL.subscribe(this);
+		
 		this.rendered = false;
 	}
 	
 	show() {
+		// Call 'UserModel' => 'refreshPointIds'
+		this.USER_MODEL.refreshPointIds();
 		this.render();
 	}
 	
@@ -34,6 +40,8 @@ export default class UserPageView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
+		this.USER_MODEL.unsubscribe(this);
+		
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -42,7 +50,15 @@ export default class UserPageView extends View {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				console.log("UserPageView ResizeEventObserver resize!!!!!!!!!!!!!!");
-				this.show();
+				//this.show();
+				this.render();
+				
+			} else if (options.model==='UserModel' && options.method==='refreshPointIds') {
+				if (options.status === 200) {
+					console.log('PointIds are now refreshed!');
+				} else {
+					console.log(['PointIds are NOT refreshed!',options.status]);
+				}
 			}
 		}
 	}

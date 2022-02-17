@@ -590,4 +590,39 @@ export default class UserModel extends Model {
 				self.notifyAll({model:self.name, method:'updateUserData', status:status, message:error});
 			});
 	}
+	
+	refreshPointIds() {
+		const self = this;
+		const myHeaders = new Headers();
+		const authorizationToken = 'Bearer '+this.token;
+		myHeaders.append("Authorization", authorizationToken);
+		myHeaders.append("Content-Type", "application/json");
+		//const data = [{a:1},{b:2}]; // Put something here!?
+		const myPost = {
+			method: 'POST',
+			headers: myHeaders
+			//body: JSON.stringify(data)
+		};
+		const myRequest = new Request(this.mongoBackend + '/users/pointids', myPost);
+		let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+		
+		fetch(myRequest)
+			.then(function(response){
+				status = response.status;
+				return response.json();
+			})
+			.then(function(myJson){
+				if (status === 200) {
+					// Update the UserModel (=self) properties:
+					self.point_id_a = myJson.point_id_a;
+					self.point_id_b = myJson.point_id_b;
+					self.point_id_c = myJson.point_id_c;
+					console.log(['self.point_id_a=',self.point_id_a,' self.point_id_b=',self.point_id_b,' self.point_id_c=',self.point_id_c]);
+				}
+				self.notifyAll({model:self.name, method:'refreshPointIds', status:status, message:myJson.message});
+			})
+			.catch(function(error){
+				self.notifyAll({model:self.name, method:'refreshPointIds', status:status, message:error});
+			});
+	}
 }

@@ -396,8 +396,7 @@ meterId
 			const targetAC = svgObject.getElementById('target-a-c');
 			targetAC.addEventListener("click", function(){
 				
-				console.log('DAC');
-				//self.models['MenuModel'].setSelected('DAC');
+				self.models['MenuModel'].setSelected('DAC');
 				
 			}, false);
 			targetAC.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

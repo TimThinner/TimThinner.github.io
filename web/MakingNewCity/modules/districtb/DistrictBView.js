@@ -4,6 +4,8 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
+
 export default class DistrictBView extends View {
 	
 	constructor(controller) {
@@ -15,24 +17,31 @@ export default class DistrictBView extends View {
 			this.models[key].subscribe(this);
 			
 		});
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
+		this.PTO.subscribe(this);
+		
 		// Start listening notify -messages from ResizeEventObserver:
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
-		
 		this.rendered = false;
 		this.FELID = 'district-b-view-failure';
 	}
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -176,9 +185,7 @@ export default class DistrictBView extends View {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						
-						
 						this.updateLatestValues();
-						
 						
 					} else {
 						this.render();
@@ -200,8 +207,15 @@ export default class DistrictBView extends View {
 					}
 				}
 			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log("DistrictBView ResizeEventObserver resize!!!!!!!!!!!!!!");
+				//console.log("DistrictBView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Models are 'SivakkaStatusModel', 'MenuModel'.
+				Object.keys(this.models).forEach(key => {
+					//console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch();
+				});
 			}
 		}
 	}

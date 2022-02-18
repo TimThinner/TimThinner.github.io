@@ -292,6 +292,15 @@ DistrictAIController
 	*USES* this.master.modelRepo.get('MenuModel');
 
 
+
+DistrictBController
+	this.master.modelRepo.add('SivakkaStatusModel',m);
+	*USES* this.master.modelRepo.get('MenuModel');
+
+
+
+
+
 ADMIN:
 UsersController
 	this.master.modelRepo.add('UsersModel',model);

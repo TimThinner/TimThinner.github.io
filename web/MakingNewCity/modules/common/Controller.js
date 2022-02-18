@@ -15,7 +15,7 @@ export default class Controller {
 	}
 	
 	remove() {
-		console.log(['REMOVE CONTROLLER ',this.name]);
+		//console.log(['REMOVE CONTROLLER ',this.name]);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -26,14 +26,14 @@ export default class Controller {
 	}
 	
 	hide() {
-		console.log(['HIDE CONTROLLER ',this.name]);
+		//console.log(['HIDE CONTROLLER ',this.name]);
 		if (this.view) {
 			this.view.hide();
 		}
 	}
 	
 	show() {
-		console.log(['SHOW CONTROLLER ',this.name]);
+		//console.log(['SHOW CONTROLLER ',this.name]);
 		if (this.visible && this.view) {
 			console.log('CONTROLLER SHOW');
 			this.view.show();

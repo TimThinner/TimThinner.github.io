@@ -281,7 +281,9 @@ DistrictAGController
 	this.master.modelRepo.add('CoolerCoolingPowerModel',model_Cooling_Power);
 	*USES* this.master.modelRepo.get('MenuModel');
 
-
+DistrictAIController
+	this.master.modelRepo.add('GeothermalModel',model);
+	*USES* this.master.modelRepo.get('MenuModel');
 
 
 ADMIN:

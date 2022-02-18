@@ -441,8 +441,7 @@ meterId
 			const targetAH = svgObject.getElementById('target-a-h');
 			targetAH.addEventListener("click", function(){
 				
-				console.log('DAG');
-				//self.models['MenuModel'].setSelected('DAG');
+				self.models['MenuModel'].setSelected('DAG');
 				
 			}, false);
 			targetAH.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -451,8 +450,7 @@ meterId
 			const targetAM = svgObject.getElementById('target-a-m');
 			targetAM.addEventListener("click", function(){
 				
-				console.log('DAG');
-				//self.models['MenuModel'].setSelected('DAG');
+				self.models['MenuModel'].setSelected('DAG');
 				
 			}, false);
 			targetAM.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -461,8 +459,7 @@ meterId
 			const targetAN = svgObject.getElementById('target-a-n');
 			targetAN.addEventListener("click", function(){
 				
-				console.log('DAG');
-				//self.models['MenuModel'].setSelected('DAG');
+				self.models['MenuModel'].setSelected('DAG');
 				
 			}, false);
 			targetAN.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -471,8 +468,7 @@ meterId
 			const targetAI = svgObject.getElementById('target-a-i');
 			targetAI.addEventListener("click", function(){
 				
-				console.log('DAI');
-				//self.models['MenuModel'].setSelected('DAI');
+				self.models['MenuModel'].setSelected('DAI');
 				
 			}, false);
 			targetAI.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -481,8 +477,7 @@ meterId
 			const targetAP = svgObject.getElementById('target-a-p');
 			targetAP.addEventListener("click", function(){
 				
-				console.log('DAG');
-				//self.models['MenuModel'].setSelected('DAG');
+				self.models['MenuModel'].setSelected('DAG');
 				
 			}, false);
 			targetAP.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

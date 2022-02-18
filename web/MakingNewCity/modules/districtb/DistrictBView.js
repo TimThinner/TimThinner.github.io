@@ -258,7 +258,7 @@ export default class DistrictBView extends View {
 			const back = svgObject.getElementById('back');
 			back.addEventListener("click", function(){
 				
-				self.models['MenuModel'].setSelected('D');
+				self.models['MenuModel'].setSelected('district');
 				
 			}, false);
 			

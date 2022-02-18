@@ -76,7 +76,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.18.SOLAR');
+		console.log('MasterController init v2022.02.18.SOLAR B');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();

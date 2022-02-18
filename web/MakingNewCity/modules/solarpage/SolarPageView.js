@@ -4,6 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
 
 export default class SolarPageView extends View {
 	
@@ -15,6 +16,10 @@ export default class SolarPageView extends View {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'solar-page-view-failure';
 		this.chart = undefined; // We have a chart!
@@ -22,9 +27,11 @@ export default class SolarPageView extends View {
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
+		this.PTO.stop();
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -34,6 +41,8 @@ export default class SolarPageView extends View {
 	}
 	
 	remove() {
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -117,6 +126,19 @@ export default class SolarPageView extends View {
 		}); // end am4core.ready()
 	}
 	
+	notifyError(options) {
+		console.log(['ERROR IN FETCHING model=',options.model,' message=',options.message]);
+		if (this.rendered) {
+			
+			$('#'+this.FELID).empty();
+			const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+			$(html).appendTo('#'+this.FELID);
+			
+		} else {
+			this.render();
+		}
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='FingridSolarPowerFinlandModel' && options.method==='fetched') {
@@ -157,23 +179,21 @@ export default class SolarPageView extends View {
 					} else {
 						this.render();
 					}
-					
 				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
+					this.notifyError(options);
 				}
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Do something with each TICK!
+				//
+				// 'MenuModel'
+				// 'EmpoEmissions1Model'
+				// ...
+				// 'EmpoEmissions30Model'
+				Object.keys(this.models).forEach(key => {
+					//console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch();
+				});
 			}
 		}
 	}

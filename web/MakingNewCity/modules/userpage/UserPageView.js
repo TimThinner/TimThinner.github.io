@@ -27,7 +27,7 @@ export default class UserPageView extends View {
 	show() {
 		// Call 'UserModel' => 'refreshPointIds'
 		this.USER_MODEL.refreshPointIds();
-		this.render();
+		
 	}
 	
 	hide() {
@@ -59,6 +59,7 @@ export default class UserPageView extends View {
 				} else {
 					console.log(['PointIds are NOT refreshed!',options.status]);
 				}
+				this.render();
 			}
 		}
 	}

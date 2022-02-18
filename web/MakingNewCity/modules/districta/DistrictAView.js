@@ -414,8 +414,7 @@ meterId
 			const targetAE = svgObject.getElementById('target-a-e');
 			targetAE.addEventListener("click", function(){
 				
-				console.log('DAE');
-				//self.models['MenuModel'].setSelected('DAE');
+				self.models['MenuModel'].setSelected('DAE');
 				
 			}, false);
 			targetAE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

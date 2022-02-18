@@ -433,9 +433,9 @@ router.post('/pointids', checkAuth, (req,res,next)=>{
 			if (user.length < 1) {
 				return res.status(404).json({message: 'Not Found'});
 			}
-			const point_id_a = user[0].point_id_a ? user[0].point_id_a : undefined;
-			const point_id_b = user[0].point_id_b ? user[0].point_id_b : undefined;
-			const point_id_c = user[0].point_id_c ? user[0].point_id_c : undefined;
+			const point_id_a = user[0].point_id_a ? user[0].point_id_a : '';
+			const point_id_b = user[0].point_id_b ? user[0].point_id_b : '';
+			const point_id_c = user[0].point_id_c ? user[0].point_id_c : '';
 			res.status(200).json({
 				message:'OK',
 				point_id_a: point_id_a,

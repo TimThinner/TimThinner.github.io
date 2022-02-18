@@ -263,11 +263,10 @@ DistrictADController
 	this.master.modelRepo.add('Kitchen108Model',model_108);
 	*USES* this.master.modelRepo.get('MenuModel');
 	
-
-
-
-
-
+DistrictAEController
+	this.master.modelRepo.add('HPAC101Model',model_101);
+	this.master.modelRepo.add('HPAC105Model',model_105);
+	*USES* this.master.modelRepo.get('MenuModel');
 
 
 

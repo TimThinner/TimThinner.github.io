@@ -233,6 +233,12 @@ EnvironmentPageController
 	*USES* this.models[name] = this.master.modelRepo.get('EmpoEmissions1Model' ... 'EmpoEmissions30Model');
 	*USES* this.master.modelRepo.get('MenuModel');
 	
+SolarPageController
+	this.master.modelRepo.add('FingridSolarPowerFinlandModel',m);
+	*USES* this.master.modelRepo.get('MenuModel');
+	
+	
+	
 DistrictController
 	*USES* this.master.modelRepo.get('MenuModel');
 	

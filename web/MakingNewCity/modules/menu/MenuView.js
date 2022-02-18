@@ -650,7 +650,7 @@ export default class MenuView extends View {
 			
 		} else if (type === 'SOLAR') {
 			surface.addEventListener("click", function(){
-				console.log('HEY, SOLAR CLICKED!');
+				self.models['MenuModel'].setSelected('solarpage');
 			}, false);
 			
 		} else if (type === 'GRID') {

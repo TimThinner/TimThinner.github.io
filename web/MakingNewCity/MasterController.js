@@ -25,6 +25,7 @@ import UserPropsController from './modules/userprops/UserPropsController.js';
 
 import GridPageController from './modules/gridpage/GridPageController.js';
 import EnvironmentPageController from './modules/environmentpage/EnvironmentPageController.js';
+import SolarPageController from './modules/solarpage/SolarPageController.js';
 
 // ADMIN stuff:
 import UsersController from './modules/admin/users/UsersController.js';
@@ -75,7 +76,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.18.DAI');
+		console.log('MasterController init v2022.02.18.SOLAR');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -120,6 +121,8 @@ class MasterController {
 		this.controllers['gridpage'].init();
 		this.controllers['environmentpage'] = new EnvironmentPageController({name:'environmentpage', master:this, el:'#content', visible:false});
 		this.controllers['environmentpage'].init();
+		this.controllers['solarpage'] = new SolarPageController({name:'solarpage', master:this, el:'#content', visible:false});
+		this.controllers['solarpage'].init();
 		
 		this.controllers['district'] = new DistrictController({name:'district', master:this, el:'#content', visible:false});
 		this.controllers['district'].init();

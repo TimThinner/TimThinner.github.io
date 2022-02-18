@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../common/View.js';
-export default class LightEnergyChartView extends View {
+export default class KitchenEnergyChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -20,12 +20,11 @@ export default class LightEnergyChartView extends View {
 		// 
 		this.el = el;
 		
-		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
-		//this.timerName = 'LightChartView';
+		//this.timerName = 'KitchenChartView';
 		this.chart = undefined;
 		this.rendered = false;
 	}
@@ -58,45 +57,40 @@ export default class LightEnergyChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if ((options.model==='Light102Model'|| 
-				options.model==='Light103Model'|| 
-				options.model==='Light104Model'|| 
-				options.model==='Light110Model') && options.method==='fetched') {
+			if ((options.model==='Kitchen106Model'|| 
+				options.model==='Kitchen107Model'|| 
+				options.model==='Kitchen108Model') && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
-						$('#light-energy-chart-view-failure').empty();
+						$('#kitchen-energy-chart-view-failure').empty();
 						
 						if (typeof this.chart !== 'undefined') {
 							
-							console.log('fetched ..... LightEnergyChartView CHART UPDATED!');
+							console.log('fetched ..... KitchenEnergyChartView CHART UPDATED!');
 							
-							// 102								Outdoor lighting (JK_101)
-							// 103								Indoor lighting (JK_101)
-							// 104								Common spaces (JK_101)
-							// 110								Indoor lighting (JK_102)
+							// 106								R3 Owen
+							// 107								R4 Owen
+							// 108								Dishwasher
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'Outdoor lighting (JK_101)') {
-									s.data = self.models['Light102Model'].energyValues;
+								if (s.name === 'R3 Oven') {
+									s.data = self.models['Kitchen106Model'].energyValues;
 									
-								} else if (s.name === 'Indoor lighting (JK_101)') {
-									s.data = self.models['Light103Model'].energyValues;
-									
-								} else if (s.name === 'Common spaces (JK_101)') {
-									s.data = self.models['Light104Model'].energyValues;
+								} else if (s.name === 'R4 Oven') {
+									s.data = self.models['Kitchen107Model'].energyValues;
 									
 								} else {
-									s.data = self.models['Light110Model'].energyValues;
+									s.data = self.models['Kitchen108Model'].energyValues;
 								}
 							});
 							
 						} else {
-							console.log('fetched ..... render LightEnergyChartView()');
+							console.log('fetched ..... render KitchenEnergyChartView()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#light-energy-chart-view-failure').empty();
+						$('#kitchen-energy-chart-view-failure').empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#light-energy-chart-view-failure');
+						$(html).appendTo('#kitchen-energy-chart-view-failure');
 					}
 				}
 			}
@@ -120,7 +114,7 @@ export default class LightEnergyChartView extends View {
 			am4core.options.autoSetClassName = true;
 			
 			// Create chart
-			self.chart = am4core.create("light-energy-chart", am4charts.XYChart);
+			self.chart = am4core.create("kitchen-energy-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -178,13 +172,12 @@ export default class LightEnergyChartView extends View {
 			/*
 			NOTE: 
 			Use this order:
-				Indoor lighting (JK_101)	blue
-				Outdoor lighting (JK_101)	red
-				Indoor lighting (JK_102)	orange
-				Common spaces (JK_101)		green
+				R3 Oven 	blue
+				R4 Oven 	red
+				Dishwasher	orange
 			*/
 			
-			// 103								Indoor lighting (JK_101)
+			// 106								R3 Oven
 			
 			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
 			//series1.tooltipText = "{name}: {valueY.value} kWh";
@@ -197,13 +190,13 @@ export default class LightEnergyChartView extends View {
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			series1.data = self.models['Light103Model'].energyValues;
+			series1.data = self.models['Kitchen106Model'].energyValues;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "energy";
-			series1.name = "Indoor lighting (JK_101)";
+			series1.name = "R3 Oven";
 			series1.yAxis = valueAxis;
 			
-			// 102								Outdoor lighting (JK_101)
+			// 107								R4 Oven
 			
 			const series2 = self.chart.series.push(new am4charts.ColumnSeries());
 			series2.defaultState.transitionDuration = 0;
@@ -218,13 +211,13 @@ export default class LightEnergyChartView extends View {
 			series2.tooltip.background.fill = am4core.color("#000");
 			series2.tooltip.background.strokeWidth = 1;
 			series2.tooltip.label.fill = series2.stroke;
-			series2.data = self.models['Light102Model'].energyValues;
+			series2.data = self.models['Kitchen107Model'].energyValues;
 			series2.dataFields.dateX = "time";
 			series2.dataFields.valueY = "energy";
-			series2.name = "Outdoor lighting (JK_101)";
+			series2.name = "R4 Oven";
 			series2.yAxis = valueAxis;
 			
-			// 110								Indoor lighting (JK_102)
+			// 108								Dishwasher
 			const series3 = self.chart.series.push(new am4charts.ColumnSeries());
 			//series3.tooltipText = "{name}: {valueY.value} kWh";
 			series3.tooltipText = "{valueY.value} kWh";
@@ -236,30 +229,11 @@ export default class LightEnergyChartView extends View {
 			series3.tooltip.background.fill = am4core.color("#000");
 			series3.tooltip.background.strokeWidth = 1;
 			series3.tooltip.label.fill = series3.stroke;
-			series3.data = self.models['Light110Model'].energyValues;
+			series3.data = self.models['Kitchen108Model'].energyValues;
 			series3.dataFields.dateX = "time";
 			series3.dataFields.valueY = "energy";
-			series3.name = "Indoor lighting (JK_102)";
+			series3.name = "Dishwasher";
 			series3.yAxis = valueAxis;
-			
-			// 104								Common spaces (JK_101)
-			
-			const series4 = self.chart.series.push(new am4charts.ColumnSeries());
-			//series4.tooltipText = "{name}: {valueY.value} kWh";
-			series4.tooltipText = "{valueY.value} kWh";
-			series4.stroke = am4core.color("#0f0");
-			series4.fill = series4.stroke;
-			series4.fillOpacity = 0.5;
-			series4.tooltip.getFillFromObject = false;
-			series4.tooltip.getStrokeFromObject = true;
-			series4.tooltip.background.fill = am4core.color("#000");
-			series4.tooltip.background.strokeWidth = 1;
-			series4.tooltip.label.fill = series4.stroke;
-			series4.data = self.models['Light104Model'].energyValues;
-			series4.dataFields.dateX = "time";
-			series4.dataFields.valueY = "energy";
-			series4.name = "Common spaces (JK_101)";
-			series4.yAxis = valueAxis;
 			
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;
@@ -269,13 +243,10 @@ export default class LightEnergyChartView extends View {
 			marker.strokeOpacity = 1;
 			marker.stroke = am4core.color("#000");
 			
-			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
 			
-			
 			console.log(['series1.data=',series1.data]);
-			
 			// Scrollbar
 			//const scrollbarX = new am4charts.XYChartScrollbar();
 			
@@ -283,7 +254,6 @@ export default class LightEnergyChartView extends View {
 			//self.chart.scrollbarX.series.push(series1);
 			//self.chart.scrollbarX.marginBottom = 20;
 			//self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-			
 			
 			var scrollbarX = new am4charts.XYChartScrollbar();
 			scrollbarX.series.push(series3);
@@ -320,12 +290,10 @@ export default class LightEnergyChartView extends View {
 			
 			let zoomTimeout;
 			function updateZoom() {
-				
 				if (zoomTimeout) {
 					clearTimeout(zoomTimeout);
 				}
 				zoomTimeout = setTimeout(function() {
-					
 					const start = document.getElementById(refreshId+"-fromfield").value;
 					const end = document.getElementById(refreshId+"-tofield").value;
 					if ((start.length < inputFieldFormat.length) || (end.length < inputFieldFormat.length)) {
@@ -339,7 +307,7 @@ export default class LightEnergyChartView extends View {
 					}
 				}, 500);
 			}
-			console.log('Light Energy RENDER CHART END =====================');
+			console.log('Kitchen Energy RENDER CHART END =====================');
 		}); // end am4core.ready()
 	}
 	
@@ -362,23 +330,23 @@ export default class LightEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					'<div id="light-energy-chart" class="medium-chart"></div>'+
+					'<div id="kitchen-energy-chart" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="light-energy-chart-view-failure"></div>'+
+				'<div class="col s12" id="kitchen-energy-chart-view-failure"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
-			console.log('LightEnergyChartView => render models READY!!!!');
+			console.log('KitchenEnergyChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="light-energy-chart-view-failure">'+
+						'<div class="col s12 center" id="kitchen-energy-chart-view-failure">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>';
@@ -387,8 +355,8 @@ export default class LightEnergyChartView extends View {
 				this.renderChart();
 			}
 		} else {
-			console.log('LightEnergyChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#light-energy-chart');
+			console.log('KitchenEnergyChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#kitchen-energy-chart');
 		}
 	}
 }

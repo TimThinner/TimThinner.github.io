@@ -256,6 +256,21 @@ DistrictACController
 	this.master.modelRepo.add('Light104Model',model_104);
 	this.master.modelRepo.add('Light110Model',model_110);
 	*USES* this.master.modelRepo.get('MenuModel');
+	
+DistrictADController
+	this.master.modelRepo.add('Kitchen106Model',model_106);
+	this.master.modelRepo.add('Kitchen107Model',model_107);
+	this.master.modelRepo.add('Kitchen108Model',model_108);
+	*USES* this.master.modelRepo.get('MenuModel');
+	
+
+
+
+
+
+
+
+
 
 
 

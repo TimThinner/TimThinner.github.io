@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../common/View.js';
-export default class LightEnergyChartView extends View {
+export default class KitchenPowerChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -25,9 +25,9 @@ export default class LightEnergyChartView extends View {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
-		//this.timerName = 'LightChartView';
 		this.chart = undefined;
 		this.rendered = false;
+		this.FELID = 'kitchen-power-chart-view-failure';
 	}
 	
 	show() {
@@ -41,6 +41,7 @@ export default class LightEnergyChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
+		
 	}
 	
 	remove() {
@@ -50,6 +51,7 @@ export default class LightEnergyChartView extends View {
 		}
 		$(this.el).empty();
 		this.rendered = false;
+		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -58,45 +60,46 @@ export default class LightEnergyChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if ((options.model==='Light102Model'|| 
-				options.model==='Light103Model'|| 
-				options.model==='Light104Model'|| 
-				options.model==='Light110Model') && options.method==='fetched') {
-				if (this.rendered===true) {
+			if ((options.model==='Kitchen106Model'|| 
+				options.model==='Kitchen107Model'|| 
+				options.model==='Kitchen108Model') && options.method==='fetched') {
+				if (this.rendered) {
 					if (options.status === 200) {
-						$('#light-energy-chart-view-failure').empty();
+						
+						$('#'+this.FELID).empty();
 						
 						if (typeof this.chart !== 'undefined') {
-							
-							console.log('fetched ..... LightEnergyChartView CHART UPDATED!');
-							
-							// 102								Outdoor lighting (JK_101)
-							// 103								Indoor lighting (JK_101)
-							// 104								Common spaces (JK_101)
-							// 110								Indoor lighting (JK_102)
+							console.log('fetched ..... KitchenPowerChartView CHART UPDATED!');
+							// 106								R3 Owen
+							// 107								R4 Owen
+							// 108								Dishwasher
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'Outdoor lighting (JK_101)') {
-									s.data = self.models['Light102Model'].energyValues;
+								if (s.name === 'R3 Oven') {
+									s.data = self.models['Kitchen106Model'].values;
 									
-								} else if (s.name === 'Indoor lighting (JK_101)') {
-									s.data = self.models['Light103Model'].energyValues;
-									
-								} else if (s.name === 'Common spaces (JK_101)') {
-									s.data = self.models['Light104Model'].energyValues;
+								} else if (s.name === 'R4 Oven') {
+									s.data = self.models['Kitchen107Model'].values;
 									
 								} else {
-									s.data = self.models['Light110Model'].energyValues;
+									s.data = self.models['Kitchen108Model'].values;
 								}
 							});
 							
 						} else {
-							console.log('fetched ..... render LightEnergyChartView()');
+							console.log('fetched ..... KitchenPowerChartView renderChart()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#light-energy-chart-view-failure').empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#light-energy-chart-view-failure');
+						$('#'+this.FELID).empty();
+						if (options.status === 401) {
+							// This status code must be caught and wired to controller forceLogout() action.
+							// Force LOGOUT if Auth failed!
+							// Call View-class method to handle error.
+							this.forceLogout(this.FELID);
+						} else {
+							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+							$(html).appendTo('#'+this.FELID);
+						}
 					}
 				}
 			}
@@ -108,9 +111,10 @@ export default class LightEnergyChartView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_energy = LM['translation'][sel]['DAA_ENERGY'];
+		const localized_string_power = LM['translation'][sel]['DAA_POWER'];
 		
 		const refreshId = this.el.slice(1);
+		
 		am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -120,7 +124,7 @@ export default class LightEnergyChartView extends View {
 			am4core.options.autoSetClassName = true;
 			
 			// Create chart
-			self.chart = am4core.create("light-energy-chart", am4charts.XYChart);
+			self.chart = am4core.create("kitchen-power-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -151,8 +155,6 @@ export default class LightEnergyChartView extends View {
 			
 			const valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
-			
-			valueAxis.min = 0;
 			valueAxis.zIndex = 1;
 			valueAxis.marginTop = 0;
 			valueAxis.renderer.baseGrid.disabled = true;
@@ -167,9 +169,9 @@ export default class LightEnergyChartView extends View {
 			
 			valueAxis.renderer.maxLabelPosition = 0.95;
 			valueAxis.renderer.fontSize = "0.75em";
-			valueAxis.title.text = localized_string_energy;
+			valueAxis.title.text = localized_string_power;
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " kWh";
+				return text + " kW";
 			});
 			
 			//valueAxis.min = 0;
@@ -178,88 +180,68 @@ export default class LightEnergyChartView extends View {
 			/*
 			NOTE: 
 			Use this order:
-				Indoor lighting (JK_101)	blue
-				Outdoor lighting (JK_101)	red
-				Indoor lighting (JK_102)	orange
-				Common spaces (JK_101)		green
+				R3 Oven 	blue
+				R4 Oven 	red
+				Dishwasher	orange
 			*/
 			
-			// 103								Indoor lighting (JK_101)
+			// 106								R3 Oven
 			
-			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
-			//series1.tooltipText = "{name}: {valueY.value} kWh";
-			series1.tooltipText = "{valueY.value} kWh";
+			const series1 = self.chart.series.push(new am4charts.StepLineSeries());
+			//series1.tooltipText = "{name}: {valueY.value} kW";
+			series1.tooltipText = "{valueY.value} kW";
 			series1.stroke = am4core.color("#0ff");
 			series1.fill = series1.stroke;
-			series1.fillOpacity = 0.5;
+			//series1.fillOpacity = 0.1;
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			series1.data = self.models['Light103Model'].energyValues;
+			series1.data = self.models['Kitchen106Model'].values;
 			series1.dataFields.dateX = "time";
-			series1.dataFields.valueY = "energy";
-			series1.name = "Indoor lighting (JK_101)";
+			series1.dataFields.valueY = "averagePower";
+			series1.name = "R3 Oven";
 			series1.yAxis = valueAxis;
 			
-			// 102								Outdoor lighting (JK_101)
+			// 107								R4 Oven
 			
-			const series2 = self.chart.series.push(new am4charts.ColumnSeries());
+			const series2 = self.chart.series.push(new am4charts.StepLineSeries());
 			series2.defaultState.transitionDuration = 0;
-			//series2.tooltipText = "{name}: {valueY.value} kWh";
-			//series2.tooltipText = localized_string_energy + ": {valueY.value} kWh";
-			series2.tooltipText = "{valueY.value} kWh";
+			series2.tooltipText = "{valueY.value} kW";
+			//series2.tooltipText = "{name}: {valueY.value} kW";
+			//series2.tooltipText = localized_string_power + ": {valueY.value} kW";
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
 			series2.stroke = am4core.color("#f80");
 			series2.fill = series2.stroke;
-			series2.fillOpacity = 0.5;
+			//series2.fillOpacity = 0.1;
 			series2.tooltip.background.fill = am4core.color("#000");
 			series2.tooltip.background.strokeWidth = 1;
 			series2.tooltip.label.fill = series2.stroke;
-			series2.data = self.models['Light102Model'].energyValues;
+			series2.data = self.models['Kitchen107Model'].values;
 			series2.dataFields.dateX = "time";
-			series2.dataFields.valueY = "energy";
-			series2.name = "Outdoor lighting (JK_101)";
+			series2.dataFields.valueY = "averagePower";
+			series2.name = "R4 Oven";
 			series2.yAxis = valueAxis;
 			
-			// 110								Indoor lighting (JK_102)
-			const series3 = self.chart.series.push(new am4charts.ColumnSeries());
-			//series3.tooltipText = "{name}: {valueY.value} kWh";
-			series3.tooltipText = "{valueY.value} kWh";
+			// 108								Dishwasher
+			const series3 = self.chart.series.push(new am4charts.StepLineSeries());
+			//series3.tooltipText = "{name}: {valueY.value} kW";
+			series3.tooltipText = "{valueY.value} kW";
 			series3.stroke = am4core.color("#ff0");
 			series3.fill = series3.stroke;
-			series3.fillOpacity = 0.5;
+			//series3.fillOpacity = 0.1;
 			series3.tooltip.getFillFromObject = false;
 			series3.tooltip.getStrokeFromObject = true;
 			series3.tooltip.background.fill = am4core.color("#000");
 			series3.tooltip.background.strokeWidth = 1;
 			series3.tooltip.label.fill = series3.stroke;
-			series3.data = self.models['Light110Model'].energyValues;
+			series3.data = self.models['Kitchen108Model'].values;
 			series3.dataFields.dateX = "time";
-			series3.dataFields.valueY = "energy";
-			series3.name = "Indoor lighting (JK_102)";
+			series3.dataFields.valueY = "averagePower";
+			series3.name = "Dishwasher";
 			series3.yAxis = valueAxis;
-			
-			// 104								Common spaces (JK_101)
-			
-			const series4 = self.chart.series.push(new am4charts.ColumnSeries());
-			//series4.tooltipText = "{name}: {valueY.value} kWh";
-			series4.tooltipText = "{valueY.value} kWh";
-			series4.stroke = am4core.color("#0f0");
-			series4.fill = series4.stroke;
-			series4.fillOpacity = 0.5;
-			series4.tooltip.getFillFromObject = false;
-			series4.tooltip.getStrokeFromObject = true;
-			series4.tooltip.background.fill = am4core.color("#000");
-			series4.tooltip.background.strokeWidth = 1;
-			series4.tooltip.label.fill = series4.stroke;
-			series4.data = self.models['Light104Model'].energyValues;
-			series4.dataFields.dateX = "time";
-			series4.dataFields.valueY = "energy";
-			series4.name = "Common spaces (JK_101)";
-			series4.yAxis = valueAxis;
 			
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;
@@ -269,32 +251,21 @@ export default class LightEnergyChartView extends View {
 			marker.strokeOpacity = 1;
 			marker.stroke = am4core.color("#000");
 			
+			//self.chart.legend.labels.template.text = "[font-size: 14px]{name}";
+			//createLabel("Hello [font-size: 30px]world[/]!");
+			//createLabel("Hello [red bold font-size: 30px]world[/]!");
 			
 			// Cursor
 			self.chart.cursor = new am4charts.XYCursor();
 			
-			
-			console.log(['series1.data=',series1.data]);
+			//console.log(['series1.data=',series1.data]);
 			
 			// Scrollbar
-			//const scrollbarX = new am4charts.XYChartScrollbar();
 			
-			//self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			//self.chart.scrollbarX.series.push(series1);
-			//self.chart.scrollbarX.marginBottom = 20;
-			//self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-			
-			
-			var scrollbarX = new am4charts.XYChartScrollbar();
-			scrollbarX.series.push(series3);
-			scrollbarX.marginBottom = 20;
-			scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
-			self.chart.scrollbarX = scrollbarX;
-			
-			// When you add a series to an XYChartScrollbar by pushing it into its series list, scrollbar makes an exact copy and places it into series list of its child element: scrollbarChart, which is a separate copy of XYChart.
-			//console.log(['self.chart.scrollbarX=',self.chart.scrollbarX]);
-			//console.log(['self.chart.scrollbarX.background=',self.chart.scrollbarX.background]);
-			//self.chart.scrollbarX.background.fill = am4core.color("#017acd");
+			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
+			self.chart.scrollbarX.series.push(series3);
+			self.chart.scrollbarX.marginBottom = 20;
+			self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 			
 			/**
  			* Set up external controls
@@ -320,12 +291,10 @@ export default class LightEnergyChartView extends View {
 			
 			let zoomTimeout;
 			function updateZoom() {
-				
 				if (zoomTimeout) {
 					clearTimeout(zoomTimeout);
 				}
 				zoomTimeout = setTimeout(function() {
-					
 					const start = document.getElementById(refreshId+"-fromfield").value;
 					const end = document.getElementById(refreshId+"-tofield").value;
 					if ((start.length < inputFieldFormat.length) || (end.length < inputFieldFormat.length)) {
@@ -339,7 +308,9 @@ export default class LightEnergyChartView extends View {
 					}
 				}, 500);
 			}
-			console.log('Light Energy RENDER CHART END =====================');
+			
+			console.log('KITCHEN POWER RENDER CHART END =====================');
+			
 		}); // end am4core.ready()
 	}
 	
@@ -347,8 +318,11 @@ export default class LightEnergyChartView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		const refreshId = this.el.slice(1);
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_adjust_interval = LM['translation'][sel]['ADJUST_UPDATE_INTERVAL'];
 		
+		const refreshId = this.el.slice(1);
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
@@ -362,33 +336,44 @@ export default class LightEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					'<div id="light-energy-chart" class="medium-chart"></div>'+
+					
+					'<div id="kitchen-power-chart" class="medium-chart"></div>'+
+					
+					'<p style="font-size:14px;text-align:right;color:#0e9e36;" id="'+refreshId+'-chart-refresh-note"></p>'+
+					'<p style="font-size:14px;text-align:left;" class="range-field">'+localized_string_adjust_interval+
+						'<input type="range" id="'+refreshId+'-chart-refresh-interval" min="0" max="60"><span class="thumb"><span class="value"></span></span>'+
+					'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="light-energy-chart-view-failure"></div>'+
+				'<div class="col s12" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
 		
+		this.wrapper.handlePollingInterval(refreshId);
+		
 		if (this.areModelsReady()) {
-			console.log('LightEnergyChartView => render models READY!!!!');
+			console.log('KitchenPowerChartView => render models READY!!!!');
 			const errorMessages = this.modelsErrorMessages();
 			if (errorMessages.length > 0) {
 				const html =
 					'<div class="row">'+
-						'<div class="col s12 center" id="light-energy-chart-view-failure">'+
+						'<div class="col s12 center" id="'+this.FELID+'">'+
 							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
 						'</div>'+
 					'</div>';
 				$(html).appendTo(this.el);
+				if (errorMessages.indexOf('Auth failed') >= 0) {
+					this.forceLogout(this.FELID);
+				}
 			} else {
 				this.renderChart();
 			}
 		} else {
-			console.log('LightEnergyChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#light-energy-chart');
+			console.log('KitchenPowerChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#kitchen-power-chart');
 		}
 	}
 }

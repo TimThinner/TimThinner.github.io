@@ -79,7 +79,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.18.DB beta');
+		console.log('MasterController init v2022.02.18.DB gamma');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();

@@ -613,7 +613,7 @@ export default class DistrictView extends View {
 			
 		} else if (type === 'hex-b') {
 			poly.addEventListener("click", function(){
-				console.log('HEY, HEX-B CLICKED!');
+				self.models['MenuModel'].setSelected('DB');
 			}, false);
 			
 		} else if (type === 'hex-c') {

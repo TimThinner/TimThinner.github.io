@@ -20,6 +20,9 @@ import DistrictAFController from './modules/districtaf/DistrictAFController.js';
 import DistrictAGController from './modules/districtag/DistrictAGController.js';
 import DistrictAIController from './modules/districtai/DistrictAIController.js';
 
+import DistrictBController from './modules/districtb/DistrictBController.js';
+
+
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';
 
@@ -76,7 +79,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.18.SOLAR B');
+		console.log('MasterController init v2022.02.18.DB');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -144,6 +147,9 @@ class MasterController {
 		this.controllers['DAG'].init();
 		this.controllers['DAI'] = new DistrictAIController({name:'DAI', master:this, el:'#content', visible:false});
 		this.controllers['DAI'].init();
+		
+		this.controllers['DB'] = new DistrictBController({name:'DB', master:this, el:'#content', visible:false});
+		this.controllers['DB'].init();
 		
 		// Admin stuff start ------>
 		// New implementation:

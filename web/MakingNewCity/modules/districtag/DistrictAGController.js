@@ -37,11 +37,6 @@ export default class DistrictAGController extends Controller {
 		});
 	}
 	
-	refreshTimerange() {
-		const timerName = 'CoolerChartView';
-		this.restartPollingInterval(timerName);
-	}
-	
 	init() {
 		const model_113 = new Cooler113Model({name:'Cooler113Model',src:'data/arina/iss/feeds.json?meterId=113'});
 		model_113.subscribe(this);
@@ -68,18 +63,9 @@ export default class DistrictAGController extends Controller {
 		this.master.modelRepo.add('CoolerCoolingPowerModel',model_Cooling_Power);
 		this.models['CoolerCoolingPowerModel'] = model_Cooling_Power;
 		
-		
-		
-		/*
-		setTimeout(() => { model_113.fetch(); }, 1500);
-		setTimeout(() => { model_112.fetch(); }, 1600);
-		*/
-		this.timers['CoolerChartView'] = {timer: undefined, interval: 30000, models:['Cooler113Model','Cooler112Model','Cooler117Model','CoolerKLPowerModel','CoolerCoolingPowerModel']};
-		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
 		this.view = new DistrictAGWrapperView(this);
-		this.show();
 	}
 }

@@ -126,6 +126,7 @@ export default class PointIdEditView extends View {
 		
 		$('#update-point-id').on('click',function() {
 			const _code = $('#point-id').val();
+			console.log(['SET THE POINT ID val=',_code]);
 			const authToken = self.models['UserModel'].token;
 			const data = [
 				{propName:pid, value:_code}

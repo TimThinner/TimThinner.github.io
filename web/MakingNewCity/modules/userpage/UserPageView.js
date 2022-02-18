@@ -634,7 +634,7 @@ export default class UserPageView extends View {
 		// UM.point_id_b = '';
 		// UM.point_id_c = '';
 		if (type === 'HEATING') {
-			if (UM.point_id_a.length > 0) {
+			if (typeof UM.point_id_a !== 'undefined' && UM.point_id_a.length > 0) {
 				// HEATING is enabled
 				surface.addEventListener("click", function(){
 					console.log('HEY! '+type+' CLICKED!');
@@ -654,7 +654,7 @@ export default class UserPageView extends View {
 				surface.style.cursor = 'default';
 			}
 		} else if (type === 'ELECTRICITY') {
-			if (UM.point_id_b.length > 0) {
+			if (typeof UM.point_id_b !== 'undefined' && UM.point_id_b.length > 0) {
 				// ELECTRICITY is enabled
 				surface.addEventListener("click", function(){
 					console.log('HEY! '+type+' CLICKED!');
@@ -674,7 +674,7 @@ export default class UserPageView extends View {
 				surface.style.cursor = 'default';
 			}
 		} else if (type === 'WATER') {
-			if (UM.point_id_c.length > 0) {
+			if (typeof UM.point_id_c !== 'undefined' && UM.point_id_c.length > 0) {
 				// WATER is enabled
 				surface.addEventListener("click", function(){
 					console.log('HEY! '+type+' CLICKED!');

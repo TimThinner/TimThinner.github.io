@@ -29,6 +29,7 @@ export default class SolarEnergyChartView extends View {
 		});
 		this.chart = undefined;
 		this.rendered = false;
+		this.FELID = 'solar-energy-chart-view-failure';
 	}
 	
 	show() {
@@ -63,7 +64,7 @@ export default class SolarEnergyChartView extends View {
 				if (this.rendered===true) {
 					if (options.status === 200) {
 						
-						$('#solar-energy-chart-view-failure').empty();
+						$('#'+this.FELID).empty();
 						
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... SolarEnergyChartView CHART UPDATED!');
@@ -75,9 +76,9 @@ export default class SolarEnergyChartView extends View {
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#solar-energy-chart-view-failure').empty();
+						$('#'+this.FELID).empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#solar-energy-chart-view-failure');
+						$(html).appendTo('#'+this.FELID);
 					}
 				}
 			}
@@ -274,26 +275,18 @@ export default class SolarEnergyChartView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="solar-energy-chart-view-failure"></div>'+
+				'<div class="col s12" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
+			
 			console.log('SolarEnergyChartView => render models READY!!!!');
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="solar-energy-chart-view-failure">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-			} else {
-				this.renderChart();
-			}
+			this.handleErrorMessages(this.FELID);
+			this.renderChart();
+			
 		} else {
 			console.log('SolarEnergyChartView => render models ARE NOT READY!!!!');
 			this.showSpinner('#solar-energy-chart');

@@ -20,16 +20,13 @@ export default class HPACEnergyChartView extends View {
 		// 
 		this.el = el;
 		
-		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'HPAC101Model' || key === 'HPAC105Model') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
 		});
-		//this.timerName = 'HPACChartView';
 		this.chart = undefined;
 		this.rendered = false;
+		this.FELID = 'hpac-energy-chart-view-failure';
 	}
 	
 	show() {
@@ -63,7 +60,7 @@ export default class HPACEnergyChartView extends View {
 			if ((options.model==='HPAC101Model'||options.model==='HPAC105Model') && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
-						$('#hpac-energy-chart-view-failure').empty();
+						$('#'+this.FELID).empty();
 						
 						if (typeof this.chart !== 'undefined') {
 							
@@ -83,9 +80,9 @@ export default class HPACEnergyChartView extends View {
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#hpac-energy-chart-view-failure').empty();
+						$('#'+this.FELID).empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#hpac-energy-chart-view-failure');
+						$(html).appendTo('#'+this.FELID);
 					}
 				}
 			}
@@ -309,26 +306,18 @@ export default class HPACEnergyChartView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="hpac-energy-chart-view-failure"></div>'+
+				'<div class="col s12" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
+			
 			console.log('HPACEnergyChartView => render models READY!!!!');
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="hpac-energy-chart-view-failure">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-			} else {
-				this.renderChart();
-			}
+			this.handleErrorMessages(this.FELID);
+			this.renderChart();
+			
 		} else {
 			console.log('HPACEnergyChartView => render models ARE NOT READY!!!!');
 			this.showSpinner('#hpac-energy-chart');

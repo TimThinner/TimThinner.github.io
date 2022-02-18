@@ -273,7 +273,13 @@ DistrictAFController
 	this.master.modelRepo.add('Other111Model',model_111);
 	*USES* this.master.modelRepo.get('MenuModel');
 	
-
+DistrictAGController
+	this.master.modelRepo.add('Cooler113Model',model_113);
+	this.master.modelRepo.add('Cooler112Model',model_112);
+	this.master.modelRepo.add('Cooler117Model',model_117);
+	this.master.modelRepo.add('CoolerKLPowerModel',model_KL_power);
+	this.master.modelRepo.add('CoolerCoolingPowerModel',model_Cooling_Power);
+	*USES* this.master.modelRepo.get('MenuModel');
 
 
 

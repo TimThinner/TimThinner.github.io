@@ -432,8 +432,7 @@ meterId
 			const targetAG = svgObject.getElementById('target-a-g');
 			targetAG.addEventListener("click", function(){
 				
-				console.log('DAG');
-				//self.models['MenuModel'].setSelected('DAG');
+				self.models['MenuModel'].setSelected('DAG');
 				
 			}, false);
 			targetAG.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

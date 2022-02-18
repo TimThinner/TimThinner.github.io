@@ -288,22 +288,11 @@ export default class SolarPowerChartView extends View {
 		this.wrapper.handlePollingInterval(refreshId);
 		
 		if (this.areModelsReady()) {
+			
 			console.log('SolarPowerChartView => render models READY!!!!');
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="'+this.FELID+'">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-				if (errorMessages.indexOf('Auth failed') >= 0) {
-					this.forceLogout(this.FELID);
-				}
-			} else {
-				this.renderChart();
-			}
+			this.handleErrorMessages(this.FELID);
+			this.renderChart();
+			
 		} else {
 			console.log('SolarPowerChartView => render models ARE NOT READY!!!!');
 			this.showSpinner('#solar-power-chart');

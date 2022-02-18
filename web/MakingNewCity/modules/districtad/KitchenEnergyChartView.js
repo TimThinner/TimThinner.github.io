@@ -24,9 +24,9 @@ export default class KitchenEnergyChartView extends View {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
-		//this.timerName = 'KitchenChartView';
 		this.chart = undefined;
 		this.rendered = false;
+		this.FELID = 'kitchen-energy-chart-view-failure';
 	}
 	
 	show() {
@@ -62,7 +62,7 @@ export default class KitchenEnergyChartView extends View {
 				options.model==='Kitchen108Model') && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
-						$('#kitchen-energy-chart-view-failure').empty();
+						$('#'+this.FELID).empty();
 						
 						if (typeof this.chart !== 'undefined') {
 							
@@ -88,9 +88,9 @@ export default class KitchenEnergyChartView extends View {
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#kitchen-energy-chart-view-failure').empty();
+						$('#'+this.FELID).empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#kitchen-energy-chart-view-failure');
+						$(html).appendTo('#'+this.FELID);
 					}
 				}
 			}
@@ -334,26 +334,18 @@ export default class KitchenEnergyChartView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="kitchen-energy-chart-view-failure"></div>'+
+				'<div class="col s12" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
+			
 			console.log('KitchenEnergyChartView => render models READY!!!!');
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="kitchen-energy-chart-view-failure">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-			} else {
-				this.renderChart();
-			}
+			this.handleErrorMessages(this.FELID);
+			this.renderChart();
+			
 		} else {
 			console.log('KitchenEnergyChartView => render models ARE NOT READY!!!!');
 			this.showSpinner('#kitchen-energy-chart');

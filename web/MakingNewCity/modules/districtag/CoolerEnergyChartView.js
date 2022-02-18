@@ -6,7 +6,7 @@ super.functionOnParent([arguments]);
 
 */
 import View from '../common/View.js';
-export default class LightEnergyChartView extends View {
+export default class CoolerEnergyChartView extends View {
 	
 	// One CHART can have ONLY one timer.
 	// Its name is given in constructor.
@@ -20,14 +20,13 @@ export default class LightEnergyChartView extends View {
 		// 
 		this.el = el;
 		
-		// Which models I have to listen? Select which ones to use here:
 		Object.keys(this.controller.models).forEach(key => {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
 		this.chart = undefined;
 		this.rendered = false;
-		this.FELID = 'light-energy-chart-view-failure';
+		this.FELID = 'cooler-energy-chart-view-failure';
 	}
 	
 	show() {
@@ -58,39 +57,35 @@ export default class LightEnergyChartView extends View {
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			if ((options.model==='Light102Model'|| 
-				options.model==='Light103Model'|| 
-				options.model==='Light104Model'|| 
-				options.model==='Light110Model') && options.method==='fetched') {
+			if ((options.model==='Cooler113Model'||
+				options.model==='Cooler112Model'||
+				options.model==='Cooler117Model'||
+				options.model==='CoolerKLPowerModel'||
+				options.model==='CoolerCoolingPowerModel') && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
 						$('#'+this.FELID).empty();
 						
 						if (typeof this.chart !== 'undefined') {
-							
-							console.log('fetched ..... LightEnergyChartView CHART UPDATED!');
-							
-							// 102								Outdoor lighting (JK_101)
-							// 103								Indoor lighting (JK_101)
-							// 104								Common spaces (JK_101)
-							// 110								Indoor lighting (JK_102)
+							console.log('fetched ..... CoolerEnergyChartView CHART UPDATED!');
+							// 113								Refrigerating machines
+							// 112								Refrigerating equipments
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'Outdoor lighting (JK_101)') {
-									s.data = self.models['Light102Model'].energyValues;
-									
-								} else if (s.name === 'Indoor lighting (JK_101)') {
-									s.data = self.models['Light103Model'].energyValues;
-									
-								} else if (s.name === 'Common spaces (JK_101)') {
-									s.data = self.models['Light104Model'].energyValues;
-									
-								} else {
-									s.data = self.models['Light110Model'].energyValues;
+								if (s.name === 'Compressors') {
+									s.data = self.models['Cooler113Model'].energyValues;
+								} else if (s.name === 'Cooler equipments') {
+									s.data = self.models['Cooler112Model'].energyValues;
+								} else if (s.name === 'Heating') {
+									s.data = self.models['Cooler117Model'].energyValues;
+								} else if (s.name === 'District Heating') {
+									s.data = self.models['CoolerKLPowerModel'].energyValues;
+								} else { // Cooling
+									s.data = self.models['CoolerCoolingPowerModel'].energyValues;
 								}
 							});
 							
 						} else {
-							console.log('fetched ..... render LightEnergyChartView()');
+							console.log('fetched ..... render CoolerEnergyChartView()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
@@ -120,7 +115,7 @@ export default class LightEnergyChartView extends View {
 			am4core.options.autoSetClassName = true;
 			
 			// Create chart
-			self.chart = am4core.create("light-energy-chart", am4charts.XYChart);
+			self.chart = am4core.create("cooler-energy-chart", am4charts.XYChart);
 			self.chart.padding(0, 15, 0, 15);
 			self.chart.colors.step = 3;
 			
@@ -175,16 +170,7 @@ export default class LightEnergyChartView extends View {
 			//valueAxis.min = 0;
 			//valueAxis.max = 200;
 			
-			/*
-			NOTE: 
-			Use this order:
-				Indoor lighting (JK_101)	blue
-				Outdoor lighting (JK_101)	red
-				Indoor lighting (JK_102)	orange
-				Common spaces (JK_101)		green
-			*/
-			
-			// 103								Indoor lighting (JK_101)
+			// 113								Refrigerating machines
 			
 			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
 			//series1.tooltipText = "{name}: {valueY.value} kWh";
@@ -197,13 +183,13 @@ export default class LightEnergyChartView extends View {
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			series1.data = self.models['Light103Model'].energyValues;
+			series1.data = self.models['Cooler113Model'].energyValues;
 			series1.dataFields.dateX = "time";
 			series1.dataFields.valueY = "energy";
-			series1.name = "Indoor lighting (JK_101)";
+			series1.name = "Compressors";
 			series1.yAxis = valueAxis;
 			
-			// 102								Outdoor lighting (JK_101)
+			// 112								Refrigerating equipments
 			
 			const series2 = self.chart.series.push(new am4charts.ColumnSeries());
 			series2.defaultState.transitionDuration = 0;
@@ -212,54 +198,80 @@ export default class LightEnergyChartView extends View {
 			series2.tooltipText = "{valueY.value} kWh";
 			series2.tooltip.getFillFromObject = false;
 			series2.tooltip.getStrokeFromObject = true;
-			series2.stroke = am4core.color("#f80");
+			series2.stroke = am4core.color("#ff0");
 			series2.fill = series2.stroke;
 			series2.fillOpacity = 0.5;
 			series2.tooltip.background.fill = am4core.color("#000");
 			series2.tooltip.background.strokeWidth = 1;
 			series2.tooltip.label.fill = series2.stroke;
-			series2.data = self.models['Light102Model'].energyValues;
+			series2.data = self.models['Cooler112Model'].energyValues;
 			series2.dataFields.dateX = "time";
 			series2.dataFields.valueY = "energy";
-			series2.name = "Outdoor lighting (JK_101)";
+			series2.name = "Cooler equipments";
 			series2.yAxis = valueAxis;
 			
-			// 110								Indoor lighting (JK_102)
+			
+			// 117								Heating
+			
 			const series3 = self.chart.series.push(new am4charts.ColumnSeries());
+			series3.defaultState.transitionDuration = 0;
 			//series3.tooltipText = "{name}: {valueY.value} kWh";
+			//series3.tooltipText = localized_string_energy + ": {valueY.value} kWh";
 			series3.tooltipText = "{valueY.value} kWh";
-			series3.stroke = am4core.color("#ff0");
-			series3.fill = series3.stroke;
-			series3.fillOpacity = 0.5;
 			series3.tooltip.getFillFromObject = false;
 			series3.tooltip.getStrokeFromObject = true;
+			series3.stroke = am4core.color("#f00");
+			series3.fill = series3.stroke;
+			series3.fillOpacity = 0.5;
 			series3.tooltip.background.fill = am4core.color("#000");
 			series3.tooltip.background.strokeWidth = 1;
 			series3.tooltip.label.fill = series3.stroke;
-			series3.data = self.models['Light110Model'].energyValues;
+			series3.data = self.models['Cooler117Model'].energyValues;
 			series3.dataFields.dateX = "time";
 			series3.dataFields.valueY = "energy";
-			series3.name = "Indoor lighting (JK_102)";
+			series3.name = "Heating";
 			series3.yAxis = valueAxis;
 			
-			// 104								Common spaces (JK_101)
-			
+			// CoolerKLPowerModel District Heating Network
 			const series4 = self.chart.series.push(new am4charts.ColumnSeries());
-			//series4.tooltipText = "{name}: {valueY.value} kWh";
+			series4.defaultState.transitionDuration = 0;
 			series4.tooltipText = "{valueY.value} kWh";
-			series4.stroke = am4core.color("#0f0");
-			series4.fill = series4.stroke;
-			series4.fillOpacity = 0.5;
+			//series4.tooltipText = "{name}: {valueY.value} kWh";
+			//series4.tooltipText = localized_string_energy + ": {valueY.value} kWh";
 			series4.tooltip.getFillFromObject = false;
 			series4.tooltip.getStrokeFromObject = true;
+			series4.stroke = am4core.color("#f0f");
+			series4.fill = series4.stroke;
+			series4.fillOpacity = 0.5;
 			series4.tooltip.background.fill = am4core.color("#000");
 			series4.tooltip.background.strokeWidth = 1;
 			series4.tooltip.label.fill = series4.stroke;
-			series4.data = self.models['Light104Model'].energyValues;
+			series4.data = self.models['CoolerKLPowerModel'].energyValues;
 			series4.dataFields.dateX = "time";
 			series4.dataFields.valueY = "energy";
-			series4.name = "Common spaces (JK_101)";
+			series4.name = "District Heating";
 			series4.yAxis = valueAxis;
+			
+			// CoolerCoolingPowerModel Cooling
+			const series5 = self.chart.series.push(new am4charts.ColumnSeries());
+			series5.defaultState.transitionDuration = 0;
+			series5.tooltipText = "{valueY.value} kWh";
+			//series5.tooltipText = "{name}: {valueY.value} kWh";
+			//series5.tooltipText = localized_string_energy + ": {valueY.value} kWh";
+			series5.tooltip.getFillFromObject = false;
+			series5.tooltip.getStrokeFromObject = true;
+			series5.stroke = am4core.color("#88f");
+			series5.fill = series5.stroke;
+			series5.fillOpacity = 0.5;
+			series5.tooltip.background.fill = am4core.color("#000");
+			series5.tooltip.background.strokeWidth = 1;
+			series5.tooltip.label.fill = series5.stroke;
+			series5.data = self.models['CoolerCoolingPowerModel'].energyValues;
+			series5.dataFields.dateX = "time";
+			series5.dataFields.valueY = "energy";
+			series5.name = "Cooling";
+			series5.yAxis = valueAxis;
+			
 			
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;
@@ -285,11 +297,14 @@ export default class LightEnergyChartView extends View {
 			//self.chart.scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 			
 			
+			
 			var scrollbarX = new am4charts.XYChartScrollbar();
-			scrollbarX.series.push(series3);
+			scrollbarX.series.push(series1);
 			scrollbarX.marginBottom = 20;
 			scrollbarX.scrollbarChart.xAxes.getIndex(0).minHeight = undefined;
 			self.chart.scrollbarX = scrollbarX;
+			
+			
 			
 			// When you add a series to an XYChartScrollbar by pushing it into its series list, scrollbar makes an exact copy and places it into series list of its child element: scrollbarChart, which is a separate copy of XYChart.
 			//console.log(['self.chart.scrollbarX=',self.chart.scrollbarX]);
@@ -339,7 +354,7 @@ export default class LightEnergyChartView extends View {
 					}
 				}, 500);
 			}
-			console.log('Light Energy RENDER CHART END =====================');
+			console.log('Cooler Energy RENDER CHART END =====================');
 		}); // end am4core.ready()
 	}
 	
@@ -362,7 +377,7 @@ export default class LightEnergyChartView extends View {
 							'<label for="'+refreshId+'-tofield" class="active">To</label>'+
 						'</div>'+
 					'</div>'+
-					'<div id="light-energy-chart" class="medium-chart"></div>'+
+					'<div id="cooler-energy-chart" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -374,13 +389,13 @@ export default class LightEnergyChartView extends View {
 		
 		if (this.areModelsReady()) {
 			
-			console.log('LightEnergyChartView => render models READY!!!!');
+			console.log('CoolerEnergyChartView => render models READY!!!!');
 			this.handleErrorMessages(this.FELID);
 			this.renderChart();
 			
 		} else {
-			console.log('LightEnergyChartView => render models ARE NOT READY!!!!');
-			this.showSpinner('#light-energy-chart');
+			console.log('CoolerEnergyChartView => render models ARE NOT READY!!!!');
+			this.showSpinner('#cooler-energy-chart');
 		}
 	}
 }

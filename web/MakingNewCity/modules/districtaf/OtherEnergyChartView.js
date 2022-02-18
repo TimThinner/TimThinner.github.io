@@ -317,16 +317,11 @@ export default class OtherEnergyChartView extends View {
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
+			
 			console.log('OtherEnergyChartView => render models READY!!!!');
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				
-				const html = '<div class="error-message"><p>'+errorMessages+'</p></div>';
-				$(html).appendTo('#'+this.FELID);
-				
-			} else {
-				this.renderChart();
-			}
+			this.handleErrorMessages(this.FELID);
+			this.renderChart();
+			
 		} else {
 			console.log('OtherEnergyChartView => render models ARE NOT READY!!!!');
 			this.showSpinner('#other-energy-chart');

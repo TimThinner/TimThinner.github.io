@@ -327,19 +327,11 @@ export default class OtherPowerChartView extends View {
 		this.wrapper.handlePollingInterval(refreshId);
 		
 		if (this.areModelsReady()) {
+			
 			console.log('OtherPowerChartView => render models READY!!!!');
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				
-				const html = '<div class="error-message"><p>'+errorMessages+'</p></div>';
-				$(html).appendTo('#'+this.FELID);
-				
-				if (errorMessages.indexOf('Auth failed') >= 0) {
-					this.forceLogout(this.FELID);
-				}
-			} else {
-				this.renderChart();
-			}
+			this.handleErrorMessages(this.FELID);
+			this.renderChart();
+			
 		} else {
 			console.log('OtherPowerChartView => render models ARE NOT READY!!!!');
 			this.showSpinner('#other-power-chart');

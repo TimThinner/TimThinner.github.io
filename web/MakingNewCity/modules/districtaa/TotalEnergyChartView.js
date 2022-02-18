@@ -27,6 +27,7 @@ export default class TotalEnergyChartView extends View {
 		});
 		this.chart = undefined;
 		this.rendered = false;
+		this.FELID = 'total-energy-chart-view-failure';
 	}
 	
 	show() {
@@ -60,7 +61,7 @@ export default class TotalEnergyChartView extends View {
 			if (options.model==='TotalModel' && options.method==='fetched') {
 				if (this.rendered===true) {
 					if (options.status === 200) {
-						$('#total-energy-chart-view-failure').empty();
+						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... TotalEnergyChartView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
@@ -71,9 +72,9 @@ export default class TotalEnergyChartView extends View {
 							this.renderChart();
 						}
 					} else { // Error in fetching.
-						$('#total-energy-chart-view-failure').empty();
+						$('#'+this.FELID).empty();
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#total-energy-chart-view-failure');
+						$(html).appendTo('#'+this.FELID);
 					}
 				}
 			}
@@ -269,26 +270,18 @@ export default class TotalEnergyChartView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12" id="total-energy-chart-view-failure"></div>'+
+				'<div class="col s12" id="'+this.FELID+'"></div>'+
 			'</div>';
 		$(html).appendTo(this.el);
 		
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {
+			
 			console.log('TotalEnergyChartView => render models READY!!!!');
-			const errorMessages = this.modelsErrorMessages();
-			if (errorMessages.length > 0) {
-				const html =
-					'<div class="row">'+
-						'<div class="col s12 center" id="total-energy-chart-view-failure">'+
-							'<div class="error-message"><p>'+errorMessages+'</p></div>'+
-						'</div>'+
-					'</div>';
-				$(html).appendTo(this.el);
-			} else {
-				this.renderChart();
-			}
+			this.handleErrorMessages(this.FELID);
+			this.renderChart();
+			
 		} else {
 			console.log('TotalEnergyChartView => render models ARE NOT READY!!!!');
 			this.showSpinner('#total-energy-chart');

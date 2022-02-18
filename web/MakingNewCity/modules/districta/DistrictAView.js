@@ -423,8 +423,7 @@ meterId
 			const targetAF = svgObject.getElementById('target-a-f');
 			targetAF.addEventListener("click", function(){
 				
-				console.log('DAF');
-				//self.models['MenuModel'].setSelected('DAF');
+				self.models['MenuModel'].setSelected('DAF');
 				
 			}, false);
 			targetAF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

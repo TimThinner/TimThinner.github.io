@@ -267,8 +267,12 @@ DistrictAEController
 	this.master.modelRepo.add('HPAC101Model',model_101);
 	this.master.modelRepo.add('HPAC105Model',model_105);
 	*USES* this.master.modelRepo.get('MenuModel');
-
-
+	
+DistrictAFController
+	this.master.modelRepo.add('Other109Model',model_109);
+	this.master.modelRepo.add('Other111Model',model_111);
+	*USES* this.master.modelRepo.get('MenuModel');
+	
 
 
 

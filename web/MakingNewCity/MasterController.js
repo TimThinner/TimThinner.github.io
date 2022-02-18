@@ -16,6 +16,7 @@ import DistrictABController from './modules/districtab/DistrictABController.js';
 import DistrictACController from './modules/districtac/DistrictACController.js';
 import DistrictADController from './modules/districtad/DistrictADController.js';
 import DistrictAEController from './modules/districtae/DistrictAEController.js';
+import DistrictAFController from './modules/districtaf/DistrictAFController.js';
 
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';
@@ -72,7 +73,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.18.DAE');
+		console.log('MasterController init v2022.02.18.DAF');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -132,6 +133,8 @@ class MasterController {
 		this.controllers['DAD'].init();
 		this.controllers['DAE'] = new DistrictAEController({name:'DAE', master:this, el:'#content', visible:false});
 		this.controllers['DAE'].init();
+		this.controllers['DAF'] = new DistrictAFController({name:'DAF', master:this, el:'#content', visible:false});
+		this.controllers['DAF'].init();
 		
 		// Admin stuff start ------>
 		// New implementation:

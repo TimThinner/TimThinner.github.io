@@ -628,12 +628,12 @@ export default class DistrictView extends View {
 			
 		} else if (type === 'hex-e') {
 			poly.addEventListener("click", function(){
-				console.log('HEY, HEX-E CLICKED!');
+				self.models['MenuModel'].setSelected('DE');
 			}, false);
 			
 		} else if (type === 'hex-f') {
 			poly.addEventListener("click", function(){
-				console.log('HEY, HEX-F CLICKED!');
+				self.models['MenuModel'].setSelected('DF');
 			}, false);
 		}
 		

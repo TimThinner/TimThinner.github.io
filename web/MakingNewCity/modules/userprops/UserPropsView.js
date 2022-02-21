@@ -370,35 +370,27 @@ export default class UserPropsView extends View {
 			
 			const localized_string_change_password_btn_txt = LM['translation'][sel]['USER_PROPS_CHANGE_PASSWORD_BTN_TXT'];
 			
-			let buttons_html = '';
+			const localized_string_admin_description = 'Admin can view and edit RegCodes, view Users and associated ReadKeys.';
+			
+			let admin_buttons_html = '';
 			if (this.userModel.is_superuser) {
-				buttons_html = 
+				admin_buttons_html = 
 					'<div class="row">'+
-						'<div class="col s12 center">'+
-							'<p>Admin can view and edit RegCodes, view Users and associated ReadKeys.</p>'+
-						'</div>'+
-						'<div class="col s4 center">'+
-							'<button class="btn waves-effect waves-light" id="readkeys">ReadKeys</button>'+
-						'</div>'+
-						'<div class="col s4 center">'+
-							'<button class="btn waves-effect waves-light" id="regcodes">RegCodes</button>'+
-						'</div>'+
-						'<div class="col s4 center">'+
-							'<button class="btn waves-effect waves-light" id="users">Users</button>'+
-						'</div>'+
-						'<div class="col s12 center" style="margin-top:32px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
-						'</div>'+
-					'</div>';
-			} else {
-				buttons_html = 
-					'<div class="row">'+
-						'<div class="col s12 center" style="margin-top:32px;">'+
-							'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-								'<i class="material-icons left">arrow_back</i>'+
-							'</button>'+
+						'<div class="col s12" style="margin-top:32px;">'+
+							'<div class="col s12" style="padding:16px 0 32px 0; border:1px solid #ccc; background-color:#fff">'+
+								'<div class="col s12 center">'+
+									'<p>'+localized_string_admin_description+'</p>'+
+								'</div>'+
+								'<div class="col s4 center">'+
+									'<button class="btn waves-effect waves-light" id="readkeys">ReadKeys</button>'+
+								'</div>'+
+								'<div class="col s4 center">'+
+									'<button class="btn waves-effect waves-light" id="regcodes">RegCodes</button>'+
+								'</div>'+
+								'<div class="col s4 center">'+
+									'<button class="btn waves-effect waves-light" id="users">Users</button>'+
+								'</div>'+
+							'</div>'+
 						'</div>'+
 					'</div>';
 			}
@@ -416,69 +408,70 @@ export default class UserPropsView extends View {
 					'</div>'+
 				'</div>'+
 				
-				
-				'<div class="row"><div class="col s12 center" style="border:1px solid #ccc;padding:16px;">'+
-				
 				'<div class="row">'+
 					'<div class="col s12 center">'+
-						'<h5>'+localized_string_energy_prices_title+'</h5>'+
-						'<p>'+localized_string_energy_prices_description+'</p>'+
-					'</div>'+
-				'</div>'+
-				'<div class="row">'+
-					'<div class="col s12 center" id="energy-monthly-price-wrapper">'+
-						'<div class="col s12 center">'+
-							'<p class="edit-item-field">'+
-							'<a href="javascript:void(0);" id="energy-monthly-price-edit">'+
-							localized_string_energy_prices_monthly +
-							'<span id="energy-monthly-price-value"></span>,'+
-							'<span id="energy-monthly-price-fractions-value"></span>'+
-							'<span class="edit-item-field-postfix"> '+localized_string_energy_prices_monthly_unit+'</span></a></p>'+
-						'</div>'+
-						'<div class="col s12 center" id="energy-monthly-price-edit-placeholder">'+
-						'</div>'+
-					'</div>'+
-					
-					'<div class="col s12 center" id="energy-basic-price-wrapper">'+
-						'<div class="col s12 center">'+
-							'<p class="edit-item-field">'+
-							'<a href="javascript:void(0);" id="energy-basic-price-edit">'+
-							localized_string_energy_prices_energy +
-							'<span id="energy-basic-price-value"></span>,'+
-							'<span id="energy-basic-price-fractions-value"></span>'+
-							'<span class="edit-item-field-postfix"> '+localized_string_energy_prices_energy_unit+'</span></a></p>'+
-						'</div>'+
-						'<div class="col s12 center" id="energy-basic-price-edit-placeholder">'+
-						'</div>'+
-					'</div>'+
-					
-					'<div class="col s12 center" id="energy-transfer-price-wrapper">'+
-						'<div class="col s12 center">'+
-							'<p class="edit-item-field">'+
-							'<a href="javascript:void(0);" id="energy-transfer-price-edit">'+
-							localized_string_energy_prices_transfer +
-							'<span id="energy-transfer-price-value"></span>,'+
-							'<span id="energy-transfer-price-fractions-value"></span>'+
-							'<span class="edit-item-field-postfix"> '+localized_string_energy_prices_transfer_unit+'</span></a></p>'+
-						'</div>'+
-						'<div class="col s12 center" id="energy-transfer-price-edit-placeholder">'+
+						'<div class="col s12" style="padding:16px 0 32px 0; border:1px solid #ccc; background-color:#fff">'+
+							'<div class="col s12 center">'+
+								'<h5>'+localized_string_energy_prices_title+'</h5>'+
+								'<p>'+localized_string_energy_prices_description+'</p>'+
+							'</div>'+
+							'<div class="col s12 center" id="energy-monthly-price-wrapper">'+
+								'<div class="col s12 center">'+
+									'<p class="edit-item-field">'+
+									'<a href="javascript:void(0);" id="energy-monthly-price-edit">'+
+									localized_string_energy_prices_monthly +
+									'<span id="energy-monthly-price-value"></span>,'+
+									'<span id="energy-monthly-price-fractions-value"></span>'+
+									'<span class="edit-item-field-postfix"> '+localized_string_energy_prices_monthly_unit+'</span></a></p>'+
+								'</div>'+
+								'<div class="col s12 center" id="energy-monthly-price-edit-placeholder">'+
+								'</div>'+
+							'</div>'+
+							'<div class="col s12 center" id="energy-basic-price-wrapper">'+
+								'<div class="col s12 center">'+
+									'<p class="edit-item-field">'+
+									'<a href="javascript:void(0);" id="energy-basic-price-edit">'+
+									localized_string_energy_prices_energy +
+									'<span id="energy-basic-price-value"></span>,'+
+									'<span id="energy-basic-price-fractions-value"></span>'+
+									'<span class="edit-item-field-postfix"> '+localized_string_energy_prices_energy_unit+'</span></a></p>'+
+								'</div>'+
+								'<div class="col s12 center" id="energy-basic-price-edit-placeholder">'+
+								'</div>'+
+							'</div>'+
+							'<div class="col s12 center" id="energy-transfer-price-wrapper">'+
+								'<div class="col s12 center">'+
+									'<p class="edit-item-field">'+
+									'<a href="javascript:void(0);" id="energy-transfer-price-edit">'+
+									localized_string_energy_prices_transfer +
+									'<span id="energy-transfer-price-value"></span>,'+
+									'<span id="energy-transfer-price-fractions-value"></span>'+
+									'<span class="edit-item-field-postfix"> '+localized_string_energy_prices_transfer_unit+'</span></a></p>'+
+								'</div>'+
+								'<div class="col s12 center" id="energy-transfer-price-edit-placeholder">'+
+								'</div>'+
+							'</div>'+
 						'</div>'+
 					'</div>'+
 				'</div>'+
 				
-				'</div></div>'+
-				
-				'<div class="row"><div class="col s12 center" style="border:1px solid #ccc;padding:16px;">'+
 				'<div class="row">'+
 					'<div class="col s12 center" id="change-password-wrapper">'+
 						'<div class="col s12 center">'+
 							'<p><a href="javascript:void(0);" id="changepsw">'+localized_string_change_password_btn_txt+'</a></p>'+
 						'</div>'+
 					'</div>'+
-				'</div>' +
-				'</div></div>'+
+				'</div>'+
 				
-				buttons_html +
+				'<div class="row">'+
+					'<div class="col s12 center" style="margin-top:32px;">'+
+						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+							'<i class="material-icons left">arrow_back</i>'+
+						'</button>'+
+					'</div>'+
+				'</div>'+
+				
+				admin_buttons_html +
 				
 				'<div class="row">'+
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+

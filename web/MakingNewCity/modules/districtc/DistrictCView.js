@@ -23,7 +23,6 @@ export default class DistrictCView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
 		this.FELID = 'district-c-view-failure';
 	}
@@ -348,7 +347,7 @@ meterId
 			const back = svgObject.getElementById('back');
 			back.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('D');
+				self.models['MenuModel'].setSelected('district');
 				
 			}, false);
 			
@@ -357,7 +356,7 @@ meterId
 			targetA.addEventListener("click", function(){
 				
 				console.log('Target C A clicked!');
-				//self.menuModel.setSelected('DBA');
+				//self.models['MenuModel'].setSelected('DBA');
 				
 			}, false);
 			targetA.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -367,7 +366,7 @@ meterId
 			targetB.addEventListener("click", function(){
 				
 				console.log('Target C B clicked!');
-				//self.menuModel.setSelected('DBB');
+				//self.models['MenuModel'].setSelected('DBB');
 				
 			}, false);
 			targetB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -378,7 +377,7 @@ meterId
 			targetD.addEventListener("click", function(){
 				
 				console.log('Target C D clicked!');
-				//self.menuModel.setSelected('DBD');
+				//self.models['MenuModel'].setSelected('DBD');
 				
 			}, false);
 			targetD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -388,7 +387,7 @@ meterId
 			targetE.addEventListener("click", function(){
 				
 				console.log('Target C E clicked!');
-				//self.menuModel.setSelected('DBE');
+				//self.models['MenuModel'].setSelected('DBE');
 				
 			}, false);
 			targetE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -398,7 +397,7 @@ meterId
 			targetF.addEventListener("click", function(){
 				
 				console.log('Target C F clicked!');
-				//self.menuModel.setSelected('DBF');
+				//self.models['MenuModel'].setSelected('DBF');
 				
 			}, false);
 			targetF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -408,7 +407,7 @@ meterId
 			targetG.addEventListener("click", function(){
 				
 				console.log('Target C G clicked!');
-				//self.menuModel.setSelected('DBG');
+				//self.models['MenuModel'].setSelected('DBG');
 				
 			}, false);
 			targetG.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -419,7 +418,7 @@ meterId
 			targetI.addEventListener("click", function(){
 				
 				console.log('Target C I clicked!');
-				//self.menuModel.setSelected('DBI');
+				//self.models['MenuModel'].setSelected('DBI');
 				
 			}, false);
 			targetI.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -429,7 +428,7 @@ meterId
 			targetJ.addEventListener("click", function(){
 				
 				console.log('Target C J clicked!');
-				//self.menuModel.setSelected('DBJ');
+				//self.models['MenuModel'].setSelected('DBJ');
 				
 			}, false);
 			targetJ.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -439,7 +438,7 @@ meterId
 			targetK.addEventListener("click", function(){
 				
 				console.log('Target C K clicked!');
-				//self.menuModel.setSelected('DBK');
+				//self.models['MenuModel'].setSelected('DBK');
 				
 			}, false);
 			targetK.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

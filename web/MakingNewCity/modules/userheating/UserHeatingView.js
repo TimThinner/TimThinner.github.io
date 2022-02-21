@@ -4,6 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
 
 export default class UserHeatingView extends View {
 	
@@ -19,22 +20,28 @@ export default class UserHeatingView extends View {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'user-heating-view-failure';
 	}
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
-		super.hide();
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		super.remove();
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -159,7 +166,7 @@ export default class UserHeatingView extends View {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
 					if (options.status === 200) {
-						
+						console.log('FeedbackModels fetched OK.');
 					}
 				} else {
 					this.render();
@@ -177,6 +184,16 @@ export default class UserHeatingView extends View {
 					$('#submit-feedback').removeClass('teal lighten-1');
 					$('#submit-feedback').addClass('disabled');
 				}
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Models are 'MenuModel', 'UserHeatingMonthModel', 'FeedbackModel'.
+				Object.keys(this.models).forEach(key => {
+					console.log(['FETCH MODEL key=',key]);
+					const UM = this.controller.master.modelRepo.get('UserModel');
+					if (UM) {
+						this.models[key].fetch(UM.token, UM.readkey);
+					}
+				});
 			}
 		}
 	}

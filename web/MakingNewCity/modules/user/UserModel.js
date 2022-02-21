@@ -335,7 +335,7 @@ export default class UserModel extends Model {
 	changePassword(data) {
 		const self = this;
 		const myHeaders = new Headers();
-		const authorizationToken = 'Bearer '+this.authToken;
+		const authorizationToken = 'Bearer '+this.token;
 		myHeaders.append("Authorization", authorizationToken);
 		myHeaders.append("Content-Type", "application/json");
 		

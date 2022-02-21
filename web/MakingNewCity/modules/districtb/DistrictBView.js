@@ -12,10 +12,8 @@ export default class DistrictBView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
-			
 		});
 		
 		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
@@ -24,6 +22,7 @@ export default class DistrictBView extends View {
 		// Start listening notify -messages from ResizeEventObserver:
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'district-b-view-failure';
 	}

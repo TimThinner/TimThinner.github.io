@@ -25,29 +25,11 @@ export default class DistrictCController extends Controller {
 	}
 	
 	init() {
-		/*
-		const m1 = new StatusModel({name:'StatusModel',src:'data/arina/iss/status'});
-		m1.subscribe(this);
-		this.master.modelRepo.add('StatusModel',m1);
-		this.models['StatusModel'] = m1;
 		
-		const m2 = new StatusJetitek983Model({name:'StatusJetitek983Model',src:'data/arina/jetitek/feeds.json?pointId=983'});
-		m2.subscribe(this);
-		this.master.modelRepo.add('StatusJetitek983Model',m2);
-		this.models['StatusJetitek983Model'] = m2;
-		
-		const m3 = new StatusJetitek1012Model({name:'StatusJetitek1012Model',src:'data/arina/jetitek/feeds.json?pointId=1012'});
-		m3.subscribe(this);
-		this.master.modelRepo.add('StatusJetitek1012Model',m3);
-		this.models['StatusJetitek1012Model'] = m3;
-		*/
-		
-		//this.timers['DistrictCView'] = {timer: undefined, interval: 30000, models:['StatusModel','StatusJetitek983Model','StatusJetitek1012Model']};
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
 		this.view = new DistrictCView(this);
-		this.show();
 	}
 }

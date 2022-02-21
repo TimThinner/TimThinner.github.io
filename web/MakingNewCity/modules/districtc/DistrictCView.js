@@ -4,17 +4,21 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
+
 export default class DistrictCView extends View {
 	
 	constructor(controller) {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			/*if (key === 'StatusModel'||key==='StatusJetitek983Model'||key==='StatusJetitek1012Model') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}*/
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
 		});
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
+		this.PTO.subscribe(this);
+		
 		// Start listening notify -messages from ResizeEventObserver:
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
@@ -26,14 +30,18 @@ export default class DistrictCView extends View {
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -287,67 +295,18 @@ meterId
 	notify(options) {
 		if (this.controller.visible) {
 			
-			
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log("DistrictAView ResizeEventObserver resize!!!!!!!!!!!!!!");
+				
+				console.log("DistrictCView ResizeEventObserver resize!");
 				this.render();
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Models are 'MenuModel'...
+				Object.keys(this.models).forEach(key => {
+					//console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch();
+				});
 			}
-			
-			/*
-			if (options.model==='StatusModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					//console.log('DistrictAView => StatusModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateLatestValues();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
-				}
-			} else if ((options.model==='StatusJetitek983Model'||options.model==='StatusJetitek1012Model') && options.method==='fetched') {
-				if (options.status === 200) {
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateLatestJetitekValue(options.model);
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
-				}
-			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log("DistrictAView ResizeEventObserver resize!!!!!!!!!!!!!!");
-				this.render();
-			}
-			*/
 		}
 	}
 	

@@ -70,6 +70,5 @@ export default class DistrictBController extends Controller {
 		this.models['MenuModel'].subscribe(this);
 		
 		this.view = new DistrictBView(this);
-		//this.show();
 	}
 }

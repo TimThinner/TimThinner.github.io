@@ -297,6 +297,10 @@ DistrictBController
 	this.master.modelRepo.add('SivakkaStatusModel',m);
 	*USES* this.master.modelRepo.get('MenuModel');
 
+DistrictCController
+
+
+
 
 
 

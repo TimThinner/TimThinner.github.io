@@ -211,7 +211,7 @@ export default class DistrictView extends View {
 		const textElement = document.querySelector('#logo-title');
 		const containerElement = document.querySelector('#logo-svg');
 		const bboxGroup = textElement.getBBox();
-		console.log(['HIPHEI THURSDAY! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
+		//console.log(['HIPHEI! x=',bboxGroup.x,' y=',bboxGroup.y,' width=',bboxGroup.width,' height=',bboxGroup.height]);
 		/*
 		const rect_foo = document.createElementNS(svgNS, 'rect');
 		rect_foo.setAttribute('x',bboxGroup.x);
@@ -618,7 +618,7 @@ export default class DistrictView extends View {
 			
 		} else if (type === 'hex-c') {
 			poly.addEventListener("click", function(){
-				console.log('HEY, HEX-C CLICKED!');
+				self.models['MenuModel'].setSelected('DC');
 			}, false);
 			
 		} else if (type === 'hex-d') {

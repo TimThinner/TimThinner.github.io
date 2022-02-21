@@ -107,6 +107,7 @@ export default class UserPropsView extends View {
 					if (options.type === 'monthly') {
 						$('#energy-basic-price-wrapper').show();
 						$('#energy-transfer-price-wrapper').show();
+						$('#change-password-wrapper').show();
 						
 						// Fill UI elements with correct values.
 						$('#energy-monthly-price-value').empty().append(this.price.monthly.toString());
@@ -119,6 +120,7 @@ export default class UserPropsView extends View {
 						
 						$('#energy-monthly-price-wrapper').show();
 						$('#energy-transfer-price-wrapper').show();
+						$('#change-password-wrapper').show();
 						
 						// Fill UI elements with correct values.
 						$('#energy-basic-price-value').empty().append(this.price.energy.toString());
@@ -130,6 +132,7 @@ export default class UserPropsView extends View {
 					} else { // 'transfer'
 						$('#energy-monthly-price-wrapper').show();
 						$('#energy-basic-price-wrapper').show();
+						$('#change-password-wrapper').show();
 						
 						// Fill UI elements with correct values.
 						$('#energy-transfer-price-value').empty().append(this.price.transfer.toString());
@@ -328,6 +331,7 @@ export default class UserPropsView extends View {
 				$('#energy-monthly-price-wrapper').show();
 				$('#energy-basic-price-wrapper').show();
 			}
+			$('#change-password-wrapper').show();
 		});
 		
 		$('#update-price').on('click',function() {
@@ -465,14 +469,16 @@ export default class UserPropsView extends View {
 				'</div></div>'+
 				
 				'<div class="row"><div class="col s12 center" style="border:1px solid #ccc;padding:16px;">'+
-					'<div class="row">'+
-						'<div class="col s12 center" id="change-password-wrapper">'+
-							'<div class="col s12 center">'+
-								'<p><a href="javascript:void(0);" id="changepsw">'+localized_string_change_password_btn_txt+'</a></p>'+
-							'</div>'+
+				'<div class="row">'+
+					'<div class="col s12 center" id="change-password-wrapper">'+
+						'<div class="col s12 center">'+
+							'<p><a href="javascript:void(0);" id="changepsw">'+localized_string_change_password_btn_txt+'</a></p>'+
 						'</div>'+
-					'</div>' + buttons_html +
+					'</div>'+
+				'</div>' +
 				'</div></div>'+
+				
+				buttons_html +
 				
 				'<div class="row">'+
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
@@ -506,18 +512,21 @@ export default class UserPropsView extends View {
 			$('#energy-monthly-price-edit').on('click',function() {
 				$('#energy-basic-price-wrapper').hide();
 				$('#energy-transfer-price-wrapper').hide();
+				$('#change-password-wrapper').hide();
 				self.showEdit('monthly');
 			});
 			
 			$('#energy-basic-price-edit').on('click',function() {
 				$('#energy-monthly-price-wrapper').hide();
 				$('#energy-transfer-price-wrapper').hide();
+				$('#change-password-wrapper').hide();
 				self.showEdit('basic');
 			});
 			
 			$('#energy-transfer-price-edit').on('click',function() {
 				$('#energy-monthly-price-wrapper').hide();
 				$('#energy-basic-price-wrapper').hide();
+				$('#change-password-wrapper').hide();
 				self.showEdit('transfer');
 			});
 			

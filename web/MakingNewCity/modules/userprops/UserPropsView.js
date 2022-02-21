@@ -410,7 +410,7 @@ export default class UserPropsView extends View {
 				
 				'<div class="row">'+
 					'<div class="col s12 center">'+
-						'<div class="col s12" style="padding:16px 0 32px 0; border:1px solid #ccc; background-color:#fff">'+
+						'<div class="col s12" style="padding:16px 0 32px 0; border:1px solid #ccc; color:#fff; background-color:#000">'+
 							'<div class="col s12 center">'+
 								'<h5>'+localized_string_energy_prices_title+'</h5>'+
 								'<p>'+localized_string_energy_prices_description+'</p>'+

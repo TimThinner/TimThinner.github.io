@@ -10,10 +10,8 @@ export default class DistrictFView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			/*if (key === 'StatusModel'||key==='StatusJetitek983Model'||key==='StatusJetitek1012Model') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}*/
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
 		});
 		// Start listening notify -messages from ResizeEventObserver:
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
@@ -150,68 +148,17 @@ export default class DistrictFView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
-			
-			
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				//console.log("DistrictEView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Models are 'MenuModel'...
+				Object.keys(this.models).forEach(key => {
+					//console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch();
+				});
 			}
-			
-			/*
-			if (options.model==='StatusModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					//console.log('DistrictAView => StatusModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateLatestValues();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
-				}
-			} else if ((options.model==='StatusJetitek983Model'||options.model==='StatusJetitek1012Model') && options.method==='fetched') {
-				if (options.status === 200) {
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateLatestJetitekValue(options.model);
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
-				}
-			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log("DistrictAView ResizeEventObserver resize!!!!!!!!!!!!!!");
-				this.render();
-			}
-			*/
 		}
 	}
 	
@@ -253,7 +200,7 @@ export default class DistrictFView extends View {
 			const back = svgObject.getElementById('back');
 			back.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('D');
+				self.models['MenuModel'].setSelected('district');
 				
 			}, false);
 			
@@ -262,7 +209,7 @@ export default class DistrictFView extends View {
 			targetA.addEventListener("click", function(){
 				
 				console.log('Target F A clicked!');
-				//self.menuModel.setSelected('DBA');
+				//self.models['MenuModel'].setSelected('DBA');
 				
 			}, false);
 			targetA.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -272,7 +219,7 @@ export default class DistrictFView extends View {
 			targetD.addEventListener("click", function(){
 				
 				console.log('Target F D clicked!');
-				//self.menuModel.setSelected('DBD');
+				//self.models['MenuModel'].setSelected('DBD');
 				
 			}, false);
 			targetD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -282,7 +229,7 @@ export default class DistrictFView extends View {
 			targetE.addEventListener("click", function(){
 				
 				console.log('Target F E clicked!');
-				//self.menuModel.setSelected('DBE');
+				//self.models['MenuModel'].setSelected('DBE');
 				
 			}, false);
 			targetE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -292,7 +239,7 @@ export default class DistrictFView extends View {
 			targetF.addEventListener("click", function(){
 				
 				console.log('Target F F clicked!');
-				//self.menuModel.setSelected('DBF');
+				//self.models['MenuModel'].setSelected('DBF');
 				
 			}, false);
 			targetF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -302,7 +249,7 @@ export default class DistrictFView extends View {
 			targetI.addEventListener("click", function(){
 				
 				console.log('Target F I clicked!');
-				//self.menuModel.setSelected('DBI');
+				//self.models['MenuModel'].setSelected('DBI');
 				
 			}, false);
 			targetI.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -312,7 +259,7 @@ export default class DistrictFView extends View {
 			targetJ.addEventListener("click", function(){
 				
 				console.log('Target F J clicked!');
-				//self.menuModel.setSelected('DBJ');
+				//self.models['MenuModel'].setSelected('DBJ');
 				
 			}, false);
 			targetJ.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -322,7 +269,7 @@ export default class DistrictFView extends View {
 			targetK.addEventListener("click", function(){
 				
 				console.log('Target F K clicked!');
-				//self.menuModel.setSelected('DBK');
+				//self.models['MenuModel'].setSelected('DBK');
 				
 			}, false);
 			targetK.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

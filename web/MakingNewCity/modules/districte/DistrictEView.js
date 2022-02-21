@@ -4,36 +4,43 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
+
 export default class DistrictEView extends View {
 	
 	constructor(controller) {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			/*if (key === 'StatusModel'||key==='StatusJetitek983Model'||key==='StatusJetitek1012Model') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}*/
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
 		});
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
+		this.PTO.subscribe(this);
+		
 		// Start listening notify -messages from ResizeEventObserver:
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
 		this.rendered = false;
 		this.FELID = 'district-e-view-failure';
 	}
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -287,67 +294,17 @@ meterId
 	notify(options) {
 		if (this.controller.visible) {
 			
-			
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				console.log("DistrictEView ResizeEventObserver resize!!!!!!!!!!!!!!");
 				this.render();
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Models are 'MenuModel'...
+				Object.keys(this.models).forEach(key => {
+					//console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch();
+				});
 			}
-			
-			/*
-			if (options.model==='StatusModel' && options.method==='fetched') {
-				if (options.status === 200) {
-					//console.log('DistrictAView => StatusModel fetched!');
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateLatestValues();
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
-				}
-			} else if ((options.model==='StatusJetitek983Model'||options.model==='StatusJetitek1012Model') && options.method==='fetched') {
-				if (options.status === 200) {
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						this.updateLatestJetitekValue(options.model);
-					} else {
-						this.render();
-					}
-				} else { // Error in fetching.
-					if (this.rendered) {
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							this.forceLogout(this.FELID);
-							
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					} else {
-						this.render();
-					}
-				}
-			} else if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				console.log("DistrictAView ResizeEventObserver resize!!!!!!!!!!!!!!");
-				this.render();
-			}
-			*/
 		}
 	}
 	
@@ -389,7 +346,7 @@ meterId
 			const back = svgObject.getElementById('back');
 			back.addEventListener("click", function(){
 				
-				self.menuModel.setSelected('D');
+				self.models['MenuModel'].setSelected('district');
 				
 			}, false);
 			
@@ -398,7 +355,7 @@ meterId
 			targetA.addEventListener("click", function(){
 				
 				console.log('Target E A clicked!');
-				//self.menuModel.setSelected('DBA');
+				//self.models['MenuModel'].setSelected('DBA');
 				
 			}, false);
 			targetA.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -408,7 +365,7 @@ meterId
 			targetB.addEventListener("click", function(){
 				
 				console.log('Target E B clicked!');
-				//self.menuModel.setSelected('DBB');
+				//self.models['MenuModel'].setSelected('DBB');
 				
 			}, false);
 			targetB.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -419,7 +376,7 @@ meterId
 			targetD.addEventListener("click", function(){
 				
 				console.log('Target E D clicked!');
-				//self.menuModel.setSelected('DBD');
+				//self.models['MenuModel'].setSelected('DBD');
 				
 			}, false);
 			targetD.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -429,7 +386,7 @@ meterId
 			targetE.addEventListener("click", function(){
 				
 				console.log('Target E E clicked!');
-				//self.menuModel.setSelected('DBE');
+				//self.models['MenuModel'].setSelected('DBE');
 				
 			}, false);
 			targetE.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -439,7 +396,7 @@ meterId
 			targetF.addEventListener("click", function(){
 				
 				console.log('Target E F clicked!');
-				//self.menuModel.setSelected('DBF');
+				//self.models['MenuModel'].setSelected('DBF');
 				
 			}, false);
 			targetF.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -449,7 +406,7 @@ meterId
 			targetG.addEventListener("click", function(){
 				
 				console.log('Target E G clicked!');
-				//self.menuModel.setSelected('DBG');
+				//self.models['MenuModel'].setSelected('DBG');
 				
 			}, false);
 			targetG.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -460,7 +417,7 @@ meterId
 			targetI.addEventListener("click", function(){
 				
 				console.log('Target E I clicked!');
-				//self.menuModel.setSelected('DBI');
+				//self.models['MenuModel'].setSelected('DBI');
 				
 			}, false);
 			targetI.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -470,7 +427,7 @@ meterId
 			targetJ.addEventListener("click", function(){
 				
 				console.log('Target E J clicked!');
-				//self.menuModel.setSelected('DBJ');
+				//self.models['MenuModel'].setSelected('DBJ');
 				
 			}, false);
 			targetJ.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);
@@ -480,7 +437,7 @@ meterId
 			targetK.addEventListener("click", function(){
 				
 				console.log('Target E K clicked!');
-				//self.menuModel.setSelected('DBK');
+				//self.models['MenuModel'].setSelected('DBK');
 				
 			}, false);
 			targetK.addEventListener("mouseover", function(event){ self.setHoverEffect(event,'scale(1.1)'); }, false);

@@ -364,6 +364,8 @@ export default class UserPropsView extends View {
 			const localized_string_energy_prices_energy_unit = LM['translation'][sel]['USER_ENERGY_PRICES_ENERGY_UNIT'];
 			const localized_string_energy_prices_transfer_unit = LM['translation'][sel]['USER_ENERGY_PRICES_TRANSFER_UNIT'];
 			
+			const localized_string_change_password_btn_txt = LM['translation'][sel]['USER_PROPS_CHANGE_PASSWORD_BTN_TXT'];
+			
 			let buttons_html = '';
 			if (this.userModel.is_superuser) {
 				buttons_html = 
@@ -454,6 +456,11 @@ export default class UserPropsView extends View {
 						'<div class="col s12 center" id="energy-transfer-price-edit-placeholder">'+
 						'</div>'+
 					'</div>'+
+					'<div class="col s12 center">'+
+						'<div class="col s12 center">'+
+							'<p><a href="javascript:void(0);" id="changepsw">'+localized_string_change_password_btn_txt+'</a></p>'+
+						'</div>'+
+					'</div>'+
 				'</div>' + buttons_html +
 				'<div class="row">'+
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
@@ -509,15 +516,19 @@ export default class UserPropsView extends View {
 			
 			if (this.userModel.is_superuser) {
 				$('#regcodes').on('click',function() {
-					self.controller.master.modelRepo.get('MenuModel').setSelected('REGCODES');
+					self.models['MenuModel').setSelected('REGCODES');
 				});
 				$('#users').on('click',function() {
-					self.controller.master.modelRepo.get('MenuModel').setSelected('USERS');
+					self.models['MenuModel').setSelected('USERS');
 				});
 				$('#readkeys').on('click',function() {
-					self.controller.master.modelRepo.get('MenuModel').setSelected('READKEYS');
+					self.models['MenuModel').setSelected('READKEYS');
 				});
 			}
+			
+			$('#changepsw').on('click',function() {
+				self.models['MenuModel'].setSelected('userchangepsw');
+			});
 			
 			$('#back').on('click',function() {
 				self.controller.master.modelRepo.get('MenuModel').setSelected('userpage');

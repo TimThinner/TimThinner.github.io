@@ -411,6 +411,10 @@ export default class UserPropsView extends View {
 						'<p>'+localized_string_description+'</p>'+
 					'</div>'+
 				'</div>'+
+				
+				
+				'<div class="row"><div class="col s12 center" style="border:1px solid #ccc;padding:16px;">'+
+				
 				'<div class="row">'+
 					'<div class="col s12 center">'+
 						'<h5>'+localized_string_energy_prices_title+'</h5>'+
@@ -456,12 +460,20 @@ export default class UserPropsView extends View {
 						'<div class="col s12 center" id="energy-transfer-price-edit-placeholder">'+
 						'</div>'+
 					'</div>'+
-					'<div class="col s12 center">'+
-						'<div class="col s12 center">'+
-							'<p><a href="javascript:void(0);" id="changepsw">'+localized_string_change_password_btn_txt+'</a></p>'+
+				'</div>'+
+				
+				'</div></div>'+
+				
+				'<div class="row"><div class="col s12 center" style="border:1px solid #ccc;padding:16px;">'+
+					'<div class="row">'+
+						'<div class="col s12 center" id="change-password-wrapper">'+
+							'<div class="col s12 center">'+
+								'<p><a href="javascript:void(0);" id="changepsw">'+localized_string_change_password_btn_txt+'</a></p>'+
+							'</div>'+
 						'</div>'+
-					'</div>'+
-				'</div>' + buttons_html +
+					'</div>' + buttons_html +
+				'</div></div>'+
+				
 				'<div class="row">'+
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 				'</div>';

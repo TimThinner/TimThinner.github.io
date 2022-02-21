@@ -516,13 +516,13 @@ export default class UserPropsView extends View {
 			
 			if (this.userModel.is_superuser) {
 				$('#regcodes').on('click',function() {
-					self.models['MenuModel').setSelected('REGCODES');
+					self.models['MenuModel'].setSelected('REGCODES');
 				});
 				$('#users').on('click',function() {
-					self.models['MenuModel').setSelected('USERS');
+					self.models['MenuModel'].setSelected('USERS');
 				});
 				$('#readkeys').on('click',function() {
-					self.models['MenuModel').setSelected('READKEYS');
+					self.models['MenuModel'].setSelected('READKEYS');
 				});
 			}
 			
@@ -531,7 +531,7 @@ export default class UserPropsView extends View {
 			});
 			
 			$('#back').on('click',function() {
-				self.controller.master.modelRepo.get('MenuModel').setSelected('userpage');
+				self.models['MenuModel'].setSelected('userpage');
 			});
 			
 			this.handleErrorMessages(this.FELID);

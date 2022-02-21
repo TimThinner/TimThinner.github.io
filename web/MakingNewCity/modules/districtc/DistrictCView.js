@@ -457,30 +457,26 @@ meterId
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
 			
-			/*
-			const localized_grid_title = LM['translation'][sel]['DBA_TITLE'];
-			const localized_solar_title = LM['translation'][sel]['DBB_TITLE'];
-			const localized_apartments_title = LM['translation'][sel]['DBD_TITLE'];
-			const localized_other_title_1 = LM['translation'][sel]['DBE_TITLE_1'];
-			const localized_other_title_2 = LM['translation'][sel]['DBE_TITLE_2'];
-			const localized_other_title_3 = LM['translation'][sel]['DBE_TITLE_3'];
-			const localized_heating_system_title_1 = LM['translation'][sel]['DBF_TITLE_1'];
-			const localized_heating_system_title_2 = LM['translation'][sel]['DBF_TITLE_2'];
-			const localized_exthaus_air_reco_title_1 = LM['translation'][sel]['DBG_TITLE_1'];
-			const localized_exthaus_air_reco_title_2 = LM['translation'][sel]['DBG_TITLE_2'];
-			const localized_wastewater_reco_title_1 = LM['translation'][sel]['DBH_TITLE_1'];
-			const localized_wastewater_reco_title_2 = LM['translation'][sel]['DBH_TITLE_2'];
-			const localized_dhn_title_1 = LM['translation'][sel]['DBI_TITLE_1'];
-			const localized_dhn_title_2 = LM['translation'][sel]['DBI_TITLE_2'];
-			const localized_dhn_title_3 = LM['translation'][sel]['DBI_TITLE_3'];
-			const localized_heating_dev_title_1 = LM['translation'][sel]['DBJ_TITLE_1'];
-			const localized_heating_dev_title_2 = LM['translation'][sel]['DBJ_TITLE_2'];
-			const localized_hot_water_title_1 = LM['translation'][sel]['DBK_TITLE_1'];
-			const localized_hot_water_title_2 = LM['translation'][sel]['DBK_TITLE_2'];
+			const localized_grid_title = LM['translation'][sel]['DBA_TITLE']; // 'Grid'
+			const localized_solar_title = LM['translation'][sel]['DBB_TITLE']; // 'Solar power'
+			const localized_apartments_title = LM['translation'][sel]['DBD_TITLE']; // 'Apartments'
+			const localized_other_title_1 = LM['translation'][sel]['DBE_TITLE_1']; // 'SAUNA,'
+			const localized_other_title_2 = LM['translation'][sel]['DBE_TITLE_2']; // 'lights,'
+			const localized_other_title_3 = LM['translation'][sel]['DBE_TITLE_3']; // 'etc.'
+			const localized_heating_system_title_1 = LM['translation'][sel]['DBF_TITLE_1']; // 'Heating'
+			const localized_heating_system_title_2 = LM['translation'][sel]['DBF_TITLE_2']; // 'system'
+			const localized_exthaus_air_reco_title_1 = LM['translation'][sel]['DBG_TITLE_1']; // 'Exthaus air'
+			const localized_exthaus_air_reco_title_2 = LM['translation'][sel]['DBG_TITLE_2']; // 'recovery'
+			const localized_dhn_title_1 = LM['translation'][sel]['DBI_TITLE_1']; // 'District'
+			const localized_dhn_title_2 = LM['translation'][sel]['DBI_TITLE_2']; // 'heating'
+			const localized_dhn_title_3 = LM['translation'][sel]['DBI_TITLE_3']; // 'network'
+			const localized_heating_dev_title_1 = LM['translation'][sel]['DBJ_TITLE_1']; // 'Heating'
+			const localized_heating_dev_title_2 = LM['translation'][sel]['DBJ_TITLE_2']; // 'devices'
+			const localized_hot_water_title_1 = LM['translation'][sel]['DBK_TITLE_1']; // 'Hot'
+			const localized_hot_water_title_2 = LM['translation'][sel]['DBK_TITLE_2']; // 'water'
 			
 			this.fillSVGTextElement(svgObject, 'dc-grid-title', localized_grid_title);
 			this.fillSVGTextElement(svgObject, 'dc-solar-title', localized_solar_title);
-			this.fillSVGTextElement(svgObject, 'dc-solar-title-2', localized_solar_title);
 			this.fillSVGTextElement(svgObject, 'dc-apartments-title', localized_apartments_title);
 			this.fillSVGTextElement(svgObject, 'dc-other-title-1', localized_other_title_1);
 			this.fillSVGTextElement(svgObject, 'dc-other-title-2', localized_other_title_2);
@@ -489,8 +485,6 @@ meterId
 			this.fillSVGTextElement(svgObject, 'dc-heating-system-title-2', localized_heating_system_title_2);
 			this.fillSVGTextElement(svgObject, 'dc-exthaus-air-reco-title-1', localized_exthaus_air_reco_title_1);
 			this.fillSVGTextElement(svgObject, 'dc-exthaus-air-reco-title-2', localized_exthaus_air_reco_title_2);
-			this.fillSVGTextElement(svgObject, 'dc-wastewater-reco-title-1', localized_wastewater_reco_title_1);
-			this.fillSVGTextElement(svgObject, 'dc-wastewater-reco-title-2', localized_wastewater_reco_title_2);
 			this.fillSVGTextElement(svgObject, 'dc-dhn-title-1', localized_dhn_title_1);
 			this.fillSVGTextElement(svgObject, 'dc-dhn-title-2', localized_dhn_title_2);
 			this.fillSVGTextElement(svgObject, 'dc-dhn-title-3', localized_dhn_title_3);
@@ -498,7 +492,6 @@ meterId
 			this.fillSVGTextElement(svgObject, 'dc-heating-dev-title-2', localized_heating_dev_title_2);
 			this.fillSVGTextElement(svgObject, 'dc-hot-water-title-1', localized_hot_water_title_1);
 			this.fillSVGTextElement(svgObject, 'dc-hot-water-title-2', localized_hot_water_title_2);
-			*/
 		}
 	}
 	

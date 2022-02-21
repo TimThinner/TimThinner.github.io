@@ -637,7 +637,9 @@ export default class UserPageView extends View {
 			if (typeof UM.point_id_a !== 'undefined' && UM.point_id_a.length > 0) {
 				// HEATING is enabled
 				surface.addEventListener("click", function(){
-					console.log('HEY! '+type+' CLICKED!');
+					
+					self.models['MenuModel'].setSelected('userheating');
+					
 				}, false);
 				surface.addEventListener("mouseover", function(event){ 
 					border.style.fill = DARKGREEN;

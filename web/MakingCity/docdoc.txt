@@ -298,9 +298,20 @@ DistrictBController
 	*USES* this.master.modelRepo.get('MenuModel');
 
 DistrictCController
+	*USES* this.master.modelRepo.get('MenuModel');
+	
+DistrictEController
+	*USES* this.master.modelRepo.get('MenuModel');
+	
+DistrictFController
+	*USES* this.master.modelRepo.get('MenuModel');
+	
 
-
-
+UserHeatingController
+	this.master.modelRepo.add('UserHeatingMonthModel',model_HeatingMonth);
+	this.master.modelRepo.add('FeedbackModel',model_Feedback);
+	*USES* this.master.modelRepo.get('MenuModel');
+	
 
 
 

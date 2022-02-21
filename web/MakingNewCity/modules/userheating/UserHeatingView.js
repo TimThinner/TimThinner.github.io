@@ -219,7 +219,7 @@ export default class UserHeatingView extends View {
 				'<div class="row">'+
 					'<div class="col s12">'+
 						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-						'<p style="text-align:center;"><img src="./svg/userpage/radiator.svg" height="80"/></p>'+
+						'<p style="text-align:center;"><img src="./svg/radiator.svg" height="80"/></p>'+
 						'<p style="text-align:center;">'+localized_string_description+'</p>'+
 					'</div>'+
 					'<div class="col s12 center">'+
@@ -243,7 +243,7 @@ export default class UserHeatingView extends View {
 									'<th>'+localized_string_period+'</th>'+
 									'<th>°C</th>'+
 									'<th>%</th>'+
-									'<th>kgCO2</th>'+
+									//'<th>kgCO2</th>'+
 								'</tr>'+
 							'</thead>'+
 							'<tbody>'+
@@ -251,19 +251,19 @@ export default class UserHeatingView extends View {
 									'<td>'+localized_string_period_day+'</td>'+
 									'<td id="day-temp">---</td>'+
 									'<td id="day-humi">---</td>'+
-									'<td>---</td>'+
+									//'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
 									'<td>'+localized_string_period_week+'</td>'+
 									'<td id="week-temp">---</td>'+
 									'<td id="week-humi">---</td>'+
-									'<td>---</td>'+
+									//'<td>---</td>'+
 								'</tr>'+
 								'<tr>'+
 									'<td>'+localized_string_period_month+'</td>'+
 									'<td id="month-temp">---</td>'+
 									'<td id="month-humi">---</td>'+
-									'<td>---</td>'+
+									//'<td>---</td>'+
 								'</tr>'+
 							'</tbody>'+
 						'</table>'+

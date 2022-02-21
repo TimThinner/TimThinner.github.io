@@ -27,7 +27,7 @@ import DistrictFController from './modules/districtf/DistrictFController.js';
 
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';
-import UserChangePswController.js from './modules/userprops/UserChangePswController.js';
+import UserChangePswController from './modules/userprops/UserChangePswController.js';
 
 import GridPageController from './modules/gridpage/GridPageController.js';
 import EnvironmentPageController from './modules/environmentpage/EnvironmentPageController.js';

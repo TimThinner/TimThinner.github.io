@@ -255,13 +255,10 @@ export default class UserHeatingView extends View {
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Models are 'MenuModel', 'UserHeatingMonthModel', 'FeedbackModel'.
 				Object.keys(this.models).forEach(key => {
-					// Do NOT fetch 'FeedbackModel'
-					if (key !== 'FeedbackModel') {
-						console.log(['FETCH MODEL key=',key]);
-						const UM = this.controller.master.modelRepo.get('UserModel');
-						if (UM) {
-							this.models[key].fetch(UM.token, UM.readkey);
-						}
+					console.log(['FETCH MODEL key=',key]);
+					const UM = this.controller.master.modelRepo.get('UserModel');
+					if (UM) {
+						this.models[key].fetch(UM.token, UM.readkey);
 					}
 				});
 			}

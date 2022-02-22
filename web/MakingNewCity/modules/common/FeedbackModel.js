@@ -6,7 +6,7 @@ export default class FeedbackModel extends Model {
 		super(options);
 		this.feedbacks = [];
 	}
-	
+	/*
 	fetch(token) {
 		const self = this;
 		if (this.fetching) {
@@ -43,7 +43,7 @@ export default class FeedbackModel extends Model {
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:error});
 			});
 	}
-	
+	*/
 	send(data, token) {
 		const self = this;
 		

@@ -120,7 +120,7 @@ export default class UserHeatingView extends View {
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " FOO";
+				return text + " °C/%";
 			});
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_heating;
@@ -175,6 +175,19 @@ export default class UserHeatingView extends View {
 			self.chart.cursor.lineY.opacity = 0;
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series1);
+			
+			self.chart.cursor.behavior = "selectX";
+			self.chart.cursor.events.on("selectended", function(ev) {
+				let range = ev.target.xRange;
+				if (range) {
+					let axis = ev.target.chart.xAxes.getIndex(0);
+					let from = axis.getPositionLabel(axis.toAxisPosition(range.start));
+					let to = axis.getPositionLabel(axis.toAxisPosition(range.end));
+					console.log(["Selected from ",from," to ",to]);
+				}
+			});
+			
+			
 			//dateAxis.start = 0.8;
 			//dateAxis.keepSelection = true;
 		}); // end am4core.ready()

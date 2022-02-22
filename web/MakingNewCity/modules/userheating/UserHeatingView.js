@@ -26,6 +26,7 @@ export default class UserHeatingView extends View {
 		
 		this.rendered = false;
 		this.FELID = 'user-heating-view-failure';
+		this.chart = undefined; // We have a chart!
 	}
 	
 	show() {
@@ -35,6 +36,10 @@ export default class UserHeatingView extends View {
 	
 	hide() {
 		this.PTO.stop();
+		if (typeof this.chart !== 'undefined') {
+			this.chart.dispose();
+			this.chart = undefined;
+		}
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -42,6 +47,10 @@ export default class UserHeatingView extends View {
 	remove() {
 		this.PTO.stop();
 		this.PTO.unsubscribe(this);
+		if (typeof this.chart !== 'undefined') {
+			this.chart.dispose();
+			this.chart = undefined;
+		}
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -49,6 +58,127 @@ export default class UserHeatingView extends View {
 		$(this.el).empty();
 	}
 	
+	
+	renderChart() {
+		const self = this;
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_heating = LM['translation'][sel]['USER_PAGE_HEATING'];
+		const localized_string_temperature = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_TEMPERATURE'];
+		const localized_string_humidity = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_HUMIDITY'];
+		
+		am4core.ready(function() {
+			// Themes begin
+			am4core.useTheme(am4themes_dark);
+			//am4core.useTheme(am4themes_animated);
+			// Themes end
+			
+			am4core.options.autoSetClassName = true;
+			am4core.options.autoDispose = true;
+			
+			
+			console.log(['values=',self.models['UserHeatingMonthModel'].values]);
+			
+			// Create chart
+			self.chart = am4core.create("user-heating-chart", am4charts.XYChart);
+			self.chart.padding(30, 15, 30, 15);
+			//self.chart.colors.step = 3;
+			
+			self.chart.numberFormatter.numberFormat = "#.#";
+			//self.chart.data = [];
+			
+			//const values = self.models['UserHeatingMonthModel'].values;
+			
+			// [{"value":207.483000,"start_time":"2021-05-17T08:00:00+0000","end_time":"2021-05-17T09:00:00+0000"},...]
+			/*console.log(['values=',values]);
+			values.forEach(v=>{
+				self.chart.data.push({
+					//date: moment(v.time).toDate(),
+					date: v.time,
+					temperature: v.temperature,
+					humidity: v.humidity
+				});
+			});*/
+			/*
+			self.chart.data.push({
+				date: newDate,
+				values: values
+			});
+			const values = this.models['FingridSolarPowerFinlandModel'].values;
+			*/
+			const dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
+			dateAxis.baseInterval = {
+				"timeUnit": "hour",
+				"count": 1
+			};
+			//dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
+			dateAxis.keepSelection = true;
+			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
+			
+			
+			
+			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
+				return text + " FOO";
+			});
+			valueAxis.tooltip.disabled = true;
+			valueAxis.title.text = localized_string_heating;
+			
+			const series1 = self.chart.series.push(new am4charts.LineSeries());
+			series1.defaultState.transitionDuration = 0;
+			series1.tooltipText = "{valueY.value} °C";
+			series1.tooltip.getFillFromObject = false;
+			series1.tooltip.getStrokeFromObject = true;
+			series1.stroke = am4core.color("#f00");
+			series1.strokeWidth = 2;
+			series1.fill = series1.stroke;
+			series1.fillOpacity = 0;
+			series1.tooltip.background.fill = am4core.color("#000");
+			series1.tooltip.background.strokeWidth = 1;
+			series1.tooltip.label.fill = series1.stroke;
+			series1.data = self.models['UserHeatingMonthModel'].values;
+			series1.dataFields.dateX = "time";
+			series1.dataFields.valueY = "temperature";
+			series1.name = localized_string_temperature;
+			series1.yAxis = valueAxis;
+			
+			const series2 = self.chart.series.push(new am4charts.LineSeries());
+			series2.defaultState.transitionDuration = 0;
+			series2.tooltipText = "{valueY.value} %";
+			series2.tooltip.getFillFromObject = false;
+			series2.tooltip.getStrokeFromObject = true;
+			series2.stroke = am4core.color("#0ff");
+			series2.strokeWidth = 2;
+			series2.fill = series2.stroke;
+			series2.fillOpacity = 0;
+			series2.tooltip.background.fill = am4core.color("#000");
+			series2.tooltip.background.strokeWidth = 1;
+			series2.tooltip.label.fill = series2.stroke;
+			series2.data = self.models['UserHeatingMonthModel'].values;
+			series2.dataFields.dateX = "time";
+			series2.dataFields.valueY = "humidity";
+			series2.name = localized_string_humidity;
+			series2.yAxis = valueAxis;
+			
+			// Legend:
+			self.chart.legend = new am4charts.Legend();
+			self.chart.legend.useDefaultMarker = true;
+			var marker = self.chart.legend.markers.template.children.getIndex(0);
+			marker.cornerRadius(12, 12, 12, 12);
+			marker.strokeWidth = 2;
+			marker.strokeOpacity = 1;
+			marker.stroke = am4core.color("#000");
+			
+			// Cursor:
+			self.chart.cursor = new am4charts.XYCursor();
+			self.chart.cursor.lineY.opacity = 0;
+			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
+			self.chart.scrollbarX.series.push(series1);
+			//dateAxis.start = 0.8;
+			//dateAxis.keepSelection = true;
+		}); // end am4core.ready()
+	}
 	
 	updateLatestValues() {
 		console.log('UserHeatingView updateLatestValues');
@@ -125,10 +255,13 @@ export default class UserHeatingView extends View {
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Models are 'MenuModel', 'UserHeatingMonthModel', 'FeedbackModel'.
 				Object.keys(this.models).forEach(key => {
-					console.log(['FETCH MODEL key=',key]);
-					const UM = this.controller.master.modelRepo.get('UserModel');
-					if (UM) {
-						this.models[key].fetch(UM.token, UM.readkey);
+					// Do NOT fetch 'FeedbackModel'
+					if (key !== 'FeedbackModel') {
+						console.log(['FETCH MODEL key=',key]);
+						const UM = this.controller.master.modelRepo.get('UserModel');
+						if (UM) {
+							this.models[key].fetch(UM.token, UM.readkey);
+						}
 					}
 				});
 			}
@@ -167,6 +300,13 @@ export default class UserHeatingView extends View {
 					'<div class="col s12 center" style="margin-top:16px;margin-bottom:16px;">'+
 						'<button class="btn waves-effect waves-light disabled" id="submit-feedback">'+localized_string_send_feedback+'</button>'+
 					'</div>'+
+				'</div>'+
+				'<div class="row">'+
+					'<div class="col s12 chart-wrapper dark-theme">'+
+						'<div id="user-heating-chart" class="medium-chart"></div>'+
+					'</div>'+
+				'</div>'+
+				'<div class="row">'+
 					'<div class="col s12 center" style="margin-top:16px;">'+
 						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 							'<i class="material-icons left">arrow_back</i>'+
@@ -227,7 +367,8 @@ export default class UserHeatingView extends View {
 			});
 			
 			this.handleErrorMessages(this.FELID);
-			this.updateLatestValues();
+			this.renderChart();
+			//this.updateLatestValues();
 			this.rendered = true;
 			
 		} else {

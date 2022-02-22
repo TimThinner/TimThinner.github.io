@@ -175,11 +175,10 @@ export default class UserHeatingView extends View {
 			self.chart.cursor.lineY.opacity = 0;
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series1);
-			
-			
 			self.chart.scrollbarX.events.on("rangechanged", function(ev) {
-				console.log(["x: ", ev.target.xPosition]);
-				console.log(["y: ", ev.target.yPosition]);
+				console.log(["target: ", ev.target]);
+				//console.log(["x: ", ev.target.xPosition]);
+				//console.log(["y: ", ev.target.yPosition]);
 			});
 			/*self.chart.cursor.behavior = "selectX";
 			self.chart.cursor.events.on("selectended", function(ev) {

@@ -177,7 +177,11 @@ export default class UserHeatingView extends View {
 			self.chart.scrollbarX.series.push(series1);
 			self.chart.scrollbarX.events.on("rangechanged", function(ev) {
 				
-				console.log(["ev: ", ev]);
+				//console.log(["ev: ", ev]);
+				console.log(["ev.target._start: ", ev.target._start]);
+				console.log(["ev.target._end: ", ev.target._end]);
+				
+				
 				
 				//range.end range.start
 				//console.log(["x: ", ev.target.xPosition]);

@@ -51,13 +51,13 @@ export default class UserHeatingView extends View {
 	
 	
 	updateLatestValues() {
-		//console.log('UPDATE UserHeating !!!!!!!');
+		console.log('UserHeatingView updateLatestValues');
 		const heat_month = this.controller.master.modelRepo.get('UserHeatingMonthModel');
 		if (heat_month) {
 			const values = heat_month.values;
 			if (Array.isArray(values)) { // && values.length > 0) {
 				
-				// 168 values, like this:
+				// values, like this:
 				// {	time: Date Sun Nov 08 2020 08:00:00 GMT+0200 (Eastern European Standard Time), 
 				//		temperature: 20.12833333333333, 
 				//		humidity: 30.536666666666683 
@@ -65,69 +65,6 @@ export default class UserHeatingView extends View {
 				// Calculate averages for last 30 days, last 7 days and finally last 24 hours.
 				// toFixed(1)
 				console.log(['values=',values]);
-				
-				// To show month average, how many days should be already measured? (7x24 = 168)
-				if (values.length >= 672) { // More than 4 weeks? (28x24 = 672)
-					
-					let sum_month_temp = 0;
-					let sum_month_humi = 0;
-					values.forEach(v => {
-						sum_month_temp += v.temperature;
-						sum_month_humi += v.humidity;
-					});
-					const ave_month_temp = sum_month_temp/values.length;
-					const ave_month_humi = sum_month_humi/values.length;
-					$('#month-temp').empty().append(ave_month_temp.toFixed(1));
-					$('#month-humi').empty().append(ave_month_humi.toFixed(1));
-					
-				} else {
-					$('#month-temp').empty().append('---');
-					$('#month-humi').empty().append('---');
-				}
-				
-				if (values.length >= 168) { // More than one week?
-					
-					const values_week = values.slice(-168); // extracts the last 168 elements (7x24) in the sequence.
-					let sum_week_temp = 0;
-					let sum_week_humi = 0;
-					values_week.forEach(v => {
-						sum_week_temp += v.temperature;
-						sum_week_humi += v.humidity;
-					});
-					const ave_week_temp = sum_week_temp/values_week.length;
-					const ave_week_humi = sum_week_humi/values_week.length;
-					$('#week-temp').empty().append(ave_week_temp.toFixed(1));
-					$('#week-humi').empty().append(ave_week_humi.toFixed(1));
-				} else {
-					$('#week-temp').empty().append('---');
-					$('#week-humi').empty().append('---');
-				}
-				
-				if (values.length >= 24) { // More than one day?
-					
-					const val24h = values.slice(-24); // extracts the last 24 elements in the sequence.
-					let sum_24h_temp = 0;
-					let sum_24h_humi = 0;
-					val24h.forEach(v => {
-						sum_24h_temp += v.temperature;
-						sum_24h_humi += v.humidity;
-					});
-					const ave_24h_temp = sum_24h_temp/val24h.length;
-					const ave_24h_humi = sum_24h_humi/val24h.length;
-					$('#day-temp').empty().append(ave_24h_temp.toFixed(1));
-					$('#day-humi').empty().append(ave_24h_humi.toFixed(1));
-				} else {
-					$('#day-temp').empty().append('---');
-					$('#day-humi').empty().append('---');
-				}
-				
-			} else {
-				$('#day-temp').empty().append('---');
-				$('#day-humi').empty().append('---');
-				$('#week-temp').empty().append('---');
-				$('#week-humi').empty().append('---');
-				$('#month-temp').empty().append('---');
-				$('#month-humi').empty().append('---');
 			}
 		}
 	}
@@ -208,10 +145,6 @@ export default class UserHeatingView extends View {
 			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 			const localized_string_title = LM['translation'][sel]['USER_HEATING_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_HEATING_DESCRIPTION'];
-			const localized_string_period = LM['translation'][sel]['USER_DATA_PERIOD'];
-			const localized_string_period_day = LM['translation'][sel]['USER_DATA_PERIOD_DAY'];
-			const localized_string_period_week = LM['translation'][sel]['USER_DATA_PERIOD_WEEK'];
-			const localized_string_period_month = LM['translation'][sel]['USER_DATA_PERIOD_MONTH'];
 			const localized_string_feedback_prompt = LM['translation'][sel]['USER_HEATING_FEEDBACK_PROMPT'];
 			const localized_string_send_feedback = LM['translation'][sel]['USER_HEATING_SEND_FEEDBACK'];
 			
@@ -232,61 +165,8 @@ export default class UserHeatingView extends View {
 						'<a href="javascript:void(0);" id="fb-smiley-5" class="feedback-smiley"><img src="./img/UX_F2F_faces-5.png" height="60"/></a>'+
 					'</div>'+
 					'<div class="col s12 center" style="margin-top:16px;margin-bottom:16px;">'+
-						'<button class="btn waves-effect waves-light disabled" id="submit-feedback">'+localized_string_send_feedback+
-							//'<i class="material-icons">send</i>'+
-						'</button>'+
+						'<button class="btn waves-effect waves-light disabled" id="submit-feedback">'+localized_string_send_feedback+'</button>'+
 					'</div>'+
-					'<div class="col s12" style="padding-bottom:16px;background-color:#fff">'+
-						'<table class="centered striped">'+
-							'<thead>'+
-								'<tr>'+
-									'<th>'+localized_string_period+'</th>'+
-									'<th>°C</th>'+
-									'<th>%</th>'+
-									//'<th>kgCO2</th>'+
-								'</tr>'+
-							'</thead>'+
-							'<tbody>'+
-								'<tr>'+
-									'<td>'+localized_string_period_day+'</td>'+
-									'<td id="day-temp">---</td>'+
-									'<td id="day-humi">---</td>'+
-									//'<td>---</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>'+localized_string_period_week+'</td>'+
-									'<td id="week-temp">---</td>'+
-									'<td id="week-humi">---</td>'+
-									//'<td>---</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>'+localized_string_period_month+'</td>'+
-									'<td id="month-temp">---</td>'+
-									'<td id="month-humi">---</td>'+
-									//'<td>---</td>'+
-								'</tr>'+
-							'</tbody>'+
-						'</table>'+
-					'</div>'+
-					
-					/*
-					'<div class="col s4 center" style="margin-top:16px;">'+
-						'<a id="view-charts" >'+
-							'<img src="./svg/userpage/viewcharts.svg" class="view-button" />'+
-						'</a>'+
-					'</div>'+
-					'<div class="col s4 center" style="margin-top:16px;">'+
-						'<a id="targets" >'+
-							'<img src="./svg/userpage/targets.svg" class="view-button" />'+
-						'</a>'+
-					'</div>'+
-					'<div class="col s4 center" style="margin-top:16px;">'+
-						'<a id="compensate" >'+
-							'<img src="./svg/userpage/compensate.svg" class="view-button" />'+
-						'</a>'+
-					'</div>'+
-					*/
-					
 					'<div class="col s12 center" style="margin-top:16px;">'+
 						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
 							'<i class="material-icons left">arrow_back</i>'+
@@ -298,12 +178,6 @@ export default class UserHeatingView extends View {
 				'</div>';
 			$(html).appendTo(this.el);
 			
-			/*
-			this.startSwipeEventListeners(
-				()=>{this.menuModel.setSelected('USERPAGE');},
-				()=>{this.menuModel.setSelected('USERELECTRICITY');}
-			);
-			*/
 			// Smileys act like radio buttons, only one can be selected at any one time.
 			// The last selection is shown. Can user just de-select?
 			for (let i=1; i<6; i++) {
@@ -324,26 +198,8 @@ export default class UserHeatingView extends View {
 					}
 				});
 			}
-			
-			/*
-			$('#view-charts').on('click',function() {
-				//console.log('VIEW CHARTS!');
-				self.menuModel.setSelected('USERHEATINGCHARTS');
-			});
-			$('#targets').on('click',function() {
-				//console.log('TARGETS!');
-				self.menuModel.setSelected('USERHEATINGTARGETS');
-			});
-			$('#compensate').on('click',function() {
-				//console.log('COMPENSATE!');
-				self.menuModel.setSelected('USERHEATINGCOMPENSATE');
-			});
-			*/
-			
-			
 			// 'UX_F2F_faces-1.png'
 			// 'UX_F2F_faces-1-grey.png'
-			
 			$('#submit-feedback').on('click',function() {
 				for (let i=1; i<6; i++) {
 					if ($('#fb-smiley-'+i).hasClass('selected')) {

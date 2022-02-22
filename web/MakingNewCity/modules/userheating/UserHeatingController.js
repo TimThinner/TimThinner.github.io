@@ -25,7 +25,17 @@ export default class UserHeatingController extends Controller {
 		this.remove();
 		this.init();
 	}
+	/*
+	We fetch values for last 30 days => 
+	Calculate averages for last 30 days, last 7 days and finally last 24 hours.
 	
+	
+	
+	resolution 1 hour 720 values (30 x 24 = 720)
+	
+	
+	
+	*/
 	init() {
 		const mTR = {ends:{value:10,unit:'seconds'},starts:{value:30,unit:'days'}};
 		// Response is 24 x 60 x 7 values  = 10 080 measurements => 24 x 7 averages (168 averages).
@@ -33,7 +43,7 @@ export default class UserHeatingController extends Controller {
 		const model_HeatingMonth = new UserApartmentModel({
 			name:'UserHeatingMonthModel',
 			src:'data/sivakka/apartments/feeds.json',
-			type:'sensor',
+			type:'sensor', // // type = sensor (Temperature and Humidity)
 			limit:0,
 			range:mTR,
 			timerange: 30  // NOTE: This is always 30 days here! TEST: 3 days! 4320 values!

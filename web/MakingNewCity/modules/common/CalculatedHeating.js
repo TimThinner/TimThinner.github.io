@@ -8,7 +8,16 @@ export default class CalculatedHeating {
 	
 	/*
 		We don't start from midnight (00:00), but select predefined number of hours from this moment.
-		We have temperature and humidity for every minute.
+		We have temperature and humidity for every minute => we convert that to hourly averages.
+		
+		How to use:
+		
+		mych.resetHours(this.timerange*24);
+		$.each(newson, function(i,v){
+			mych.addMeasurement(v); // set cumulative energy for each hour.
+		});
+		mych.calculateAverage();
+		mych.copyTo(self.values);
 		
 		
 	*/
@@ -20,7 +29,7 @@ export default class CalculatedHeating {
 		start.minutes(0);
 		start.seconds(0);
 		
-		// Make sure that Hour is entered into water object AFTER it is fully done!
+		// Make sure that Hour is entered into heating object AFTER it is fully done!
 		now.minutes(0);
 		now.seconds(0);
 		

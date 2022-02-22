@@ -278,7 +278,8 @@ export default class UserApartmentModel extends Model {
 				return aa - bb;
 			});
 			
-			
+			// 30 x 24 = 720 = Hourly values for temperature and humidity
+			// Object { time: Date Mon Feb 21 2022 13:00:00 GMT+0200 (Eastern European Standard Time), temperature: 23.281666666666673, humidity: 32.13333333333333 }
 			console.log(['Heating values = ',self.values]);
 			
 			// NOW we copy ONLY selected set.

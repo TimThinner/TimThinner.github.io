@@ -202,19 +202,19 @@ export default class UserPageView extends View {
 		*/
 		let fontsize;
 		if (w <= 600) {
-			console.log('Mobile Device.');
+			//console.log('Mobile Device.');
 			fontsize = 36; // big font 36, small font 12
 			
 		} else if (w > 600 && w <= 992) {
-			console.log('Tablet Device.');
+			//console.log('Tablet Device.');
 			fontsize = 42; // big font 42, small font 14
 			
 		} else if (w > 992 && w <= 1200) {
-			console.log('Desktop Device.');
+			//console.log('Desktop Device.');
 			fontsize = 54; // big font 54, small font 18
 			
 		} else {
-			console.log('Large Desktop Device.');
+			//console.log('Large Desktop Device.');
 			fontsize = 72; // big font 72, small font 24
 		}
 		const bw = w;

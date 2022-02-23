@@ -81,16 +81,28 @@ export default class UserHeatingView extends View {
 					selection.push(v);
 				}
 			});
-			if (selection.length > 0) {
+			
+			const slen = selection.length;
+			if (slen > 0) {
+				
 				let sum_temp = 0;
 				let sum_humi = 0;
+				
+				// Use moment because it has nice formatting functions.
+				const s_date = moment(selection[0].time); // Date of first value.
+				const e_date = moment(selection[slen-1].time); // Date of last value.
+				//const duration_in_hours = slen;
 				selection.forEach(v=>{
 					sum_temp += v.temperature;
 					sum_humi += v.humidity;
 				});
-				const ave_temp = sum_temp/selection.length;
-				const ave_humi = sum_humi/selection.length;
-				const html = '<p>'+localized_string_average+': <span style="color:#f00">'+ave_temp.toFixed(1)+' °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff">'+ave_humi.toFixed(1)+' %</span></p>';
+				const ave_temp = sum_temp/slen;
+				const ave_humi = sum_humi/slen;
+				const html = '<p>'+localized_string_average+
+					': <span style="color:#f00">'+ave_temp.toFixed(1)+' °C&nbsp;&nbsp;&nbsp;</span>'+
+					'<span style="color:#0ff">'+ave_humi.toFixed(1)+' %</span><br/>'+
+					'<span style="color:#eee">from '+s_date.format('DD.MM.YYYY HH:mm')+' to '+e_date.format('DD.MM.YYYY HH:mm')+'</span>'+
+					'</p>';
 				$('#user-heating-chart-average').empty().append(html);
 			} else {
 				const html = '<p>'+localized_string_average+': <span style="color:#f00">- °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff"> - %</span></p>';

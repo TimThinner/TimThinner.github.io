@@ -85,7 +85,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.23.HEAT-B');
+		console.log('MasterController init v2022.02.23.HEAT-C');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();

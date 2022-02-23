@@ -68,33 +68,34 @@ export default class UserHeatingView extends View {
 		
 		const values = this.models['UserHeatingMonthModel'].values;
 		if (Array.isArray(values) && values.length > 0) {
-			let sum_temp = 0;
-			let sum_humi = 0;
-			
 			//this.chartRangeStart = 0;
 			//this.chartRangeEnd = 1;
 			// This is where we select only part of timerange to be included into calculation.
 			//
-			// values.length 
-			// 
 			const begin = Math.round(this.chartRangeStart*values.length);
 			const end = Math.round(this.chartRangeEnd*values.length);
 			//The Math.round() function returns the value of a number rounded to the nearest integer. 
 			const selection = [];
 			values.forEach((v,i)=>{
-				if (i >= begin && i <= end)  {
+				if (i >= begin && i <= end) {
 					selection.push(v);
 				}
 			});
-			selection.forEach(v=>{
-				sum_temp += v.temperature;
-				sum_humi += v.humidity;
-			});
-			const ave_temp = sum_temp/selection.length;
-			const ave_humi = sum_humi/selection.length;
-			
-			const html = '<p>'+localized_string_average+': <span style="color:#f00">'+ave_temp.toFixed(1)+' °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff">'+ave_humi.toFixed(1)+' %</span></p>';
-			$('#user-heating-chart-average').empty().append(html);
+			if (selection.length > 0) {
+				let sum_temp = 0;
+				let sum_humi = 0;
+				selection.forEach(v=>{
+					sum_temp += v.temperature;
+					sum_humi += v.humidity;
+				});
+				const ave_temp = sum_temp/selection.length;
+				const ave_humi = sum_humi/selection.length;
+				const html = '<p>'+localized_string_average+': <span style="color:#f00">'+ave_temp.toFixed(1)+' °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff">'+ave_humi.toFixed(1)+' %</span></p>';
+				$('#user-heating-chart-average').empty().append(html);
+			} else {
+				const html = '<p>'+localized_string_average+': <span style="color:#f00">- °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff"> - %</span></p>';
+				$('#user-heating-chart-average').empty().append(html);
+			}
 		} else {
 			const html = '<p>'+localized_string_average+': <span style="color:#f00">- °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff"> - %</span></p>';
 			$('#user-heating-chart-average').empty().append(html);

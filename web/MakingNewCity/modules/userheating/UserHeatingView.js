@@ -62,8 +62,6 @@ export default class UserHeatingView extends View {
 	
 	appendAverage() {
 		
-		
-		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_average = LM['translation'][sel]['USER_HEATING_CHART_AVERAGE'];
@@ -73,18 +71,28 @@ export default class UserHeatingView extends View {
 			let sum_temp = 0;
 			let sum_humi = 0;
 			
-			
 			//this.chartRangeStart = 0;
 			//this.chartRangeEnd = 1;
 			// This is where we select only part of timerange to be included into calculation.
 			//
-			values.forEach(v => {
+			// values.length 
+			// 
+			const begin = Math.round(this.chartRangeStart*values.length);
+			const end = Math.round(this.chartRangeEnd*values.length);
+			//The Math.round() function returns the value of a number rounded to the nearest integer. 
+			const selection = [];
+			values.forEach((v,i)=>{
+				if (i >= begin && i <= end)  {
+					selection.push(v);
+				}
+			});
+			selection.forEach(v=>{
 				sum_temp += v.temperature;
 				sum_humi += v.humidity;
 			});
+			const ave_temp = sum_temp/selection.length;
+			const ave_humi = sum_humi/selection.length;
 			
-			const ave_temp = sum_temp/values.length;
-			const ave_humi = sum_humi/values.length;
 			const html = '<p>'+localized_string_average+': <span style="color:#f00">'+ave_temp.toFixed(1)+' °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff">'+ave_humi.toFixed(1)+' %</span></p>';
 			$('#user-heating-chart-average').empty().append(html);
 		} else {
@@ -211,7 +219,8 @@ export default class UserHeatingView extends View {
 				// Range is from 0 to 1.
 				self.chartRangeStart = ev.target._start;
 				self.chartRangeEnd = ev.target._end;
-				
+				// Calculate averages based on this new selection.
+				self.appendAverage();
 				//console.log(["ev.target._start: ", ev.target._start]); // 0
 				//console.log(["ev.target._end: ", ev.target._end]); // 1
 			});
@@ -220,33 +229,6 @@ export default class UserHeatingView extends View {
 		this.appendAverage();
 	}
 	
-	updateLatestValues() {
-		console.log('UserHeatingView updateLatestValues');
-		const heat_month = this.controller.master.modelRepo.get('UserHeatingMonthModel');
-		if (heat_month) {
-			const values = heat_month.values;
-			if (Array.isArray(values)) { // && values.length > 0) {
-				
-				// values, like this:
-				// {	time: Date Sun Nov 08 2020 08:00:00 GMT+0200 (Eastern European Standard Time), 
-				//		temperature: 20.12833333333333, 
-				//		humidity: 30.536666666666683 
-				//	}
-				// Calculate averages for last 30 days, last 7 days and finally last 24 hours.
-				// toFixed(1)
-				
-				
-				//this.chartRangeStart = 0;
-				//this.chartRangeEnd = 1;
-				
-				
-				//values.length 
-				
-				
-				console.log(['values=',values]);
-			}
-		}
-	}
 	/*
 		Use class "selected" to reduce processing.
 	*/
@@ -362,7 +344,7 @@ export default class UserHeatingView extends View {
 				'<div class="row">'+
 					'<div class="col s12 chart-wrapper dark-theme">'+
 						'<div id="user-heating-chart" class="medium-chart"></div>'+
-						'<div id="user-heating-chart-average"></div>'+
+						'<div style="text-align:center;" id="user-heating-chart-average"></div>'+
 					'</div>'+
 				'</div>'+
 				'<div class="row">'+
@@ -427,7 +409,6 @@ export default class UserHeatingView extends View {
 			
 			this.handleErrorMessages(this.FELID);
 			this.renderChart();
-			//this.updateLatestValues();
 			this.rendered = true;
 			
 		} else {

@@ -225,9 +225,12 @@ export default class UserHeatingView extends View {
 				//console.log(["ev.target._end: ", ev.target._end]); // 1
 			});
 			self.chart.zoomOutButton.events.on("hit", function(ev) {
-				console.log('zoomOutButton hit event!');
+				// Reset of ZoomIn => start = 0 and end = 1.
+				// console.log('zoomOutButton hit event!');
+				self.chartRangeStart = 0;
+				self.chartRangeEnd = 1;
+				self.appendAverage();
 			})
-			
 		}); // end am4core.ready()
 		
 		this.appendAverage();

@@ -659,7 +659,7 @@ export default class UserPageView extends View {
 			if (typeof UM.point_id_b !== 'undefined' && UM.point_id_b.length > 0) {
 				// ELECTRICITY is enabled
 				surface.addEventListener("click", function(){
-					console.log('HEY! '+type+' CLICKED!');
+					self.models['MenuModel'].setSelected('userelectricity');
 				}, false);
 				surface.addEventListener("mouseover", function(event){ 
 					border.style.fill = DARKGREEN;

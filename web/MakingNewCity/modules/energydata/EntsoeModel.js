@@ -227,7 +227,7 @@ export default class EntsoeModel extends Model {
 			if (resu.Acknowledgement_MarketDocument['Reason'] && Array.isArray(resu.Acknowledgement_MarketDocument['Reason'])) {
 				resu.Acknowledgement_MarketDocument['Reason'].forEach(reason=> {
 					//message += reason.text;
-					console.log(['NOTE!!! reason=',reason]);
+					//console.log(['NOTE!!! reason=',reason]);
 				});
 			}
 		} else if (typeof resu.GL_MarketDocument !== 'undefined') {
@@ -246,7 +246,7 @@ export default class EntsoeModel extends Model {
 					if (typeof ts.MktPSRType !== 'undefined' && Array.isArray(ts.MktPSRType)) {
 						ts.MktPSRType.forEach(t=>{
 							if (typeof t.psrType !== 'undefined') {
-								console.log(['t.psrType=',t.psrType[0]]);
+								//console.log(['t.psrType=',t.psrType[0]]);
 							}
 						});
 					}
@@ -256,12 +256,12 @@ export default class EntsoeModel extends Model {
 							let myp = {};
 							
 							if (typeof p.resolution !== 'undefined' && Array.isArray(p.resolution)) {
-								console.log(['resolution=',p.resolution[0]]);
+								//console.log(['resolution=',p.resolution[0]]);
 								myp['resolution'] = p.resolution[0];
 							}
 							if (typeof p.timeInterval !== 'undefined' && Array.isArray(p.timeInterval)) {
 								p.timeInterval.forEach(ti=> {
-									console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
+									//console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
 									myp['timeInterval'] = {'start':ti.start[0],'end':ti.end[0]};
 								});
 							}
@@ -280,7 +280,7 @@ export default class EntsoeModel extends Model {
 									}
 									
 									myp['Point'].push({'position':position,'quantity':quantity});
-									console.log(['position=',position,' quantity=',quantity]);
+									//console.log(['position=',position,' quantity=',quantity]);
 								});
 							}
 							this.timeseries.push(myp);
@@ -312,12 +312,12 @@ export default class EntsoeModel extends Model {
 							*/
 							let myp = {};
 							if (typeof p.resolution !== 'undefined' && Array.isArray(p.resolution)) {
-								console.log(['resolution=',p.resolution[0]]);
+								//console.log(['resolution=',p.resolution[0]]);
 								myp['resolution'] = p.resolution[0];
 							}
 							if (typeof p.timeInterval !== 'undefined' && Array.isArray(p.timeInterval)) {
 								p.timeInterval.forEach(ti=> {
-									console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
+									//console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
 									myp['timeInterval'] = {'start':ti.start[0],'end':ti.end[0]};
 								});
 							}
@@ -334,7 +334,7 @@ export default class EntsoeModel extends Model {
 										pa = po['price.amount'][0];
 									}
 									myp['Point'].push({'position':position,'price':pa});
-									console.log(['position=',position,'price=',pa]);
+									//console.log(['position=',position,'price=',pa]);
 								});
 							}
 							this.timeseries.push(myp);

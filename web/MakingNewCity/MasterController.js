@@ -27,8 +27,8 @@ import DistrictFController from './modules/districtf/DistrictFController.js';
 
 import UserPageController from './modules/userpage/UserPageController.js';
 import UserPropsController from './modules/userprops/UserPropsController.js';
-//import UserElectricityController from './modules/userelectricity/UserElectricityController.js';
 import UserHeatingController from './modules/userheating/UserHeatingController.js';
+import UserElectricityController from './modules/userelectricity/UserElectricityController.js';
 //import UserWaterController from './modules/userwater/UserWaterController.js';
 import UserChangePswController from './modules/userprops/UserChangePswController.js';
 
@@ -85,7 +85,7 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init v2022.02.23.HEAT-C');
+		console.log('MasterController init v2022.02.23.ELE-A');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -125,8 +125,12 @@ class MasterController {
 		this.controllers['userpage'].init();
 		this.controllers['userprops'] = new UserPropsController({name:'userprops', master:this, el:'#content', visible:false});
 		this.controllers['userprops'].init();
+		
 		this.controllers['userheating'] = new UserHeatingController({name:'userheating', master:this, el:'#content', visible:false});
 		this.controllers['userheating'].init();
+		this.controllers['userelectricity'] = new UserElectricityController({name:'userelectricity', master:this, el:'#content', visible:false});
+		this.controllers['userelectricity'].init();
+		
 		this.controllers['userchangepsw'] = new UserChangePswController({name:'userchangepsw', master:this, el:'#content', visible:false});
 		this.controllers['userchangepsw'].init();
 		

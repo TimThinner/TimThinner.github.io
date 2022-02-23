@@ -307,12 +307,19 @@ DistrictFController
 	*USES* this.master.modelRepo.get('MenuModel');
 	
 
+
 UserHeatingController
 	this.master.modelRepo.add('UserHeatingMonthModel',model_HeatingMonth);
 	this.master.modelRepo.add('FeedbackModel',model_Feedback);
 	*USES* this.master.modelRepo.get('MenuModel');
 	
-
+UserElectricityController
+	this.master.modelRepo.add('UserElectricityNowModel',model_EleNow);
+	this.master.modelRepo.add('UserElectricityDayModel',model_EleDay);
+	this.master.modelRepo.add('UserElectricityWeekModel',model_EleWeek);
+	this.master.modelRepo.add('UserElectricityMonthModel',model_EleMonth);
+	*USES* this.master.modelRepo.get('MenuModel');
+	
 
 
 

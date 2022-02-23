@@ -82,8 +82,14 @@ export default class UserHeatingView extends View {
 				}
 			});
 			
+			
 			const slen = selection.length;
 			if (slen > 0) {
+				
+				let range_title = 'Range: ';
+				if (slen < values.length) {
+					range_title = 'Zoomed: ';
+				}
 				
 				let sum_temp = 0;
 				let sum_humi = 0;
@@ -101,7 +107,7 @@ export default class UserHeatingView extends View {
 				const html = '<p>'+localized_string_average+
 					': <span style="color:#f00">'+ave_temp.toFixed(1)+' °C&nbsp;&nbsp;&nbsp;</span>'+
 					'<span style="color:#0ff">'+ave_humi.toFixed(1)+' %</span><br/>'+
-					'<span style="color:#eee">from '+s_date.format('DD.MM.YYYY HH:mm')+' to '+e_date.format('DD.MM.YYYY HH:mm')+'</span>'+
+					'<span style="color:#ccc">'+range_title + s_date.format('DD.MM.YYYY HH:mm')+' - '+e_date.format('DD.MM.YYYY HH:mm')+'</span>'+
 					'</p>';
 				$('#user-heating-chart-average').empty().append(html);
 			} else {

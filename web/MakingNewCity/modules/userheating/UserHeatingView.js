@@ -27,6 +27,8 @@ export default class UserHeatingView extends View {
 		this.rendered = false;
 		this.FELID = 'user-heating-view-failure';
 		this.chart = undefined; // We have a chart!
+		this.chartRangeStart = 0;
+		this.chartRangeEnd = 1;
 	}
 	
 	show() {
@@ -58,6 +60,38 @@ export default class UserHeatingView extends View {
 		$(this.el).empty();
 	}
 	
+	appendAverage() {
+		
+		
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_average = LM['translation'][sel]['USER_HEATING_CHART_AVERAGE'];
+		
+		const values = this.models['UserHeatingMonthModel'].values;
+		if (Array.isArray(values) && values.length > 0) {
+			let sum_temp = 0;
+			let sum_humi = 0;
+			
+			
+			//this.chartRangeStart = 0;
+			//this.chartRangeEnd = 1;
+			// This is where we select only part of timerange to be included into calculation.
+			//
+			values.forEach(v => {
+				sum_temp += v.temperature;
+				sum_humi += v.humidity;
+			});
+			
+			const ave_temp = sum_temp/values.length;
+			const ave_humi = sum_humi/values.length;
+			const html = '<p>'+localized_string_average+': <span style="color:#f00">'+ave_temp.toFixed(1)+' °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff">'+ave_humi.toFixed(1)+' %</span></p>';
+			$('#user-heating-chart-average').empty().append(html);
+		} else {
+			const html = '<p>'+localized_string_average+': <span style="color:#f00">- °C&nbsp;&nbsp;&nbsp;</span><span style="color:#0ff"> - %</span></p>';
+			$('#user-heating-chart-average').empty().append(html);
+		}
+	}
 	
 	renderChart() {
 		const self = this;
@@ -76,7 +110,6 @@ export default class UserHeatingView extends View {
 			
 			am4core.options.autoSetClassName = true;
 			am4core.options.autoDispose = true;
-			
 			
 			console.log(['values=',self.models['UserHeatingMonthModel'].values]);
 			
@@ -115,8 +148,6 @@ export default class UserHeatingView extends View {
 			//dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
 			dateAxis.keepSelection = true;
 			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
-			
-			
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
@@ -173,33 +204,20 @@ export default class UserHeatingView extends View {
 			// Cursor:
 			self.chart.cursor = new am4charts.XYCursor();
 			self.chart.cursor.lineY.opacity = 0;
+			// ScrollbarX to limit selection:
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chart.scrollbarX.series.push(series1);
 			self.chart.scrollbarX.events.on("rangechanged", function(ev) {
+				// Range is from 0 to 1.
+				self.chartRangeStart = ev.target._start;
+				self.chartRangeEnd = ev.target._end;
 				
-				//console.log(["ev: ", ev]);
-				console.log(["ev.target._start: ", ev.target._start]);
-				console.log(["ev.target._end: ", ev.target._end]);
-				
-				
-				
-				//range.end range.start
-				//console.log(["x: ", ev.target.xPosition]);
-				//console.log(["y: ", ev.target.yPosition]);
+				//console.log(["ev.target._start: ", ev.target._start]); // 0
+				//console.log(["ev.target._end: ", ev.target._end]); // 1
 			});
-			/*self.chart.cursor.behavior = "selectX";
-			self.chart.cursor.events.on("selectended", function(ev) {
-				let range = ev.target.xRange;
-				if (range) {
-					let axis = ev.target.chart.xAxes.getIndex(0);
-					let from = axis.getPositionLabel(axis.toAxisPosition(range.start));
-					let to = axis.getPositionLabel(axis.toAxisPosition(range.end));
-					console.log(["Selected from ",from," to ",to]);
-				}
-			});*/
-			//dateAxis.start = 0.8;
-			//dateAxis.keepSelection = true;
 		}); // end am4core.ready()
+		
+		this.appendAverage();
 	}
 	
 	updateLatestValues() {
@@ -216,6 +234,15 @@ export default class UserHeatingView extends View {
 				//	}
 				// Calculate averages for last 30 days, last 7 days and finally last 24 hours.
 				// toFixed(1)
+				
+				
+				//this.chartRangeStart = 0;
+				//this.chartRangeEnd = 1;
+				
+				
+				//values.length 
+				
+				
 				console.log(['values=',values]);
 			}
 		}
@@ -233,7 +260,7 @@ export default class UserHeatingView extends View {
 	}
 	
 	notify(options) {
-		
+		const self = this;
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_feedback_ok = LM['translation'][sel]['USER_HEATING_FEEDBACK_OK'];
@@ -244,23 +271,35 @@ export default class UserHeatingView extends View {
 				if (this.rendered) {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
+					
 					if (options.status === 200) {
-						this.updateLatestValues();
+						$('#'+this.FELID).empty();
+						if (typeof this.chart !== 'undefined') {
+							console.log(['NOTIFY values=',this.models['UserHeatingMonthModel'].values]);
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
+								s.data = self.models['UserHeatingMonthModel'].values;
+							});
+							this.appendAverage();
+						} else {
+							console.log('chart not yet done => renderChart!');
+							this.renderChart();
+						}
 					}
 				} else {
 					this.render();
 				}
-			} else if (options.model==='FeedbackModel' && options.method==='fetched') {
+			/*} else if (options.model==='FeedbackModel' && options.method==='fetched') {
 				if (this.rendered) {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
+					
 					if (options.status === 200) {
 						console.log('FeedbackModels fetched OK.');
 					}
 				} else {
 					this.render();
 				}
-				
+				*/
 			} else if (options.model==='FeedbackModel' && options.method==='send') {
 				if (options.status === 200) {
 					// const msg = 'Feedback submitted OK';
@@ -323,6 +362,7 @@ export default class UserHeatingView extends View {
 				'<div class="row">'+
 					'<div class="col s12 chart-wrapper dark-theme">'+
 						'<div id="user-heating-chart" class="medium-chart"></div>'+
+						'<div id="user-heating-chart-average"></div>'+
 					'</div>'+
 				'</div>'+
 				'<div class="row">'+

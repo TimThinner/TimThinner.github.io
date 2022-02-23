@@ -97,7 +97,12 @@ export default class UserHeatingView extends View {
 				// Use moment because it has nice formatting functions.
 				const s_date = moment(selection[0].time); // Date of first value.
 				const e_date = moment(selection[slen-1].time); // Date of last value.
-				//const duration_in_hours = slen;
+				
+				// Calculate how many days + hours this timerange is:
+				const duration_in_hours = slen;
+				const timerange_days = Math.floor(duration_in_hours/24);
+				const timerange_hours = duration_in_hours-(timerange_days*24);
+				
 				selection.forEach(v=>{
 					sum_temp += v.temperature;
 					sum_humi += v.humidity;
@@ -107,7 +112,8 @@ export default class UserHeatingView extends View {
 				const html = '<p>'+localized_string_average+
 					': <span style="color:#f00">'+ave_temp.toFixed(1)+' °C&nbsp;&nbsp;&nbsp;</span>'+
 					'<span style="color:#0ff">'+ave_humi.toFixed(1)+' %</span><br/>'+
-					'<span style="color:#ccc">'+range_title + s_date.format('DD.MM.YYYY HH:mm')+' - '+e_date.format('DD.MM.YYYY HH:mm')+'</span>'+
+					'<span style="color:#ccc">'+range_title + s_date.format('DD.MM.YYYY HH:mm')+' - '+e_date.format('DD.MM.YYYY HH:mm')+'</span><br/>'+
+					'<span style="color:#aaa">('+timerange_days+' days '+timerange_hours+' hours)</span>'+
 					'</p>';
 				$('#user-heating-chart-average').empty().append(html);
 			} else {

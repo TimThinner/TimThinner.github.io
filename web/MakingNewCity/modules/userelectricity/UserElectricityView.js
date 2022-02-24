@@ -66,6 +66,37 @@ export default class UserElectricityView extends View {
 						
 						$('#'+this.FELID).empty();
 						console.log('OK. Electricity Now, Day, Week or Month FETCHED.');
+						
+						console.log(['UserElectricityNowModel measurement=',
+							this.models['UserElectricityNowModel'].measurement,
+							' values=',
+							this.models['UserElectricityNowModel'].values,
+							' energyValues=',
+							this.models['UserElectricityNowModel'].energyValues]);
+						
+						console.log(['UserElectricityDayModel measurement=',
+							this.models['UserElectricityDayModel'].measurement,
+							' values=',
+							this.models['UserElectricityDayModel'].values,
+							' energyValues=',
+							this.models['UserElectricityDayModel'].energyValues]);
+						
+						console.log(['UserElectricityWeekModel measurement=',
+							this.models['UserElectricityWeekModel'].measurement,
+							' values=',
+							this.models['UserElectricityWeekModel'].values,
+							' energyValues=',
+							this.models['UserElectricityWeekModel'].energyValues]);
+						
+						
+						console.log(['UserElectricityMonthModel measurement=',
+							this.models['UserElectricityMonthModel'].measurement,
+							' values=',
+							this.models['UserElectricityMonthModel'].values,
+							' energyValues=',
+							this.models['UserElectricityMonthModel'].energyValues]);
+						
+						
 						if (typeof this.chart !== 'undefined') {
 							console.log('chart is OK => UPDATE CHART DATA!');
 						} else {

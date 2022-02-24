@@ -308,6 +308,7 @@ export default class UserApartmentModel extends Model {
 					
 					if (myJson.length === 1) {
 						self.measurement = myJson;
+						console.log(['self.measurement=',myJson]);
 					} else {
 						console.log(['Before process() myJson=',myJson]);
 						self.process(myJson);

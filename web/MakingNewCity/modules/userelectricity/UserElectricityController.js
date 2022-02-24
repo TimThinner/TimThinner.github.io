@@ -52,10 +52,10 @@ export default class UserElectricityController extends Controller {
 	init() {
 		// ends defines the moment subtracted from now.
 		// starts is then substracted from end to create a short timerange just to get one (last) value close to end moment.
-		const nowTR = {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}};
-		const dayTR = {ends:{value:24,unit:'hours'},starts:{value:2,unit:'minutes'}};
-		const weekTR = {ends:{value:7,unit:'days'},starts:{value:2,unit:'minutes'}};
-		const monthTR = {ends:{value:1,unit:'months'},starts:{value:2,unit:'minutes'}};
+		const nowTR = {ends:{value:10,unit:'seconds'},starts:{value:5,unit:'minutes'}};
+		const dayTR = {ends:{value:24,unit:'hours'},starts:{value:10,unit:'minutes'}};
+		const weekTR = {ends:{value:7,unit:'days'},starts:{value:60,unit:'minutes'}};
+		const monthTR = {ends:{value:1,unit:'months'},starts:{value:24,unit:'hours'}};
 		
 		const model_EleNow = new UserApartmentModel({name:'UserElectricityNowModel',src:'data/sivakka/apartments/feeds.json',type:'energy',limit:1,range:nowTR});
 		model_EleNow.subscribe(this);

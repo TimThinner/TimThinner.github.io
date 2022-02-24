@@ -52,6 +52,57 @@ export default class UserElectricityView extends View {
 		$(this.el).empty();
 	}
 	
+	foo() {
+		
+		const ele_now = this.models['UserElectricityNowModel'];
+		const ele_day = this.models['UserElectricityDayModel'];
+		const ele_week = this.models['UserElectricityWeekModel'];
+		const ele_month = this.models['UserElectricityMonthModel'];
+		
+		const UM = this.controller.master.modelRepo.get('UserModel');
+		
+		//const dim = moment().daysInMonth();
+		
+		/*
+		UM.price_energy_monthly
+		UM.price_energy_basic
+		UM.price_energy_transfer
+		*/
+		const meas_now = ele_now.measurement; // is in normal situation an array.
+		const meas_day = ele_day.measurement; // is in normal situation an array.
+		const meas_week = ele_week.measurement; // is in normal situation an array.
+		const meas_month = ele_month.measurement; // is in normal situation an array.
+		
+		if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_day) && meas_day.length > 0) {
+			const energy_now = meas_now[0].totalEnergy;
+			const energy_day = meas_day[0].totalEnergy;
+			if (typeof energy_now !== 'undefined' && typeof energy_day !== 'undefined') {
+				
+				const energy_diffe = energy_now - energy_day;
+				console.log(['Electricity for day = 'energy_diffe]);
+				
+			}
+		}
+		if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_week) && meas_week.length > 0) {
+			const energy_now = meas_now[0].totalEnergy;
+			const energy_week = meas_week[0].totalEnergy;
+			if (typeof energy_now !== 'undefined' && typeof energy_week !== 'undefined') {
+				
+				const energy_diffe = energy_now - energy_week;
+				console.log(['Electricity for week = 'energy_diffe]);
+			}
+		}
+		if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_month) && meas_month.length > 0) {
+			const energy_now = meas_now[0].totalEnergy;
+			const energy_month = meas_month[0].totalEnergy;
+			if (typeof energy_now !== 'undefined' && typeof energy_month !== 'undefined') {
+				
+				const energy_diffe = energy_now - energy_month;
+				console.log(['Electricity for month = 'energy_diffe]);
+			}
+		}
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if ((options.model==='UserElectricityNowModel'||
@@ -66,7 +117,8 @@ export default class UserElectricityView extends View {
 						
 						$('#'+this.FELID).empty();
 						console.log('OK. Electricity Now, Day, Week or Month FETCHED.');
-						
+						this.foo();
+						/*
 						console.log(['UserElectricityNowModel measurement=',
 							this.models['UserElectricityNowModel'].measurement,
 							' values=',
@@ -82,7 +134,7 @@ export default class UserElectricityView extends View {
 							this.models['UserElectricityDayModel'].energyValues]);
 						
 						console.log(['UserElectricityWeekModel measurement=',
-							this.models['UserElectricityWeekModel'].measurement,
+							this.models['UserElectricityWeekModel'].measurement.totalEnergy,
 							' values=',
 							this.models['UserElectricityWeekModel'].values,
 							' energyValues=',
@@ -95,8 +147,7 @@ export default class UserElectricityView extends View {
 							this.models['UserElectricityMonthModel'].values,
 							' energyValues=',
 							this.models['UserElectricityMonthModel'].energyValues]);
-						
-						
+						*/
 						if (typeof this.chart !== 'undefined') {
 							console.log('chart is OK => UPDATE CHART DATA!');
 						} else {

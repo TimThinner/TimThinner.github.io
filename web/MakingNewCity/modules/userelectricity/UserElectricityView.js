@@ -79,7 +79,7 @@ export default class UserElectricityView extends View {
 			if (typeof energy_now !== 'undefined' && typeof energy_day !== 'undefined') {
 				
 				const energy_diffe = energy_now - energy_day;
-				console.log(['Electricity for day = 'energy_diffe]);
+				console.log(['Electricity for day = ',energy_diffe]);
 				
 			}
 		}
@@ -89,7 +89,7 @@ export default class UserElectricityView extends View {
 			if (typeof energy_now !== 'undefined' && typeof energy_week !== 'undefined') {
 				
 				const energy_diffe = energy_now - energy_week;
-				console.log(['Electricity for week = 'energy_diffe]);
+				console.log(['Electricity for week = ',energy_diffe]);
 			}
 		}
 		if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_month) && meas_month.length > 0) {
@@ -98,7 +98,7 @@ export default class UserElectricityView extends View {
 			if (typeof energy_now !== 'undefined' && typeof energy_month !== 'undefined') {
 				
 				const energy_diffe = energy_now - energy_month;
-				console.log(['Electricity for month = 'energy_diffe]);
+				console.log(['Electricity for month = ',energy_diffe]);
 			}
 		}
 	}

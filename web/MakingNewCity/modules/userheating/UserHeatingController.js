@@ -37,16 +37,13 @@ export default class UserHeatingController extends Controller {
 	
 	*/
 	init() {
-		const mTR = {ends:{value:10,unit:'seconds'},starts:{value:30,unit:'days'}};
-		// Response is 24 x 60 x 7 values  = 10 080 measurements => 24 x 7 averages (168 averages).
-		//             24 x 60 x 30 values = 43 200 measurements => 24 x 30 averages (720 averages).
+		// Response is 24 x 60 x 30 values = 43 200 measurements => 24 x 30 averages (720 averages).
 		const model_Heating = new UserHeatingModel({
-			name:'UserHeatingMonthModel',
-			src:'data/sivakka/apartments/feeds.json',
-			type:'sensor', // // type = sensor (Temperature and Humidity)
-			limit:0,
-			range:mTR,
-			timerange: 30  // NOTE: This is always 30 days here!
+			name: 'UserHeatingMonthModel',
+			src: 'data/sivakka/apartments/feeds.json',
+			type: 'sensor', // // type = sensor (Temperature and Humidity)
+			limit: 0, // 0 = no limit
+			timerange: 30 // 30 days
 		});
 		model_Heating.subscribe(this);
 		this.master.modelRepo.add('UserHeatingMonthModel',model_Heating);

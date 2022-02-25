@@ -44,31 +44,15 @@ export default class UserHeatingModel extends Model {
 	
 	*/
 	constructor(options) {
-		
 		super(options);
 		
 		this.type = options.type;
 		this.limit = options.limit;
-		this.range = options.range;
-		// In the old implementation we had always end NOW and START was adjusted to be 
-		// todays (00:00)    timerange 1
-		// yesterdays 00:00  timerange 2
-		// etc.
-		// 
-		// Now we need to define END-POINT to somewhere not always NOW-moment. And then the START-POINT to create period.
-		// After that timerange just moves the startpoint further past but with 24 hour steps.
-		// 
-		/*
+		
 		if (typeof options.timerange !== 'undefined') {
 			this.timerange = options.timerange;
 		} else {
-			this.timerange = undefined;
-		}
-		*/
-		if (typeof options.timerange !== 'undefined') {
-			this.timerange = options.timerange;
-		} else {
-			this.timerange = 1; // User can change this from 1 ... 7.
+			this.timerange = 1; // Default is one day.
 		}
 		
 		this.measurement = [];
@@ -77,37 +61,15 @@ export default class UserHeatingModel extends Model {
 	}
 	
 	setTimePeriod() {
-		const e_v = this.range.ends.value;
-		const e_u = this.range.ends.unit;
-		let s_v;
-		let s_u;
-		// NOTE: In charts we don't restrict number of values in response => we
-		// use timerange to specify how many days to include in database query.
-		if (this.limit === 0) {
-			s_v = this.timerange;
-			s_u = 'days';
-			const e_m = moment().subtract(e_v, e_u);
-			// Snap end to this current full hour.
-			e_m.minutes(0);
-			e_m.seconds(0);
-			// ... it automatically snaps start to full hour of yesterday or day before that or ...
-			// which makes it different than calls to get only one value (limit==1).
-			const s_m = moment(e_m).subtract(s_v, s_u);
-			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
-			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
-			
-		} else {
-			s_v = this.range.starts.value;
-			s_u = this.range.starts.unit;
-			
-			const e_m = moment().subtract(e_v, e_u);
-			// Do NOT snap end to current full hour, instead use current REAL-TIME!
-			//e_m.minutes(0);
-			//e_m.seconds(0);
-			const s_m = moment(e_m).subtract(s_v, s_u);
-			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
-			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
-		}
+		const e_m = moment().subtract(10,'seconds'); // now - 10 seconds
+		// Snap end to this current full hour.
+		e_m.minutes(0);
+		e_m.seconds(0);
+		// ... it automatically snaps start to full hour of yesterday or day before that or ...
+		// which makes it different than calls to get only one value (limit==1).
+		const s_m = moment(e_m).subtract(this.timerange, 'days'); // exactly 30 days before end-moment.
+		this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
+		this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
 	}
 	
 	removeHeatingDuplicates(json) {
@@ -269,7 +231,6 @@ export default class UserHeatingModel extends Model {
 				};
 				const myRequest = new Request(url, myPost);
 				this.doTheFetch(myRequest);
-				//this.doTheFetch(url, myPost);
 				
 			} else {
 				// Abnormal user (admin) => no readkey. Use direct url for testing purposes.

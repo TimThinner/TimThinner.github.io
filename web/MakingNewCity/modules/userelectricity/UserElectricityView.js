@@ -51,6 +51,17 @@ export default class UserElectricityView extends View {
 		this.rendered = false;
 		$(this.el).empty();
 	}
+	
+	show(model_name) {
+		
+		const ele = this.models[model_name];
+		const meas = ele.measurement; // is in normal situation an array.
+		if (Array.isArray(meas) && meas.length > 0) {
+			const energy = meas[0].totalEnergy;
+			console.log(['energy=',energy]);
+		}
+	}
+	
 	/*
 	foo() {
 		
@@ -114,7 +125,9 @@ export default class UserElectricityView extends View {
 						
 						$('#'+this.FELID).empty();
 						console.log('OK. '+options.model+' FETCHED.');
-						//this.foo();
+						
+						this.show(options.model);
+						
 						if (typeof this.chart !== 'undefined') {
 							console.log('chart is OK => UPDATE CHART DATA!');
 						} else {

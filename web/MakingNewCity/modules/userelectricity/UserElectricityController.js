@@ -83,7 +83,7 @@ export default class UserElectricityController extends Controller {
 		// NOTE: Range is created dynamically at each fetching cycle.
 		const model_data = [];
 		for (let i=0; i<this.numOfDays; i++) {
-			model_data.push({name:'UserElectricity'+i+'Model',range:i});
+			model_data.push({name:'UserElectricity'+i+'Model',index:i});
 		}
 		model_data.forEach(md => {
 			const m = new UserElectricityModel({
@@ -91,7 +91,7 @@ export default class UserElectricityController extends Controller {
 				src: 'data/sivakka/apartments/feeds.json',
 				type: 'energy',
 				limit: 1,
-				range: md.range
+				index: md.index
 			});
 			m.subscribe(this);
 			this.master.modelRepo.add(md.name, m);

@@ -124,7 +124,7 @@ export default class UserElectricityView extends View {
 					if (options.status === 200) {
 						
 						$('#'+this.FELID).empty();
-						console.log('OK. '+options.model+' FETCHED.');
+						//console.log('OK. '+options.model+' FETCHED.');
 						
 						this.foo(options.model);
 						

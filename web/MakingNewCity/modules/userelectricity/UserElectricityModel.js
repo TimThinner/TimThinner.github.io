@@ -138,7 +138,7 @@ export default class UserElectricityModel extends Model {
 						console.log(['self.measurement=',myJson]);
 					} else {
 						console.log(['Before process() myJson=',myJson]);
-						self.process(myJson);
+						//self.process(myJson);
 					}
 					
 				} else {
@@ -147,6 +147,16 @@ export default class UserElectricityModel extends Model {
 						message = self.name+': '+myJson;
 						self.errorMessage = message;
 						self.measurement = [];
+						
+					} else if (myJson === 'Err:PROTOCOL_SEQUENCE_TIMEOUT') {
+						
+						console.log('Err:PROTOCOL_SEQUENCE_TIMEOUT  !!!!!!!!!!!!!!!!!!?');
+						
+						self.status = 404;
+						message = self.name+': '+myJson;
+						self.errorMessage = message;
+						self.measurement = [];
+						
 					} else if (typeof self.measurement.message !== 'undefined') {
 						message = self.measurement.message;
 						self.errorMessage = message;
@@ -155,8 +165,8 @@ export default class UserElectricityModel extends Model {
 						self.measurement = [];
 					}
 				}
-				console.log(['self.measurement=',self.measurement]);
-				console.log([self.name+' fetch status=',self.status]);
+				//console.log(['self.measurement=',self.measurement]);
+				//console.log([self.name+' fetch status=',self.status]);
 				self.fetching = false;
 				self.ready = true;
 				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});

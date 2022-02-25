@@ -28,16 +28,8 @@ export default class UserPageController extends Controller {
 	}
 	
 	init() {
-		/*
-		const model = new UserApartmentModel({name:'UserPageModel',src:''});
-		model.subscribe(this);
-		this.master.modelRepo.add('UserPageModel',model);
-		this.models['UserPageModel'] = model;
-		*/
-		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
-		
 		this.view = new UserPageView(this);
 	}
 }

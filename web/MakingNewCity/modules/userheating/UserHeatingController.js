@@ -1,5 +1,5 @@
 import Controller from '../common/Controller.js';
-import UserApartmentModel from '../userpage/UserApartmentModel.js';
+import UserHeatingModel from './UserHeatingModel.js';
 import FeedbackModel from '../common/FeedbackModel.js';
 import UserHeatingView from './UserHeatingView.js';
 
@@ -40,17 +40,17 @@ export default class UserHeatingController extends Controller {
 		const mTR = {ends:{value:10,unit:'seconds'},starts:{value:30,unit:'days'}};
 		// Response is 24 x 60 x 7 values  = 10 080 measurements => 24 x 7 averages (168 averages).
 		//             24 x 60 x 30 values = 43 200 measurements => 24 x 30 averages (720 averages).
-		const model_HeatingMonth = new UserApartmentModel({
+		const model_Heating = new UserHeatingModel({
 			name:'UserHeatingMonthModel',
 			src:'data/sivakka/apartments/feeds.json',
 			type:'sensor', // // type = sensor (Temperature and Humidity)
 			limit:0,
 			range:mTR,
-			timerange: 30  // NOTE: This is always 30 days here! TEST: 3 days! 4320 values!
+			timerange: 30  // NOTE: This is always 30 days here!
 		});
-		model_HeatingMonth.subscribe(this);
-		this.master.modelRepo.add('UserHeatingMonthModel',model_HeatingMonth);
-		this.models['UserHeatingMonthModel'] = model_HeatingMonth;
+		model_Heating.subscribe(this);
+		this.master.modelRepo.add('UserHeatingMonthModel',model_Heating);
+		this.models['UserHeatingMonthModel'] = model_Heating;
 		
 		const model_Feedback = new FeedbackModel({name:'FeedbackModel',src:''});
 		model_Feedback.subscribe(this);

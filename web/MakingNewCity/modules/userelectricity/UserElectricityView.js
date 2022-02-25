@@ -51,7 +51,7 @@ export default class UserElectricityView extends View {
 		this.rendered = false;
 		$(this.el).empty();
 	}
-	
+	/*
 	foo() {
 		
 		const ele_now = this.models['UserElectricityNowModel'];
@@ -63,11 +63,11 @@ export default class UserElectricityView extends View {
 		
 		//const dim = moment().daysInMonth();
 		
-		/*
-		UM.price_energy_monthly
-		UM.price_energy_basic
-		UM.price_energy_transfer
-		*/
+		
+		//UM.price_energy_monthly
+		//UM.price_energy_basic
+		//UM.price_energy_transfer
+		
 		const meas_now = ele_now.measurement; // is in normal situation an array.
 		const meas_day = ele_day.measurement; // is in normal situation an array.
 		const meas_week = ele_week.measurement; // is in normal situation an array.
@@ -102,52 +102,19 @@ export default class UserElectricityView extends View {
 			}
 		}
 	}
+	*/
 	
 	notify(options) {
 		if (this.controller.visible) {
-			if ((options.model==='UserElectricityNowModel'||
-				options.model==='UserElectricityDayModel'||
-				options.model==='UserElectricityWeekModel'||
-				options.model==='UserElectricityMonthModel') && options.method==='fetched') {
-				
+			if (options.model.indexOf('UserElectricity') === 0 && options.method==='fetched') {
 				if (this.rendered) {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
 					if (options.status === 200) {
 						
 						$('#'+this.FELID).empty();
-						console.log('OK. Electricity Now, Day, Week or Month FETCHED.');
-						this.foo();
-						/*
-						console.log(['UserElectricityNowModel measurement=',
-							this.models['UserElectricityNowModel'].measurement,
-							' values=',
-							this.models['UserElectricityNowModel'].values,
-							' energyValues=',
-							this.models['UserElectricityNowModel'].energyValues]);
-						
-						console.log(['UserElectricityDayModel measurement=',
-							this.models['UserElectricityDayModel'].measurement,
-							' values=',
-							this.models['UserElectricityDayModel'].values,
-							' energyValues=',
-							this.models['UserElectricityDayModel'].energyValues]);
-						
-						console.log(['UserElectricityWeekModel measurement=',
-							this.models['UserElectricityWeekModel'].measurement.totalEnergy,
-							' values=',
-							this.models['UserElectricityWeekModel'].values,
-							' energyValues=',
-							this.models['UserElectricityWeekModel'].energyValues]);
-						
-						
-						console.log(['UserElectricityMonthModel measurement=',
-							this.models['UserElectricityMonthModel'].measurement,
-							' values=',
-							this.models['UserElectricityMonthModel'].values,
-							' energyValues=',
-							this.models['UserElectricityMonthModel'].energyValues]);
-						*/
+						console.log('OK. '+options.model+' FETCHED.');
+						//this.foo();
 						if (typeof this.chart !== 'undefined') {
 							console.log('chart is OK => UPDATE CHART DATA!');
 						} else {

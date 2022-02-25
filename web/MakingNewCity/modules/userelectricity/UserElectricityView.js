@@ -175,24 +175,23 @@ export default class UserElectricityView extends View {
 	render() {
 		const self = this;
 		$(this.el).empty();
-		if (this.areModelsReady()) {
-			
-			const LM = this.controller.master.modelRepo.get('LanguageModel');
-			const sel = LM.selected;
-			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-			const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
-			const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
-			
-			const html =
-				'<div class="row">'+
-					'<div class="col s12">'+
-						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-						'<p style="text-align:center;"><img src="./svg/radiator.svg" height="80"/></p>'+
-						'<p style="text-align:center;">'+localized_string_description+'</p>'+
-					'</div>'+
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+		const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
+		const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
+		
+		const html =
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
+					'<p style="text-align:center;"><img src="./svg/radiator.svg" height="80"/></p>'+
+					'<p style="text-align:center;">'+localized_string_description+'</p>'+
 				'</div>'+
-				/*
-				'<div class="row">'+
+			'</div>'+
+			/*
+			'<div class="row">'+
 					'<div class="col s12 chart-wrapper dark-theme">'+
 						'<div id="user-electricity-chart" class="medium-chart"></div>'+
 						'<div style="text-align:center;" id="user-electricity-chart-average"></div>'+
@@ -209,20 +208,13 @@ export default class UserElectricityView extends View {
 				'<div class="row">'+
 					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
 				'</div>';
-			$(html).appendTo(this.el);
-			
-			$('#back').on('click',function() {
-				self.models['MenuModel'].setSelected('userpage');
-			});
-			
-			this.handleErrorMessages(this.FELID);
-			//this.renderChart();
-			this.rendered = true;
-			
-		} else {
-			console.log('UserElectricityView => render Model IS NOT READY!!!!');
-			// this.el = '#content'
-			this.showSpinner(this.el);
-		}
+		$(html).appendTo(this.el);
+		
+		$('#back').on('click',function() {
+			self.models['MenuModel'].setSelected('userpage');
+		});
+		//this.handleErrorMessages(this.FELID);
+		//this.renderChart();
+		this.rendered = true;
 	}
 }

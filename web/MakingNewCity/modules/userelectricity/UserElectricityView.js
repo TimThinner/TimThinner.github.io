@@ -18,6 +18,7 @@ export default class UserElectricityView extends View {
 		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
 		this.PTO.subscribe(this);
 		
+		this.fetchQueue = [];
 		this.rendered = false;
 		this.FELID = 'user-electricity-view-failure';
 		this.chart = undefined; // We have a chart!
@@ -118,6 +119,14 @@ export default class UserElectricityView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model.indexOf('UserElectricity') === 0 && options.method==='fetched') {
+				
+				
+				//.. and start the fetching process with NEXT model:
+				const f = this.fetchQueue.shift();
+				if (typeof f !== 'undefined') {
+					this.models[f.key].fetch(f.token, f.readkey);
+				}
+				
 				if (this.rendered) {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
@@ -139,15 +148,24 @@ export default class UserElectricityView extends View {
 					this.render();
 				}
 				
+				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Models are 'MenuModel', 'UserElectricityNowModel', ...
+				
+				this.fetchQueue = [];
 				Object.keys(this.models).forEach(key => {
 					console.log(['FETCH MODEL key=',key]);
 					const UM = this.controller.master.modelRepo.get('UserModel');
 					if (UM) {
-						this.models[key].fetch(UM.token, UM.readkey);
+						this.fetchQueue.push({'key':key,'token':UM.token,'readkey':UM.readkey});
+						//this.models[key].fetch(UM.token, UM.readkey);
 					}
 				});
+				//.. and start the fetching process with FIRST model:
+				const f = this.fetchQueue.shift();
+				if (typeof f !== 'undefined') {
+					this.models[f.key].fetch(f.token, f.readkey);
+				}
 			}
 		}
 	}

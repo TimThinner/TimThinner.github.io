@@ -58,9 +58,10 @@ export default class UserElectricityModel extends Model {
 	
 	setTimePeriod() {
 		
-		const d = this.index;
+		const d = this.index+1;
 		const e_m = moment().subtract(d,'days');
 		// Snap end to this current full hour.
+		e_m.hours(0);
 		e_m.minutes(0);
 		e_m.seconds(0);
 		const s_m = moment(e_m).subtract(10, 'minutes'); // get latest value between end-10m ... end

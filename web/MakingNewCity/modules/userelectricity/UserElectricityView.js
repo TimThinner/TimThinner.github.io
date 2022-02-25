@@ -18,6 +18,13 @@ export default class UserElectricityView extends View {
 		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
 		this.PTO.subscribe(this);
 		
+		/*
+			Note: IT TAKES time to fecth electricity values (totalEnergy), even if we are fetching 
+			only one value from short period of time.
+			https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&limit=1&start=2022-02-25T15:50&end=2022-02-25T16:00
+			
+		*/
+		
 		this.fetchQueue = [];
 		this.rendered = false;
 		this.FELID = 'user-electricity-view-failure';

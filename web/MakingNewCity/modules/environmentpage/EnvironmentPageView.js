@@ -222,8 +222,6 @@ export default class EnvironmentPageView extends View {
 			
 			const resuArray = self.convertResults();
 			
-			
-			
 			// Create chart
 			self.chart = am4core.create('emissions-chart', am4charts.XYChart);
 			self.paddingRight = 20;

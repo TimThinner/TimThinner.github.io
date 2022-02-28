@@ -55,9 +55,17 @@ export default class UserElectricityModel extends Model {
 		this.energyValues = [];
 		this.energyTotal = 0;
 	}
-	
-	setTimePeriod() {
+	/*
+		Note: IT TAKES time to fecth electricity values (totalEnergy), even if we are fetching 
+		only one value from short period of time.
 		
+		2022-02-25:
+		
+		https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&limit=1&start=2022-02-23T23:50&end=2022-02-24T00:00
+		...
+		https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&limit=1&start=2022-01-25T23:50&end=2022-01-26T00:00
+	*/
+	setTimePeriod() {
 		const d = this.index+1;
 		const e_m = moment().subtract(d,'days');
 		// Snap end to this current full hour.

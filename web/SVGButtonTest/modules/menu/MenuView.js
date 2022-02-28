@@ -81,6 +81,7 @@ export default class MenuView extends View {
 		console.log('MenuView hide()');
 		this.rendered = false;
 		
+		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
 		let wrap = document.getElementById(this.el.slice(1));
 		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
 		//$(this.el).empty();
@@ -107,11 +108,6 @@ export default class MenuView extends View {
 		const bh = h*0.45;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
-		
-		const BLACK = '#000';
-		const WHITE = '#fff';
-		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
-		const GREEN = '#0f0';
 		
 		const TEAL_LIGHTEN_4 = '#b2dfdb';
 		const TEAL_LIGHTEN_3 = '#80cbc4';
@@ -195,7 +191,7 @@ export default class MenuView extends View {
 		}, false);
 		
 		surface.addEventListener("mouseover", function(event){ 
-			border.style.stroke = TEAL_LIGHTEN_4;
+			border.style.stroke = TEAL;
 			border.style.fill = TEAL_LIGHTEN_2;
 		}, false);
 		surface.addEventListener("mouseout", function(event){ 
@@ -209,19 +205,6 @@ export default class MenuView extends View {
 		//$('#space').append(group);
 	}
 	
-	/*
-	<defs>
-	<radialGradient id="grad" cx="50%" cy="50%" r="100%">
-		<stop offset="10%" style="stop-color:#fff; stop-opacity:1" />
-		<stop offset="50%" style="stop-color:#eee; stop-opacity:1" />
-		<stop offset="90%" style="stop-color:#ddd; stop-opacity:1" />
-	</radialGradient>
-	</defs>
-	<rect x="-900" y="-500" width="1800" height="900" fill="url(#grad)" stroke-width="0" stroke="#000" />
-	
-	https://stackoverflow.com/questions/13760299/dynamic-svg-linear-gradient-when-using-javascript
-	
-	*/
 	createSpace() {
 		const w = this.REO.width;
 		const h = this.REO.height;

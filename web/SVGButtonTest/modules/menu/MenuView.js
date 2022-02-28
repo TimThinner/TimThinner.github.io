@@ -81,7 +81,7 @@ export default class MenuView extends View {
 		console.log('MenuView hide()');
 		this.rendered = false;
 		
-		let wrap = document.getElementById(this.el);
+		let wrap = document.getElementById(this.el.slice(1));
 		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
 		//$(this.el).empty();
 	}
@@ -94,7 +94,7 @@ export default class MenuView extends View {
 		this.REO.unsubscribe(this);
 		this.rendered = false;
 		
-		let wrap = document.getElementById(this.el);
+		let wrap = document.getElementById(this.el.slice(1));
 		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
 		//$(this.el).empty();
 	}
@@ -246,7 +246,7 @@ export default class MenuView extends View {
 		rect.setAttribute('fill', '#fff');
 		
 		svg.appendChild(rect);
-		document.getElementById(this.el).appendChild(svg);
+		document.getElementById(this.el.slice(1)).appendChild(svg);
 		//$(this.el).append(svg);
 	}
 	
@@ -254,7 +254,7 @@ export default class MenuView extends View {
 		console.log('renderALL()!!!! VANILLA ');
 		//$(this.el).empty();
 		// Vanilla
-		let wrap = document.getElementById(this.el);
+		let wrap = document.getElementById(this.el.slice(1));
 		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
 		
 		this.createSpace();

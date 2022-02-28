@@ -86,8 +86,8 @@ export default class MenuView extends View {
 		const self = this;
 		const w = this.REO.width;
 		const h = this.REO.height;
-		const bw = w*0.5;
-		const bh = h*0.5;
+		const bw = w*0.45;
+		const bh = h*0.45;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
 		
@@ -122,7 +122,7 @@ export default class MenuView extends View {
 		border.style.fill = WHITE;
 		border.style.fillOpacity = 0.5;
 		border.style.stroke = DARK_BLUE;
-		border.style.strokeWidth = 3;
+		border.style.strokeWidth = 4;
 		group.appendChild(border);
 		
 		const surface = document.createElementNS(svgNS, "rect");
@@ -168,10 +168,6 @@ export default class MenuView extends View {
 	
 	*/
 	createSpace() {
-		$('html').css('background-color','#000');
-		$('body').css('background-color','#000');
-		$('.container').css('background-color','#000');
-		
 		const w = this.REO.width;
 		const h = this.REO.height;
 		const wp2 = w*0.5;
@@ -186,47 +182,15 @@ export default class MenuView extends View {
 		svg.setAttributeNS(null,'viewBox',vb);
 		svg.id = 'space';
 		
-		// Store an array of stop information for the gradient
-		var stops = [
-			{"color":"#fff","offset": "10%"},
-			{"color":"#000","offset": "50%"}
-		];
-		/*
-		const stops = [
-			{"style":"stop-color:#fff; stop-opacity:1","offset": "10%"}
-			//{"style":"#stop-color:#eee; stop-opacity:1","offset": "50%"},
-			//{"style":"#stop-color:#ddd; stop-opacity:1","offset": "90%"}
-		];*/
-		const defs = document.createElementNS(svgNS, 'defs');
-		const gradient = document.createElementNS(svgNS, 'radialGradient');
 		const rect = document.createElementNS(svgNS, 'rect');
-		
-		// Parses an array of stop information and appends <stop> elements to the gradient
-		for (let i=0, length=stops.length; i < length; i++) {
-			// Create a <stop> element and set its offset based on the position of the for loop.
-			var stop = document.createElementNS(svgNS, 'stop');
-			stop.setAttribute('offset', stops[i].offset);
-			stop.setAttribute('stop-color', stops[i].color);
-			// Add the stop to the gradient element.
-			gradient.appendChild(stop);
-		}
-		// Apply the gradient to <defs>
-		gradient.id = 'grad';
-		gradient.setAttribute('cx', '50%');
-		gradient.setAttribute('cy', '50%');
-		gradient.setAttribute('r', '100%');
-		defs.appendChild(gradient);
-		
 		// Setup the <rect> element.
 		rect.setAttribute('x',-wp2);
 		rect.setAttribute('y',-hp2);
 		rect.setAttribute('width',w);
 		rect.setAttribute('height',h);
-		rect.setAttribute('fill', 'url(#grad)');
+		rect.setAttribute('fill', '#fff');
 		
-		svg.appendChild(defs);
 		svg.appendChild(rect);
-		
 		$(this.el).append(svg);
 	}
 	

@@ -44,6 +44,17 @@ import View from '../common/View.js';
 #0288d1 light-blue darken-2
 #0277bd light-blue darken-3
 #01579b light-blue darken-4
+
+#e0f2f1 teal lighten-5
+#b2dfdb teal lighten-4
+#80cbc4 teal lighten-3
+#4db6ac teal lighten-2
+#26a69a teal lighten-1
+#009688 teal
+#00897b teal darken-1
+#00796b teal darken-2
+#00695c teal darken-3
+#004d40 teal darken-4
 */
 
 export default class MenuView extends View {
@@ -91,10 +102,20 @@ export default class MenuView extends View {
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
 		
+		const BLACK = '#000';
 		const WHITE = '#fff';
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
-		const RED = '#f00';
+		
+		const TEAL_LIGHTEN_4 = '#b2dfdb';
+		const TEAL_LIGHTEN_3 = '#80cbc4';
+		const TEAL_LIGHTEN_2 = '#4db6ac';
+		const TEAL_LIGHTEN_1 = '#26a69a';
+		const TEAL = '#009688';
+		const TEAL_DARKEN_1 = '#00897b';
+		const TEAL_DARKEN_2 = '#00796b';
+		const TEAL_DARKEN_3 = '#00695c';
+		const TEAL_DARKEN_4 = '#004d40';
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'TL') {
@@ -119,21 +140,44 @@ export default class MenuView extends View {
 		border.setAttributeNS(null, 'width', bw);
 		border.setAttributeNS(null, 'height', bh);
 		border.setAttributeNS(null, 'rx', 10);
-		border.style.fill = WHITE;
+		border.style.fill = TEAL_DARKEN_2;
 		border.style.fillOpacity = 0.5;
-		border.style.stroke = DARK_BLUE;
-		border.style.strokeWidth = 4;
+		border.style.stroke = TEAL_DARKEN_4;
+		border.style.strokeWidth = 5;
 		group.appendChild(border);
+		
+		/*
+		<svg x="-100" y="410" width="200px" height="32px">
+			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="version" class="version-info"></text>
+		</svg>
+		*/
+		// TEXT is wrapped inside SVG-element.
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttributeNS(null, 'x', -bw*0.5);
+		svg.setAttributeNS(null, 'y', -bh*0.5);
+		svg.setAttributeNS(null, 'width', bw);
+		svg.setAttributeNS(null, 'height', bh);
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','50%');
+		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.setAttribute('font-size','42px');
+		txt.setAttribute('font-weight','bold');
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.setAttribute('fill','#fff');
+		const text_node = document.createTextNode(type);
+		txt.appendChild(text_node);
+		svg.appendChild(txt);
+		group.appendChild(svg);
 		
 		const surface = document.createElementNS(svgNS, "rect");
 		surface.setAttributeNS(null, 'x', -bw*0.5);
 		surface.setAttributeNS(null, 'y', -bh*0.5);
 		surface.setAttributeNS(null, 'width', bw);
 		surface.setAttributeNS(null, 'height', bh);
-		//surface.style.stroke = RED;
-		//surface.style.strokeWidth = 1;
 		surface.style.opacity = 0;
-		//surface.style.fill = WHITE;
 		surface.style.fillOpacity = 0;
 		surface.style.cursor = 'pointer';
 		
@@ -143,10 +187,12 @@ export default class MenuView extends View {
 		}, false);
 		
 		surface.addEventListener("mouseover", function(event){ 
-			border.style.fill = GREEN;
+			border.style.stroke = TEAL_LIGHTEN_4;
+			border.style.fill = TEAL_LIGHTEN_2;
 		}, false);
 		surface.addEventListener("mouseout", function(event){ 
-			border.style.fill = WHITE;
+			border.style.stroke = TEAL_DARKEN_4;
+			border.style.fill = TEAL_DARKEN_2;
 		}, false);
 		
 		group.appendChild(surface);

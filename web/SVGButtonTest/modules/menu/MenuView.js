@@ -168,7 +168,7 @@ export default class MenuView extends View {
 		txt.setAttribute('text-anchor','middle');
 		txt.style.fill = '#fff';
 		txt.style.stroke = '#000';
-		txt.style.strokeWidth = 2;
+		txt.style.strokeWidth = 1;
 		const text_node = document.createTextNode(type);
 		txt.appendChild(text_node);
 		svg.appendChild(txt);

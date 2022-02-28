@@ -80,7 +80,10 @@ export default class MenuView extends View {
 	hide() {
 		console.log('MenuView hide()');
 		this.rendered = false;
-		$(this.el).empty();
+		
+		let wrap = document.getElementById(this.el);
+		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		//$(this.el).empty();
 	}
 	
 	remove() {
@@ -90,7 +93,10 @@ export default class MenuView extends View {
 		});
 		this.REO.unsubscribe(this);
 		this.rendered = false;
-		$(this.el).empty();
+		
+		let wrap = document.getElementById(this.el);
+		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		//$(this.el).empty();
 	}
 	
 	appendButton(type) {
@@ -199,7 +205,8 @@ export default class MenuView extends View {
 		
 		group.appendChild(surface);
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
-		$('#space').append(group);
+		document.getElementById('#space').appendChild(group);
+		//$('#space').append(group);
 	}
 	
 	/*
@@ -239,12 +246,17 @@ export default class MenuView extends View {
 		rect.setAttribute('fill', '#fff');
 		
 		svg.appendChild(rect);
-		$(this.el).append(svg);
+		document.getElementById(this.el).appendChild(svg);
+		//$(this.el).append(svg);
 	}
 	
 	renderALL() {
-		console.log('renderALL()!!!!');
-		$(this.el).empty();
+		console.log('renderALL()!!!! VANILLA ');
+		//$(this.el).empty();
+		// Vanilla
+		let wrap = document.getElementById(this.el);
+		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		
 		this.createSpace();
 		this.appendButton('TL');
 		this.appendButton('TR');

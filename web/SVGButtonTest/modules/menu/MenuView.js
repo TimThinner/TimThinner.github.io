@@ -205,7 +205,7 @@ export default class MenuView extends View {
 		
 		group.appendChild(surface);
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
-		document.getElementById('#space').appendChild(group);
+		document.getElementById('space').appendChild(group);
 		//$('#space').append(group);
 	}
 	

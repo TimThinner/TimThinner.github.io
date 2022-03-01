@@ -90,6 +90,7 @@ export default class UserElectricityView extends View {
 	updateTotal() {
 		
 		const localized_string_total = 'Total';
+		const localized_string_price = 'Price';
 		// this.chartRangeStart = 0;
 		// this.chartRangeEnd = 1;
 		// This is where we select only part of timerange to be included into calculation.
@@ -132,7 +133,9 @@ export default class UserElectricityView extends View {
 			const price = timerange_days * UM.price_energy_monthly/dim + (UM.price_energy_basic*sum)/100 + (UM.price_energy_transfer*sum)/100;
 			
 			const html = '<p>'+localized_string_total+
-				': <span style="color:#0f0">'+sum.toFixed(1)+' kWh</span> (<span style="color:#0f0">'+price.toFixed(2)+'&euro;</span>)<br/>'+
+				': <span style="color:#0f0">'+sum.toFixed(1)+' kWh</span> '+
+				localized_string_price+
+				': <span style="color:#0f0">'+price.toFixed(2)+'&euro;</span><br/>'+
 				'<span style="color:#ccc">'+range_title + s_date.format('DD.MM.YYYY HH:mm')+' - '+e_date.format('DD.MM.YYYY HH:mm')+'</span><br/>'+
 				'<span style="color:#aaa">('+timerange_days+' days)</span>'+
 				'</p>';

@@ -92,22 +92,22 @@ export default class UserElectricityView extends View {
 					temp_a.push({date:d, total:total});
 				}
 			}
-			const len = temp_a.length;
-			if (len > 1) {
-				// Then sort array based according to date, oldest entry first.
-				temp_a.sort(function(a,b){
-					var bb = moment(b.date);
-					var aa = moment(a.date);
-					return aa - bb;
-				});
-				console.log(['SORTED temp_a=',temp_a]);
-				for (let i=0; i<len-1; i++) {
-					const d = temp_a[i+1].date;
-					const tot = temp_a[i+1].total - temp_a[i].total;
-					resuArray.push({date:d, total:tot});
-				}
-			}
 		});
+		const len = temp_a.length;
+		if (len > 1) {
+			// Then sort array based according to date, oldest entry first.
+			temp_a.sort(function(a,b){
+				var bb = moment(b.date);
+				var aa = moment(a.date);
+				return aa - bb;
+			});
+			console.log(['SORTED temp_a=',temp_a]);
+			for (let i=0; i<len-1; i++) {
+				const d = temp_a[i+1].date;
+				const tot = temp_a[i+1].total - temp_a[i].total;
+				resuArray.push({date:d, total:tot});
+			}
+		}
 		return resuArray;
 	}
 	

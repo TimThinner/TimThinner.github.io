@@ -33,6 +33,11 @@ export default class UserElectricityView extends View {
 		this.rendered = false;
 		this.FELID = 'user-electricity-view-failure';
 		this.chart = undefined; // We have a chart!
+		
+		this.resuArray = [];
+		// Range is from 0 to 1.
+		this.chartRangeStart = 0;
+		this.chartRangeEnd = 1;
 	}
 	
 	show() {
@@ -64,9 +69,13 @@ export default class UserElectricityView extends View {
 		$(this.el).empty();
 	}
 	
-	updateFoo() {
-		
-		
+	updateTotal() {
+		let total = 0;
+		this.resuArray.forEach(e=>{
+			total += e.total;
+		});
+		const html = '<p>TOTAL: <span style="color:#0f0">'+total.toFixed(1)+' kWh</span></p>';
+		$('#user-electricity-chart-total').empty().append(html);
 	}
 	
 	/*
@@ -82,7 +91,9 @@ export default class UserElectricityView extends View {
 	
 	convertResults() {
 		const temp_a = [];
-		const resuArray = [];
+		
+		this.resuArray = [];
+		
 		Object.keys(this.models).forEach(key => {
 			if (key.indexOf('UserElectricity') === 0) {
 				const meas = this.models[key].measurement; // is in normal situation an array.
@@ -105,11 +116,10 @@ export default class UserElectricityView extends View {
 			for (let i=0; i<len-1; i++) {
 				const d = temp_a[i+1].date;
 				const tot = temp_a[i+1].total - temp_a[i].total;
-				resuArray.push({date:d, total:tot});
+				this.resuArray.push({date:d, total:tot});
 			}
-			console.log(['resuArray=',resuArray]);
+			//console.log(['resuArray=',this.resuArray]);
 		}
-		return resuArray;
 	}
 	
 	renderChart() {
@@ -119,6 +129,7 @@ export default class UserElectricityView extends View {
 		const sel = LM.selected;
 		const localized_string_energy = LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE'];
 		
+		this.convertResults();
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -130,8 +141,8 @@ export default class UserElectricityView extends View {
 			am4core.options.autoDispose = true;
 			
 			
-			const resuArray = self.convertResults();
-			console.log(['resuArray=',resuArray]);
+			
+			
 			
 			// Create chart
 			self.chart = am4core.create("user-electricity-chart", am4charts.XYChart);
@@ -201,7 +212,7 @@ export default class UserElectricityView extends View {
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			series1.data = resuArray;
+			series1.data = self.resuArray;
 			series1.dataFields.dateX = "date"; //"time";
 			series1.dataFields.valueY = "total"; //"temperature";
 			series1.name = "ENERGY";
@@ -226,8 +237,8 @@ export default class UserElectricityView extends View {
 				// Range is from 0 to 1.
 				self.chartRangeStart = ev.target._start;
 				self.chartRangeEnd = ev.target._end;
-				// Calculate averages based on this new selection.
-				self.updateFoo();
+				// Calculate total based on this new selection.
+				self.updateTotal();
 				//console.log(["ev.target._start: ", ev.target._start]); // 0
 				//console.log(["ev.target._end: ", ev.target._end]); // 1
 			});
@@ -236,11 +247,11 @@ export default class UserElectricityView extends View {
 				// console.log('zoomOutButton hit event!');
 				self.chartRangeStart = 0;
 				self.chartRangeEnd = 1;
-				self.updateFoo();
+				self.updateTotal();
 			})
 		}); // end am4core.ready()
 		
-		this.updateFoo();
+		this.updateTotal();
 	}
 	
 	/*
@@ -308,6 +319,7 @@ export default class UserElectricityView extends View {
 	*/
 	
 	notify(options) {
+		const self = this;
 		if (this.controller.visible) {
 			if (options.model.indexOf('UserElectricity') === 0 && options.method==='fetched') {
 				
@@ -326,12 +338,12 @@ export default class UserElectricityView extends View {
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							
-							const resuArray = this.convertResults();
+							this.convertResults();
 							//console.log(['resuArray.length = ',resuArray.length, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!']);
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = resuArray;
+								s.data = self.resuArray;
 							});
-							this.updateFoo();
+							this.updateTotal();
 							
 						} else {
 							this.renderChart();
@@ -383,7 +395,7 @@ export default class UserElectricityView extends View {
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					'<div id="user-electricity-chart" class="medium-chart"></div>'+
-					'<div style="text-align:center;" id="user-electricity-chart-average"></div>'+
+					'<div style="text-align:center;" id="user-electricity-chart-total"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -406,7 +418,7 @@ export default class UserElectricityView extends View {
 		if (this.areModelsReady()) {
 			this.handleErrorMessages(this.FELID);
 			this.renderChart();
-			this.updateFoo();
+			this.updateTotal();
 		}
 	}
 }

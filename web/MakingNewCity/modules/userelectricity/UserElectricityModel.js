@@ -248,7 +248,6 @@ export default class UserElectricityModel extends Model {
 				};
 				const myRequest = new Request(url, myPost);
 				this.doTheFetch(myRequest);
-				//this.doTheFetch(url, myPost);
 				
 			} else {
 				// Abnormal user (admin) => no readkey. Use direct url for testing purposes.

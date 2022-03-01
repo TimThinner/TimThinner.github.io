@@ -365,20 +365,18 @@ export default class UserElectricityView extends View {
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Models are 'MenuModel', 'UserElectricityNowModel', ...
-				
 				this.fetchQueue = [];
-				Object.keys(this.models).forEach(key => {
-					console.log(['FETCH MODEL key=',key]);
-					const UM = this.controller.master.modelRepo.get('UserModel');
-					if (UM) {
+				const UM = this.controller.master.modelRepo.get('UserModel');
+				if (UM) {
+					Object.keys(this.models).forEach(key => {
 						this.fetchQueue.push({'key':key,'token':UM.token,'readkey':UM.readkey});
 						//this.models[key].fetch(UM.token, UM.readkey);
+					});
+					//.. and start the fetching process with FIRST model:
+					const f = this.fetchQueue.shift();
+					if (typeof f !== 'undefined') {
+						this.models[f.key].fetch(f.token, f.readkey);
 					}
-				});
-				//.. and start the fetching process with FIRST model:
-				const f = this.fetchQueue.shift();
-				if (typeof f !== 'undefined') {
-					this.models[f.key].fetch(f.token, f.readkey);
 				}
 			}
 		}

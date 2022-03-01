@@ -394,6 +394,52 @@ export default class UserHeatingView extends View {
 				self.models['MenuModel'].setSelected('userpage');
 			});
 			
+			// Smileys act like radio buttons, only one can be selected at any one time.
+			// The last selection is shown. Can user just de-select?
+			for (let i=1; i<6; i++) {
+				$('#fb-smiley-'+i).on('click',function() {
+					// If this smiley was already "selected" => de-select it and disable submit-feedback -button.
+					if ($('#fb-smiley-'+i).hasClass('selected')) {
+						$('#fb-smiley-'+i).removeClass('selected');
+						$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'.png');
+						$('#submit-feedback').removeClass('teal lighten-1');
+						$('#submit-feedback').addClass('disabled');
+						
+					} else {
+						self.resetSelectedSmiley();
+						$('#fb-smiley-'+i).addClass('selected');
+						$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'-grey.png');
+						$('#submit-feedback').removeClass('disabled');
+						$('#submit-feedback').addClass('teal lighten-1');
+					}
+				});
+			}
+			
+			// 'UX_F2F_faces-1.png'
+			// 'UX_F2F_faces-1-grey.png'
+			
+			$('#submit-feedback').on('click',function() {
+				for (let i=1; i<6; i++) {
+					if ($('#fb-smiley-'+i).hasClass('selected')) {
+						const selected = i;
+						// FeedbackModel send (data, token) 
+							//const refToUser = req.body.refToUser;
+							//const fbType = req.body.feedbackType;
+							//const fb = req.body.feedback;
+						const UM = self.controller.master.modelRepo.get('UserModel');
+						if (UM) {
+							console.log(['Sending Feedback ',selected]);
+							const data = {
+								refToUser: UM.id, // UserModel id
+								feedbackType: 'Heating',
+								feedback: selected
+							}
+							self.models['FeedbackModel'].send(data, UM.token); // see notify for the response...
+						}
+					}
+				}
+			});
+			
 			this.handleErrorMessages(this.FELID);
 			this.renderChart();
 			this.rendered = true;

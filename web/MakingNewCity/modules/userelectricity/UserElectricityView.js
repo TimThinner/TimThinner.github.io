@@ -188,7 +188,7 @@ export default class UserElectricityView extends View {
 				var aa = moment(a.date);
 				return aa - bb;
 			});
-			console.log(['SORTED temp_a=',temp_a]);
+			//console.log(['SORTED temp_a=',temp_a]);
 			for (let i=0; i<len-1; i++) {
 				const d = temp_a[i+1].date;
 				const tot = temp_a[i+1].total - temp_a[i].total;

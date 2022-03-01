@@ -92,7 +92,7 @@ export default class UserElectricityView extends View {
 			console.log(['resuArray=',resuArray]);
 			
 			// Create chart
-			self.chart = am4core.create("user-heating-chart", am4charts.XYChart);
+			self.chart = am4core.create("user-electricity-chart", am4charts.XYChart);
 			self.chart.padding(30, 15, 30, 15);
 			//self.chart.colors.step = 3;
 			
@@ -145,8 +145,8 @@ export default class UserElectricityView extends View {
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
 			series1.data = resuArray;
-			series1.dataFields.dateX = "time";
-			series1.dataFields.valueY = "temperature";
+			series1.dataFields.dateX = "date"; //"time";
+			series1.dataFields.valueY = "total"; //"temperature";
 			series1.name = localized_string_temperature;
 			series1.yAxis = valueAxis;
 			/*
@@ -215,15 +215,28 @@ export default class UserElectricityView extends View {
 				const meas = this.models[key].measurement; // is in normal situation an array.
 				if (Array.isArray(meas) && meas.length > 0) {
 					
-					const energy = meas[0].totalEnergy;
-					console.log(['meas energy=',energy]);
+					const total = meas[0].totalEnergy;
+					const d = new Date(meas[0].created_at);
+					resuArray.push({date:d, total:total});
+					
+					/*
+					apartmentId: 101
+​​​					averagePower: 1200
+​​​					created_at: "2022-02-14T23:59:35"
+​​​					impulseLastCtr: 20
+​​​					impulseTotalCtr: 18797376
+​​​					meterId: 1001
+​​​					residentId: 1
+​​​					totalEnergy: 18797.376
+					*/
+					
 					
 				} else {
 					console.log('NO MEAS YET!');
 				}
 			}
 		});
-		return aveArray;
+		return resuArray;
 	}
 	
 	/*

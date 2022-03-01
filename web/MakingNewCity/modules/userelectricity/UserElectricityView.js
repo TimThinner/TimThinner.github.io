@@ -107,6 +107,7 @@ export default class UserElectricityView extends View {
 				const tot = temp_a[i+1].total - temp_a[i].total;
 				resuArray.push({date:d, total:tot});
 			}
+			console.log(['resuArray=',resuArray]);
 		}
 		return resuArray;
 	}
@@ -174,7 +175,8 @@ export default class UserElectricityView extends View {
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_heating;
 			
-			const series1 = self.chart.series.push(new am4charts.LineSeries());
+			//const series1 = self.chart.series.push(new am4charts.LineSeries());
+			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
 			series1.defaultState.transitionDuration = 0;
 			series1.tooltipText = "{valueY.value} °C";
 			series1.tooltip.getFillFromObject = false;

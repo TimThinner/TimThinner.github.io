@@ -82,7 +82,6 @@ export default class UserHeatingView extends View {
 				}
 			});
 			
-			
 			const slen = selection.length;
 			if (slen > 0) {
 				

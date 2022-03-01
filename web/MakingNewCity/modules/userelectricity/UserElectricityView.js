@@ -70,12 +70,56 @@ export default class UserElectricityView extends View {
 	}
 	
 	updateTotal() {
+		
+		const localized_string_total = 'Total';
+		// this.chartRangeStart = 0;
+		// this.chartRangeEnd = 1;
+		// This is where we select only part of timerange to be included into calculation.
+		//
+		const len = this.resuArray.length;
+		const begin = Math.round(this.chartRangeStart * len);
+		const end = Math.round(this.chartRangeEnd * len);
+		//The Math.round() function returns the value of a number rounded to the nearest integer. 
+		const selection = [];
+		this.resuArray.forEach((v,i)=>{
+			if (i >= begin && i <= end) {
+				selection.push(v);
+			}
+		});
+		
+		const slen = selection.length;
+		if (slen > 0) {
+			let range_title = 'Range: ';
+			if (slen < len) {
+				range_title = 'Zoomed: ';
+			}
+			
+			let sum = 0;
+			// Use moment because it has nice formatting functions.
+			const s_date = moment(selection[0].date); // Date of first value.
+			const e_date = moment(selection[slen-1].date); // Date of last value.
+			const timerange_days = slen;
+			selection.forEach(v=>{
+				sum += v.total;
+			});
+			const html = '<p>'+localized_string_total+
+				': <span style="color:#0f0">'+sum.toFixed(1)+' kWh</span><br/>'+
+				'<span style="color:#ccc">'+range_title + s_date.format('DD.MM.YYYY HH:mm')+' - '+e_date.format('DD.MM.YYYY HH:mm')+'</span><br/>'+
+				'<span style="color:#aaa">('+timerange_days+' days)</span>'+
+				'</p>';
+			$('#user-electricity-chart-total').empty().append(html);
+		} else {
+			const html = '<p>'+localized_string_total+': <span style="color:#0f0">- kWh</span></p>';
+			$('#user-electricity-chart-total').empty().append(html);
+		}
+		/*
 		let total = 0;
 		this.resuArray.forEach(e=>{
 			total += e.total;
 		});
 		const html = '<p>TOTAL: <span style="color:#0f0">'+total.toFixed(1)+' kWh</span></p>';
 		$('#user-electricity-chart-total').empty().append(html);
+		*/
 	}
 	
 	/*
@@ -139,10 +183,6 @@ export default class UserElectricityView extends View {
 			
 			am4core.options.autoSetClassName = true;
 			am4core.options.autoDispose = true;
-			
-			
-			
-			
 			
 			// Create chart
 			self.chart = am4core.create("user-electricity-chart", am4charts.XYChart);
@@ -253,70 +293,6 @@ export default class UserElectricityView extends View {
 		
 		this.updateTotal();
 	}
-	
-	/*
-	foo(model_name) {
-		
-		const ele = this.models[model_name];
-		const meas = ele.measurement; // is in normal situation an array.
-		if (Array.isArray(meas) && meas.length > 0) {
-			const energy = meas[0].totalEnergy;
-			console.log(['energy=',energy]);
-		}
-	}*/
-	
-	/*
-	foo() {
-		
-		const ele_now = this.models['UserElectricityNowModel'];
-		const ele_day = this.models['UserElectricityDayModel'];
-		const ele_week = this.models['UserElectricityWeekModel'];
-		const ele_month = this.models['UserElectricityMonthModel'];
-		
-		const UM = this.controller.master.modelRepo.get('UserModel');
-		
-		//const dim = moment().daysInMonth();
-		
-		
-		//UM.price_energy_monthly
-		//UM.price_energy_basic
-		//UM.price_energy_transfer
-		
-		const meas_now = ele_now.measurement; // is in normal situation an array.
-		const meas_day = ele_day.measurement; // is in normal situation an array.
-		const meas_week = ele_week.measurement; // is in normal situation an array.
-		const meas_month = ele_month.measurement; // is in normal situation an array.
-		
-		if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_day) && meas_day.length > 0) {
-			const energy_now = meas_now[0].totalEnergy;
-			const energy_day = meas_day[0].totalEnergy;
-			if (typeof energy_now !== 'undefined' && typeof energy_day !== 'undefined') {
-				
-				const energy_diffe = energy_now - energy_day;
-				console.log(['Electricity for day = ',energy_diffe]);
-				
-			}
-		}
-		if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_week) && meas_week.length > 0) {
-			const energy_now = meas_now[0].totalEnergy;
-			const energy_week = meas_week[0].totalEnergy;
-			if (typeof energy_now !== 'undefined' && typeof energy_week !== 'undefined') {
-				
-				const energy_diffe = energy_now - energy_week;
-				console.log(['Electricity for week = ',energy_diffe]);
-			}
-		}
-		if (Array.isArray(meas_now) && meas_now.length > 0 && Array.isArray(meas_month) && meas_month.length > 0) {
-			const energy_now = meas_now[0].totalEnergy;
-			const energy_month = meas_month[0].totalEnergy;
-			if (typeof energy_now !== 'undefined' && typeof energy_month !== 'undefined') {
-				
-				const energy_diffe = energy_now - energy_month;
-				console.log(['Electricity for month = ',energy_diffe]);
-			}
-		}
-	}
-	*/
 	
 	notify(options) {
 		const self = this;

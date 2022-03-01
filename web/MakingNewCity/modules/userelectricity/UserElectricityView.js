@@ -394,6 +394,8 @@ export default class UserElectricityView extends View {
 			'</div>';
 		$(html).appendTo(this.el);
 		
+		this.rendered = true;
+		
 		$('#back').on('click',function() {
 			self.models['MenuModel'].setSelected('userpage');
 		});

@@ -69,6 +69,24 @@ export default class UserElectricityView extends View {
 		$(this.el).empty();
 	}
 	
+	/*
+		const UM = this.controller.master.modelRepo.get('UserModel');
+		
+		const dim = moment().daysInMonth();
+		
+		
+		
+		
+				const energy_now = meas_now[0].totalEnergy;
+				const energy_day = meas_day[0].totalEnergy;
+				
+				
+				const energy_diffe = energy_now - energy_day;
+				const dayprice = UM.price_energy_monthly/dim + (UM.price_energy_basic*energy_diffe)/100 + (UM.price_energy_transfer*energy_diffe)/100;
+				$('#day-price').empty().append(dayprice.toFixed(2));
+				
+	*/
+	
 	updateTotal() {
 		
 		const localized_string_total = 'Total';
@@ -99,11 +117,22 @@ export default class UserElectricityView extends View {
 			const s_date = moment(selection[0].date); // Date of first value.
 			const e_date = moment(selection[slen-1].date); // Date of last value.
 			const timerange_days = slen;
+			
+			
 			selection.forEach(v=>{
 				sum += v.total;
 			});
+			
+			// UM.price_energy_monthly		euros/month
+			// UM.price_energy_basic		eurocent/kWh
+			// UM.price_energy_transfer		eurocent/kWh
+			
+			const UM = this.controller.master.modelRepo.get('UserModel');
+			const dim = moment().daysInMonth();
+			const price = timerange_days * UM.price_energy_monthly/dim + (UM.price_energy_basic*sum)/100 + (UM.price_energy_transfer*sum)/100;
+			
 			const html = '<p>'+localized_string_total+
-				': <span style="color:#0f0">'+sum.toFixed(1)+' kWh</span><br/>'+
+				': <span style="color:#0f0">'+sum.toFixed(1)+' kWh</span> (<span style="color:#0f0">'+price.toFixed(2)+'&euro;</span>)<br/>'+
 				'<span style="color:#ccc">'+range_title + s_date.format('DD.MM.YYYY HH:mm')+' - '+e_date.format('DD.MM.YYYY HH:mm')+'</span><br/>'+
 				'<span style="color:#aaa">('+timerange_days+' days)</span>'+
 				'</p>';
@@ -259,6 +288,7 @@ export default class UserElectricityView extends View {
 			series1.yAxis = valueAxis;
 			
 			// Legend:
+			/*
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;
 			var marker = self.chart.legend.markers.template.children.getIndex(0);
@@ -266,6 +296,7 @@ export default class UserElectricityView extends View {
 			marker.strokeWidth = 2;
 			marker.strokeOpacity = 1;
 			marker.stroke = am4core.color("#000");
+			*/
 			
 			// Cursor:
 			self.chart.cursor = new am4charts.XYCursor();

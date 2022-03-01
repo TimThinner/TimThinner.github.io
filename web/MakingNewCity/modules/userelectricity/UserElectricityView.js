@@ -117,9 +117,8 @@ export default class UserElectricityView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_heating = LM['translation'][sel]['USER_PAGE_HEATING'];
-		const localized_string_temperature = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_TEMPERATURE'];
-		const localized_string_humidity = LM['translation'][sel]['USER_HEATING_CHART_LEGEND_HUMIDITY'];
+		const localized_string_energy = LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE'];
+		
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -160,58 +159,54 @@ export default class UserElectricityView extends View {
 			const values = this.models['FingridSolarPowerFinlandModel'].values;
 			*/
 			const dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
-			dateAxis.baseInterval = {
-				"timeUnit": "hour",
-				"count": 1
-			};
+			//dateAxis.baseInterval = {
+			//	"timeUnit": "day",
+			//	"count": 1
+			//};
+			dateAxis.renderer.grid.template.location = 0;
+			dateAxis.renderer.ticks.template.length = 8;
+			dateAxis.renderer.ticks.template.strokeOpacity = 0.3;
+			dateAxis.renderer.grid.template.disabled = false;
+			dateAxis.renderer.ticks.template.disabled = false;
+			//dateAxis.renderer.ticks.template.strokeOpacity = 0.2;
+			dateAxis.renderer.minLabelPosition = 0.1; //0.01;
+			dateAxis.renderer.maxLabelPosition = 0.9; //0.99;
+			dateAxis.minHeight = 30;
+			
+			
 			//dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
 			dateAxis.keepSelection = true;
-			dateAxis.tooltipDateFormat = "dd.MM.yyyy - HH:mm";
+			dateAxis.tooltipDateFormat = "dd.MM.yyyy";
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.renderer.fontSize = "0.75em";
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " °C/%";
+				return text + " kWh";
 			});
+			
 			valueAxis.tooltip.disabled = true;
-			valueAxis.title.text = localized_string_heating;
+			valueAxis.title.text = localized_string_energy;
+			valueAxis.min = 0;
 			
 			//const series1 = self.chart.series.push(new am4charts.LineSeries());
 			const series1 = self.chart.series.push(new am4charts.ColumnSeries());
 			series1.defaultState.transitionDuration = 0;
-			series1.tooltipText = "{valueY.value} °C";
+			series1.tooltipText = "{valueY.value} kWh";
 			series1.tooltip.getFillFromObject = false;
 			series1.tooltip.getStrokeFromObject = true;
-			series1.stroke = am4core.color("#f00");
-			series1.strokeWidth = 2;
+			series1.stroke = am4core.color("#0f0");
+			series1.strokeWidth = 1;
 			series1.fill = series1.stroke;
-			series1.fillOpacity = 0;
+			series1.fillOpacity = 0.25;
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
 			series1.data = resuArray;
 			series1.dataFields.dateX = "date"; //"time";
 			series1.dataFields.valueY = "total"; //"temperature";
-			series1.name = localized_string_temperature;
+			series1.name = "ENERGY";
 			series1.yAxis = valueAxis;
-			/*
-			const series2 = self.chart.series.push(new am4charts.LineSeries());
-			series2.defaultState.transitionDuration = 0;
-			series2.tooltipText = "{valueY.value} %";
-			series2.tooltip.getFillFromObject = false;
-			series2.tooltip.getStrokeFromObject = true;
-			series2.stroke = am4core.color("#0ff");
-			series2.strokeWidth = 2;
-			series2.fill = series2.stroke;
-			series2.fillOpacity = 0;
-			series2.tooltip.background.fill = am4core.color("#000");
-			series2.tooltip.background.strokeWidth = 1;
-			series2.tooltip.label.fill = series2.stroke;
-			series2.data = self.models['UserHeatingMonthModel'].values;
-			series2.dataFields.dateX = "time";
-			series2.dataFields.valueY = "humidity";
-			series2.name = localized_string_humidity;
-			series2.yAxis = valueAxis;
-			*/
+			
 			// Legend:
 			self.chart.legend = new am4charts.Legend();
 			self.chart.legend.useDefaultMarker = true;

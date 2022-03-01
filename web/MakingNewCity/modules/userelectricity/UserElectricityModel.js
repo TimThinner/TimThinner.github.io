@@ -66,7 +66,7 @@ export default class UserElectricityModel extends Model {
 		https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&limit=1&start=2022-01-25T23:50&end=2022-01-26T00:00
 	*/
 	setTimePeriod() {
-		const d = this.index+1;
+		const d = this.index;
 		const e_m = moment().subtract(d,'days');
 		// Snap end to this current full hour.
 		e_m.hours(0);

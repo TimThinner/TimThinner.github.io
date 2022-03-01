@@ -69,44 +69,44 @@ export default class UserElectricityView extends View {
 		
 	}
 	
-	
-	
+	/*
+		apartmentId: 101
+​​​		averagePower: 1200
+​​​		created_at: "2022-02-14T23:59:35"
+​​​		impulseLastCtr: 20
+​​​		impulseTotalCtr: 18797376
+​​​		meterId: 1001
+​​​		residentId: 1
+​​​		totalEnergy: 18797.376
+	*/
 	
 	convertResults() {
-		
+		const temp_a = [];
 		const resuArray = [];
-		const aveArray = [];
-		
 		Object.keys(this.models).forEach(key => {
 			if (key.indexOf('UserElectricity') === 0) {
 				const meas = this.models[key].measurement; // is in normal situation an array.
 				if (Array.isArray(meas) && meas.length > 0) {
-					
 					const total = meas[0].totalEnergy;
 					const d = new Date(meas[0].created_at);
-					resuArray.push({date:d, total:total});
-					/*
-					apartmentId: 101
-​​​					averagePower: 1200
-​​​					created_at: "2022-02-14T23:59:35"
-​​​					impulseLastCtr: 20
-​​​					impulseTotalCtr: 18797376
-​​​					meterId: 1001
-​​​					residentId: 1
-​​​					totalEnergy: 18797.376
-					*/
-				} else {
-					console.log('NO MEAS YET!');
+					temp_a.push({date:d, total:total});
 				}
 			}
-			// Then sort array based according to date, oldest entry first.
-			//self.test_values.sort(function(a,b){
-			resuArray.sort(function(a,b){
-				var bb = moment(b.date);
-				var aa = moment(a.date);
-				return aa - bb;
-			});
-			console.log(['SORTED resuArray=',resuArray]);
+			const len = temp_a.length;
+			if (len > 1) {
+				// Then sort array based according to date, oldest entry first.
+				temp_a.sort(function(a,b){
+					var bb = moment(b.date);
+					var aa = moment(a.date);
+					return aa - bb;
+				});
+				console.log(['SORTED temp_a=',temp_a]);
+				for (let i=0; i<len-1; i++) {
+					const d = temp_a[i+1].date;
+					const tot = temp_a[i+1].total - temp_a[i].total;
+					resuArray.push({date:d, total:tot});
+				}
+			}
 		});
 		return resuArray;
 	}

@@ -108,6 +108,7 @@ export default class MenuView extends View {
 		let wrap = document.getElementById('hands');
 		if (wrap) {
 			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+			wrap.remove(); // Finally remove group.
 		}
 		
 		const tim = moment();
@@ -283,7 +284,7 @@ export default class MenuView extends View {
 	}
 	
 	renderALL() {
-		console.log('renderALL() START v4!');
+		console.log('renderALL() START v5!');
 		let wrap = document.getElementById(this.el.slice(1));
 		if (wrap) {
 			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);

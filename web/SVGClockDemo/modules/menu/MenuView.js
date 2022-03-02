@@ -83,7 +83,7 @@ export default class MenuView extends View {
 	
 	appendTick(group, r, v, h) {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const r2 = r-r*0.05;
+		const r2 = r-r*0.1;
 		
 		const x1 = Math.sin(v*Math.PI/180) * r;
 		const y1 = Math.cos(v*Math.PI/180) * r;
@@ -96,7 +96,7 @@ export default class MenuView extends View {
 		line.setAttributeNS(null, 'x2', x2);
 		line.setAttributeNS(null, 'y2', y2);
 		line.style.stroke = '#333';
-		line.style.strokeWidth = 1;
+		line.style.strokeWidth = 3;
 		group.appendChild(line);
 	}
 	
@@ -109,9 +109,9 @@ export default class MenuView extends View {
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', cx);
 		c.setAttributeNS(null, 'cy', cy);
-		c.setAttributeNS(null, 'r', 6);
+		c.setAttributeNS(null, 'r', 4);
 		c.style.stroke = '#333';
-		c.style.strokeWidth = 1;
+		c.style.strokeWidth = 2;
 		c.style.fill = color;
 		group.appendChild(c);
 	}
@@ -126,8 +126,8 @@ export default class MenuView extends View {
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
-		c.style.stroke = '#333';
-		c.style.strokeWidth = 3;
+		c.style.stroke = '#000';
+		c.style.strokeWidth = 10;
 		c.style.fill = '#fff';
 		group.appendChild(c);
 		

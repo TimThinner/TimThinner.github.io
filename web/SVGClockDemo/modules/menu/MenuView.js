@@ -1,6 +1,15 @@
 import View from '../common/View.js';
 import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
 
+/*
+
+Made similar clock as amCharts example here:
+
+https://www.amcharts.com/demos-v4/clock-v4/
+
+
+*/
+
 export default class MenuView extends View {
 	
 	constructor(controller) {
@@ -30,7 +39,9 @@ export default class MenuView extends View {
 		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
 		//$(this.el).empty();
 		let wrap = document.getElementById(this.el.slice(1));
-		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		if (wrap) {
+			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		}
 	}
 	
 	remove() {
@@ -44,7 +55,9 @@ export default class MenuView extends View {
 		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
 		//$(this.el).empty();
 		let wrap = document.getElementById(this.el.slice(1));
-		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		if (wrap) {
+			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		}
 	}
 	
 	createSpace() {
@@ -93,7 +106,9 @@ export default class MenuView extends View {
 		
 		// Start by removing ALL hands (hours, minutes, seconds).
 		let wrap = document.getElementById('hands');
-		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		if (wrap) {
+			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		}
 		
 		const tim = moment();
 		const ts = tim.seconds();
@@ -270,7 +285,9 @@ export default class MenuView extends View {
 	renderALL() {
 		console.log('renderALL() START v4!');
 		let wrap = document.getElementById(this.el.slice(1));
-		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		if (wrap) {
+			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		}
 		this.createSpace();
 		this.appendClock();
 		console.log('renderALL() END!');

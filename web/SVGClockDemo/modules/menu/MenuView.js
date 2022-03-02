@@ -64,7 +64,7 @@ export default class MenuView extends View {
 		rect.setAttribute('y',-hp2);
 		rect.setAttribute('width',w);
 		rect.setAttribute('height',h);
-		rect.setAttribute('fill', '#232022');
+		rect.setAttribute('fill', '#fff');
 		
 		svg.appendChild(rect);
 		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
@@ -72,30 +72,60 @@ export default class MenuView extends View {
 		document.getElementById(this.el.slice(1)).appendChild(svg);
 	}
 	
-	faceRadius() {
+	sunRadius() {
 		const w = this.REO.width;
 		const h = this.REO.height;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
-		const r = Math.min(wp2, hp2)*0.5;
+		const r = Math.min(wp2, hp2)*0.5; // r = 25% of width (or height).
 		return r;
+	}
+	
+	appendDot(group, cx, cy, color) {
+		const c = document.createElementNS(svgNS, "circle");
+		c.setAttributeNS(null, 'cx', cx);
+		c.setAttributeNS(null, 'cy', cy);
+		c.setAttributeNS(null, 'r', 6);
+		c.style.stroke = '#333';
+		c.style.strokeWidth = 1;
+		c.style.fill = color;
+		group.appendChild(c);
 	}
 	
 	appendClock() {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.faceRadius();
+		const r = this.sunRadius();
+		
+		const group = document.createElementNS(svgNS, "g");
+		
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#333';
-		c.style.strokeWidth = 6;
-		c.style.fill = '#ffffff';
-		document.getElementById('space').appendChild(c);
+		c.style.strokeWidth = 3;
+		c.style.fill = '#fff';
+		group.appendChild(c);
+		
+		// sin(60) = 0,866
+		// cos(60) = 0,5
+		let cx = Math.sin(0) * r;
+		let cy = Math.cos(0) * r;
+		this.appendDot(group, cx, cy, '#f00');
+		
+		cx = Math.sin(30*Math.PI/180) * r;
+		cy = Math.cos(30*Math.PI/180) * r;
+		this.appendDot(group, cx, cy, '#0f0');
+		
+		cx = Math.sin(60*Math.PI/180) * r;
+		cy = Math.cos(60*Math.PI/180) * r;
+		this.appendDot(group, cx, cy, '#00f');
+		
+		document.getElementById('space').appendChild(group);
 	}
 	
 	renderALL() {
-		console.log('renderALL()!');
+		console.log('renderALL() v2!');
 		let wrap = document.getElementById(this.el.slice(1));
 		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
 		this.createSpace();

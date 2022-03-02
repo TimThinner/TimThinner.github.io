@@ -120,6 +120,10 @@ export default class MenuView extends View {
 		const tm = tim.minutes();
 		const th = tim.hours();
 		
+		const rs = r - r*0.1;
+		const rm = r - r*0.2;
+		const rh = r - r*0.3;
+		
 		//console.log(['Time now h=',th,' tm=',tm,' ts=',ts]);
 		const group = document.createElementNS(svgNS, "g");
 		group.id = 'hands';
@@ -138,8 +142,21 @@ export default class MenuView extends View {
 		// 30 => 
 		// 
 		const ss = 180 - ts * 6;
-		const x1 = Math.sin(ss*Math.PI/180) * r;
-		const y1 = Math.cos(ss*Math.PI/180) * r;
+		const xs = Math.sin(ss*Math.PI/180) * rs;
+		const ys = Math.cos(ss*Math.PI/180) * rs;
+		
+		const mm = 180 - tm * 6;
+		const xm = Math.sin(mm*Math.PI/180) * rm;
+		const ym = Math.cos(mm*Math.PI/180) * rm;
+		
+		const hm = document.createElementNS(svgNS, "line");
+		hm.setAttributeNS(null, 'x1', 0);
+		hm.setAttributeNS(null, 'y1', 0);
+		hm.setAttributeNS(null, 'x2', xm);
+		hm.setAttributeNS(null, 'y2', ym);
+		hm.style.stroke = '#444';
+		hm.style.strokeWidth = 4;
+		group.appendChild(hm);
 		
 		const cc = document.createElementNS(svgNS, "circle");
 		cc.setAttributeNS(null, 'cx', 0);
@@ -150,14 +167,17 @@ export default class MenuView extends View {
 		cc.style.fill = '#f00';
 		group.appendChild(cc);
 		
-		const line = document.createElementNS(svgNS, "line");
-		line.setAttributeNS(null, 'x1', 0);
-		line.setAttributeNS(null, 'y1', 0);
-		line.setAttributeNS(null, 'x2', x1);
-		line.setAttributeNS(null, 'y2', y1);
-		line.style.stroke = '#f00';
-		line.style.strokeWidth = 3;
-		group.appendChild(line);
+		const hs = document.createElementNS(svgNS, "line");
+		hs.setAttributeNS(null, 'x1', 0);
+		hs.setAttributeNS(null, 'y1', 0);
+		hs.setAttributeNS(null, 'x2', xs);
+		hs.setAttributeNS(null, 'y2', ys);
+		hs.style.stroke = '#f00';
+		hs.style.strokeWidth = 3;
+		group.appendChild(hs);
+		
+		
+		
 		document.getElementById('space').appendChild(group);
 	}
 	

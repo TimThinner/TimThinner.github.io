@@ -120,7 +120,7 @@ export default class MenuView extends View {
 		txt.style.fill = '#000';
 		txt.style.stroke = '#000';
 		txt.style.strokeWidth = 1;
-		const text_node = document.createTextNode(type);
+		const text_node = document.createTextNode(h);
 		txt.appendChild(text_node);
 		svg.appendChild(txt);
 		group.appendChild(svg);

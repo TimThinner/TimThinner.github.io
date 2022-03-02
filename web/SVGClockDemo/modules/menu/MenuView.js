@@ -77,7 +77,7 @@ export default class MenuView extends View {
 		const h = this.REO.height;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
-		const r = Math.min(wp2, hp2)*0.5; // r = 25% of width (or height).
+		const r = Math.min(wp2, hp2)*0.75; // r = 25% of width (or height).
 		return r;
 	}
 	
@@ -98,12 +98,12 @@ export default class MenuView extends View {
 		const yei = Math.cos(ae*Math.PI/180) * ri;
 		const xeo = Math.sin(ae*Math.PI/180) * ro;
 		const yeo = Math.cos(ae*Math.PI/180) * ro;
-		
+		// A rx ry x-axis-rotation large-arc-flag sweep-flag x y
 		const d='M '+xbi+','+ybi+' '+
 				'L '+xbo+','+ybo+' '+
 				'A '+ro+','+ro+' 0,0,1 '+xeo+','+yeo+' '+
 				'L '+xei+','+yei+' '+
-				'A '+ri+','+ri+' 0,0,1 '+xbi+','+ybi;
+				'A '+ri+','+ri+' 1,0,1 '+xbi+','+ybi;
 				
 		const p = document.createElementNS(svgNS, "path");
 		p.setAttributeNS(null, 'd', d);

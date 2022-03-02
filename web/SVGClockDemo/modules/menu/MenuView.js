@@ -110,23 +110,13 @@ export default class MenuView extends View {
 		
 		// sin(60) = 0,866
 		// cos(60) = 0,5
-		
-		let cx = Math.sin(180*Math.PI/180) * r;
-		let cy = Math.cos(180*Math.PI/180) * r;
-		this.appendDot(group, cx, cy, '#f00');
-		
-		cx = Math.sin(150*Math.PI/180) * r;
-		cy = Math.cos(150*Math.PI/180) * r;
-		this.appendDot(group, cx, cy, '#0f0');
-		
-		cx = Math.sin(120*Math.PI/180) * r;
-		cy = Math.cos(120*Math.PI/180) * r;
-		this.appendDot(group, cx, cy, '#00f');
-		
-		cx = Math.sin(90*Math.PI/180) * r;
-		cy = Math.cos(90*Math.PI/180) * r;
-		this.appendDot(group, cx, cy, '#888');
-		
+		for (let i=180; i>-180; i-=30) {
+			// 180	150	120	90	60	30	0	-30	-60	-90	-120	-150.
+			// 12	1	2	3	4	5	6	7	8	9	10		11
+			let cx = Math.sin(i*Math.PI/180) * r;
+			let cy = Math.cos(i*Math.PI/180) * r;
+			this.appendDot(group, cx, cy, '#777');
+		}
 		document.getElementById('space').appendChild(group);
 	}
 	

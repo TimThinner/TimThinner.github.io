@@ -8,6 +8,10 @@ Made similar clock as amCharts example here:
 https://www.amcharts.com/demos-v4/clock-v4/
 
 
+
+
+https://timthinner.github.io/web/SVGClockDemo/index.html
+
 */
 
 export default class MenuView extends View {
@@ -137,13 +141,22 @@ export default class MenuView extends View {
 		const x1 = Math.sin(ss*Math.PI/180) * r;
 		const y1 = Math.cos(ss*Math.PI/180) * r;
 		
+		const cc = document.createElementNS(svgNS, "circle");
+		cc.setAttributeNS(null, 'cx', 0);
+		cc.setAttributeNS(null, 'cy', 0);
+		cc.setAttributeNS(null, 'r', 5);
+		cc.style.stroke = '#000';
+		cc.style.strokeWidth = 2;
+		cc.style.fill = '#f00';
+		group.appendChild(cc);
+		
 		const line = document.createElementNS(svgNS, "line");
 		line.setAttributeNS(null, 'x1', 0);
 		line.setAttributeNS(null, 'y1', 0);
 		line.setAttributeNS(null, 'x2', x1);
 		line.setAttributeNS(null, 'y2', y1);
 		line.style.stroke = '#f00';
-		line.style.strokeWidth = 5;
+		line.style.strokeWidth = 3;
 		group.appendChild(line);
 		document.getElementById('space').appendChild(group);
 	}
@@ -216,8 +229,8 @@ export default class MenuView extends View {
 		//txt.setAttribute('font-weight','bold');
 		txt.setAttribute('dominant-baseline','middle');
 		txt.setAttribute('text-anchor','middle');
-		txt.style.fill = 'none'; //'#000';
-		txt.style.stroke = '#000';
+		txt.style.fill = '#777';
+		txt.style.stroke = '#777';
 		txt.style.strokeWidth = 1;
 		const text_node = document.createTextNode(h);
 		txt.appendChild(text_node);
@@ -253,7 +266,7 @@ export default class MenuView extends View {
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#000';
 		c.style.strokeWidth = 9;
-		c.style.fill = '#fff';
+		c.style.fill = '#eee';
 		group.appendChild(c);
 		
 		const cc = document.createElementNS(svgNS, "circle");

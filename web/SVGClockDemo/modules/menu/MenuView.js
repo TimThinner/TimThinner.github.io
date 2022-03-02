@@ -81,8 +81,31 @@ export default class MenuView extends View {
 		return r;
 	}
 	
-	appendDot(group, cx, cy, color) {
+	appendTick(group, r, v, h) {
 		const svgNS = 'http://www.w3.org/2000/svg';
+		const r2 = r-r*0.05;
+		
+		const x1 = Math.sin(v*Math.PI/180) * r;
+		const y1 = Math.cos(v*Math.PI/180) * r;
+		const x2 = Math.sin(v*Math.PI/180) * r2;
+		const y2 = Math.cos(v*Math.PI/180) * r2;
+		
+		const line = document.createElementNS(svgNS, "line");
+		line.setAttributeNS(null, 'x1', x1);
+		line.setAttributeNS(null, 'y1', y1);
+		line.setAttributeNS(null, 'x2', x2);
+		line.setAttributeNS(null, 'y2', y2);
+		line.style.stroke = '#333';
+		line.style.strokeWidth = 1;
+		group.appendChild(line);
+	}
+	
+	appendDot(group, r, v, color) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		const cx = Math.sin(v*Math.PI/180) * r;
+		const cy = Math.cos(v*Math.PI/180) * r;
+		
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', cx);
 		c.setAttributeNS(null, 'cy', cy);
@@ -108,15 +131,14 @@ export default class MenuView extends View {
 		c.style.fill = '#fff';
 		group.appendChild(c);
 		
-		// sin(60) = 0,866
-		// cos(60) = 0,5
-		for (let i=180; i>-180; i-=30) {
-			// 180	150	120	90	60	30	0	-30	-60	-90	-120	-150.
-			// 12	1	2	3	4	5	6	7	8	9	10		11
-			let cx = Math.sin(i*Math.PI/180) * r;
-			let cy = Math.cos(i*Math.PI/180) * r;
-			this.appendDot(group, cx, cy, '#777');
-		}
+		const degrees = [150,120,90,60,30,0,-30,-60,-90,-120,-150,-180];
+		const hours = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+		degrees.forEach((v,i)=>{
+			// 150	120	90	60	30	0	-30	-60	-90	-120	-150	-180
+			//   1	  2	 3	 4	 5	6	 7	  8	  9	  10	  11	  12
+			this.appendDot(group, r, v, '#777');
+			this.appendTick(group, r, v, hours[i]);
+		});
 		document.getElementById('space').appendChild(group);
 	}
 	

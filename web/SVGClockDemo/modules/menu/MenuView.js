@@ -1,4 +1,5 @@
 import View from '../common/View.js';
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
 
 export default class MenuView extends View {
 	

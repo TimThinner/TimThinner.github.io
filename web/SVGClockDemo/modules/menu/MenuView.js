@@ -11,18 +11,21 @@ export default class MenuView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
+		this.PTO = new PeriodicTimeoutObserver({interval:1000}); // interval 1 seconds
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 	}
 	
 	show() {
 		console.log('MenuView show()');
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
-		console.log('MenuView hide()');
+		this.PTO.stop();
 		this.rendered = false;
-		
 		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
 		//$(this.el).empty();
 		let wrap = document.getElementById(this.el.slice(1));
@@ -30,13 +33,13 @@ export default class MenuView extends View {
 	}
 	
 	remove() {
-		console.log('MenuView remove()');
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
 		this.rendered = false;
-		
 		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
 		//$(this.el).empty();
 		let wrap = document.getElementById(this.el.slice(1));
@@ -77,8 +80,14 @@ export default class MenuView extends View {
 		const h = this.REO.height;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
-		const r = Math.min(wp2, hp2)*0.75; // r = 25% of width (or height).
+		const r = Math.min(wp2, hp2)*0.5; // r = 25% of width (or height).
 		return r;
+	}
+	
+	
+	
+	updateHands() {
+		console.log('UPDATE HANDS!');
 	}
 	
 	/*
@@ -198,6 +207,12 @@ export default class MenuView extends View {
 			this.appendTick(group, r, a, hours[i]);
 		});
 		
+		const tim = moment();
+		const ts = tim.seconds();
+		const tm = tim.minutes();
+		const th = tim.hours();
+		
+		console.log(['Time now h=',th,' tm=',tm,' ts=',ts]);
 		
 		const ri = r;
 		const ro = r + r*0.2;
@@ -209,12 +224,12 @@ export default class MenuView extends View {
 	}
 	
 	renderALL() {
-		console.log('renderALL() v3!');
+		console.log('renderALL() START v4!');
 		let wrap = document.getElementById(this.el.slice(1));
 		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
 		this.createSpace();
 		this.appendClock();
-		
+		console.log('renderALL() END!');
 	}
 	
 	notify(options) {
@@ -222,12 +237,22 @@ export default class MenuView extends View {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				console.log('ResizeEventObserver resize => SHOW()!');
 				this.show();
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				
+				console.log('PeriodicTimeoutObserver TIMEOUT!');
+				
+				if (this.rendered) {
+					// Do something with each TICK!
+					this.updateHands();
+				} else {
+					console.log('WTF?!');
+				}
 			}
 		}
 	}
 	
 	render() {
-		console.log('MenuView render()');
 		this.renderALL();
 		this.rendered = true;
 	}

@@ -104,10 +104,11 @@ export default class MenuView extends View {
 		
 		// TEXT is wrapped inside SVG-element.
 		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttributeNS(null, 'x', x3);
-		svg.setAttributeNS(null, 'y', y3);
+		svg.setAttributeNS(null, 'x', x3-16);
+		svg.setAttributeNS(null, 'y', y3-10);
 		svg.setAttributeNS(null, 'width', 32);
 		svg.setAttributeNS(null, 'height', 20);
+		svg.style.border = '1px solid #00f';
 		
 		const txt = document.createElementNS(svgNS, 'text');
 		txt.setAttribute('x','50%');

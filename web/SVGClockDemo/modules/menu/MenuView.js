@@ -88,7 +88,48 @@ export default class MenuView extends View {
 	
 	
 	updateHands() {
-		console.log('UPDATE HANDS!');
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		// Start by removing ALL hands (hours, minutes, seconds).
+		let wrap = document.getElementById('hands');
+		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+		
+		const tim = moment();
+		const ts = tim.seconds();
+		const tm = tim.minutes();
+		const th = tim.hours();
+		
+		//console.log(['Time now h=',th,' tm=',tm,' ts=',ts]);
+		const group = document.createElementNS(svgNS, "g");
+		group.id = 'hands';
+		
+		// const degrees = [150,120,90,60,30,0,-30,-60,-90,-120,-150,-180];
+		// const hours = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+		// Each second equals 6 degrees.
+		// 0 => 180
+		// 1 => 174
+		// 2 => 168
+		// 3 => 162
+		// 4 => 156
+		// 5 => 150
+		//
+		// 15 => 90
+		// 30 => 
+		// 
+		const ss = 180 - ts * 6;
+		const x1 = Math.sin(ss*Math.PI/180) * r;
+		const y1 = Math.cos(ss*Math.PI/180) * r;
+		
+		const line = document.createElementNS(svgNS, "line");
+		line.setAttributeNS(null, 'x1', 0);
+		line.setAttributeNS(null, 'y1', 0);
+		line.setAttributeNS(null, 'x2', x1);
+		line.setAttributeNS(null, 'y2', y1);
+		line.style.stroke = '#f00';
+		line.style.strokeWidth = 5;
+		group.appendChild(line);
+		document.getElementById('space').appendChild(group);
 	}
 	
 	/*
@@ -159,7 +200,7 @@ export default class MenuView extends View {
 		//txt.setAttribute('font-weight','bold');
 		txt.setAttribute('dominant-baseline','middle');
 		txt.setAttribute('text-anchor','middle');
-		txt.style.fill = '#000';
+		txt.style.fill = 'none'; //'#000';
 		txt.style.stroke = '#000';
 		txt.style.strokeWidth = 1;
 		const text_node = document.createTextNode(h);
@@ -199,6 +240,15 @@ export default class MenuView extends View {
 		c.style.fill = '#fff';
 		group.appendChild(c);
 		
+		const cc = document.createElementNS(svgNS, "circle");
+		cc.setAttributeNS(null, 'cx', 0);
+		cc.setAttributeNS(null, 'cy', 0);
+		cc.setAttributeNS(null, 'r', 3);
+		cc.style.stroke = '#000';
+		cc.style.strokeWidth = 1;
+		cc.style.fill = '#000';
+		group.appendChild(cc);
+		
 		const degrees = [150,120,90,60,30,0,-30,-60,-90,-120,-150,-180];
 		const hours = ['1','2','3','4','5','6','7','8','9','10','11','12'];
 		degrees.forEach((a,i)=>{
@@ -207,13 +257,6 @@ export default class MenuView extends View {
 			//this.appendDot(group, r, a, '#777');
 			this.appendTick(group, r, a, hours[i]);
 		});
-		
-		const tim = moment();
-		const ts = tim.seconds();
-		const tm = tim.minutes();
-		const th = tim.hours();
-		
-		console.log(['Time now h=',th,' tm=',tm,' ts=',ts]);
 		
 		const ri = r;
 		const ro = r + r*0.2;

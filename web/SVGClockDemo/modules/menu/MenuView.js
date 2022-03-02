@@ -103,12 +103,12 @@ export default class MenuView extends View {
 				'L '+xbo+','+ybo+' '+
 				'A '+ro+','+ro+' 0,0,1 '+xeo+','+yeo+' '+
 				'L '+xei+','+yei+' '+
-				'A '+ri+','+ri+' 1,0,1 '+xbi+','+ybi;
+				'A '+ri+','+ri+' 0,0,0 '+xbi+','+ybi;
 				
 		const p = document.createElementNS(svgNS, "path");
 		p.setAttributeNS(null, 'd', d);
 		p.style.stroke = '#000';
-		p.style.strokeWidth = 1;
+		p.style.strokeWidth = 3;
 		p.style.fill = '#0f0'; // 'none'
 		group.appendChild(p);
 	}

@@ -84,11 +84,14 @@ export default class MenuView extends View {
 	appendTick(group, r, v, h) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r2 = r-r*0.1;
+		const r3 = r-r*0.2;
 		
 		const x1 = Math.sin(v*Math.PI/180) * r;
 		const y1 = Math.cos(v*Math.PI/180) * r;
 		const x2 = Math.sin(v*Math.PI/180) * r2;
 		const y2 = Math.cos(v*Math.PI/180) * r2;
+		const x3 = Math.sin(v*Math.PI/180) * r3;
+		const y3 = Math.cos(v*Math.PI/180) * r3;
 		
 		const line = document.createElementNS(svgNS, "line");
 		line.setAttributeNS(null, 'x1', x1);
@@ -98,6 +101,29 @@ export default class MenuView extends View {
 		line.style.stroke = '#333';
 		line.style.strokeWidth = 3;
 		group.appendChild(line);
+		
+		// TEXT is wrapped inside SVG-element.
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttributeNS(null, 'x', x3);
+		svg.setAttributeNS(null, 'y', y3);
+		svg.setAttributeNS(null, 'width', 32);
+		svg.setAttributeNS(null, 'height', 20);
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','50%');
+		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.setAttribute('font-size','16px');
+		//txt.setAttribute('font-weight','bold');
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.style.fill = '#000';
+		txt.style.stroke = '#000';
+		txt.style.strokeWidth = 1;
+		const text_node = document.createTextNode(type);
+		txt.appendChild(text_node);
+		svg.appendChild(txt);
+		group.appendChild(svg);
 	}
 	
 	appendDot(group, r, v, color) {
@@ -127,7 +153,7 @@ export default class MenuView extends View {
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#000';
-		c.style.strokeWidth = 10;
+		c.style.strokeWidth = 9;
 		c.style.fill = '#fff';
 		group.appendChild(c);
 		
@@ -136,7 +162,7 @@ export default class MenuView extends View {
 		degrees.forEach((v,i)=>{
 			// 150	120	90	60	30	0	-30	-60	-90	-120	-150	-180
 			//   1	  2	 3	 4	 5	6	 7	  8	  9	  10	  11	  12
-			this.appendDot(group, r, v, '#777');
+			//this.appendDot(group, r, v, '#777');
 			this.appendTick(group, r, v, hours[i]);
 		});
 		document.getElementById('space').appendChild(group);

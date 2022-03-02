@@ -82,6 +82,7 @@ export default class MenuView extends View {
 	}
 	
 	appendDot(group, cx, cy, color) {
+		const svgNS = 'http://www.w3.org/2000/svg';
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', cx);
 		c.setAttributeNS(null, 'cy', cy);

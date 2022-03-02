@@ -81,17 +81,49 @@ export default class MenuView extends View {
 		return r;
 	}
 	
-	appendTick(group, r, v, h) {
+	/*
+		ri = inner radius
+		ro = outer radius 
+		ab = angle to begin 
+		ae = angle to end
+	*/
+	appendSector(group, ri, ro, ab, ae) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const xbi = Math.sin(ab*Math.PI/180) * ri;
+		const ybi = Math.cos(ab*Math.PI/180) * ri;
+		const xbo = Math.sin(ab*Math.PI/180) * ro;
+		const ybo = Math.cos(ab*Math.PI/180) * ro;
+		
+		const xei = Math.sin(ae*Math.PI/180) * ri;
+		const yei = Math.cos(ae*Math.PI/180) * ri;
+		const xeo = Math.sin(ae*Math.PI/180) * ro;
+		const yeo = Math.cos(ae*Math.PI/180) * ro;
+		
+		const d='M '+xbi+','+ybi+' '+
+				'L '+xbo+','+ybo+' '+
+				'A '+ro+','+ro+' 0,0,1 '+xeo+','+yeo+' '+
+				'L '+xei+','+yei+' '+
+				'A '+ri+','+ri+' 0,0,1 '+xbi+','+ybi;
+				
+		const p = document.createElementNS(svgNS, "path");
+		p.setAttributeNS(null, 'd', d);
+		p.style.stroke = '#000';
+		p.style.strokeWidth = 1;
+		p.style.fill = '#0f0'; // 'none'
+		group.appendChild(p);
+	}
+	
+	appendTick(group, r, a, h) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r2 = r-r*0.1;
 		const r3 = r-r*0.2;
 		
-		const x1 = Math.sin(v*Math.PI/180) * r;
-		const y1 = Math.cos(v*Math.PI/180) * r;
-		const x2 = Math.sin(v*Math.PI/180) * r2;
-		const y2 = Math.cos(v*Math.PI/180) * r2;
-		const x3 = Math.sin(v*Math.PI/180) * r3;
-		const y3 = Math.cos(v*Math.PI/180) * r3;
+		const x1 = Math.sin(a*Math.PI/180) * r;
+		const y1 = Math.cos(a*Math.PI/180) * r;
+		const x2 = Math.sin(a*Math.PI/180) * r2;
+		const y2 = Math.cos(a*Math.PI/180) * r2;
+		const x3 = Math.sin(a*Math.PI/180) * r3;
+		const y3 = Math.cos(a*Math.PI/180) * r3;
 		
 		const line = document.createElementNS(svgNS, "line");
 		line.setAttributeNS(null, 'x1', x1);
@@ -108,7 +140,6 @@ export default class MenuView extends View {
 		svg.setAttributeNS(null, 'y', y3-10);
 		svg.setAttributeNS(null, 'width', 32);
 		svg.setAttributeNS(null, 'height', 20);
-		svg.style.border = '1px solid #00f';
 		
 		const txt = document.createElementNS(svgNS, 'text');
 		txt.setAttribute('x','50%');
@@ -127,11 +158,11 @@ export default class MenuView extends View {
 		group.appendChild(svg);
 	}
 	
-	appendDot(group, r, v, color) {
+	appendDot(group, r, a, color) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		
-		const cx = Math.sin(v*Math.PI/180) * r;
-		const cy = Math.cos(v*Math.PI/180) * r;
+		const cx = Math.sin(a*Math.PI/180) * r;
+		const cy = Math.cos(a*Math.PI/180) * r;
 		
 		const c = document.createElementNS(svgNS, "circle");
 		c.setAttributeNS(null, 'cx', cx);
@@ -160,21 +191,30 @@ export default class MenuView extends View {
 		
 		const degrees = [150,120,90,60,30,0,-30,-60,-90,-120,-150,-180];
 		const hours = ['1','2','3','4','5','6','7','8','9','10','11','12'];
-		degrees.forEach((v,i)=>{
+		degrees.forEach((a,i)=>{
 			// 150	120	90	60	30	0	-30	-60	-90	-120	-150	-180
 			//   1	  2	 3	 4	 5	6	 7	  8	  9	  10	  11	  12
-			//this.appendDot(group, r, v, '#777');
-			this.appendTick(group, r, v, hours[i]);
+			//this.appendDot(group, r, a, '#777');
+			this.appendTick(group, r, a, hours[i]);
 		});
+		
+		
+		const ri = r;
+		const ro = r + r*0.2;
+		const ab = -180; // From 12
+		const ae = 90;    // to 3
+		this.appendSector(group, ri, ro, ab, ae);
+		
 		document.getElementById('space').appendChild(group);
 	}
 	
 	renderALL() {
-		console.log('renderALL() v2!');
+		console.log('renderALL() v3!');
 		let wrap = document.getElementById(this.el.slice(1));
 		while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
 		this.createSpace();
 		this.appendClock();
+		
 	}
 	
 	notify(options) {

@@ -211,12 +211,13 @@ export default class MenuView extends View {
 		const ro = params.outerRadius;
 		const ab = params.startAngle;
 		const ae = params.endAngle;
+		const span = params.span;
 		const label = params.label;
 		const fill = params.fill;
 		
-		const averageAngle = (ab-ae)/2;
-		const xTxt = Math.sin(averageAngle*Math.PI/180) * ri;
-		const yTxt = Math.cos(averageAngle*Math.PI/180) * ri;
+		const centerAngle = ab-span/2;
+		const xTxt = Math.sin(centerAngle*Math.PI/180) * ri;
+		const yTxt = Math.cos(centerAngle*Math.PI/180) * ri;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const xbi = Math.sin(ab*Math.PI/180) * ri;
@@ -285,12 +286,13 @@ export default class MenuView extends View {
 		const group = document.createElementNS(svgNS, "g");
 		group.id = 'sectors';
 		
-		for (let i=1; i<dim; i++) {
+		for (let i=1; i<=dim; i++) {
 			const sa = 180-(i-1)*dayAngle;
 			const ea = sa - dayAngle;
-			let fill = '#ccc';
+			const span = dayAngle; // The "length" of sector.
+			let fill = '#eee';
 			if (i==date) {
-				fill = '#0f0';
+				fill = '#8f8';
 			}
 			// SECTOR
 			this.appendSector({
@@ -299,6 +301,7 @@ export default class MenuView extends View {
 				outerRadius: r + r*0.2,
 				startAngle: sa,
 				endAngle: ea,
+				span: span,
 				label: i,
 				fill: fill
 			});

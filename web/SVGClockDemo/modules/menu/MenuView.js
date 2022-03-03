@@ -94,7 +94,7 @@ export default class MenuView extends View {
 		rect.setAttribute('y',-hp2);
 		rect.setAttribute('width',w);
 		rect.setAttribute('height',h);
-		rect.setAttribute('fill', '#fff');
+		rect.setAttribute('fill', '#000');
 		
 		svg.appendChild(rect);
 		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
@@ -425,7 +425,7 @@ export default class MenuView extends View {
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = '#444';
 		c.style.strokeWidth = 9;
-		c.style.fill = '#eee';
+		c.style.fill = '#fff';
 		group.appendChild(c);
 		
 		const cc = document.createElementNS(svgNS, "circle");

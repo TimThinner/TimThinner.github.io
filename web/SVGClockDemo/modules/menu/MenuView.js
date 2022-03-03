@@ -102,8 +102,6 @@ export default class MenuView extends View {
 		return r;
 	}
 	
-	
-	
 	updateHands() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
@@ -197,7 +195,15 @@ export default class MenuView extends View {
 		ab = angle to begin 
 		ae = angle to end
 	*/
-	appendSector(group, ri, ro, ab, ae) {
+	appendSector(params) {
+		
+		const group = params.group;
+		const ri = params.innerRadius;
+		const ro = params.outerRadius;
+		const ab = params.startAngle;
+		const ae = params.endAngle;
+		const fill = params.fill;
+		
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const xbi = Math.sin(ab*Math.PI/180) * ri;
 		const ybi = Math.cos(ab*Math.PI/180) * ri;
@@ -219,8 +225,42 @@ export default class MenuView extends View {
 		p.setAttributeNS(null, 'd', d);
 		p.style.stroke = '#000';
 		p.style.strokeWidth = 3;
-		p.style.fill = '#0f0'; // 'none'
+		p.style.fill = fill;
 		group.appendChild(p);
+	}
+	
+	updateSectors() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		// Start by removing ALL hands (hours, minutes, seconds).
+		let wrap = document.getElementById('sectors');
+		if (wrap) {
+			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+			wrap.remove(); // Finally remove group.
+		}
+		
+		const date = moment().date(); // Number 1....31
+		const dim = moment().daysInMonth();
+		const dayAngle = 360/dim; // angle for one day
+		
+		const group = document.createElementNS(svgNS, "g");
+		group.id = 'sectors';
+		
+		for (let i=1; i<=dim; i++) {
+			const sa = 180-i*dayAngle;
+			const ea = sa - dayAngle;
+			// SECTOR
+			this.appendSector({
+				group: group,
+				innerRadius: r,
+				outerRadius: r + r*0.2,
+				startAngle: sa,
+				endAngle: ea,
+				fill: '#ff00ff'
+			});
+		}
+		document.getElementById('space').appendChild(group);
 	}
 	
 	appendTick(group, r, a, h) {
@@ -267,7 +307,7 @@ export default class MenuView extends View {
 		svg.appendChild(txt);
 		group.appendChild(svg);
 	}
-	
+	/*
 	appendDot(group, r, a, color) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		
@@ -283,7 +323,7 @@ export default class MenuView extends View {
 		c.style.fill = color;
 		group.appendChild(c);
 	}
-	
+	*/
 	appendClock() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
@@ -302,9 +342,9 @@ export default class MenuView extends View {
 		const cc = document.createElementNS(svgNS, "circle");
 		cc.setAttributeNS(null, 'cx', 0);
 		cc.setAttributeNS(null, 'cy', 0);
-		cc.setAttributeNS(null, 'r', 3);
+		cc.setAttributeNS(null, 'r', 6);
 		cc.style.stroke = '#000';
-		cc.style.strokeWidth = 1;
+		cc.style.strokeWidth = 2;
 		cc.style.fill = '#000';
 		group.appendChild(cc);
 		
@@ -316,16 +356,6 @@ export default class MenuView extends View {
 			//this.appendDot(group, r, a, '#777');
 			this.appendTick(group, r, a, hours[i]);
 		});
-		
-		
-		
-		// SECTORS
-		//const ri = r;
-		//const ro = r + r*0.2;
-		//const ab = -180; // From 12
-		//const ae = 90;    // to 3
-		//this.appendSector(group, ri, ro, ab, ae);
-		
 		document.getElementById('space').appendChild(group);
 	}
 	

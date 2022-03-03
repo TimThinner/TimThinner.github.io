@@ -269,12 +269,12 @@ export default class MenuView extends View {
 		group.appendChild(svg);
 	}
 	
-	updateSectors() {
+	updateDateNumberInMonth() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
 		
 		// Start by removing ALL hands (hours, minutes, seconds).
-		let wrap = document.getElementById('sectors');
+		let wrap = document.getElementById('days');
 		if (wrap) {
 			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
 			wrap.remove(); // Finally remove group.
@@ -282,15 +282,15 @@ export default class MenuView extends View {
 		
 		const date = moment().date(); // Number 1....31
 		const dim = moment().daysInMonth();
-		const dayAngle = 360/dim; // angle for one day
+		const dAngle = 360/dim; // angle for one day
 		
 		const group = document.createElementNS(svgNS, "g");
-		group.id = 'sectors';
+		group.id = 'days';
 		
 		for (let i=1; i<=dim; i++) {
-			const sa = 180-(i-1)*dayAngle;
-			const ea = sa - dayAngle;
-			const span = dayAngle; // The "length" of sector.
+			const sa = 180-(i-1)*dAngle;
+			const ea = sa - dAngle;
+			const span = dAngle; // The "length" of sector.
 			let fill = '#eee';
 			if (i==date) {
 				fill = '#8f8';
@@ -304,6 +304,48 @@ export default class MenuView extends View {
 				endAngle: ea,
 				span: span,
 				label: i,
+				fill: fill
+			});
+		}
+		document.getElementById('space').appendChild(group);
+	}
+	
+	updateMonth() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		// Start by removing ALL months.
+		let wrap = document.getElementById('months');
+		if (wrap) {
+			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+			wrap.remove(); // Finally remove group.
+		}
+		
+		const month = moment().month(); // Number 0...11
+		const dim = 12;
+		const mAngle = 360/dim; // angle for one month
+		const label = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+		
+		const group = document.createElementNS(svgNS, "g");
+		group.id = 'months';
+		
+		for (let i=0; i<dim; i++) {
+			const sa = 180-i*mAngle;
+			const ea = sa - mAngle;
+			const span = mAngle; // The "length" of sector.
+			let fill = '#eee';
+			if (i==month) {
+				fill = '#ff8';
+			}
+			// SECTOR
+			this.appendSector({
+				group: group,
+				innerRadius: r + r*0.2,
+				outerRadius: r + r*0.4,
+				startAngle: sa,
+				endAngle: ea,
+				span: span,
+				label: label[i],
 				fill: fill
 			});
 		}
@@ -431,7 +473,8 @@ export default class MenuView extends View {
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout' && options.name==='minute') {
 				console.log('PeriodicTimeoutObserver one minute has elapsed!');
 				if (this.rendered) {
-					this.updateSectors();
+					this.updateDateNumberInMonth();
+					this.updateMonth();
 				}
 			}
 		}

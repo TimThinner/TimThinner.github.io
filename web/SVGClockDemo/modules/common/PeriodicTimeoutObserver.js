@@ -9,6 +9,12 @@ export default class PeriodicTimeoutObserver extends EventObserver {
 		} else {
 			this.interval = 1000; //  The default interval is 1 second.
 		}
+		
+		if (typeof options !== 'undefined' && typeof options.name !== 'undefined') {
+			this.name = options.name;
+		} else {
+			this.name = 'PTO'; //  The default name is 'PTO'.
+		}
 		this.timer = undefined;
 	}
 	
@@ -16,7 +22,7 @@ export default class PeriodicTimeoutObserver extends EventObserver {
 		if (this.interval > 0) {
 			// Notify all observers.
 			//setTimeout(() => this.notifyAll({model:'PeriodicTimeoutObserver',method:'timeout',status:200,message:'OK'}), 100);
-			this.notifyAll({model:'PeriodicTimeoutObserver',method:'timeout',status:200,message:'OK'});
+			this.notifyAll({model:'PeriodicTimeoutObserver',method:'timeout',name:this.name});
 			// Set timer to do "timeout" again.
 			this.timer = setTimeout(()=>{
 				this.poller();
@@ -24,7 +30,7 @@ export default class PeriodicTimeoutObserver extends EventObserver {
 		} else if (this.interval == -1) {
 			// Notify all observers ONLY once.
 			//setTimeout(() => this.notifyAll({model:'PeriodicTimeoutObserver',method:'timeout',status:200,message:'OK'}), 100);
-			this.notifyAll({model:'PeriodicTimeoutObserver',method:'timeout',status:200,message:'OK'});
+			this.notifyAll({model:'PeriodicTimeoutObserver',method:'timeout',name:this.name});
 		}
 	}
 	

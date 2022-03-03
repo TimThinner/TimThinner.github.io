@@ -25,8 +25,11 @@ export default class MenuView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		this.PTO = new PeriodicTimeoutObserver({interval:1000}); // interval 1 seconds
+		this.PTO = new PeriodicTimeoutObserver({interval:1000,name:'second'}); // interval 1 seconds
 		this.PTO.subscribe(this);
+		
+		this.PTO2 = new PeriodicTimeoutObserver({interval:60000,name:'minute'}); // interval 60 seconds
+		this.PTO2.subscribe(this);
 		
 		this.rendered = false;
 	}
@@ -35,10 +38,12 @@ export default class MenuView extends View {
 		console.log('MenuView show()');
 		this.render();
 		this.PTO.restart();
+		this.PTO2.restart();
 	}
 	
 	hide() {
 		this.PTO.stop();
+		this.PTO2.stop();
 		this.rendered = false;
 		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
 		//$(this.el).empty();
@@ -51,6 +56,10 @@ export default class MenuView extends View {
 	remove() {
 		this.PTO.stop();
 		this.PTO.unsubscribe(this);
+		
+		this.PTO2.stop();
+		this.PTO2.unsubscribe(this);
+		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -376,15 +385,14 @@ export default class MenuView extends View {
 				console.log('ResizeEventObserver resize => SHOW()!');
 				this.show();
 				
-			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
-				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout' && options.name==='second') {
 				console.log('PeriodicTimeoutObserver TIMEOUT!');
-				
 				if (this.rendered) {
-					// Do something with each TICK!
 					this.updateHands();
-				} else {
-					console.log('WTF?!');
+				}
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout' && options.name==='minute') {
+				if (this.rendered) {
+					this.updateSectors();
 				}
 			}
 		}

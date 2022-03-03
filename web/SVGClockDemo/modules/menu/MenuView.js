@@ -216,8 +216,9 @@ export default class MenuView extends View {
 		const fill = params.fill;
 		
 		const centerAngle = ab-span/2;
-		const xTxt = Math.sin(centerAngle*Math.PI/180) * ri;
-		const yTxt = Math.cos(centerAngle*Math.PI/180) * ri;
+		const centerRadius = (ri+ro)/2;
+		const xTxt = Math.sin(centerAngle*Math.PI/180) * centerRadius;
+		const yTxt = Math.cos(centerAngle*Math.PI/180) * centerRadius;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const xbi = Math.sin(ab*Math.PI/180) * ri;

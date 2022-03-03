@@ -139,12 +139,12 @@ export default class MenuView extends View {
 		const xs = Math.sin(ss*Math.PI/180) * rs;
 		const ys = Math.cos(ss*Math.PI/180) * rs;
 		
-		const mm = 180 - tm*6 - ts*0.1;
+		const mm = 180 - tm*6 - ts/10;
 		const xm = Math.sin(mm*Math.PI/180) * rm;
 		const ym = Math.cos(mm*Math.PI/180) * rm;
 		
-		// th = 0 - 23   1 hour => 180 - 30 = 150 degrees 
-		const hh = 180 - th*30 - tm*0.5;
+		// th = 0 - 23   1 hour => 180 - 30 = 150 degrees
+		const hh = 180 - th*30 - tm/2 - ts/120;  // 60s => 0.5 degrees => 1s = 1/120 degrees.
 		const xh = Math.sin(hh*Math.PI/180) * rh;
 		const yh = Math.cos(hh*Math.PI/180) * rh;
 		
@@ -159,7 +159,6 @@ export default class MenuView extends View {
 		group.appendChild(m_hand);
 		
 		// HOURS:
-		
 		const h_hand = document.createElementNS(svgNS, "line");
 		h_hand.setAttributeNS(null, 'x1', 0);
 		h_hand.setAttributeNS(null, 'y1', 0);

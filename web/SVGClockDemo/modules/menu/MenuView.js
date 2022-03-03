@@ -239,8 +239,8 @@ export default class MenuView extends View {
 				
 		const p = document.createElementNS(svgNS, "path");
 		p.setAttributeNS(null, 'd', d);
-		p.style.stroke = '#000';
-		p.style.strokeWidth = 3;
+		p.style.stroke = '#888';
+		p.style.strokeWidth = 1;
 		p.style.fill = fill;
 		group.appendChild(p);
 		

@@ -211,7 +211,12 @@ export default class MenuView extends View {
 		const ro = params.outerRadius;
 		const ab = params.startAngle;
 		const ae = params.endAngle;
+		const label = params.label;
 		const fill = params.fill;
+		
+		const averageAngle = (ab-ae)/2;
+		const xTxt = Math.sin(averageAngle*Math.PI/180) * ri;
+		const yTxt = Math.cos(averageAngle*Math.PI/180) * ri;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const xbi = Math.sin(ab*Math.PI/180) * ri;
@@ -236,6 +241,30 @@ export default class MenuView extends View {
 		p.style.strokeWidth = 3;
 		p.style.fill = fill;
 		group.appendChild(p);
+		
+		// Text (label) is wrapped inside SVG-element.
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttributeNS(null, 'x', xTxt-16);
+		svg.setAttributeNS(null, 'y', yTxt-10);
+		svg.setAttributeNS(null, 'width', 32);
+		svg.setAttributeNS(null, 'height', 20);
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','50%');
+		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.setAttribute('font-size','16px');
+		//txt.setAttribute('font-weight','bold');
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.style.fill = '#777';
+		txt.style.stroke = '#777';
+		txt.style.strokeWidth = 1;
+		const text_node = document.createTextNode(label);
+		txt.appendChild(text_node);
+		svg.appendChild(txt);
+		
+		group.appendChild(svg);
 	}
 	
 	updateSectors() {
@@ -256,9 +285,13 @@ export default class MenuView extends View {
 		const group = document.createElementNS(svgNS, "g");
 		group.id = 'sectors';
 		
-		for (let i=1; i<=dim; i++) {
-			const sa = 180-i*dayAngle;
+		for (let i=1; i<dim; i++) {
+			const sa = 180-(i-1)*dayAngle;
 			const ea = sa - dayAngle;
+			let fill = '#ccc';
+			if (i==date) {
+				fill = '#0f0';
+			}
 			// SECTOR
 			this.appendSector({
 				group: group,
@@ -266,7 +299,8 @@ export default class MenuView extends View {
 				outerRadius: r + r*0.2,
 				startAngle: sa,
 				endAngle: ea,
-				fill: '#ff00ff'
+				label: i,
+				fill: fill
 			});
 		}
 		document.getElementById('space').appendChild(group);
@@ -386,11 +420,12 @@ export default class MenuView extends View {
 				this.show();
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout' && options.name==='second') {
-				console.log('PeriodicTimeoutObserver TIMEOUT!');
+				console.log('PeriodicTimeoutObserver one second has elapsed!');
 				if (this.rendered) {
 					this.updateHands();
 				}
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout' && options.name==='minute') {
+				console.log('PeriodicTimeoutObserver one minute has elapsed!');
 				if (this.rendered) {
 					this.updateSectors();
 				}

@@ -139,7 +139,7 @@ export default class MenuView extends View {
 		const xs = Math.sin(ss*Math.PI/180) * rs;
 		const ys = Math.cos(ss*Math.PI/180) * rs;
 		
-		const mm = 180 - tm*6 + ts*0.1;
+		const mm = 180 - tm*6 - ts*0.1;
 		const xm = Math.sin(mm*Math.PI/180) * rm;
 		const ym = Math.cos(mm*Math.PI/180) * rm;
 		

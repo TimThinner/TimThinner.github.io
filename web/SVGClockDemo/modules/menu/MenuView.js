@@ -133,31 +133,42 @@ export default class MenuView extends View {
 		// Each second equals 6 degrees.
 		// 0 => 180
 		// 1 => 174
-		// 2 => 168
-		// 3 => 162
-		// 4 => 156
-		// 5 => 150
-		//
-		// 15 => 90
-		// 30 => 
-		// 
-		const ss = 180 - ts * 6;
+		// ...
+		// Seconds can go "one-second-at-a-time", but minutes and hours movement is calculated to be smooth.
+		const ss = 180 - ts*6;
 		const xs = Math.sin(ss*Math.PI/180) * rs;
 		const ys = Math.cos(ss*Math.PI/180) * rs;
 		
-		const mm = 180 - tm * 6;
+		const mm = 180 - tm*6 + ts*0.1;
 		const xm = Math.sin(mm*Math.PI/180) * rm;
 		const ym = Math.cos(mm*Math.PI/180) * rm;
 		
-		const hm = document.createElementNS(svgNS, "line");
-		hm.setAttributeNS(null, 'x1', 0);
-		hm.setAttributeNS(null, 'y1', 0);
-		hm.setAttributeNS(null, 'x2', xm);
-		hm.setAttributeNS(null, 'y2', ym);
-		hm.style.stroke = '#444';
-		hm.style.strokeWidth = 4;
-		group.appendChild(hm);
+		//const hh = 180 - th * 6;
+		//const xh = Math.sin(hh*Math.PI/180) * rh;
+		//const yh = Math.cos(hh*Math.PI/180) * rh;
 		
+		// MINUTES:
+		const m_hand = document.createElementNS(svgNS, "line");
+		m_hand.setAttributeNS(null, 'x1', 0);
+		m_hand.setAttributeNS(null, 'y1', 0);
+		m_hand.setAttributeNS(null, 'x2', xm);
+		m_hand.setAttributeNS(null, 'y2', ym);
+		m_hand.style.stroke = '#444';
+		m_hand.style.strokeWidth = 4;
+		group.appendChild(m_hand);
+		
+		// HOURS:
+		/*
+		const h_hand = document.createElementNS(svgNS, "line");
+		h_hand.setAttributeNS(null, 'x1', 0);
+		h_hand.setAttributeNS(null, 'y1', 0);
+		h_hand.setAttributeNS(null, 'x2', xh);
+		h_hand.setAttributeNS(null, 'y2', yh);
+		h_hand.style.stroke = '#444';
+		h_hand.style.strokeWidth = 4;
+		group.appendChild(h_hand);*/
+		
+		// Small circle in center (RED):
 		const cc = document.createElementNS(svgNS, "circle");
 		cc.setAttributeNS(null, 'cx', 0);
 		cc.setAttributeNS(null, 'cy', 0);
@@ -167,16 +178,15 @@ export default class MenuView extends View {
 		cc.style.fill = '#f00';
 		group.appendChild(cc);
 		
-		const hs = document.createElementNS(svgNS, "line");
-		hs.setAttributeNS(null, 'x1', 0);
-		hs.setAttributeNS(null, 'y1', 0);
-		hs.setAttributeNS(null, 'x2', xs);
-		hs.setAttributeNS(null, 'y2', ys);
-		hs.style.stroke = '#f00';
-		hs.style.strokeWidth = 3;
-		group.appendChild(hs);
-		
-		
+		// SECONDS (RED):
+		const s_hand = document.createElementNS(svgNS, "line");
+		s_hand.setAttributeNS(null, 'x1', 0);
+		s_hand.setAttributeNS(null, 'y1', 0);
+		s_hand.setAttributeNS(null, 'x2', xs);
+		s_hand.setAttributeNS(null, 'y2', ys);
+		s_hand.style.stroke = '#f00';
+		s_hand.style.strokeWidth = 3;
+		group.appendChild(s_hand);
 		
 		document.getElementById('space').appendChild(group);
 	}
@@ -284,7 +294,7 @@ export default class MenuView extends View {
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
-		c.style.stroke = '#000';
+		c.style.stroke = '#444';
 		c.style.strokeWidth = 9;
 		c.style.fill = '#eee';
 		group.appendChild(c);

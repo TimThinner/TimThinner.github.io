@@ -143,9 +143,10 @@ export default class MenuView extends View {
 		const xm = Math.sin(mm*Math.PI/180) * rm;
 		const ym = Math.cos(mm*Math.PI/180) * rm;
 		
-		//const hh = 180 - th * 6;
-		//const xh = Math.sin(hh*Math.PI/180) * rh;
-		//const yh = Math.cos(hh*Math.PI/180) * rh;
+		// th = 0 - 23   1 hour => 180 - 30 = 150 degrees 
+		const hh = 180 - th*30 - tm*6 - ts*0.1;
+		const xh = Math.sin(hh*Math.PI/180) * rh;
+		const yh = Math.cos(hh*Math.PI/180) * rh;
 		
 		// MINUTES:
 		const m_hand = document.createElementNS(svgNS, "line");
@@ -158,7 +159,7 @@ export default class MenuView extends View {
 		group.appendChild(m_hand);
 		
 		// HOURS:
-		/*
+		
 		const h_hand = document.createElementNS(svgNS, "line");
 		h_hand.setAttributeNS(null, 'x1', 0);
 		h_hand.setAttributeNS(null, 'y1', 0);
@@ -166,7 +167,7 @@ export default class MenuView extends View {
 		h_hand.setAttributeNS(null, 'y2', yh);
 		h_hand.style.stroke = '#444';
 		h_hand.style.strokeWidth = 4;
-		group.appendChild(h_hand);*/
+		group.appendChild(h_hand);
 		
 		// Small circle in center (RED):
 		const cc = document.createElementNS(svgNS, "circle");
@@ -317,11 +318,14 @@ export default class MenuView extends View {
 			this.appendTick(group, r, a, hours[i]);
 		});
 		
-		const ri = r;
-		const ro = r + r*0.2;
-		const ab = -180; // From 12
-		const ae = 90;    // to 3
-		this.appendSector(group, ri, ro, ab, ae);
+		
+		
+		// SECTORS
+		//const ri = r;
+		//const ro = r + r*0.2;
+		//const ab = -180; // From 12
+		//const ae = 90;    // to 3
+		//this.appendSector(group, ri, ro, ab, ae);
 		
 		document.getElementById('space').appendChild(group);
 	}

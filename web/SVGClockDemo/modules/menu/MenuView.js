@@ -107,7 +107,7 @@ export default class MenuView extends View {
 		const h = this.REO.height;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
-		const r = Math.min(wp2, hp2)*0.75; // r = 25% of width (or height).
+		const r = Math.min(wp2, hp2)*0.7; // r = 25% of width (or height).
 		return r;
 	}
 	

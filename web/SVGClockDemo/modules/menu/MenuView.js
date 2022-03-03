@@ -122,7 +122,7 @@ export default class MenuView extends View {
 		
 		const rs = r - r*0.1;
 		const rm = r - r*0.2;
-		const rh = r - r*0.3;
+		const rh = r - r*0.4;
 		
 		//console.log(['Time now h=',th,' tm=',tm,' ts=',ts]);
 		const group = document.createElementNS(svgNS, "g");
@@ -155,7 +155,7 @@ export default class MenuView extends View {
 		m_hand.setAttributeNS(null, 'x2', xm);
 		m_hand.setAttributeNS(null, 'y2', ym);
 		m_hand.style.stroke = '#444';
-		m_hand.style.strokeWidth = 4;
+		m_hand.style.strokeWidth = 5;
 		group.appendChild(m_hand);
 		
 		// HOURS:
@@ -166,7 +166,7 @@ export default class MenuView extends View {
 		h_hand.setAttributeNS(null, 'x2', xh);
 		h_hand.setAttributeNS(null, 'y2', yh);
 		h_hand.style.stroke = '#444';
-		h_hand.style.strokeWidth = 4;
+		h_hand.style.strokeWidth = 7;
 		group.appendChild(h_hand);
 		
 		// Small circle in center (RED):
@@ -186,7 +186,7 @@ export default class MenuView extends View {
 		s_hand.setAttributeNS(null, 'x2', xs);
 		s_hand.setAttributeNS(null, 'y2', ys);
 		s_hand.style.stroke = '#f00';
-		s_hand.style.strokeWidth = 3;
+		s_hand.style.strokeWidth = 2;
 		group.appendChild(s_hand);
 		
 		document.getElementById('space').appendChild(group);

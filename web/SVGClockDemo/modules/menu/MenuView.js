@@ -144,7 +144,7 @@ export default class MenuView extends View {
 		const ym = Math.cos(mm*Math.PI/180) * rm;
 		
 		// th = 0 - 23   1 hour => 180 - 30 = 150 degrees 
-		const hh = 180 - th*30 - tm*0.1;
+		const hh = 180 - th*30 - tm*0.5;
 		const xh = Math.sin(hh*Math.PI/180) * rh;
 		const yh = Math.cos(hh*Math.PI/180) * rh;
 		

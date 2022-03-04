@@ -94,7 +94,7 @@ export default class MenuView extends View {
 		rect.setAttribute('y',-hp2);
 		rect.setAttribute('width',w);
 		rect.setAttribute('height',h);
-		rect.setAttribute('fill', '#000');
+		rect.setAttribute('fill', '#ccc');
 		
 		svg.appendChild(rect);
 		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
@@ -349,6 +349,19 @@ export default class MenuView extends View {
 				fill: fill
 			});
 		}
+		
+		// The most outer black frame!
+		const frameWidth = 30;
+		const c = document.createElementNS(svgNS, "circle");
+		c.setAttributeNS(null, 'cx', 0);
+		c.setAttributeNS(null, 'cy', 0);
+		c.setAttributeNS(null, 'r', r*0.4+frameWidth/2);
+		c.style.stroke = '#444';
+		c.style.strokeWidth = frameWidth;
+		c.style.fill = '#000';
+		group.appendChild(c);
+		
+		
 		document.getElementById('space').appendChild(group);
 	}
 	
@@ -462,19 +475,22 @@ export default class MenuView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				
 				console.log('ResizeEventObserver resize => SHOW()!');
 				this.show();
 				
-			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout' && options.name==='second') {
-				console.log('PeriodicTimeoutObserver one second has elapsed!');
-				if (this.rendered) {
-					this.updateHands();
-				}
-			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout' && options.name==='minute') {
-				console.log('PeriodicTimeoutObserver one minute has elapsed!');
-				if (this.rendered) {
-					this.updateDateNumberInMonth();
-					this.updateMonth();
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				if (options.name==='second') {
+					//console.log('PeriodicTimeoutObserver one second has elapsed!');
+					if (this.rendered) {
+						this.updateHands();
+					}
+				} else if (options.name==='minute') {
+					//console.log('PeriodicTimeoutObserver one minute has elapsed!');
+					if (this.rendered) {
+						this.updateDateNumberInMonth();
+						this.updateMonth();
+					}
 				}
 			}
 		}

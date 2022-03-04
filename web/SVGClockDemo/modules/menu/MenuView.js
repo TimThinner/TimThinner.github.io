@@ -300,7 +300,7 @@ export default class MenuView extends View {
 			this.appendSector({
 				group: group,
 				innerRadius: r,
-				outerRadius: r + r*0.2,
+				outerRadius: r + r*0.3,
 				startAngle: sa,
 				endAngle: ea,
 				span: span,
@@ -341,8 +341,8 @@ export default class MenuView extends View {
 			// SECTOR
 			this.appendSector({
 				group: group,
-				innerRadius: r + r*0.2,
-				outerRadius: r + r*0.4,
+				innerRadius: r + r*0.3,
+				outerRadius: r + r*0.6,
 				startAngle: sa,
 				endAngle: ea,
 				span: span,
@@ -352,11 +352,11 @@ export default class MenuView extends View {
 		}
 		
 		// The most outer black frame!
-		const frameWidth = 30;
+		const frameWidth = 20;
 		const cf = document.createElementNS(svgNS, "circle");
 		cf.setAttributeNS(null, 'cx', 0);
 		cf.setAttributeNS(null, 'cy', 0);
-		cf.setAttributeNS(null, 'r', r+r*0.4+frameWidth/2);
+		cf.setAttributeNS(null, 'r', r+r*0.6+frameWidth/2);
 		cf.style.stroke = '#444';
 		cf.style.strokeWidth = frameWidth;
 		cf.style.fill = 'none';

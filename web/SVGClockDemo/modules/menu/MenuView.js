@@ -105,9 +105,9 @@ export default class MenuView extends View {
 	sunRadius() {
 		const w = this.REO.width;
 		const h = this.REO.height;
-		const wp2 = w*0.5;
-		const hp2 = h*0.5;
-		const r = Math.min(wp2, hp2)*0.7; // r = 25% of width (or height).
+		const wp2 = w*0.5; // 50%
+		const hp2 = h*0.5; // 50%
+		const r = Math.min(wp2, hp2)*0.5; // r = 25% of width (or height).
 		return r;
 	}
 	
@@ -254,8 +254,9 @@ export default class MenuView extends View {
 		const txt = document.createElementNS(svgNS, 'text');
 		txt.setAttribute('x','50%');
 		txt.setAttribute('y','50%');
-		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		txt.setAttribute('font-size','16px');
+		//txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.style.fontFamily = "'Open Sans', sans-serif";
+		txt.style.fontSize = '16px';
 		//txt.setAttribute('font-weight','bold');
 		txt.setAttribute('dominant-baseline','middle');
 		txt.setAttribute('text-anchor','middle');
@@ -395,8 +396,10 @@ export default class MenuView extends View {
 		const txt = document.createElementNS(svgNS, 'text');
 		txt.setAttribute('x','50%');
 		txt.setAttribute('y','50%');
-		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		txt.setAttribute('font-size','16px');
+		txt.style.fontFamily = "'Open Sans', sans-serif";
+		txt.style.fontSize = '16px';
+		//txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		//txt.setAttribute('font-size','16px');
 		//txt.setAttribute('font-weight','bold');
 		txt.setAttribute('dominant-baseline','middle');
 		txt.setAttribute('text-anchor','middle');

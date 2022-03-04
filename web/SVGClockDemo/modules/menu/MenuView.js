@@ -352,15 +352,14 @@ export default class MenuView extends View {
 		
 		// The most outer black frame!
 		const frameWidth = 30;
-		const c = document.createElementNS(svgNS, "circle");
-		c.setAttributeNS(null, 'cx', 0);
-		c.setAttributeNS(null, 'cy', 0);
-		c.setAttributeNS(null, 'r', r*0.4+frameWidth/2);
-		c.style.stroke = '#444';
-		c.style.strokeWidth = frameWidth;
-		c.style.fill = '#000';
-		group.appendChild(c);
-		
+		const cf = document.createElementNS(svgNS, "circle");
+		cf.setAttributeNS(null, 'cx', 0);
+		cf.setAttributeNS(null, 'cy', 0);
+		cf.setAttributeNS(null, 'r', r+r*0.4+frameWidth/2);
+		cf.style.stroke = '#444';
+		cf.style.strokeWidth = frameWidth;
+		cf.style.fill = 'none';
+		group.appendChild(cf);
 		
 		document.getElementById('space').appendChild(group);
 	}

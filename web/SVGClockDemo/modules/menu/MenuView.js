@@ -31,6 +31,30 @@ export default class MenuView extends View {
 		this.PTO2 = new PeriodicTimeoutObserver({interval:60000,name:'minute'}); // interval 60 seconds
 		this.PTO2.subscribe(this);
 		
+		// colors:   in styles.css background is '#ccc'
+		this.colors = {
+			SPACE_FILL: '#ccc',
+			CLOCK_FACE_CIRCLE_STROKE: '#444',
+			CLOCK_FACE_CIRCLE_FILL: '#fff',
+			CLOCK_FACE_CENTER_DOT_STROKE: '#000',
+			CLOCK_FACE_CENTER_DOT_FILL: '#000',
+			CLOCK_FACE_TICK_LINE_STROKE: '#333',
+			CLOCK_FACE_TICK_TXT_FILL: '#777',
+			CLOCK_FACE_TICK_TXT_STROKE: '#777',
+			CLOCK_FACE_SECONDS_HAND: '#f00',
+			CLOCK_FACE_SECONDS_CENTER_DOT_STROKE: '#000',
+			CLOCK_FACE_SECONDS_CENTER_DOT_FILL: '#f00',
+			CLOCK_FACE_MINUTES_HAND: '#444',
+			CLOCK_FACE_HOURS_HAND: '#444',
+			SECTOR_PATH_STROKE: '#888',
+			SECTOR_DATENUMBER_FILL_INACTIVE: '#eee',
+			SECTOR_DATENUMBER_FILL_ACTIVE: '#8f8',
+			SECTOR_MONTH_FILL_INACTIVE: '#eee',
+			SECTOR_MONTH_FILL_ACTIVE: '#ff8',
+			SECTOR_TXT_STROKE: '#777',
+			SECTOR_TXT_FILL: '#777',
+			FRAME_STROKE: '#444'
+		}
 		this.rendered = false;
 	}
 	
@@ -94,7 +118,7 @@ export default class MenuView extends View {
 		rect.setAttribute('y',-hp2);
 		rect.setAttribute('width',w);
 		rect.setAttribute('height',h);
-		rect.setAttribute('fill', '#ccc');
+		rect.setAttribute('fill', this.colors.SPACE_FILL);
 		
 		svg.appendChild(rect);
 		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
@@ -161,7 +185,7 @@ export default class MenuView extends View {
 		m_hand.setAttributeNS(null, 'y1', 0);
 		m_hand.setAttributeNS(null, 'x2', xm);
 		m_hand.setAttributeNS(null, 'y2', ym);
-		m_hand.style.stroke = '#444';
+		m_hand.style.stroke = this.colors.CLOCK_FACE_MINUTES_HAND;
 		m_hand.style.strokeWidth = 5;
 		group.appendChild(m_hand);
 		
@@ -171,7 +195,7 @@ export default class MenuView extends View {
 		h_hand.setAttributeNS(null, 'y1', 0);
 		h_hand.setAttributeNS(null, 'x2', xh);
 		h_hand.setAttributeNS(null, 'y2', yh);
-		h_hand.style.stroke = '#444';
+		h_hand.style.stroke = this.colors.CLOCK_FACE_HOURS_HAND;
 		h_hand.style.strokeWidth = 7;
 		group.appendChild(h_hand);
 		
@@ -180,9 +204,9 @@ export default class MenuView extends View {
 		cc.setAttributeNS(null, 'cx', 0);
 		cc.setAttributeNS(null, 'cy', 0);
 		cc.setAttributeNS(null, 'r', 5);
-		cc.style.stroke = '#000';
+		cc.style.stroke = this.colors.CLOCK_FACE_SECONDS_CENTER_DOT_STROKE;
 		cc.style.strokeWidth = 2;
-		cc.style.fill = '#f00';
+		cc.style.fill = this.colors.CLOCK_FACE_SECONDS_CENTER_DOT_FILL;
 		group.appendChild(cc);
 		
 		// SECONDS (RED):
@@ -191,7 +215,7 @@ export default class MenuView extends View {
 		s_hand.setAttributeNS(null, 'y1', 0);
 		s_hand.setAttributeNS(null, 'x2', xs);
 		s_hand.setAttributeNS(null, 'y2', ys);
-		s_hand.style.stroke = '#f00';
+		s_hand.style.stroke = this.colors.CLOCK_FACE_SECONDS_HAND;
 		s_hand.style.strokeWidth = 2;
 		group.appendChild(s_hand);
 		
@@ -239,7 +263,7 @@ export default class MenuView extends View {
 				
 		const p = document.createElementNS(svgNS, "path");
 		p.setAttributeNS(null, 'd', d);
-		p.style.stroke = '#888';
+		p.style.stroke = this.colors.SECTOR_PATH_STROKE;
 		p.style.strokeWidth = 1;
 		p.style.fill = fill;
 		group.appendChild(p);
@@ -260,8 +284,8 @@ export default class MenuView extends View {
 		//txt.setAttribute('font-weight','bold');
 		txt.setAttribute('dominant-baseline','middle');
 		txt.setAttribute('text-anchor','middle');
-		txt.style.fill = '#777';
-		txt.style.stroke = '#777';
+		txt.style.fill = this.colors.SECTOR_TXT_FILL;
+		txt.style.stroke = this.colors.SECTOR_TXT_STROKE;
 		txt.style.strokeWidth = 1;
 		const text_node = document.createTextNode(label);
 		txt.appendChild(text_node);
@@ -292,9 +316,10 @@ export default class MenuView extends View {
 			const sa = 180-(i-1)*dAngle;
 			const ea = sa - dAngle;
 			const span = dAngle; // The "length" of sector.
-			let fill = '#eee';
+			
+			let fill = this.colors.SECTOR_DATENUMBER_FILL_INACTIVE;
 			if (i==date) {
-				fill = '#8f8';
+				fill = this.colors.SECTOR_DATENUMBER_FILL_ACTIVE;
 			}
 			// SECTOR
 			this.appendSector({
@@ -334,15 +359,15 @@ export default class MenuView extends View {
 			const sa = 180-i*mAngle;
 			const ea = sa - mAngle;
 			const span = mAngle; // The "length" of sector.
-			let fill = '#eee';
+			let fill = this.colors.SECTOR_MONTH_FILL_INACTIVE;
 			if (i==month) {
-				fill = '#ff8';
+				fill = this.colors.SECTOR_MONTH_FILL_ACTIVE;
 			}
 			// SECTOR
 			this.appendSector({
 				group: group,
 				innerRadius: r + r*0.3,
-				outerRadius: r + r*0.6,
+				outerRadius: r + r*0.7,
 				startAngle: sa,
 				endAngle: ea,
 				span: span,
@@ -352,12 +377,12 @@ export default class MenuView extends View {
 		}
 		
 		// The most outer black frame!
-		const frameWidth = 20;
+		const frameWidth = 10;
 		const cf = document.createElementNS(svgNS, "circle");
 		cf.setAttributeNS(null, 'cx', 0);
 		cf.setAttributeNS(null, 'cy', 0);
-		cf.setAttributeNS(null, 'r', r+r*0.6+frameWidth/2);
-		cf.style.stroke = '#444';
+		cf.setAttributeNS(null, 'r', r+r*0.7+frameWidth/2);
+		cf.style.stroke = this.colors.FRAME_STROKE;
 		cf.style.strokeWidth = frameWidth;
 		cf.style.fill = 'none';
 		group.appendChild(cf);
@@ -382,7 +407,7 @@ export default class MenuView extends View {
 		line.setAttributeNS(null, 'y1', y1);
 		line.setAttributeNS(null, 'x2', x2);
 		line.setAttributeNS(null, 'y2', y2);
-		line.style.stroke = '#333';
+		line.style.stroke = this.colors.CLOCK_FACE_TICK_LINE_STROKE;
 		line.style.strokeWidth = 3;
 		group.appendChild(line);
 		
@@ -403,31 +428,15 @@ export default class MenuView extends View {
 		//txt.setAttribute('font-weight','bold');
 		txt.setAttribute('dominant-baseline','middle');
 		txt.setAttribute('text-anchor','middle');
-		txt.style.fill = '#777';
-		txt.style.stroke = '#777';
+		txt.style.stroke = this.colors.CLOCK_FACE_TICK_TXT_STROKE;
+		txt.style.fill = this.colors.CLOCK_FACE_TICK_TXT_FILL;
 		txt.style.strokeWidth = 1;
 		const text_node = document.createTextNode(h);
 		txt.appendChild(text_node);
 		svg.appendChild(txt);
 		group.appendChild(svg);
 	}
-	/*
-	appendDot(group, r, a, color) {
-		const svgNS = 'http://www.w3.org/2000/svg';
-		
-		const cx = Math.sin(a*Math.PI/180) * r;
-		const cy = Math.cos(a*Math.PI/180) * r;
-		
-		const c = document.createElementNS(svgNS, "circle");
-		c.setAttributeNS(null, 'cx', cx);
-		c.setAttributeNS(null, 'cy', cy);
-		c.setAttributeNS(null, 'r', 4);
-		c.style.stroke = '#333';
-		c.style.strokeWidth = 2;
-		c.style.fill = color;
-		group.appendChild(c);
-	}
-	*/
+	
 	appendClock() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
@@ -438,18 +447,18 @@ export default class MenuView extends View {
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
-		c.style.stroke = '#444';
+		c.style.stroke = this.colors.CLOCK_FACE_CIRCLE_STROKE;
 		c.style.strokeWidth = 9;
-		c.style.fill = '#fff';
+		c.style.fill = this.colors.CLOCK_FACE_CIRCLE_FILL;
 		group.appendChild(c);
 		
 		const cc = document.createElementNS(svgNS, "circle");
 		cc.setAttributeNS(null, 'cx', 0);
 		cc.setAttributeNS(null, 'cy', 0);
 		cc.setAttributeNS(null, 'r', 6);
-		cc.style.stroke = '#000';
+		cc.style.stroke = this.colors.CLOCK_FACE_CENTER_DOT_STROKE;
 		cc.style.strokeWidth = 2;
-		cc.style.fill = '#000';
+		cc.style.fill = this.colors.CLOCK_FACE_CENTER_DOT_FILL;
 		group.appendChild(cc);
 		
 		const degrees = [150,120,90,60,30,0,-30,-60,-90,-120,-150,-180];
@@ -457,7 +466,6 @@ export default class MenuView extends View {
 		degrees.forEach((a,i)=>{
 			// 150	120	90	60	30	0	-30	-60	-90	-120	-150	-180
 			//   1	  2	 3	 4	 5	6	 7	  8	  9	  10	  11	  12
-			//this.appendDot(group, r, a, '#777');
 			this.appendTick(group, r, a, hours[i]);
 		});
 		document.getElementById('space').appendChild(group);

@@ -138,9 +138,10 @@ export default class FeedbacksView extends View {
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Do something with each TICK!
 				//
+				const UM = this.controller.master.modelRepo.get('UserModel');
 				Object.keys(this.models).forEach(key => {
-					//console.log(['FETCH MODEL key=',key]);
-					this.models[key].fetch();
+					console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch(UM.token);
 				});
 			}
 		}

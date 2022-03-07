@@ -10,9 +10,9 @@ export default class FeedbacksModel extends Model {
 		
 	}
 	
-	fetch(po) {
+	fetch(token) {
 		const self = this;
-		const token = po.token;
+		//const token = token;
 		
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');

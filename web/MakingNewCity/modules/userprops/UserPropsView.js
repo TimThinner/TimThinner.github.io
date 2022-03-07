@@ -537,7 +537,7 @@ export default class UserPropsView extends View {
 				$('#users').on('click',function() {
 					self.models['MenuModel'].setSelected('USERS');
 				});
-				$('#readkeys').on('click',function() {
+				$('#feedbacks').on('click',function() {
 					self.models['MenuModel'].setSelected('FEEDBACKS');
 				});
 			}

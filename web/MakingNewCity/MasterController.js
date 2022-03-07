@@ -202,6 +202,8 @@ class MasterController {
 		this.controllers['READKEYS'].init();
 		this.controllers['READKEYEDIT'] = new ReadKeyEditController({name:'READKEYEDIT', master:this, el:'#content', visible:false});
 		this.controllers['READKEYEDIT'].init();
+		this.controllers['FEEDBACKS'] = new FeedbacksController({name:'FEEDBACKS', master:this, el:'#content', visible:false});
+		this.controllers['FEEDBACKS'].init();
 		// <------------- Admin stuff end.
 		
 		

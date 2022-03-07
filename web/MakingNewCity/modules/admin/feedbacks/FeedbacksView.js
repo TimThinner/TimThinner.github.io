@@ -4,6 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../../common/View.js';
+import PeriodicTimeoutObserver from '../../common/PeriodicTimeoutObserver.js';
 
 export default class FeedbacksView extends View {
 	
@@ -16,7 +17,10 @@ export default class FeedbacksView extends View {
 			this.models[key].subscribe(this);
 			
 		});
-		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'view-failure';
 		this.layout = 'Table';
@@ -24,16 +28,18 @@ export default class FeedbacksView extends View {
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
-		super.hide();
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		super.remove();
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -97,6 +103,7 @@ export default class FeedbacksView extends View {
 	
 	notify(options) {
 		if (this.controller.visible) {
+			
 			if (options.model==='FeedbacksModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.areModelsReady()) {
@@ -127,6 +134,14 @@ export default class FeedbacksView extends View {
 						this.render();
 					}
 				}
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Do something with each TICK!
+				//
+				Object.keys(this.models).forEach(key => {
+					//console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch();
+				});
 			}
 		}
 	}
@@ -184,7 +199,7 @@ export default class FeedbacksView extends View {
 			this.showFeedbacks();
 			
 			$('#back').on('click',function() {
-				self.menuModel.setSelected('USERPROPS');
+				self.models['MenuModel'].setSelected('userprops');
 			});
 			
 			this.handleErrorMessages(this.FELID);

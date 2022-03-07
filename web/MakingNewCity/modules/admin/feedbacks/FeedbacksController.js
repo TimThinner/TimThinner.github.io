@@ -25,18 +25,6 @@ export default class FeedbacksController extends Controller {
 		this.models = {};
 	}
 	
-	initialize() {
-		const model = new FeedbacksModel({name:'FeedbacksModel',src:'to-be-added-in-the-future'});
-		model.subscribe(this);
-		this.master.modelRepo.add('FeedbacksModel',model);
-		this.models['FeedbacksModel'] = model;
-		
-		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
-		this.models['MenuModel'].subscribe(this);
-		
-		this.view = new FeedbacksView(this);
-	}
-	
 	clean() {
 		console.log('FeedbacksController is now REALLY cleaned!');
 		this.remove();
@@ -60,12 +48,19 @@ export default class FeedbacksController extends Controller {
 		// AND in this.remove finally all models created here is removed.
 		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
 		// so there is no need to redefine them.
-		this.initialize();
+		this.init();
 	}
 	
 	
 	init() {
-		this.initialize();
-		this.timers['FeedbacksView'] = {timer: undefined, interval: -1, models:['FeedbacksModel']};
+		const model = new FeedbacksModel({name:'FeedbacksModel',src:'to-be-added-in-the-future'});
+		model.subscribe(this);
+		this.master.modelRepo.add('FeedbacksModel',model);
+		this.models['FeedbacksModel'] = model;
+		
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
+		this.view = new FeedbacksView(this);
 	}
 }

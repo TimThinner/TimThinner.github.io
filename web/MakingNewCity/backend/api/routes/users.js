@@ -55,7 +55,7 @@ const Readkey = require('../models/readkey');
 */
 router.get('/', checkAuth, (req,res,next)=>{
 	User.find()
-		.select('_id email created regcode readkey point_id_a point_id_b point_id_c')
+		.select('_id email created regcode readkey point_id_a point_id_b point_id_c request_for_tablet consent_a consent_b'')
 		.populate('regcode')
 		.populate('readkey')
 		.exec()
@@ -71,7 +71,10 @@ router.get('/', checkAuth, (req,res,next)=>{
 						readkey: doc.readkey,
 						point_id_a: doc.point_id_a,
 						point_id_b: doc.point_id_b,
-						point_id_c: doc.point_id_c
+						point_id_c: doc.point_id_c,
+						request_for_tablet: doc.request_for_tablet,
+						consent_a: doc.consent_a,
+						consent_b: doc.consent_b
 					}
 				})
 			});
@@ -101,6 +104,10 @@ router.get('/', checkAuth, (req,res,next)=>{
 router.post("/signup", (req,res,next)=>{
 	const email_lc = req.body.email.toLowerCase();
 	const regcode_lc = req.body.regcode.toLowerCase();
+	const request_for_tablet = req.body.request_for_tablet;
+	const consent_a = req.body.consent_a;
+	const consent_b = req.body.consent_b;
+	
 	// First check that this email is NOT already used.
 	User.find({email:email_lc})
 		.exec()
@@ -112,180 +119,84 @@ router.post("/signup", (req,res,next)=>{
 				});
 			} else {
 				// NO CONFLICT!
-				if (regcode_lc === 'f00baz') {
-					// Generate a user and save it
-					bcrypt.hash(req.body.password, 10, (err,hash)=>{
-						if (err) {
-							return res.status(500).json({error:err});
-						} else {
-							const user = new User({
-								_id: new mongoose.Types.ObjectId(),
-								email: email_lc, // Store lowercase version of email.
-								password: hash
-								//is_superuser: true
-								//regcode: regcode[0]._id, // Ref to Regcode
-								//readkey: result._id // Ref to Readkey
-							});
-							user
-								.save()
-								.then(result=>{
-									res.status(201).json({
-										message:'User created'
+				// Normal case: find the given REGCODE from database:
+				Regcode.find({code:regcode_lc})
+					.exec()
+					.then(regcode=>{
+						//console.log(['regcode=',regcode]);
+						if (regcode && regcode.length > 0) {
+							//console.log(['regcode[0]=',regcode[0]]);
+							// Ref to regcode is regcode[0]._id;
+							// Check that emails match
+							if (regcode[0].email === email_lc) {
+								// Check that current timestamp is between startdate and enddate
+								const ts = Date.now()+120000; // Add extra 2 minutes if server clocks are not in sync.
+								const sTS = new Date(regcode[0].startdate);
+								const eTS  = new Date(regcode[0].enddate);
+								//console.log(['Now=',ts]);
+								//console.log(['Start=',sTS.getTime()]);
+								//console.log(['End=',eTS.getTime()]);
+								if (ts > sTS.getTime() && ts < eTS.getTime()) {
+									// Generate a ReadKey and save it
+									const readkey = new Readkey({
+										_id: new mongoose.Types.ObjectId(),
+										startdate: sTS,
+										enddate: eTS
 									});
-								})
-								.catch(err=>{
-									console.log(['err=',err]);
-									res.status(500).json({error:err});
-								})
-						}
-					});
-				} else if (regcode_lc === 'f00bar') {
-					// Generate a user and save it
-					bcrypt.hash(req.body.password, 10, (err,hash)=>{
-						if (err) {
-							return res.status(500).json({error:err});
-						} else {
-							const user = new User({
-								_id: new mongoose.Types.ObjectId(),
-								email: email_lc, // Store lowercase version of email.
-								password: hash,
-								is_superuser: true
-								//regcode: regcode[0]._id, // Ref to Regcode
-								//readkey: result._id // Ref to Readkey
-							});
-							user
-								.save()
-								.then(result=>{
-									res.status(201).json({
-										message:'User created'
-									});
-								})
-								.catch(err=>{
-									console.log(['err=',err]);
-									res.status(500).json({error:err});
-								})
-						}
-					});
-				} else {
-					// Normal case: find the given REGCODE from database:
-					Regcode.find({code:regcode_lc})
-						.exec()
-						.then(regcode=>{
-							//console.log(['regcode=',regcode]);
-							if (regcode && regcode.length > 0) {
-								//console.log(['regcode[0]=',regcode[0]]);
-								// Ref to regcode is regcode[0]._id;
-								// Check that emails match
-								if (regcode[0].email === email_lc) {
-									// Check that current timestamp is between startdate and enddate
-									const ts = Date.now();
-									const sTS = new Date(regcode[0].startdate);
-									const eTS  = new Date(regcode[0].enddate);
-									//console.log(['Now=',ts]);
-									//console.log(['Start=',sTS.getTime()]);
-									//console.log(['End=',eTS.getTime()]);
-									if (ts > sTS.getTime() && ts < eTS.getTime()) {
-										// Generate a ReadKey and save it
-										const readkey = new Readkey({
-											_id: new mongoose.Types.ObjectId(),
-											startdate: sTS,
-											enddate: eTS
-										});
-										readkey
-											.save()
-											.then(result=>{
-												//console.log(['Readkey saved result=',result]);
-												// Generate a User and save it
-												bcrypt.hash(req.body.password, 10, (err,hash)=>{
-												if (err) {
-													return res.status(500).json({error:err});
-												} else {
-													const user = new User({
-														_id: new mongoose.Types.ObjectId(),
-														email: email_lc, // Store lowercase version of email.
-														password: hash,
-														regcode: regcode[0]._id, // Ref to Regcode
-														readkey: result._id // Ref to Readkey
-													});
-													user
-														.save()
-														.then(result=>{
-															res.status(201).json({
-																message:'User created'
-															});
-														})
-														.catch(err=>{
-															console.log(['err=',err]);
-															res.status(500).json({error:err});
-														})
-													}
-												})
+									readkey
+										.save()
+										.then(result=>{
+											//console.log(['Readkey saved result=',result]);
+											// Generate a User and save it
+											bcrypt.hash(req.body.password, 10, (err,hash)=>{
+											if (err) {
+												return res.status(500).json({error:err});
+											} else {
+												const user = new User({
+													_id: new mongoose.Types.ObjectId(),
+													email: email_lc, // Store lowercase version of email.
+													password: hash,
+													regcode: regcode[0]._id, // Ref to Regcode
+													readkey: result._id, // Ref to Readkey
+													request_for_tablet: request_for_tablet,
+													consent_a: consent_a,
+													consent_b: consent_b
+												});
+												user
+													.save()
+													.then(result=>{
+														res.status(201).json({
+															message:'User created'
+														});
+													})
+													.catch(err=>{
+														console.log(['err=',err]);
+														res.status(500).json({error:err});
+													})
+												}
 											})
-											.catch(err=>{
-												console.log(['err=',err]);
-												res.status(500).json({error:err});
-											})
-									} else {
-										res.status(404).json({message: 'Regcode Expired'});
-									}
+										})
+										.catch(err=>{
+											console.log(['err=',err]);
+											res.status(500).json({error:err});
+										})
 								} else {
-									res.status(404).json({message: 'Email and Regcode Not Matching'});
+									res.status(404).json({message: 'Regcode Expired'});
 								}
 							} else {
-								res.status(404).json({message: 'Regcode Not Found'});
+								res.status(404).json({message: 'Email and Regcode Not Matching'});
 							}
-						})
-				}
+						} else {
+							res.status(404).json({message: 'Regcode Not Found'});
+						}
+					})
+			
 			}
 		})
 		.catch(err=>{
 			console.log(['err=',err]);
 			res.status(500).json({error:err});
 		});
-	
-	
-	/*
-	// First check that this email is NOT already used.
-	User.find({email:email_lc})
-		.exec()
-		.then(user=>{
-			if (user.length >= 1) {
-				// CONFLICT!
-				return res.status(409).json({
-					message: 'This email already exists'
-				});
-			} else {
-				// NO CONFLICT!
-				bcrypt.hash(req.body.password, 10, (err,hash)=>{
-					if (err) {
-						return res.status(500).json({error:err});
-					} else {
-						const user = new User({
-							_id: new mongoose.Types.ObjectId(),
-							email: email_lc, // Store lowercase version of email.
-							password: hash
-						});
-						user
-							.save()
-							.then(result=>{
-								res.status(201).json({
-									message:'User created'
-								});
-							})
-							.catch(err=>{
-								console.log(['err=',err]);
-								res.status(500).json({error:err});
-							})
-					}
-				})
-			}
-		})
-		.catch(err=>{
-			console.log(['err=',err]);
-			res.status(500).json({error:err});
-		});
-		
-		*/
 });
 /*
 	Responses:
@@ -296,9 +207,10 @@ router.post("/signup", (req,res,next)=>{
 router.post("/login", (req,res,next)=>{
 	
 	const email_lc = req.body.email.toLowerCase();
-	const selString = '_id email password created readkey'+
+	const selString = '_id email password created regcode readkey'+
 		' price_energy_monthly price_energy_basic price_energy_transfer'+
 		' point_id_a point_id_b point_id_c'+
+		' request_for_tablet consent_a consent_b'+
 		' heating_temperature_upper heating_target_temperature heating_temperature_lower'+
 		' heating_humidity_upper heating_target_humidity heating_humidity_lower'+
 		' water_hot_upper water_hot_target water_hot_lower'+
@@ -307,6 +219,7 @@ router.post("/login", (req,res,next)=>{
 		' is_superuser';
 	User.find({email:email_lc})
 		.select(selString)
+		.populate('regcode')
 		.populate('readkey')
 		.exec()
 		.then(user=>{
@@ -337,6 +250,10 @@ router.post("/login", (req,res,next)=>{
 						}
 					)
 					const rkey = user[0].readkey ? user[0].readkey._id : undefined;
+					const rkey_startdate = user[0].readkey ? user[0].readkey.startdate : undefined;
+					const rkey_enddate = user[0].readkey ? user[0].readkey.enddate : undefined;
+					
+					const apaid = user[0].regcode ? user[0].regcode.apartmentId : undefined;
 					
 					const pem = user[0].price_energy_monthly ? user[0].price_energy_monthly : undefined;
 					const peb = user[0].price_energy_basic ? user[0].price_energy_basic : undefined;
@@ -386,13 +303,19 @@ router.post("/login", (req,res,next)=>{
 						token: token,
 						userId: user[0]._id,
 						created: user[0].created,
+						apartmentId: apaid,
 						readkey: rkey,
+						readkey_startdate: rkey_startdate,
+						readkey_enddate: rkey_enddate,
 						price_energy_monthly: pem,
 						price_energy_basic: peb,
 						price_energy_transfer: pet,
 						point_id_a: pid_a,
 						point_id_b: pid_b,
 						point_id_c: pid_c,
+						request_for_tablet: user[0].request_for_tablet,
+						consent_a: user[0].consent_a,
+						consent_b: user[0].consent_b,
 						heating_temperature_upper: htu,
 						heating_target_temperature: htt,
 						heating_temperature_lower: htl,

@@ -20,12 +20,13 @@ const userSchema = mongoose.Schema({
 	price_energy_monthly: {type:Number},
 	price_energy_basic: {type:Number},
 	price_energy_transfer: {type:Number},
-	
 	// 3 new properties (point_id_x):
 	point_id_a: {type:String, default:''},
 	point_id_b: {type:String, default:''},
 	point_id_c: {type:String, default:''},
-	
+	request_for_tablet: { type: Boolean, default: false },
+	consent_a: { type: Boolean, default: false },
+	consent_b: { type: Boolean, default: false },
 	heating_temperature_upper: {type:Number},
 	heating_target_temperature: {type:Number},
 	heating_temperature_lower: {type:Number},

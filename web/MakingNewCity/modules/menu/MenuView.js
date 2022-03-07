@@ -694,12 +694,11 @@ export default class MenuView extends View {
 		const rr = r*0.4;
 		const r2 = rr-rr*0.2;
 		const w = r2*2;
-		const wper2 = w*0.5;
 		
-		const icon_x = -wper2;//icon_w*0.5;
-		const icon_y = -wper2;
+		const icon_w = w;  // The original icon is 220 x 220 pixels.
 		const icon_h = w;
-		const icon_w = w;
+		const icon_x = -icon_w*0.5;
+		const icon_y = cy-icon_w*0.5;
 		
 		// 'transform' => 'translate('+tx+','+ty+')'
 		const tx = 0;
@@ -718,8 +717,8 @@ export default class MenuView extends View {
 		group.appendChild(border);
 		
 		const img = document.createElementNS(svgNS, "image");
-		img.setAttribute('x', icon_x);//-wper2);
-		img.setAttribute('y', icon_y);//-wper2);
+		img.setAttribute('x', icon_x);
+		img.setAttribute('y', icon_y);
 		img.setAttribute('width', icon_w);
 		img.setAttribute('height', icon_h);
 		img.setAttribute('href', './svg/info.svg');

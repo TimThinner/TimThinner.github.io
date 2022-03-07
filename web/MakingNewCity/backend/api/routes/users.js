@@ -55,7 +55,7 @@ const Readkey = require('../models/readkey');
 */
 router.get('/', checkAuth, (req,res,next)=>{
 	User.find()
-		.select('_id email created regcode readkey point_id_a point_id_b point_id_c request_for_tablet consent_a consent_b'')
+		.select('_id email created regcode readkey point_id_a point_id_b point_id_c request_for_tablet consent_a consent_b')
 		.populate('regcode')
 		.populate('readkey')
 		.exec()

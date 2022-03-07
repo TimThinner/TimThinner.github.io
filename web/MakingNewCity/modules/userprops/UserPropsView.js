@@ -354,7 +354,7 @@ export default class UserPropsView extends View {
 			
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
-			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+			const localized_string_back = LM['translation'][sel]['BACK'];
 			
 			const localized_string_title = LM['translation'][sel]['USER_PROPS_TITLE'];
 			const localized_string_description = LM['translation'][sel]['USER_PROPS_DESCRIPTION'];
@@ -367,10 +367,12 @@ export default class UserPropsView extends View {
 			const localized_string_energy_prices_monthly_unit = LM['translation'][sel]['USER_ENERGY_PRICES_MONTHLY_UNIT'];
 			const localized_string_energy_prices_energy_unit = LM['translation'][sel]['USER_ENERGY_PRICES_ENERGY_UNIT'];
 			const localized_string_energy_prices_transfer_unit = LM['translation'][sel]['USER_ENERGY_PRICES_TRANSFER_UNIT'];
-			
 			const localized_string_change_password_btn_txt = LM['translation'][sel]['USER_PROPS_CHANGE_PASSWORD_BTN_TXT'];
+			const localized_string_admin_description = LM['translation'][sel]['USER_PROPS_ADMIN_DESCRIPTION'];
 			
-			const localized_string_admin_description = 'Admin can view and edit RegCodes, view Users and associated ReadKeys.';
+			const localized_string_admin_regcodes = LM['translation'][sel]['USER_PROPS_ADMIN_REGCODES'];
+			const localized_string_admin_users = LM['translation'][sel]['USER_PROPS_ADMIN_USERS'];
+			const localized_string_admin_feedbacks = LM['translation'][sel]['USER_PROPS_ADMIN_FEEDBACKS'];
 			
 			let admin_buttons_html = '';
 			if (this.userModel.is_superuser) {
@@ -382,13 +384,13 @@ export default class UserPropsView extends View {
 									'<p>'+localized_string_admin_description+'</p>'+
 								'</div>'+
 								'<div class="col s4 center">'+
-									'<button class="btn waves-effect waves-light" id="readkeys">ReadKeys</button>'+
+									'<button class="btn waves-effect waves-light" id="regcodes">'+localized_string_admin_regcodes+'</button>'+
 								'</div>'+
 								'<div class="col s4 center">'+
-									'<button class="btn waves-effect waves-light" id="regcodes">RegCodes</button>'+
+									'<button class="btn waves-effect waves-light" id="users">'+localized_string_admin_users+'</button>'+
 								'</div>'+
 								'<div class="col s4 center">'+
-									'<button class="btn waves-effect waves-light" id="users">Users</button>'+
+									'<button class="btn waves-effect waves-light" id="feedbacks">'+localized_string_admin_feedbacks+'</button>'+
 								'</div>'+
 							'</div>'+
 						'</div>'+
@@ -465,7 +467,7 @@ export default class UserPropsView extends View {
 				
 				'<div class="row">'+
 					'<div class="col s12 center" style="margin-top:32px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+						'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
 							'<i class="material-icons left">arrow_back</i>'+
 						'</button>'+
 					'</div>'+
@@ -536,7 +538,7 @@ export default class UserPropsView extends View {
 					self.models['MenuModel'].setSelected('USERS');
 				});
 				$('#readkeys').on('click',function() {
-					self.models['MenuModel'].setSelected('READKEYS');
+					self.models['MenuModel'].setSelected('FEEDBACKS');
 				});
 			}
 			

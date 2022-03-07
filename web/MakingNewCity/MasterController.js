@@ -47,7 +47,7 @@ import RegCodeCreateController from './modules/admin/regcodes/RegCodeCreateContr
 import RegCodeEditController from './modules/admin/regcodes/RegCodeEditController.js';
 import ReadKeyController from './modules/admin/readkeys/ReadKeyController.js';
 import ReadKeyEditController from './modules/admin/readkeys/ReadKeyEditController.js';
-
+import FeedbacksController from './modules/admin/feedbacks/FeedbacksController.js';
 
 class MasterController {
 	

@@ -488,7 +488,6 @@ export default class MenuView extends View {
 			r = r*0.8; // 80%
 		}
 		const WHITE = '#fff';
-		const BLUE = '#51b0ce';
 		const LIGHTGREEN = '#73d3ae';
 		const DARKGREEN = '#1fac78';
 		
@@ -676,6 +675,66 @@ export default class MenuView extends View {
 		$('#space').append(group);
 	}
 	
+	appendInfoButton() {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		const WHITE = '#fff';
+		const LIGHTGREEN = '#73d3ae';
+		const DARKGREEN = '#1fac78';
+		
+		const rr = r*0.4;
+		const r2 = rr-rr*0.2;
+		const w = r2*2;
+		const wper2 = w*0.5;
+		
+		 // 'transform' => 'translate('+tx+','+ty+')'
+		const tx = 0;
+		const ty = 12*r/5;
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const border = document.createElementNS(svgNS, "circle");
+		border.setAttributeNS(null, 'cx', 0);
+		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'r', rr);
+		border.style.fill = WHITE;
+		border.style.fillOpacity = 0.5;
+		border.style.stroke = LIGHTGREEN;
+		border.style.strokeWidth = 2;
+		group.appendChild(border);
+		
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', -wper2);
+		img.setAttribute('y', -wper2);
+		img.setAttribute('width', w);
+		img.setAttribute('height', w);
+		img.setAttribute('href', './svg/info.svg');
+		group.appendChild(img);
+		
+		const surface = document.createElementNS(svgNS, "circle");
+		surface.setAttributeNS(null, 'cx', 0);
+		surface.setAttributeNS(null, 'cy', 0);
+		surface.setAttributeNS(null, 'r', rr);
+		surface.style.stroke = LIGHTGREEN;
+		surface.style.strokeWidth = 1;
+		surface.style.fillOpacity = 0;
+		surface.style.cursor = 'pointer';
+		surface.addEventListener("click", function(){
+			self.models['MenuModel'].setSelected('HELP');
+		}, false);
+		surface.addEventListener("mouseover", function(event){ 
+			border.style.fill = DARKGREEN;
+		}, false);
+		surface.addEventListener("mouseout", function(event){ 
+			border.style.fill = WHITE;
+		}, false);
+		
+		group.appendChild(surface);
+		group.setAttribute('transform', 'translate('+tx+','+ty+')');
+		$('#space').append(group);
+	}
 	
 	setSelectedLanguage(lang) {
 		
@@ -883,9 +942,8 @@ export default class MenuView extends View {
 		this.appendSun('SOLAR');
 		this.appendSun('GRID');
 		this.appendSun('ENVIRONMENT');
-		/*
+		
 		this.appendInfoButton();
-		*/
 		this.appendLanguageSelections();
 		this.appendMCLinkAndEUFlag();
 	}

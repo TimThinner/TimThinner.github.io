@@ -12,6 +12,22 @@ export default class LanguageModel {
 				'USER_OPEN_SIGNUP_FORM':'Open signup form &raquo;',
 				'USER_SIGNUP_TITLE':'Signup',
 				'USER_SIGNUP_BTN_TXT':'Signup',
+				'USER_SIGNUP_SENSORS_TXT':'You can also have sensors to measure temperature and humidity in your apartment. This data is shown only to you. Check the checkbox below if you want sensors. Due to limited number of sensors in this pilot, please be quick.',
+				'USER_SIGNUP_SENSORS_CHECKBOX_LABEL':'Yes, I want sensors.',
+				'USER_SIGNUP_CONSENT_OK_1':'I have read the ',
+				'USER_SIGNUP_GDPR_LINK_TXT':'GDPR statement',
+				'USER_SIGNUP_CONSENT_OK_2':' and given my consent in ',
+				'USER_SIGNUP_CONSENT_LINK_TXT':'consent form.',
+				'USER_SIGNUP_APARTMENT_NUMBER':'Apartment number',
+				'USER_SIGNUP_APARTMENT_NOT_SELECTED':'Not selected',
+				'USER_SIGNUP_APARTMENT_MUST_INPUT':'Must input <b>Apartment number</b>',
+				'HELP_INFO_TITLE':'iFlex -pilot',
+				'HELP_INFO_THANKS':'Thank you. You have now signed to MakingCity -pilot. Please login.',
+				'HELP_INFO_1':'You can view <b>building</b> measurements and give <b>building</b> feedback without signup or login.',
+				'HELP_INFO_2':'You can view measurements from your <b>apartment</b> and give feedback about your <b>apartment</b> by signing and logging in.',
+				'HELP_INFO_3':'If you selected sensors in signup phase, they will be installed to your apartment as soon as possible (within one month).',
+				'HELP_INFO_4':'The sensor data for your apartment can be found after login from bottom left corner, clicking the radiator icon.',
+				'HELP_INFO_5':'If you need more help, please contact us via email: <a href="mailto:iFLEX-Info@vtt.fi">iFLEX-Info@vtt.fi</a>',
 				'COMING_SOON':'COMING SOON!',
 				'USER_PAGE_ELECTRICITY':'Electricity',
 				'USER_PAGE_HEATING':'Heating',
@@ -167,7 +183,6 @@ export default class LanguageModel {
 				'AUTO_UPDATE_MSG_3':'Chart is NOT automatically updated',
 				'ADJUST_UPDATE_INTERVAL':'Adjust the update interval (0-60s):',
 				'UPDATED_HEADER_TEXT':'Values updated: ',
-				
 				'CONSENT_TITLE':'SUOSTUMUS',
 				'CONSENT_TEXT_A':'Vahvistan lukeneeni ja ymmärtäneeni tutkimustiedotteen ja sen liitteenä olleen tietosuojailmoituksen. Vahvistan, että tiedossani ei ole tutkimustiedotteessa esitettyä poissulkukriteeriä ja/tai täytän valintakriteerit. Minulla on ollut mahdollisuus harkita saamaani tietoa, esittää kysymyksiä ja olen saanut kysymyksiini riittävän vastauksen.',
 				'CONSENT_CHECK_A':'Annan suostumukseni <b>tutkimukseen osallistumiseen</b>. Minulla on oikeus keskeyttää osallistuminen väliaikaisesti tai toistaiseksi (jättäytyä tutkimuksen vaiheen ulkopuolelle) tai peruuttaa suostumus, milloin tahansa ilman erityistä syytä ja syytä kertomatta.',
@@ -300,10 +315,8 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12I':'<b>Oikeus tehdä valitus valvontaviranomaiselle</b>',
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
-				
-				
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 22.02.11'
+				'MENU_VERSION':'v 22.03.07'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -314,6 +327,22 @@ export default class LanguageModel {
 				'USER_OPEN_SIGNUP_FORM':'Rekisteröityminen &raquo;',
 				'USER_SIGNUP_TITLE':'Rekisteröityminen',
 				'USER_SIGNUP_BTN_TXT':'Rekisteröidy',
+				'USER_SIGNUP_SENSORS_TXT':'Asuntoon on mahdollista asentaa lämpötila- ja kosteusmittaus. Laita rasti alla olevaan ruutuun jos haluat mittarit. Koska mittareita on tässä kokeilussa rajoitettu määrä, toimi nopeasti.',
+				'USER_SIGNUP_SENSORS_CHECKBOX_LABEL':'Kyllä, haluan mittarit.',
+				'USER_SIGNUP_CONSENT_OK_1':'Olen lukenut ',
+				'USER_SIGNUP_GDPR_LINK_TXT':'tietosuojaselosteen',
+				'USER_SIGNUP_CONSENT_OK_2':' ja annan suostumukseni ',
+				'USER_SIGNUP_CONSENT_LINK_TXT':'suostumuslomakkeella.',
+				'USER_SIGNUP_APARTMENT_NUMBER':'Asunnon numero',
+				'USER_SIGNUP_APARTMENT_NOT_SELECTED':'Ei valittu',
+				'USER_SIGNUP_APARTMENT_MUST_INPUT':'<b>Asunnon numero</b> täytyy ilmoittaa</b>',
+				'HELP_INFO_TITLE':'iFlex -kokeilu',
+				'HELP_INFO_THANKS':'Kiitos. Olet rekisteröitynyt iFlex -kokeiluun. Nyt voit kirjautua sisään.',
+				'HELP_INFO_1':'Voit tarkastella <b>talokohtaisia</b> mittauksia ja antaa <b>talokohtaista</b> palautetta ilman rekisteröitymistä tai kirjautumista.',
+				'HELP_INFO_2':'Voit tarkastella <b>asuntoasi</b> koskevia mittauksia ja antaa <b>asuntoasi</b> koskevaa palautetta rekisteröitymällä ja kirjautumalla sisään.',
+				'HELP_INFO_3':'Jos valitsit rekisteröinnin yhteydessä mittareiden asennuksen, ne tullaan asentamaan mahdollisimman nopeasti (noin kuukauden kuluessa).',
+				'HELP_INFO_4':'Oman asunnon mittaukset löytyvät kirjautumisen jälkeen asuntosivulta vasemmasta alareunasta, lämpöpatteri-ikonia klikkaamalla.',
+				'HELP_INFO_5':'Ohjeita ja apua saat lähettämällä meille sähköpostia: <a href="mailto:iFLEX-Info@vtt.fi">iFLEX-Info@vtt.fi</a>',
 				'COMING_SOON':'TULOSSA PIAN!',
 				'USER_PAGE_ELECTRICITY':'Sähkö',
 				'USER_PAGE_HEATING':'Lämmitys',
@@ -469,7 +498,6 @@ export default class LanguageModel {
 				'AUTO_UPDATE_MSG_3':'Kuvaaja EI päivity automaattisesti',
 				'ADJUST_UPDATE_INTERVAL':'Säädä päivitystaajuutta (0-60s):',
 				'UPDATED_HEADER_TEXT':'Luvut päivitetty: ',
-				
 				'CONSENT_TITLE':'SUOSTUMUS',
 				'CONSENT_TEXT_A':'Vahvistan lukeneeni ja ymmärtäneeni tutkimustiedotteen ja sen liitteenä olleen tietosuojailmoituksen. Vahvistan, että tiedossani ei ole tutkimustiedotteessa esitettyä poissulkukriteeriä ja/tai täytän valintakriteerit. Minulla on ollut mahdollisuus harkita saamaani tietoa, esittää kysymyksiä ja olen saanut kysymyksiini riittävän vastauksen.',
 				'CONSENT_CHECK_A':'Annan suostumukseni <b>tutkimukseen osallistumiseen</b>. Minulla on oikeus keskeyttää osallistuminen väliaikaisesti tai toistaiseksi (jättäytyä tutkimuksen vaiheen ulkopuolelle) tai peruuttaa suostumus, milloin tahansa ilman erityistä syytä ja syytä kertomatta.',
@@ -602,9 +630,8 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12I':'<b>Oikeus tehdä valitus valvontaviranomaiselle</b>',
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
-				
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 22.02.11'
+				'MENU_VERSION':'v 22.03.07'
 			}
 		}
 	}

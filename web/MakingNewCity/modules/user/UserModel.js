@@ -31,6 +31,10 @@ export default class UserModel extends Model {
 		this.point_id_a = '';
 		this.point_id_b = '';
 		this.point_id_c = '';
+		this.request_for_tablet = false;
+		this.consent_a = false;
+		this.consent_b = false;
+		this.apartmentId = undefined;
 		
 		// Set Heating targets and limits to some reasonable level:
 		this.heating_temperature_upper  = this.DEFAULTS.heating_temperature_upper;
@@ -109,6 +113,10 @@ export default class UserModel extends Model {
 		this.point_id_a = '';
 		this.point_id_b = '';
 		this.point_id_c = '';
+		this.request_for_tablet = false;
+		this.consent_a = false;
+		this.consent_b = false;
+		this.apartmentId = undefined;
 		// this.DEFAULTS is defined in Configuration.js
 		this.setDefaults();
 		this.is_superuser = false;
@@ -127,6 +135,10 @@ export default class UserModel extends Model {
 			'point_id_a':  this.point_id_a,
 			'point_id_b':  this.point_id_b,
 			'point_id_c':  this.point_id_c,
+			'request_for_tablet': this.request_for_tablet,
+			'consent_a': this.consent_a,
+			'consent_b': this.consent_b,
+			'apartmentId': this.apartmentId,
 			'heating_target_temperature': this.heating_target_temperature,
 			'heating_temperature_upper':  this.heating_temperature_upper,
 			'heating_temperature_lower':  this.heating_temperature_lower,
@@ -178,6 +190,11 @@ export default class UserModel extends Model {
 			if (typeof stat.point_id_a !== 'undefined') { this.point_id_a = stat.point_id_a; }
 			if (typeof stat.point_id_b !== 'undefined') { this.point_id_b = stat.point_id_b; }
 			if (typeof stat.point_id_c !== 'undefined') { this.point_id_c = stat.point_id_c; }
+			
+			if (typeof stat.request_for_tablet !== 'undefined') { this.request_for_tablet = stat.request_for_tablet; }
+			if (typeof stat.consent_a !== 'undefined') { this.consent_a = stat.consent_a; }
+			if (typeof stat.consent_b !== 'undefined') { this.consent_b = stat.consent_b; }
+			if (typeof stat.apartmentId !== 'undefined') { this.apartmentId = stat.apartmentId; }
 			
 			if (typeof stat.heating_target_temperature !== 'undefined') { this.heating_target_temperature = stat.heating_target_temperature; }
 			if (typeof stat.heating_temperature_upper !== 'undefined')  { this.heating_temperature_upper = stat.heating_temperature_upper; }
@@ -269,6 +286,10 @@ export default class UserModel extends Model {
 					self.is_superuser = myJson.is_superuser;
 					self.readkey = myJson.readkey;
 					
+					self.request_for_tablet = myJson.request_for_tablet;
+					self.consent_a = myJson.consent_a;
+					self.consent_b = myJson.consent_b;
+					self.apartmentId = myJson.apartmentId;
 					// this.DEFAULTS is defined in Configuration.js
 					self.setDefaults();
 					
@@ -329,6 +350,30 @@ export default class UserModel extends Model {
 			self.notifyAll({model:'UserModel',method:'signup',status:status,message:message});
 		}).catch(function(error){
 			self.notifyAll({model:'UserModel',method:'signup',status:status,message:error});
+		});
+	}
+	
+	signupApa(data) {
+		const self = this;
+		let status = 500; // RESPONSE (OK: 201, MAIL EXISTS: 409, error: 500)
+		const url = this.mongoBackend + '/regcodes/anon';
+		fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers:{
+				'Content-Type': 'application/json'
+			}
+		})
+		.then(function(response){
+			status = response.status;
+			return response.json();
+		})
+		.then(function(myJson){
+			const message = myJson.message;
+			self.notifyAll({model:'UserModel',method:'signupApa',status:status,message:message,data:data});
+		})
+		.catch(function(error){
+			self.notifyAll({model:'UserModel',method:'signupApa',status:status,message:error});
 		});
 	}
 	

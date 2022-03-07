@@ -684,12 +684,24 @@ export default class MenuView extends View {
 		const LIGHTGREEN = '#73d3ae';
 		const DARKGREEN = '#1fac78';
 		
+		let cy = 0;
+		// If view is SQUARE: Put all circles to vertical center.
+		// If view is PORTRAIT: Put all circles to vertical center.
+		// If view is LANDSCAPE: Move all circles 10% down from vertical center.
+		if (this.REO.mode === 'LANDSCAPE') {
+			cy = this.REO.height*0.1;
+		}
 		const rr = r*0.4;
 		const r2 = rr-rr*0.2;
 		const w = r2*2;
 		const wper2 = w*0.5;
 		
-		 // 'transform' => 'translate('+tx+','+ty+')'
+		const icon_x = -wper2;//icon_w*0.5;
+		const icon_y = -wper2;
+		const icon_h = w;
+		const icon_w = w;
+		
+		// 'transform' => 'translate('+tx+','+ty+')'
 		const tx = 0;
 		const ty = 12*r/5;
 		
@@ -697,7 +709,7 @@ export default class MenuView extends View {
 		
 		const border = document.createElementNS(svgNS, "circle");
 		border.setAttributeNS(null, 'cx', 0);
-		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'cy', cy);
 		border.setAttributeNS(null, 'r', rr);
 		border.style.fill = WHITE;
 		border.style.fillOpacity = 0.5;
@@ -706,16 +718,16 @@ export default class MenuView extends View {
 		group.appendChild(border);
 		
 		const img = document.createElementNS(svgNS, "image");
-		img.setAttribute('x', -wper2);
-		img.setAttribute('y', -wper2);
-		img.setAttribute('width', w);
-		img.setAttribute('height', w);
+		img.setAttribute('x', icon_x);//-wper2);
+		img.setAttribute('y', icon_y);//-wper2);
+		img.setAttribute('width', icon_w);
+		img.setAttribute('height', icon_h);
 		img.setAttribute('href', './svg/info.svg');
 		group.appendChild(img);
 		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
-		surface.setAttributeNS(null, 'cy', 0);
+		surface.setAttributeNS(null, 'cy', cy);
 		surface.setAttributeNS(null, 'r', rr);
 		surface.style.stroke = LIGHTGREEN;
 		surface.style.strokeWidth = 1;

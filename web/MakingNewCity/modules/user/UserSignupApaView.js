@@ -23,7 +23,7 @@ export default class UserSignupApaView extends UserView {
 		
 		this.emaile = '';
 		this.passworde = '';
-		this.request_for_sensors = false;
+		this.request_for_tablet = false;
 		
 		// NEW:
 		this.letters_allowed = ['A','B','C','D'];
@@ -72,7 +72,7 @@ export default class UserSignupApaView extends UserView {
 		
 		const _email = $('#signup-email').val();
 		const _password = $('#signup-password').val();
-		const _request_for_sensors = $('#request-for-sensors').is(':checked');
+		const _request_for_tablet = $('#request-for-tablet').is(':checked');
 		// NOTE: If REGCODE is copy-pasted from somewhere, it might contain extra spaces... 
 		// MUST remove them just in case!
 		// The trim() method removes whitespace from both ends of a string. 
@@ -113,7 +113,7 @@ export default class UserSignupApaView extends UserView {
 				email: _email,
 				password: _password,
 				regcode: _regcode,
-				request_for_sensors: _request_for_sensors,
+				request_for_tablet: _request_for_tablet,
 				consent_a: true,
 				consent_b: true
 			};
@@ -186,7 +186,7 @@ export default class UserSignupApaView extends UserView {
 					// Here we shoud empty (reset) the filled properties:
 					this.emaile = '';
 					this.passworde = '';
-					this.request_for_sensors = false;
+					this.request_for_tablet = false;
 					
 					this.resetApartment();
 					
@@ -285,8 +285,8 @@ export default class UserSignupApaView extends UserView {
 		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
 		const localized_string_user_password = LM['translation'][sel]['USER_PASSWORD'];
 		const localized_string_signup_button_text = LM['translation'][sel]['USER_SIGNUP_BTN_TXT'];
-		const localized_string_signup_sensors_text = LM['translation'][sel]['USER_SIGNUP_SENSORS_TXT'];
-		const localized_string_signup_sensors_cb_label = LM['translation'][sel]['USER_SIGNUP_SENSORS_CHECKBOX_LABEL'];
+		const localized_string_signup_tablet_text = LM['translation'][sel]['USER_SIGNUP_TABLET_TXT'];
+		const localized_string_signup_tablet_cb_label = LM['translation'][sel]['USER_SIGNUP_TABLET_CHECKBOX_LABEL'];
 		
 		const consent_ok_1 = LM['translation'][sel]['USER_SIGNUP_CONSENT_OK_1'];
 		const consent_ok_2 = LM['translation'][sel]['USER_SIGNUP_CONSENT_OK_2'];
@@ -364,8 +364,8 @@ export default class UserSignupApaView extends UserView {
 				'<div class="col s12">'+
 					'<div class="input-field col s12">'+
 						// checked="checked"
-						'<p class="note">'+localized_string_signup_sensors_text+'</p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="request-for-sensors" /><span>'+localized_string_signup_sensors_cb_label+'</span></label></p>'+
+						'<p class="note">'+localized_string_signup_tablet_text+'</p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="request-for-tablet" /><span>'+localized_string_signup_tablet_cb_label+'</span></label></p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<p><label><input type="checkbox" class="filled-in" id="consent" />'+
@@ -521,22 +521,22 @@ export default class UserSignupApaView extends UserView {
 			self.updateApaInfo();
 		});
 		
-		$("#request-for-sensors").change(function() {
+		$("#request-for-tablet").change(function() {
 			 if (this.checked) {
-				self.request_for_sensors = true;
+				self.request_for_tablet = true;
 			} else {
-				self.request_for_sensors = false;
+				self.request_for_tablet = false;
 			}
 		});
-		if (this.request_for_sensors === true) {
-			$('#request-for-sensors').attr('checked','checked');
+		if (this.request_for_tablet === true) {
+			$('#request-for-tablet').attr('checked','checked');
 		}
 		
 		$("#cancel").on('click', function() {
 			// Here we shoud empty the filled properties:
 			self.emaile = '';
 			self.passworde = '';
-			self.request_for_sensors = false;
+			self.request_for_tablet = false;
 			UCM.consent_one = false;
 			UCM.consent_two = false;
 			

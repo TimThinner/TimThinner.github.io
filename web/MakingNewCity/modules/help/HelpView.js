@@ -42,7 +42,7 @@ export default class HelpView extends View {
 		const help_thanks = LM['translation'][sel]['HELP_INFO_THANKS'];
 		const help_1 = LM['translation'][sel]['HELP_INFO_1'];
 		const help_2 = LM['translation'][sel]['HELP_INFO_2'];
-		const help_3 = LM['translation'][sel]['HELP_INFO_3'];
+		//const help_3 = LM['translation'][sel]['HELP_INFO_3'];
 		const help_4 = LM['translation'][sel]['HELP_INFO_4'];
 		const help_5 = LM['translation'][sel]['HELP_INFO_5'];
 		const version = LM['translation'][sel]['MENU_VERSION'];
@@ -64,7 +64,7 @@ export default class HelpView extends View {
 						thanks_message+
 						'<p>'+help_1+'</p>'+
 						'<p>'+help_2+'</p>'+
-						'<p>'+help_3+'</p>'+
+						//'<p>'+help_3+'</p>'+
 					'</div>'+
 				'</div>'+
 				'<div class="col s12">'+
@@ -88,7 +88,7 @@ export default class HelpView extends View {
 		$("#back").on('click', function() {
 			// Safe to reset HelpModel caller => This is set to 'signup' in signup -phase.
 			HM.caller = undefined;
-			self.controller.models['MenuModel'].setSelected('menu');
+			self.models['MenuModel'].setSelected('menu');
 		});
 	}
 }

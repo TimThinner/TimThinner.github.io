@@ -86,6 +86,15 @@ export default class UsersView extends View {
 				let readkey = '-';
 				let readkey_validity = '&nbsp;';
 				
+				let consent_a_validity = '<i style="color:red;vertical-align:middle;" class="material-icons small">brightness_1</i>';
+				let consent_b_validity = '<i style="color:red;vertical-align:middle;" class="material-icons small">brightness_1</i>';
+				if (user.consent_a) {
+					consent_a_validity = '<i style="color:green;vertical-align:middle;" class="material-icons small">brightness_1</i>';
+				}
+				if (user.consent_b) {
+					consent_b_validity = '<i style="color:green;vertical-align:middle;" class="material-icons small">brightness_1</i>';
+				}
+				
 				if (typeof user.regcode !== 'undefined') {
 					regcode_apaid = user.regcode.apartmentId;
 					regcode_code = '<a href="javascript:void(0);" id="edit-regcode-'+user.regcode._id+'">'+user.regcode.code+'</a>';
@@ -125,6 +134,9 @@ export default class UsersView extends View {
 						'<td>'+point_id_a_link+'</td>'+
 						'<td>'+point_id_b_link+'</td>'+
 						'<td>'+point_id_c_link+'</td>'+
+						'<td>'+user.request_for_tablet+'</td>'+
+						'<td>'+consent_a_validity+'</td>'+
+						'<td>'+consent_b_validity+'</td>'+
 						'<td>'+regcode_code+'</td>'+
 						'<td>'+regcode_validity+'</td>'+
 						'<td>'+readkey+'</td>'+
@@ -140,6 +152,9 @@ export default class UsersView extends View {
 							'PointIdA: '+point_id_a_link+'<br/>'+
 							'PointIdB: '+point_id_b_link+'<br/>'+
 							'PointIdC: '+point_id_c_link+'<br/>'+
+							'Tablet: '+user.request_for_tablet+'<br/>'+
+							'Consent A: '+consent_a_validity+'<br/>'+
+							'Consent B: '+consent_b_validity+'<br/>'+
 							'RegCode: '+regcode_code+' '+regcode_validity+'<br/>'+
 							'ReadKey: '+readkey+' '+readkey_validity+'</p>'+
 						'</div>'+
@@ -163,7 +178,6 @@ export default class UsersView extends View {
 					self.models['UsersModel'].setContext({'id':uid,'caller':'USERS','pid':'point_id_c'});
 					self.models['MenuModel'].setSelected('POINTIDEDIT');
 				});
-				
 				
 				if (typeof user.regcode !== 'undefined') {
 					const id = user.regcode._id;
@@ -242,12 +256,9 @@ export default class UsersView extends View {
 			
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
-			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-			//const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
-			//const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
-			
-			const localized_string_title = 'Users';
-			const localized_string_description = 'Admin can list all Users and see RegCode and ReadKey information.';
+			const localized_string_back = LM['translation'][sel]['BACK'];
+			const localized_string_title = LM['translation'][sel]['USER_PROPS_ADMIN_USERS'];
+			//const localized_string_description = 'Admin can list all Users and see RegCode and ReadKey information.';
 			/*
 				regcode:
 				apartmentId: { type:String, required:true },
@@ -267,10 +278,13 @@ export default class UsersView extends View {
 							'<tr>'+
 								'<th>Email</th>'+
 								'<th>Created</th>'+
-								'<th>ApartmentId</th>'+
+								'<th>Apartment</th>'+
 								'<th>PointIdA</th>'+
 								'<th>PointIdB</th>'+
 								'<th>PointIdC</th>'+
+								'<th>Tablet</th>'+
+								'<th>Cons A</th>'+
+								'<th>Cons B</th>'+
 								'<th>RegCode</th>'+
 								'<th>&nbsp;</th>'+
 								'<th>ReadKey</th>'+
@@ -288,7 +302,7 @@ export default class UsersView extends View {
 				'<div class="row">'+
 					'<div class="col s12">'+
 						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-						'<p style="text-align:center;">'+localized_string_description+'</p>'+
+						//'<p style="text-align:center;">'+localized_string_description+'</p>'+
 					'</div>'+
 					'<div class="col s12" style="padding: 0 24px;">'+
 					'<form action="#">'+
@@ -306,7 +320,7 @@ export default class UsersView extends View {
 						'</p>'+
 					'</form></div>'+ placeholder +
 					'<div class="col s12 center" style="margin-top:16px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+						'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
 							'<i class="material-icons left">arrow_back</i>'+
 						'</button>'+
 					'</div>'+

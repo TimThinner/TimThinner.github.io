@@ -59,6 +59,19 @@ export default class LanguageModel {
 				'USER_ENERGY_PRICES_TRANSFER':'Network price: ',
 				'USER_ENERGY_PRICES_TRANSFER_UNIT':'cnt/kWh',
 				'USER_ENERGY_PRICE_SAVED_OK':'New price saved.',
+				'USER_PROPS_CONSENT':'Click this link to read the ',
+				'USER_PROPS_ADMIN_DESCRIPTION':'Admin can view and edit RegCodes, view Users and associated ReadKeys.',
+				'USER_PROPS_ADMIN_REGCODES':'RegCodes',
+				'USER_PROPS_ADMIN_REGCODES_CREATE_BTN_TXT': 'Create new',
+				'USER_PROPS_ADMIN_USERS':'Users',
+				'USER_PROPS_ADMIN_CONFIGS':'Configs',
+				'USER_PROPS_ADMIN_FEEDBACKS':'Feedbacks',
+				'USER_CONSENT_TXT':'You can also view your ',
+				'USER_CONSENT_LINK_TXT':'consent form.',
+				'USER_GDPR_TXT':'You can also view the ',
+				'USER_GDPR_LINK_TXT':'informed consent (GDPR).',
+				'ADMIN_START_LABEL':'Start',
+				'ADMIN_END_LABEL':'End',
 				'USER_PROPS_CHANGE_PASSWORD_BTN_TXT':'Change your password',
 				'USER_CHANGE_PASSWORD_TITLE':'Change password',
 				'USER_OLD_PASSWORD':'Old password',
@@ -318,7 +331,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 22.03.07'
+				'MENU_VERSION':'v 22.03.07-A'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -365,8 +378,8 @@ export default class LanguageModel {
 				'ENVIRONMENT_PAGE_PROD_LEGEND_LABEL':'Tuotanto',
 				'ENVIRONMENT_PAGE_LATEST_CONSUMPTION':'Viimeisin kulutus',
 				'ENVIRONMENT_PAGE_AVERAGE_CONSUMPTION':'Keskiarvo',
-				'USER_PROPS_TITLE':'Käyttäjätiedot',
-				'USER_PROPS_DESCRIPTION':'Täältä löytyvät kaikki sinun tietosi ja asetuksesi.',
+				'USER_PROPS_TITLE':'Omat tiedot',
+				'USER_PROPS_DESCRIPTION':'Tällä sivulla käyttäjä voi katsoa ja muokata omia tietojaan.',
 				'USER_ENERGY_PRICES_TITLE':'Energian hinta',
 				'USER_ENERGY_PRICES_DESCRIPTION':'Syötä hinnat omasta sähkösopimuksestasi, niin voimme laskea sähkönkulutuksen jaksokohtaiset hinta-arviot.',
 				'USER_ENERGY_PRICES_MONTHLY':'Kuukausimaksu: ',
@@ -376,6 +389,19 @@ export default class LanguageModel {
 				'USER_ENERGY_PRICES_TRANSFER':'Siirtomaksu: ',
 				'USER_ENERGY_PRICES_TRANSFER_UNIT':'snt/kWh',
 				'USER_ENERGY_PRICE_SAVED_OK':'Uusi hinta talletettu.',
+				'USER_PROPS_CONSENT':'Täältä voit lukea ',
+				'USER_PROPS_ADMIN_DESCRIPTION':'Ylläpitäjä voi nähdä ja muokata rekisteröintikoodeja ja lisäksi hallita kaikkien käyttäjien lukuavaimia.',
+				'USER_PROPS_ADMIN_REGCODES':'Rekisteröintikoodit',
+				'USER_PROPS_ADMIN_REGCODES_CREATE_BTN_TXT':'Luo uusi',
+				'USER_PROPS_ADMIN_USERS':'Käyttäjät',
+				'USER_PROPS_ADMIN_CONFIGS':'Asetukset',
+				'USER_PROPS_ADMIN_FEEDBACKS':'Palautteet',
+				'USER_CONSENT_TXT':'Täältä voit katsella ',
+				'USER_CONSENT_LINK_TXT':'suostumuslomakettasi.',
+				'USER_GDPR_TXT':'Täältä voit lukea ',
+				'USER_GDPR_LINK_TXT':'tietosuojaselosteen (GDPR).',
+				'ADMIN_START_LABEL':'Alkaa',
+				'ADMIN_END_LABEL':'Loppuu',
 				'USER_PROPS_CHANGE_PASSWORD_BTN_TXT':'Vaihda salasanasi',
 				'USER_CHANGE_PASSWORD_TITLE':'Salasanan vaihto',
 				'USER_OLD_PASSWORD':'Vanha salasana',
@@ -635,7 +661,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 22.03.07'
+				'MENU_VERSION':'v 22.03.07-A'
 			}
 		}
 	}

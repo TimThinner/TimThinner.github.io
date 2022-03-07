@@ -43,8 +43,8 @@ export default class HelpView extends View {
 		const help_1 = LM['translation'][sel]['HELP_INFO_1'];
 		const help_2 = LM['translation'][sel]['HELP_INFO_2'];
 		//const help_3 = LM['translation'][sel]['HELP_INFO_3'];
-		const help_4 = LM['translation'][sel]['HELP_INFO_4'];
-		const help_5 = LM['translation'][sel]['HELP_INFO_5'];
+		//const help_4 = LM['translation'][sel]['HELP_INFO_4'];
+		//const help_5 = LM['translation'][sel]['HELP_INFO_5'];
 		const version = LM['translation'][sel]['MENU_VERSION'];
 		
 		const help_ok = LM['translation'][sel]['OK'];
@@ -64,15 +64,17 @@ export default class HelpView extends View {
 						thanks_message+
 						'<p>'+help_1+'</p>'+
 						'<p>'+help_2+'</p>'+
-						//'<p>'+help_3+'</p>'+
+						'<p style="color:#aaa">'+version+'</p>'+
 					'</div>'+
 				'</div>'+
+				/*
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<p class="success-message" style="padding-top:8px;padding-bottom:8px">'+help_5+'</p>'+
 						'<p style="color:#aaa">'+version+'</p>'+
 					'</div>'+
 				'</div>'+
+				*/
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+

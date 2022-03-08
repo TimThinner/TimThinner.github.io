@@ -254,14 +254,6 @@ export default class UserElectricityModel extends Model {
 					end: end_date,
 					expiration_in_seconds: 180
 				};
-					req.body.readkey
-	req.body.url
-	req.body.type
-	req.body.limit
-	req.body.start
-	req.body.end
-	req.body.expiration_in_seconds
-
 				const myPost = {
 					method: 'POST',
 					headers: myHeaders,

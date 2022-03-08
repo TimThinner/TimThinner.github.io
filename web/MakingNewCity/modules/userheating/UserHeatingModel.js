@@ -218,12 +218,19 @@ export default class UserHeatingModel extends Model {
 			
 			if (typeof readkey !== 'undefined') {
 				// Normal user has a readkey, which was created when user registered into the system. 
-				const url = this.mongoBackend + '/apartments/feeds/';
-				
+				//const url = this.mongoBackend + '/apartments/feeds/';
+				const url = this.mongoBackend + '/proxes/apafeeds';
 				// this.src = 'data/sivakka/apartments/feeds.json' 
 				const body_url = this.backend + '/' + this.src;
-				const data = {url:body_url, readkey:readkey, type: this.type, limit:this.limit, start: start_date, end: end_date };
-				
+				const data = {
+					url:body_url, 
+					readkey:readkey, 
+					type: this.type, 
+					limit:this.limit, 
+					start: start_date, 
+					end: end_date,
+					expiration_in_seconds: 180
+				};
 				const myPost = {
 					method: 'POST',
 					headers: myHeaders,
@@ -233,8 +240,13 @@ export default class UserHeatingModel extends Model {
 				this.doTheFetch(myRequest);
 				
 			} else {
+				
+				console.log('===============================');
+				console.log('!!!!!!!!!!! NO READKEY !!!!!!!!');
+				console.log('===============================');
+				
 				// Abnormal user (admin) => no readkey. Use direct url for testing purposes.
-				this.fetch_d();
+				//this.fetch_d();
 			}
 			
 		} else {

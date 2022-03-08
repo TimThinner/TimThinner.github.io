@@ -140,11 +140,17 @@ export default class UserElectricityModel extends Model {
 			})
 			.then(function(myJson) {
 				let message = 'OK';
+				
+				
+				console.log(['%%%% UserElectricityModel myJson=',myJson]);
+				
+				
+				
 				if (Array.isArray(myJson)) {
 					
 					if (myJson.length === 1) {
 						self.measurement = myJson;
-						//console.log(['self.measurement=',myJson]);
+						console.log(['self.measurement=',myJson]);
 					} else {
 						console.log(['Before process() myJson=',myJson]);
 						//self.process(myJson);
@@ -248,6 +254,14 @@ export default class UserElectricityModel extends Model {
 					end: end_date,
 					expiration_in_seconds: 180
 				};
+					req.body.readkey
+	req.body.url
+	req.body.type
+	req.body.limit
+	req.body.start
+	req.body.end
+	req.body.expiration_in_seconds
+
 				const myPost = {
 					method: 'POST',
 					headers: myHeaders,

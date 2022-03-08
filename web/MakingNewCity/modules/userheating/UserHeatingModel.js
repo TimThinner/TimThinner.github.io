@@ -133,6 +133,9 @@ export default class UserHeatingModel extends Model {
 			})
 			.then(function(myJson) {
 				let message = 'OK';
+				
+				console.log(['%%%% UserHeatingModel myJson=',myJson]);
+				
 				if (Array.isArray(myJson)) {
 					
 					if (myJson.length === 1) {

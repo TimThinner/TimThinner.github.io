@@ -226,6 +226,7 @@ const Proxe_HTTPS_GET = (po, res) => {
 	const expiration = po.expiration;
 	const options = po.options;
 	const response_type = po.response_type;
+	const parse = po.parse;
 	
 	https.get(url, options, (res2) => {
 		
@@ -254,7 +255,6 @@ const Proxe_HTTPS_GET = (po, res) => {
 			try {
 				if (ctype === 'json') {
 					// rawData is a JSON string.
-					//const parsedData = JSON.parse(rawData);
 					if (typeof id !== 'undefined') {
 						// Update
 						Proxe_Update({id:id, json:rawData}, res);
@@ -415,7 +415,8 @@ router.post('/fingrid', (req,res,next)=>{
 		url: req.body.url,
 		options: options,
 		expiration: req.body.expiration_in_seconds,
-		response_type: 'json'
+		response_type: 'json',
+		parse: false
 	}
 	Proxe_Find(po,res);
 });
@@ -478,7 +479,8 @@ router.post('/entsoe', (req,res,next)=>{
 		url: url,
 		options: options,
 		expiration: req.body.expiration_in_seconds,
-		response_type: 'xml'
+		response_type: 'xml',
+		parse: false
 	};
 	Proxe_Find(po, res);
 });
@@ -498,7 +500,8 @@ router.post('/empo', (req,res,next)=>{
 		url: url,
 		options: options,
 		expiration: req.body.expiration_in_seconds,
-		response_type: 'json'
+		response_type: 'json',
+		parse: false
 	};
 	Proxe_Find(po, res);
 });
@@ -523,7 +526,8 @@ router.post('/sivakkastatus', (req,res,next)=>{
 		url: req.body.url,
 		options: options,
 		expiration: req.body.expiration_in_seconds,
-		response_type: 'json'
+		response_type: 'json',
+		parse: false
 	};
 	Proxe_Find(po, res);
 });
@@ -572,7 +576,8 @@ router.post('/apafeeds', checkAuth, (req,res,next)=>{
 						url: url,
 						options: options,
 						expiration: req.body.expiration_in_seconds,
-						response_type: 'json'
+						response_type: 'json',
+						parse: true
 					};
 					Proxe_Find(po, res);
 					

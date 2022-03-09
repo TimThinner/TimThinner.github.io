@@ -784,11 +784,11 @@ export default class UserPageView extends View {
 				const svg = document.createElementNS(svgNS, "svg");
 				svg.id = 'heating-now-svg';
 				svg.setAttribute('x',-r*0.4);
-				svg.setAttribute('y',r*0.4);
+				svg.setAttribute('y',r*0.3);
 				svg.setAttributeNS(null,'width',r*0.8);
-				svg.setAttributeNS(null,'height',r*0.8);
-				const fontsize = 32;
-				const d_fontsize = fontsize/2;
+				svg.setAttributeNS(null,'height',r*0.6);
+				const fontsize = 28;
+				const d_fontsize = 18;
 				/*
 				const rect_bg = document.createElementNS(svgNS, 'rect');
 				rect_bg.setAttribute('x',0);
@@ -809,7 +809,7 @@ export default class UserPageView extends View {
 				tempTxt.setAttribute('text-anchor','middle');
 				tempTxt.setAttribute('fill','#000');
 				tempTxt.style.opacity = 0.75;
-				tempTxt.appendChild(document.createTextNode('21°C'));
+				tempTxt.appendChild(document.createTextNode('21.4°C'));
 				svg.appendChild(tempTxt);
 				
 				const humiTxt = document.createElementNS(svgNS, 'text');
@@ -821,7 +821,7 @@ export default class UserPageView extends View {
 				humiTxt.setAttribute('text-anchor','middle');
 				humiTxt.setAttribute('fill','#000');
 				humiTxt.style.opacity = 0.75;
-				humiTxt.appendChild(document.createTextNode('33%'));
+				humiTxt.appendChild(document.createTextNode('33.3%'));
 				svg.appendChild(humiTxt);
 				
 				group.appendChild(svg);

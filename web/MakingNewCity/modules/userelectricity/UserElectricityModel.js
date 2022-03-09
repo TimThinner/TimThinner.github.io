@@ -141,19 +141,22 @@ export default class UserElectricityModel extends Model {
 			.then(function(myJson) {
 				let message = 'OK';
 				
-				
 				console.log(['%%%% UserElectricityModel myJson=',myJson]);
 				
+				const resu = JSON.parse(myJson);
+				
+				console.log(['%%%% resu=',resu]);
 				
 				
-				if (Array.isArray(myJson)) {
+				
+				if (Array.isArray(resu)) {
 					
-					if (myJson.length === 1) {
-						self.measurement = myJson;
-						console.log(['self.measurement=',myJson]);
+					if (resu.length === 1) {
+						self.measurement = resu;
+						console.log(['self.measurement=',resu]);
 					} else {
-						console.log(['Before process() myJson=',myJson]);
-						//self.process(myJson);
+						console.log(['Before process() resu=',resu]);
+						//self.process(resu);
 					}
 					
 				} else {

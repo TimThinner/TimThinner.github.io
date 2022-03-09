@@ -261,9 +261,8 @@ const Proxe_HTTPS_GET = (po, res) => {
 							//	const parsedData = JSON.parse(rawData);
 								//console.log(['parsedData=',parsedData]);
 							//	res.status(200).json(parsedData);
-					
-					
-					
+					console.log(['rawData=',rawData]);
+					//[ 'rawData=','[{"created_at":"2022-02-08T23:59:35","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":660,"totalEnergy":18562.673,"impulseLastCtr":11,"impulseTotalCtr":18562673}]' ]
 					if (typeof id !== 'undefined') {
 						// Update
 						Proxe_Update({id:id, json:rawData}, res);

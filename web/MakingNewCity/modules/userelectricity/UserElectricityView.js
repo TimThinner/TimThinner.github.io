@@ -176,8 +176,6 @@ export default class UserElectricityView extends View {
 				
 				console.log(['meas=',meas]);
 				
-				//if (typeof meas === 'string') {
-				//const measo = JSON.parse(meas);
 				if (Array.isArray(meas) && meas.length > 0) {
 					const total = meas[0].totalEnergy;
 					const d = new Date(meas[0].created_at);

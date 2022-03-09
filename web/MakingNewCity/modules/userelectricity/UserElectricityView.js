@@ -174,11 +174,11 @@ export default class UserElectricityView extends View {
 			if (key.indexOf('UserElectricity') === 0) {
 				const meas = this.models[key].measurement; // is in normal situation an array.
 				
-				//console.log(['meas=',meas]);
+				console.log(['meas=',meas]);
 				
 				//if (typeof meas === 'string') {
-				const measo = JSON.parse(meas);
-				if (Array.isArray(measo) && measo.length > 0) {
+				//const measo = JSON.parse(meas);
+				if (Array.isArray(meas) && meas.length > 0) {
 					const total = meas[0].totalEnergy;
 					const d = new Date(meas[0].created_at);
 					temp_a.push({date:d, total:total});

@@ -255,6 +255,15 @@ const Proxe_HTTPS_GET = (po, res) => {
 			try {
 				if (ctype === 'json') {
 					// rawData is a JSON string.
+					
+					
+					// Todo: add JSON parse for rawdata if requested.
+							//	const parsedData = JSON.parse(rawData);
+								//console.log(['parsedData=',parsedData]);
+							//	res.status(200).json(parsedData);
+					
+					
+					
 					if (typeof id !== 'undefined') {
 						// Update
 						Proxe_Update({id:id, json:rawData}, res);

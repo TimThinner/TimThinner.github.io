@@ -338,7 +338,7 @@ export default class UserSignupApaView extends UserView {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s6 center">'+
+				'<div class="col s6">'+
 					'<p style="color:#aaa;">'+localized_string_signup_apartment_address+'</p>'+
 				'</div>'+
 				'<div class="col s3 center">'+
@@ -351,10 +351,10 @@ export default class UserSignupApaView extends UserView {
 			
 			'<div class="row">'+
 				'<div class="col s6">'+
-					'<p><label><input class="with-gap" name="address" type="radio" value="Vaskitie 1" checked /><span>Vaskitie 1</span></label></p>'+
-					'<p><label><input class="with-gap" name="address" type="radio" value="Kaukonraitti" /><span>Kaukonraitti</span></label></p>'+
-					'<p><label><input class="with-gap" name="address" type="radio" value="Jalohaukantie 5" /><span>Jalohaukantie 5</span></label></p>'+
-					'<p><label><input class="with-gap" name="address" type="radio" value="Hiirihaukantie 12A" /><span>Hiirihaukantie 12A</span></label></p>'+
+					'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Vaskitie 1" checked /><span>Vaskitie 1</span></label></p>'+
+					'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Kaukonraitti" /><span>Kaukonraitti</span></label></p>'+
+					'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Jalohaukantie 5" /><span>Jalohaukantie 5</span></label></p>'+
+					'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Hiirihaukantie 12A" /><span>Hiirihaukantie 12A</span></label></p>'+
 				'</div>'+
 				'<div class="col s6 center">'+
 					'<div class="row" style="margin-top:0;margin-bottom:0;">'+

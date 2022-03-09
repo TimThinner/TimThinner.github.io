@@ -1,5 +1,5 @@
 import Model from '../common/Model.js';
-export default class UserHeatingLastModel extends Model {
+export default class UserHeatingNowModel extends Model {
 	/* Model:
 		this.name = options.name;
 		this.src = options.src;

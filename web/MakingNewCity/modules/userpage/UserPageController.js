@@ -1,5 +1,5 @@
 import Controller from '../common/Controller.js';
-import UserHeatingLastModel from './UserHeatingLastModel.js';
+import UserHeatingNowModel from './UserHeatingNowModel.js';
 import UserPageView from './UserPageView.js';
 
 /*
@@ -24,7 +24,7 @@ export default class UserPageController extends Controller {
 		// We must remove all models that were created here at the init():
 		
 		Object.keys(this.models).forEach(key => {
-			if (key==='UserHeatingLastModel') {
+			if (key==='UserHeatingNowModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -40,13 +40,13 @@ export default class UserPageController extends Controller {
 	init() {
 		
 		// Response is 24 x 60 x 30 values = 43 200 measurements => 24 x 30 averages (720 averages).
-		const m = new UserHeatingLastModel({
-			name: 'UserHeatingLastModel',
+		const m = new UserHeatingNowModel({
+			name: 'UserHeatingNowModel',
 			src: 'data/sivakka/wlsensordata/last.json'
 		});
 		m.subscribe(this);
-		this.master.modelRepo.add('UserHeatingLastModel',m);
-		this.models['UserHeatingLastModel'] = m;
+		this.master.modelRepo.add('UserHeatingNowModel',m);
+		this.models['UserHeatingNowModel'] = m;
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

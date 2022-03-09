@@ -155,6 +155,7 @@ export default class RegCodeCreateView extends View {
 		
 		const localized_string_title = 'Create a new RegCode';
 		const localized_string_user_email = LM['translation'][sel]['USER_EMAIL'];
+		const localized_string_address = 'Address';
 		const localized_string_apartment_id = 'Apartment Id';
 		const localized_string_da_cancel = LM['translation'][sel]['DA_CANCEL'];
 		const localized_string_create_regcode = 'Create RegCode';
@@ -191,11 +192,14 @@ export default class RegCodeCreateView extends View {
 						'<input id="regcode-email" type="email" class="validate" required="" aria-required="true" />'+
 						'<label for="regcode-email">'+localized_string_user_email+'</label>'+
 					'</div>'+
-					'<div class="input-field col s12 m6">'+
+					'<div class="input-field col s12 m3">'+
+						'<input id="regcode-address" type="text" class="validate" required="" aria-required="true" />'+
+						'<label for="regcode-address">'+localized_string_address+'</label>'+
+					'</div>'+
+					'<div class="input-field col s12 m3">'+
 						'<input id="regcode-apartment-id" type="text" class="validate" required="" aria-required="true" />'+
 						'<label for="regcode-apartment-id">'+localized_string_apartment_id+'</label>'+
 					'</div>'+
-					
 					'<div class="input-field col s12 m6" id="active-period-start-wrapper">'+
 						'<input id="active-period-start" type="text" value="'+display_start_datetime+'">'+
 						'<label class="active" for="active-period-start">'+localized_string_active_period_start+'</label>'+
@@ -265,6 +269,7 @@ export default class RegCodeCreateView extends View {
 		
 		$('#create-regcode').on('click',function() {
 			const _email = $('#regcode-email').val();
+			const _address = $('#regcode-address').val();
 			const _apaid = $('#regcode-apartment-id').val();
 			
 			const startDate = self.serviceDates.start;	// This is a Date object!
@@ -299,6 +304,7 @@ export default class RegCodeCreateView extends View {
 			
 			const validateArray = [
 				{test:"email",name:"Email",value:_email},
+				{test:"exist",name:"Address",value:_address}
 				{test:"exist",name:"Apartment Id",value:_apaid}
 			];
 			const v = new Validator();
@@ -318,6 +324,7 @@ export default class RegCodeCreateView extends View {
 				const _code = self.randomString(6, '23456789abcdefghijkmnprstuvwxyz');
 				const data = {
 					email: _email,
+					address: _address,
 					apartmentId: _apaid,
 					code: _code,
 					startdate: startDate,

@@ -308,14 +308,14 @@ export default class UserSignupApaView extends UserView {
 			D 1 ... D 99
 		What if these ranges need to be extended to include more letters or more numbers?
 		*/
-		let hundreds_up = '<div class="col s2 m1">&nbsp;</div>';
-		let hundreds_ph = '<div class="col s2 m1 edit-item-change-number">&nbsp;</div>';
-		let hundreds_do = '<div class="col s2 m1">&nbsp;</div>';
+		let hundreds_up = '<div class="col s2">&nbsp;</div>';
+		let hundreds_ph = '<div class="col s2 edit-item-change-number">&nbsp;</div>';
+		let hundreds_do = '<div class="col s2">&nbsp;</div>';
 		
 		if (typeof this.apa_hundreds !== 'undefined') {
-			hundreds_up = '<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-up"><i class="small material-icons">arrow_drop_up</i></a></div>';
-			hundreds_ph = '<div class="col s2 m1 edit-item-change-number" id="hundreds"></div>';
-			hundreds_do = '<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-down"><i class="small material-icons">arrow_drop_down</i></a></div>';
+			hundreds_up = '<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-up"><i class="small material-icons">arrow_drop_up</i></a></div>';
+			hundreds_ph = '<div class="col s2 edit-item-change-number" id="hundreds"></div>';
+			hundreds_do = '<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-down"><i class="small material-icons">arrow_drop_down</i></a></div>';
 		}
 		
 		
@@ -358,30 +358,30 @@ export default class UserSignupApaView extends UserView {
 					
 					'<div class="row" style="margin-top:0;margin-bottom:0;">'+
 						
-						'<div class="col s2 m1">&nbsp;</div>'+ // offset-m3
-						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="letters-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+						'<div class="col s2">&nbsp;</div>'+ // offset-m3
+						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="letters-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
 						hundreds_up+
-						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
-						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
-						'<div class="col s2 m1"></div>'+
+						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+						'<div class="col s2"></div>'+
 					'</div>'+
 					
 					'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-						'<div class="col s2 m1">&nbsp;</div>'+ // offset-m3
-						'<div class="col s2 m1 edit-item-change-number" id="letters"></div>'+
+						'<div class="col s2">&nbsp;</div>'+ // offset-m3
+						'<div class="col s2 edit-item-change-number" id="letters"></div>'+
 						hundreds_ph+
-						'<div class="col s2 m1 edit-item-change-number" id="tens"></div>'+
-						'<div class="col s2 m1 edit-item-change-number" id="ones"></div>'+
-						'<div class="col s2 m1"></div>'+
+						'<div class="col s2 edit-item-change-number" id="tens"></div>'+
+						'<div class="col s2 edit-item-change-number" id="ones"></div>'+
+						'<div class="col s2"></div>'+
 					'</div>'+
 					
 					'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-						'<div class="col s2 m1">&nbsp;</div>'+ // offset-m3
-						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="letters-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+						'<div class="col s2">&nbsp;</div>'+ // offset-m3
+						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="letters-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
 						hundreds_do+
-						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
-						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
-						'<div class="col s2 m1"></div>'+
+						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+						'<div class="col s2"></div>'+
 					'</div>'+
 					
 				'</div>'+

@@ -224,6 +224,7 @@ export default class RegCodeView extends View {
 						'<thead>'+
 							'<tr>'+
 								'<th>Email</th>'+
+								'<th>Address</th>'+
 								'<th>Apartment Id</th>'+
 								'<th>Code</th>'+
 								'<th>Start Date</th>'+

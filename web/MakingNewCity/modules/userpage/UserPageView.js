@@ -783,10 +783,10 @@ export default class UserPageView extends View {
 				
 				const svg = document.createElementNS(svgNS, "svg");
 				svg.id = 'heating-now-svg';
-				svg.setAttribute('x',-r*0.25);
-				svg.setAttribute('y',r*0.25);
-				svg.setAttributeNS(null,'width',r*0.5);
-				svg.setAttributeNS(null,'height',r*0.5);
+				svg.setAttribute('x',-r*0.4);
+				svg.setAttribute('y',r*0.4);
+				svg.setAttributeNS(null,'width',r*0.8);
+				svg.setAttributeNS(null,'height',r*0.8);
 				const fontsize = 32;
 				const d_fontsize = fontsize/2;
 				/*
@@ -802,7 +802,7 @@ export default class UserPageView extends View {
 				
 				const tempTxt = document.createElementNS(svgNS, 'text');
 				tempTxt.setAttribute('x','50%');
-				tempTxt.setAttribute('y','40%');
+				tempTxt.setAttribute('y','50%');
 				tempTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
 				tempTxt.setAttribute('font-size',fontsize);
 				tempTxt.setAttribute('dominant-baseline','middle');
@@ -814,7 +814,7 @@ export default class UserPageView extends View {
 				
 				const humiTxt = document.createElementNS(svgNS, 'text');
 				humiTxt.setAttribute('x','50%');
-				humiTxt.setAttribute('y','70%');
+				humiTxt.setAttribute('y','75%');
 				humiTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
 				humiTxt.setAttribute('font-size',d_fontsize);
 				humiTxt.setAttribute('dominant-baseline','middle');

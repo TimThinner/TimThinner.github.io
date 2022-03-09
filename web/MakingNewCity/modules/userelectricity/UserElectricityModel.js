@@ -140,17 +140,8 @@ export default class UserElectricityModel extends Model {
 			})
 			.then(function(myJson) {
 				let message = 'OK';
-				
-				console.log(['%%%% UserElectricityModel myJson=',myJson]);
-				
 				const resu = JSON.parse(myJson);
-				
-				console.log(['%%%% resu=',resu]);
-				
-				
-				
 				if (Array.isArray(resu)) {
-					
 					if (resu.length === 1) {
 						self.measurement = resu;
 						console.log(['self.measurement=',resu]);
@@ -158,7 +149,6 @@ export default class UserElectricityModel extends Model {
 						console.log(['Before process() resu=',resu]);
 						//self.process(resu);
 					}
-					
 				} else {
 					if (myJson === 'No data!') {
 						self.status = 404;

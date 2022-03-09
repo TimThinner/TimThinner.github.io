@@ -133,19 +133,15 @@ export default class UserHeatingModel extends Model {
 			})
 			.then(function(myJson) {
 				let message = 'OK';
-				
-				console.log(['%%%% UserHeatingModel myJson=',myJson]);
-				
-				if (Array.isArray(myJson)) {
-					
-					if (myJson.length === 1) {
-						self.measurement = myJson;
-						console.log(['self.measurement=',myJson]);
+				const resu = JSON.parse(myJson);
+				if (Array.isArray(resu)) {
+					if (resu.length === 1) {
+						self.measurement = resu;
+						console.log(['self.measurement=',resu]);
 					} else {
-						console.log(['Before process() myJson=',myJson]);
-						self.process(myJson);
+						console.log(['Before process() resu=',resu]);
+						self.process(resu);
 					}
-					
 				} else {
 					if (myJson === 'No data!') {
 						self.status = 404;

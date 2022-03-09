@@ -228,7 +228,7 @@ export default class UserHeatingModel extends Model {
 					limit:this.limit, 
 					start: start_date, 
 					end: end_date,
-					expiration_in_seconds: 180
+					expiration_in_seconds: 3600
 				};
 				const myPost = {
 					method: 'POST',

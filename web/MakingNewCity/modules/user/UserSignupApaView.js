@@ -293,7 +293,10 @@ export default class UserSignupApaView extends UserView {
 		const consent_link_text = LM['translation'][sel]['USER_SIGNUP_CONSENT_LINK_TXT'];
 		const gdpr_link_text = LM['translation'][sel]['USER_SIGNUP_GDPR_LINK_TXT'];
 		
+		const localized_string_signup_apartment_address = LM['translation'][sel]['USER_SIGNUP_APARTMENT_ADDRESS'];
+		const localized_string_signup_apartment_letter = LM['translation'][sel]['USER_SIGNUP_APARTMENT_LETTER'];
 		const localized_string_signup_apartment_number = LM['translation'][sel]['USER_SIGNUP_APARTMENT_NUMBER'];
+		
 		const localized_string_signup_apartment_must_input = LM['translation'][sel]['USER_SIGNUP_APARTMENT_MUST_INPUT'];
 		
 		/*
@@ -315,6 +318,9 @@ export default class UserSignupApaView extends UserView {
 			hundreds_do = '<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-down"><i class="small material-icons">arrow_drop_down</i></a></div>';
 		}
 		
+		
+		// Osoite		Rappu			Huoneiston numero
+		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
@@ -332,34 +338,56 @@ export default class UserSignupApaView extends UserView {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12 center">'+
+				'<div class="col s6 center">'+
+					'<p style="color:#aaa;">'+localized_string_signup_apartment_address+'</p>'+
+				'</div>'+
+				'<div class="col s3 center">'+
+					'<p style="color:#aaa;">'+localized_string_signup_apartment_letter+'</p>'+
+				'</div>'+
+				'<div class="col s3 center">'+
 					'<p style="color:#aaa;">'+localized_string_signup_apartment_number+'</p>'+
 				'</div>'+
 			'</div>'+
-			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-				'<div class="col s2 m1 offset-m3">&nbsp;</div>'+
-				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="letters-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
-				hundreds_up+
-				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
-				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
-				'<div class="col s2 m1"></div>'+
+			
+			
+			'<div class="row">'+
+				'<div class="col s6 center">'+
+					'<p>Here the address input ... </p>'+
+				'</div>'+
+				'<div class="col s6 center">'+
+					
+					'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+						
+						'<div class="col s2 m1">&nbsp;</div>'+ // offset-m3
+						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="letters-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+						hundreds_up+
+						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+						'<div class="col s2 m1"></div>'+
+					'</div>'+
+					
+					'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+						'<div class="col s2 m1">&nbsp;</div>'+ // offset-m3
+						'<div class="col s2 m1 edit-item-change-number" id="letters"></div>'+
+						hundreds_ph+
+						'<div class="col s2 m1 edit-item-change-number" id="tens"></div>'+
+						'<div class="col s2 m1 edit-item-change-number" id="ones"></div>'+
+						'<div class="col s2 m1"></div>'+
+					'</div>'+
+					
+					'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+						'<div class="col s2 m1">&nbsp;</div>'+ // offset-m3
+						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="letters-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+						hundreds_do+
+						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+						'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+						'<div class="col s2 m1"></div>'+
+					'</div>'+
+					
+				'</div>'+
 			'</div>'+
-			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-				'<div class="col s2 m1 offset-m3">&nbsp;</div>'+
-				'<div class="col s2 m1 edit-item-change-number" id="letters"></div>'+
-				hundreds_ph+
-				'<div class="col s2 m1 edit-item-change-number" id="tens"></div>'+
-				'<div class="col s2 m1 edit-item-change-number" id="ones"></div>'+
-				'<div class="col s2 m1"></div>'+
-			'</div>'+
-			'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-				'<div class="col s2 m1 offset-m3">&nbsp;</div>'+
-				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="letters-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
-				hundreds_do+
-				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
-				'<div class="col s2 m1 edit-item-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
-				'<div class="col s2 m1"></div>'+
-			'</div>'+
+			
+			
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="input-field col s12">'+

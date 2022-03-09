@@ -80,6 +80,7 @@ export default class UsersView extends View {
 				}
 				const point_id_c_link = '<a href="javascript:void(0);" id="edit-point-id-c-'+id+'">'+point_id_c+'</a>';
 				
+				let regcode_address = '-';
 				let regcode_apaid = '-';
 				let regcode_code = '-';
 				let regcode_validity = '&nbsp;';
@@ -96,6 +97,7 @@ export default class UsersView extends View {
 				}
 				
 				if (typeof user.regcode !== 'undefined') {
+					regcode_address = user.regcode.address;
 					regcode_apaid = user.regcode.apartmentId;
 					regcode_code = '<a href="javascript:void(0);" id="edit-regcode-'+user.regcode._id+'">'+user.regcode.code+'</a>';
 					//regcode_validity = '<i style="color:green" class="material-icons small">brightness_1</i>';
@@ -148,6 +150,7 @@ export default class UsersView extends View {
 						'<div class="col s12 user-item">'+
 							'<p>Email: '+user.email+'<br/>'+
 							'Created: '+user.created+'<br/>'+
+							'Address: '+regcode_address+'<br/>'+
 							'ApartmentId: '+regcode_apaid+'<br/>'+
 							'PointIdA: '+point_id_a_link+'<br/>'+
 							'PointIdB: '+point_id_b_link+'<br/>'+
@@ -261,6 +264,7 @@ export default class UsersView extends View {
 			//const localized_string_description = 'Admin can list all Users and see RegCode and ReadKey information.';
 			/*
 				regcode:
+				address:     { type:String, required:true },
 				apartmentId: { type:String, required:true },
 				code:        { type:String, required:true },
 				startdate:   { type:Date, default: Date.now },
@@ -278,6 +282,7 @@ export default class UsersView extends View {
 							'<tr>'+
 								'<th>Email</th>'+
 								'<th>Created</th>'+
+								'<th>Address</th>'+
 								'<th>Apartment</th>'+
 								'<th>PointIdA</th>'+
 								'<th>PointIdB</th>'+

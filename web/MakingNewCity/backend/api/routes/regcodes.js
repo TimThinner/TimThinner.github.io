@@ -14,6 +14,7 @@ const Regcode = require('../models/regcode');
 		// => DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
 		match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 	},
+	address:     { type:String, required:true },
 	apartmentId: { type:String, required:true },
 	code:        { type:String, required:true },
 	startdate:   { type:Date, default: Date.now },
@@ -24,7 +25,7 @@ const Regcode = require('../models/regcode');
 */
 router.get('/', checkAuth, (req,res,next)=>{
 	Regcode.find()
-		.select('_id email apartmentId code startdate enddate')
+		.select('_id email address apartmentId code startdate enddate')
 		.exec()
 		.then(docs=>{
 			res.status(200).json({
@@ -33,6 +34,7 @@ router.get('/', checkAuth, (req,res,next)=>{
 					return {
 						_id: doc._id,
 						email: doc.email,
+						address: doc.address,
 						apartmentId: doc.apartmentId,
 						code: doc.code,
 						startdate: doc.startdate,
@@ -65,6 +67,7 @@ router.post('/', checkAuth, (req,res,next)=>{
 				const reg = new Regcode({
 					_id: new mongoose.Types.ObjectId(),
 					email: email_lc,
+					address: req.body.address,
 					apartmentId: req.body.apartmentId,
 					code: code_lc,
 					startdate: req.body.startdate,
@@ -78,6 +81,7 @@ router.post('/', checkAuth, (req,res,next)=>{
 							message: 'Created regcode successfully',
 							_id:         result._id,
 							email:       result.email,
+							address:     result.address,
 							apartmentId: result.apartmentId,
 							code:        result.code,
 							startdate:   result.startdate,
@@ -116,6 +120,7 @@ router.post('/anon', (req,res,next)=>{
 				const reg = new Regcode({
 					_id: new mongoose.Types.ObjectId(),
 					email: email_lc,
+					address: req.body.address,
 					apartmentId: req.body.apartmentId,
 					code: code_lc,
 					startdate: req.body.startdate,
@@ -129,6 +134,7 @@ router.post('/anon', (req,res,next)=>{
 							message: 'Created regcode successfully',
 							_id:         result._id,
 							email:       result.email,
+							address:     result.address,
 							apartmentId: result.apartmentId,
 							code:        result.code,
 							startdate:   result.startdate,

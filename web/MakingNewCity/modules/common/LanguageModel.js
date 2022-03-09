@@ -18,9 +18,9 @@ export default class LanguageModel {
 				'USER_SIGNUP_GDPR_LINK_TXT':'GDPR statement',
 				'USER_SIGNUP_CONSENT_OK_2':' and given my consent in ',
 				'USER_SIGNUP_CONSENT_LINK_TXT':'consent form.',
-				'USER_SIGNUP_APARTMENT_ADDRESS':'Apartment address',
-				'USER_SIGNUP_APARTMENT_LETTER':'letter',
-				'USER_SIGNUP_APARTMENT_NUMBER':'number',
+				'USER_SIGNUP_APARTMENT_ADDRESS':'Address',
+				'USER_SIGNUP_APARTMENT_LETTER':'Letter',
+				'USER_SIGNUP_APARTMENT_NUMBER':'Number',
 				'USER_SIGNUP_APARTMENT_NOT_SELECTED':'Not selected',
 				'USER_SIGNUP_APARTMENT_MUST_INPUT':'Must input <b>Apartment number</b>',
 				'HELP_INFO_TITLE':'Making City -pilot',
@@ -333,7 +333,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 22.03.09-E'
+				'MENU_VERSION':'v 22.03.09-F'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -350,9 +350,9 @@ export default class LanguageModel {
 				'USER_SIGNUP_GDPR_LINK_TXT':'tietosuojaselosteen',
 				'USER_SIGNUP_CONSENT_OK_2':' ja annan suostumukseni ',
 				'USER_SIGNUP_CONSENT_LINK_TXT':'suostumuslomakkeella.',
-				'USER_SIGNUP_APARTMENT_ADDRESS':'Asunnon osoite',
-				'USER_SIGNUP_APARTMENT_LETTER':'rappu',
-				'USER_SIGNUP_APARTMENT_NUMBER':'numero',
+				'USER_SIGNUP_APARTMENT_ADDRESS':'Osoite',
+				'USER_SIGNUP_APARTMENT_LETTER':'Rappu',
+				'USER_SIGNUP_APARTMENT_NUMBER':'Numero',
 				'USER_SIGNUP_APARTMENT_NOT_SELECTED':'Ei valittu',
 				'USER_SIGNUP_APARTMENT_MUST_INPUT':'<b>Asunnon numero</b> täytyy ilmoittaa</b>',
 				'HELP_INFO_TITLE':'Making City -kokeilu',
@@ -665,7 +665,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 22.03.09-E'
+				'MENU_VERSION':'v 22.03.09-F'
 			}
 		}
 	}

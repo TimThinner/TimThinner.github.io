@@ -38,6 +38,7 @@ export default class UserSignupApaView extends UserView {
 		} else {
 			this.apa_hundreds = undefined;
 		}
+		this.address = 'Vaskitie 1';
 	}
 	
 	hide() {
@@ -162,6 +163,7 @@ export default class UserSignupApaView extends UserView {
 			var data = {
 				email: _email,
 				code: code,
+				address: this.address,
 				apartmentId: this.apartment,
 				startdate: startDate,
 				enddate: endDate
@@ -318,9 +320,7 @@ export default class UserSignupApaView extends UserView {
 			hundreds_do = '<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="hundreds-down"><i class="small material-icons">arrow_drop_down</i></a></div>';
 		}
 		
-		
-		// Osoite		Rappu			Huoneiston numero
-		
+		// Osoite		Rappu			Numero
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
@@ -350,11 +350,11 @@ export default class UserSignupApaView extends UserView {
 			'</div>'+
 			
 			'<div class="row">'+
-				'<div class="col s6 center">'+
-					'<p><label><input class="with-gap" name="address" type="radio" checked /><span>Vaskitie 1</span></label></p>'+
-					'<p><label><input class="with-gap" name="address" type="radio" /><span>Kaukonraitti</span></label></p>'+
-					'<p><label><input class="with-gap" name="address" type="radio" /><span>Jalohaukantie 5</span></label></p>'+
-					'<p><label><input class="with-gap" name="address" type="radio" /><span>Hiirihaukantie 12A</span></label></p>'+
+				'<div class="col s6">'+
+					'<p><label><input class="with-gap" name="address" type="radio" value="Vaskitie 1" checked /><span>Vaskitie 1</span></label></p>'+
+					'<p><label><input class="with-gap" name="address" type="radio" value="Kaukonraitti" /><span>Kaukonraitti</span></label></p>'+
+					'<p><label><input class="with-gap" name="address" type="radio" value="Jalohaukantie 5" /><span>Jalohaukantie 5</span></label></p>'+
+					'<p><label><input class="with-gap" name="address" type="radio" value="Hiirihaukantie 12A" /><span>Hiirihaukantie 12A</span></label></p>'+
 				'</div>'+
 				'<div class="col s6 center">'+
 					'<div class="row" style="margin-top:0;margin-bottom:0;">'+
@@ -422,7 +422,7 @@ export default class UserSignupApaView extends UserView {
 		$("input[type='radio']").click(function(){
 			const radioValue = $("input[name='address']:checked").val();
 			if(radioValue){
-				//self.layout = radioValue;
+				self.address = radioValue;
 				//self.render();
 				console.log(['radioValue=',radioValue]);
 			}

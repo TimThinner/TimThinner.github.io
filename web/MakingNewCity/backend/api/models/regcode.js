@@ -9,6 +9,7 @@ const regcodeSchema = mongoose.Schema({
 		// => DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
 		match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 	},
+	address:     { type:String, required:true },
 	apartmentId: { type:String, required:true },
 	code:        { type:String, required:true },
 	startdate:   { type:Date, default: Date.now },

@@ -34,6 +34,7 @@ export default class UserModel extends Model {
 		this.request_for_tablet = false;
 		this.consent_a = false;
 		this.consent_b = false;
+		this.address = undefined;
 		this.apartmentId = undefined;
 		
 		// Set Heating targets and limits to some reasonable level:
@@ -116,6 +117,7 @@ export default class UserModel extends Model {
 		this.request_for_tablet = false;
 		this.consent_a = false;
 		this.consent_b = false;
+		this.address = undefined;
 		this.apartmentId = undefined;
 		// this.DEFAULTS is defined in Configuration.js
 		this.setDefaults();
@@ -138,6 +140,7 @@ export default class UserModel extends Model {
 			'request_for_tablet': this.request_for_tablet,
 			'consent_a': this.consent_a,
 			'consent_b': this.consent_b,
+			'address': this.address,
 			'apartmentId': this.apartmentId,
 			'heating_target_temperature': this.heating_target_temperature,
 			'heating_temperature_upper':  this.heating_temperature_upper,
@@ -194,6 +197,7 @@ export default class UserModel extends Model {
 			if (typeof stat.request_for_tablet !== 'undefined') { this.request_for_tablet = stat.request_for_tablet; }
 			if (typeof stat.consent_a !== 'undefined') { this.consent_a = stat.consent_a; }
 			if (typeof stat.consent_b !== 'undefined') { this.consent_b = stat.consent_b; }
+			if (typeof stat.address !== 'undefined') { this.address = stat.address; }
 			if (typeof stat.apartmentId !== 'undefined') { this.apartmentId = stat.apartmentId; }
 			
 			if (typeof stat.heating_target_temperature !== 'undefined') { this.heating_target_temperature = stat.heating_target_temperature; }
@@ -289,6 +293,7 @@ export default class UserModel extends Model {
 					self.request_for_tablet = myJson.request_for_tablet;
 					self.consent_a = myJson.consent_a;
 					self.consent_b = myJson.consent_b;
+					self.address = myJson.address;
 					self.apartmentId = myJson.apartmentId;
 					// this.DEFAULTS is defined in Configuration.js
 					self.setDefaults();

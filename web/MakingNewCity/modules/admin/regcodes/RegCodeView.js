@@ -121,6 +121,7 @@ export default class RegCodeView extends View {
 				/*
 					_id: doc._id,
 					email: doc.email,
+					address: doc.address,
 					apartmentId: doc.apartmentId,
 					code: doc.code,
 					startdate: doc.startdate,     "2020-09-22T21:00:00.000Z"
@@ -131,6 +132,7 @@ export default class RegCodeView extends View {
 				if (this.layout === 'Table') {
 					const html = '<tr>'+
 						'<td>'+title+'</td>'+
+						'<td>'+code.address+'</td>'+
 						'<td>'+code.apartmentId+'</td>'+
 						'<td>'+code.code+'</td>'+
 						'<td>'+startDateStringLocalTZ+'</td>'+
@@ -142,6 +144,7 @@ export default class RegCodeView extends View {
 					const html = '<div class="row">'+
 						'<div class="col s12 regcode-item">'+
 							'<p>Email: '+title+'<br/>'+
+							'Address: '+code.address+'<br/>'+
 							'Apartment Id: '+code.apartmentId+'<br/>'+
 							'Code: '+code.code+'<br/>'+
 							'Start Date: '+startDateStringLocalTZ+' '+regcode_validity+'<br/>'+

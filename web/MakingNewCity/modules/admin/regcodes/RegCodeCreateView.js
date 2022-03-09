@@ -304,7 +304,7 @@ export default class RegCodeCreateView extends View {
 			
 			const validateArray = [
 				{test:"email",name:"Email",value:_email},
-				{test:"exist",name:"Address",value:_address}
+				{test:"exist",name:"Address",value:_address},
 				{test:"exist",name:"Apartment Id",value:_apaid}
 			];
 			const v = new Validator();

@@ -54,6 +54,12 @@ export default class UserPageView extends View {
 		$(this.el).empty();
 	}
 	
+	updateHeatingLast() {
+		const temperature = this.models['UserHeatingLastModel'].measurement.temperature;
+		const humidity = this.models['UserHeatingLastModel'].measurement.humidity;
+		console.log(['temperature=',temperature,' humidity=',humidity]);
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -70,7 +76,7 @@ export default class UserPageView extends View {
 				this.render();
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
-				// Models are 'MenuModel', 'UserEleLastModel'
+				// Models are 'MenuModel', 'UserHeatingLastModel'
 				Object.keys(this.models).forEach(key => {
 					console.log(['FETCH MODEL key=',key]);
 					// this.USER_MODEL.point_id_a // HEATING
@@ -80,13 +86,13 @@ export default class UserPageView extends View {
 						this.models[key].fetch(this.USER_MODEL.token, this.USER_MODEL.readkey, this.USER_MODEL.point_id_a);
 					}
 				});
-			} else if (options.model==='UserEleLastModel' && options.method==='fetched') {
+			} else if (options.model==='UserHeatingLastModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					
-					console.log(['this.models[options.model].measurement=',this.models[options.model].measurement]);
+					this.updateHeatingLast();
 					
 				} else {
-					console.log(['ERROR when fetching UserEleLastModel! options.status=',options.status]);
+					console.log(['ERROR when fetching UserHeatingLastModel! options.status=',options.status]);
 				}
 			}
 		}

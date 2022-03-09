@@ -786,13 +786,23 @@ export default class UserPageView extends View {
 				svg.setAttribute('x',0);
 				svg.setAttribute('y',0);
 				svg.setAttributeNS(null,'width',80);
-				svg.setAttributeNS(null,'height',40);
+				svg.setAttributeNS(null,'height',64);
 				const fontsize = 32;
 				const d_fontsize = fontsize/2;
 				
+				const rect_bg = document.createElementNS(svgNS, 'rect');
+				rect_bg.setAttribute('x',0);
+				rect_bg.setAttribute('y',0);
+				rect_bg.setAttribute('width',80);
+				rect_bg.setAttribute('height',64);
+				rect_bg.style.stroke = '#000';
+				rect_bg.style.strokeWidth = 1;
+				rect_bg.style.fill = 'none';
+				svg.appendChild(rect_bg);
+				
 				const tempTxt = document.createElementNS(svgNS, 'text');
 				tempTxt.setAttribute('x','50%');
-				tempTxt.setAttribute('y','50%');
+				tempTxt.setAttribute('y','40%');
 				tempTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
 				tempTxt.setAttribute('font-size',fontsize);
 				tempTxt.setAttribute('dominant-baseline','middle');
@@ -804,7 +814,7 @@ export default class UserPageView extends View {
 				
 				const humiTxt = document.createElementNS(svgNS, 'text');
 				humiTxt.setAttribute('x','50%');
-				humiTxt.setAttribute('y','50%');
+				humiTxt.setAttribute('y','60%');
 				humiTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
 				humiTxt.setAttribute('font-size',d_fontsize);
 				humiTxt.setAttribute('dominant-baseline','middle');

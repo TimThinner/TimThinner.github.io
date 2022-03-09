@@ -132,6 +132,7 @@ export default class UsersView extends View {
 					const html = '<tr>'+
 						'<td>'+user.email+'</td>'+
 						'<td>'+user.created+'</td>'+
+						'<td>'+regcode_address+'</td>'+
 						'<td>'+regcode_apaid+'</td>'+
 						'<td>'+point_id_a_link+'</td>'+
 						'<td>'+point_id_b_link+'</td>'+

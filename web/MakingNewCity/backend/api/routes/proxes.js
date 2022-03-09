@@ -166,7 +166,6 @@ const Proxe_HTTP_GET = (po, res) => {
 			try {
 				if (ctype === 'json') {
 					// rawData is a JSON string.
-					//const parsedData = JSON.parse(rawData);
 					if (typeof id !== 'undefined') {
 						// Update
 						Proxe_Update({id:id, json:rawData}, res);
@@ -226,7 +225,6 @@ const Proxe_HTTPS_GET = (po, res) => {
 	const expiration = po.expiration;
 	const options = po.options;
 	const response_type = po.response_type;
-	const parse = po.parse;
 	
 	https.get(url, options, (res2) => {
 		
@@ -415,8 +413,7 @@ router.post('/fingrid', (req,res,next)=>{
 		url: req.body.url,
 		options: options,
 		expiration: req.body.expiration_in_seconds,
-		response_type: 'json',
-		parse: false
+		response_type: 'json'
 	}
 	Proxe_Find(po,res);
 });
@@ -479,8 +476,7 @@ router.post('/entsoe', (req,res,next)=>{
 		url: url,
 		options: options,
 		expiration: req.body.expiration_in_seconds,
-		response_type: 'xml',
-		parse: false
+		response_type: 'xml'
 	};
 	Proxe_Find(po, res);
 });
@@ -500,8 +496,7 @@ router.post('/empo', (req,res,next)=>{
 		url: url,
 		options: options,
 		expiration: req.body.expiration_in_seconds,
-		response_type: 'json',
-		parse: false
+		response_type: 'json'
 	};
 	Proxe_Find(po, res);
 });
@@ -526,8 +521,7 @@ router.post('/sivakkastatus', (req,res,next)=>{
 		url: req.body.url,
 		options: options,
 		expiration: req.body.expiration_in_seconds,
-		response_type: 'json',
-		parse: false
+		response_type: 'json'
 	};
 	Proxe_Find(po, res);
 });
@@ -576,8 +570,50 @@ router.post('/apafeeds', checkAuth, (req,res,next)=>{
 						url: url,
 						options: options,
 						expiration: req.body.expiration_in_seconds,
-						response_type: 'json',
-						parse: true
+						response_type: 'json'
+					};
+					Proxe_Find(po, res);
+					
+				} else {
+					res.status(404).json({message: 'Readkey Expired'});
+				}
+			} else {
+				res.status(404).json({message:'Readkey not found'});
+			}
+		})
+		.catch(err=>{
+			res.status(500).json({error:err});
+		});
+});
+
+router.post('/apalast', checkAuth, (req,res,next)=>{
+	const readkey = req.body.readkey;
+	Readkey.findById(readkey)
+		.select('_id startdate enddate')
+		.exec()
+		.then(doc=>{
+			if (doc) {
+				// Check that current timestamp is between startdate and enddate
+				const ts = Date.now();
+				const sTS = new Date(doc.startdate);
+				const eTS  = new Date(doc.enddate);
+				if (ts > sTS.getTime() && ts < eTS.getTime()) {
+					// OK.
+					const url = req.body.url;
+					const auth = req.headers.authorization;
+					const options = {
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': auth
+						}
+					};
+					const po = {
+						hash: url,
+						useHttps: true,
+						url: url,
+						options: options,
+						expiration: req.body.expiration_in_seconds,
+						response_type: 'json'
 					};
 					Proxe_Find(po, res);
 					

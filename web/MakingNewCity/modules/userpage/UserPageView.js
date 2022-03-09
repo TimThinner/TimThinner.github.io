@@ -4,6 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../common/View.js';
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
 
 export default class UserPageView extends View {
 	
@@ -18,6 +19,9 @@ export default class UserPageView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
+		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
+		this.PTO.subscribe(this);
+		
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		this.USER_MODEL.subscribe(this);
 		
@@ -26,16 +30,20 @@ export default class UserPageView extends View {
 	
 	show() {
 		// Call 'UserModel' => 'refreshPointIds'
-		this.USER_MODEL.refreshPointIds();
+		this.USER_MODEL.refreshPointIds(); // NOTE: render() is called at notify()
+		this.PTO.restart();
 		
 	}
 	
 	hide() {
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -60,6 +68,26 @@ export default class UserPageView extends View {
 					console.log(['PointIds are NOT refreshed!',options.status]);
 				}
 				this.render();
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Models are 'MenuModel', 'UserEleLastModel'
+				Object.keys(this.models).forEach(key => {
+					console.log(['FETCH MODEL key=',key]);
+					// this.USER_MODEL.point_id_a // HEATING
+					// this.USER_MODEL.point_id_b, // ELECTRICITY
+					// this.USER_MODEL.point_id_c  // WATER
+					if (key === 'UserHeatingLastModel') {
+						this.models[key].fetch(this.USER_MODEL.token, this.USER_MODEL.readkey, this.USER_MODEL.point_id_a);
+					}
+				});
+			} else if (options.model==='UserEleLastModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					
+					console.log(['this.models[options.model].measurement=',this.models[options.model].measurement]);
+					
+				} else {
+					console.log(['ERROR when fetching UserEleLastModel! options.status=',options.status]);
+				}
 			}
 		}
 	}
@@ -628,13 +656,13 @@ export default class UserPageView extends View {
 			#b2dfdb teal lighten-4
 			#80cbc4 teal lighten-3
 		*/
-		const UM = self.controller.master.modelRepo.get('UserModel');
+		
 		// What is the order here (heating, electricity, water)?
 		// UM.point_id_a = ''; 
 		// UM.point_id_b = '';
 		// UM.point_id_c = '';
 		if (type === 'HEATING') {
-			if (typeof UM.point_id_a !== 'undefined' && UM.point_id_a.length > 0) {
+			if (typeof this.USER_MODEL.point_id_a !== 'undefined' && this.USER_MODEL.point_id_a.length > 0) {
 				// HEATING is enabled
 				surface.addEventListener("click", function(){
 					
@@ -656,7 +684,7 @@ export default class UserPageView extends View {
 				surface.style.cursor = 'default';
 			}
 		} else if (type === 'ELECTRICITY') {
-			if (typeof UM.point_id_b !== 'undefined' && UM.point_id_b.length > 0) {
+			if (typeof this.USER_MODEL.point_id_b !== 'undefined' && this.USER_MODEL.point_id_b.length > 0) {
 				// ELECTRICITY is enabled
 				surface.addEventListener("click", function(){
 					self.models['MenuModel'].setSelected('userelectricity');
@@ -676,7 +704,7 @@ export default class UserPageView extends View {
 				surface.style.cursor = 'default';
 			}
 		} else if (type === 'WATER') {
-			if (typeof UM.point_id_c !== 'undefined' && UM.point_id_c.length > 0) {
+			if (typeof this.USER_MODEL.point_id_c !== 'undefined' && this.USER_MODEL.point_id_c.length > 0) {
 				// WATER is enabled
 				surface.addEventListener("click", function(){
 					console.log('HEY! '+type+' CLICKED!');
@@ -705,7 +733,7 @@ export default class UserPageView extends View {
 				// setTimeout(() => this.notifyAll({model:'UserModel',method:'logout',status:200,message:'Logout OK'}), 100);
 				//
 				// These notifications are handled in MasterController.
-				UM.logout();
+				self.USER_MODEL.logout();
 				
 			}, false);
 			surface.addEventListener("mouseover", function(event){ 

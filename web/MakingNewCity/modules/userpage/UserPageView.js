@@ -54,105 +54,34 @@ export default class UserPageView extends View {
 		$(this.el).empty();
 	}
 	
+	/*
+	19.4kWh
+	300W
 	
-	
-	
+	24.7°C
+	36.9%
+	*/
 	updateHeatingNow() {
-		
+		// Empty old temperature.
+		let wrap_temp = document.getElementById('heating-now-temperature');
+		while(wrap_temp.firstChild) wrap_temp.removeChild(wrap_temp.firstChild);
 		
 		const temp = this.models['UserHeatingNowModel'].measurement.temperature;
-		const humi = this.models['UserHeatingNowModel'].measurement.humidity;
-		console.log(['temperature=',temp,' humidity=',humi]);
-		
-		
-		
-		/*
-		const svgNS = 'http://www.w3.org/2000/svg';
-		const w = this.REO.width;
-		const h = this.REO.height;
-		
-		const FILLCOLOR = '#777';
-		const STROKECOLOR = '#777';
-		
-		// Screen Sizes (in Materialize CSS)
-		// Mobile Devices		Tablet Devices		Desktop Devices		Large Desktop Devices
-		// <= 600px 			> 600px 			> 992px 				> 1200px
-		//
-		let fontsize;
-		if (w <= 600) {
-			//console.log('Mobile Device.');
-			fontsize = 36; // big font 36, small font 12
-			
-		} else if (w > 600 && w <= 992) {
-			//console.log('Tablet Device.');
-			fontsize = 42; // big font 42, small font 14
-			
-		} else if (w > 992 && w <= 1200) {
-			//console.log('Desktop Device.');
-			fontsize = 54; // big font 54, small font 18
-			
-		} else {
-			//console.log('Large Desktop Device.');
-			fontsize = 72; // big font 72, small font 24
+		if (typeof temp !== 'undefined') {
+			wrap_temp.appendChild(document.createTextNode(temp.toFixed(1)+'°C'));
+		} else 
+			wrap_temp.appendChild(document.createTextNode('---'));
 		}
-		const bw = w;
-		const bh = fontsize+fontsize*0.5;
-		const bx = -w*0.5;
-		const by = -h*0.5+fontsize*0.25;
+		// Empty old humidity.
+		let wrap_humi = document.getElementById('heating-now-humidity');
+		while(wrap_humi.firstChild) wrap_humi.removeChild(wrap_humi.firstChild);
 		
-		
-		
-		const svg = document.createElementNS(svgNS, "svg");
-		svg.id = 'heating-now-svg';
-		svg.setAttribute('x',bx);
-		svg.setAttribute('y',by);
-		svg.setAttributeNS(null,'width',bw);
-		svg.setAttributeNS(null,'height',bh);
-		const fontsize = 33;
-		const d_fontsize = fontsize/3;
-		
-		const title = document.createElementNS(svgNS, 'text');
-		title.setAttribute('x','50%');
-		title.setAttribute('y','40%');
-		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		title.setAttribute('font-size',fontsize);
-		title.setAttribute('dominant-baseline','middle');
-		title.setAttribute('text-anchor','middle');
-		title.setAttribute('fill',FILLCOLOR);
-		title.style.opacity = 0.75;
-		title.appendChild(document.createTextNode('Making City'));
-		svg.appendChild(title);
-		
-		const descr = document.createElementNS(svgNS, 'text');
-		descr.setAttribute('x','70%');
-		descr.setAttribute('y','80%');
-		descr.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		descr.setAttribute('font-size',d_fontsize);
-		descr.setAttribute('dominant-baseline','middle');
-		descr.setAttribute('text-anchor','middle');
-		descr.setAttribute('fill',FILLCOLOR);
-		descr.style.opacity = 0.75;
-		descr.appendChild(document.createTextNode('Positive Energy Districts'));
-		svg.appendChild(descr);
-		
-		$('#space').append(svg);
-		*/
-		
-		
-		
-		
-		/*
-						this.fillSVGTextElement(svgObject, 'user-temperature', temp.toFixed(1) + '°C');
-					} else {
-						this.fillSVGTextElement(svgObject, 'user-temperature', '---');
-					}
-					
-					const humi = meas[0].humidity;
-					if (typeof humi !== 'undefined') {
-						this.fillSVGTextElement(svgObject, 'user-humidity', humi.toFixed(1) + '%');
-					} else {
-						this.fillSVGTextElement(svgObject, 'user-humidity', '---');
-		*/
+		const humi = this.models['UserHeatingNowModel'].measurement.humidity;
+		if (typeof humi !== 'undefined') {
+			wrap_humi.appendChild(document.createTextNode(humi.toFixed(1)+'%'));
+		} else 
+			wrap_humi.appendChild(document.createTextNode('---'));
+		}
 	}
 	
 	notify(options) {
@@ -597,6 +526,13 @@ export default class UserPageView extends View {
 		$('#space').append(group);
 	}
 	
+	/*
+	19.4kWh
+	300W
+	
+	24.7°C
+	36.9%
+	*/
 	appendHeatingTextWrapper(group) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
@@ -638,6 +574,7 @@ export default class UserPageView extends View {
 		svg.setAttributeNS(null,'height',r*0.5);
 		
 		const tempTxt = document.createElementNS(svgNS, 'text');
+		tempTxt.id = 'heating-now-temperature';
 		tempTxt.setAttribute('x','50%');
 		tempTxt.setAttribute('y','40%');
 		tempTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
@@ -650,6 +587,7 @@ export default class UserPageView extends View {
 		svg.appendChild(tempTxt);
 		
 		const humiTxt = document.createElementNS(svgNS, 'text');
+		humiTxt.id = 'heating-now-humidity';
 		humiTxt.setAttribute('x','50%');
 		humiTxt.setAttribute('y','75%');
 		humiTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');

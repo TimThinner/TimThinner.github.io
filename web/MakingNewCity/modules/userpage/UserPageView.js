@@ -61,27 +61,18 @@ export default class UserPageView extends View {
 	24.7°C
 	36.9%
 	*/
-	updateHeatingNow() {
-		// Empty old temperature.
-		let wrap_temp = document.getElementById('heating-now-temperature');
-		while(wrap_temp.firstChild) wrap_temp.removeChild(wrap_temp.firstChild);
+	updateValueNow(type, first, second) {
+		// Remove old value.
+		let wrap_f = document.getElementById(type+'-now-first');
+		while(wrap_f.firstChild) wrap_f.removeChild(wrap_f.firstChild);
+		// Append new value.
+		wrap_f.appendChild(document.createTextNode(first));
 		
-		const temp = this.models['UserHeatingNowModel'].measurement.temperature;
-		if (typeof temp !== 'undefined' && temp > 0 && temp < 100) {
-			wrap_temp.appendChild(document.createTextNode(temp.toFixed(1)+'°C'));
-		} else {
-			wrap_temp.appendChild(document.createTextNode('---'));
-		}
-		// Empty old humidity.
-		let wrap_humi = document.getElementById('heating-now-humidity');
-		while(wrap_humi.firstChild) wrap_humi.removeChild(wrap_humi.firstChild);
-		
-		const humi = this.models['UserHeatingNowModel'].measurement.humidity;
-		if (typeof humi !== 'undefined' && humi > 0 && humi < 100) {
-			wrap_humi.appendChild(document.createTextNode(humi.toFixed(1)+'%'));
-		} else {
-			wrap_humi.appendChild(document.createTextNode('---'));
-		}
+		// Remove old value.
+		let wrap_s = document.getElementById(type+'-now-second');
+		while(wrap_s.firstChild) wrap_s.removeChild(wrap_s.firstChild);
+		// Append new value.
+		wrap_s.appendChild(document.createTextNode(second));
 	}
 	
 	notify(options) {
@@ -112,8 +103,17 @@ export default class UserPageView extends View {
 				});
 			} else if (options.model==='UserHeatingNowModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					
-					this.updateHeatingNow();
+					let first = '---';
+					let second = '---';
+					const temp = this.models['UserHeatingNowModel'].measurement.temperature;
+					if (typeof temp !== 'undefined' && temp > 0 && temp < 100) {
+						first = temp.toFixed(1)+'°C';
+					}
+					const humi = this.models['UserHeatingNowModel'].measurement.humidity;
+					if (typeof humi !== 'undefined' && humi > 0 && humi < 100) {
+						second = humi.toFixed(1)+'%';
+					}
+					this.updateValueNow('heating', first, second);
 					
 				} else {
 					console.log(['ERROR when fetching UserHeatingNowModel! options.status=',options.status]);
@@ -533,7 +533,7 @@ export default class UserPageView extends View {
 	24.7°C
 	36.9%
 	*/
-	appendHeatingTextWrapper(group) {
+	appendValueNowTextWrapper(group, type) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
 		/*
@@ -567,37 +567,37 @@ export default class UserPageView extends View {
 		*/
 		
 		const svg = document.createElementNS(svgNS, "svg");
-		svg.id = 'heating-now-svg';
+		svg.id = type+'-now-svg';
 		svg.setAttribute('x',-r);
 		svg.setAttribute('y',r*0.33);
 		svg.setAttributeNS(null,'width',r*2);
 		svg.setAttributeNS(null,'height',r*0.5);
 		
-		const tempTxt = document.createElementNS(svgNS, 'text');
-		tempTxt.id = 'heating-now-temperature';
-		tempTxt.setAttribute('x','50%');
-		tempTxt.setAttribute('y','40%');
-		tempTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		tempTxt.setAttribute('font-size',fontsize);
-		tempTxt.setAttribute('dominant-baseline','middle');
-		tempTxt.setAttribute('text-anchor','middle');
-		tempTxt.setAttribute('fill','#000');
-		tempTxt.style.opacity = 0.75;
-		tempTxt.appendChild(document.createTextNode('21.4°C'));
-		svg.appendChild(tempTxt);
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.id = type + '-now-first';
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','40%');
+		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.setAttribute('font-size',fontsize);
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.setAttribute('fill','#000');
+		txt.style.opacity = 0.75;
+		//txt.appendChild(document.createTextNode('19.4kWh'));
+		svg.appendChild(txt);
 		
-		const humiTxt = document.createElementNS(svgNS, 'text');
-		humiTxt.id = 'heating-now-humidity';
-		humiTxt.setAttribute('x','50%');
-		humiTxt.setAttribute('y','75%');
-		humiTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		humiTxt.setAttribute('font-size',d_fontsize);
-		humiTxt.setAttribute('dominant-baseline','middle');
-		humiTxt.setAttribute('text-anchor','middle');
-		humiTxt.setAttribute('fill','#000');
-		humiTxt.style.opacity = 0.75;
-		humiTxt.appendChild(document.createTextNode('33.3%'));
-		svg.appendChild(humiTxt);
+		const txt2 = document.createElementNS(svgNS, 'text');
+		txt2.id = type + '-now-second';
+		txt2.setAttribute('x','50%');
+		txt2.setAttribute('y','75%');
+		txt2.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt2.setAttribute('font-size',d_fontsize);
+		txt2.setAttribute('dominant-baseline','middle');
+		txt2.setAttribute('text-anchor','middle');
+		txt2.setAttribute('fill','#000');
+		txt2.style.opacity = 0.75;
+		//txt2.appendChild(document.createTextNode('300W'));
+		svg.appendChild(txt2);
 		
 		group.appendChild(svg);
 	}
@@ -668,7 +668,6 @@ export default class UserPageView extends View {
 		} else if (type === 'WATER') {
 			tx = ty = 12*r/5;
 		}
-		
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -783,7 +782,7 @@ export default class UserPageView extends View {
 				}, false);
 				
 				// Add text wrapper for Heating Now measurement to be added.
-				this.appendHeatingTextWrapper(group);
+				this.appendValueNowTextWrapper(group,'heating');
 				
 			} else { // HEATING is disabled
 				surface.style.stroke = '#b2dfdb';
@@ -804,6 +803,9 @@ export default class UserPageView extends View {
 				surface.addEventListener("mouseout", function(event){ 
 					border.style.fill = WHITE;
 				}, false);
+				
+				// Add text wrapper for Electricity Now measurement to be added.
+				this.appendValueNowTextWrapper(group,'electricity')
 				
 			} else { // ELECTRICITY is disabled
 				surface.style.stroke = '#b2dfdb';

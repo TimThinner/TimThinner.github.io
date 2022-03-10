@@ -20,6 +20,8 @@ export default class EnvironmentPageView extends View {
 		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
 		this.PTO.subscribe(this);
 		
+		this.fetchQueue = [];
+		
 		this.rendered = false;
 		this.FELID = 'environment-page-view-failure';
 		this.chart = undefined;
@@ -334,8 +336,13 @@ export default class EnvironmentPageView extends View {
 		if (this.controller.visible) {
 			
 			if (options.model.indexOf('EmpoEmissions') === 0 && options.method==='fetched') {
+				const f = this.fetchQueue.shift();
+				if (typeof f !== 'undefined') {
+					console.log('Fetch NEXT EmpoEmissions MODEL.');
+					this.models[f.key].fetch();
+				}
 				if (options.status === 200) {
-					if (this.areModelsReady()) {
+					//if (this.areModelsReady()) {
 						if (this.rendered) {
 							$('#'+this.FELID).empty();
 							if (typeof this.chart !== 'undefined') {
@@ -352,7 +359,7 @@ export default class EnvironmentPageView extends View {
 						} else {
 							this.render();
 						}
-					}
+					//}
 				} else { // Error in fetching.
 					this.notifyError(options);
 				}
@@ -364,10 +371,25 @@ export default class EnvironmentPageView extends View {
 				// 'EmpoEmissions1Model'
 				// ...
 				// 'EmpoEmissions30Model'
+				/*
 				Object.keys(this.models).forEach(key => {
 					//console.log(['FETCH MODEL key=',key]);
 					this.models[key].fetch();
 				});
+				*/
+				this.fetchQueue = [];
+				
+				Object.keys(this.models).forEach(key => {
+					if (key.indexOf('EmpoEmissions') === 0) {
+						this.fetchQueue.push({'key':key});
+					}
+				});
+				//.. and start the fetching process with FIRST EmpoEmissions... model:
+				const f = this.fetchQueue.shift();
+				if (typeof f !== 'undefined') {
+					console.log('Fetch FIRST EmpoEmissions MODEL.');
+					this.models[f.key].fetch();
+				}
 			}
 		}
 	}

@@ -174,7 +174,7 @@ export default class MenuView extends View {
 				
 				Object.keys(this.models).forEach(key => {
 					if (key.indexOf('EmpoEmissions') === 0) {
-						this.fetchQueue.push({'key':key,'token':UM.token,'readkey':UM.readkey});
+						this.fetchQueue.push({'key':key});
 					} else {
 						// Fetch 'FingridPowerSystemStateModel' immediately.
 						this.models[key].fetch();
@@ -183,6 +183,7 @@ export default class MenuView extends View {
 				//.. and start the fetching process with FIRST EmpoEmissions... model:
 				const f = this.fetchQueue.shift();
 				if (typeof f !== 'undefined') {
+					console.log('Fetch FIRST EmpoEmissions MODEL.');
 					this.models[f.key].fetch();
 				}
 				
@@ -199,6 +200,7 @@ export default class MenuView extends View {
 				//.. and start the fetching process with NEXT model:
 				const f = this.fetchQueue.shift();
 				if (typeof f !== 'undefined') {
+					console.log('Fetch NEXT EmpoEmissions MODEL.');
 					this.models[f.key].fetch();
 				}
 				if (options.status === 200) {

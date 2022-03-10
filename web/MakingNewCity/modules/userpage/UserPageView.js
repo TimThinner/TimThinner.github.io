@@ -608,22 +608,22 @@ export default class UserPageView extends View {
 		*/
 		let fontsize;
 		if (r <= 75) {
-			fontsize = 24; // 16
+			fontsize = 16;
 		} else if (r > 75 && r <= 124) {
-			fontsize = 26; // 17.33
+			fontsize = 20;
 		} else if (r > 124 && r <= 150) {
-			fontsize = 28; // 18.666
+			fontsize = 24;
 		} else {
-			fontsize = 30; // 20
+			fontsize = 28;
 		}
-		const d_fontsize = fontsize/1.5;
+		const d_fontsize = fontsize-6;
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.id = 'heating-now-svg';
-		svg.setAttribute('x',-r*0.5);
-		svg.setAttribute('y',r*0.3);
-		svg.setAttributeNS(null,'width',r);
-		svg.setAttributeNS(null,'height',r*0.6);
+		svg.setAttribute('x',-r);
+		svg.setAttribute('y',r*0.5);
+		svg.setAttributeNS(null,'width',r*2);
+		svg.setAttributeNS(null,'height',r);
 		/*
 		const rect_bg = document.createElementNS(svgNS, 'rect');
 		rect_bg.setAttribute('x',0);
@@ -649,7 +649,7 @@ export default class UserPageView extends View {
 		
 		const humiTxt = document.createElementNS(svgNS, 'text');
 		humiTxt.setAttribute('x','50%');
-		humiTxt.setAttribute('y','80%');
+		humiTxt.setAttribute('y','75%');
 		humiTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
 		humiTxt.setAttribute('font-size',d_fontsize);
 		humiTxt.setAttribute('dominant-baseline','middle');

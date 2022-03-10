@@ -176,6 +176,7 @@ export default class UserHeatingModel extends Model {
 		fetch_d
 		Calls directly from src using backend (NOT mongoBackend).
 	*/
+	/*
 	fetch_d() {
 		const self = this;
 		
@@ -193,7 +194,7 @@ export default class UserHeatingModel extends Model {
 		url += '&start='+start_date+'&end='+end_date;
 		this.doTheFetch(url);
 	}
-	
+	*/
 	fetch(token, readkey) {
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
@@ -221,6 +222,53 @@ export default class UserHeatingModel extends Model {
 				const url = this.mongoBackend + '/proxes/apafeeds';
 				// this.src = 'data/sivakka/apartments/feeds.json' 
 				const body_url = this.backend + '/' + this.src;
+				
+				
+				/* NOTE:
+				Now the backend creates full URL using given params, like: type, limit, start, end =>
+				Rewrite this so that URL is is created here at the model.
+				
+				https://makingcity.vtt.fi/data/sivakka/wlsensordata/feeds.json?pointId=11534143&start=2021-12-26&end=2021-12-31&limit=10
+				
+				NEW:
+				const body_url = this.backend + '/' + this.src + '?pointId=' + pid + '&start=' + start_date + '&end=' + end_date;
+				
+				Append pointId: 			?pointId=11534143
+				Append start:				&start=2021-12-26
+				Append end:					&end=2021-12-31
+				Append limit:				&limit=10  				NO LIMIT!
+				
+				
+				SEE UserHeatingNowModel:
+				
+				const url = this.mongoBackend + '/proxes/apalast';
+				const body_url = this.backend + '/' + this.src + '?pointId='+pid;
+				const data = {
+					url:body_url, 
+					readkey:readkey, 
+					expiration_in_seconds: 180 // 3 minutes
+				};
+				const myPost = {
+					method: 'POST',
+					headers: myHeaders,
+					body: JSON.stringify(data)
+				};
+				const myRequest = new Request(url, myPost);
+				this.doTheFetch(myRequest);
+				
+				
+				TODO:
+				Modify Frontend and Backend for apafeeds-route (note that this currently applies ONLY to heating!!!)
+				
+				
+				
+					let url = req.body.url + '?apiKey='+fakeKey+'&type='+req.body.type;
+					if (req.body.limit > 0) {
+						url += '&limit='+req.body.limit;
+					}
+					url += '&start='+req.body.start+'&end='+req.body.end;
+				*/
+				
 				const data = {
 					url:body_url, 
 					readkey:readkey, 
@@ -239,13 +287,13 @@ export default class UserHeatingModel extends Model {
 				this.doTheFetch(myRequest);
 				
 			} else {
-				
-				console.log('===============================');
-				console.log('!!!!!!!!!!! NO READKEY !!!!!!!!');
-				console.log('===============================');
-				
-				// Abnormal user (admin) => no readkey. Use direct url for testing purposes.
-				//this.fetch_d();
+				// No readkey? Forbidden (403).
+				this.status = 403;
+				this.fetching = false;
+				this.ready = true;
+				const message = this.name+': Forbidden';
+				this.errorMessage = message;
+				this.notifyAll({model:this.name, method:'fetched', status:this.status, message:message});
 			}
 			
 		} else {

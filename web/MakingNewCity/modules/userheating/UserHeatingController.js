@@ -35,6 +35,8 @@ export default class UserHeatingController extends Controller {
 	
 	
 	
+	https://makingcity.vtt.fi/data/sivakka/wlsensordata/feeds.json?pointId=11534143&start=2021-12-26&end=2021-12-31&limit=10
+	
 	*/
 	init() {
 		// Response is 24 x 60 x 30 values = 43 200 measurements => 24 x 30 averages (720 averages).

@@ -2,6 +2,32 @@
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
+
+
+New API to fetch apartment data: 
+
+https://makingcity.vtt.fi/data/sivakka/wlsensordata/feeds.json?pointId=11534143&start=2021-12-26&end=2021-12-31&limit=10
+
+Returns:
+
+[
+{"created_at":"2021-12-31T20:20:16","timestamp":"2021-12-31T20:16:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.6},
+{"created_at":"2021-12-31T20:28:16","timestamp":"2021-12-31T20:26:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.7},
+{"created_at":"2021-12-31T20:40:16","timestamp":"2021-12-31T20:36:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.9},
+{"created_at":"2021-12-31T20:48:16","timestamp":"2021-12-31T20:46:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.9},
+{"created_at":"2021-12-31T21:00:16","timestamp":"2021-12-31T20:56:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.8},
+{"created_at":"2021-12-31T21:08:16","timestamp":"2021-12-31T21:06:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.2,"humidity":20.5},
+{"created_at":"2021-12-31T21:20:18","timestamp":"2021-12-31T21:16:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.2,"humidity":20.4},
+{"created_at":"2021-12-31T21:28:18","timestamp":"2021-12-31T21:26:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.2,"humidity":20.5},
+{"created_at":"2021-12-31T21:40:16","timestamp":"2021-12-31T21:36:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.2,"humidity":20.5},
+{"created_at":"2021-12-31T21:48:16","timestamp":"2021-12-31T21:46:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.2,"humidity":20.5}]
+
+A new measurement once every 10 minutes.
+
+=> 6 times an hour => 144 times a day. => 30 days => 4320 values.
+
+Use "timestamp", "temperature" and "humidity".
+
 */
 import View from '../common/View.js';
 import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';

@@ -256,11 +256,13 @@ export default class UserElectricityModel extends Model {
 				this.doTheFetch(myRequest);
 				
 			} else {
-				console.log('===============================');
-				console.log('!!!!!!!!!!! NO READKEY !!!!!!!!');
-				console.log('===============================');
-				// Abnormal user (admin) => no readkey. Use direct url for testing purposes.
-				//this.fetch_d();
+				// No readkey? Forbidden (403).
+				this.status = 403;
+				this.fetching = false;
+				this.ready = true;
+				const message = this.name+': Forbidden';
+				this.errorMessage = message;
+				this.notifyAll({model:this.name, method:'fetched', status:this.status, message:message});
 			}
 			
 		} else {

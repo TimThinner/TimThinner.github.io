@@ -23,6 +23,8 @@ export default class MenuView extends View {
 		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
 		this.PTO.subscribe(this);
 		
+		this.fetchQueue = [];
+		
 		this.LANGUAGE_MODEL = this.controller.master.modelRepo.get('LanguageModel');
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		this.rendered = false;
@@ -162,10 +164,27 @@ export default class MenuView extends View {
 				// 'EmpoEmissions1Model'
 				// ...
 				// 'EmpoEmissions30Model'
+				/*
 				Object.keys(this.models).forEach(key => {
 					//console.log(['FETCH MODEL key=',key]);
 					this.models[key].fetch();
 				});
+				*/
+				this.fetchQueue = [];
+				
+				Object.keys(this.models).forEach(key => {
+					if (key.indexOf('EmpoEmissions') === 0) {
+						this.fetchQueue.push({'key':key,'token':UM.token,'readkey':UM.readkey});
+					} else {
+						// Fetch 'FingridPowerSystemStateModel' immediately.
+						this.models[key].fetch();
+					}
+				});
+				//.. and start the fetching process with FIRST EmpoEmissions... model:
+				const f = this.fetchQueue.shift();
+				if (typeof f !== 'undefined') {
+					this.models[f.key].fetch();
+				}
 				
 			} else if (options.model==='FingridPowerSystemStateModel' && options.method==='fetched') {
 				//console.log(options.model + 'fetched!');
@@ -177,6 +196,11 @@ export default class MenuView extends View {
 				
 			} else if (options.model.indexOf('EmpoEmissions') === 0 && options.method==='fetched') {
 				//console.log(options.model + 'fetched!');
+				//.. and start the fetching process with NEXT model:
+				const f = this.fetchQueue.shift();
+				if (typeof f !== 'undefined') {
+					this.models[f.key].fetch();
+				}
 				if (options.status === 200) {
 					this.updateEmissionsValue();
 				}

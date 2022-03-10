@@ -618,22 +618,24 @@ export default class UserPageView extends View {
 		}
 		const d_fontsize = fontsize-6;
 		
+		
+		const rect_bg = document.createElementNS(svgNS, 'rect');
+		rect_bg.setAttribute('x',-r);
+		rect_bg.setAttribute('y',r*0.5);
+		rect_bg.setAttribute('width',r*2);
+		rect_bg.setAttribute('height',r*0.5);
+		rect_bg.style.stroke = '#000';
+		rect_bg.style.strokeWidth = 3;
+		rect_bg.style.fill = 'none';
+		group.appendChild(rect_bg);
+		
+		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.id = 'heating-now-svg';
 		svg.setAttribute('x',-r);
 		svg.setAttribute('y',r*0.5);
 		svg.setAttributeNS(null,'width',r*2);
-		svg.setAttributeNS(null,'height',r);
-		/*
-		const rect_bg = document.createElementNS(svgNS, 'rect');
-		rect_bg.setAttribute('x',0);
-		rect_bg.setAttribute('y',0);
-		rect_bg.setAttribute('width',);
-		rect_bg.setAttribute('height',64);
-		rect_bg.style.stroke = '#000';
-		rect_bg.style.strokeWidth = 3;
-		rect_bg.style.fill = 'none';
-		svg.appendChild(rect_bg);*/
+		svg.setAttributeNS(null,'height',r*0.5);
 		
 		const tempTxt = document.createElementNS(svgNS, 'text');
 		tempTxt.setAttribute('x','50%');

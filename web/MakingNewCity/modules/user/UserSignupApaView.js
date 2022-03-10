@@ -338,48 +338,52 @@ export default class UserSignupApaView extends UserView {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s6">'+
-					'<p style="color:#aaa;">'+localized_string_signup_apartment_address+'</p>'+
-				'</div>'+
-				'<div class="col s3 center">'+
-					'<p style="color:#aaa;">'+localized_string_signup_apartment_letter+'</p>'+
-				'</div>'+
-				'<div class="col s3 center">'+
-					'<p style="color:#aaa;">'+localized_string_signup_apartment_number+'</p>'+
+				'<div class="col s12">'+
+					'<div class="col s6">'+
+						'<p style="color:#aaa;">'+localized_string_signup_apartment_address+'</p>'+
+					'</div>'+
+					'<div class="col s3 center">'+
+						'<p style="color:#aaa;">'+localized_string_signup_apartment_letter+'</p>'+
+					'</div>'+
+					'<div class="col s3 center">'+
+						'<p style="color:#aaa;">'+localized_string_signup_apartment_number+'</p>'+
+					'</div>'+
 				'</div>'+
 			'</div>'+
 			
 			'<div class="row">'+
-				'<div class="col s6">'+
-					'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Vaskitie 1" checked /><span>Vaskitie 1</span></label></p>'+
-					'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Kaukonraitti" /><span>Kaukonraitti</span></label></p>'+
-					'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Jalohaukantie 5" /><span>Jalohaukantie 5</span></label></p>'+
-					'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Hiirihaukantie 12A" /><span>Hiirihaukantie 12A</span></label></p>'+
-				'</div>'+
-				'<div class="col s6 center">'+
-					'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-						'<div class="col s2">&nbsp;</div>'+ // offset-m3
-						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="letters-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
-						hundreds_up+
-						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
-						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
-						'<div class="col s2">&nbsp;</div>'+
+				'<div class="col s12">'+
+					'<div class="col s6">'+
+						'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Vaskitie 1" checked /><span>Vaskitie 1</span></label></p>'+
+						'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Kaukonraitti" /><span>Kaukonraitti</span></label></p>'+
+						'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Jalohaukantie 5" /><span>Jalohaukantie 5</span></label></p>'+
+						'<p style="margin:8px 0 8px 0;"><label><input class="with-gap" name="address" type="radio" value="Hiirihaukantie 12A" /><span>Hiirihaukantie 12A</span></label></p>'+
 					'</div>'+
-					'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-						'<div class="col s2">&nbsp;</div>'+ // offset-m3
-						'<div class="col s2 edit-item-change-number" id="letters"></div>'+
-						hundreds_ph+
-						'<div class="col s2 edit-item-change-number" id="tens"></div>'+
-						'<div class="col s2 edit-item-change-number" id="ones"></div>'+
-						'<div class="col s2">&nbsp;</div>'+
-					'</div>'+
-					'<div class="row" style="margin-top:0;margin-bottom:0;">'+
-						'<div class="col s2">&nbsp;</div>'+ // offset-m3
-						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="letters-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
-						hundreds_do+
-						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
-						'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
-						'<div class="col s2">&nbsp;</div>'+
+					'<div class="col s6 center">'+
+						'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+							'<div class="col s2">&nbsp;</div>'+ // offset-m3
+							'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="letters-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+							hundreds_up+
+							'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="tens-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+							'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="ones-up"><i class="small material-icons">arrow_drop_up</i></a></div>'+
+							'<div class="col s2">&nbsp;</div>'+
+						'</div>'+
+						'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+							'<div class="col s2">&nbsp;</div>'+ // offset-m3
+							'<div class="col s2 edit-item-change-number" id="letters"></div>'+
+							hundreds_ph+
+							'<div class="col s2 edit-item-change-number" id="tens"></div>'+
+							'<div class="col s2 edit-item-change-number" id="ones"></div>'+
+							'<div class="col s2">&nbsp;</div>'+
+						'</div>'+
+						'<div class="row" style="margin-top:0;margin-bottom:0;">'+
+							'<div class="col s2">&nbsp;</div>'+ // offset-m3
+							'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="letters-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+							hundreds_do+
+							'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="tens-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+							'<div class="col s2 edit-item-change-button"><a href="javascript:void(0);" id="ones-down"><i class="small material-icons">arrow_drop_down</i></a></div>'+
+							'<div class="col s2">&nbsp;</div>'+
+						'</div>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

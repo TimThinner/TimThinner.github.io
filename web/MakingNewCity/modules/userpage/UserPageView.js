@@ -618,7 +618,7 @@ export default class UserPageView extends View {
 		}
 		const d_fontsize = fontsize-6;
 		
-		
+		/*
 		const rect_bg = document.createElementNS(svgNS, 'rect');
 		rect_bg.setAttribute('x',-r);
 		rect_bg.setAttribute('y',r*0.33);
@@ -628,7 +628,7 @@ export default class UserPageView extends View {
 		rect_bg.style.strokeWidth = 3;
 		rect_bg.style.fill = 'none';
 		group.appendChild(rect_bg);
-		
+		*/
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.id = 'heating-now-svg';

@@ -608,23 +608,23 @@ export default class UserPageView extends View {
 		*/
 		let fontsize;
 		if (r <= 75) {
-			fontsize = 16;
+			fontsize = 18;
 		} else if (r > 75 && r <= 124) {
-			fontsize = 20;
+			fontsize = 22;
 		} else if (r > 124 && r <= 150) {
-			fontsize = 24;
+			fontsize = 26;
 		} else {
-			fontsize = 28;
+			fontsize = 30;
 		}
 		const d_fontsize = fontsize-6;
 		
 		
 		const rect_bg = document.createElementNS(svgNS, 'rect');
 		rect_bg.setAttribute('x',-r);
-		rect_bg.setAttribute('y',r*0.5);
+		rect_bg.setAttribute('y',r*0.33);
 		rect_bg.setAttribute('width',r*2);
 		rect_bg.setAttribute('height',r*0.5);
-		rect_bg.style.stroke = '#000';
+		rect_bg.style.stroke = '#888';
 		rect_bg.style.strokeWidth = 3;
 		rect_bg.style.fill = 'none';
 		group.appendChild(rect_bg);
@@ -633,13 +633,13 @@ export default class UserPageView extends View {
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.id = 'heating-now-svg';
 		svg.setAttribute('x',-r);
-		svg.setAttribute('y',r*0.5);
+		svg.setAttribute('y',r*0.33);
 		svg.setAttributeNS(null,'width',r*2);
 		svg.setAttributeNS(null,'height',r*0.5);
 		
 		const tempTxt = document.createElementNS(svgNS, 'text');
 		tempTxt.setAttribute('x','50%');
-		tempTxt.setAttribute('y','50%');
+		tempTxt.setAttribute('y','40%');
 		tempTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
 		tempTxt.setAttribute('font-size',fontsize);
 		tempTxt.setAttribute('dominant-baseline','middle');

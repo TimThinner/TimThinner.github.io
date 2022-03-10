@@ -597,6 +597,71 @@ export default class UserPageView extends View {
 		$('#space').append(group);
 	}
 	
+	appendHeatingTextWrapper(group) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		/*
+		The radius of circle is 12,5% of H or W (smaller dimension).
+		0,125 x 600 = 75
+		0,125 x 992 = 124
+		0,125 x 1200 = 150
+		*/
+		let fontsize;
+		if (r <= 75) {
+			fontsize = 24; // 16
+		} else if (r > 75 && r <= 124) {
+			fontsize = 26; // 17.33
+		} else if (r > 124 && r <= 150) {
+			fontsize = 28; // 18.666
+		} else {
+			fontsize = 30; // 20
+		}
+		const d_fontsize = fontsize/1.5;
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.id = 'heating-now-svg';
+		svg.setAttribute('x',-r*0.5);
+		svg.setAttribute('y',r*0.3);
+		svg.setAttributeNS(null,'width',r);
+		svg.setAttributeNS(null,'height',r*0.6);
+		/*
+		const rect_bg = document.createElementNS(svgNS, 'rect');
+		rect_bg.setAttribute('x',0);
+		rect_bg.setAttribute('y',0);
+		rect_bg.setAttribute('width',);
+		rect_bg.setAttribute('height',64);
+		rect_bg.style.stroke = '#000';
+		rect_bg.style.strokeWidth = 3;
+		rect_bg.style.fill = 'none';
+		svg.appendChild(rect_bg);*/
+		
+		const tempTxt = document.createElementNS(svgNS, 'text');
+		tempTxt.setAttribute('x','50%');
+		tempTxt.setAttribute('y','50%');
+		tempTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		tempTxt.setAttribute('font-size',fontsize);
+		tempTxt.setAttribute('dominant-baseline','middle');
+		tempTxt.setAttribute('text-anchor','middle');
+		tempTxt.setAttribute('fill','#000');
+		tempTxt.style.opacity = 0.75;
+		tempTxt.appendChild(document.createTextNode('21.4°C'));
+		svg.appendChild(tempTxt);
+		
+		const humiTxt = document.createElementNS(svgNS, 'text');
+		humiTxt.setAttribute('x','50%');
+		humiTxt.setAttribute('y','80%');
+		humiTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		humiTxt.setAttribute('font-size',d_fontsize);
+		humiTxt.setAttribute('dominant-baseline','middle');
+		humiTxt.setAttribute('text-anchor','middle');
+		humiTxt.setAttribute('fill','#000');
+		humiTxt.style.opacity = 0.75;
+		humiTxt.appendChild(document.createTextNode('33.3%'));
+		svg.appendChild(humiTxt);
+		
+		group.appendChild(svg);
+	}
+	
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -778,55 +843,7 @@ export default class UserPageView extends View {
 				}, false);
 				
 				// Add text wrapper for Heating Now measurement to be added.
-				
-				
-				
-				const svg = document.createElementNS(svgNS, "svg");
-				svg.id = 'heating-now-svg';
-				svg.setAttribute('x',-r*0.4);
-				svg.setAttribute('y',r*0.3);
-				svg.setAttributeNS(null,'width',r*0.8);
-				svg.setAttributeNS(null,'height',r*0.6);
-				const fontsize = 28;
-				const d_fontsize = 18;
-				/*
-				const rect_bg = document.createElementNS(svgNS, 'rect');
-				rect_bg.setAttribute('x',0);
-				rect_bg.setAttribute('y',0);
-				rect_bg.setAttribute('width',);
-				rect_bg.setAttribute('height',64);
-				rect_bg.style.stroke = '#000';
-				rect_bg.style.strokeWidth = 3;
-				rect_bg.style.fill = 'none';
-				svg.appendChild(rect_bg);*/
-				
-				const tempTxt = document.createElementNS(svgNS, 'text');
-				tempTxt.setAttribute('x','50%');
-				tempTxt.setAttribute('y','50%');
-				tempTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
-				tempTxt.setAttribute('font-size',fontsize);
-				tempTxt.setAttribute('dominant-baseline','middle');
-				tempTxt.setAttribute('text-anchor','middle');
-				tempTxt.setAttribute('fill','#000');
-				tempTxt.style.opacity = 0.75;
-				tempTxt.appendChild(document.createTextNode('21.4°C'));
-				svg.appendChild(tempTxt);
-				
-				const humiTxt = document.createElementNS(svgNS, 'text');
-				humiTxt.setAttribute('x','50%');
-				humiTxt.setAttribute('y','75%');
-				humiTxt.setAttribute('font-family','Arial, Helvetica, sans-serif');
-				humiTxt.setAttribute('font-size',d_fontsize);
-				humiTxt.setAttribute('dominant-baseline','middle');
-				humiTxt.setAttribute('text-anchor','middle');
-				humiTxt.setAttribute('fill','#000');
-				humiTxt.style.opacity = 0.75;
-				humiTxt.appendChild(document.createTextNode('33.3%'));
-				svg.appendChild(humiTxt);
-				
-				group.appendChild(svg);
-				
-				
+				this.appendHeatingTextWrapper(group);
 				
 			} else { // HEATING is disabled
 				surface.style.stroke = '#b2dfdb';

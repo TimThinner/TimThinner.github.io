@@ -67,9 +67,9 @@ export default class UserPageView extends View {
 		while(wrap_temp.firstChild) wrap_temp.removeChild(wrap_temp.firstChild);
 		
 		const temp = this.models['UserHeatingNowModel'].measurement.temperature;
-		if (typeof temp !== 'undefined') {
+		if (typeof temp !== 'undefined' && temp > 0 && temp < 100) {
 			wrap_temp.appendChild(document.createTextNode(temp.toFixed(1)+'°C'));
-		} else 
+		} else {
 			wrap_temp.appendChild(document.createTextNode('---'));
 		}
 		// Empty old humidity.
@@ -77,9 +77,9 @@ export default class UserPageView extends View {
 		while(wrap_humi.firstChild) wrap_humi.removeChild(wrap_humi.firstChild);
 		
 		const humi = this.models['UserHeatingNowModel'].measurement.humidity;
-		if (typeof humi !== 'undefined') {
+		if (typeof humi !== 'undefined' && humi > 0 && humi < 100) {
 			wrap_humi.appendChild(document.createTextNode(humi.toFixed(1)+'%'));
-		} else 
+		} else {
 			wrap_humi.appendChild(document.createTextNode('---'));
 		}
 	}

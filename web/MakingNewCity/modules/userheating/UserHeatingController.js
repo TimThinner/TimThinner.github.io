@@ -43,7 +43,7 @@ export default class UserHeatingController extends Controller {
 		const model_Heating = new UserHeatingModel({
 			name: 'UserHeatingMonthModel',
 			//src: 'data/sivakka/apartments/feeds.json',
-			src: 'data/sivakka/wlsensordata/feeds.json'
+			src: 'data/sivakka/wlsensordata/feeds.json',
 			//type: 'sensor', // // type = sensor (Temperature and Humidity)
 			//limit: 0, // 0 = no limit
 			timerange: 30 // 30 days

@@ -111,7 +111,7 @@ Use "timestamp", "temperature" and "humidity".
 		this.doTheFetch(url);
 	}
 	*/
-	fetch(token, readkey) {
+	fetch(token, readkey, pid) {
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
 			return;

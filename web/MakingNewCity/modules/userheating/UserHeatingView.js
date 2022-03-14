@@ -341,7 +341,7 @@ export default class UserHeatingView extends View {
 					console.log(['FETCH MODEL key=',key]);
 					const UM = this.controller.master.modelRepo.get('UserModel');
 					if (UM) {
-						this.models[key].fetch(UM.token, UM.readkey);
+						this.models[key].fetch(UM.token, UM.readkey, UM.point_id_a);
 					}
 				});
 			}

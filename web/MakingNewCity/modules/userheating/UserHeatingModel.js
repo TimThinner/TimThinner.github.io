@@ -1,8 +1,5 @@
 import Model from '../common/Model.js';
-import CalculatedHeating from '../common/CalculatedHeating.js';
-
 export default class UserHeatingModel extends Model {
-	
 	/* Model:
 		this.name = options.name;
 		this.src = options.src;
@@ -11,116 +8,54 @@ export default class UserHeatingModel extends Model {
 		this.status = 500;
 		this.fetching = false;
 	*/
-	
 	/*
-	
-	Todo: 
-	When we process response with more than one measurement, we must form result per hour (YYYYMMDDHH) => approx. 60 measurements 
-	are summed into object with timestamp as a key (like in FeedModel).
-	this.energy[YYYYMMDDHH] = {};
-	
-	IN FeedModel we have:
-		[
-		
-		{"created_at":"2020-10-26T00:00:45","meterId":116,"averagePower":0,"totalEnergy":50932.2,"energyDiff":0},
-		{"created_at":"2020-10-26T00:01:42","meterId":116,"averagePower":0,"totalEnergy":50932.2,"energyDiff":0},
-		{"created_at":"2020-10-26T00:02:43","meterId":116,"averagePower":0,"totalEnergy":50932.2,"energyDiff":0},
-		...
-		
-	IN ApartmentModel:
-	{"created_at": "2020-10-20T03:21:38","apartmentId":101,"averagePower":2040,"impulseLastCtr": 34,"​​​​​impulseTotalCtr": 585464,"​​​​​meterId": 1001,"​​​​​residentId": 1,"​​​​​totalEnergy": 585.464}
-	
-	
-	
-	Another case is when we need DAILY consumption data. This applies to electricity and water, where we need to fetch 
-	total consumptions at the beginning and at the end of each day.
-	This also is different to those which go back 24 hours (or one week, or one month) from current time.
-	But we have the limit=1 here also, which makes this easier. And we should keep already fetched daily values in memory. They don't change.
-	This is a new "category", data is not needed to fetch periodically. Fetch ONCE case.
-	
-	about:config
-	devtools.netmonitor.responseBodyLimit is equal to 0.
-	
-	
+https://makingcity.vtt.fi/data/sivakka/wlsensordata/last.json?pointId=11534143
+Palauttaa: 
+{"tMeterId":11534143,"hMeterId":11534144,"created_at":"2022-03-09 12:36:16","timestamp":"2022-03-09 12:33:47","temperature":0,"humidity":1267503.8}
+
+
+New API to fetch apartment data: 
+
+https://makingcity.vtt.fi/data/sivakka/wlsensordata/feeds.json?pointId=11534143&start=2021-12-26&end=2021-12-31&limit=10
+
+Returns:
+
+[
+{"created_at":"2021-12-31T20:20:16","timestamp":"2021-12-31T20:16:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.6},
+{"created_at":"2021-12-31T20:28:16","timestamp":"2021-12-31T20:26:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.7},
+{"created_at":"2021-12-31T20:40:16","timestamp":"2021-12-31T20:36:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.9},
+{"created_at":"2021-12-31T20:48:16","timestamp":"2021-12-31T20:46:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.9},
+{"created_at":"2021-12-31T21:00:16","timestamp":"2021-12-31T20:56:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.8},
+{"created_at":"2021-12-31T21:08:16","timestamp":"2021-12-31T21:06:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.2,"humidity":20.5},
+{"created_at":"2021-12-31T21:20:18","timestamp":"2021-12-31T21:16:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.2,"humidity":20.4},
+{"created_at":"2021-12-31T21:28:18","timestamp":"2021-12-31T21:26:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.2,"humidity":20.5},
+{"created_at":"2021-12-31T21:40:16","timestamp":"2021-12-31T21:36:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.2,"humidity":20.5},
+{"created_at":"2021-12-31T21:48:16","timestamp":"2021-12-31T21:46:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.2,"humidity":20.5}]
+
+A new measurement once every 10 minutes.
+
+=> 6 times an hour => 144 times a day. => 30 days => 4320 values.
+
+Use "timestamp", "temperature" and "humidity".
 	*/
 	constructor(options) {
 		super(options);
 		
-		this.type = options.type;
-		this.limit = options.limit;
+		if (typeof options.limit !== 'undefined') {
+			this.limit = options.limit;
+		} else {
+			this.limit = 0; // Default is no limit
+		}
 		
 		if (typeof options.timerange !== 'undefined') {
 			this.timerange = options.timerange;
 		} else {
-			this.timerange = 1; // Default is one day.
+			this.timerange = 0; // Default is no timerange
 		}
-		
-		this.measurement = [];
+		// Response is either an array of measurements (feeds.json) or one mesurement (last.json).
+		this.measurements = [];
+		this.measurement = {};
 		this.period = {start: undefined, end: undefined};
-		this.values = [];
-	}
-	
-	setTimePeriod() {
-		const e_m = moment().subtract(10,'seconds'); // now - 10 seconds
-		// Snap end to this current full hour.
-		e_m.minutes(0);
-		e_m.seconds(0);
-		// ... it automatically snaps start to full hour of yesterday or day before that or ...
-		// which makes it different than calls to get only one value (limit==1).
-		const s_m = moment(e_m).subtract(this.timerange, 'days'); // exactly 30 days before end-moment.
-		this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
-		this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
-	}
-	
-	removeHeatingDuplicates(json) {
-		// Check if there are timestamp duplicates?
-		const test = {};
-		const newJson = [];
-		json.forEach(item => {
-			const datetime = item.created_at;
-			if (test.hasOwnProperty(datetime)) {
-				console.log(['DUPLICATE IGNORED! datetime=',datetime]);
-			} else {
-				test[datetime] = item;
-				newJson.push(item);
-			}
-		});
-		return newJson;
-	}
-	
-	process(myJson) {
-		const self = this;
-		// type = sensor (Temperature and Humidity)
-		self.values = []; // Start with fresh empty data.
-		const newson = this.removeHeatingDuplicates(myJson);
-		console.log(['SENSOR (Temperature and Humidity) newson=',newson]);
-		/*
-			humidity: 37.7
-			meterId: 201​​​​
-			residentId: 1
-			temperature: 22.8
-		*/
-		const mych = new CalculatedHeating();
-		mych.resetHours(this.timerange*24);
-		
-		$.each(newson, function(i,v){
-			// set cumulative energy for each hour.
-			mych.addMeasurement(v);
-		});
-		mych.calculateAverage();
-		//mych.copyTo(self.test_values);
-		mych.copyTo(self.values);
-		// Then sort array based according to time, oldest entry first.
-		//self.test_values.sort(function(a,b){
-		self.values.sort(function(a,b){
-			var bb = moment(b.time);
-			var aa = moment(a.time);
-			return aa - bb;
-		});
-		
-		// 30 x 24 = 720 = Hourly values for temperature and humidity
-		// Object { time: Date Mon Feb 21 2022 13:00:00 GMT+0200 (Eastern European Standard Time), temperature: 23.281666666666673, humidity: 32.13333333333333 }
-		console.log(['Heating values = ',self.values]);
 	}
 	
 	doTheFetch(url) {
@@ -135,29 +70,10 @@ export default class UserHeatingModel extends Model {
 				let message = 'OK';
 				const resu = JSON.parse(myJson);
 				if (Array.isArray(resu)) {
-					if (resu.length === 1) {
-						self.measurement = resu;
-						console.log(['self.measurement=',resu]);
-					} else {
-						console.log(['Before process() resu=',resu]);
-						self.process(resu);
-					}
+					self.measurements = resu;
 				} else {
-					if (myJson === 'No data!') {
-						self.status = 404;
-						message = self.name+': '+myJson;
-						self.errorMessage = message;
-						self.measurement = [];
-					} else if (typeof self.measurement.message !== 'undefined') {
-						message = self.measurement.message;
-						self.errorMessage = message;
-						self.measurement = [];
-					} else {
-						self.measurement = [];
-					}
+					self.measurement = resu;
 				}
-				console.log(['self.measurement=',self.measurement]);
-				console.log([self.name+' fetch status=',self.status]);
 				self.fetching = false;
 				self.ready = true;
 				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
@@ -201,14 +117,9 @@ export default class UserHeatingModel extends Model {
 			return;
 		}
 		
-		// Always start with setting the TIME PERIOD!
-		this.setTimePeriod();
 		this.status = 500; // error: 500
 		this.errorMessage = '';
 		this.fetching = true;
-		
-		const start_date = this.period.start;
-		const end_date = this.period.end;
 		
 		if (typeof token !== 'undefined') {
 			var myHeaders = new Headers();
@@ -219,10 +130,8 @@ export default class UserHeatingModel extends Model {
 			if (typeof readkey !== 'undefined') {
 				// Normal user has a readkey, which was created when user registered into the system. 
 				//const url = this.mongoBackend + '/apartments/feeds/';
-				const url = this.mongoBackend + '/proxes/apafeeds';
+				const url = this.mongoBackend + '/proxes/apartments';
 				// this.src = 'data/sivakka/apartments/feeds.json' 
-				const body_url = this.backend + '/' + this.src;
-				
 				
 				/* NOTE:
 				Now the backend creates full URL using given params, like: type, limit, start, end =>
@@ -236,47 +145,24 @@ export default class UserHeatingModel extends Model {
 				Append pointId: 			?pointId=11534143
 				Append start:				&start=2021-12-26
 				Append end:					&end=2021-12-31
-				Append limit:				&limit=10  				NO LIMIT!
-				
-				
-				SEE UserHeatingNowModel:
-				
-				const url = this.mongoBackend + '/proxes/apalast';
+				*/
 				const body_url = this.backend + '/' + this.src + '?pointId='+pid;
+				if (this.timerange > 0) {
+					const e_m = moment();
+					const s_m = moment(e_m).subtract(this.timerange, 'days');
+					//this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
+					//this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
+					const start_date = s_m.format('YYYY-MM-DD');
+					const end_date = e_m.format('YYYY-MM-DD');
+					body_url += '&start='+start_date+'&end='+end_date;
+				}
+				if (this.limit > 0) {
+					body_url += '&limit='+this.limit;
+				}
 				const data = {
 					url:body_url, 
 					readkey:readkey, 
 					expiration_in_seconds: 180 // 3 minutes
-				};
-				const myPost = {
-					method: 'POST',
-					headers: myHeaders,
-					body: JSON.stringify(data)
-				};
-				const myRequest = new Request(url, myPost);
-				this.doTheFetch(myRequest);
-				
-				
-				TODO:
-				Modify Frontend and Backend for apafeeds-route (note that this currently applies ONLY to heating!!!)
-				
-				
-				
-					let url = req.body.url + '?apiKey='+fakeKey+'&type='+req.body.type;
-					if (req.body.limit > 0) {
-						url += '&limit='+req.body.limit;
-					}
-					url += '&start='+req.body.start+'&end='+req.body.end;
-				*/
-				
-				const data = {
-					url:body_url, 
-					readkey:readkey, 
-					type: this.type, 
-					limit:this.limit, 
-					start: start_date, 
-					end: end_date,
-					expiration_in_seconds: 3600
 				};
 				const myPost = {
 					method: 'POST',

@@ -399,7 +399,7 @@ export default class UserElectricityView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-					'<p style="text-align:center;"><img src="./svg/radiator.svg" height="80"/></p>'+
+					'<p style="text-align:center;"><img src="./svg/electricity.svg" height="80"/></p>'+
 					'<p style="text-align:center;">'+localized_string_description+'</p>'+
 				'</div>'+
 			'</div>'+

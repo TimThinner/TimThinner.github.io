@@ -1,5 +1,5 @@
 import Controller from '../common/Controller.js';
-import UserHeatingNowModel from './UserHeatingNowModel.js';
+import UserHeatingModel from '../userheating/UserHeatingModel.js';
 import UserPageView from './UserPageView.js';
 
 /*
@@ -38,9 +38,7 @@ export default class UserPageController extends Controller {
 	}
 	
 	init() {
-		
-		// Response is 24 x 60 x 30 values = 43 200 measurements => 24 x 30 averages (720 averages).
-		const m = new UserHeatingNowModel({
+		const m = new UserHeatingModel({
 			name: 'UserHeatingNowModel',
 			src: 'data/sivakka/wlsensordata/last.json'
 		});

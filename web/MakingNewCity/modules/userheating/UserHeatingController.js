@@ -42,9 +42,10 @@ export default class UserHeatingController extends Controller {
 		// Response is 24 x 60 x 30 values = 43 200 measurements => 24 x 30 averages (720 averages).
 		const model_Heating = new UserHeatingModel({
 			name: 'UserHeatingMonthModel',
-			src: 'data/sivakka/apartments/feeds.json',
-			type: 'sensor', // // type = sensor (Temperature and Humidity)
-			limit: 0, // 0 = no limit
+			//src: 'data/sivakka/apartments/feeds.json',
+			src: 'data/sivakka/wlsensordata/feeds.json'
+			//type: 'sensor', // // type = sensor (Temperature and Humidity)
+			//limit: 0, // 0 = no limit
 			timerange: 30 // 30 days
 		});
 		model_Heating.subscribe(this);

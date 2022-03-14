@@ -92,7 +92,7 @@ export default class UserHeatingView extends View {
 		const sel = LM.selected;
 		const localized_string_average = LM['translation'][sel]['USER_HEATING_CHART_AVERAGE'];
 		
-		const values = this.models['UserHeatingMonthModel'].values;
+		const values = this.models['UserHeatingMonthModel'].measurements;
 		if (Array.isArray(values) && values.length > 0) {
 			//this.chartRangeStart = 0;
 			//this.chartRangeEnd = 1;
@@ -120,8 +120,8 @@ export default class UserHeatingView extends View {
 				let sum_humi = 0;
 				
 				// Use moment because it has nice formatting functions.
-				const s_date = moment(selection[0].time); // Date of first value.
-				const e_date = moment(selection[slen-1].time); // Date of last value.
+				const s_date = moment(selection[0].timestamp); // Date of first value.
+				const e_date = moment(selection[slen-1].timestamp); // Date of last value.
 				
 				// Calculate how many days + hours this timerange is:
 				const duration_in_hours = slen;
@@ -169,7 +169,7 @@ export default class UserHeatingView extends View {
 			am4core.options.autoSetClassName = true;
 			am4core.options.autoDispose = true;
 			
-			console.log(['values=',self.models['UserHeatingMonthModel'].values]);
+			//console.log(['values=',self.models['UserHeatingMonthModel'].values]);
 			
 			// Create chart
 			self.chart = am4core.create("user-heating-chart", am4charts.XYChart);
@@ -179,25 +179,6 @@ export default class UserHeatingView extends View {
 			self.chart.numberFormatter.numberFormat = "#.#";
 			//self.chart.data = [];
 			
-			//const values = self.models['UserHeatingMonthModel'].values;
-			
-			// [{"value":207.483000,"start_time":"2021-05-17T08:00:00+0000","end_time":"2021-05-17T09:00:00+0000"},...]
-			/*console.log(['values=',values]);
-			values.forEach(v=>{
-				self.chart.data.push({
-					//date: moment(v.time).toDate(),
-					date: v.time,
-					temperature: v.temperature,
-					humidity: v.humidity
-				});
-			});*/
-			/*
-			self.chart.data.push({
-				date: newDate,
-				values: values
-			});
-			const values = this.models['FingridSolarPowerFinlandModel'].values;
-			*/
 			const dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
 			dateAxis.baseInterval = {
 				"timeUnit": "hour",
@@ -214,6 +195,8 @@ export default class UserHeatingView extends View {
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_heating;
 			
+			
+			// {"created_at":"2021-12-31T20:20:16","timestamp":"2021-12-31T20:16:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.6},
 			const series1 = self.chart.series.push(new am4charts.LineSeries());
 			series1.defaultState.transitionDuration = 0;
 			series1.tooltipText = "{valueY.value} °C";
@@ -226,8 +209,8 @@ export default class UserHeatingView extends View {
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			series1.data = self.models['UserHeatingMonthModel'].values;
-			series1.dataFields.dateX = "time";
+			series1.data = self.models['UserHeatingMonthModel'].measurements;
+			series1.dataFields.dateX = "timestamp";
 			series1.dataFields.valueY = "temperature";
 			series1.name = localized_string_temperature;
 			series1.yAxis = valueAxis;
@@ -244,8 +227,8 @@ export default class UserHeatingView extends View {
 			series2.tooltip.background.fill = am4core.color("#000");
 			series2.tooltip.background.strokeWidth = 1;
 			series2.tooltip.label.fill = series2.stroke;
-			series2.data = self.models['UserHeatingMonthModel'].values;
-			series2.dataFields.dateX = "time";
+			series2.data = self.models['UserHeatingMonthModel'].measurements;
+			series2.dataFields.dateX = "timestamp";
 			series2.dataFields.valueY = "humidity";
 			series2.name = localized_string_humidity;
 			series2.yAxis = valueAxis;
@@ -314,9 +297,9 @@ export default class UserHeatingView extends View {
 					if (options.status === 200) {
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
-							console.log(['NOTIFY values=',this.models['UserHeatingMonthModel'].values]);
+							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['UserHeatingMonthModel'].values;
+								s.data = self.models['UserHeatingMonthModel'].measurements;
 							});
 							this.appendAverage();
 						} else {

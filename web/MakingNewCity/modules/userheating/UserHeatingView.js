@@ -93,6 +93,9 @@ export default class UserHeatingView extends View {
 		const localized_string_average = LM['translation'][sel]['USER_HEATING_CHART_AVERAGE'];
 		
 		const values = this.models['UserHeatingMonthModel'].measurements;
+		
+		console.log(['appendAverage measurements=',values]);
+		
 		if (Array.isArray(values) && values.length > 0) {
 			//this.chartRangeStart = 0;
 			//this.chartRangeEnd = 1;
@@ -107,6 +110,8 @@ export default class UserHeatingView extends View {
 					selection.push(v);
 				}
 			});
+			
+			// What is the resolution here? Not 1 hour.  IT IS 10 minutes!
 			
 			const slen = selection.length;
 			if (slen > 0) {
@@ -124,7 +129,7 @@ export default class UserHeatingView extends View {
 				const e_date = moment(selection[slen-1].timestamp); // Date of last value.
 				
 				// Calculate how many days + hours this timerange is:
-				const duration_in_hours = slen;
+				const duration_in_hours = slen/6;
 				const timerange_days = Math.floor(duration_in_hours/24);
 				const timerange_hours = duration_in_hours-(timerange_days*24);
 				

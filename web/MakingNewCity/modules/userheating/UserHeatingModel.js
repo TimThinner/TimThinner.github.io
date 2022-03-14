@@ -70,9 +70,42 @@ Use "timestamp", "temperature" and "humidity".
 				let message = 'OK';
 				const resu = JSON.parse(myJson);
 				if (Array.isArray(resu)) {
-					self.measurements = resu;
+					const resa = [];
+					resu.forEach(r=>{
+						let temp = r.temperature;
+						let humi = r.humidity;
+						// Make sure we have sane values:
+						const res = {timestamp: r.timestamp};
+						if (typeof temp !== 'undefined' && temp > 0 && temp < 100) {
+							res.temperature = temp; // OK
+						} else {
+							res.temperature = 0;
+						}
+						if (typeof humi !== 'undefined' && humi > 0 && humi < 100) {
+							res.humidity = humi;
+						} else {
+							res.humidity = 0;
+						}
+						resa.push(res);
+					}
+					self.measurements = resa;
+					
 				} else {
-					self.measurement = resu;
+					let temp = resu.temperature;
+					let humi = resu.humidity;
+					// Make sure we have sane values:
+					const res = {timestamp: resu.timestamp};
+					if (typeof temp !== 'undefined' && temp > 0 && temp < 100) {
+						res.temperature = temp; // OK
+					} else {
+						res.temperature = 0;
+					}
+					if (typeof humi !== 'undefined' && humi > 0 && humi < 100) {
+						res.humidity = humi;
+					} else {
+						res.humidity = 0;
+					}
+					self.measurement = res;
 				}
 				self.fetching = false;
 				self.ready = true;
@@ -88,29 +121,6 @@ Use "timestamp", "temperature" and "humidity".
 			});
 	}
 	
-	/*
-		fetch_d
-		Calls directly from src using backend (NOT mongoBackend).
-	*/
-	/*
-	fetch_d() {
-		const self = this;
-		
-		// this.src = 'data/sivakka/apartments/feeds.json'   
-		//      must append: ?apiKey=12E6F2B1236A&type=type&limit=limit&start=2020-10-12T09:00&end=2020-10-12T10:00'
-		// Use FAKE key now: '12E6F2B1236A'
-		const fakeKey = '12E6F2B1236A';
-		const start_date = this.period.start;
-		const end_date = this.period.end;
-		
-		let url = this.backend + '/' + this.src + '?apiKey='+fakeKey+'&type='+this.type;
-		if (this.limit > 0) {
-			url += '&limit='+this.limit;
-		}
-		url += '&start='+start_date+'&end='+end_date;
-		this.doTheFetch(url);
-	}
-	*/
 	fetch(token, readkey, pid) {
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');

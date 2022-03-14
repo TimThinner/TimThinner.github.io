@@ -546,6 +546,7 @@ router.post('/apartments', checkAuth, (req,res,next)=>{
 				if (ts > sTS.getTime() && ts < eTS.getTime()) {
 					// OK.
 					let url = req.body.url;
+					console.log(url);
 					const auth = req.headers.authorization;
 					const options = {
 						headers: {

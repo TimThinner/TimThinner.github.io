@@ -148,7 +148,6 @@ Use "timestamp", "temperature" and "humidity".
 				Rewrite this so that URL is is created here at the model.
 				
 				https://makingcity.vtt.fi/data/sivakka/wlsensordata/feeds.json?pointId=11534143&start=2021-12-26&end=2021-12-31&limit=10
-				
 				NEW:
 				const body_url = this.backend + '/' + this.src + '?pointId=' + pid + '&start=' + start_date + '&end=' + end_date;
 				

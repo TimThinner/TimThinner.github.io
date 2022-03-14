@@ -128,8 +128,11 @@ export default class UserHeatingView extends View {
 				const s_date = moment(selection[0].timestamp); // Date of first value.
 				const e_date = moment(selection[slen-1].timestamp); // Date of last value.
 				
+				// NOTE: By default, moment#diff will truncate the result to zero decimal places, returning an integer. 
+				// If you want a floating point number, pass true as the third argument.
 				// Calculate how many days + hours this timerange is:
-				const duration_in_hours = slen/6;
+				const duration_in_hours = e_date.diff(s_date, 'hours');
+				//const duration_in_hours = slen/6;
 				const timerange_days = Math.floor(duration_in_hours/24);
 				const timerange_hours = duration_in_hours-(timerange_days*24);
 				

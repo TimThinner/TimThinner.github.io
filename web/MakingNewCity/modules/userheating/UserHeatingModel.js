@@ -146,7 +146,7 @@ Use "timestamp", "temperature" and "humidity".
 				Append start:				&start=2021-12-26
 				Append end:					&end=2021-12-31
 				*/
-				const body_url = this.backend + '/' + this.src + '?pointId='+pid;
+				let body_url = this.backend + '/' + this.src + '?pointId='+pid;
 				if (this.timerange > 0) {
 					const e_m = moment();
 					const s_m = moment(e_m).subtract(this.timerange, 'days');

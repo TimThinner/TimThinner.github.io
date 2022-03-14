@@ -87,7 +87,7 @@ Use "timestamp", "temperature" and "humidity".
 							res.humidity = 0;
 						}
 						resa.push(res);
-					}
+					});
 					self.measurements = resa;
 					
 				} else {

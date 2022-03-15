@@ -28,15 +28,7 @@ export default class UserHeatingController extends Controller {
 	/*
 	We fetch values for last 30 days => 
 	Calculate averages for last 30 days, last 7 days and finally last 24 hours.
-	
-	
-	
 	resolution 1 hour 720 values (30 x 24 = 720)
-	
-	
-	
-	https://makingcity.vtt.fi/data/sivakka/wlsensordata/feeds.json?pointId=11534143&start=2021-12-26&end=2021-12-31&limit=10
-	
 	*/
 	init() {
 		// Response is 24 x 60 x 30 values = 43 200 measurements => 24 x 30 averages (720 averages).

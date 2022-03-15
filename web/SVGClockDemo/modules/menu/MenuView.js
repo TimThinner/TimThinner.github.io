@@ -25,11 +25,13 @@ export default class MenuView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		this.PTO = new PeriodicTimeoutObserver({interval:1000,name:'second'}); // interval 1 seconds
-		this.PTO.subscribe(this);
-		
-		this.PTO2 = new PeriodicTimeoutObserver({interval:60000,name:'minute'}); // interval 60 seconds
-		this.PTO2.subscribe(this);
+		this.PTOs = [
+			new PeriodicTimeoutObserver({interval:1000,name:'second'}), // interval 1 seconds
+			new PeriodicTimeoutObserver({interval:60000,name:'minute'}) // interval 60 seconds
+		];
+		this.PTOs.forEach(t=>{
+			t.subscribe(this);
+		});
 		
 		// colors:   in styles.css background is '#ccc'
 		this.colors = {
@@ -61,13 +63,15 @@ export default class MenuView extends View {
 	show() {
 		console.log('MenuView show()');
 		this.render();
-		this.PTO.restart();
-		this.PTO2.restart();
+		this.PTOs.forEach(t=>{
+			t.restart();
+		});
 	}
 	
 	hide() {
-		this.PTO.stop();
-		this.PTO2.stop();
+		this.PTOs.forEach(t=>{
+			t.stop();
+		});
 		this.rendered = false;
 		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
 		//$(this.el).empty();
@@ -78,12 +82,10 @@ export default class MenuView extends View {
 	}
 	
 	remove() {
-		this.PTO.stop();
-		this.PTO.unsubscribe(this);
-		
-		this.PTO2.stop();
-		this.PTO2.unsubscribe(this);
-		
+		this.PTOs.forEach(t=>{
+			t.stop();
+			t.unsubscribe(this);
+		});
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -472,7 +474,7 @@ export default class MenuView extends View {
 	}
 	
 	renderALL() {
-		console.log('renderALL() START v5!');
+		console.log('renderALL() START v6!');
 		let wrap = document.getElementById(this.el.slice(1));
 		if (wrap) {
 			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);

@@ -576,6 +576,66 @@ router.post('/apartments', checkAuth, (req,res,next)=>{
 		});
 });
 
+/*
+INPUT:
+	req.body.readkey
+	req.body.url
+	req.body.type
+	req.body.limit
+	req.body.start
+	req.body.end
+	req.body.expiration_in_seconds
+*/
+router.post('/apafeeds', checkAuth, (req,res,next)=>{
+	const readkey = req.body.readkey;
+	Readkey.findById(readkey)
+		.select('_id startdate enddate')
+		.exec()
+		.then(doc=>{
+			if (doc) {
+				// Check that current timestamp is between startdate and enddate
+				const ts = Date.now();
+				const sTS = new Date(doc.startdate);
+				const eTS  = new Date(doc.enddate);
+				if (ts > sTS.getTime() && ts < eTS.getTime()) {
+					// OK.
+					// Use FAKE key now: '12E6F2B1236A'
+					const fakeKey = '12E6F2B1236A';
+					let url = req.body.url + '?apiKey='+fakeKey+'&type='+req.body.type;
+					if (req.body.limit > 0) {
+						url += '&limit='+req.body.limit;
+					}
+					url += '&start='+req.body.start+'&end='+req.body.end;
+					
+					const auth = req.headers.authorization;
+					const options = {
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': auth
+						}
+					};
+					const po = {
+						hash: url,
+						useHttps: true,
+						url: url,
+						options: options,
+						expiration: req.body.expiration_in_seconds,
+						response_type: 'json'
+					};
+					Proxe_Find(po, res);
+					
+				} else {
+					res.status(404).json({message: 'Readkey Expired'});
+				}
+			} else {
+				res.status(404).json({message:'Readkey not found'});
+			}
+		})
+		.catch(err=>{
+			res.status(500).json({error:err});
+		});
+});
+
 router.get('/clean', (req,res,next)=>{
 	Proxe_Clean(res);
 });

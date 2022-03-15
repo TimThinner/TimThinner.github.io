@@ -13,16 +13,6 @@ export default class ConfigsController extends Controller {
 		this.models = {};
 	}
 	
-	initialize() {
-		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
-		this.models['MenuModel'].subscribe(this);
-		
-		this.models['ConfigModel'] = this.master.modelRepo.get('ConfigModel');
-		this.models['ConfigModel'].subscribe(this);
-		
-		this.view = new ConfigsView(this);
-	}
-	
 	clean() {
 		this.remove();
 		/* IN PeriodicPoller:
@@ -45,11 +35,16 @@ export default class ConfigsController extends Controller {
 		// AND in this.remove finally all models created here is removed.
 		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
 		// so there is no need to redefine them.
-		this.initialize();
+		this.init();
 	}
 	
-	
 	init() {
-		this.initialize();
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
+		this.models['ConfigModel'] = this.master.modelRepo.get('ConfigModel');
+		this.models['ConfigModel'].subscribe(this);
+		
+		this.view = new ConfigsView(this);
 	}
 }

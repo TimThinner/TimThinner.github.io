@@ -26,18 +26,6 @@ export default class RegCodeController extends Controller {
 		this.models = {};
 	}
 	
-	initialize() {
-		const model = new RegCodeModel({name:'RegCodeModel',src:'to-be-added-in-the-future'});
-		model.subscribe(this);
-		this.master.modelRepo.add('RegCodeModel',model);
-		this.models['RegCodeModel'] = model;
-		
-		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
-		this.models['MenuModel'].subscribe(this);
-		
-		this.view = new RegCodeView(this);
-	}
-	
 	clean() {
 		console.log('RegCodeController is now REALLY cleaned!');
 		this.remove();
@@ -61,14 +49,19 @@ export default class RegCodeController extends Controller {
 		// AND in this.remove finally all models created here is removed.
 		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
 		// so there is no need to redefine them.
-		this.initialize();
+		this.init();
 	}
 	
 	init() {
-		this.initialize();
-		this.timers['RegCodeModel'] = {timer: undefined, interval: -1, models:['RegCodeModel']};
-		// If view is shown immediately and poller is used, like in this case, 
-		// we can just call show() and let it start fetching... 
-		//this.show(); // Try if this view can be shown right now!
+		// Fetch only once!
+		const model = new RegCodeModel({name:'RegCodeModel',src:'to-be-added-in-the-future'});
+		model.subscribe(this);
+		this.master.modelRepo.add('RegCodeModel',model);
+		this.models['RegCodeModel'] = model;
+		
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
+		this.view = new RegCodeView(this);
 	}
 }

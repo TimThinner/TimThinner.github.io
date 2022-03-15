@@ -99,6 +99,8 @@ export default class UserPageView extends View {
 					// this.USER_MODEL.point_id_c  // WATER
 					if (key === 'UserHeatingNowModel') {
 						this.models[key].fetch(this.USER_MODEL.token, this.USER_MODEL.readkey, this.USER_MODEL.point_id_a);
+					} else if (key === 'UserElectricityNow0Model' || key === 'UserElectricityNow1Model') {
+						this.models[key].fetch(this.USER_MODEL.token, this.USER_MODEL.readkey);
 					}
 				});
 			} else if (options.model==='UserHeatingNowModel' && options.method==='fetched') {
@@ -118,6 +120,12 @@ export default class UserPageView extends View {
 				} else {
 					console.log(['ERROR when fetching UserHeatingNowModel! options.status=',options.status]);
 				}
+				
+			} else if (options.model==='UserElectricityNow0Model' && options.method==='fetched') {
+				console.log('UserElectricityNow0Model fetched!!!!!!!!!');
+				
+			} else if (options.model==='UserElectricityNow1Model' && options.method==='fetched') {
+				console.log('UserElectricityNow1Model fetched!!!!!!!!!');
 			}
 		}
 	}

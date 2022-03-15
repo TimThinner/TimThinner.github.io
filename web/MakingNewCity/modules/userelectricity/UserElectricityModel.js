@@ -56,7 +56,7 @@ export default class UserElectricityModel extends Model {
 		this.energyTotal = 0;
 	}
 	/*
-		Note: IT TAKES time to fecth electricity values (totalEnergy), even if we are fetching 
+		Note: IT TAKES time to fetch electricity values (totalEnergy), even if we are fetching 
 		only one value from short period of time.
 		
 		2022-02-25:

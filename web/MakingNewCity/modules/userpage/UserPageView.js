@@ -121,6 +121,37 @@ export default class UserPageView extends View {
 		}
 	}
 	
+	updateHeatingNow() {
+		let first = '---';
+		let second = '---';
+		const temp = this.models['UserHeatingNowModel'].measurement.temperature;
+		if (typeof temp !== 'undefined' && temp > 0 && temp < 100) {
+			first = temp.toFixed(1)+'°C';
+		}
+		const humi = this.models['UserHeatingNowModel'].measurement.humidity;
+		if (typeof humi !== 'undefined' && humi > 0 && humi < 100) {
+			second = humi.toFixed(1)+'%';
+		}
+		this.updateValueNow('heating', first, second);
+	}
+	
+	updateElectricityNow() {
+		this.convertResults();
+		if (this.resuArray.length > 0) {
+			let first = '---';
+			let second = '---';
+			const total = this.resuArray[0].total;
+			if (typeof total !== 'undefined' && total > 0) {
+				first = total.toFixed(1)+'kWh';
+			}
+			const power = this.resuArray[0].power;
+			if (typeof power !== 'undefined' && power > 0) {
+				second = power.toFixed(0)+'W';
+			}
+			this.updateValueNow('electricity', first, second);
+		}
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -151,38 +182,20 @@ export default class UserPageView extends View {
 				});
 			} else if (options.model==='UserHeatingNowModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					let first = '---';
-					let second = '---';
-					const temp = this.models['UserHeatingNowModel'].measurement.temperature;
-					if (typeof temp !== 'undefined' && temp > 0 && temp < 100) {
-						first = temp.toFixed(1)+'°C';
-					}
-					const humi = this.models['UserHeatingNowModel'].measurement.humidity;
-					if (typeof humi !== 'undefined' && humi > 0 && humi < 100) {
-						second = humi.toFixed(1)+'%';
-					}
-					this.updateValueNow('heating', first, second);
+					
+					this.updateHeatingNow();
 					
 				} else {
-					console.log(['ERROR when fetching UserHeatingNowModel! options.status=',options.status]);
+					console.log(['ERROR when fetching '+options.model+': options.status=',options.status]);
 				}
 				
 			} else if (options.model.indexOf('UserElectricityNow') === 0 && options.method==='fetched') {
 				if (options.status === 200) {
-					this.convertResults();
-					if (this.resuArray.length > 0) {
-						let first = '---';
-						let second = '---';
-						const total = this.resuArray[0].total;
-						if (typeof total !== 'undefined' && total > 0) {
-							first = total.toFixed(1)+'kWh';
-						}
-						const power = this.resuArray[0].power;
-						if (typeof power !== 'undefined' && power > 0) {
-							second = power.toFixed(0)+'W';
-						}
-						this.updateValueNow('electricity', first, second);
-					}
+					
+					this.updateElectricityNow();
+					
+				} else {
+					console.log(['ERROR when fetching '+options.model+': options.status=',options.status]);
 				}
 			}
 		}
@@ -950,6 +963,9 @@ export default class UserPageView extends View {
 		this.appendSun('ELECTRICITY');
 		this.appendSun('HEATING');
 		this.appendSun('WATER');
+		
+		this.updateHeatingNow();
+		this.updateElectricityNow();
 	}
 	
 	render() {

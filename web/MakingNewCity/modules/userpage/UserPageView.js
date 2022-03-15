@@ -12,6 +12,9 @@ export default class UserPageView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
+			
+			console.log(['UserPageView constructor key=',key]);
+			
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});

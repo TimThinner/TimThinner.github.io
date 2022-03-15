@@ -179,7 +179,7 @@ export default class UserPageView extends View {
 						}
 						const power = this.resuArray[0].power;
 						if (typeof power !== 'undefined' && power > 0) {
-							second = power.toFixed(1)+'W';
+							second = power.toFixed(0)+'W';
 						}
 						this.updateValueNow('electricity', first, second);
 					}

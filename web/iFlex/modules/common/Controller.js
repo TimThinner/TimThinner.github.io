@@ -1,6 +1,6 @@
-import PeriodicPoller from '../common/PeriodicPoller.js';
+//import PeriodicPoller from '../common/PeriodicPoller.js';
 
-export default class Controller extends PeriodicPoller {
+export default class Controller { //extends PeriodicPoller {
 	
 	/*
 	Timers are used to fetch (update) data periodically.
@@ -15,7 +15,7 @@ export default class Controller extends PeriodicPoller {
 	*/
 	
 	constructor(options) {
-		super(options);
+		//super(options);
 		this.name    = options.name;
 		this.master  = options.master;
 		this.visible = options.visible;
@@ -28,8 +28,8 @@ export default class Controller extends PeriodicPoller {
 	}
 	
 	remove() {
-		console.log(['REMOVE CONTROLLER ',this.name]);
-		super.remove();
+		//console.log(['REMOVE CONTROLLER ',this.name]);
+		//super.remove();
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -41,7 +41,7 @@ export default class Controller extends PeriodicPoller {
 	
 	hide() {
 		//console.log(['HIDE CONTROLLER ',this.name]);
-		super.hide();
+		//super.hide();
 		if (this.view) {
 			this.view.hide();
 		}
@@ -50,11 +50,11 @@ export default class Controller extends PeriodicPoller {
 	// So it is important to make sure that before polling starts we have right parameters 
 	// set at the models.
 	show() {
-		console.log(['SHOW CONTROLLER ',this.name]);
+		//console.log(['SHOW CONTROLLER ',this.name]);
 		if (this.visible && this.view) {
 			//console.log('... and after that Start THE POLLERS!');
 			// Start polling all timers for THIS CONTROLLER:
-			this.startPollers();
+			//this.startPollers();
 			//console.log('Show the VIEW...');
 			this.view.show();
 		}

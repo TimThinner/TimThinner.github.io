@@ -24,13 +24,18 @@ export default class AController extends Controller {
 		});
 		this.models = {};
 	}
-	
+	/*
 	refreshTimerange() {
 		this.restartPollingInterval('AView');
 	}
+	*/
+	clean() {
+		console.log('UserHeatingController is now REALLY cleaned!');
+		this.remove();
+		this.init();
+	}
 	
-	initialize() {
-			
+	init() {
 		// NOTE: host: 'ba.vtt.fi' is added at the backend
 		// We can select dynamically whether data fetcher uses "QUERY" or "ROLLUP" API:
 		// "query/" or "rollup/" is added at ObixModel depending on if "interval" is defined or not.
@@ -66,20 +71,5 @@ export default class AController extends Controller {
 		this.models['MenuModel'].subscribe(this);
 		
 		this.view = new AView(this);
-	}
-	
-	clean() {
-		console.log('UserHeatingController is now REALLY cleaned!');
-		this.remove();
-		this.initialize();
-	}
-	
-	init() {
-		this.initialize();
-		const interval = this.fetching_interval_in_seconds * 1000; // once per 60 seconds by default.
-		this.timers['AView'] = {timer:undefined, interval:interval, models:['BuildingElectricityPL1Model','BuildingElectricityPL2Model','BuildingElectricityPL3Model']};
-		// If view is shown immediately and poller is used, like in this case, 
-		// we can just call show() and let it start fetching... 
-		//this.show(); // Try if this view can be shown right now!
 	}
 }

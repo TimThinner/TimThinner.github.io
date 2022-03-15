@@ -44,7 +44,38 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 4 HOURS		6 months		1080 (30 x 6 x 6)
 6 HOURS		1 year			1460 (4 x 365)
 */
-	initialize() {
+/*
+	refreshTimerange() {
+		this.restartPollingInterval('CView');
+	}
+	*/
+	clean() {
+		console.log('CController is now REALLY cleaned!');
+		this.remove();
+		/* IN PeriodicPoller:
+		Object.keys(this.timers).forEach(key => {
+			if (this.timers[key].timer) {
+				clearTimeout(this.timers[key].timer);
+				this.timers[key].timer = undefined;
+			}
+		});
+		*/
+		/* IN Controller:
+		Object.keys(this.models).forEach(key => {
+			this.models[key].unsubscribe(this);
+		});
+		if (this.view) {
+			this.view.remove();
+			this.view = undefined;
+		}
+		*/
+		// AND in this.remove finally all models created here is removed.
+		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
+		// so there is no need to redefine them.
+		this.init();
+	}
+	
+	init() {
 		const model_1 = new BuildingEmissionFactorForElectricityConsumedInFinlandModel({
 			name: this.modelnames[0],
 			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/',
@@ -56,7 +87,6 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 		
 		// NOTE: do not use same model instances created in A or B controller. 
 		// Create new instances here:
-		
 		
 		// NOTE: host: 'ba.vtt.fi' is added at the backend
 		// We can select dynamically whether data fetcher uses "QUERY" or "ROLLUP" API:
@@ -102,59 +132,5 @@ INTERVAL	TIMERANGE		NUMBER OF SAMPLES
 		this.models['MenuModel'].subscribe(this);
 		
 		this.view = new CView(this);
-		
-		// At init() there is ALWAYS only one controller with visible=true, this controller.
-		// and also the ResizeEventObserver is started at init() => this controller is shown 
-		// TWICE in init() if this.show() is called here!!!
-		
-		//this.startPollers();
-		// If view is shown immediately and poller is used, like in this case, 
-		// we can just call show() and let it start fetching... 
-		
-		//this.show(); // Try if this view can be shown right now!
-		/*
-			NOTE: this.show() calls this.view.show(); and 
-			this.startPollers(); but there are no timers defined, so no polling is actually performed.
-		*/
-	}
-	
-	refreshTimerange() {
-		this.restartPollingInterval('CView');
-	}
-	
-	clean() {
-		console.log('CController is now REALLY cleaned!');
-		this.remove();
-		/* IN PeriodicPoller:
-		Object.keys(this.timers).forEach(key => {
-			if (this.timers[key].timer) {
-				clearTimeout(this.timers[key].timer);
-				this.timers[key].timer = undefined;
-			}
-		});
-		*/
-		/* IN Controller:
-		Object.keys(this.models).forEach(key => {
-			this.models[key].unsubscribe(this);
-		});
-		if (this.view) {
-			this.view.remove();
-			this.view = undefined;
-		}
-		*/
-		// AND in this.remove finally all models created here is removed.
-		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
-		// so there is no need to redefine them.
-		this.initialize();
-	}
-	init() {
-		
-		this.initialize();
-		const interval = this.fetching_interval_in_seconds * 1000; // once per 60 seconds by default.
-		this.timers['CView'] = {
-			timer:undefined,
-			interval:interval,
-			models: this.modelnames
-		};
 	}
 }

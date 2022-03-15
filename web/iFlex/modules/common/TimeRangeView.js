@@ -156,7 +156,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR1D";
 				self.resetButtonClass();
 				self.setTR(models);
-				self.controller.refreshTimerange();
+				//self.controller.refreshTimerange();   // self.PTO.restart();
 				self.showInfo(models);
 			}
 		});
@@ -167,7 +167,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR1W";
 				self.resetButtonClass();
 				self.setTR(models);
-				self.controller.refreshTimerange();
+				//self.controller.refreshTimerange();
 				self.showInfo(models);
 			}
 		});
@@ -178,7 +178,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR2W";
 				self.resetButtonClass();
 				self.setTR(models);
-				self.controller.refreshTimerange();
+				//self.controller.refreshTimerange();
 				self.showInfo(models);
 			}
 		});
@@ -189,7 +189,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR1M";
 				self.resetButtonClass();
 				self.setTR(models);
-				self.controller.refreshTimerange();
+				//self.controller.refreshTimerange();
 				self.showInfo(models);
 			}
 		});
@@ -200,7 +200,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR6M";
 				self.resetButtonClass();
 				self.setTR(models);
-				self.controller.refreshTimerange();
+				//self.controller.refreshTimerange();
 				self.showInfo(models);
 			}
 		});
@@ -211,7 +211,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR13M";
 				self.resetButtonClass();
 				self.setTR(models);
-				self.controller.refreshTimerange();
+				//self.controller.refreshTimerange();
 				self.showInfo(models);
 			}
 		});

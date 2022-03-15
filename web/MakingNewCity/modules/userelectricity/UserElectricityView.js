@@ -173,9 +173,6 @@ export default class UserElectricityView extends View {
 		Object.keys(this.models).forEach(key => {
 			if (key.indexOf('UserElectricity') === 0) {
 				const meas = this.models[key].measurement; // is in normal situation an array.
-				
-				console.log(['meas=',meas]);
-				
 				if (Array.isArray(meas) && meas.length > 0) {
 					const total = meas[0].totalEnergy;
 					const d = new Date(meas[0].created_at);

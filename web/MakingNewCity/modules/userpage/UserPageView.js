@@ -96,8 +96,9 @@ export default class UserPageView extends View {
 				const meas = this.models[key].measurement; // is in normal situation an array.
 				if (Array.isArray(meas) && meas.length > 0) {
 					const total = meas[0].totalEnergy;
+					const power = meas[0].averagePower;
 					const d = new Date(meas[0].created_at);
-					temp_a.push({date:d, total:total});
+					temp_a.push({date:d, total:total, power:power});
 				}
 			}
 		});
@@ -113,13 +114,12 @@ export default class UserPageView extends View {
 			for (let i=0; i<len-1; i++) {
 				const d = temp_a[i+1].date;
 				const tot = temp_a[i+1].total - temp_a[i].total;
-				this.resuArray.push({date:d, total:tot});
+				const power = temp_a[i+1].power;
+				this.resuArray.push({date:d, total:tot, power:power});
 			}
 			console.log(['resuArray=',this.resuArray]);
 		}
 	}
-	
-	
 	
 	notify(options) {
 		if (this.controller.visible) {
@@ -170,6 +170,19 @@ export default class UserPageView extends View {
 			} else if (options.model.indexOf('UserElectricityNow') === 0 && options.method==='fetched') {
 				if (options.status === 200) {
 					this.convertResults();
+					if (this.resuArray.length > 0) {
+						let first = '---';
+						let second = '---';
+						const total = this.resuArray[0].total;
+						if (typeof total !== 'undefined' && total > 0) {
+							first = total.toFixed(1)+'kWh';
+						}
+						const power = this.resuArray[0].power;
+						if (typeof power !== 'undefined' && power > 0) {
+							second = power.toFixed(1)+'W';
+						}
+						this.updateValueNow('electricity', first, second);
+					}
 				}
 			}
 		}

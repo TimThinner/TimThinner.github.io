@@ -335,8 +335,6 @@ export default class UserElectricityView extends View {
 		const self = this;
 		if (this.controller.visible) {
 			if (options.model.indexOf('UserElectricity') === 0 && options.method==='fetched') {
-				
-				
 				//.. and start the fetching process with NEXT model:
 				const f = this.fetchQueue.shift();
 				if (typeof f !== 'undefined') {

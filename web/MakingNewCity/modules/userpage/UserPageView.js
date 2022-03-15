@@ -28,6 +28,7 @@ export default class UserPageView extends View {
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		this.USER_MODEL.subscribe(this);
 		
+		this.resuArray = [];
 		this.rendered = false;
 	}
 	
@@ -77,6 +78,48 @@ export default class UserPageView extends View {
 		// Append new value.
 		wrap_s.appendChild(document.createTextNode(second));
 	}
+	/*
+		apartmentId: 101
+​​​		averagePower: 1200
+​​​		created_at: "2022-02-14T23:59:35"
+​​​		impulseLastCtr: 20
+​​​		impulseTotalCtr: 18797376
+​​​		meterId: 1001
+​​​		residentId: 1
+​​​		totalEnergy: 18797.376
+	*/
+	convertResults() {
+		const temp_a = [];
+		this.resuArray = [];
+		Object.keys(this.models).forEach(key => {
+			if (key.indexOf('UserElectricityNow') === 0) {
+				const meas = this.models[key].measurement; // is in normal situation an array.
+				if (Array.isArray(meas) && meas.length > 0) {
+					const total = meas[0].totalEnergy;
+					const d = new Date(meas[0].created_at);
+					temp_a.push({date:d, total:total});
+				}
+			}
+		});
+		const len = temp_a.length;
+		if (len > 1) {
+			// Then sort array based according to date, oldest entry first.
+			temp_a.sort(function(a,b){
+				var bb = moment(b.date);
+				var aa = moment(a.date);
+				return aa - bb;
+			});
+			//console.log(['SORTED temp_a=',temp_a]);
+			for (let i=0; i<len-1; i++) {
+				const d = temp_a[i+1].date;
+				const tot = temp_a[i+1].total - temp_a[i].total;
+				this.resuArray.push({date:d, total:tot});
+			}
+			console.log(['resuArray=',this.resuArray]);
+		}
+	}
+	
+	
 	
 	notify(options) {
 		if (this.controller.visible) {
@@ -102,7 +145,7 @@ export default class UserPageView extends View {
 					// this.USER_MODEL.point_id_c  // WATER
 					if (key === 'UserHeatingNowModel') {
 						this.models[key].fetch(this.USER_MODEL.token, this.USER_MODEL.readkey, this.USER_MODEL.point_id_a);
-					} else if (key === 'UserElectricityNow0Model' || key === 'UserElectricityNow1Model') {
+					} else if (key.indexOf('UserElectricityNow') === 0) {
 						this.models[key].fetch(this.USER_MODEL.token, this.USER_MODEL.readkey);
 					}
 				});
@@ -124,11 +167,10 @@ export default class UserPageView extends View {
 					console.log(['ERROR when fetching UserHeatingNowModel! options.status=',options.status]);
 				}
 				
-			} else if (options.model==='UserElectricityNow0Model' && options.method==='fetched') {
-				console.log('UserElectricityNow0Model fetched!!!!!!!!!');
-				
-			} else if (options.model==='UserElectricityNow1Model' && options.method==='fetched') {
-				console.log('UserElectricityNow1Model fetched!!!!!!!!!');
+			} else if (options.model.indexOf('UserElectricityNow') === 0 && options.method==='fetched') {
+				if (options.status === 200) {
+					this.convertResults();
+				}
 			}
 		}
 	}

@@ -29,14 +29,6 @@ export default class RegCodeController extends Controller {
 	clean() {
 		console.log('RegCodeController is now REALLY cleaned!');
 		this.remove();
-		/* IN PeriodicPoller:
-		Object.keys(this.timers).forEach(key => {
-			if (this.timers[key].timer) {
-				clearTimeout(this.timers[key].timer);
-				this.timers[key].timer = undefined;
-			}
-		});
-		*/
 		/* IN Controller:
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
@@ -46,9 +38,6 @@ export default class RegCodeController extends Controller {
 			this.view = undefined;
 		}
 		*/
-		// AND in this.remove finally all models created here is removed.
-		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
-		// so there is no need to redefine them.
 		this.init();
 	}
 	

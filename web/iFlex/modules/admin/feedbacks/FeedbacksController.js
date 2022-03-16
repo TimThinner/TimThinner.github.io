@@ -31,14 +31,6 @@ export default class FeedbacksController extends Controller {
 	clean() {
 		console.log('FeedbacksController is now REALLY cleaned!');
 		this.remove();
-		/* IN PeriodicPoller:
-		Object.keys(this.timers).forEach(key => {
-			if (this.timers[key].timer) {
-				clearTimeout(this.timers[key].timer);
-				this.timers[key].timer = undefined;
-			}
-		});
-		*/
 		/* IN Controller:
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
@@ -48,9 +40,6 @@ export default class FeedbacksController extends Controller {
 			this.view = undefined;
 		}
 		*/
-		// AND in this.remove finally all models created here is removed.
-		// So we need to do init() almost in its entirety again ... timers are NOT deleted in remove, 
-		// so there is no need to redefine them.
 		this.init();
 	}
 	
@@ -65,6 +54,5 @@ export default class FeedbacksController extends Controller {
 		this.models['MenuModel'].subscribe(this);
 		
 		this.view = new FeedbacksView(this);
-		//this.timers['FeedbacksView'] = {timer: undefined, interval: -1, models:['FeedbacksModel']};
 	}
 }

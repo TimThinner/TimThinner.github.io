@@ -140,6 +140,56 @@ export default class TimeRangeView extends View {
 			'<a href="javascript:void(0);" id="TR13M" class="my-range-button" style="float:right;">13M</a>';
 		$('#'+id).empty().append(html);
 	}
+/*
+	interval: 'PT15M'	1D
+	interval: 'PT30M'	1W
+	interval: 'PT60M'	2W
+	interval: 'PT2H'	1M
+	interval: 'PT12H'	6M
+	interval: 'PT24H'	13M
+*/
+	adjustSyncMinute(interval, sm) {
+		// New: SYNC moment should always be have same intervals, like "HH:00", "HH:15", "HH:30", "HH:45", ...
+		// Floor down to closest "QUARTER-HOUR"? OR HALF-HOUR OR FULL-HOUR, depending on MODELS interval.
+		//const m1 = (parseInt((sync_minute + 7.5)/15) * 15) % 60;
+		//var h = minutes > 52 ? (hours === 23 ? 0 : ++hours) : hours;
+		//minutes can as well be calculated by using Math.round():
+		let m = sm;
+		if (interval==='PT15M') {
+			m = (Math.floor(sm/15) * 15) % 60;
+		} else if(interval==='PT30M') {
+			m = (Math.floor(sm/30) * 30) % 60;
+		} else if(interval==='PT60M') {
+			m = 0;
+		} else if(interval==='PT2H') {
+			m = 0;
+		} else if(interval==='PT12H') {
+			m = 0;
+		} else if(interval==='PT24H') {
+			m = 0;
+		}
+		console.log(['SYNC MINUTE m=',m]);
+		return m;
+	}
+	
+	adjustSyncHour(interval, sh) {
+		let h = sh;
+		if (interval==='PT15M') {
+			h = sh;
+		} else if(interval==='PT30M') {
+			h = sh;
+		} else if(interval==='PT60M') {
+			h = sh;
+		} else if(interval==='PT2H') {
+			h = (Math.floor(sh/2) * 2) % 24;
+		} else if(interval==='PT12H') {
+			h = (Math.floor(sh/12) * 12) % 24;
+		} else if(interval==='PT24H') {
+			h = 0;
+		}
+		console.log(['SYNC HOUR h=',h]);
+		return h;
+	}
 	
 	setTimerangeHandlers(models) {
 		const self = this;

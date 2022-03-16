@@ -1,5 +1,5 @@
 import TimeRangeView from '../common/TimeRangeView.js';
-import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js'
 
 export default class AView extends TimeRangeView {
 	
@@ -13,6 +13,9 @@ export default class AView extends TimeRangeView {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
+		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
+		this.PTO.subscribe(this);
+		
 		this.chart = undefined;
 		this.rendered = false;
 		this.FELID = 'building-electricity-view-failure';
@@ -22,14 +25,13 @@ export default class AView extends TimeRangeView {
 	}
 	
 	show() {
-		// NOTE: FIRST render and then super.show. 
-		// super.show() restarts the timer (this.PTO.restart())!
+		// NOTE: FIRST render and then restart the timer.
 		this.render();
-		super.show();
+		this.PTO.restart();
 	}
 	
 	hide() {
-		super.hide();
+		this.PTO.stop();
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -39,7 +41,8 @@ export default class AView extends TimeRangeView {
 	}
 	
 	remove() {
-		super.remove();
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -137,7 +140,6 @@ export default class AView extends TimeRangeView {
 	
 	notify(options) {
 		const self = this;
-		
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				
@@ -267,6 +269,40 @@ export default class AView extends TimeRangeView {
 						}
 					}
 				}
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Do something with each TICK!
+				
+				// Feed the UserModel parameters into fetch call.
+				const UM = this.controller.master.modelRepo.get('UserModel');
+				
+				const token = UM ? UM.token : undefined;
+				const readkey = UM ? UM.readkey : undefined;
+				const readkey_startdate = UM ? UM.readkey_startdate : undefined;
+				const readkey_enddate = UM ? UM.readkey_enddate : undefined;
+				const obix_code = UM ? UM.obix_code : undefined;
+				const obix_code_b = UM ? UM.obix_code_b : undefined;
+				const obix_code_c = UM ? UM.obix_code_c : undefined;
+				
+				const now = moment();
+				let sync_minute = now.minutes(); // Returns a number from 0 to 59
+				let sync_hour = now.hours();
+				
+				Object.keys(this.models).forEach(key => {
+					if (typeof this.models[key].interval !== 'undefined') {
+						sync_minute = this.adjustSyncMinute(this.models[key].interval, sync_minute);
+						sync_hour = this.adjustSyncHour(this.models[key].interval, sync_hour);
+					}
+					console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch({
+						token: token,
+						readkey: readkey,
+						readkey_startdate: readkey_startdate,
+						readkey_enddate: readkey_enddate,
+						obix_code: obix_code,
+						obix_code_b: obix_code_b,
+						obix_code_c: obix_code_c
+					}, sync_minute, sync_hour);
+				});
 			}
 		}
 	}

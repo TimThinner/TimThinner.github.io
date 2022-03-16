@@ -1,29 +1,11 @@
 import View from './View.js';
-import PeriodicTimeoutObserver from './PeriodicTimeoutObserver.js'
 
 export default class TimeRangeView extends View {
 	
 	constructor(controller) {
 		super(controller);
 		this.selected = "TR1D";
-		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
-		this.PTO.subscribe(this);
 	}
-	
-	show() {
-		console.log('TimeRangeView show()');
-		this.PTO.restart();
-	}
-	
-	hide() {
-		this.PTO.stop();
-	}
-	
-	remove() {
-		this.PTO.stop();
-		this.PTO.unsubscribe(this);
-	}
-	
 	
 	resetButtonClass() {
 		const elems = document.getElementsByClassName("my-range-button");
@@ -283,45 +265,5 @@ export default class TimeRangeView extends View {
 				self.showInfo(models);
 			}
 		});
-	}
-	
-	notify(options) {
-		if (this.controller.visible) {
-			if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
-				// Do something with each TICK!
-				
-				// Feed the UserModel parameters into fetch call.
-				const UM = this.controller.master.modelRepo.get('UserModel');
-				
-				const token = UM ? UM.token : undefined;
-				const readkey = UM ? UM.readkey : undefined;
-				const readkey_startdate = UM ? UM.readkey_startdate : undefined;
-				const readkey_enddate = UM ? UM.readkey_enddate : undefined;
-				const obix_code = UM ? UM.obix_code : undefined;
-				const obix_code_b = UM ? UM.obix_code_b : undefined;
-				const obix_code_c = UM ? UM.obix_code_c : undefined;
-				
-				const now = moment();
-				let sync_minute = now.minutes(); // Returns a number from 0 to 59
-				let sync_hour = now.hours();
-				
-				Object.keys(this.controller.models).forEach(key => {
-					if (typeof this.controller.models[key].interval !== 'undefined') {
-						sync_minute = this.adjustSyncMinute(this.controller.models[key].interval, sync_minute);
-						sync_hour = this.adjustSyncHour(this.controller.models[key].interval, sync_hour);
-					}
-					console.log(['FETCH MODEL key=',key]);
-					this.controller.models[key].fetch({
-						token: token,
-						readkey: readkey,
-						readkey_startdate: readkey_startdate,
-						readkey_enddate: readkey_enddate,
-						obix_code: obix_code,
-						obix_code_b: obix_code_b,
-						obix_code_c: obix_code_c
-					}, sync_minute, sync_hour);
-				});
-			}
-		}
 	}
 }

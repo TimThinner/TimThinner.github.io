@@ -223,7 +223,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR1D";
 				self.resetButtonClass();
 				self.setTR(models);
-				//self.controller.refreshTimerange();   // self.PTO.restart();
+				self.PTO.restart();
 				self.showInfo(models);
 			}
 		});
@@ -234,7 +234,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR1W";
 				self.resetButtonClass();
 				self.setTR(models);
-				//self.controller.refreshTimerange();
+				self.PTO.restart();
 				self.showInfo(models);
 			}
 		});
@@ -245,7 +245,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR2W";
 				self.resetButtonClass();
 				self.setTR(models);
-				//self.controller.refreshTimerange();
+				self.PTO.restart();
 				self.showInfo(models);
 			}
 		});
@@ -256,7 +256,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR1M";
 				self.resetButtonClass();
 				self.setTR(models);
-				//self.controller.refreshTimerange();
+				self.PTO.restart();
 				self.showInfo(models);
 			}
 		});
@@ -267,7 +267,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR6M";
 				self.resetButtonClass();
 				self.setTR(models);
-				//self.controller.refreshTimerange();
+				self.PTO.restart();
 				self.showInfo(models);
 			}
 		});
@@ -278,7 +278,7 @@ export default class TimeRangeView extends View {
 				self.selected = "TR13M";
 				self.resetButtonClass();
 				self.setTR(models);
-				//self.controller.refreshTimerange();
+				self.PTO.restart();
 				self.showInfo(models);
 			}
 		});
@@ -309,7 +309,7 @@ export default class TimeRangeView extends View {
 						sync_minute = this.adjustSyncMinute(this.models[key].interval, sync_minute);
 						sync_hour = this.adjustSyncHour(this.models[key].interval, sync_hour);
 					}
-					console.log(['FETCH MODEL key=',key]);
+					console.log(['FETCH MODEL key=',key,' sync_minute=',sync_minute,' sync_hour=',sync_hour]);
 					this.models[key].fetch({
 						token: token,
 						readkey: readkey,

@@ -271,7 +271,7 @@ export default class AView extends TimeRangeView {
 					}
 				}
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
-				console.log('PTO notification came here! RELAY IT TO TimeRangeView!');
+				//console.log('PTO notification came here! RELAY IT TO TimeRangeView!');
 				super.notify(options);
 			}
 			/*else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {

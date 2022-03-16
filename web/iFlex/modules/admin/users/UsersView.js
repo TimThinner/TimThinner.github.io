@@ -4,6 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../../common/View.js';
+import PeriodicTimeoutObserver from '../../common/PeriodicTimeoutObserver.js'
 
 export default class UsersView extends View {
 	
@@ -11,12 +12,13 @@ export default class UsersView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
-			
 		});
-		this.menuModel = this.controller.master.modelRepo.get('MenuModel');
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:-1});
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'view-failure';
 		this.layout = 'Table';
@@ -24,16 +26,18 @@ export default class UsersView extends View {
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
-		super.hide();
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		super.remove();
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -164,75 +168,36 @@ export default class UsersView extends View {
 				
 				const uid = user._id;
 				$('#edit-obixcode-'+uid).on('click', function(){
-					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
+					self.models['UsersModel'].setContext({'id':uid,'caller':'USERS'});
 					self.models['MenuModel'].setSelected('OBIXCODEEDIT');
 				});
 				$('#edit-obixcode-b-'+uid).on('click', function(){
-					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
+					self.models['UsersModel'].setContext({'id':uid,'caller':'USERS'});
 					self.models['MenuModel'].setSelected('OBIXCODEBEDIT');
 				});
 				$('#edit-obixcode-c-'+uid).on('click', function(){
-					self.models['UsersModel'].setSelected({'id':uid,'caller':'USERS'});
+					self.models['UsersModel'].setContext({'id':uid,'caller':'USERS'});
 					self.models['MenuModel'].setSelected('OBIXCODECEDIT');
 				});
 				
 				if (typeof user.regcode !== 'undefined') {
 					const id = user.regcode._id;
 					$('#edit-regcode-'+id).on('click', function(){
-						//console.log(['SET RegCodeModel selected id=',id]);
-						self.models['RegCodeModel'].setSelected({'id':id,'caller':'USERS'});
-						self.menuModel.setSelected('REGCODEEDIT');
+						self.models['RegCodeModel'].setContext({'id':id,'caller':'USERS'});
+						self.models['MenuModel'].setSelected('REGCODEEDIT');
 					});
 				}
 				if (typeof user.readkey !== 'undefined') {
 					const id = user.readkey._id;
 					$('#edit-readkey-'+id).on('click', function(){
-						//console.log(['SET ReadkeyModel selected id=',id]);
-						self.models['ReadKeyModel'].setSelected({'id':id,'caller':'USERS'});
-						self.menuModel.setSelected('READKEYEDIT');
+						self.models['ReadKeyModel'].setContext({'id':id,'caller':'USERS'});
+						self.models['MenuModel'].setSelected('READKEYEDIT');
 					});
 				}
-				
 				
 			});
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-		if (typeof this.models['ReadKeyModel'].readkeys !== 'undefined') {
-			
-			this.models['ReadKeyModel'].readkeys.forEach(key => {
-				const id = key._id;
-				const title = '<a href="javascript:void(0);" id="edit-readkey-'+id+'">'+id+'</a>';
-				const startDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(key.startdate));
-				const endDateStringLocalTZ = this.dateTimeWithTimezoneOffset(new Date(key.enddate));
-				
-				
-				
-				
-				
-				//console.log(['key._id=',id]);
-				const html = '<tr class="readkey-item">'+
-					'<td>'+title+'</td>'+
-					'<td>'+startDateStringLocalTZ+'</td>'+
-					'<td>'+endDateStringLocalTZ+'</td></tr>';
-				
-				$(html).appendTo("#readkeys-table");
-				$('#edit-readkey-'+id).on('click', function(){
-					self.models['ReadKeyModel'].setSelected({'id':id,'caller':'READKEYS'});
-					self.models['MenuModel'].setSelected('READKEYEDIT');
-				});
-			});
-		}
-	*/
-	
 	
 	notify(options) {
 		if (this.controller.visible) {
@@ -251,7 +216,6 @@ export default class UsersView extends View {
 						console.log('WAIT...');
 					}
 					
-					
 				} else { // Error in fetching.
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
@@ -267,6 +231,16 @@ export default class UsersView extends View {
 						this.render();
 					}
 				}
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Do something with each TICK!
+				// Feed the UserModel parameters into fetch call.
+				const UM = this.controller.master.modelRepo.get('UserModel');
+				const token = UM ? UM.token : undefined;
+				Object.keys(this.models).forEach(key => {
+					console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch({token: token});
+				});
 			}
 		}
 	}
@@ -369,7 +343,7 @@ export default class UsersView extends View {
 			this.showUsers();
 			
 			$('#back').on('click',function() {
-				self.menuModel.setSelected('USERPROPS');
+				self.models['MenuModel'].setSelected('USERPROPS');
 			});
 			
 			this.handleErrorMessages(this.FELID);

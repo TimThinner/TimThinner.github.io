@@ -41,8 +41,8 @@ export default class ObixCodeEditView extends View {
 		if (this.controller.visible) {
 			if (options.model==='UserModel' && options.method==='updateUserData') {
 				
-				const selected = this.models['UsersModel'].getSelected();
-				const caller = selected.caller;
+				const ctx = this.models['UsersModel'].getContext();
+				const caller = ctx.caller;
 				
 				if (options.status === 200) {
 					// ReadKey updated OK, show OK message and go back to ReadKeyList (after 1 second delay).
@@ -76,9 +76,9 @@ export default class ObixCodeEditView extends View {
 		// Should we reset this everytime we render the FORM?
 		//this.serviceDates = {'start':'','end':''};
 		// Get the selected ReadKey (model) to see the old dates.
-		const selected = this.models['UsersModel'].getSelected();
-		const sid = selected.id;
-		const caller = selected.caller;
+		const ctx = this.models['UsersModel'].getContext();
+		const sid = ctx.id;
+		const caller = ctx.caller;
 		let obix_code = '';
 		
 		this.models['UsersModel'].users.forEach(user=>{

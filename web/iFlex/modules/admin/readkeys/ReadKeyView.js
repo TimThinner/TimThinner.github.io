@@ -4,6 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../../common/View.js';
+import PeriodicTimeoutObserver from '../../common/PeriodicTimeoutObserver.js'
 
 export default class ReadKeyView extends View {
 	
@@ -11,27 +12,31 @@ export default class ReadKeyView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			if (key === 'ReadKeyModel' || key === 'MenuModel') {
-				this.models[key] = this.controller.models[key];
-				this.models[key].subscribe(this);
-			}
+			this.models[key] = this.controller.models[key];
+			this.models[key].subscribe(this);
 		});
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:-1});
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'view-failure';
 	}
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
-		super.hide();
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		super.remove();
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -144,6 +149,16 @@ export default class ReadKeyView extends View {
 						this.render();
 					}
 				}
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Do something with each TICK!
+				// Feed the UserModel parameters into fetch call.
+				const UM = this.controller.master.modelRepo.get('UserModel');
+				const token = UM ? UM.token : undefined;
+				Object.keys(this.models).forEach(key => {
+					console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch({token: token});
+				});
 			}
 		}
 	}
@@ -154,12 +169,11 @@ export default class ReadKeyView extends View {
 		if (this.areModelsReady()) {
 			
 			//const UM = this.controller.master.modelRepo.get('UserModel')
-			//const LM = this.controller.master.modelRepo.get('LanguageModel');
-			//const sel = LM.selected;
-			const localized_string_da_back = 'Back';//LM['translation'][sel]['DA_BACK'];
+			const LM = this.controller.master.modelRepo.get('LanguageModel');
+			const sel = LM.selected;
+			const localized_string_back = LM['translation'][sel]['BACK'];
 			//const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
 			//const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
-			
 			const localized_string_title = 'ReadKeys';
 			const localized_string_description = 'Admin can list all ReadKeys and edit dates.';
 			
@@ -183,7 +197,7 @@ export default class ReadKeyView extends View {
 						'</table>'+
 					'</div>'+
 					'<div class="col s6 center" style="margin-top:16px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+						'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
 							'<i class="material-icons left">arrow_back</i>'+
 						'</button>'+
 					'</div>'+

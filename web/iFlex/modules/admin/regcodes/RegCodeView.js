@@ -4,6 +4,7 @@ super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
 */
 import View from '../../common/View.js';
+import PeriodicTimeoutObserver from '../../common/PeriodicTimeoutObserver.js'
 
 export default class RegCodeView extends View {
 	
@@ -11,11 +12,12 @@ export default class RegCodeView extends View {
 		super(controller);
 		
 		Object.keys(this.controller.models).forEach(key => {
-			
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
-			
 		});
+		this.PTO = new PeriodicTimeoutObserver({interval:-1});
+		this.PTO.subscribe(this);
+		
 		this.rendered = false;
 		this.FELID = 'view-failure';
 		this.layout = 'Table';
@@ -23,16 +25,18 @@ export default class RegCodeView extends View {
 	
 	show() {
 		this.render();
+		this.PTO.restart();
 	}
 	
 	hide() {
-		super.hide();
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
-		super.remove();
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -186,6 +190,16 @@ export default class RegCodeView extends View {
 						this.render();
 					}
 				}
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Do something with each TICK!
+				// Feed the UserModel parameters into fetch call.
+				const UM = this.controller.master.modelRepo.get('UserModel');
+				const token = UM ? UM.token : undefined;
+				Object.keys(this.models).forEach(key => {
+					console.log(['FETCH MODEL key=',key]);
+					this.models[key].fetch({token: token});
+				});
 			}
 		}
 	}

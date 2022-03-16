@@ -123,10 +123,13 @@ export default class CView extends TimeRangeView {
 	}
 	
 	show() {
+		// NOTE: FIRST render and then restart the timer.
 		this.render();
+		super.show();
 	}
 	
 	hide() {
+		super.hide();
 		if (typeof this.chart_comparison !== 'undefined') {
 			this.chart_comparison.dispose();
 			this.chart_comparison = undefined;
@@ -141,6 +144,7 @@ export default class CView extends TimeRangeView {
 	}
 	
 	remove() {
+		super.remove();
 		if (typeof this.chart_comparison !== 'undefined') {
 			this.chart_comparison.dispose();
 			this.chart_comparison = undefined;
@@ -481,7 +485,11 @@ export default class CView extends TimeRangeView {
 				}
 				this.render();
 				
-			} else if (options.model==='BuildingEmissionFactorForElectricityConsumedInFinlandModel' && options.method==='fetched') {
+			} else if ((options.model === 'BuildingEmissionFactorForElectricityConsumedInFinlandModel' ||
+				options.model === 'CControllerBuildingElectricityPL1Model' ||
+				options.model === 'CControllerBuildingElectricityPL2Model' ||
+				options.model === 'CControllerBuildingElectricityPL3Model' ||
+				options.model === 'CControllerBuildingHeatingQE01Model') && options.method==='fetched') {
 				
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
@@ -493,11 +501,6 @@ export default class CView extends TimeRangeView {
 							
 							if (typeof this.chart_comparison !== 'undefined') {
 								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
-									/*if (s.name === 'AVERAGEEMISSIONS') {
-										s.data = self.calculated_AVE_emissions;
-									} else if (s.name === 'USEREMISSIONS') {
-										s.data = self.calculated_USER_emissions;
-									}*/
 									s.data = self.calculated_USER_emissions;
 								});
 							} else {
@@ -526,178 +529,10 @@ export default class CView extends TimeRangeView {
 				} else { // This should never be the case, but render anyway if we get here.
 					this.render();
 				}
-			} else if (options.model==='CControllerBuildingElectricityPL1Model' && options.method==='fetched') {
-				//console.log('NOTIFY BuildingElectricityPL1Model fetched!');
-				//console.log(['options.status=',options.status]);
-				if (this.rendered) {
-					if (options.status === 200 || options.status === '200') {
-						
-						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						
-						if (this.calculate_ALL() === true) {
-							$('#'+this.FELID).empty();
-							
-							if (typeof this.chart_comparison !== 'undefined') {
-								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
-									/*if (s.name === 'AVERAGEEMISSIONS') {
-										s.data = self.calculated_AVE_emissions;
-									} else if (s.name === 'USEREMISSIONS') {
-										s.data = self.calculated_USER_emissions;
-									}*/
-									s.data = self.calculated_USER_emissions;
-								});
-							} else {
-								this.renderChartComparison();
-							}
-							if (typeof this.chart_timeseries !== 'undefined') {
-								am4core.iter.each(this.chart_timeseries.series.iterator(), function (s) {
-									if (s.name === 'DHEMISSIONS') {
-										s.data = self.calculated_DH_emissions;
-									} else if (s.name === 'ELEMISSIONS') {
-										s.data = self.calculated_EL_emissions;
-									} else if (s.name === 'ALLEMISSIONS') {
-										s.data = self.calculated_ALL_emissions;
-									}
-								});
-							} else {
-								this.renderChartTimeseries();
-							}
-						}
-						
-					} else { // Error in fetching.
-						$('#'+this.FELID).empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#'+this.FELID);
-					}
-				}
-			} else if (options.model==='CControllerBuildingElectricityPL2Model' && options.method==='fetched') {
-				if (this.rendered) {
-					if (options.status === 200 || options.status === '200') {
-						
-						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						
-						if (this.calculate_ALL() === true) {
-							$('#'+this.FELID).empty();
-							
-							if (typeof this.chart_comparison !== 'undefined') {
-								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
-									/*if (s.name === 'AVERAGEEMISSIONS') {
-										s.data = self.calculated_AVE_emissions;
-									} else if (s.name === 'USEREMISSIONS') {
-										s.data = self.calculated_USER_emissions;
-									}*/
-									s.data = self.calculated_USER_emissions;
-								});
-							} else {
-								this.renderChartComparison();
-							}
-							if (typeof this.chart_timeseries !== 'undefined') {
-								am4core.iter.each(this.chart_timeseries.series.iterator(), function (s) {
-									if (s.name === 'DHEMISSIONS') {
-										s.data = self.calculated_DH_emissions;
-									} else if (s.name === 'ELEMISSIONS') {
-										s.data = self.calculated_EL_emissions;
-									} else if (s.name === 'ALLEMISSIONS') {
-										s.data = self.calculated_ALL_emissions;
-									}
-								});
-							} else {
-								this.renderChartTimeseries();
-							}
-						}
-						
-					} else { // Error in fetching.
-						$('#'+this.FELID).empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#'+this.FELID);
-					}
-				}
-			} else if (options.model==='CControllerBuildingElectricityPL3Model' && options.method==='fetched') {
-				if (this.rendered) {
-					if (options.status === 200 || options.status === '200') {
-						
-						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						
-						if (this.calculate_ALL() === true) {
-							$('#'+this.FELID).empty();
-							
-							if (typeof this.chart_comparison !== 'undefined') {
-								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
-									/*if (s.name === 'AVERAGEEMISSIONS') {
-										s.data = self.calculated_AVE_emissions;
-									} else if (s.name === 'USEREMISSIONS') {
-										s.data = self.calculated_USER_emissions;
-									}*/
-									s.data = self.calculated_USER_emissions;
-								});
-							} else {
-								this.renderChartComparison();
-							}
-							if (typeof this.chart_timeseries !== 'undefined') {
-								am4core.iter.each(this.chart_timeseries.series.iterator(), function (s) {
-									if (s.name === 'DHEMISSIONS') {
-										s.data = self.calculated_DH_emissions;
-									} else if (s.name === 'ELEMISSIONS') {
-										s.data = self.calculated_EL_emissions;
-									} else if (s.name === 'ALLEMISSIONS') {
-										s.data = self.calculated_ALL_emissions;
-									}
-								});
-							} else {
-								this.renderChartTimeseries();
-							}
-						}
-						
-					} else { // Error in fetching.
-						$('#'+this.FELID).empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#'+this.FELID);
-					}
-				}
-			} else if (options.model==='CControllerBuildingHeatingQE01Model' && options.method==='fetched') {
-				//console.log('NOTIFY BuildingHeatingQE01Model fetched!');
-				//console.log(['options.status=',options.status]);
-				if (this.rendered) {
-					if (options.status === 200 || options.status === '200') {
-						
-						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						
-						if (this.calculate_ALL() === true) {
-							$('#'+this.FELID).empty();
-							
-							if (typeof this.chart_comparison !== 'undefined') {
-								am4core.iter.each(this.chart_comparison.series.iterator(), function (s) {
-									/*if (s.name === 'AVERAGEEMISSIONS') {
-										s.data = self.calculated_AVE_emissions;
-									} else if (s.name === 'USEREMISSIONS') {
-										s.data = self.calculated_USER_emissions;
-									}*/
-									s.data = self.calculated_USER_emissions;
-								});
-							} else {
-								this.renderChartComparison();
-							}
-							if (typeof this.chart_timeseries !== 'undefined') {
-								am4core.iter.each(this.chart_timeseries.series.iterator(), function (s) {
-									if (s.name === 'DHEMISSIONS') {
-										s.data = self.calculated_DH_emissions;
-									} else if (s.name === 'ELEMISSIONS') {
-										s.data = self.calculated_EL_emissions;
-									} else if (s.name === 'ALLEMISSIONS') {
-										s.data = self.calculated_ALL_emissions;
-									}
-								});
-							} else {
-								this.renderChartTimeseries();
-							}
-						}
-						
-					} else { // Error in fetching.
-						$('#'+this.FELID).empty();
-						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-						$(html).appendTo('#'+this.FELID);
-					}
-				}
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				//console.log('PTO notification came here! RELAY IT TO TimeRangeView!');
+				super.notify(options);
 			}
 		}
 	}

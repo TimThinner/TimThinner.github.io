@@ -1,5 +1,4 @@
 import TimeRangeView from '../common/TimeRangeView.js';
-//import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js'
 
 export default class AView extends TimeRangeView {
 	
@@ -13,9 +12,6 @@ export default class AView extends TimeRangeView {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		//this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
-		//this.PTO.subscribe(this);
-		
 		this.chart = undefined;
 		this.rendered = false;
 		this.FELID = 'building-electricity-view-failure';
@@ -27,11 +23,11 @@ export default class AView extends TimeRangeView {
 	show() {
 		// NOTE: FIRST render and then restart the timer.
 		this.render();
-		super.show();//this.PTO.restart();
+		super.show();
 	}
 	
 	hide() {
-		super.hide();//this.PTO.stop();
+		super.hide();
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -41,9 +37,7 @@ export default class AView extends TimeRangeView {
 	}
 	
 	remove() {
-		super.remove(); 
-		//this.PTO.stop();
-		//this.PTO.unsubscribe(this);
+		super.remove();
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;

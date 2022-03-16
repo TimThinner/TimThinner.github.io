@@ -21,10 +21,13 @@ export default class BView extends TimeRangeView {
 	}
 	
 	show() {
+		// NOTE: FIRST render and then restart the timer.
 		this.render();
+		super.show();
 	}
 	
 	hide() {
+		super.hide();
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -34,6 +37,7 @@ export default class BView extends TimeRangeView {
 	}
 	
 	remove() {
+		super.remove(); 
 		if (typeof this.chart !== 'undefined') {
 			this.chart.dispose();
 			this.chart = undefined;
@@ -57,6 +61,7 @@ export default class BView extends TimeRangeView {
 					this.chart = undefined;
 				}
 				this.render();
+				
 			} else if (options.model==='BuildingHeatingQE01Model' && options.method==='fetched') {
 				//console.log('NOTIFY BuildingHeatingQE01Model fetched!');
 				//console.log(['options.status=',options.status]);
@@ -83,7 +88,13 @@ export default class BView extends TimeRangeView {
 						const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 						$(html).appendTo('#'+this.FELID);
 					}
+				} else {
+					this.render();
 				}
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				//console.log('PTO notification came here! RELAY IT TO TimeRangeView!');
+				super.notify(options);
 			}
 		}
 	}

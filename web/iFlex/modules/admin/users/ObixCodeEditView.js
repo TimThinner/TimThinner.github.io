@@ -73,18 +73,17 @@ export default class ObixCodeEditView extends View {
 		const localized_string_cancel = LM['translation'][sel]['CANCEL'];
 		const localized_string_update = LM['translation'][sel]['UPDATE'];
 		
-		// Should we reset this everytime we render the FORM?
-		//this.serviceDates = {'start':'','end':''};
-		// Get the selected ReadKey (model) to see the old dates.
 		const ctx = this.models['UsersModel'].getContext();
 		const sid = ctx.id;
 		const caller = ctx.caller;
 		const obid = ctx.obid; // 'obix_code', 'obix_code_b' or 'obix_code_c'
 		let obix_code = '';
+		let email = '';
 		
 		this.models['UsersModel'].users.forEach(user=>{
 			if (user._id === sid) {
 				obix_code = user[obid]; // Selects the correct property.
+				email = user['email'];
 			}
 		});
 		
@@ -97,7 +96,7 @@ export default class ObixCodeEditView extends View {
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<input id="obix-code" type="text" class="validate">'+
-						'<label for="obix-code">'+localized_string_obixcode_label+': ('+obid+')</label>'+
+						'<label for="obix-code">'+localized_string_obixcode_label+': ('+email+': '+obid+')</label>'+
 					'</div>'+
 					'<div class="col s12 center" id="response"></div>'+
 				'</div>'+

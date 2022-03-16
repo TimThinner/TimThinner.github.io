@@ -79,12 +79,12 @@ export default class ObixCodeEditView extends View {
 		const ctx = this.models['UsersModel'].getContext();
 		const sid = ctx.id;
 		const caller = ctx.caller;
+		const obid = context.obid; // 'obix_code', 'obix_code_b' or 'obix_code_c'
 		let obix_code = '';
 		
 		this.models['UsersModel'].users.forEach(user=>{
 			if (user._id === sid) {
-				//console.log(['selected user=',user]);
-				obix_code = user.obix_code;
+				obix_code = user[obid]; // Selects the correct property.
 			}
 		});
 		
@@ -97,7 +97,7 @@ export default class ObixCodeEditView extends View {
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<input id="obix-code" type="text" class="validate">'+
-						'<label for="obix-code">'+localized_string_obixcode_label+'</label>'+
+						'<label for="obix-code">'+localized_string_obixcode_label+': ('+obid+')</label>'+
 					'</div>'+
 					'<div class="col s12 center" id="response"></div>'+
 				'</div>'+
@@ -127,13 +127,10 @@ export default class ObixCodeEditView extends View {
 		
 		$('#update-obix-code').on('click',function() {
 			const _code = $('#obix-code').val();
-			//console.log(['_code=',_code]);
-				//$('#response').empty();
-				//const html = '<div class="error-message"><p>'+localized_message+'</p></div>';
-				//$(html).appendTo('#response');
+			console.log(['SET THE OBIX CODE val=',_code]);
 			const authToken = self.models['UserModel'].token;
 			const data = [
-				{propName:'obix_code', value:_code}
+				{propName:obid, value:_code}
 			];
 			self.models['UserModel'].updateUserData(sid, data, authToken);
 		});

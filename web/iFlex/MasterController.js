@@ -31,8 +31,8 @@ import RegCodeEditController from './modules/admin/regcodes/RegCodeEditControlle
 import ReadKeyController from './modules/admin/readkeys/ReadKeyController.js';
 import ReadKeyEditController from './modules/admin/readkeys/ReadKeyEditController.js';
 import ObixCodeEditController from './modules/admin/users/ObixCodeEditController.js';
-import ObixCodeBEditController from './modules/admin/users/ObixCodeBEditController.js';
-import ObixCodeCEditController from './modules/admin/users/ObixCodeCEditController.js';
+//import ObixCodeBEditController from './modules/admin/users/ObixCodeBEditController.js';
+//import ObixCodeCEditController from './modules/admin/users/ObixCodeCEditController.js';
 import UsersController from './modules/admin/users/UsersController.js';
 import ConfigsController from './modules/admin/configs/ConfigsController.js';
 import FeedbacksController from './modules/admin/feedbacks/FeedbacksController.js';
@@ -165,10 +165,10 @@ class MasterController {
 		this.controllers['USERS'].init();
 		this.controllers['OBIXCODEEDIT'] = new ObixCodeEditController({name:'OBIXCODEEDIT', master:this, el:'#content', visible:false});
 		this.controllers['OBIXCODEEDIT'].init();
-		this.controllers['OBIXCODEBEDIT'] = new ObixCodeBEditController({name:'OBIXCODEBEDIT', master:this, el:'#content', visible:false});
-		this.controllers['OBIXCODEBEDIT'].init();
-		this.controllers['OBIXCODECEDIT'] = new ObixCodeCEditController({name:'OBIXCODECEDIT', master:this, el:'#content', visible:false});
-		this.controllers['OBIXCODECEDIT'].init();
+		//this.controllers['OBIXCODEBEDIT'] = new ObixCodeBEditController({name:'OBIXCODEBEDIT', master:this, el:'#content', visible:false});
+		//this.controllers['OBIXCODEBEDIT'].init();
+		//this.controllers['OBIXCODECEDIT'] = new ObixCodeCEditController({name:'OBIXCODECEDIT', master:this, el:'#content', visible:false});
+		//this.controllers['OBIXCODECEDIT'].init();
 		
 		this.controllers['CONFIGS'] = new ConfigsController({name:'CONFIGS', master:this, el:'#content', visible:false});
 		this.controllers['CONFIGS'].init();

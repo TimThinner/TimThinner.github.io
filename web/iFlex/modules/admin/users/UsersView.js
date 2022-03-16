@@ -168,29 +168,29 @@ export default class UsersView extends View {
 				
 				const uid = user._id;
 				$('#edit-obixcode-'+uid).on('click', function(){
-					self.models['UsersModel'].setContext({'id':uid,'caller':'USERS'});
+					self.models['UsersModel'].setContext({id:uid,caller:'USERS',obid:'obix_code'});
 					self.models['MenuModel'].setSelected('OBIXCODEEDIT');
 				});
 				$('#edit-obixcode-b-'+uid).on('click', function(){
-					self.models['UsersModel'].setContext({'id':uid,'caller':'USERS'});
-					self.models['MenuModel'].setSelected('OBIXCODEBEDIT');
+					self.models['UsersModel'].setContext({id:uid,caller:'USERS',obid:'obix_code_b'});
+					self.models['MenuModel'].setSelected('OBIXCODEEDIT');
 				});
 				$('#edit-obixcode-c-'+uid).on('click', function(){
-					self.models['UsersModel'].setContext({'id':uid,'caller':'USERS'});
-					self.models['MenuModel'].setSelected('OBIXCODECEDIT');
+					self.models['UsersModel'].setContext({id:uid,caller:'USERS',obid:'obix_code_c'});
+					self.models['MenuModel'].setSelected('OBIXCODEEDIT');
 				});
 				
 				if (typeof user.regcode !== 'undefined') {
 					const id = user.regcode._id;
 					$('#edit-regcode-'+id).on('click', function(){
-						self.models['RegCodeModel'].setContext({'id':id,'caller':'USERS'});
+						self.models['RegCodeModel'].setContext({id:id,caller:'USERS'});
 						self.models['MenuModel'].setSelected('REGCODEEDIT');
 					});
 				}
 				if (typeof user.readkey !== 'undefined') {
 					const id = user.readkey._id;
 					$('#edit-readkey-'+id).on('click', function(){
-						self.models['ReadKeyModel'].setContext({'id':id,'caller':'USERS'});
+						self.models['ReadKeyModel'].setContext({id:id,caller:'USERS'});
 						self.models['MenuModel'].setSelected('READKEYEDIT');
 					});
 				}

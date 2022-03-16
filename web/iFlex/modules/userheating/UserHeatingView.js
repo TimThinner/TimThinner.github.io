@@ -29,9 +29,11 @@ export default class UserHeatingView extends TimeRangeView {
 	
 	show() {
 		this.render();
+		super.show();
 	}
 	
 	hide() {
+		super.hide();
 		if (typeof this.chart_temperature !== 'undefined') {
 			this.chart_temperature.dispose();
 			this.chart_temperature = undefined;
@@ -49,6 +51,7 @@ export default class UserHeatingView extends TimeRangeView {
 	}
 	
 	remove() {
+		super.remove(); 
 		if (typeof this.chart_temperature !== 'undefined') {
 			this.chart_temperature.dispose();
 			this.chart_temperature = undefined;
@@ -243,6 +246,9 @@ export default class UserHeatingView extends TimeRangeView {
 					}
 				}
 				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				//console.log('PTO notification came here! RELAY IT TO TimeRangeView!');
+				super.notify(options);
 			}
 		}
 	}

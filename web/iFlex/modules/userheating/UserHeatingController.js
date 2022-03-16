@@ -6,7 +6,7 @@ export default class UserHeatingController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		//this.fetching_interval_in_seconds = 60;
+		this.fetching_interval_in_seconds = 60;
 	}
 	
 	remove() {

@@ -150,8 +150,8 @@ export default class AView extends TimeRangeView {
 				}
 				this.render();
 				
-			} else if (options.model==='BuildingElectricityPL1Model' && options.method==='fetched') {
-				console.log('NOTIFY BuildingElectricityPL1Model fetched!');
+			} else if (options.model.indexOf('BuildingElectricityPL' === 0) && options.method==='fetched') {
+				console.log('NOTIFY '+options.model+' fetched!');
 				console.log(['options.status=',options.status]);
 				if (this.rendered) {
 					if (options.status === 200 || options.status === '200') {
@@ -163,18 +163,11 @@ export default class AView extends TimeRangeView {
 						if (typeof this.chart !== 'undefined') {
 							console.log('fetched ..... BuildingElectricityView CHART UPDATED!');
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								/*
-								if (s.name === 'L1') {
-									s.data = self.models['BuildingElectricityPL1Model'].values;
-								} else if (s.name === 'SUM') {
-									s.data = self.values;
-								}*/
 								if (s.name === 'SUM') {
 									s.data = self.values;
 								}
 							});
 						} else {
-							console.log('fetched ..... render BuildingElectricityView()');
 							this.renderChart();
 						}
 					} else { // Error in fetching.
@@ -189,126 +182,14 @@ export default class AView extends TimeRangeView {
 							$(html).appendTo('#'+this.FELID);
 						}
 					}
+				} else {
+					this.render();
 				}
-			} else if (options.model==='BuildingElectricityPL2Model' && options.method==='fetched') {
-				console.log('NOTIFY BuildingElectricityPL2Model fetched!');
-				console.log(['options.status=',options.status]);
-				if (this.rendered) {
-					if (options.status === 200 || options.status === '200') {
-						
-						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculateSum();
-						
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... BuildingElectricityView CHART UPDATED!');
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								/*
-								if (s.name === 'L2') {
-									s.data = self.models['BuildingElectricityPL2Model'].values;
-								} else if (s.name === 'SUM') {
-									s.data = self.values;
-								}*/
-								if (s.name === 'SUM') {
-									s.data = self.values;
-								}
-							});
-						} else {
-							console.log('fetched ..... render BuildingElectricityView()');
-							this.renderChart();
-						}
-					} else { // Error in fetching.
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to controller forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							// Call View-class method to handle error.
-							this.forceLogout(this.FELID);
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					}
-				}
-			} else if (options.model==='BuildingElectricityPL3Model' && options.method==='fetched') {
-				console.log('NOTIFY BuildingElectricityPL3Model fetched!');
-				console.log(['options.status=',options.status]);
-				if (this.rendered) {
-					if (options.status === 200 || options.status === '200') {
-						
-						this.updateInfoModelValues(options.model, this.models[options.model].values.length); // implemented in TimeRangeView
-						this.calculateSum();
-						
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... BuildingElectricityView CHART UPDATED!');
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								/*
-								if (s.name === 'L3') {
-									s.data = self.models['BuildingElectricityPL3Model'].values;
-								} else if (s.name === 'SUM') {
-									s.data = self.values;
-								}*/
-								if (s.name === 'SUM') {
-									s.data = self.values;
-								}
-							});
-						} else {
-							console.log('fetched ..... render BuildingElectricityView()');
-							this.renderChart();
-						}
-					} else { // Error in fetching.
-						$('#'+this.FELID).empty();
-						if (options.status === 401) {
-							// This status code must be caught and wired to controller forceLogout() action.
-							// Force LOGOUT if Auth failed!
-							// Call View-class method to handle error.
-							this.forceLogout(this.FELID);
-						} else {
-							const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-							$(html).appendTo('#'+this.FELID);
-						}
-					}
-				}
+				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				//console.log('PTO notification came here! RELAY IT TO TimeRangeView!');
 				super.notify(options);
 			}
-			/*else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
-				// Do something with each TICK!
-				
-				// Feed the UserModel parameters into fetch call.
-				const UM = this.controller.master.modelRepo.get('UserModel');
-				
-				const token = UM ? UM.token : undefined;
-				const readkey = UM ? UM.readkey : undefined;
-				const readkey_startdate = UM ? UM.readkey_startdate : undefined;
-				const readkey_enddate = UM ? UM.readkey_enddate : undefined;
-				const obix_code = UM ? UM.obix_code : undefined;
-				const obix_code_b = UM ? UM.obix_code_b : undefined;
-				const obix_code_c = UM ? UM.obix_code_c : undefined;
-				
-				const now = moment();
-				let sync_minute = now.minutes(); // Returns a number from 0 to 59
-				let sync_hour = now.hours();
-				
-				Object.keys(this.models).forEach(key => {
-					if (typeof this.models[key].interval !== 'undefined') {
-						sync_minute = this.adjustSyncMinute(this.models[key].interval, sync_minute);
-						sync_hour = this.adjustSyncHour(this.models[key].interval, sync_hour);
-					}
-					console.log(['FETCH MODEL key=',key]);
-					this.models[key].fetch({
-						token: token,
-						readkey: readkey,
-						readkey_startdate: readkey_startdate,
-						readkey_enddate: readkey_enddate,
-						obix_code: obix_code,
-						obix_code_b: obix_code_b,
-						obix_code_c: obix_code_c
-					}, sync_minute, sync_hour);
-				});
-			}*/
 		}
 	}
 	
@@ -343,50 +224,18 @@ export default class AView extends TimeRangeView {
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_power_axis;
-			/*
-			var series1 = self.chart.series.push(new am4charts.LineSeries());
-			series1.data = self.models['BuildingElectricityPL1Model'].values;
-			series1.dataFields.dateX = "timestamp"; // "date";
-			series1.dataFields.valueY = "value"; // "visits";
-			series1.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series1.fillOpacity = 0;
-			series1.name = 'L1';
-			series1.stroke = am4core.color("#ff0");
-			series1.fill = "#ff0";
 			
-			var series2 = self.chart.series.push(new am4charts.LineSeries());
-			series2.data = self.models['BuildingElectricityPL2Model'].values;
-			series2.dataFields.dateX = "timestamp"; // "date";
-			series2.dataFields.valueY = "value"; // "visits";
-			series2.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series2.fillOpacity = 0;
-			series2.name = 'L2';
-			series2.stroke = am4core.color("#0f0");
-			series2.fill = "#0f0";
-			
-			var series3 = self.chart.series.push(new am4charts.LineSeries());
-			series3.data = self.models['BuildingElectricityPL3Model'].values;
-			series3.dataFields.dateX = "timestamp"; // "date";
-			series3.dataFields.valueY = "value"; // "visits";
-			series3.tooltipText = "Value: [bold]{valueY}[/]"; //"Visits: [bold]{valueY}[/]";
-			series3.fillOpacity = 0;
-			series3.name = 'L3';
-			series3.stroke = am4core.color("#f80");
-			series3.fill = "#f80";
-			*/
-			
-			var series4 = self.chart.series.push(new am4charts.LineSeries());
-			series4.data = self.values;
-			series4.dataFields.dateX = "timestamp"; // "date";
-			series4.dataFields.valueY = "value"; // "visits";
-			series4.tooltipText = localized_string_power + ": [bold]{valueY}[/] kW";
-			series4.fillOpacity = 0.2;
-			series4.name = 'SUM';
-			series4.customname = localized_string_power_legend;
-			series4.stroke = am4core.color("#0ff");
-			series4.fill = "#0ff";
-			series4.legendSettings.labelText = "{customname}";
-			
+			const seri = self.chart.series.push(new am4charts.LineSeries());
+			seri.data = self.values;
+			seri.dataFields.dateX = "timestamp"; // "date";
+			seri.dataFields.valueY = "value"; // "visits";
+			seri.tooltipText = localized_string_power + ": [bold]{valueY}[/] kW";
+			seri.fillOpacity = 0.2;
+			seri.name = 'SUM';
+			seri.customname = localized_string_power_legend;
+			seri.stroke = am4core.color("#0ff");
+			seri.fill = "#0ff";
+			seri.legendSettings.labelText = "{customname}";
 			
 			// Legend:
 			self.chart.legend = new am4charts.Legend();
@@ -400,7 +249,7 @@ export default class AView extends TimeRangeView {
 			self.chart.cursor = new am4charts.XYCursor();
 			self.chart.cursor.lineY.opacity = 0;
 			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(series4);
+			self.chart.scrollbarX.series.push(seri);
 			
 			dateAxis.start = 0.0;
 			dateAxis.end = 1.0;

@@ -79,7 +79,7 @@ export default class ObixCodeEditView extends View {
 		const ctx = this.models['UsersModel'].getContext();
 		const sid = ctx.id;
 		const caller = ctx.caller;
-		const obid = context.obid; // 'obix_code', 'obix_code_b' or 'obix_code_c'
+		const obid = ctx.obid; // 'obix_code', 'obix_code_b' or 'obix_code_c'
 		let obix_code = '';
 		
 		this.models['UsersModel'].users.forEach(user=>{

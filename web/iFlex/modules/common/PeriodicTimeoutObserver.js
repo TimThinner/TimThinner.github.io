@@ -42,6 +42,7 @@ export default class PeriodicTimeoutObserver extends EventObserver {
 		At restart the polling interval can be changed.
 	*/
 	restart(interval) {
+		console.log('PeriodicTimeoutObserver restart');
 		if (this.timer) {
 			clearTimeout(this.timer);
 			this.timer = undefined;

@@ -11,6 +11,7 @@ export default class TimeRangeView extends View {
 	}
 	
 	show() {
+		console.log('TimeRangeView show()');
 		this.PTO.restart();
 	}
 	

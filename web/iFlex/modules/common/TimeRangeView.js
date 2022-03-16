@@ -305,13 +305,13 @@ export default class TimeRangeView extends View {
 				let sync_minute = now.minutes(); // Returns a number from 0 to 59
 				let sync_hour = now.hours();
 				
-				Object.keys(this.models).forEach(key => {
-					if (typeof this.models[key].interval !== 'undefined') {
-						sync_minute = this.adjustSyncMinute(this.models[key].interval, sync_minute);
-						sync_hour = this.adjustSyncHour(this.models[key].interval, sync_hour);
+				Object.keys(this.controller.models).forEach(key => {
+					if (typeof this.controller.models[key].interval !== 'undefined') {
+						sync_minute = this.adjustSyncMinute(this.controller.models[key].interval, sync_minute);
+						sync_hour = this.adjustSyncHour(this.controller.models[key].interval, sync_hour);
 					}
 					console.log(['FETCH MODEL key=',key]);
-					this.models[key].fetch({
+					this.controller.models[key].fetch({
 						token: token,
 						readkey: readkey,
 						readkey_startdate: readkey_startdate,

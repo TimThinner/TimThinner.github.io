@@ -8,6 +8,11 @@ export default class MainController extends Controller {
 		super(options);
 	}
 	
+	notify(options) {
+		console.log(['MainCotroller notify options=',options]);
+		super.notify(options);
+	}
+	
 	init() {
 		const model = new MainModel({name:'MainModel',src:''});
 		model.subscribe(this);

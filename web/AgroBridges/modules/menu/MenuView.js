@@ -51,8 +51,7 @@ export default class MenuView extends View {
 		if (wrap) {
 			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
 		}
-		const html = 
-			'<div class="row">'+
+		const html = '<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h1>This is the Menu page for AgroBridges</h1>'+

@@ -17,12 +17,7 @@ export default class MenuView extends View {
 	
 	hide() {
 		this.rendered = false;
-		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
-		//$(this.el).empty();
-		let wrap = document.getElementById(this.el.slice(1));
-		if (wrap) {
-			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
-		}
+		$(this.el).empty();
 	}
 	
 	remove() {
@@ -30,12 +25,7 @@ export default class MenuView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.rendered = false;
-		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
-		//$(this.el).empty();
-		let wrap = document.getElementById(this.el.slice(1));
-		if (wrap) {
-			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
-		}
+		$(this.el).empty();
 	}
 	
 	notify(options) {
@@ -60,9 +50,7 @@ export default class MenuView extends View {
 					'</div>'+
 				'</div>'+
 			'</div>';
-		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
-		//$(this.el).append(html);
-		document.getElementById(this.el.slice(1)).appendChild(html);
+		$(this.el).append(html);
 		
 		$("#login").on('click', function() {
 			self.controller.models['MenuModel'].setSelected('main');

@@ -5,9 +5,9 @@ export default class View {
 		this.el = controller.el;
 		this.models = {};
 		
-		// NOTE: in styles.css background-color is '#ccc'
+		// NOTE: in styles.css background-color is '#EEF8EB'
 		this.colors = {
-			SPACE_FILL:'#ccc',
+			SPACE_FILL:'#EEF8EB',
 			WHITE:'#fff',
 			LIGHT_GREEN:'#EEF8EB',
 			DARK_GREEN:'#0B7938',

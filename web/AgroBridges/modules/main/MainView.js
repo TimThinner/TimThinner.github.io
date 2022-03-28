@@ -11,8 +11,8 @@ export default class MainView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
-		this.USER_MODEL.subscribe(this);
+		//this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+		//this.USER_MODEL.subscribe(this);
 		
 		this.rendered = false;
 	}
@@ -36,7 +36,7 @@ export default class MainView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
-		this.USER_MODEL.unsubscribe(this);
+		//this.USER_MODEL.unsubscribe(this);
 		this.rendered = false;
 		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
 		//$(this.el).empty();
@@ -181,10 +181,13 @@ export default class MainView extends View {
 			}, false);
 		} else if (type === 'LOGOUT') {
 			surface.addEventListener("click", function(){
-				const UM = self.controller.master.modelRepo.get('UserModel');
-				if (UM) {
-					UM.logout();
-				}
+				//const UM = self.controller.master.modelRepo.get('UserModel');
+				//if (UM) {
+					//UM.logout();
+				//}
+				self.models['MenuModel'].setSelected('menu');
+				
+				
 			}, false);
 		} else if (type === 'HEATING') {
 			surface.addEventListener("click", function(){

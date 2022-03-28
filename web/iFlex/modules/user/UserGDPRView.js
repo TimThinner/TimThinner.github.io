@@ -48,7 +48,7 @@ export default class UserGDPRView extends View {
 		const gdpr_chapter_2a  = LM['translation'][sel]['GDPR_CHAPTER_2A'];
 		const gdpr_chapter_2aa  = LM['translation'][sel]['GDPR_CHAPTER_2AA'];
 		const gdpr_chapter_2aaa  = LM['translation'][sel]['GDPR_CHAPTER_2AAA'];
-		const gdpr_chapter_2aab  = LM['translation'][sel]['GDPR_CHAPTER_2AAB'];
+		//const gdpr_chapter_2aab  = LM['translation'][sel]['GDPR_CHAPTER_2AAB'];
 		const gdpr_chapter_2aac  = LM['translation'][sel]['GDPR_CHAPTER_2AAC'];
 		const gdpr_chapter_2ab  = LM['translation'][sel]['GDPR_CHAPTER_2AB'];
 		const gdpr_chapter_2aba  = LM['translation'][sel]['GDPR_CHAPTER_2ABA'];
@@ -197,7 +197,7 @@ export default class UserGDPRView extends View {
 							'<div class="col s11">'+
 								'<p><b>'+gdpr_chapter_2aa+'</b><br/>'+
 								gdpr_chapter_2aaa+'<br/>'+
-								gdpr_chapter_2aab+'<br/>'+
+								//gdpr_chapter_2aab+'<br/>'+
 								gdpr_chapter_2aac+'</p>'+
 							'</div>'+
 							'<div class="col s1">&nbsp;</div>'+

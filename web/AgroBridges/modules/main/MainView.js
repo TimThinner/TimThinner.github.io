@@ -195,10 +195,10 @@ export default class MainView extends View {
 		}
 		
 		surface.addEventListener("mouseover", function(event){ 
-			border.style.fill = this.colors.DARK_GREEN;
+			border.style.fill = self.colors.DARK_GREEN;
 		}, false);
 		surface.addEventListener("mouseout", function(event){ 
-			border.style.fill = this.colors.WHITE;
+			border.style.fill = self.colors.WHITE;
 		}, false);
 		
 		group.appendChild(surface);

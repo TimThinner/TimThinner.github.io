@@ -52,8 +52,8 @@ export default class MainView extends View {
 	*/
 	
 	sunRadius() {
-		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		const h = this.REO.height-18;
+		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
+		const h = this.REO.height;
 		const wp2 = w*0.125;
 		const hp2 = h*0.125;
 		const r = Math.min(wp2, hp2); // r = 0,125 x W or H, whichever is smallest (d=0,25 x W or H)
@@ -71,7 +71,7 @@ export default class MainView extends View {
 		// All SVG images are 400 x 300 => w=r, h=r*0.75
 		const w = r;
 		const wper2 = w*0.5;
-		const h = r*0.75; 
+		const h = r*0.75;
 		const hper2 = h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
@@ -235,19 +235,13 @@ export default class MainView extends View {
 		rect.setAttribute('fill', this.colors.SPACE_FILL);
 		
 		svg.appendChild(rect);
-		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
-		//$(this.el).append(svg);
-		document.getElementById(this.el.slice(1)).appendChild(svg);
+		$(this.el).append(svg);
 	}
 	
 	renderALL() {
+		$(this.el).empty();
 		
-		let wrap = document.getElementById(this.el.slice(1));
-		if (wrap) {
-			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
-		}
 		this.createSpace();
-		
 		this.appendSun('LOGOUT');
 		
 		console.log('renderALL() END!');

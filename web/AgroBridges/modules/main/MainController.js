@@ -13,6 +13,11 @@ export default class MainController extends Controller {
 		model.subscribe(this);
 		this.master.modelRepo.add('MainModel',model);
 		this.models['MainModel'] = model;
+		
+		// Every Controller MUST have MenuModel in its models.
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
 		this.view = new MainView(this);
 	}
 }

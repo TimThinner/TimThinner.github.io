@@ -37,10 +37,8 @@ export default class MenuView extends View {
 	
 	render() {
 		const self = this;
-		let wrap = document.getElementById(this.el.slice(1));
-		if (wrap) {
-			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
-		}
+		$(this.el).empty();
+		
 		const html = '<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+

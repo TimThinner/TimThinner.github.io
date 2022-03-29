@@ -79,17 +79,17 @@ export default class FarmView extends View {
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'LOCATION') {
 			
-			tx = -2*r;
-			ty = -2*r;
+			tx = -1.5*r;
+			ty = -1.5*r;
 			
 		} else if (type === 'INFO') {
 			
-			tx = 2*r;
-			ty = -2*r;
+			tx = 1.5*r;
+			ty = -1.5*r;
 			
 		} else if (type === 'VEGETABLES') {
 			
-			tx = -3*r;
+			tx = -2.5*r;
 			ty = r;
 			
 		} else if (type === 'ANIMALS') {
@@ -99,7 +99,7 @@ export default class FarmView extends View {
 			
 		} else if (type === 'FRUITS') {
 			
-			tx = 3*r;
+			tx = 2.5*r;
 			ty = r;
 		}
 		

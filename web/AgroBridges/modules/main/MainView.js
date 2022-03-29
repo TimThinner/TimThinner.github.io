@@ -56,8 +56,15 @@ export default class MainView extends View {
 		let r = this.sunRadius();
 		
 		
+		
+		// All SVG images are 400 x 300 => w=r, h=r*0.75
+		const w = r;
+		const wper2 = w*0.5;
+		const h = r*0.75;
+		const hper2 = h*0.5;
+		
 		if (type === 'LOGOUT') {
-			r = r*0.75;
+			r = r*0.5;
 		}
 		// Four circles (three visible):
 		// 1. outer border (opacity=0.5)
@@ -68,23 +75,12 @@ export default class MainView extends View {
 		//const r2 = r-r*0.1;
 		//const r3 = r-r*0.3;
 		
-		// All SVG images are 400 x 300 => w=r, h=r*0.75
-		const w = r;
-		const wper2 = w*0.5;
-		const h = r*0.75;
-		const hper2 = h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
-		if (type === 'BUILDING') {
-			tx = ty = -12*r/5;
-		} else if (type === 'LOGOUT') {
-			tx = 12*r/5;
-			ty = -12*r/5;
-		} else if (type === 'HEATING') {
-			tx = -12*r/5;
-			ty = 12*r/5;
-		} else if (type === 'FEEDBACK') {
-			tx = ty = 12*r/5;
+		if (type === 'LOGOUT') {
+			// Move LOGOUT-button to upper-right corner.
+			tx = this.REO.width*0.5 - w;
+			ty = this.REO.height*0.5 + h;
 		}
 		
 		const group = document.createElementNS(svgNS, "g");
@@ -109,33 +105,7 @@ export default class MainView extends View {
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
-		/*const cb = document.createElementNS(svgNS, "circle");
-		cb.setAttribute('cx', 0);
-		cb.setAttribute('cy', 0);
-		cb.setAttribute('r', r3);
-		cb.style.fill = this.colors.WHITE;
-		cb.style.fillOpacity = 1;
-		cb.style.stroke = this.colors.DARK_GREEN;
-		cb.style.strokeWidth = 0.5;
-		group.appendChild(cb);
-		*/
-		if (type === 'USER') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -wper2);
-			img.setAttribute('y', -hper2);
-			img.setAttribute('width', w);
-			img.setAttribute('height', h);
-			img.setAttribute('href', './svg/user.svg');
-			group.appendChild(img);
-		} else if (type === 'BUILDING') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -wper2);
-			img.setAttribute('y', -hper2);
-			img.setAttribute('width', w);
-			img.setAttribute('height', h);
-			img.setAttribute('href', './svg/building.svg');
-			group.appendChild(img);
-		} else if (type === 'LOGOUT') {
+		if (type === 'LOGOUT') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', -wper2);
 			img.setAttribute('y', -hper2);
@@ -143,24 +113,7 @@ export default class MainView extends View {
 			img.setAttribute('height', h);
 			img.setAttribute('href', './svg/logout.svg');
 			group.appendChild(img);
-		} else if (type === 'HEATING') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -wper2);
-			img.setAttribute('y', -hper2);
-			img.setAttribute('width', w);
-			img.setAttribute('height', h);
-			img.setAttribute('href', './svg/radiator.svg');
-			group.appendChild(img);
-		} else if (type === 'FEEDBACK') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -wper2);
-			img.setAttribute('y', -hper2);
-			img.setAttribute('width', w);
-			img.setAttribute('height', h);
-			img.setAttribute('href', './svg/feedback.svg');
-			group.appendChild(img);
 		}
-		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
 		surface.setAttributeNS(null, 'cy', 0);
@@ -171,34 +124,15 @@ export default class MainView extends View {
 		surface.style.cursor = 'pointer';
 		
 		// Select which pages open...
-		if (type === 'USER') {
-			surface.addEventListener("click", function(){
-				self.models['MenuModel'].setSelected('USERPROPS');
-			}, false);
-		} else if (type === 'BUILDING') {
-			surface.addEventListener("click", function(){
-				self.models['MenuModel'].setSelected('menu');
-			}, false);
-		} else if (type === 'LOGOUT') {
+		if (type === 'LOGOUT') {
 			surface.addEventListener("click", function(){
 				//const UM = self.controller.master.modelRepo.get('UserModel');
 				//if (UM) {
 					//UM.logout();
 				//}
 				self.models['MenuModel'].setSelected('menu');
-				
-				
-			}, false);
-		} else if (type === 'HEATING') {
-			surface.addEventListener("click", function(){
-				self.models['MenuModel'].setSelected('USERHEATING');
-			}, false);
-		} else if (type === 'FEEDBACK') {
-			surface.addEventListener("click", function(){
-				self.models['MenuModel'].setSelected('USERFEEDBACK');
 			}, false);
 		}
-		
 		surface.addEventListener("mouseover", function(event){ 
 			border.style.fill = self.colors.DARK_GREEN;
 		}, false);

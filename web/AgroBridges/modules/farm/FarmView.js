@@ -89,18 +89,18 @@ export default class FarmView extends View {
 			
 		} else if (type === 'VEGETABLES') {
 			
-			tx = -2*r;
-			ty = 2*r;
+			tx = -3*r;
+			ty = r;
 			
 		} else if (type === 'ANIMALS') {
 			
 			tx = 0;
-			ty = 2*r;
+			ty = r;
 			
 		} else if (type === 'FRUITS') {
 			
-			tx = 2*r;
-			ty = 2*r;
+			tx = 3*r;
+			ty = r;
 		}
 		
 		const group = document.createElementNS(svgNS, "g");

@@ -40,7 +40,6 @@ export default class MainView extends View {
 	The radius of circle is 12,5% of H or W (smaller dimension).
 	=> circle diameter is 25% of H or W.
 	*/
-	
 	sunRadius() {
 		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height;
@@ -54,18 +53,17 @@ export default class MainView extends View {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
+		// Minimum diameter of button is 60 pixels!
+		if (r < 30) {
+			r = 30;
+		}
 		
-		
-		
-		// All SVG images are 400 x 300 => w=r, h=r*0.75
-		const w = r;
+		// All SVG images are 400 x 300 => w=1.8*r, h=w*0.75
+		const w = 1.8*r;
 		const wper2 = w*0.5;
-		const h = r*0.75;
+		const h = w*0.75;
 		const hper2 = h*0.5;
 		
-		if (type === 'LOGOUT') {
-			r = r*0.5;
-		}
 		// Four circles (three visible):
 		// 1. outer border (opacity=0.5)
 		// 2. 10% smaller inner circle (opacity=0.5)
@@ -74,7 +72,6 @@ export default class MainView extends View {
 		const r2 = r-r*0.2;
 		//const r2 = r-r*0.1;
 		//const r3 = r-r*0.3;
-		
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'LOGOUT') {

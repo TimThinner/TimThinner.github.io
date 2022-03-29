@@ -42,8 +42,10 @@ export default class MenuView extends View {
 		const html = '<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h2>AgroBridges</h2>'+
+						//'<h2>AgroBridges</h2>'+
+						'<p>&nbsp;</p>'+
 						'<p><img src="./img/logo2.png" height="108"/></p>'+ // Original logo is 960 x 540 pixels.
+						'<p>&nbsp;</p>'+
 						'<button class="btn waves-effect waves-light" id="login">Login</button>'+
 					'</div>'+
 				'</div>'+

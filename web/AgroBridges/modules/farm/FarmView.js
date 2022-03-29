@@ -179,6 +179,44 @@ export default class FarmView extends View {
 		$('#space').append(group);
 	}
 	
+	appendTitle() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius(); // Radius 12,5%
+		let fontsize;
+		if (r <= 75) {
+			fontsize = 20;
+		} else if (r > 75 && r <= 124) {
+			fontsize = 30;
+		} else if (r > 124 && r <= 150) {
+			fontsize = 40;
+		} else {
+			fontsize = 50;
+		}
+		const titleSVGHeight = fontsize;
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',-2*r);
+		svg.setAttribute('y',-4*r);
+		svg.setAttributeNS(null,'width',4*r);
+		svg.setAttributeNS(null,'height',titleSVGHeight);
+		
+		const title = document.createElementNS(svgNS, 'text');
+		title.setAttribute('x','50%');
+		title.setAttribute('y','50%');
+		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		title.setAttribute('font-size',fontsize);
+		title.setAttribute('dominant-baseline','middle');
+		title.setAttribute('text-anchor','middle');
+		title.setAttribute('fill',this.colors.DARK_GREEN);
+		title.style.opacity = 1;
+		title.appendChild(document.createTextNode('FARM'));
+		svg.appendChild(title);
+		group.appendChild(svg);
+		$('#space').append(group);
+	}
+	
 	appendOKButton() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -247,6 +285,8 @@ export default class FarmView extends View {
 	renderALL() {
 		$(this.el).empty();
 		this.createSpace();
+		
+		this.appendTitle();
 		
 		this.appendSun('LOCATION');
 		this.appendSun('INFO');

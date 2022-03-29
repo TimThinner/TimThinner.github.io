@@ -69,14 +69,11 @@ export default class MainView extends View {
 		const h = w*0.75;
 		const hper2 = h*0.5;
 		
-		// Four circles (three visible):
-		// 1. outer border (opacity=0.5)
-		// 2. 10% smaller inner circle (opacity=0.5)
-		// 3. 30% smaller inner circle (opacity=1)
-		// 4. surface, same size as bordr (opacity=0)
+		// Three circles (two visible):
+		// 1. outer border (opacity=0.75)
+		// 2. 20% smaller inner circle (opacity=1)
+		// 3. surface, same size as outer border (opacity=0)
 		const r2 = r-r*0.2;
-		//const r2 = r-r*0.1;
-		//const r3 = r-r*0.3;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'LOGOUT') {
@@ -85,19 +82,19 @@ export default class MainView extends View {
 			ty = -this.REO.height*0.5 + h;
 		} else if (type === 'FARM') {
 			
-			ty = -2*r;
+			ty = -2.5*r;
 			
 		} else if (type === 'ACTIVITIES') {
 			
 			const ss = 180 - 120;
-			tx = Math.sin(ss*Math.PI/180) * 2 * r;
-			ty = Math.cos(ss*Math.PI/180) * 2 * r;
+			tx = Math.sin(ss*Math.PI/180) * 2.5 * r;
+			ty = Math.cos(ss*Math.PI/180) * 2.5 * r;
 			
 		} else if (type === 'PRODUCER') {
 			
 			const ss = 180 - 240;
-			tx = Math.sin(ss*Math.PI/180) * 2 * r;
-			ty = Math.cos(ss*Math.PI/180) * 2 * r;
+			tx = Math.sin(ss*Math.PI/180) * 2.5 * r;
+			ty = Math.cos(ss*Math.PI/180) * 2.5 * r;
 		}
 		
 		const group = document.createElementNS(svgNS, "g");
@@ -107,7 +104,7 @@ export default class MainView extends View {
 		border.setAttributeNS(null, 'cy', 0);
 		border.setAttributeNS(null, 'r', r);
 		border.style.fill = this.colors.WHITE;
-		border.style.fillOpacity = 0.5;
+		border.style.fillOpacity = 0.75;
 		border.style.stroke = this.colors.DARK_GREEN;
 		border.style.strokeWidth = 2;
 		group.appendChild(border);
@@ -117,7 +114,7 @@ export default class MainView extends View {
 		ca.setAttributeNS(null, 'cy', 0);
 		ca.setAttributeNS(null, 'r', r2);
 		ca.style.fill = this.colors.WHITE;
-		ca.style.fillOpacity = 1;//0.5;
+		ca.style.fillOpacity = 1;
 		ca.style.stroke = this.colors.DARK_GREEN;
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
@@ -168,7 +165,7 @@ export default class MainView extends View {
 	appendProgress() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		let r = this.sunRadius()*2; // r = 25% => d = 50%
+		let r = this.sunRadius()*2.5; // r = 31,25% => d = 62,5%
 		let ro = r+r*0.1;
 		let ri = r-r*0.1;
 		const group = document.createElementNS(svgNS, "g");

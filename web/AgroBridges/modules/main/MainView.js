@@ -147,6 +147,37 @@ export default class MainView extends View {
 		$('#space').append(group);
 	}
 	
+	appendProgress() {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius()*2; // r = 25% => d = 50%
+		let ro = r+r*0.1;
+		let ri = r-r*0.1;
+		const group = document.createElementNS(svgNS, "g");
+		
+		const outer = document.createElementNS(svgNS, "circle");
+		outer.setAttributeNS(null, 'cx', 0);
+		outer.setAttributeNS(null, 'cy', 0);
+		outer.setAttributeNS(null, 'r', ro);
+		outer.style.fill = 'none';
+		outer.style.fillOpacity = 0;
+		outer.style.stroke = this.colors.DARK_GREEN;
+		outer.style.strokeWidth = 3;
+		group.appendChild(outer);
+		
+		const inner = document.createElementNS(svgNS, "circle");
+		inner.setAttributeNS(null, 'cx', 0);
+		inner.setAttributeNS(null, 'cy', 0);
+		inner.setAttributeNS(null, 'r', ri);
+		inner.style.fill = 'none';
+		inner.style.fillOpacity = 0;
+		inner.style.stroke = this.colors.DARK_GREEN;
+		inner.style.strokeWidth = 3;
+		group.appendChild(inner);
+		
+		$('#space').append(group);
+	}
+	
 	createSpace() {
 		const w = this.REO.width;
 		const h = this.REO.height;
@@ -178,7 +209,9 @@ export default class MainView extends View {
 		$(this.el).empty();
 		
 		this.createSpace();
+		this.appendProgress();
 		this.appendSun('LOGOUT');
+		
 		
 		console.log('renderALL() END!');
 	}
@@ -186,10 +219,8 @@ export default class MainView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				
 				console.log('ResizeEventObserver resize => SHOW()!');
 				this.show();
-				
 			}
 		}
 	}

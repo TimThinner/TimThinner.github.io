@@ -80,7 +80,7 @@ export default class MainView extends View {
 		if (type === 'LOGOUT') {
 			// Move LOGOUT-button to upper-right corner.
 			tx = this.REO.width*0.5 - w;
-			ty = this.REO.height*0.5 + h;
+			ty = -this.REO.height*0.5 + h;
 		}
 		
 		const group = document.createElementNS(svgNS, "g");

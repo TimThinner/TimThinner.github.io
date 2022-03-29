@@ -54,12 +54,12 @@ export default class MainView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius(); // Radius 12,5%
 		// Minimum diameter of LOGOUT-button is 60 pixels!
-		// Maximum diameter of LOGOUT-button is 100 pixels!
+		// Maximum diameter of LOGOUT-button is 80 pixels!
 		if (type === 'LOGOUT') {
 			if (r < 30) {
 				r = 30;
-			} else if (r > 50) {
-				r = 50;
+			} else if (r > 40) {
+				r = 40;
 			}
 		}
 		
@@ -83,6 +83,21 @@ export default class MainView extends View {
 			// Move LOGOUT-button to upper-right corner.
 			tx = this.REO.width*0.5 - w;
 			ty = -this.REO.height*0.5 + h;
+		} else if (type === 'FARM') {
+			
+			ty = -2*r;
+			
+		} else if (type === 'ACTIVITIES') {
+			
+			const ss = 180 - 120;
+			tx = Math.sin(ss*Math.PI/180) * 2 * r;
+			ty = Math.cos(ss*Math.PI/180) * 2 * r;
+			
+		} else if (type === 'PRODUCER') {
+			
+			const ss = 180 - 240;
+			tx = Math.sin(ss*Math.PI/180) * 2 * r;
+			ty = Math.cos(ss*Math.PI/180) * 2 * r;
 		}
 		
 		const group = document.createElementNS(svgNS, "g");
@@ -135,6 +150,9 @@ export default class MainView extends View {
 				self.models['MenuModel'].setSelected('menu');
 			}, false);
 		}
+		
+		
+		
 		surface.addEventListener("mouseover", function(event){ 
 			border.style.fill = self.colors.DARK_GREEN;
 		}, false);
@@ -211,8 +229,9 @@ export default class MainView extends View {
 		this.createSpace();
 		this.appendProgress();
 		this.appendSun('LOGOUT');
-		
-		
+		this.appendSun('FARM');
+		this.appendSun('ACTIVITIES');
+		this.appendSun('PRODUCER');
 		console.log('renderALL() END!');
 	}
 	

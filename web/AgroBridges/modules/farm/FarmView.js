@@ -75,7 +75,7 @@ export default class FarmView extends View {
 		img.setAttribute('y', by);
 		img.setAttribute('width', bw);
 		img.setAttribute('height', bh);
-		img.setAttribute('href', './svg/backbutton.svg');
+		img.setAttribute('href', './svg/okbutton.svg');
 		img.style.cursor = 'pointer';
 		img.addEventListener("click", function(){
 			self.models['MenuModel'].setSelected('main');

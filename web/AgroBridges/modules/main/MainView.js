@@ -63,11 +63,21 @@ export default class MainView extends View {
 			}
 		}
 		
+		let fontsize;
+		if (r <= 75) {
+			fontsize = 14;
+		} else if (r > 75 && r <= 124) {
+			fontsize = 16;
+		} else if (r > 124 && r <= 150) {
+			fontsize = 18;
+		} else {
+			fontsize = 20;
+		}
+		const titleSVGHeight = fontsize;
+		
 		// All SVG images are 400 x 300 => w=1.8*r, h=w*0.75
-		const w = 1.8*r;
-		const wper2 = w*0.5;
-		const h = w*0.75;
-		const hper2 = h*0.5;
+		const image_w = 1.8*r;
+		const image_h = w*0.75;
 		
 		// Three circles (two visible):
 		// 1. outer border (opacity=0.75)
@@ -78,8 +88,8 @@ export default class MainView extends View {
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'LOGOUT') {
 			// Move LOGOUT-button to upper-right corner.
-			tx = this.REO.width*0.5 - w;
-			ty = -this.REO.height*0.5 + h;
+			tx = this.REO.width*0.5 - image_w;
+			ty = -this.REO.height*0.5 + image_h;
 		} else if (type === 'FARM') {
 			
 			ty = -2.5*r;
@@ -121,12 +131,31 @@ export default class MainView extends View {
 		
 		if (type === 'LOGOUT') {
 			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -wper2);
-			img.setAttribute('y', -hper2);
-			img.setAttribute('width', w);
-			img.setAttribute('height', h);
+			img.setAttribute('x', -image_w*0.5);
+			img.setAttribute('y', -image_h*0.5);
+			img.setAttribute('width', image_w);
+			img.setAttribute('height', image_h);
 			img.setAttribute('href', './svg/logout.svg');
 			group.appendChild(img);
+		} else {
+			const svg = document.createElementNS(svgNS, "svg");
+			svg.setAttribute('x',-image_w*0.5);
+			svg.setAttribute('y',-titleSVGHeight*0.5);
+			svg.setAttributeNS(null,'width',image_w);
+			svg.setAttributeNS(null,'height',titleSVGHeight);
+			
+			const title = document.createElementNS(svgNS, 'text');
+			title.setAttribute('x','50%');
+			title.setAttribute('y','50%');
+			title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+			title.setAttribute('font-size',fontsize);
+			title.setAttribute('dominant-baseline','middle');
+			title.setAttribute('text-anchor','middle');
+			title.setAttribute('fill','#000');
+			title.style.opacity = 1;
+			title.appendChild(document.createTextNode(type));
+			svg.appendChild(title);
+			group.appendChild(svg);
 		}
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
@@ -147,8 +176,6 @@ export default class MainView extends View {
 				self.models['MenuModel'].setSelected('menu');
 			}, false);
 		}
-		
-		
 		
 		surface.addEventListener("mouseover", function(event){ 
 			border.style.fill = self.colors.DARK_GREEN;

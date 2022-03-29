@@ -49,6 +49,135 @@ export default class FarmView extends View {
 		return r;
 	}
 	
+	appendSun(type) {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius(); // Radius 12,5%
+		
+		let fontsize;
+		if (r <= 75) {
+			fontsize = 14;
+		} else if (r > 75 && r <= 124) {
+			fontsize = 16;
+		} else if (r > 124 && r <= 150) {
+			fontsize = 18;
+		} else {
+			fontsize = 20;
+		}
+		const titleSVGHeight = fontsize;
+		
+		// All SVG images are 400 x 300 => w=1.8*r, h=w*0.75
+		const image_w = 1.8*r;
+		const image_h = image_w*0.75;
+		
+		// Three circles (two visible):
+		// 1. outer border (opacity=0.75)
+		// 2. 20% smaller inner circle (opacity=1)
+		// 3. surface, same size as outer border (opacity=0)
+		const r2 = r-r*0.2;
+		
+		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
+		if (type === 'LOCATION') {
+			
+			tx = -2*r;
+			ty = -2*r;
+			
+		} else if (type === 'INFO') {
+			
+			tx = 2*r;
+			ty = -2*r;
+			
+		} else if (type === 'VEGETABLES') {
+			
+			tx = -2*r;
+			ty = 2*r;
+			
+		} else if (type === 'ANIMALS') {
+			
+			tx = 0;
+			ty = 2*r;
+			
+		} else if (type === 'FRUITS') {
+			
+			tx = 2*r;
+			ty = 2*r;
+		}
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const border = document.createElementNS(svgNS, "circle");
+		border.setAttributeNS(null, 'cx', 0);
+		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'r', r);
+		border.style.fill = this.colors.WHITE;
+		border.style.fillOpacity = 0.75;
+		border.style.stroke = this.colors.DARK_GREEN;
+		border.style.strokeWidth = 2;
+		group.appendChild(border);
+		
+		const ca = document.createElementNS(svgNS, "circle");
+		ca.setAttributeNS(null, 'cx', 0);
+		ca.setAttributeNS(null, 'cy', 0);
+		ca.setAttributeNS(null, 'r', r2);
+		ca.style.fill = this.colors.WHITE;
+		ca.style.fillOpacity = 1;
+		ca.style.stroke = this.colors.DARK_GREEN;
+		ca.style.strokeWidth = 1;
+		group.appendChild(ca);
+		
+			// Text, which will be replaced with an image soon.
+			const svg = document.createElementNS(svgNS, "svg");
+			svg.setAttribute('x',-image_w*0.5);
+			svg.setAttribute('y',-titleSVGHeight*0.5);
+			svg.setAttributeNS(null,'width',image_w);
+			svg.setAttributeNS(null,'height',titleSVGHeight);
+			
+			const title = document.createElementNS(svgNS, 'text');
+			title.setAttribute('x','50%');
+			title.setAttribute('y','50%');
+			title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+			title.setAttribute('font-size',fontsize);
+			title.setAttribute('dominant-baseline','middle');
+			title.setAttribute('text-anchor','middle');
+			title.setAttribute('fill',this.colors.DARK_GREEN);
+			title.style.opacity = 1;
+			title.appendChild(document.createTextNode(type));
+			svg.appendChild(title);
+			group.appendChild(svg);
+			
+		const surface = document.createElementNS(svgNS, "circle");
+		surface.setAttributeNS(null, 'cx', 0);
+		surface.setAttributeNS(null, 'cy', 0);
+		surface.setAttributeNS(null, 'r', r);
+		surface.style.stroke = this.colors.DARK_GREEN;
+		surface.style.strokeWidth = 1;
+		surface.style.fillOpacity = 0;
+		surface.style.cursor = 'pointer';
+		
+		// Select which pages open...
+		
+			surface.addEventListener("click", function(){
+				
+				self.models['MenuModel'].setSelected('main');
+				
+			}, false);
+			
+			
+			
+		
+		
+		surface.addEventListener("mouseover", function(event){ 
+			border.style.fill = self.colors.DARK_GREEN;
+		}, false);
+		surface.addEventListener("mouseout", function(event){ 
+			border.style.fill = self.colors.WHITE;
+		}, false);
+		
+		group.appendChild(surface);
+		group.setAttribute('transform', 'translate('+tx+','+ty+')');
+		$('#space').append(group);
+	}
+	
 	appendBackButton() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -113,6 +242,13 @@ export default class FarmView extends View {
 	renderALL() {
 		$(this.el).empty();
 		this.createSpace();
+		
+		this.appendSun('LOCATION');
+		this.appendSun('INFO');
+		this.appendSun('VEGETABLES');
+		this.appendSun('ANIMALS');
+		this.appendSun('FRUITS');
+		
 		this.appendBackButton();
 		console.log('renderALL() END!');
 	}

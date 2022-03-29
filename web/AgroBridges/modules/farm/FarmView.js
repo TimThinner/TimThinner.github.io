@@ -184,21 +184,25 @@ export default class FarmView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const w = this.REO.width;
 		const h = this.REO.height;
-		// Position back-button left and below horizontal line in Making City logo.
+		let coeff = 2;
+		if (this.REO.mode === 'LANDSCAPE') {
+			coeff = 1.5;
+		}
+		
 		let bw;
 		if (w <= 600) {
 			bw = 80;
 		} else if (w > 600 && w <= 992) {
-			bw = 90;
+			bw = 80;
 		} else if (w > 992 && w <= 1200) {
-			bw = 100;
+			bw = 90;
 		} else {
-			bw = 110;
+			bw = 100;
 		}
 		
 		const bh = bw * 0.5; // "okbutton" is 200 x 100 pixels
 		const bx = -bw*0.5;
-		const by = h*0.5 - 2*bh;
+		const by = h*0.5 - coeff*bh;
 		
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', bx);

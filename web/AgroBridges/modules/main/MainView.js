@@ -62,7 +62,7 @@ export default class MainView extends View {
 			r = 40;
 		}
 		// All SVG images are 400 x 300 => w=1.8*r, h=w*0.75
-		const image_w = 1.8*r;
+		const image_w = 2*r;
 		const image_h = image_w*0.75;
 		const image_x = this.REO.width*0.5 - image_w;
 		const image_y = -this.REO.height*0.5 + image_h;

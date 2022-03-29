@@ -49,19 +49,41 @@ export default class MainView extends View {
 		return r;
 	}
 	
+	appendLogoutButton() {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		// Minimum diameter of LOGOUT-button is 60 pixels!
+		// Maximum diameter of LOGOUT-button is 80 pixels!
+		let r = this.sunRadius(); // Radius 12,5%
+		if (r < 30) {
+			r = 30;
+		} else if (r > 40) {
+			r = 40;
+		}
+		// All SVG images are 400 x 300 => w=1.8*r, h=w*0.75
+		const image_w = 1.8*r;
+		const image_h = image_w*0.75;
+		const image_x = this.REO.width*0.5 - image_w;
+		const image_y = -this.REO.height*0.5 + image_h;
+		
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', image_x);
+		img.setAttribute('y', image_y);
+		img.setAttribute('width', image_w);
+		img.setAttribute('height', image_h);
+		img.setAttribute('href', './svg/logout.svg');
+		img.style.cursor = 'pointer';
+		img.addEventListener("click", function(){
+			self.controller.master.forceLogout();
+		}, false);
+		$('#space').append(img);
+	}
+	
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius(); // Radius 12,5%
-		// Minimum diameter of LOGOUT-button is 60 pixels!
-		// Maximum diameter of LOGOUT-button is 80 pixels!
-		if (type === 'LOGOUT') {
-			if (r < 30) {
-				r = 30;
-			} else if (r > 40) {
-				r = 40;
-			}
-		}
 		
 		let fontsize;
 		if (r <= 75) {
@@ -86,11 +108,8 @@ export default class MainView extends View {
 		const r2 = r-r*0.2;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
-		if (type === 'LOGOUT') {
-			// Move LOGOUT-button to upper-right corner.
-			tx = this.REO.width*0.5 - image_w;
-			ty = -this.REO.height*0.5 + image_h;
-		} else if (type === 'FARM') {
+		
+		if (type === 'FARM') {
 			
 			ty = -2.5*r;
 			
@@ -129,15 +148,7 @@ export default class MainView extends View {
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
-		if (type === 'LOGOUT') {
-			const img = document.createElementNS(svgNS, "image");
-			img.setAttribute('x', -image_w*0.5);
-			img.setAttribute('y', -image_h*0.5);
-			img.setAttribute('width', image_w);
-			img.setAttribute('height', image_h);
-			img.setAttribute('href', './svg/logout.svg');
-			group.appendChild(img);
-		} else {
+		
 			// Text, which will be replaced with an image soon.
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',-image_w*0.5);
@@ -157,7 +168,7 @@ export default class MainView extends View {
 			title.appendChild(document.createTextNode(type));
 			svg.appendChild(title);
 			group.appendChild(svg);
-		}
+		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
 		surface.setAttributeNS(null, 'cy', 0);
@@ -168,14 +179,7 @@ export default class MainView extends View {
 		surface.style.cursor = 'pointer';
 		
 		// Select which pages open...
-		if (type === 'LOGOUT') {
-			surface.addEventListener("click", function(){
-				
-				self.controller.master.forceLogout();
-				//self.models['MenuModel'].setSelected('menu');
-				
-			}, false);
-		} else if (type === 'FARM') {
+		if (type === 'FARM') {
 			
 			surface.addEventListener("click", function(){
 				self.models['MenuModel'].setSelected('farm');
@@ -257,10 +261,13 @@ export default class MainView extends View {
 		
 		this.createSpace();
 		this.appendProgress();
-		this.appendSun('LOGOUT');
+		
 		this.appendSun('FARM');
 		this.appendSun('ACTIVITIES');
 		this.appendSun('PRODUCER');
+		
+		this.appendLogoutButton();
+		
 		console.log('renderALL() END!');
 	}
 	

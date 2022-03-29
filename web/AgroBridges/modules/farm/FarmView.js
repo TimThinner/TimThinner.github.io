@@ -179,7 +179,7 @@ export default class FarmView extends View {
 		$('#space').append(group);
 	}
 	
-	appendBackButton() {
+	appendOKButton() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const w = this.REO.width;
@@ -198,7 +198,7 @@ export default class FarmView extends View {
 		
 		const bh = bw * 0.5; // "okbutton" is 200 x 100 pixels
 		const bx = -bw*0.5;
-		const by = h*0.5 - 1.5*bh;
+		const by = h*0.5 - 2*bh;
 		
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', bx);
@@ -250,7 +250,7 @@ export default class FarmView extends View {
 		this.appendSun('ANIMALS');
 		this.appendSun('FRUITS');
 		
-		this.appendBackButton();
+		this.appendOKButton();
 		console.log('renderALL() END!');
 	}
 	

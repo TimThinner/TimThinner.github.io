@@ -158,7 +158,8 @@ export default class FarmView extends View {
 		
 			surface.addEventListener("click", function(){
 				
-				self.models['MenuModel'].setSelected('main');
+				//self.models['MenuModel'].setSelected('main');
+				console.log('SELECTED: '+type);
 				
 			}, false);
 			
@@ -188,16 +189,16 @@ export default class FarmView extends View {
 		if (w <= 600) {
 			bw = 80;
 		} else if (w > 600 && w <= 992) {
-			bw = 100;
+			bw = 90;
 		} else if (w > 992 && w <= 1200) {
-			bw = 120;
+			bw = 100;
 		} else {
-			bw = 140;
+			bw = 110;
 		}
 		
 		const bh = bw * 0.5; // "okbutton" is 200 x 100 pixels
 		const bx = -bw*0.5;
-		const by = h*0.5 - 2*bh;
+		const by = h*0.5 - 1.5*bh;
 		
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', bx);

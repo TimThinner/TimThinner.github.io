@@ -77,7 +77,7 @@ export default class MainView extends View {
 		
 		// All SVG images are 400 x 300 => w=1.8*r, h=w*0.75
 		const image_w = 1.8*r;
-		const image_h = w*0.75;
+		const image_h = image_w*0.75;
 		
 		// Three circles (two visible):
 		// 1. outer border (opacity=0.75)

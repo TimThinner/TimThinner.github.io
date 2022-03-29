@@ -184,21 +184,26 @@ export default class FarmView extends View {
 		let r = this.sunRadius(); // Radius 12,5%
 		let fontsize;
 		if (r <= 75) {
-			fontsize = 20;
-		} else if (r > 75 && r <= 124) {
-			fontsize = 30;
-		} else if (r > 124 && r <= 150) {
-			fontsize = 40;
-		} else {
 			fontsize = 50;
+		} else if (r > 75 && r <= 124) {
+			fontsize = 80;
+		} else if (r > 124 && r <= 150) {
+			fontsize = 100;
+		} else {
+			fontsize = 120;
 		}
 		const titleSVGHeight = fontsize;
 		
 		const group = document.createElementNS(svgNS, "g");
 		
+		let coeff = 1;
+		if (this.REO.mode === 'LANDSCAPE') {
+			coeff = 0.75;
+		}
+		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-2*r);
-		svg.setAttribute('y',-4*r);
+		svg.setAttribute('y',-4*coeff*r);
 		svg.setAttributeNS(null,'width',4*r);
 		svg.setAttributeNS(null,'height',titleSVGHeight);
 		

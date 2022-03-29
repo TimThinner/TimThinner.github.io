@@ -9,7 +9,7 @@ export default class MainController extends Controller {
 	}
 	
 	notify(options) {
-		console.log(['MainCotroller notify options=',options]);
+		console.log(['MainController notify options=',options]);
 		super.notify(options);
 	}
 	

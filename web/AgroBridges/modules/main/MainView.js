@@ -138,6 +138,7 @@ export default class MainView extends View {
 			img.setAttribute('href', './svg/logout.svg');
 			group.appendChild(img);
 		} else {
+			// Text, which will be replaced with an image soon.
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',-image_w*0.5);
 			svg.setAttribute('y',-titleSVGHeight*0.5);
@@ -151,7 +152,7 @@ export default class MainView extends View {
 			title.setAttribute('font-size',fontsize);
 			title.setAttribute('dominant-baseline','middle');
 			title.setAttribute('text-anchor','middle');
-			title.setAttribute('fill','#000');
+			title.setAttribute('fill',this.colors.DARK_GREEN);
 			title.style.opacity = 1;
 			title.appendChild(document.createTextNode(type));
 			svg.appendChild(title);
@@ -169,11 +170,15 @@ export default class MainView extends View {
 		// Select which pages open...
 		if (type === 'LOGOUT') {
 			surface.addEventListener("click", function(){
-				//const UM = self.controller.master.modelRepo.get('UserModel');
-				//if (UM) {
-					//UM.logout();
-				//}
-				self.models['MenuModel'].setSelected('menu');
+				
+				self.controller.master.forceLogout();
+				//self.models['MenuModel'].setSelected('menu');
+				
+			}, false);
+		} else if (type === 'FARM') {
+			
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('farm');
 			}, false);
 		}
 		

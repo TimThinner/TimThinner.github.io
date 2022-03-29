@@ -52,10 +52,15 @@ export default class MainView extends View {
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		let r = this.sunRadius();
-		// Minimum diameter of button is 60 pixels!
-		if (r < 30) {
-			r = 30;
+		let r = this.sunRadius(); // Radius 12,5%
+		// Minimum diameter of LOGOUT-button is 60 pixels!
+		// Maximum diameter of LOGOUT-button is 100 pixels!
+		if (type === 'LOGOUT') {
+			if (r < 30) {
+				r = 30;
+			} else if (r > 50) {
+				r = 50;
+			}
 		}
 		
 		// All SVG images are 400 x 300 => w=1.8*r, h=w*0.75

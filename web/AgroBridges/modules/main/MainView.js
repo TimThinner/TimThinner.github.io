@@ -53,10 +53,20 @@ export default class MainView extends View {
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.sunRadius();
+		let r = this.sunRadius();
 		
-		const r2 = r-r*0.1;
-		const r3 = r-r*0.3;
+		
+		if (type === 'LOGOUT') {
+			r = r*0.75;
+		}
+		// Four circles (three visible):
+		// 1. outer border (opacity=0.5)
+		// 2. 10% smaller inner circle (opacity=0.5)
+		// 3. 30% smaller inner circle (opacity=1)
+		// 4. surface, same size as bordr (opacity=0)
+		const r2 = r-r*0.2;
+		//const r2 = r-r*0.1;
+		//const r3 = r-r*0.3;
 		
 		// All SVG images are 400 x 300 => w=r, h=r*0.75
 		const w = r;
@@ -94,12 +104,12 @@ export default class MainView extends View {
 		ca.setAttributeNS(null, 'cy', 0);
 		ca.setAttributeNS(null, 'r', r2);
 		ca.style.fill = this.colors.WHITE;
-		ca.style.fillOpacity = 0.5;
+		ca.style.fillOpacity = 1;//0.5;
 		ca.style.stroke = this.colors.DARK_GREEN;
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
-		const cb = document.createElementNS(svgNS, "circle");
+		/*const cb = document.createElementNS(svgNS, "circle");
 		cb.setAttribute('cx', 0);
 		cb.setAttribute('cy', 0);
 		cb.setAttribute('r', r3);
@@ -108,7 +118,7 @@ export default class MainView extends View {
 		cb.style.stroke = this.colors.DARK_GREEN;
 		cb.style.strokeWidth = 0.5;
 		group.appendChild(cb);
-		
+		*/
 		if (type === 'USER') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', -wper2);

@@ -193,28 +193,25 @@ export default class FarmView extends View {
 			fontsize = 100;
 		}
 		*/
-		const titleSVGHeight = fontsize;
-		
 		const group = document.createElementNS(svgNS, "g");
-		/*
+		
 		let coeff = -4;
 		if (this.REO.mode === 'LANDSCAPE') {
 			coeff = -3.5;
-		}*/
+		}
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-3*r);
-		//svg.setAttribute('y',coeff*r);
-		svg.setAttribute('y',-4*r);
+		svg.setAttribute('y',coeff*r);
 		svg.setAttributeNS(null,'width',6*r);
-		svg.setAttributeNS(null,'height',titleSVGHeight);
+		svg.setAttributeNS(null,'height',fontsize);
 		
 		/*
 		const rect = document.createElementNS(svgNS, 'rect');
 		rect.setAttribute('x',1);
 		rect.setAttribute('y',1);
 		rect.setAttribute('width',6*r-2);
-		rect.setAttribute('height',titleSVGHeight-2);
+		rect.setAttribute('height',fontsize-2);
 		rect.style.fill = this.colors.DARK_GREEN;
 		rect.style.opacity = 0.2;
 		svg.appendChild(rect);

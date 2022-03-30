@@ -213,7 +213,7 @@ export default class FarmView extends View {
 		rect.setAttribute('y',1);
 		rect.setAttribute('width',6*r-2);
 		rect.setAttribute('height',titleSVGHeight-2);
-		rext.style.fill = this.colors.DARK_GREEN;
+		rect.style.fill = this.colors.DARK_GREEN;
 		rect.style.opacity = 0.2;
 		svg.appendChild(rect);
 		

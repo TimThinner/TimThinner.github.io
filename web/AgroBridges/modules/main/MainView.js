@@ -65,7 +65,7 @@ export default class MainView extends View {
 		const image_w = 2*r;
 		const image_h = image_w*0.75;
 		const image_x = this.REO.width*0.5 - image_w;
-		const image_y = -this.REO.height*0.5 + image_h;
+		const image_y = -this.REO.height*0.5 + image_h*0.5;
 		
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', image_x);

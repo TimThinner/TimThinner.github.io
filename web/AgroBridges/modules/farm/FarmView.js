@@ -195,15 +195,15 @@ export default class FarmView extends View {
 		const titleSVGHeight = fontsize;
 		
 		const group = document.createElementNS(svgNS, "g");
-		/*
-		let coeff = 1;
+		
+		let coeff = -4;
 		if (this.REO.mode === 'LANDSCAPE') {
-			coeff = 0.75;
-		}*/
+			coeff = -3.5;
+		}
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-3*r);
-		svg.setAttribute('y',-3.5*r);
+		svg.setAttribute('y',coeff*r);
 		svg.setAttributeNS(null,'width',6*r);
 		svg.setAttributeNS(null,'height',titleSVGHeight);
 		

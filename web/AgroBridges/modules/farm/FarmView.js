@@ -181,33 +181,35 @@ export default class FarmView extends View {
 	
 	appendTitle() {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		let r = this.sunRadius(); // Radius 12,5%
-		let fontsize;
-		if (r <= 75) {
-			fontsize = 60;
+		const r = this.sunRadius(); // Radius 12,5%
+		const fontsize = r;
+		/*if (r <= 75) {
+			fontsize = 50;
 		} else if (r > 75 && r <= 124) {
-			fontsize = 80;
+			fontsize = 60;
 		} else if (r > 124 && r <= 150) {
-			fontsize = 100;
+			fontsize = 80;
 		} else {
-			fontsize = 120;
+			fontsize = 100;
 		}
+		*/
 		const titleSVGHeight = fontsize;
 		
 		const group = document.createElementNS(svgNS, "g");
-		
+		/*
 		let coeff = -4;
 		if (this.REO.mode === 'LANDSCAPE') {
 			coeff = -3.5;
-		}
+		}*/
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-3*r);
-		svg.setAttribute('y',coeff*r);
+		//svg.setAttribute('y',coeff*r);
+		svg.setAttribute('y',-4*r);
 		svg.setAttributeNS(null,'width',6*r);
 		svg.setAttributeNS(null,'height',titleSVGHeight);
 		
-		
+		/*
 		const rect = document.createElementNS(svgNS, 'rect');
 		rect.setAttribute('x',1);
 		rect.setAttribute('y',1);
@@ -216,7 +218,7 @@ export default class FarmView extends View {
 		rect.style.fill = this.colors.DARK_GREEN;
 		rect.style.opacity = 0.2;
 		svg.appendChild(rect);
-		
+		*/
 		const title = document.createElementNS(svgNS, 'text');
 		title.setAttribute('x','50%');
 		title.setAttribute('y','50%');

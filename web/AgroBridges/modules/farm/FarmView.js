@@ -202,10 +202,20 @@ export default class FarmView extends View {
 		}*/
 		
 		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttribute('x',-2*r);
-		svg.setAttribute('y',-4*r);
-		svg.setAttributeNS(null,'width',4*r);
+		svg.setAttribute('x',-3*r);
+		svg.setAttribute('y',-3.5*r);
+		svg.setAttributeNS(null,'width',6*r);
 		svg.setAttributeNS(null,'height',titleSVGHeight);
+		
+		
+		const rect = document.createElementNS(svgNS, 'rect');
+		rect.setAttribute('x',1);
+		rect.setAttribute('y',1);
+		rect.setAttribute('width',6*r-2);
+		rect.setAttribute('height',titleSVGHeight-2);
+		rext.style.fill = this.colors.DARK_GREEN;
+		rect.style.opacity = 0.2;
+		svg.appendChild(rect);
 		
 		const title = document.createElementNS(svgNS, 'text');
 		title.setAttribute('x','50%');

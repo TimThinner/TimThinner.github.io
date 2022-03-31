@@ -202,13 +202,14 @@ export default class MainView extends View {
 			
 			const rect = document.createElementNS(svgNS, 'rect');
 			// Setup the <rect> element.
-			rect.setAttribute('x',-r*0.5);
-			rect.setAttribute('y',r*0.8);
+			rect.setAttribute('x',0);
+			rect.setAttribute('y',0);
 			rect.setAttribute('width',r);
 			rect.setAttribute('height',fontsize);
-			rect.setAttribute('fill', this.colors.SPACE_FILL);
-			rect.setAttribute('stroke', this.colors.DARK_GREEN);
-			
+			rect.style.fill = this.colors.LIGHT_ORANGE;
+			rect.style.fillOpacity = 1;
+			rect.style.stroke = this.colors.DARK_ORANGE;
+			rect.style.strokeWidth = 1;
 			svg.appendChild(rect);
 			
 			const title = document.createElementNS(svgNS, 'text');

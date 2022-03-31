@@ -48,15 +48,20 @@ export default class MenuView extends View {
 		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height;
 		
-		let fontsize;
+		let footer_fontsize;
+		let descr_fontsize;
 		if (w <= 600) {
-			fontsize = '11px';
+			footer_fontsize = '11px';
+			descr_fontsize = '12px';
 		} else if (w > 600 && w <= 992) {
-			fontsize = '12px';
+			footer_fontsize = '12px';
+			descr_fontsize = '14px';
 		} else if (w > 992 && w <= 1200) {
-			fontsize = '14px';
+			footer_fontsize = '14px';
+			descr_fontsize = '16px';
 		} else {
-			fontsize = '16px';
+			footer_fontsize = '16px';
+			descr_fontsize = '18px';
 		}
 		const title = 'Welcome to promote short supply food chain!';
 		const descr_A = 'Decision Support Tool for producers';
@@ -79,8 +84,8 @@ export default class MenuView extends View {
 					'<div class="col s12 hero" style="padding-top:32px;">'+
 						'<div class="col s12" style="'+frameStyle+'">'+
 							'<h5 style="color:'+this.colors.DARK_ORANGE+'">'+descr_A+'</h5>'+
-							'<p style="color:'+this.colors.DARK_GREEN+'">'+descr_B+'</p>'+
-							'<p style="color:'+this.colors.DARK_GREEN+'">'+descr_C+'</p>'+
+							'<p style="color:'+this.colors.DARK_GREEN+';font-size:'+descr_fontsize+';">'+descr_B+'</p>'+
+							'<p style="color:'+this.colors.DARK_GREEN+';font-size:'+descr_fontsize+';">'+descr_C+'</p>'+
 						'</div>'+
 					'</div>'+
 				'</div>'+
@@ -102,7 +107,7 @@ export default class MenuView extends View {
 					'<div class="col s2 center">'+
 						'<p><img src="./img/640px-Flag_of_Europe.svg.png" class="responsive-img"/></p>'+ // Original logo is 640 x 427 pixels.
 					'</div>'+
-					'<div class="col s8 center" style="color:'+this.colors.DARK_GREEN+'; font-size:'+fontsize+'">'+
+					'<div class="col s8 center" style="color:'+this.colors.DARK_GREEN+'; font-size:'+footer_fontsize+'">'+
 						"<p>THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020 RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N&deg; 101000788</p>"+
 					'</div>'+
 					'<div class="col s2 center">'+

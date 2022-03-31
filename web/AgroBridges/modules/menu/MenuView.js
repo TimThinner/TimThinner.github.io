@@ -50,6 +50,7 @@ export default class MenuView extends View {
 					'</div>'+
 				'</div>'+
 			'</div>'+
+			// FOOTER:
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s2 center">'+
@@ -62,9 +63,7 @@ export default class MenuView extends View {
 						'<p><img src="./img/logo2.png" height="54"/></p>'+ // Original logo is 960 x 540 pixels.
 					'</div>'+
 				'</div>'+
-			'</div>'+
-			
-			
+			'</div>';
 		$(this.el).append(html);
 		
 		$("#login").on('click', function() {

@@ -50,23 +50,25 @@ export default class MenuView extends View {
 		
 		let fontsize;
 		if (w <= 600) {
-			fontsize = '12px';
+			fontsize = '11px';
 		} else if (w > 600 && w <= 992) {
-			fontsize = '13px';
+			fontsize = '12px';
 		} else if (w > 992 && w <= 1200) {
-			fontsize = '14px';
+			fontsize = '13px';
 		} else {
-			fontsize = '16px';
+			fontsize = '14px';
 		}
-		
+		const title = 'Welcome to promote short supply food chain!';
+		const descr_A = 'Decision Support Tool for producers';
+		const descr_B = 'You will be able to evaluate the most suitable business models for Short Supply Food Chains.';
+		const descr_C = 'Evaluations and recommendations are based on information about your farm, products and activities.';
 		// LIGHT_GREEN:'#EEF8EB', R=238, G=248, B=235
-		
 		const html = 
 			// Title:
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h2 style="color:'+this.colors.DARK_ORANGE+'">Welcome to promote short supply food chain!</h2>'+
+						'<h2 style="color:'+this.colors.DARK_ORANGE+'">'+title+'</h2>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -74,9 +76,11 @@ export default class MenuView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 hero">'+
-						'<h4 style="background-color:rgba(238,248,235,0.8);color:'+this.colors.DARK_ORANGE+'">Decision Support Tool for producers</h4>'+
-						'<p style="background-color:rgba(238,248,235,0.8);color:'+this.colors.DARK_GREEN+'">You will be able to evaluate the most suitable business models for Short Supply Food Chains.</p>'+
-						'<p style="background-color:rgba(238,248,235,0.8);color:'+this.colors.DARK_GREEN+'">Evaluations and recommendations are based on information about your farm, products and activities.</p>'+
+						'<div class="col s12" style="padding:32px 16px 32px 16px; background-color:rgba(238,248,235,0.8);">'+
+							'<h4 style="color:'+this.colors.DARK_ORANGE+'">'+descr_A+'</h4>'+
+							'<p style="color:'+this.colors.DARK_GREEN+'">'+descr_B+'</p>'+
+							'<p style="color:'+this.colors.DARK_GREEN+'">'+descr_C+'</p>'+
+						'</div>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -95,13 +99,13 @@ export default class MenuView extends View {
 			'<div class="row">'+
 				'<div class="col s12 footer">'+
 					'<div class="col s2 center">'+
-						'<p><img src="./img/640px-Flag_of_Europe.svg.png" height="54"/></p>'+ // Original logo is 640 x 427 pixels.
+						'<p><img src="./img/640px-Flag_of_Europe.svg.png" class="responsive-img"/></p>'+ // Original logo is 640 x 427 pixels.
 					'</div>'+
 					'<div class="col s8 center" style="color:'+this.colors.DARK_GREEN+'; font-size:'+fontsize+'">'+
 						"<p>THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020 RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N&deg; 101000788</p>"+
 					'</div>'+
 					'<div class="col s2 center">'+
-						'<p><img src="./img/logo2.png" height="54"/></p>'+ // Original logo is 960 x 540 pixels.
+						'<p><img src="./img/logo2.png" class="responsive-img" /></p>'+ // Original logo is 960 x 540 pixels.
 					'</div>'+
 				'</div>'+
 			'</div>';

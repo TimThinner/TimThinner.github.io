@@ -63,13 +63,13 @@ export default class MenuView extends View {
 		const descr_B = 'You will be able to evaluate the most suitable business models for Short Supply Food Chains.';
 		const descr_C = 'Evaluations and recommendations are based on information about your farm, products and activities.';
 		// LIGHT_GREEN:'#EEF8EB', R=238, G=248, B=235
-		const frameStyle = 'padding:32px 16px 32px 16px; background-color:rgba(238,248,235,0.9);border-radius:32px;border:1px solid '+this.colors.DARK_GREEN+';';
+		const frameStyle = 'padding:16px; background-color:rgba(238,248,235,0.9);border-radius:32px;border:1px solid '+this.colors.DARK_GREEN+';';
 		const html = 
 			// Title:
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h2 style="color:'+this.colors.DARK_ORANGE+'">'+title+'</h2>'+
+						'<h3 style="color:'+this.colors.DARK_ORANGE+'">'+title+'</h3>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -78,7 +78,7 @@ export default class MenuView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12 hero" style="padding-top:32px;">'+
 						'<div class="col s12" style="'+frameStyle+'">'+
-							'<h4 style="color:'+this.colors.DARK_ORANGE+'">'+descr_A+'</h4>'+
+							'<h5 style="color:'+this.colors.DARK_ORANGE+'">'+descr_A+'</h5>'+
 							'<p style="color:'+this.colors.DARK_GREEN+'">'+descr_B+'</p>'+
 							'<p style="color:'+this.colors.DARK_GREEN+'">'+descr_C+'</p>'+
 						'</div>'+

@@ -59,6 +59,8 @@ export default class MenuView extends View {
 			fontsize = '16px';
 		}
 		
+		// LIGHT_GREEN:'#EEF8EB', R=238, G=248, B=235
+		
 		const html = 
 			// Title:
 			'<div class="row">'+
@@ -72,7 +74,9 @@ export default class MenuView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 hero">'+
-						'<p style="padding:16px; background-color:rgba(255,255,255,0.5);color:'+this.colors.DARK_ORANGE+'">Some descriptoin here...</p>'+
+						'<h4 style="background-color:rgba(238,248,235,0.8);color:'+this.colors.DARK_ORANGE+'">Decision Support Tool for producers</h4>'+
+						'<p style="background-color:rgba(238,248,235,0.8);color:'+this.colors.DARK_GREEN+'">You will be able to evaluate the most suitable business models for Short Supply Food Chains.</p>'+
+						'<p style="background-color:rgba(238,248,235,0.8);color:'+this.colors.DARK_GREEN+'">Evaluations and recommendations are based on information about your farm, products and activities.</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

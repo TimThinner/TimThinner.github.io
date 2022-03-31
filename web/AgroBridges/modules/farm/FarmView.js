@@ -258,12 +258,14 @@ export default class FarmView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const w = this.REO.width;
 		const h = this.REO.height;
+		
 		let coeff = 2;
 		if (this.REO.mode === 'LANDSCAPE') {
 			coeff = 1.5;
 		}
-		
-		let bw;
+		const bw = 126;
+		const bh = 42;
+		/*
 		if (w <= 600) {
 			bw = 80;
 		} else if (w > 600 && w <= 992) {
@@ -273,8 +275,8 @@ export default class FarmView extends View {
 		} else {
 			bw = 100;
 		}
-		
-		const bh = bw * 0.5; // "okbutton" is 200 x 100 pixels
+		*/
+		//const bh = bw * 0.5; // "okbutton" is 200 x 100 pixels
 		const bx = -bw*0.5;
 		const by = h*0.5 - coeff*bh;
 		
@@ -283,7 +285,8 @@ export default class FarmView extends View {
 		img.setAttribute('y', by);
 		img.setAttribute('width', bw);
 		img.setAttribute('height', bh);
-		img.setAttribute('href', './svg/okbutton.svg');
+		//img.setAttribute('href', './svg/okbutton.svg');
+		img.setAttribute('href', './img/ok.png');
 		img.style.cursor = 'pointer';
 		img.addEventListener("click", function(){
 			self.models['MenuModel'].setSelected('main');

@@ -80,6 +80,8 @@ export default class MainView extends View {
 		$('#space').append(img);
 	}
 	
+	
+	
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -240,6 +242,108 @@ export default class MainView extends View {
 		$('#space').append(group);
 	}
 	
+	appendAnalysisButton() {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius(); // Radius 12,5%
+		
+		let fontsize;
+		if (r <= 75) {
+			fontsize = 14;
+		} else if (r > 75 && r <= 124) {
+			fontsize = 16;
+		} else if (r > 124 && r <= 150) {
+			fontsize = 18;
+		} else {
+			fontsize = 20;
+		}
+		const titleSVGHeight = fontsize;
+		
+		/*
+		let icon_w = 2*r;
+		let icon_x = -icon_w*0.5;
+		let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		let icon_y = - icon_h*0.5;
+		*/
+		const image_w = 1.8*r;
+		const image_h = image_w*0.75;
+		
+		// Three circles (two visible):
+		// 1. outer border (opacity=0.75)
+		// 2. 20% smaller inner circle (opacity=1)
+		// 3. surface, same size as outer border (opacity=0)
+		const r2 = r-r*0.2;
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const border = document.createElementNS(svgNS, "circle");
+		border.setAttributeNS(null, 'cx', 0);
+		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'r', r);
+		border.style.fill = this.colors.LIGHT_GREY;
+		border.style.fillOpacity = 0.75;
+		border.style.stroke = this.colors.DARK_GREY;
+		border.style.strokeWidth = 5;
+		group.appendChild(border);
+		
+		const ca = document.createElementNS(svgNS, "circle");
+		ca.setAttributeNS(null, 'cx', 0);
+		ca.setAttributeNS(null, 'cy', 0);
+		ca.setAttributeNS(null, 'r', r2);
+		ca.style.fill = this.colors.LIGHT_GREY;
+		ca.style.fillOpacity = 1;
+		ca.style.stroke = this.colors.DARK_GREY;
+		ca.style.strokeWidth = 1;
+		group.appendChild(ca);
+		
+			
+			const svg = document.createElementNS(svgNS, "svg");
+			svg.setAttribute('x',-image_w*0.5);
+			svg.setAttribute('y',-titleSVGHeight*0.5);
+			svg.setAttributeNS(null,'width',image_w);
+			svg.setAttributeNS(null,'height',titleSVGHeight);
+			
+			const title = document.createElementNS(svgNS, 'text');
+			title.setAttribute('x','50%');
+			title.setAttribute('y','50%');
+			title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+			title.setAttribute('font-size',fontsize);
+			title.setAttribute('dominant-baseline','middle');
+			title.setAttribute('text-anchor','middle');
+			title.setAttribute('fill',this.colors.DARK_GREY);
+			title.style.opacity = 1;
+			title.appendChild(document.createTextNode('ANALYSIS'));
+			svg.appendChild(title);
+			group.appendChild(svg);
+		
+		const surface = document.createElementNS(svgNS, "circle");
+		surface.setAttributeNS(null, 'cx', 0);
+		surface.setAttributeNS(null, 'cy', 0);
+		surface.setAttributeNS(null, 'r', r);
+		surface.style.stroke = this.colors.DARK_GREY;
+		surface.style.strokeWidth = 1;
+		surface.style.fillOpacity = 0;
+		surface.style.cursor = 'pointer';
+		
+		// Select which pages open...
+		
+		surface.addEventListener("click", function(){
+			//self.models['MenuModel'].setSelected('farm');
+			console.log('ANALYSIS!');
+		}, false);
+		
+		surface.addEventListener("mouseover", function(event){ 
+			border.style.fill = self.colors.DARK_GREY;
+		}, false);
+		surface.addEventListener("mouseout", function(event){ 
+			border.style.fill = self.colors.LIGHT_GREY;
+		}, false);
+		
+		group.appendChild(surface);
+		
+		$('#space').append(group);
+	}
+	
 	appendProgress() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -307,6 +411,8 @@ export default class MainView extends View {
 		this.appendSun('FARM');
 		this.appendSun('ACTIVITIES');
 		this.appendSun('PRODUCER');
+		
+		this.appendAnalysisButton();
 		
 		this.appendLogoutButton();
 		

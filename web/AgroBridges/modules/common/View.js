@@ -9,6 +9,8 @@ export default class View {
 		this.colors = {
 			SPACE_FILL:'#EEF8EB',
 			WHITE:'#fff',
+			LIGHT_GREY:'#CCCCCC',
+			DARK_GREY:'#888888',
 			LIGHT_GREEN:'#EEF8EB',
 			DARK_GREEN:'#0B7938',
 			LIGHT_ORANGE:'#F4D25A',

@@ -49,7 +49,22 @@ export default class MenuView extends View {
 						'<button class="btn waves-effect waves-light" id="login">Login</button>'+
 					'</div>'+
 				'</div>'+
-			'</div>';
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<div class="col s2 center">'+
+						'<p><img src="./img/640px-Flag_of_Europe.svg.png" height="54"/></p>'+ // Original logo is 640 x 427 pixels.
+					'</div>'+
+					'<div class="col s8 center">'+
+						"<p>THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020 RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N&deg; 101000788</p>"+
+					'</div>'+
+					'<div class="col s2 center">'+
+						'<p><img src="./img/logo2.png" height="54"/></p>'+ // Original logo is 960 x 540 pixels.
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			
+			
 		$(this.el).append(html);
 		
 		$("#login").on('click', function() {

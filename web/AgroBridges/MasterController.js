@@ -5,6 +5,7 @@ import UserModel from './modules/user/UserModel.js';
 import MenuController from './modules/menu/MenuController.js';
 import MainController from './modules/main/MainController.js';
 import FarmController from './modules/farm/FarmController.js';
+import LocationController from './modules/location/LocationController.js';
 /*
 EventObserver	Model					MenuModel
 				ResizeEventObserver		
@@ -46,7 +47,7 @@ class MasterController {
 	
 	
 	init() {
-		console.log('MasterController init! Version 22.03.29-M');
+		console.log('MasterController init! Version 22.03.31');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
@@ -63,13 +64,25 @@ class MasterController {
 		REO.start();
 		
 		console.log('Create Controllers...');
-		
+		// - MENU
+		// - MAIN
+		//   - Farm
+		//     - Location
+		//     - Info
+		//     - Vegetables
+		//     - Animals
+		//     - Fruits
+		//   - Activities
+		//   - Producer
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
 		this.controllers['main'] = new MainController({name:'main', master:this, el:'#content', visible:false});
 		this.controllers['main'].init();
+		
 		this.controllers['farm'] = new FarmController({name:'farm', master:this, el:'#content', visible:false});
 		this.controllers['farm'].init();
+		this.controllers['location'] = new LocationController({name:'location', master:this, el:'#content', visible:false});
+		this.controllers['location'].init();
 	}
 	
 	forceLogout() {

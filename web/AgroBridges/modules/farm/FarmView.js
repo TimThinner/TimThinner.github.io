@@ -155,16 +155,19 @@ export default class FarmView extends View {
 		surface.style.cursor = 'pointer';
 		
 		// Select which pages open...
-		
+		if (type === 'LOCATION') {
 			surface.addEventListener("click", function(){
-				
-				//self.models['MenuModel'].setSelected('main');
-				console.log('SELECTED: '+type);
-				
+				self.models['MenuModel'].setSelected('location');
 			}, false);
 			
-			
-			
+		} else {
+			surface.addEventListener("click", function(){
+				//self.models['MenuModel'].setSelected('main');
+				console.log('SELECTED: '+type);
+			}, false);
+		}
+		
+		
 		
 		
 		surface.addEventListener("mouseover", function(event){ 

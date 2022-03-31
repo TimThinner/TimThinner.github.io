@@ -168,6 +168,18 @@ export default class MainView extends View {
 			img.setAttribute('href', './img/farm.png');
 			group.appendChild(img);
 			
+			
+		} else if (type === 'ACTIVITIES') {
+			
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './img/activities.png');
+			group.appendChild(img);
+			
+			
 		} else if (type === 'PRODUCER') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', icon_x);

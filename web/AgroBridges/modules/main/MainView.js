@@ -89,15 +89,15 @@ export default class MainView extends View {
 		
 		let fontsize;
 		if (r <= 75) {
-			fontsize = 14;
-		} else if (r > 75 && r <= 124) {
-			fontsize = 16;
-		} else if (r > 124 && r <= 150) {
 			fontsize = 18;
-		} else {
+		} else if (r > 75 && r <= 124) {
 			fontsize = 20;
+		} else if (r > 124 && r <= 150) {
+			fontsize = 22;
+		} else {
+			fontsize = 24;
 		}
-		const titleSVGHeight = fontsize;
+		//const titleSVGHeight = fontsize;
 		
 		/*
 		Use Oranges in "button" circles:
@@ -111,7 +111,7 @@ export default class MainView extends View {
 		let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		let icon_y = - icon_h*0.5;
 		
-		const image_w = 1.8*r;
+		const image_w = r;
 		const image_h = image_w*0.75;
 		
 		// Three circles (two visible):
@@ -190,16 +190,16 @@ export default class MainView extends View {
 			img.setAttribute('height', icon_h);
 			img.setAttribute('href', './img/farmer.png');
 			group.appendChild(img);
-			
-		} else {
+		}
 		
+		if (type === 'FARM') {
 			// Text, which will be replaced with an image soon.
 			const svg = document.createElementNS(svgNS, "svg");
-			svg.setAttribute('x',-image_w*0.5);
-			svg.setAttribute('y',-titleSVGHeight*0.5);
+			svg.setAttribute('x',-r*0.5);
+			svg.setAttribute('y',r*0.8);
 			svg.setAttributeNS(null,'width',image_w);
-			svg.setAttributeNS(null,'height',titleSVGHeight);
-			
+			svg.setAttributeNS(null,'height',fontsize);
+		
 			const title = document.createElementNS(svgNS, 'text');
 			title.setAttribute('x','50%');
 			title.setAttribute('y','50%');
@@ -207,9 +207,9 @@ export default class MainView extends View {
 			title.setAttribute('font-size',fontsize);
 			title.setAttribute('dominant-baseline','middle');
 			title.setAttribute('text-anchor','middle');
-			title.setAttribute('fill',this.colors.DARK_ORANGE);
+			title.setAttribute('fill',this.colors.DARK_GREEN);
 			title.style.opacity = 1;
-			title.appendChild(document.createTextNode(type));
+			title.appendChild(document.createTextNode('3/8'));
 			svg.appendChild(title);
 			group.appendChild(svg);
 		}
@@ -296,25 +296,24 @@ export default class MainView extends View {
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
-			
-			const svg = document.createElementNS(svgNS, "svg");
-			svg.setAttribute('x',-image_w*0.5);
-			svg.setAttribute('y',-titleSVGHeight*0.5);
-			svg.setAttributeNS(null,'width',image_w);
-			svg.setAttributeNS(null,'height',titleSVGHeight);
-			
-			const title = document.createElementNS(svgNS, 'text');
-			title.setAttribute('x','50%');
-			title.setAttribute('y','50%');
-			title.setAttribute('font-family','Arial, Helvetica, sans-serif');
-			title.setAttribute('font-size',fontsize);
-			title.setAttribute('dominant-baseline','middle');
-			title.setAttribute('text-anchor','middle');
-			title.setAttribute('fill',this.colors.DARK_GREY);
-			title.style.opacity = 1;
-			title.appendChild(document.createTextNode('ANALYSIS'));
-			svg.appendChild(title);
-			group.appendChild(svg);
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',-image_w*0.5);
+		svg.setAttribute('y',-titleSVGHeight*0.5);
+		svg.setAttributeNS(null,'width',image_w);
+		svg.setAttributeNS(null,'height',titleSVGHeight);
+		
+		const title = document.createElementNS(svgNS, 'text');
+		title.setAttribute('x','50%');
+		title.setAttribute('y','50%');
+		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		title.setAttribute('font-size',fontsize);
+		title.setAttribute('dominant-baseline','middle');
+		title.setAttribute('text-anchor','middle');
+		title.setAttribute('fill',this.colors.DARK_GREY);
+		title.style.opacity = 1;
+		title.appendChild(document.createTextNode('ANALYSIS'));
+		svg.appendChild(title);
+		group.appendChild(svg);
 		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);

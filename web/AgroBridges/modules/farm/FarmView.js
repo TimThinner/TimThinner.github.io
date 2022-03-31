@@ -256,13 +256,14 @@ export default class FarmView extends View {
 	appendOKButton() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const w = this.REO.width;
-		const h = this.REO.height;
+		const r = this.sunRadius(); // Radius 12,5%
+		//const w = this.REO.width;
+		//const h = this.REO.height;
 		
-		let coeff = 2;
+		/*let coeff = 2;
 		if (this.REO.mode === 'LANDSCAPE') {
 			coeff = 1.5;
-		}
+		}*/
 		const bw = 126;
 		const bh = 42;
 		/*
@@ -278,7 +279,7 @@ export default class FarmView extends View {
 		*/
 		//const bh = bw * 0.5; // "okbutton" is 200 x 100 pixels
 		const bx = -bw*0.5;
-		const by = h*0.5 - coeff*bh;
+		const by = 3*r; // h*0.5 - coeff*bh;
 		
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', bx);

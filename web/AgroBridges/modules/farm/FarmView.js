@@ -182,6 +182,11 @@ export default class FarmView extends View {
 				self.models['MenuModel'].setSelected('location');
 			}, false);
 			
+		} else if (type === 'VEGETABLES') {
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('vege');
+			}, false);
+			
 		} else {
 			surface.addEventListener("click", function(){
 				//self.models['MenuModel'].setSelected('main');
@@ -217,9 +222,9 @@ export default class FarmView extends View {
 		*/
 		const group = document.createElementNS(svgNS, "g");
 		
-		let coeff = -4;
-		if (this.REO.mode === 'LANDSCAPE') {
-			coeff = -3.5;
+		let coeff = -3.5;
+		if (this.REO.mode === 'PORTRAIT') {
+			coeff = -4;
 		}
 		
 		const svg = document.createElementNS(svgNS, "svg");

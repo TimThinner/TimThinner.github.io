@@ -1,6 +1,6 @@
 import View from '../common/View.js';
 
-export default class LocationView extends View {
+export default class VegeView extends View {
 	
 	constructor(controller) {
 		super(controller);
@@ -29,7 +29,7 @@ export default class LocationView extends View {
 	}
 	
 	notify(options) {
-		console.log('LocationView NOTHING to Notify!');
+		console.log('VegeView NOTHING to Notify!');
 	}
 	
 	render() {
@@ -40,19 +40,19 @@ export default class LocationView extends View {
 		const html = '<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+color+'">FARM LOCATION</h3>'+
+						'<h3 style="color:'+color+'">FARM VEGETABLES</h3>'+
 						'<p>&nbsp;</p>'+
 						'<p>&nbsp;</p>'+
 						'<p>&nbsp;</p>'+
 						'<p>&nbsp;</p>'+
-						'<button class="btn waves-effect waves-light" id="location-ok" style="width:120px">OK</button>'+
+						'<button class="btn waves-effect waves-light" id="vege-ok" style="width:120px">OK</button>'+
 						'<p>&nbsp;</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>';
 		$(this.el).append(html);
 		
-		$("#location-ok").on('click', function() {
+		$("#vege-ok").on('click', function() {
 			self.controller.models['MenuModel'].setSelected('farm');
 		});
 		this.rendered = true;

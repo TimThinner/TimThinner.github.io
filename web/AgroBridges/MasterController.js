@@ -6,6 +6,7 @@ import MenuController from './modules/menu/MenuController.js';
 import MainController from './modules/main/MainController.js';
 import FarmController from './modules/farm/FarmController.js';
 import LocationController from './modules/location/LocationController.js';
+import VegeController from './modules/vege/VegeController.js';
 /*
 EventObserver	Model					MenuModel
 				ResizeEventObserver		
@@ -83,6 +84,8 @@ class MasterController {
 		this.controllers['farm'].init();
 		this.controllers['location'] = new LocationController({name:'location', master:this, el:'#content', visible:false});
 		this.controllers['location'].init();
+		this.controllers['vege'] = new VegeController({name:'vege', master:this, el:'#content', visible:false});
+		this.controllers['vege'].init();
 	}
 	
 	forceLogout() {

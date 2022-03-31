@@ -54,16 +54,16 @@ export default class MenuView extends View {
 		} else if (w > 600 && w <= 992) {
 			fontsize = '12px';
 		} else if (w > 992 && w <= 1200) {
-			fontsize = '13px';
-		} else {
 			fontsize = '14px';
+		} else {
+			fontsize = '16px';
 		}
 		const title = 'Welcome to promote short supply food chain!';
 		const descr_A = 'Decision Support Tool for producers';
 		const descr_B = 'You will be able to evaluate the most suitable business models for Short Supply Food Chains.';
 		const descr_C = 'Evaluations and recommendations are based on information about your farm, products and activities.';
 		// LIGHT_GREEN:'#EEF8EB', R=238, G=248, B=235
-		const frameStyle = 'padding:32px 16px 32px 16px; background-color:rgba(238,248,235,0.8);border-radius:10%;border:1px solid '+this.colors.DARK_GREEN;
+		const frameStyle = 'padding:32px 16px 32px 16px; background-color:rgba(238,248,235,0.9);border-radius:32px;border:1px solid '+this.colors.DARK_GREEN+';';
 		const html = 
 			// Title:
 			'<div class="row">'+
@@ -76,7 +76,7 @@ export default class MenuView extends View {
 			// Description:
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<div class="col s12 hero" style="margin-top:32px;">'+
+					'<div class="col s12 hero" style="padding-top:32px;">'+
 						'<div class="col s12" style="'+frameStyle+'">'+
 							'<h4 style="color:'+this.colors.DARK_ORANGE+'">'+descr_A+'</h4>'+
 							'<p style="color:'+this.colors.DARK_GREEN+'">'+descr_B+'</p>'+

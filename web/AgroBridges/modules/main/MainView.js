@@ -196,7 +196,7 @@ export default class MainView extends View {
 			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',-r*0.5);
-			svg.setAttribute('y',r*0.8);
+			svg.setAttribute('y',r*0.75);
 			svg.setAttributeNS(null,'width',r);
 			svg.setAttributeNS(null,'height',fontsize+fontsize*0.5);
 			
@@ -206,10 +206,10 @@ export default class MainView extends View {
 			rect.setAttribute('y',0);
 			rect.setAttribute('width',r);
 			rect.setAttribute('height',fontsize+fontsize*0.5);
-			rect.style.fill = this.colors.WHITE;
+			rect.style.fill = this.colors.LIGHT_ORANGE;
 			rect.style.fillOpacity = 1;
 			rect.style.stroke = this.colors.DARK_ORANGE;
-			rect.style.strokeWidth = 1;
+			rect.style.strokeWidth = 2;
 			svg.appendChild(rect);
 			
 			const title = document.createElementNS(svgNS, 'text');

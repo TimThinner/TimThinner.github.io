@@ -67,6 +67,8 @@ export default class MenuView extends View {
 		const descr_A = 'Decision Support Tool for producers';
 		const descr_B = 'You will be able to evaluate the most suitable business models for Short Supply Food Chains.';
 		const descr_C = 'Evaluations and recommendations are based on information about your farm, products and activities.';
+		const footer_text = "THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020 RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N&deg;&nbsp;101000788";
+		
 		// LIGHT_GREEN:'#EEF8EB', R=238, G=248, B=235
 		const frameStyle = 'padding:16px; background-color:rgba(238,248,235,0.9);border-radius:32px;border:1px solid '+this.colors.DARK_GREEN+';';
 		const html = 
@@ -107,8 +109,8 @@ export default class MenuView extends View {
 					'<div class="col s2 center">'+
 						'<p><img src="./img/640px-Flag_of_Europe.svg.png" class="responsive-img"/></p>'+ // Original logo is 640 x 427 pixels.
 					'</div>'+
-					'<div class="col s8 center" style="color:'+this.colors.DARK_GREEN+'; font-size:'+footer_fontsize+';">'+
-						"<p>THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020 RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N&deg; 101000788</p>"+
+					'<div class="col s8 center">'+
+						'<p style="color:'+this.colors.DARK_GREEN+';font-size:'+footer_fontsize+';">'+footer_text+'</p>'+
 					'</div>'+
 					'<div class="col s2 center">'+
 						'<p><img src="./img/logo2.png" class="responsive-img" /></p>'+ // Original logo is 960 x 540 pixels.

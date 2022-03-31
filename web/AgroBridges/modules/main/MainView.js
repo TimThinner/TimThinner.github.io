@@ -97,7 +97,13 @@ export default class MainView extends View {
 		}
 		const titleSVGHeight = fontsize;
 		
-		// All SVG images are 400 x 300 => w=1.8*r, h=w*0.75
+		
+		let icon_w = r;
+		let icon_x = -icon_w*0.5;
+		let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		let icon_y = - icon_h*0.5;
+		
+		
 		const image_w = 1.8*r;
 		const image_h = image_w*0.75;
 		
@@ -148,6 +154,15 @@ export default class MainView extends View {
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
+		if (type === 'FARM') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './img/farm.png');
+			group.appendChild(img);
+		} else {
 		
 			// Text, which will be replaced with an image soon.
 			const svg = document.createElementNS(svgNS, "svg");
@@ -168,7 +183,7 @@ export default class MainView extends View {
 			title.appendChild(document.createTextNode(type));
 			svg.appendChild(title);
 			group.appendChild(svg);
-		
+		}
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
 		surface.setAttributeNS(null, 'cy', 0);

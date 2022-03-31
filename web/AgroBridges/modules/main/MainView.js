@@ -97,7 +97,13 @@ export default class MainView extends View {
 		}
 		const titleSVGHeight = fontsize;
 		
+		/*
+		Use Oranges in "button" circles:
+		LIGHT_ORANGE in background and DARK_ORANGE in outline stroke.
 		
+		LIGHT_ORANGE:'#F4D25A',
+		DARK_ORANGE:'#EF8806'
+		*/
 		let icon_w = 2*r;
 		let icon_x = -icon_w*0.5;
 		let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
@@ -137,19 +143,19 @@ export default class MainView extends View {
 		border.setAttributeNS(null, 'cx', 0);
 		border.setAttributeNS(null, 'cy', 0);
 		border.setAttributeNS(null, 'r', r);
-		border.style.fill = this.colors.WHITE;
+		border.style.fill = this.colors.LIGHT_ORANGE;
 		border.style.fillOpacity = 0.75;
-		border.style.stroke = this.colors.DARK_GREEN;
-		border.style.strokeWidth = 2;
+		border.style.stroke = this.colors.DARK_ORANGE;
+		border.style.strokeWidth = 5;
 		group.appendChild(border);
 		
 		const ca = document.createElementNS(svgNS, "circle");
 		ca.setAttributeNS(null, 'cx', 0);
 		ca.setAttributeNS(null, 'cy', 0);
 		ca.setAttributeNS(null, 'r', r2);
-		ca.style.fill = this.colors.WHITE;
+		ca.style.fill = this.colors.LIGHT_ORANGE;
 		ca.style.fillOpacity = 1;
-		ca.style.stroke = this.colors.DARK_GREEN;
+		ca.style.stroke = this.colors.LIGHT_ORANGE;
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
@@ -161,6 +167,16 @@ export default class MainView extends View {
 			img.setAttribute('height', icon_h);
 			img.setAttribute('href', './img/farm.png');
 			group.appendChild(img);
+			
+		} else if (type === 'PRODUCER') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './img/farmer.png');
+			group.appendChild(img);
+			
 		} else {
 		
 			// Text, which will be replaced with an image soon.
@@ -177,7 +193,7 @@ export default class MainView extends View {
 			title.setAttribute('font-size',fontsize);
 			title.setAttribute('dominant-baseline','middle');
 			title.setAttribute('text-anchor','middle');
-			title.setAttribute('fill',this.colors.DARK_GREEN);
+			title.setAttribute('fill',this.colors.DARK_ORANGE);
 			title.style.opacity = 1;
 			title.appendChild(document.createTextNode(type));
 			svg.appendChild(title);
@@ -187,7 +203,7 @@ export default class MainView extends View {
 		surface.setAttributeNS(null, 'cx', 0);
 		surface.setAttributeNS(null, 'cy', 0);
 		surface.setAttributeNS(null, 'r', r);
-		surface.style.stroke = this.colors.DARK_GREEN;
+		surface.style.stroke = this.colors.DARK_ORANGE;
 		surface.style.strokeWidth = 1;
 		surface.style.fillOpacity = 0;
 		surface.style.cursor = 'pointer';
@@ -201,10 +217,10 @@ export default class MainView extends View {
 		}
 		
 		surface.addEventListener("mouseover", function(event){ 
-			border.style.fill = self.colors.DARK_GREEN;
+			border.style.fill = self.colors.DARK_ORANGE;
 		}, false);
 		surface.addEventListener("mouseout", function(event){ 
-			border.style.fill = self.colors.WHITE;
+			border.style.fill = self.colors.LIGHT_ORANGE;
 		}, false);
 		
 		group.appendChild(surface);

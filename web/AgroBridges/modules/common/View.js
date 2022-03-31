@@ -11,7 +11,7 @@ export default class View {
 			WHITE:'#fff',
 			LIGHT_GREEN:'#EEF8EB',
 			DARK_GREEN:'#0B7938',
-			LIGHT_ORANGE: '#F4D25A',
+			LIGHT_ORANGE:'#F4D25A',
 			DARK_ORANGE:'#EF8806'
 		};
 	}

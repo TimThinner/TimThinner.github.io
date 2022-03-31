@@ -207,6 +207,7 @@ export default class MainView extends View {
 			rect.setAttribute('width',r);
 			rect.setAttribute('height',fontsize);
 			rect.setAttribute('fill', this.colors.SPACE_FILL);
+			rect.setAttribute('stroke', this.colors.DARK_GREEN);
 			
 			svg.appendChild(rect);
 			

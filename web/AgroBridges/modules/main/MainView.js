@@ -155,7 +155,7 @@ export default class MainView extends View {
 		ca.setAttributeNS(null, 'r', r2);
 		ca.style.fill = this.colors.LIGHT_ORANGE;
 		ca.style.fillOpacity = 1;
-		ca.style.stroke = this.colors.LIGHT_ORANGE;
+		ca.style.stroke = this.colors.DARK_ORANGE;
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		

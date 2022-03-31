@@ -89,13 +89,13 @@ export default class MainView extends View {
 		
 		let fontsize;
 		if (r <= 75) {
-			fontsize = 18;
-		} else if (r > 75 && r <= 124) {
 			fontsize = 20;
-		} else if (r > 124 && r <= 150) {
+		} else if (r > 75 && r <= 124) {
 			fontsize = 22;
-		} else {
+		} else if (r > 124 && r <= 150) {
 			fontsize = 24;
+		} else {
+			fontsize = 26;
 		}
 		//const titleSVGHeight = fontsize;
 		
@@ -205,7 +205,7 @@ export default class MainView extends View {
 			rect.setAttribute('x',0);
 			rect.setAttribute('y',0);
 			rect.setAttribute('width',r);
-			rect.setAttribute('height',fontsize);
+			rect.setAttribute('height',fontsize+fontsize*0.5);
 			rect.style.fill = this.colors.LIGHT_ORANGE;
 			rect.style.fillOpacity = 1;
 			rect.style.stroke = this.colors.DARK_ORANGE;

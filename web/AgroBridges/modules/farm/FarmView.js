@@ -145,6 +145,15 @@ export default class FarmView extends View {
 			img.setAttribute('href', './img/vege.png');
 			group.appendChild(img);
 			
+		} else if (type === 'ANIMALS') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './img/animals.png');
+			group.appendChild(img);
+			
 		} else {
 		
 			// Text, which will be replaced with an image soon.

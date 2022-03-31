@@ -98,11 +98,10 @@ export default class MainView extends View {
 		const titleSVGHeight = fontsize;
 		
 		
-		let icon_w = r;
+		let icon_w = 2*r;
 		let icon_x = -icon_w*0.5;
 		let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		let icon_y = - icon_h*0.5;
-		
 		
 		const image_w = 1.8*r;
 		const image_h = image_w*0.75;

@@ -198,7 +198,7 @@ export default class MainView extends View {
 			svg.setAttribute('x',-r*0.5);
 			svg.setAttribute('y',r*0.8);
 			svg.setAttributeNS(null,'width',r);
-			svg.setAttributeNS(null,'height',fontsize);
+			svg.setAttributeNS(null,'height',fontsize+fontsize*0.5);
 			
 			const rect = document.createElementNS(svgNS, 'rect');
 			// Setup the <rect> element.
@@ -206,7 +206,7 @@ export default class MainView extends View {
 			rect.setAttribute('y',0);
 			rect.setAttribute('width',r);
 			rect.setAttribute('height',fontsize+fontsize*0.5);
-			rect.style.fill = this.colors.LIGHT_ORANGE;
+			rect.style.fill = this.colors.WHITE;
 			rect.style.fillOpacity = 1;
 			rect.style.stroke = this.colors.DARK_ORANGE;
 			rect.style.strokeWidth = 1;

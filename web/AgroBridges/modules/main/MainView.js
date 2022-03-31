@@ -111,8 +111,8 @@ export default class MainView extends View {
 		let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		let icon_y = - icon_h*0.5;
 		
-		const image_w = r;
-		const image_h = image_w*0.75;
+		//const image_w = r;
+		//const image_h = image_w*0.75;
 		
 		// Three circles (two visible):
 		// 1. outer border (opacity=0.75)
@@ -193,13 +193,23 @@ export default class MainView extends View {
 		}
 		
 		if (type === 'FARM') {
-			// Text, which will be replaced with an image soon.
+			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',-r*0.5);
 			svg.setAttribute('y',r*0.8);
-			svg.setAttributeNS(null,'width',image_w);
+			svg.setAttributeNS(null,'width',r);
 			svg.setAttributeNS(null,'height',fontsize);
-		
+			
+			const rect = document.createElementNS(svgNS, 'rect');
+			// Setup the <rect> element.
+			rect.setAttribute('x',-r*0.5);
+			rect.setAttribute('y',r*0.8);
+			rect.setAttribute('width',r);
+			rect.setAttribute('height',fontsize);
+			rect.setAttribute('fill', this.colors.SPACE_FILL);
+			
+			svg.appendChild(rect);
+			
 			const title = document.createElementNS(svgNS, 'text');
 			title.setAttribute('x','50%');
 			title.setAttribute('y','50%');
@@ -220,6 +230,7 @@ export default class MainView extends View {
 		surface.style.stroke = this.colors.DARK_ORANGE;
 		surface.style.strokeWidth = 1;
 		surface.style.fillOpacity = 0;
+		surface.style.opacity = 0;
 		surface.style.cursor = 'pointer';
 		
 		// Select which pages open...

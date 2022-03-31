@@ -59,13 +59,6 @@ export default class MenuView extends View {
 			fontsize = '16px';
 		}
 		
-				<div class="row" style="margin-bottom:0.5em;">
-					<div class="large-12 columns hero" id="top">
-						<h1 style="margin-top:-0.25em"><img src="./img/herotext.png" /></h1>
-					</div>
-				</div>
-		
-		
 		const html = 
 			// Title:
 			'<div class="row">'+

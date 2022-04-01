@@ -69,7 +69,7 @@ export default class ActivitiesView extends View {
 		$(this.el).append(html);
 		
 		$("#location-ok").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('farm');
+			self.controller.models['MenuModel'].setSelected('main');
 		});
 		this.rendered = true;
 	}

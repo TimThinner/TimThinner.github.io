@@ -86,13 +86,13 @@ export default class MainView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let fontsize;
 		if (r <= 75) {
-			fontsize = 14;
+			fontsize = 12;
 		} else if (r > 75 && r <= 124) {
-			fontsize = 16;
+			fontsize = 14;
 		} else if (r > 124 && r <= 150) {
-			fontsize = 18;
+			fontsize = 16;
 		} else {
-			fontsize = 20;
+			fontsize = 18;
 		}
 		
 		const labelWidth = r + r*0.5;
@@ -128,22 +128,55 @@ export default class MainView extends View {
 		group.appendChild(svg);
 	}
 	
+	appendFillStatus(group, type, r) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let fontsize;
+		if (r <= 75) {
+			fontsize = 12;
+		} else if (r > 75 && r <= 124) {
+			fontsize = 14;
+		} else if (r > 124 && r <= 150) {
+			fontsize = 16;
+		} else {
+			fontsize = 18;
+		}
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',-r*0.5);
+		svg.setAttribute('y',r*0.75);
+		svg.setAttributeNS(null,'width',r);
+		svg.setAttributeNS(null,'height',2*fontsize);
+		
+		const rect = document.createElementNS(svgNS, 'rect');
+		// Setup the <rect> element.
+		rect.setAttribute('x',0);
+		rect.setAttribute('y',0);
+		rect.setAttribute('width',r);
+		rect.setAttribute('height',2*fontsize);
+		rect.style.fill = this.colors.LIGHT_ORANGE;
+		rect.style.fillOpacity = 1;
+		rect.style.stroke = this.colors.DARK_ORANGE;
+		rect.style.strokeWidth = 2;
+		svg.appendChild(rect);
+		
+		const title = document.createElementNS(svgNS, 'text');
+		title.setAttribute('x','50%');
+		title.setAttribute('y','50%');
+		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		title.setAttribute('font-size',fontsize);
+		title.setAttribute('dominant-baseline','middle');
+		title.setAttribute('text-anchor','middle');
+		title.setAttribute('fill',this.colors.DARK_GREEN);
+		title.style.opacity = 1;
+		title.appendChild(document.createTextNode('3/8'));
+		svg.appendChild(title);
+		group.appendChild(svg);
+	}
+	
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius(); // Radius 12,5%
-		
-		let fontsize;
-		if (r <= 75) {
-			fontsize = 20;
-		} else if (r > 75 && r <= 124) {
-			fontsize = 22;
-		} else if (r > 124 && r <= 150) {
-			fontsize = 24;
-		} else {
-			fontsize = 26;
-		}
-		//const titleSVGHeight = fontsize;
 		
 		/*
 		Use Oranges in "button" circles:
@@ -238,40 +271,7 @@ export default class MainView extends View {
 			group.appendChild(img);
 		}
 		
-		if (type === 'FARM') {
-			
-			const svg = document.createElementNS(svgNS, "svg");
-			svg.setAttribute('x',-r*0.5);
-			svg.setAttribute('y',r*0.75);
-			svg.setAttributeNS(null,'width',r);
-			svg.setAttributeNS(null,'height',fontsize+fontsize*0.5);
-			
-			const rect = document.createElementNS(svgNS, 'rect');
-			// Setup the <rect> element.
-			rect.setAttribute('x',0);
-			rect.setAttribute('y',0);
-			rect.setAttribute('width',r);
-			rect.setAttribute('height',fontsize+fontsize*0.5);
-			rect.style.fill = this.colors.LIGHT_ORANGE;
-			rect.style.fillOpacity = 1;
-			rect.style.stroke = this.colors.DARK_ORANGE;
-			rect.style.strokeWidth = 2;
-			svg.appendChild(rect);
-			
-			const title = document.createElementNS(svgNS, 'text');
-			title.setAttribute('x','50%');
-			title.setAttribute('y','50%');
-			title.setAttribute('font-family','Arial, Helvetica, sans-serif');
-			title.setAttribute('font-size',fontsize);
-			title.setAttribute('dominant-baseline','middle');
-			title.setAttribute('text-anchor','middle');
-			title.setAttribute('fill',this.colors.DARK_GREEN);
-			title.style.opacity = 1;
-			title.appendChild(document.createTextNode('3/8'));
-			svg.appendChild(title);
-			group.appendChild(svg);
-		}
-		
+		this.appendFillStatus(group, type, r);
 		this.appendLabel(group, type, r);
 		
 		const surface = document.createElementNS(svgNS, "circle");

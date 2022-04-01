@@ -55,13 +55,13 @@ export default class FarmView extends View {
 		
 		let fontsize;
 		if (r <= 75) {
-			fontsize = 14;
+			fontsize = 12;
 		} else if (r > 75 && r <= 124) {
-			fontsize = 16;
+			fontsize = 14;
 		} else if (r > 124 && r <= 150) {
-			fontsize = 18;
+			fontsize = 16;
 		} else {
-			fontsize = 20;
+			fontsize = 18;
 		}
 		
 		const labelWidth = r + r*0.5;
@@ -93,6 +93,51 @@ export default class FarmView extends View {
 		title.setAttribute('fill',this.colors.DARK_GREEN);
 		title.style.opacity = 1;
 		title.appendChild(document.createTextNode(type));
+		svg.appendChild(title);
+		group.appendChild(svg);
+	}
+	
+	appendFillStatus(group, type, r) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let fontsize;
+		if (r <= 75) {
+			fontsize = 12;
+		} else if (r > 75 && r <= 124) {
+			fontsize = 14;
+		} else if (r > 124 && r <= 150) {
+			fontsize = 16;
+		} else {
+			fontsize = 18;
+		}
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',-r*0.5);
+		svg.setAttribute('y',r*0.75);
+		svg.setAttributeNS(null,'width',r);
+		svg.setAttributeNS(null,'height',2*fontsize);
+		
+		const rect = document.createElementNS(svgNS, 'rect');
+		// Setup the <rect> element.
+		rect.setAttribute('x',0);
+		rect.setAttribute('y',0);
+		rect.setAttribute('width',r);
+		rect.setAttribute('height',2*fontsize);
+		rect.style.fill = this.colors.LIGHT_ORANGE;
+		rect.style.fillOpacity = 1;
+		rect.style.stroke = this.colors.DARK_ORANGE;
+		rect.style.strokeWidth = 2;
+		svg.appendChild(rect);
+		
+		const title = document.createElementNS(svgNS, 'text');
+		title.setAttribute('x','50%');
+		title.setAttribute('y','50%');
+		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		title.setAttribute('font-size',fontsize);
+		title.setAttribute('dominant-baseline','middle');
+		title.setAttribute('text-anchor','middle');
+		title.setAttribute('fill',this.colors.DARK_GREEN);
+		title.style.opacity = 1;
+		title.appendChild(document.createTextNode('3/8'));
 		svg.appendChild(title);
 		group.appendChild(svg);
 	}
@@ -218,29 +263,9 @@ export default class FarmView extends View {
 			img.setAttribute('href', './img/fruits.png');
 			group.appendChild(img);
 		}
-		
 		this.appendLabel(group, type, r);
-		/*else {
-			
-			const svg = document.createElementNS(svgNS, "svg");
-			svg.setAttribute('x',-image_w*0.5);
-			svg.setAttribute('y',-fontsize*0.5);
-			svg.setAttributeNS(null,'width',image_w);
-			svg.setAttributeNS(null,'height',fontsize);
-			
-			const title = document.createElementNS(svgNS, 'text');
-			title.setAttribute('x','50%');
-			title.setAttribute('y','50%');
-			title.setAttribute('font-family','Arial, Helvetica, sans-serif');
-			title.setAttribute('font-size',fontsize);
-			title.setAttribute('dominant-baseline','middle');
-			title.setAttribute('text-anchor','middle');
-			title.setAttribute('fill',this.colors.DARK_ORANGE);
-			title.style.opacity = 1;
-			title.appendChild(document.createTextNode(type));
-			svg.appendChild(title);
-			group.appendChild(svg);
-		}*/
+		this.appendFillStatus(group, type, r);
+		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
 		surface.setAttributeNS(null, 'cy', 0);

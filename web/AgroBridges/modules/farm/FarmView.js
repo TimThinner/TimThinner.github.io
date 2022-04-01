@@ -67,16 +67,16 @@ export default class FarmView extends View {
 		const labelWidth = r + r*0.5;
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-labelWidth*0.5);
-		svg.setAttribute('y',-r + r*0.5);
+		svg.setAttribute('y',-r - r*0.5);
 		svg.setAttributeNS(null,'width',labelWidth);
-		svg.setAttributeNS(null,'height',fontsize+fontsize*0.5);
+		svg.setAttributeNS(null,'height',2*fontsize);
 		
 		const rect = document.createElementNS(svgNS, 'rect');
 		// Setup the <rect> element.
 		rect.setAttribute('x',0);
 		rect.setAttribute('y',0);
 		rect.setAttribute('width',labelWidth);
-		rect.setAttribute('height',fontsize+fontsize*0.5);
+		rect.setAttribute('height',2*fontsize);
 		rect.style.fill = this.colors.LIGHT_ORANGE;
 		rect.style.fillOpacity = 1;
 		rect.style.stroke = this.colors.DARK_ORANGE;

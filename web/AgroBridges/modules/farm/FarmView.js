@@ -282,6 +282,11 @@ export default class FarmView extends View {
 				self.models['MenuModel'].setSelected('location');
 			}, false);
 			
+		} else if (type === 'INFO') {
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('info');
+			}, false);
+			
 		} else if (type === 'VEGETABLES') {
 			surface.addEventListener("click", function(){
 				self.models['MenuModel'].setSelected('vege');

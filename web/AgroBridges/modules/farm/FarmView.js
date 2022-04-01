@@ -171,17 +171,18 @@ export default class FarmView extends View {
 			group.appendChild(img);
 		}
 		
+		const labelWidth = r + r*0.5;
 		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttribute('x',-r*0.5);
+		svg.setAttribute('x',-labelWidth*0.5);
 		svg.setAttribute('y',-r*0.75);
-		svg.setAttributeNS(null,'width',r);
+		svg.setAttributeNS(null,'width',labelWidth);
 		svg.setAttributeNS(null,'height',fontsize+fontsize*0.5);
 		
 		const rect = document.createElementNS(svgNS, 'rect');
 		// Setup the <rect> element.
 		rect.setAttribute('x',0);
 		rect.setAttribute('y',0);
-		rect.setAttribute('width',r);
+		rect.setAttribute('width',labelWidth);
 		rect.setAttribute('height',fontsize+fontsize*0.5);
 		rect.style.fill = this.colors.LIGHT_ORANGE;
 		rect.style.fillOpacity = 1;

@@ -288,6 +288,16 @@ export default class MainView extends View {
 			surface.addEventListener("click", function(){
 				self.models['MenuModel'].setSelected('farm');
 			}, false);
+			
+		} else if (type === 'ACTIVITIES') {
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('activities');
+			}, false);
+			
+		} else if (type === 'PRODUCER') {
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('producer');
+			}, false);
 		}
 		
 		surface.addEventListener("mouseover", function(event){ 

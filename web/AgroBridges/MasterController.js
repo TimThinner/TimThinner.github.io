@@ -5,14 +5,14 @@ import UserModel from './modules/user/UserModel.js';
 import MenuController from './modules/menu/MenuController.js';
 import MainController from './modules/main/MainController.js';
 import FarmController from './modules/farm/FarmController.js';
-
-
 import LocationController from './modules/location/LocationController.js';
 import InfoController from './modules/info/InfoController.js';
 import VegeController from './modules/vege/VegeController.js';
 import AnimalsController from './modules/animals/AnimalsController.js';
 import FruitsController from './modules/fruits/FruitsController.js';
 
+import ActivitiesController from './modules/activities/ActivitiesController.js';
+import ProducerController from './modules/producer/ProducerController.js';
 /*
 EventObserver	Model					MenuModel
 				ResizeEventObserver		
@@ -98,6 +98,11 @@ class MasterController {
 		this.controllers['animals'].init();
 		this.controllers['fruits'] = new FruitsController({name:'fruits', master:this, el:'#content', visible:false});
 		this.controllers['fruits'].init();
+		
+		this.controllers['activities'] = new ActivitiesController({name:'activities', master:this, el:'#content', visible:false});
+		this.controllers['activities'].init();
+		this.controllers['producer'] = new ProducerController({name:'producer', master:this, el:'#content', visible:false});
+		this.controllers['producer'].init();
 	}
 	
 	forceLogout() {

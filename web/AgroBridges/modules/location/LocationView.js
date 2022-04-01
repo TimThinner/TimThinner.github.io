@@ -41,9 +41,29 @@ export default class LocationView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">FARM LOCATION</h3>'+
-						'<p>&nbsp;</p>'+
-						'<p>&nbsp;</p>'+
-						'<p>&nbsp;</p>'+
+						'<p><img src="./img/info.png" height="150"/></p>'+
+						'<table class="striped">'+
+							'<thead>'+
+								'<tr>'+
+									'<th>Question</th>'+
+									'<th>Variables</th>'+
+								'</tr>'+
+							'</thead>'+
+							'<tbody>'+
+								'<tr>'+
+									'<td>Where are you from?</td>'+
+									'<td>Country, NUTS3</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>How long is the driving distance to the next bigger town?</td>'+
+									'<td>Distance_Drive_small</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>How long is the driving distance to the major city?</td>'+
+									'<td>Distance_Drive_major</td>'+
+								'</tr>'+
+							'</tbody>'+
+						'</table>'+
 						'<p>&nbsp;</p>'+
 						'<button class="btn waves-effect waves-light" id="location-ok" style="width:120px">OK</button>'+
 						'<p>&nbsp;</p>'+

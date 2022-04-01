@@ -98,7 +98,7 @@ export default class MainView extends View {
 		const labelWidth = r + r*0.5;
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-labelWidth*0.5);
-		svg.setAttribute('y',-r - r*0.5);
+		svg.setAttribute('y',-r);
 		svg.setAttributeNS(null,'width',labelWidth);
 		svg.setAttributeNS(null,'height',2*fontsize);
 		

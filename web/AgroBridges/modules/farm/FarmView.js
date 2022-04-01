@@ -64,8 +64,6 @@ export default class FarmView extends View {
 		} else {
 			fontsize = 20;
 		}
-		const titleSVGHeight = fontsize;
-		
 		/*
 		Use Oranges in "button" circles:
 		LIGHT_ORANGE in background and DARK_ORANGE in outline stroke.
@@ -89,27 +87,18 @@ export default class FarmView extends View {
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		if (type === 'LOCATION') {
-			
 			tx = -1.5*r;
 			ty = -1.5*r;
-			
 		} else if (type === 'INFO') {
-			
 			tx = 1.5*r;
 			ty = -1.5*r;
-			
 		} else if (type === 'VEGETABLES') {
-			
 			tx = -2.5*r;
 			ty = r;
-			
 		} else if (type === 'ANIMALS') {
-			
 			tx = 0;
 			ty = r;
-			
 		} else if (type === 'FRUITS') {
-			
 			tx = 2.5*r;
 			ty = r;
 		}
@@ -136,7 +125,25 @@ export default class FarmView extends View {
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
-		if (type === 'VEGETABLES') {
+		if (type === 'LOCATION') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './img/location.png');
+			group.appendChild(img);
+			
+		} else if (type === 'INFO') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './img/info.png');
+			group.appendChild(img);
+			
+		} else if (type === 'VEGETABLES') {
 			const img = document.createElementNS(svgNS, "image");
 			img.setAttribute('x', icon_x);
 			img.setAttribute('y', icon_y);
@@ -154,14 +161,53 @@ export default class FarmView extends View {
 			img.setAttribute('href', './img/animals.png');
 			group.appendChild(img);
 			
-		} else {
+		} else if (type === 'FRUITS') {
+			const img = document.createElementNS(svgNS, "image");
+			img.setAttribute('x', icon_x);
+			img.setAttribute('y', icon_y);
+			img.setAttribute('width', icon_w);
+			img.setAttribute('height', icon_h);
+			img.setAttribute('href', './img/fruits.png');
+			group.appendChild(img);
+		}
 		
-			// Text, which will be replaced with an image soon.
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',-r*0.5);
+		svg.setAttribute('y',-r*0.75);
+		svg.setAttributeNS(null,'width',r);
+		svg.setAttributeNS(null,'height',fontsize+fontsize*0.5);
+		
+		const rect = document.createElementNS(svgNS, 'rect');
+		// Setup the <rect> element.
+		rect.setAttribute('x',0);
+		rect.setAttribute('y',0);
+		rect.setAttribute('width',r);
+		rect.setAttribute('height',fontsize+fontsize*0.5);
+		rect.style.fill = this.colors.LIGHT_ORANGE;
+		rect.style.fillOpacity = 1;
+		rect.style.stroke = this.colors.DARK_ORANGE;
+		rect.style.strokeWidth = 2;
+		svg.appendChild(rect);
+		
+		const title = document.createElementNS(svgNS, 'text');
+		title.setAttribute('x','50%');
+		title.setAttribute('y','50%');
+		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		title.setAttribute('font-size',fontsize);
+		title.setAttribute('dominant-baseline','middle');
+		title.setAttribute('text-anchor','middle');
+		title.setAttribute('fill',this.colors.DARK_GREEN);
+		title.style.opacity = 1;
+		title.appendChild(document.createTextNode(type));
+		svg.appendChild(title);
+		group.appendChild(svg);
+		/*else {
+			
 			const svg = document.createElementNS(svgNS, "svg");
 			svg.setAttribute('x',-image_w*0.5);
-			svg.setAttribute('y',-titleSVGHeight*0.5);
+			svg.setAttribute('y',-fontsize*0.5);
 			svg.setAttributeNS(null,'width',image_w);
-			svg.setAttributeNS(null,'height',titleSVGHeight);
+			svg.setAttributeNS(null,'height',fontsize);
 			
 			const title = document.createElementNS(svgNS, 'text');
 			title.setAttribute('x','50%');
@@ -175,7 +221,7 @@ export default class FarmView extends View {
 			title.appendChild(document.createTextNode(type));
 			svg.appendChild(title);
 			group.appendChild(svg);
-		}
+		}*/
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
 		surface.setAttributeNS(null, 'cy', 0);

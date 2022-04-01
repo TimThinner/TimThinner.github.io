@@ -64,7 +64,7 @@ export default class FarmView extends View {
 			fontsize = 18;
 		}
 		
-		const labelWidth = r + r*0.5;
+		const labelWidth = r + r*0.75;
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-labelWidth*0.5);
 		svg.setAttribute('y',-r);

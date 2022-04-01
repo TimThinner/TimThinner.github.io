@@ -286,7 +286,6 @@ export default class MainView extends View {
 		
 		// Select which pages open...
 		if (type === 'FARM') {
-			
 			surface.addEventListener("click", function(){
 				self.models['MenuModel'].setSelected('farm');
 			}, false);

@@ -248,6 +248,7 @@ export default class FarmView extends View {
 		surface.style.stroke = this.colors.DARK_ORANGE;
 		surface.style.strokeWidth = 1;
 		surface.style.fillOpacity = 0;
+		surface.style.opacity = 0;
 		surface.style.cursor = 'pointer';
 		
 		// Select which pages open...

@@ -153,7 +153,7 @@ export default class MainView extends View {
 		rect.setAttribute('y',0);
 		rect.setAttribute('width',r);
 		rect.setAttribute('height',2*fontsize);
-		rect.style.fill = this.colors.LIGHT_ORANGE;
+		rect.style.fill = this.colors.LIGHT_YELLOW;
 		rect.style.fillOpacity = 1;
 		rect.style.stroke = this.colors.DARK_ORANGE;
 		rect.style.strokeWidth = 2;
@@ -270,9 +270,8 @@ export default class MainView extends View {
 			img.setAttribute('href', './img/farmer.png');
 			group.appendChild(img);
 		}
-		
-		this.appendFillStatus(group, type, r);
 		this.appendLabel(group, type, r);
+		this.appendFillStatus(group, type, r);
 		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);

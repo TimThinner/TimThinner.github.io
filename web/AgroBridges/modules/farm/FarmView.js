@@ -122,7 +122,7 @@ export default class FarmView extends View {
 		rect.setAttribute('y',0);
 		rect.setAttribute('width',r);
 		rect.setAttribute('height',2*fontsize);
-		rect.style.fill = this.colors.LIGHT_ORANGE;
+		rect.style.fill = this.colors.LIGHT_YELLOW;
 		rect.style.fillOpacity = 1;
 		rect.style.stroke = this.colors.DARK_ORANGE;
 		rect.style.strokeWidth = 2;

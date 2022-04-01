@@ -116,14 +116,14 @@ export default class MenuView extends View {
 						'<p><img src="./img/logo2.png" class="responsive-img" /></p>'+ // Original logo is 960 x 540 pixels.
 					'</div>'+
 				'</div>'+
-			'</div>'+
-			'<div class="row">'+
+			'</div>';
+			/*'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<p style="color:#ccc;">W='+w+'px H='+h+'px</p>'+
 					'</div>'+
 				'</div>'+
-			'</div>';
+			'</div>';*/
 		$(this.el).append(html);
 		
 		$("#login").on('click', function() {

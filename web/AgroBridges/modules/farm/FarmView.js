@@ -49,6 +49,43 @@ export default class FarmView extends View {
 		return r;
 	}
 	
+	appendLabel(group, type, fontsize, r) {
+		
+		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		const labelWidth = r + r*0.5;
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',-labelWidth*0.5);
+		svg.setAttribute('y',-r);
+		svg.setAttributeNS(null,'width',labelWidth);
+		svg.setAttributeNS(null,'height',fontsize+fontsize*0.5);
+		
+		const rect = document.createElementNS(svgNS, 'rect');
+		// Setup the <rect> element.
+		rect.setAttribute('x',0);
+		rect.setAttribute('y',0);
+		rect.setAttribute('width',labelWidth);
+		rect.setAttribute('height',fontsize+fontsize*0.5);
+		rect.style.fill = this.colors.LIGHT_ORANGE;
+		rect.style.fillOpacity = 1;
+		rect.style.stroke = this.colors.DARK_ORANGE;
+		rect.style.strokeWidth = 2;
+		svg.appendChild(rect);
+		
+		const title = document.createElementNS(svgNS, 'text');
+		title.setAttribute('x','50%');
+		title.setAttribute('y','50%');
+		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		title.setAttribute('font-size',fontsize);
+		title.setAttribute('dominant-baseline','middle');
+		title.setAttribute('text-anchor','middle');
+		title.setAttribute('fill',this.colors.DARK_GREEN);
+		title.style.opacity = 1;
+		title.appendChild(document.createTextNode(type));
+		svg.appendChild(title);
+		group.appendChild(svg);
+	}
+	
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -171,37 +208,7 @@ export default class FarmView extends View {
 			group.appendChild(img);
 		}
 		
-		const labelWidth = r + r*0.5;
-		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttribute('x',-labelWidth*0.5);
-		svg.setAttribute('y',-r*0.75);
-		svg.setAttributeNS(null,'width',labelWidth);
-		svg.setAttributeNS(null,'height',fontsize+fontsize*0.5);
-		
-		const rect = document.createElementNS(svgNS, 'rect');
-		// Setup the <rect> element.
-		rect.setAttribute('x',0);
-		rect.setAttribute('y',0);
-		rect.setAttribute('width',labelWidth);
-		rect.setAttribute('height',fontsize+fontsize*0.5);
-		rect.style.fill = this.colors.LIGHT_ORANGE;
-		rect.style.fillOpacity = 1;
-		rect.style.stroke = this.colors.DARK_ORANGE;
-		rect.style.strokeWidth = 2;
-		svg.appendChild(rect);
-		
-		const title = document.createElementNS(svgNS, 'text');
-		title.setAttribute('x','50%');
-		title.setAttribute('y','50%');
-		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		title.setAttribute('font-size',fontsize);
-		title.setAttribute('dominant-baseline','middle');
-		title.setAttribute('text-anchor','middle');
-		title.setAttribute('fill',this.colors.DARK_GREEN);
-		title.style.opacity = 1;
-		title.appendChild(document.createTextNode(type));
-		svg.appendChild(title);
-		group.appendChild(svg);
+		this.appendLabel(group, type, fontsize, r);
 		/*else {
 			
 			const svg = document.createElementNS(svgNS, "svg");

@@ -5,9 +5,14 @@ import UserModel from './modules/user/UserModel.js';
 import MenuController from './modules/menu/MenuController.js';
 import MainController from './modules/main/MainController.js';
 import FarmController from './modules/farm/FarmController.js';
+
+
 import LocationController from './modules/location/LocationController.js';
-import VegeController from './modules/vege/VegeController.js';
 import InfoController from './modules/info/InfoController.js';
+import VegeController from './modules/vege/VegeController.js';
+import AnimalsController from './modules/animals/AnimalsController.js';
+import FruitsController from './modules/fruits/FruitsController.js';
+
 /*
 EventObserver	Model					MenuModel
 				ResizeEventObserver		
@@ -85,10 +90,14 @@ class MasterController {
 		this.controllers['farm'].init();
 		this.controllers['location'] = new LocationController({name:'location', master:this, el:'#content', visible:false});
 		this.controllers['location'].init();
-		this.controllers['vege'] = new VegeController({name:'vege', master:this, el:'#content', visible:false});
-		this.controllers['vege'].init();
 		this.controllers['info'] = new InfoController({name:'info', master:this, el:'#content', visible:false});
 		this.controllers['info'].init();
+		this.controllers['vege'] = new VegeController({name:'vege', master:this, el:'#content', visible:false});
+		this.controllers['vege'].init();
+		this.controllers['animals'] = new AnimalsController({name:'animals', master:this, el:'#content', visible:false});
+		this.controllers['animals'].init();
+		this.controllers['fruits'] = new FruitsController({name:'fruits', master:this, el:'#content', visible:false});
+		this.controllers['fruits'].init();
 	}
 	
 	forceLogout() {

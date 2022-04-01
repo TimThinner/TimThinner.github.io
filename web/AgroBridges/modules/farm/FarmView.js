@@ -276,7 +276,6 @@ export default class FarmView extends View {
 		surface.style.opacity = 0;
 		surface.style.cursor = 'pointer';
 		
-		// Select which pages open...
 		if (type === 'LOCATION') {
 			surface.addEventListener("click", function(){
 				self.models['MenuModel'].setSelected('location');
@@ -292,13 +291,17 @@ export default class FarmView extends View {
 				self.models['MenuModel'].setSelected('vege');
 			}, false);
 			
-		} else {
+		} else if (type === 'ANIMALS') {
 			surface.addEventListener("click", function(){
-				//self.models['MenuModel'].setSelected('main');
-				console.log('SELECTED: '+type);
+				self.models['MenuModel'].setSelected('animals');
+			}, false);
+			
+		} else if (type === 'FRUITS') {
+			surface.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('fruits');
 			}, false);
 		}
-		
+		// Mouseover and Mouseout handlers
 		surface.addEventListener("mouseover", function(event){ 
 			border.style.fill = self.colors.DARK_ORANGE;
 		}, false);

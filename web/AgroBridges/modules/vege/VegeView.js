@@ -41,9 +41,33 @@ export default class VegeView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">FARM VEGETABLES</h3>'+
-						'<p>&nbsp;</p>'+
-						'<p>&nbsp;</p>'+
-						'<p>&nbsp;</p>'+
+						'<p><img src="./img/vege.png" height="150"/></p>'+
+						'<table class="striped">'+
+							'<thead>'+
+								'<tr>'+
+									'<th>Question</th>'+
+									'<th>Variables</th>'+
+								'</tr>'+
+							'</thead>'+
+							'<tbody>'+
+								'<tr>'+
+									'<td>Are you offering these products?</td>'+
+									'<td>Dummy_veggie_farm (No, Yes)</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Which of these vegetables do you grow?</td>'+
+									'<td>Dummy_lettuce, Dummy_fruit_vegetables, Dummy_pumpkin, Dummy_bulb, Dummy_Root, Dummy_Cabbage,Dummy_Special</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>How many different vegetables do you grow in total?</td>'+
+									'<td>vegetables_total</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>On how many hectares do you grow vegetables?</td>'+
+									'<td>Hectare_veggies</td>'+
+								'</tr>'+
+							'</tbody>'+
+						'</table>'+
 						'<p>&nbsp;</p>'+
 						'<button class="btn waves-effect waves-light" id="vege-ok" style="width:120px">OK</button>'+
 						'<p>&nbsp;</p>'+

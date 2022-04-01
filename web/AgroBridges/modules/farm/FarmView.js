@@ -49,14 +49,25 @@ export default class FarmView extends View {
 		return r;
 	}
 	
-	appendLabel(group, type, fontsize, r) {
+	appendLabel(group, type, r) {
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		let fontsize;
+		if (r <= 75) {
+			fontsize = 14;
+		} else if (r > 75 && r <= 124) {
+			fontsize = 16;
+		} else if (r > 124 && r <= 150) {
+			fontsize = 18;
+		} else {
+			fontsize = 20;
+		}
 		
 		const labelWidth = r + r*0.5;
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-labelWidth*0.5);
-		svg.setAttribute('y',-r);
+		svg.setAttribute('y',-r + r*0.5);
 		svg.setAttributeNS(null,'width',labelWidth);
 		svg.setAttributeNS(null,'height',fontsize+fontsize*0.5);
 		
@@ -208,7 +219,7 @@ export default class FarmView extends View {
 			group.appendChild(img);
 		}
 		
-		this.appendLabel(group, type, fontsize, r);
+		this.appendLabel(group, type, r);
 		/*else {
 			
 			const svg = document.createElementNS(svgNS, "svg");

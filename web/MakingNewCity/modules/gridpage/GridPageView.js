@@ -143,13 +143,14 @@ export default class GridPageView extends View {
 	*/
 	
 	populateShortNow() {
+		const resuArray = [];
+		
 		this.shortAverageElevenHours = {};
 		
 		const timerange_start_subtract_hours = this.models['EmpoEmissionsElevenHours'].timerange_start_subtract_hours;
 		let startMom = moment().subtract(timerange_start_subtract_hours, 'hours');
-		
-		const timerange_end_subtract_hours = this.models['EmpoEmissionsElevenHours'].timerange_end_subtract_hours;
-		let endMom = moment().subtract(timerange_end_subtract_hours, 'hours');
+		let endMom = moment().subtract(timerange_start_subtract_hours, 'hours');
+		endMom.add(1, 'hours');
 		
 		const res = this.models['EmpoEmissionsElevenHours'].results;
 		//console.log(['res length=',res.length]);
@@ -197,7 +198,7 @@ export default class GridPageView extends View {
 			}
 			
 		} else {
-			console.log('POPULATE LONG! resuArray is EMPTY!');
+			console.log('POPULATE SHORT! resuArray is EMPTY!');
 		}
 		
 		

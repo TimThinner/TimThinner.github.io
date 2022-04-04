@@ -53,6 +53,13 @@ export default class GridPageView extends View {
 		this.category_Production = 'Prod';
 		this.category_Production_and_Import = 'Prod+import';
 		this.category_Consumption_and_Export = 'Cons+export';
+		
+		
+		/*
+			Will have 'hh':'5-day-average' key-value pairs.
+			Populated from 'EmpoEmissionsFiveDays'-model.
+		*/
+		this.nowMinusElevenHours = {};
 	}
 	
 	show() {
@@ -125,6 +132,74 @@ export default class GridPageView extends View {
 		// append the new circle to the svg
 		svg.appendChild(uc);
 	}*/
+	
+	/*
+	For the clock: 
+	
+	{ "results": [ 
+		{ "country": "FI", "date_time": "2022-04-04 09:43:40", "em_cons": 183.0017, "em_prod": 144.4801, "emdb": "EcoInvent", "id": 794585 }, 
+		...
+	*/
+	
+	populateNow() {
+		
+		const resuArray = [];
+		
+		this.nowMinusElevenHours = {};
+		
+		const timerange_start_subtract_hours = this.models['EmpoEmissionsFiveDays'].timerange_start_subtract_hours;
+		let startMom = moment().subtract(timerange_start_subtract_hours, 'hours');
+		
+		const timerange_end_subtract_hours = this.models['EmpoEmissionsFiveDays'].timerange_end_subtract_hours;
+		let endMom = moment().subtract(timerange_end_subtract_hours, 'hours');
+		
+		const res = this.models['EmpoEmissionsFiveDays'].results;
+		//console.log(['res length=',res.length]);
+		if (res.length > 0) {
+			// Create a Date Object from date_time:
+			res.forEach(r=>{
+				if (Number.isFinite(r.em_cons)) {
+					const d = new Date(r.date_time);
+					resuArray.push({date:d, consumed:r.em_cons});
+				}
+			});
+		}
+		if (resuArray.length > 0) {
+			// Then sort array based according to time, oldest entry first.
+			resuArray.sort(function(a,b){
+				return a.date - b.date;
+			});
+			// Take a slice of resuArray and calculate average value for each hour.
+			// First slice is from A to B.
+			//
+			// A             A - B = 5 days = 120 hours           B          C
+			// |--------------------------------------------------|----------|
+			// |                                                  | 11 hours |
+			const A = startMom;
+			for (let i=0; i<11; i++) {
+				startMom.add(i, 'hours');
+				endMom.add(i, 'hours');
+				const key = 'H'+startMom.hours();
+				let sum = 0;
+				let count = 0;
+				resuArray.forEach(r=>{
+					const c = moment(r.date);
+					if (c.isBetween(startMom, endMom)) {
+						sum += r.consumed;
+						count++;
+					}
+				});
+				let ave = 0;
+				if (count > 0) {
+					ave = sum / count;
+				}
+				this.nowMinusElevenHours[key] = ave;
+			}
+			console.log(['POPULATE NOW! this.nowMinusElevenHours[key]=',this.nowMinusElevenHours[key]]);
+		} else {
+			console.log('POPULATE NOW! resuArray is EMPTY!');
+		}
+	}
 	
 	addSeries(m) {
 		var series = this.chart.series.push(new am4charts.ColumnSeries());
@@ -639,18 +714,22 @@ export default class GridPageView extends View {
 				
 			} else if (options.model==='EmpoEmissionsElevenHours' && options.method==='fetched') {
 				if (options.status === 200) {
-					const res = this.models[options.model].results;
-					console.log(['ELEVEN HOURS results=',res]);
+					//const res = this.models[options.model].results;
+					//console.log(['ELEVEN HOURS results=',res]);
+					//this.convertResults(options.model);
 				} else {
 					console.log(['ELEVEN HOURS status=',options.status]);
 				}
 				
 			} else if (options.model==='EmpoEmissionsFiveDays' && options.method==='fetched') {
 				if (options.status === 200) {
-					const res = this.models[options.model].results;
-					console.log(['FIVE DAYS PLUS ELEVEN HOURS results=',res]);
+					//const res = this.models[options.model].results;
+					//console.log(['FIVE DAYS PLUS ELEVEN HOURS results=',res]);
+					
+					this.populateNow();
+					
 				} else {
-					console.log(['ELEVEN HOURS status=',options.status]);
+					console.log(['EmpoEmissionsFiveDays fetched status=',options.status]);
 				}
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {

@@ -136,31 +136,26 @@ export default class GridPageController extends Controller {
 		
 		/*
 		We need two EmpoModels:
-		1. start 
-		2. 
+		1. From now - 11 hours to now
+		2. From now - 5d 11h to now - 11h
 		
-		const model_data = [];
-		for (let i=1; i<this.numOfEmpoModels+1; i++) {
-			const sh = i*24;
-			const eh = i*24-24;
-			model_data.push({name:'EmpoEmissions'+i+'Model',sh:sh,eh:eh});
-		}
-		model_data.forEach(md => {
-			const em = new EmpoModel({
-				name: md.name,
-				src: 'emissions/findByDate?country=FI&EmDB=EcoInvent',
-				timerange_start_subtract_hours: md.sh,
-				timerange_end_subtract_hours: md.eh
-			});
-			em.subscribe(this);
-			this.master.modelRepo.add(md.name, em);
-			this.models[md.name] = em;
+		http://128.214.253.150/api/v1/resources/emissions/findByDate?country=FI&EmDB=EcoInvent&startdate=2022-04-04%2000:00&enddate=2022-04-04%2011:00
+		
+		
+		
+		http://128.214.253.150/api/v1/resources/emissions/findByDate?country=FI&EmDB=EcoInvent&startdate=2022-04-04%2002:03&enddate=2022-04-04%2013:03
+		
+		
+		
+		http://128.214.253.150/api/v1/resources/emissions/findByDate?startdate=2022-04-04%2000:00&enddate=2022-04-04%2011:00&EmDB=EcoInvent&country=FI
+		
+		http://128.214.253.150/api/v1/resources/emissions/findByDate?country=FI&EmDB=EcoInvent&startdate=2022-03-30%2000:00:00&enddate=2022-04-04%2000:00:00
 		*/
 		const mElevenHours = new EmpoModel({
 				name: 'EmpoEmissionsElevenHours',
 				src: 'emissions/findByDate?country=FI&EmDB=EcoInvent',
 				timerange_start_subtract_hours: 11,
-				timerange_end_subtract_hours: 0
+				timerange_end_subtract_hours: 0 // should be 11 x 20 = 220 values 
 			});
 		mElevenHours.subscribe(this);
 		this.master.modelRepo.add('EmpoEmissionsElevenHours', mElevenHours);
@@ -169,8 +164,8 @@ export default class GridPageController extends Controller {
 		const mFiveDays = new EmpoModel({
 				name: 'EmpoEmissionsFiveDays',
 				src: 'emissions/findByDate?country=FI&EmDB=EcoInvent',
-				timerange_start_subtract_hours: 131, // 120 + 11
-				timerange_end_subtract_hours: 11
+				timerange_start_subtract_hours: 131, // 120 + 11 hours 
+				timerange_end_subtract_hours: 0 // should be 131 x 20 = 2620 values
 			});
 		mFiveDays.subscribe(this);
 		this.master.modelRepo.add('EmpoEmissionsFiveDays', mFiveDays);

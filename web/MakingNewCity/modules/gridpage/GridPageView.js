@@ -194,8 +194,9 @@ export default class GridPageView extends View {
 					ave = sum / count;
 				}
 				this.nowMinusElevenHours[key] = ave;
+				console.log(['POPULATE NOW! this.nowMinusElevenHours[key]=',this.nowMinusElevenHours[key]]);
 			}
-			console.log(['POPULATE NOW! this.nowMinusElevenHours[key]=',this.nowMinusElevenHours[key]]);
+			
 		} else {
 			console.log('POPULATE NOW! resuArray is EMPTY!');
 		}

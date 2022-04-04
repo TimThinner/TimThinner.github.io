@@ -1,4 +1,5 @@
 import Controller from '../common/Controller.js';
+import EmpoModel from  '../environmentpage/EmpoModel.js';
 import GridPageView from './GridPageView.js';
 /*
 Electricity production in Finland

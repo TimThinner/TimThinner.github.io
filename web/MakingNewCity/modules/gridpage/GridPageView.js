@@ -59,7 +59,8 @@ export default class GridPageView extends View {
 			Will have 'hh':'5-day-average' key-value pairs.
 			Populated from 'EmpoEmissionsFiveDays'-model.
 		*/
-		this.nowMinusElevenHours = {};
+		this.longAverageElevenHours = {};
+		this.shortAverageElevenHours = {};
 	}
 	
 	show() {
@@ -141,11 +142,72 @@ export default class GridPageView extends View {
 		...
 	*/
 	
-	populateNow() {
+	populateShortNow() {
+		this.shortAverageElevenHours = {};
+		
+		const timerange_start_subtract_hours = this.models['EmpoEmissionsElevenHours'].timerange_start_subtract_hours;
+		let startMom = moment().subtract(timerange_start_subtract_hours, 'hours');
+		
+		const timerange_end_subtract_hours = this.models['EmpoEmissionsElevenHours'].timerange_end_subtract_hours;
+		let endMom = moment().subtract(timerange_end_subtract_hours, 'hours');
+		
+		const res = this.models['EmpoEmissionsElevenHours'].results;
+		//console.log(['res length=',res.length]);
+		if (res.length > 0) {
+			// Create a Date Object from date_time:
+			res.forEach(r=>{
+				if (Number.isFinite(r.em_cons)) {
+					const d = new Date(r.date_time);
+					resuArray.push({date:d, consumed:r.em_cons});
+				}
+			});
+		}
+		if (resuArray.length > 0) {
+			// Then sort array based according to time, oldest entry first.
+			resuArray.sort(function(a,b){
+				return a.date - b.date;
+			});
+			// Take a slice of resuArray and calculate average value for each hour.
+			// First slice is from A to B.
+			//
+			// A             A - B = 5 days = 120 hours           B          C
+			// |--------------------------------------------------|----------|
+			// |                                                  | 11 hours |
+			
+			for (let i=0; i<11; i++) {
+				const key = 'H'+startMom.hours();
+				let sum = 0;
+				let count = 0;
+				resuArray.forEach(r=>{
+					const c = moment(r.date);
+					if (c.isBetween(startMom, endMom)) {
+						sum += r.consumed;
+						count++;
+					}
+				});
+				let ave = 0;
+				if (count > 0) {
+					ave = sum / count;
+				}
+				this.shortAverageElevenHours[key] = ave;
+				console.log(['POPULATE SHORT! key=',key,' sum=',sum,' count=',count,' ave=',ave]);
+				
+				startMom.add(1, 'hours');
+				endMom.add(1, 'hours');
+			}
+			
+		} else {
+			console.log('POPULATE LONG! resuArray is EMPTY!');
+		}
+		
+		
+	}
+	
+	populateLongNow() {
 		
 		const resuArray = [];
 		
-		this.nowMinusElevenHours = {};
+		this.longAverageElevenHours = {};
 		
 		const timerange_start_subtract_hours = this.models['EmpoEmissionsFiveDays'].timerange_start_subtract_hours;
 		let startMom = moment().subtract(timerange_start_subtract_hours, 'hours');
@@ -191,15 +253,15 @@ export default class GridPageView extends View {
 				if (count > 0) {
 					ave = sum / count;
 				}
-				this.nowMinusElevenHours[key] = ave;
-				console.log(['POPULATE NOW! key=',key,' sum=',sum,' count=',count,' ave=',ave]);
+				this.longAverageElevenHours[key] = ave;
+				console.log(['POPULATE LONG! key=',key,' sum=',sum,' count=',count,' ave=',ave]);
 				
 				startMom.add(1, 'hours');
 				endMom.add(1, 'hours');
 			}
 			
 		} else {
-			console.log('POPULATE NOW! resuArray is EMPTY!');
+			console.log('POPULATE LONG! resuArray is EMPTY!');
 		}
 	}
 	
@@ -718,7 +780,7 @@ export default class GridPageView extends View {
 				if (options.status === 200) {
 					//const res = this.models[options.model].results;
 					//console.log(['ELEVEN HOURS results=',res]);
-					//this.convertResults(options.model);
+					this.populateShortNow();
 				} else {
 					console.log(['ELEVEN HOURS status=',options.status]);
 				}
@@ -727,8 +789,7 @@ export default class GridPageView extends View {
 				if (options.status === 200) {
 					//const res = this.models[options.model].results;
 					//console.log(['FIVE DAYS PLUS ELEVEN HOURS results=',res]);
-					
-					this.populateNow();
+					this.populateLongNow();
 					
 				} else {
 					console.log(['EmpoEmissionsFiveDays fetched status=',options.status]);

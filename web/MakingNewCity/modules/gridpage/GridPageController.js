@@ -170,7 +170,7 @@ export default class GridPageController extends Controller {
 				name: 'EmpoEmissionsFiveDays',
 				src: 'emissions/findByDate?country=FI&EmDB=EcoInvent',
 				timerange_start_subtract_hours: 131, // 120 + 11
-				timerange_end_subtract_hours: 0
+				timerange_end_subtract_hours: 11
 			});
 		mFiveDays.subscribe(this);
 		this.master.modelRepo.add('EmpoEmissionsFiveDays', mFiveDays);

@@ -575,16 +575,13 @@ export default class GridPageView extends View {
 				
 				console.log("GridPageView resize => update all models!!!!!!!!!!!!!!");
 				//this.render();
-				
 				Object.keys(this.models).forEach(key => {
 					if (key !== 'MenuModel') {
 						this.updateChart(key);
 					}
 				});
-				
 				//this.renderChart();
 				//this.render();
-				
 			} else if (key_array.includes(options.model) && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.rendered) {
@@ -638,6 +635,22 @@ export default class GridPageView extends View {
 					} else {
 						this.render();
 					}
+				}
+				
+			} else if (options.model==='EmpoEmissionsElevenHours' && options.method==='fetched') {
+				if (options.status === 200) {
+					const res = this.models[options.model].results;
+					console.log(['ELEVEN HOURS results=',res]);
+				} else {
+					console.log(['ELEVEN HOURS status=',options.status]);
+				}
+				
+			} else if (options.model==='EmpoEmissionsFiveDays' && options.method==='fetched') {
+				if (options.status === 200) {
+					const res = this.models[options.model].results;
+					console.log(['FIVE DAYS PLUS ELEVEN HOURS results=',res]);
+				} else {
+					console.log(['ELEVEN HOURS status=',options.status]);
 				}
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {

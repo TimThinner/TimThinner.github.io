@@ -132,28 +132,52 @@ export default class GridPageController extends Controller {
 		this.models['FingridPowerSystemStateModel'] = this.master.modelRepo.get('FingridPowerSystemStateModel');
 		this.models['FingridPowerSystemStateModel'].subscribe(this);
 		
+		
+		/*
+		We need two EmpoModels:
+		1. start 
+		2. 
+		
+		const model_data = [];
+		for (let i=1; i<this.numOfEmpoModels+1; i++) {
+			const sh = i*24;
+			const eh = i*24-24;
+			model_data.push({name:'EmpoEmissions'+i+'Model',sh:sh,eh:eh});
+		}
+		model_data.forEach(md => {
+			const em = new EmpoModel({
+				name: md.name,
+				src: 'emissions/findByDate?country=FI&EmDB=EcoInvent',
+				timerange_start_subtract_hours: md.sh,
+				timerange_end_subtract_hours: md.eh
+			});
+			em.subscribe(this);
+			this.master.modelRepo.add(md.name, em);
+			this.models[md.name] = em;
+		*/
+		const mElevenHours = new EmpoModel({
+				name: 'EmpoEmissionsElevenHours',
+				src: 'emissions/findByDate?country=FI&EmDB=EcoInvent',
+				timerange_start_subtract_hours: 11,
+				timerange_end_subtract_hours: 0
+			});
+		mElevenHours.subscribe(this);
+		this.master.modelRepo.add('EmpoEmissionsElevenHours', mElevenHours);
+		this.models['EmpoEmissionsElevenHours'] = mElevenHours;
+		
+		const mFiveDays = new EmpoModel({
+				name: 'EmpoEmissionsFiveDays',
+				src: 'emissions/findByDate?country=FI&EmDB=EcoInvent',
+				timerange_start_subtract_hours: 131, // 120 + 11
+				timerange_end_subtract_hours: 0
+			});
+		mFiveDays.subscribe(this);
+		this.master.modelRepo.add('EmpoEmissionsFiveDays', mFiveDays);
+		this.models['EmpoEmissionsFiveDays'] = mFiveDays;
+		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
-		/*
-		this.timers['GridPageChartView'] = {timer: undefined, interval: 180000, // 3 minute interval
-			models:[ // 14 models
-				'FingridPowerSystemStateModel',
-				'Fingrid192Model',
-				'Fingrid193Model',
-				'Fingrid188Model',
-				'Fingrid191Model',
-				'Fingrid181Model',
-				'Fingrid205Model',
-				'Fingrid202Model',
-				'Fingrid201Model',
-				'Fingrid89Model',
-				'Fingrid180Model',
-				'Fingrid87Model',
-				'Fingrid195Model',
-				'Fingrid187Model',
-				'EntsoeEnergyPriceModel'
-			]};
-		*/
+		
 		this.view = new GridPageView(this);
 		// If view is shown immediately and poller is used, like in this case, 
 		// we can just call show() and let it start fetching... 

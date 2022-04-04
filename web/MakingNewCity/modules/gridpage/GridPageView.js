@@ -175,10 +175,8 @@ export default class GridPageView extends View {
 			// A             A - B = 5 days = 120 hours           B          C
 			// |--------------------------------------------------|----------|
 			// |                                                  | 11 hours |
-			const A = startMom;
+			
 			for (let i=0; i<11; i++) {
-				startMom.add(i, 'hours');
-				endMom.add(i, 'hours');
 				const key = 'H'+startMom.hours();
 				let sum = 0;
 				let count = 0;
@@ -195,6 +193,9 @@ export default class GridPageView extends View {
 				}
 				this.nowMinusElevenHours[key] = ave;
 				console.log(['POPULATE NOW! key=',key,' sum=',sum,' count=',count,' ave=',ave]);
+				
+				startMom.add(1, 'hours');
+				endMom.add(1, 'hours');
 			}
 			
 		} else {

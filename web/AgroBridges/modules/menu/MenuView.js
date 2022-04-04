@@ -79,7 +79,7 @@ export default class MenuView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+this.colors.DARK_ORANGE+'">'+title+'</h3>'+
+						'<h4 style="color:'+this.colors.DARK_ORANGE+'">'+title+'</h4>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

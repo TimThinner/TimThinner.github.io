@@ -63,7 +63,10 @@ export default class MenuView extends View {
 			footer_fontsize = '16px';
 			descr_fontsize = '20px';
 		}
-		const title = 'Welcome to promote short supply food chain!';
+		//const title = 'Welcome to promote short supply food chain!';
+		
+		const title = 'Welcome to assess business models for selling over the short food supply chain in your farm!';
+		
 		const descr_A = 'Decision Support Tool for producers';
 		const descr_B = 'You will be able to evaluate the most suitable business models for Short Supply Food Chains.';
 		const descr_C = 'Evaluations and recommendations are based on information about your farm, products and activities.';

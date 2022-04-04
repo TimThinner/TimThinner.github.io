@@ -51,7 +51,7 @@ export default class LocationView extends View {
 							'</thead>'+
 							'<tbody>'+
 								'<tr>'+
-									'<td>Where are you from?</td>'+
+									'<td>In which country is your farm located?</td>'+
 									'<td>Country, NUTS3</td>'+
 								'</tr>'+
 								'<tr>'+

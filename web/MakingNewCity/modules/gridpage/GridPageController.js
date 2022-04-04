@@ -110,7 +110,9 @@ export default class GridPageController extends Controller {
 				key === 'Fingrid202Model' || key === 'Fingrid201Model' ||
 				key === 'Fingrid89Model' || key === 'Fingrid180Model' ||
 				key === 'Fingrid87Model' || key === 'Fingrid195Model' ||
-				key === 'Fingrid187Model' || key === 'EntsoeEnergyPriceModel') {
+				key === 'Fingrid187Model' || key === 'EntsoeEnergyPriceModel' ||
+				key === 'EmpoEmissionsElevenHours' || key === 'EmpoEmissionsFiveDays') {
+				
 				this.master.modelRepo.remove(key);
 			}
 		});
@@ -141,11 +143,7 @@ export default class GridPageController extends Controller {
 		
 		http://128.214.253.150/api/v1/resources/emissions/findByDate?country=FI&EmDB=EcoInvent&startdate=2022-04-04%2000:00&enddate=2022-04-04%2011:00
 		
-		
-		
 		http://128.214.253.150/api/v1/resources/emissions/findByDate?country=FI&EmDB=EcoInvent&startdate=2022-04-04%2002:03&enddate=2022-04-04%2013:03
-		
-		
 		
 		http://128.214.253.150/api/v1/resources/emissions/findByDate?startdate=2022-04-04%2000:00&enddate=2022-04-04%2011:00&EmDB=EcoInvent&country=FI
 		

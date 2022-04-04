@@ -169,11 +169,11 @@ export default class GridPageView extends View {
 				return a.date - b.date;
 			});
 			// Take a slice of resuArray and calculate average value for each hour.
-			// First slice is from A to B.
+			// First slice is from B to B+1 hour.
 			//
-			// A             A - B = 5 days = 120 hours           B          C
-			// |--------------------------------------------------|----------|
-			// |                                                  | 11 hours |
+			// B          C
+			// |----------|
+			// | 11 hours |
 			
 			for (let i=0; i<11; i++) {
 				const key = 'H'+startMom.hours();
@@ -192,7 +192,6 @@ export default class GridPageView extends View {
 				}
 				this.shortAverageElevenHours[key] = ave;
 				console.log(['POPULATE SHORT! key=',key,' sum=',sum,' count=',count,' ave=',ave]);
-				
 				startMom.add(1, 'hours');
 				endMom.add(1, 'hours');
 			}
@@ -210,11 +209,9 @@ export default class GridPageView extends View {
 		
 		this.longAverageElevenHours = {};
 		
-		const timerange_start_subtract_hours = this.models['EmpoEmissionsFiveDays'].timerange_start_subtract_hours;
-		let startMom = moment().subtract(timerange_start_subtract_hours, 'hours');
-		
-		const timerange_end_subtract_hours = this.models['EmpoEmissionsFiveDays'].timerange_end_subtract_hours;
-		let endMom = moment().subtract(timerange_end_subtract_hours, 'hours');
+		//const timerange_start_subtract_hours = this.models['EmpoEmissionsFiveDays'].timerange_start_subtract_hours;
+		let startMom = moment().subtract(131, 'hours');
+		let endMom = moment().subtract(11, 'hours');
 		
 		const res = this.models['EmpoEmissionsFiveDays'].results;
 		//console.log(['res length=',res.length]);
@@ -238,7 +235,6 @@ export default class GridPageView extends View {
 			// A             A - B = 5 days = 120 hours           B          C
 			// |--------------------------------------------------|----------|
 			// |                                                  | 11 hours |
-			
 			for (let i=0; i<11; i++) {
 				const key = 'H'+startMom.hours();
 				let sum = 0;
@@ -256,7 +252,6 @@ export default class GridPageView extends View {
 				}
 				this.longAverageElevenHours[key] = ave;
 				console.log(['POPULATE LONG! key=',key,' sum=',sum,' count=',count,' ave=',ave]);
-				
 				startMom.add(1, 'hours');
 				endMom.add(1, 'hours');
 			}

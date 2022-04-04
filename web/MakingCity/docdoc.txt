@@ -226,6 +226,8 @@ UserPropsController
 GridPageController
 	this.master.modelRepo.add('FingridNNNModel',model); NNN in ['192','193','188','191','181','205','202','201','89','180','87','195','187'];
 	this.master.modelRepo.add('EntsoeEnergyPriceModel', m);
+	this.master.modelRepo.add('EmpoEmissionsElevenHours', mElevenHours);
+	this.master.modelRepo.add('EmpoEmissionsFiveDays', mFiveDays);
 	*USES* this.master.modelRepo.get('FingridPowerSystemStateModel');
 	*USES* this.master.modelRepo.get('MenuModel');
 	

@@ -411,7 +411,7 @@ export default class GridPageView extends View {
 		if (hourNow === 11) {
 			start = 0;
 		}
-		const end = start+10;
+		const end = start+11;
 		const mAngle = 360/12; // angle for one hour
 		//const label = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 		
@@ -426,8 +426,8 @@ export default class GridPageView extends View {
 			// SECTOR
 			this.appendSector({
 				group: group,
-				innerRadius: r + r*0.3,
-				outerRadius: r + r*0.7,
+				innerRadius: r,
+				outerRadius: r + r*0.3,
 				startAngle: sa,
 				endAngle: ea,
 				span: span,

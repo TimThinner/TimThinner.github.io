@@ -391,6 +391,62 @@ export default class GridPageView extends View {
 		*/
 	}
 	
+	updatePriceForecast() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		// Start by removing ALL emissions.
+		let wrap = document.getElementById('clock-price-forecast');
+		if (wrap) {
+			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+			wrap.remove(); // Finally remove group.
+		}
+		
+		let hourNow = moment().hours(); // Number 0 ... 23
+		if (hourNow > 11) {
+			hourNow -= 12; // always 0 ... 11
+		}
+		const start = hourNow;
+		//if (hourNow === 11) {
+		//	start = 0;
+		//}
+		const end = start+11;
+		const mAngle = 360/12; // angle for one hour
+		//const label = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+		
+		const group = document.createElementNS(svgNS, "g");
+		group.id = 'clock-price-forecast';
+		
+		for (let i=start; i<end; i++) {
+			const sa = 180-i*mAngle;
+			const ea = sa - mAngle;
+			const span = mAngle; // The "length" of sector.
+			let fill = this.colors.SECTOR_DATENUMBER_FILL_ACTIVE;
+			// SECTOR
+			this.appendSector({
+				group: group,
+				innerRadius: r + r*0.3,
+				outerRadius: r + r*0.6,
+				startAngle: sa,
+				endAngle: ea,
+				span: span,
+				//label: label[i],
+				fill: fill
+			});
+		}
+		// The most outer black frame!
+		const frameWidth = 10;
+		const cf = document.createElementNS(svgNS, "circle");
+		cf.setAttributeNS(null, 'cx', 0);
+		cf.setAttributeNS(null, 'cy', 0);
+		cf.setAttributeNS(null, 'r', r+r*0.7+frameWidth/2);
+		cf.style.stroke = this.colors.FRAME_STROKE;
+		cf.style.strokeWidth = frameWidth;
+		cf.style.fill = 'none';
+		group.appendChild(cf);
+		
+		document.getElementById('clock-space').appendChild(group);
+	}
 	
 	updateEmissions() {
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -407,10 +463,10 @@ export default class GridPageView extends View {
 		if (hourNow > 11) {
 			hourNow -= 12; // always 0 ... 11
 		}
-		let start = hourNow+1;
-		if (hourNow === 11) {
-			start = 0;
-		}
+		const start = hourNow+1;
+		//if (hourNow === 11) {
+			//start = 0;
+		//}
 		const end = start+11;
 		const mAngle = 360/12; // angle for one hour
 		//const label = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -435,18 +491,6 @@ export default class GridPageView extends View {
 				fill: fill
 			});
 		}
-		
-		// The most outer black frame!
-		/*const frameWidth = 10;
-		const cf = document.createElementNS(svgNS, "circle");
-		cf.setAttributeNS(null, 'cx', 0);
-		cf.setAttributeNS(null, 'cy', 0);
-		cf.setAttributeNS(null, 'r', r+r*0.7+frameWidth/2);
-		cf.style.stroke = this.colors.FRAME_STROKE;
-		cf.style.strokeWidth = frameWidth;
-		cf.style.fill = 'none';
-		group.appendChild(cf);
-		*/
 		document.getElementById('clock-space').appendChild(group);
 	}
 	
@@ -1200,6 +1244,7 @@ export default class GridPageView extends View {
 				
 				this.updateHands();
 				this.updateEmissions();
+				this.updatePriceForecast();
 				//this.updateDateNumberInMonth();
 				//this.updateMonth();
 				

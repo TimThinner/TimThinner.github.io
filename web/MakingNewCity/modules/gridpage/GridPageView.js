@@ -191,7 +191,7 @@ export default class GridPageView extends View {
 	*/
 	createClockSpace() {
 		const w = this.REO.width;
-		const h = this.REO.height;
+		const h = this.REO.height*0.5; // Note: use only half of vertical space
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
@@ -220,7 +220,7 @@ export default class GridPageView extends View {
 	
 	sunRadius() {
 		const w = this.REO.width;
-		const h = this.REO.height;
+		const h = this.REO.height*0.5; // Note: use only half of vertical space
 		const wp2 = w*0.5; // 50%
 		const hp2 = h*0.5; // 50%
 		const r = Math.min(wp2, hp2)*0.5; // r = 25% of width (or height).

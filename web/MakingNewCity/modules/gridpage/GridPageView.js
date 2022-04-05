@@ -439,7 +439,7 @@ export default class GridPageView extends View {
 		const cf = document.createElementNS(svgNS, "circle");
 		cf.setAttributeNS(null, 'cx', 0);
 		cf.setAttributeNS(null, 'cy', 0);
-		cf.setAttributeNS(null, 'r', r+r*0.7+frameWidth/2);
+		cf.setAttributeNS(null, 'r', r+r*0.6+frameWidth/2);
 		cf.style.stroke = this.colors.FRAME_STROKE;
 		cf.style.strokeWidth = frameWidth;
 		cf.style.fill = 'none';

@@ -79,10 +79,9 @@ export default class GridPageView extends View {
 			CLOCK_FACE_MINUTES_HAND: '#000',
 			CLOCK_FACE_HOURS_HAND: '#000',
 			SECTOR_PATH_STROKE: '#888',
-			SECTOR_DATENUMBER_FILL_INACTIVE: '#eee',
-			SECTOR_DATENUMBER_FILL_ACTIVE: '#8f8',
-			SECTOR_MONTH_FILL_INACTIVE: '#eee',
-			SECTOR_MONTH_FILL_ACTIVE: '#ff8',
+			SECTOR_FILL_GREEN: '#8f8',
+			SECTOR_FILL_ORANGE: '#f80',
+			SECTOR_FILL_RED: '#f00',
 			SECTOR_TXT_STROKE: '#888',
 			SECTOR_TXT_FILL: '#888',
 			FRAME_STROKE: '#000'
@@ -421,7 +420,7 @@ export default class GridPageView extends View {
 			const sa = 180-i*mAngle;
 			const ea = sa - mAngle;
 			const span = mAngle; // The "length" of sector.
-			let fill = this.colors.SECTOR_DATENUMBER_FILL_ACTIVE;
+			let fill = this.colors.SECTOR_FILL_GREEN;
 			// SECTOR
 			this.appendSector({
 				group: group,
@@ -474,11 +473,44 @@ export default class GridPageView extends View {
 		const group = document.createElementNS(svgNS, "g");
 		group.id = 'clock-emissions';
 		
+		/*
+		% Colour coding for the wheel
+		% I take a value of 5% around the moving average to assess the "Orange" colour, above the 5% limit it is "Red" and below the "Green"
+		
+		emiT.cat(emiT.emissions > 1.05 * emiT.movingmean)                                       = .1 ;
+		emiT.cat(emiT.emissions >= emiT.movingmean & emiT.emissions <= 1.05*emiT.movingmean)    = .5 ;
+		emiT.cat(emiT.emissions < emiT.movingmean)                                              = 1 ;
+		
+		% For the pricing, 2 approaches can deployed, either the same approach than for the emissions <=> 5% around the moving average of the last 5 days.
+		% or take a fix value of 10€cts/kWh as the limit price and around the 5% of this limit, [9.5 10.5], this is orange, green blow this point, red above the threshold (Fingrid approach).
+		% For the making city project, we are taking the first appraoch <=> 5% around the moving average of the last 5 days.
+		
+		elsepost_array(elsepost_array > 1.05 * elsepost_array.movingmean)                                       = .1 ;
+		elsepost_array(elsepost_array >= elsepost_array.movingmean & elsepost_array <= 1.05*elsepost_array.movingmean)    = .5 ;
+		elsepost_array(elsepost_array < elsepost_array.movingmean)                                              = 1 ;
+		
+		% 0.1 = 'Red'
+		% 0.5 = 'Orange'
+		% 1   = 'Green'
+		*/
+		
 		for (let i=start; i<end; i++) {
 			const sa = 180-i*mAngle;
 			const ea = sa - mAngle;
 			const span = mAngle; // The "length" of sector.
-			let fill = this.colors.SECTOR_MONTH_FILL_ACTIVE;
+			let fill = this.colors.SECTOR_FILL_ORANGE;
+			
+			console.log(['SHORT LIST i=',i]);
+			Object.keys(this.shortAverageElevenHours).forEach(key => {
+				const val = this.shortAverageElevenHours[key];
+				console.log(['key=',key,' val=',val]);
+			});
+			console.log(['LONG LIST i=',i]);
+			Object.keys(this.longAverageElevenHours).forEach(key => {
+				const val = this.longAverageElevenHours[key];
+				console.log(['key=',key,' val=',val]);
+			});
+			
 			// SECTOR
 			this.appendSector({
 				group: group,
@@ -552,7 +584,7 @@ export default class GridPageView extends View {
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = this.colors.CLOCK_FACE_CIRCLE_STROKE;
-		c.style.strokeWidth = 3;
+		c.style.strokeWidth = 2;
 		c.style.fill = this.colors.CLOCK_FACE_CIRCLE_FILL;
 		group.appendChild(c);
 		

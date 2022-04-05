@@ -82,6 +82,7 @@ export default class GridPageView extends View {
 			SECTOR_FILL_GREEN: '#8f8',
 			SECTOR_FILL_ORANGE: '#f80',
 			SECTOR_FILL_RED: '#f00',
+			SECTOR_FILL_GREY: '#eee',
 			SECTOR_TXT_STROKE: '#888',
 			SECTOR_TXT_FILL: '#888',
 			FRAME_STROKE: '#000'
@@ -498,8 +499,25 @@ export default class GridPageView extends View {
 			const sa = 180-i*mAngle;
 			const ea = sa - mAngle;
 			const span = mAngle; // The "length" of sector.
-			let fill = this.colors.SECTOR_FILL_ORANGE;
+			let fill = this.colors.SECTOR_FILL_GREY;
 			
+			const key = 'H'+i;
+			const s_val = this.shortAverageElevenHours[key];
+			const l_val = this.longAverageElevenHours[key];
+			if (typeof s_val !== 'undefined' &&  s_val > 0 && typeof l_val !== 'undefined' &&  l_val > 0) {
+				
+				const upper_limit = l_val+l_val*0.05; // upper
+				const lower_limit = l_val-l_val*0.05; // lower
+				
+				if (s_val > upper_limit) {
+					fill = this.colors.SECTOR_FILL_RED;
+				} else if (s_val < lower_limit) {
+					fill = this.colors.SECTOR_FILL_GREEN;
+				} else {
+					fill = this.colors.SECTOR_FILL_ORANGE;
+				}
+			}
+			/*
 			console.log(['SHORT LIST i=',i]);
 			Object.keys(this.shortAverageElevenHours).forEach(key => {
 				const val = this.shortAverageElevenHours[key];
@@ -510,7 +528,7 @@ export default class GridPageView extends View {
 				const val = this.longAverageElevenHours[key];
 				console.log(['key=',key,' val=',val]);
 			});
-			
+			*/
 			// SECTOR
 			this.appendSector({
 				group: group,
@@ -584,7 +602,7 @@ export default class GridPageView extends View {
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = this.colors.CLOCK_FACE_CIRCLE_STROKE;
-		c.style.strokeWidth = 2;
+		c.style.strokeWidth = 1;
 		c.style.fill = this.colors.CLOCK_FACE_CIRCLE_FILL;
 		group.appendChild(c);
 		

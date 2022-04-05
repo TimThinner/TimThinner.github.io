@@ -364,9 +364,21 @@ export default class EntsoeModel extends Model {
 		const body_url = this.src; // URL will be appended in backend.
 		
 		// NOTE: Times are given always in UTC time!!!
-		const body_period_start = moment.utc().subtract(1, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
-		const body_period_end = moment.utc().add(23,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
+		//const body_period_start = moment.utc().subtract(1, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
+		//const body_period_end = moment.utc().add(23,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
+		
+		const body_period_start = moment.utc().subtract(120, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
+		const body_period_end = moment.utc().add(36,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
 		console.log(['body_period_start=',body_period_start,' body_period_end=',body_period_end]);
+		
+		//periodStart = dateshift(datetime(curtime - hours(11), 'Format','yyyyMMddHHmm'), 'start', 'hour') ;
+		//periodEnd   = dateshift(datetime(curtime + hours(36), 'Format','yyyyMMddHHmm'), 'start', 'hour') ;
+			// IN BACKEND:
+			//url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm
+			//url += '&periodEnd=' + req.body.period_end;       // yyyyMMddHHmm
+		
+		
+		
 		
 		//EntsoeA65NorwayNO4Model: SyntaxError: JSON.parse: unexpected character at line 1 column 2 of the JSON data
 		

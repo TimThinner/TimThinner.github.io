@@ -21,7 +21,8 @@ export default class GridPageView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
+		//this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
+		this.PTO = new PeriodicTimeoutObserver({interval:60000}); // interval 1 minute.
 		this.PTO.subscribe(this);
 		
 		this.rendered = false;
@@ -224,6 +225,94 @@ export default class GridPageView extends View {
 		const hp2 = h*0.5; // 50%
 		const r = Math.min(wp2, hp2)*0.5; // r = 25% of width (or height).
 		return r;
+	}
+	
+	updateHands() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		// Start by removing ALL hands (hours, minutes, seconds).
+		let wrap = document.getElementById('hands');
+		if (wrap) {
+			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+			wrap.remove(); // Finally remove group.
+		}
+		
+		const tim = moment();
+		const ts = tim.seconds();
+		const tm = tim.minutes();
+		const th = tim.hours();
+		
+		const rs = r - r*0.1;
+		const rm = r - r*0.2;
+		const rh = r - r*0.4;
+		
+		//console.log(['Time now h=',th,' tm=',tm,' ts=',ts]);
+		const group = document.createElementNS(svgNS, "g");
+		group.id = 'hands';
+		
+		// const degrees = [150,120,90,60,30,0,-30,-60,-90,-120,-150,-180];
+		// const hours = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+		// Each second equals 6 degrees.
+		// 0 => 180
+		// 1 => 174
+		// ...
+		// Seconds can go "one-second-at-a-time", but minutes and hours movement is calculated to be smooth.
+		//const ss = 180 - ts*6;
+		//const xs = Math.sin(ss*Math.PI/180) * rs;
+		//const ys = Math.cos(ss*Math.PI/180) * rs;
+		
+		const mm = 180 - tm*6 - ts/10;
+		const xm = Math.sin(mm*Math.PI/180) * rm;
+		const ym = Math.cos(mm*Math.PI/180) * rm;
+		
+		// th = 0 - 23   1 hour => 180 - 30 = 150 degrees
+		const hh = 180 - th*30 - tm/2 - ts/120;  // 60s => 0.5 degrees => 1s = 1/120 degrees.
+		const xh = Math.sin(hh*Math.PI/180) * rh;
+		const yh = Math.cos(hh*Math.PI/180) * rh;
+		
+		// MINUTES:
+		const m_hand = document.createElementNS(svgNS, "line");
+		m_hand.setAttributeNS(null, 'x1', 0);
+		m_hand.setAttributeNS(null, 'y1', 0);
+		m_hand.setAttributeNS(null, 'x2', xm);
+		m_hand.setAttributeNS(null, 'y2', ym);
+		m_hand.style.stroke = this.colors.CLOCK_FACE_MINUTES_HAND;
+		m_hand.style.strokeWidth = 5;
+		group.appendChild(m_hand);
+		
+		// HOURS:
+		const h_hand = document.createElementNS(svgNS, "line");
+		h_hand.setAttributeNS(null, 'x1', 0);
+		h_hand.setAttributeNS(null, 'y1', 0);
+		h_hand.setAttributeNS(null, 'x2', xh);
+		h_hand.setAttributeNS(null, 'y2', yh);
+		h_hand.style.stroke = this.colors.CLOCK_FACE_HOURS_HAND;
+		h_hand.style.strokeWidth = 7;
+		group.appendChild(h_hand);
+		
+		// Small circle in center (RED):
+		/*const cc = document.createElementNS(svgNS, "circle");
+		cc.setAttributeNS(null, 'cx', 0);
+		cc.setAttributeNS(null, 'cy', 0);
+		cc.setAttributeNS(null, 'r', 5);
+		cc.style.stroke = this.colors.CLOCK_FACE_SECONDS_CENTER_DOT_STROKE;
+		cc.style.strokeWidth = 2;
+		cc.style.fill = this.colors.CLOCK_FACE_SECONDS_CENTER_DOT_FILL;
+		group.appendChild(cc);
+		*/
+		// SECONDS (RED):
+		/*
+		const s_hand = document.createElementNS(svgNS, "line");
+		s_hand.setAttributeNS(null, 'x1', 0);
+		s_hand.setAttributeNS(null, 'y1', 0);
+		s_hand.setAttributeNS(null, 'x2', xs);
+		s_hand.setAttributeNS(null, 'y2', ys);
+		s_hand.style.stroke = this.colors.CLOCK_FACE_SECONDS_HAND;
+		s_hand.style.strokeWidth = 2;
+		group.appendChild(s_hand);
+		*/
+		document.getElementById('space').appendChild(group);
 	}
 	
 	appendTick(group, r, a, h) {
@@ -872,15 +961,24 @@ export default class GridPageView extends View {
 			
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				
-				console.log("GridPageView resize => update all models!!!!!!!!!!!!!!");
+				
+				
+				//console.log("GridPageView resize => update all models!!!!!!!!!!!!!!");
 				//this.render();
-				Object.keys(this.models).forEach(key => {
+				/*Object.keys(this.models).forEach(key => {
 					if (key !== 'MenuModel') {
 						this.updateChart(key);
 					}
-				});
+				});*/
 				//this.renderChart();
 				//this.render();
+				
+				console.log('ResizeEventObserver resize => SHOW()!');
+				this.show();
+				
+				
+				
+				
 			} else if (key_array.includes(options.model) && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.rendered) {
@@ -964,6 +1062,11 @@ export default class GridPageView extends View {
 					const UM = this.controller.master.modelRepo.get('UserModel');
 					this.models[key].fetch(UM.token);
 				});
+				
+				this.updateHands();
+				//this.updateDateNumberInMonth();
+				//this.updateMonth();
+				
 			}
 		}
 	}

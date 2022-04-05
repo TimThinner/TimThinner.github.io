@@ -65,7 +65,7 @@ export default class GridPageView extends View {
 		
 		// colors:   in styles.css background is '#ccc'
 		this.colors = {
-			SPACE_FILL: '#ccc',
+			SPACE_FILL: '#eee',
 			CLOCK_FACE_CIRCLE_STROKE: '#000',
 			CLOCK_FACE_CIRCLE_FILL: '#fff',
 			CLOCK_FACE_CENTER_DOT_STROKE: '#000',
@@ -190,7 +190,7 @@ export default class GridPageView extends View {
 		
 	*/
 	createClockSpace() {
-		const w = this.REO.width;
+		const w = this.REO.width-12;
 		const h = this.REO.height*0.5; // Note: use only half of vertical space
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
@@ -219,7 +219,7 @@ export default class GridPageView extends View {
 	}
 	
 	sunRadius() {
-		const w = this.REO.width;
+		const w = this.REO.width-12;
 		const h = this.REO.height*0.5; // Note: use only half of vertical space
 		const wp2 = w*0.5; // 50%
 		const hp2 = h*0.5; // 50%
@@ -311,6 +311,141 @@ export default class GridPageView extends View {
 		s_hand.style.stroke = this.colors.CLOCK_FACE_SECONDS_HAND;
 		s_hand.style.strokeWidth = 2;
 		group.appendChild(s_hand);
+		*/
+		document.getElementById('clock-space').appendChild(group);
+	}
+	
+	
+	
+	/*
+		ri = inner radius
+		ro = outer radius 
+		ab = angle to begin 
+		ae = angle to end
+	*/
+	appendSector(params) {
+		
+		const group = params.group;
+		const ri = params.innerRadius;
+		const ro = params.outerRadius;
+		const ab = params.startAngle;
+		const ae = params.endAngle;
+		const span = params.span;
+		const label = params.label;
+		const fill = params.fill;
+		
+		const centerAngle = ab-span/2;
+		const centerRadius = (ri+ro)/2;
+		const xTxt = Math.sin(centerAngle*Math.PI/180) * centerRadius;
+		const yTxt = Math.cos(centerAngle*Math.PI/180) * centerRadius;
+		
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const xbi = Math.sin(ab*Math.PI/180) * ri;
+		const ybi = Math.cos(ab*Math.PI/180) * ri;
+		const xbo = Math.sin(ab*Math.PI/180) * ro;
+		const ybo = Math.cos(ab*Math.PI/180) * ro;
+		
+		const xei = Math.sin(ae*Math.PI/180) * ri;
+		const yei = Math.cos(ae*Math.PI/180) * ri;
+		const xeo = Math.sin(ae*Math.PI/180) * ro;
+		const yeo = Math.cos(ae*Math.PI/180) * ro;
+		// A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+		const d='M '+xbi+','+ybi+' '+
+				'L '+xbo+','+ybo+' '+
+				'A '+ro+','+ro+' 0,0,1 '+xeo+','+yeo+' '+
+				'L '+xei+','+yei+' '+
+				'A '+ri+','+ri+' 0,0,0 '+xbi+','+ybi;
+				
+		const p = document.createElementNS(svgNS, "path");
+		p.setAttributeNS(null, 'd', d);
+		p.style.stroke = this.colors.SECTOR_PATH_STROKE;
+		p.style.strokeWidth = 1;
+		p.style.fill = fill;
+		group.appendChild(p);
+		
+		// Text (label) is wrapped inside SVG-element.
+		/*
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttributeNS(null, 'x', xTxt-16);
+		svg.setAttributeNS(null, 'y', yTxt-10);
+		svg.setAttributeNS(null, 'width', 32);
+		svg.setAttributeNS(null, 'height', 20);
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','50%');
+		//txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.style.fontFamily = "'Open Sans', sans-serif";
+		txt.style.fontSize = '16px';
+		//txt.setAttribute('font-weight','bold');
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.style.fill = this.colors.SECTOR_TXT_FILL;
+		txt.style.stroke = this.colors.SECTOR_TXT_STROKE;
+		txt.style.strokeWidth = 1;
+		const text_node = document.createTextNode(label);
+		txt.appendChild(text_node);
+		svg.appendChild(txt);
+		
+		group.appendChild(svg);
+		*/
+	}
+	
+	
+	updateEmissions() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		// Start by removing ALL emissions.
+		let wrap = document.getElementById('clock-emissions');
+		if (wrap) {
+			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+			wrap.remove(); // Finally remove group.
+		}
+		
+		let hourNow = moment().hours(); // Number 0 ... 23
+		if (hourNow > 11) {
+			hourNow -= 12; // always 0 ... 11
+		}
+		let start = hourNow+1;
+		if (hourNow === 11) {
+			start = 0;
+		}
+		const end = start+10;
+		const mAngle = 360/12; // angle for one hour
+		//const label = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+		
+		const group = document.createElementNS(svgNS, "g");
+		group.id = 'clock-emissions';
+		
+		for (let i=start; i<end; i++) {
+			const sa = 180-i*mAngle;
+			const ea = sa - mAngle;
+			const span = mAngle; // The "length" of sector.
+			let fill = this.colors.SECTOR_MONTH_FILL_ACTIVE;
+			// SECTOR
+			this.appendSector({
+				group: group,
+				innerRadius: r + r*0.3,
+				outerRadius: r + r*0.7,
+				startAngle: sa,
+				endAngle: ea,
+				span: span,
+				//label: label[i],
+				fill: fill
+			});
+		}
+		
+		// The most outer black frame!
+		/*const frameWidth = 10;
+		const cf = document.createElementNS(svgNS, "circle");
+		cf.setAttributeNS(null, 'cx', 0);
+		cf.setAttributeNS(null, 'cy', 0);
+		cf.setAttributeNS(null, 'r', r+r*0.7+frameWidth/2);
+		cf.style.stroke = this.colors.FRAME_STROKE;
+		cf.style.strokeWidth = frameWidth;
+		cf.style.fill = 'none';
+		group.appendChild(cf);
 		*/
 		document.getElementById('clock-space').appendChild(group);
 	}
@@ -1064,6 +1199,7 @@ export default class GridPageView extends View {
 				});
 				
 				this.updateHands();
+				this.updateEmissions();
 				//this.updateDateNumberInMonth();
 				//this.updateMonth();
 				

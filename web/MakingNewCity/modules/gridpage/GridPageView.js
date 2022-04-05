@@ -61,6 +61,31 @@ export default class GridPageView extends View {
 		*/
 		this.longAverageElevenHours = {};
 		this.shortAverageElevenHours = {};
+		
+		// colors:   in styles.css background is '#ccc'
+		this.colors = {
+			SPACE_FILL: '#ccc',
+			CLOCK_FACE_CIRCLE_STROKE: '#000',
+			CLOCK_FACE_CIRCLE_FILL: '#fff',
+			CLOCK_FACE_CENTER_DOT_STROKE: '#000',
+			CLOCK_FACE_CENTER_DOT_FILL: '#000',
+			CLOCK_FACE_TICK_LINE_STROKE: '#000',
+			CLOCK_FACE_TICK_TXT_FILL: '#888',
+			CLOCK_FACE_TICK_TXT_STROKE: '#888',
+			CLOCK_FACE_SECONDS_HAND: '#f00',
+			CLOCK_FACE_SECONDS_CENTER_DOT_STROKE: '#000',
+			CLOCK_FACE_SECONDS_CENTER_DOT_FILL: '#f00',
+			CLOCK_FACE_MINUTES_HAND: '#000',
+			CLOCK_FACE_HOURS_HAND: '#000',
+			SECTOR_PATH_STROKE: '#888',
+			SECTOR_DATENUMBER_FILL_INACTIVE: '#eee',
+			SECTOR_DATENUMBER_FILL_ACTIVE: '#8f8',
+			SECTOR_MONTH_FILL_INACTIVE: '#eee',
+			SECTOR_MONTH_FILL_ACTIVE: '#ff8',
+			SECTOR_TXT_STROKE: '#888',
+			SECTOR_TXT_FILL: '#888',
+			FRAME_STROKE: '#000'
+		}
 	}
 	
 	show() {
@@ -140,9 +165,150 @@ export default class GridPageView extends View {
 	{ "results": [ 
 		{ "country": "FI", "date_time": "2022-04-04 09:43:40", "em_cons": 183.0017, "em_prod": 144.4801, "emdb": "EcoInvent", "id": 794585 }, 
 		...
-	*/
 	
-	populateShortNow() {
+	
+	After populateShort() and populateLong() we have hourly averages in 
+		this.longAverageElevenHours = {};
+		this.shortAverageElevenHours = {};
+			For example:
+			{
+				"H6" : 209.456787,
+				"H7": 209.345322,
+				...
+				"H16": 211.987654
+			}
+		11 key,value pairs to visualize around the clock.
+		
+		inner circle for emissions.
+		3 colors?
+		
+		outer circle for price forecast.. next 11 hours?
+		
+		
+		
+		
+	*/
+	createClockSpace() {
+		const w = this.REO.width;
+		const h = this.REO.height;
+		const wp2 = w*0.5;
+		const hp2 = h*0.5;
+		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
+		
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(svgNS, "svg");
+		
+		svg.setAttributeNS(null,'width',w);
+		svg.setAttributeNS(null,'height',h);
+		svg.setAttributeNS(null,'viewBox',vb);
+		svg.id = 'clock-space';
+		
+		const rect = document.createElementNS(svgNS, 'rect');
+		// Setup the <rect> element.
+		rect.setAttribute('x',-wp2);
+		rect.setAttribute('y',-hp2);
+		rect.setAttribute('width',w);
+		rect.setAttribute('height',h);
+		rect.setAttribute('fill', this.colors.SPACE_FILL);
+		
+		svg.appendChild(rect);
+		// Vanilla JS equivalents of jQuery methods SEE: https://gist.github.com/joyrexus/7307312
+		$('#clock-placeholder').append(svg);
+		//document.getElementById(this.el.slice(1)).appendChild(svg);
+	}
+	
+	sunRadius() {
+		const w = this.REO.width;
+		const h = this.REO.height;
+		const wp2 = w*0.5; // 50%
+		const hp2 = h*0.5; // 50%
+		const r = Math.min(wp2, hp2)*0.5; // r = 25% of width (or height).
+		return r;
+	}
+	
+	appendTick(group, r, a, h) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r2 = r-r*0.1;
+		const r3 = r-r*0.2;
+		
+		const x1 = Math.sin(a*Math.PI/180) * r;
+		const y1 = Math.cos(a*Math.PI/180) * r;
+		const x2 = Math.sin(a*Math.PI/180) * r2;
+		const y2 = Math.cos(a*Math.PI/180) * r2;
+		const x3 = Math.sin(a*Math.PI/180) * r3;
+		const y3 = Math.cos(a*Math.PI/180) * r3;
+		
+		const line = document.createElementNS(svgNS, "line");
+		line.setAttributeNS(null, 'x1', x1);
+		line.setAttributeNS(null, 'y1', y1);
+		line.setAttributeNS(null, 'x2', x2);
+		line.setAttributeNS(null, 'y2', y2);
+		line.style.stroke = this.colors.CLOCK_FACE_TICK_LINE_STROKE;
+		line.style.strokeWidth = 3;
+		group.appendChild(line);
+		
+		// TEXT is wrapped inside SVG-element.
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttributeNS(null, 'x', x3-16);
+		svg.setAttributeNS(null, 'y', y3-10);
+		svg.setAttributeNS(null, 'width', 32);
+		svg.setAttributeNS(null, 'height', 20);
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','50%');
+		txt.style.fontFamily = "'Open Sans', sans-serif";
+		txt.style.fontSize = '16px';
+		//txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		//txt.setAttribute('font-size','16px');
+		//txt.setAttribute('font-weight','bold');
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.style.stroke = this.colors.CLOCK_FACE_TICK_TXT_STROKE;
+		txt.style.fill = this.colors.CLOCK_FACE_TICK_TXT_FILL;
+		txt.style.strokeWidth = 1;
+		const text_node = document.createTextNode(h);
+		txt.appendChild(text_node);
+		svg.appendChild(txt);
+		group.appendChild(svg);
+	}
+	
+	appendClock() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const c = document.createElementNS(svgNS, "circle");
+		c.setAttributeNS(null, 'cx', 0);
+		c.setAttributeNS(null, 'cy', 0);
+		c.setAttributeNS(null, 'r', r);
+		c.style.stroke = this.colors.CLOCK_FACE_CIRCLE_STROKE;
+		c.style.strokeWidth = 9;
+		c.style.fill = this.colors.CLOCK_FACE_CIRCLE_FILL;
+		group.appendChild(c);
+		
+		const cc = document.createElementNS(svgNS, "circle");
+		cc.setAttributeNS(null, 'cx', 0);
+		cc.setAttributeNS(null, 'cy', 0);
+		cc.setAttributeNS(null, 'r', 6);
+		cc.style.stroke = this.colors.CLOCK_FACE_CENTER_DOT_STROKE;
+		cc.style.strokeWidth = 2;
+		cc.style.fill = this.colors.CLOCK_FACE_CENTER_DOT_FILL;
+		group.appendChild(cc);
+		
+		const degrees = [150,120,90,60,30,0,-30,-60,-90,-120,-150,-180];
+		const hours = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+		degrees.forEach((a,i)=>{
+			// 150	120	90	60	30	0	-30	-60	-90	-120	-150	-180
+			//   1	  2	 3	 4	 5	6	 7	  8	  9	  10	  11	  12
+			this.appendTick(group, r, a, hours[i]);
+		});
+		document.getElementById('clock-space').appendChild(group);
+	}
+	
+	
+	populateShort() {
 		const resuArray = [];
 		
 		this.shortAverageElevenHours = {};
@@ -199,11 +365,9 @@ export default class GridPageView extends View {
 		} else {
 			console.log('POPULATE SHORT! resuArray is EMPTY!');
 		}
-		
-		
 	}
 	
-	populateLongNow() {
+	populateLong() {
 		
 		const resuArray = [];
 		
@@ -776,7 +940,7 @@ export default class GridPageView extends View {
 				if (options.status === 200) {
 					//const res = this.models[options.model].results;
 					//console.log(['ELEVEN HOURS results=',res]);
-					this.populateShortNow();
+					this.populateShort();
 				} else {
 					console.log(['ELEVEN HOURS status=',options.status]);
 				}
@@ -785,7 +949,7 @@ export default class GridPageView extends View {
 				if (options.status === 200) {
 					//const res = this.models[options.model].results;
 					//console.log(['FIVE DAYS PLUS ELEVEN HOURS results=',res]);
-					this.populateLongNow();
+					this.populateLong();
 					
 				} else {
 					console.log(['EmpoEmissionsFiveDays fetched status=',options.status]);
@@ -823,14 +987,15 @@ export default class GridPageView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
+				'<div class="col s12" id="clock-placeholder">'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					'<div id="fingrid-chart" class="extra-large-chart"></div>'+ // height = 600px
 				'</div>'+
 				'<div class="col s12"><p class="grid-timestamp">'+localized_string_updated_header+'<span id="update-timestamp"></span></p></div>'+
 			'</div>'+
-			//'<div class="row">'+
-			//	'<div class="col s12" id="table-wrapper"></div>'+
-			//'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					'<div id="price-chart" class="medium-chart"></div>'+ // height = 400px
@@ -854,6 +1019,10 @@ export default class GridPageView extends View {
 		
 		//this.createTable('#table-wrapper');
 		this.renderChart();
+		
+		this.createClockSpace();
+		this.appendClock();
+		
 		this.rendered = true;
 		
 		if (this.areModelsReady()) {

@@ -116,77 +116,79 @@ export default class DistrictEView extends View {
 	*/
 	updateOne(svgObject, svgId, val) {
 		const textElement = svgObject.getElementById(svgId);
-		while (textElement.firstChild) {
-			textElement.removeChild(textElement.firstChild);
-		}
-		// Check if 'geothermal-power' is giving or taking.
-		if (svgId === 'geothermal-power') {
-			const ps = {
-				'PORTRAIT':{
-					'give':'M 380,260 L 380,350',
-					'take':'M 380,350 L 380,260'
-				},
-				'SQUARE':{
-					'give':'M 670,260 L 670,330',
-					'take':'M 670,330 L 670,260'
-				},
-				'LANDSCAPE':{
-					'give':'M 1400,300 L 1400,380',
-					'take':'M 1400,380 L 1400,300'
-				}
-			};
-			const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
-			
-			if (val === 0) {
-				// Freeze the animation!
-				const pipeElement = svgObject.getElementById('geothermal-pipe');
-				if (pipeElement.firstElementChild) {
-					// from = "40" set also to = "40", this freezes the "flow".
-					pipeElement.firstElementChild.setAttributeNS(null, 'to', '40');
-				}
-				// Render power YELLOW color!
-				textElement.appendChild(document.createTextNode(Math.abs(val).toFixed(1) + " kW"));
-				textElement.setAttributeNS(null, 'fill', '#ff0');
-				
-			} else if (val < 0) {
-				const pipeElement = svgObject.getElementById('geothermal-pipe');
-				pipeElement.setAttributeNS(null, 'd', ps[mode]['take']);
-				// Remember to set flow back to normal.
-				if (pipeElement.firstElementChild) {
-					pipeElement.firstElementChild.setAttributeNS(null, 'to', '0');
-				}
-				textElement.appendChild(document.createTextNode(Math.abs(val).toFixed(1) + " kW"));
-				textElement.setAttributeNS(null, 'fill', '#f00');
-				
-			} else { // val > 0
-				const pipeElement = svgObject.getElementById('geothermal-pipe');
-				pipeElement.setAttributeNS(null, 'd', ps[mode]['give']);
-				// Remember to set flow back to normal.
-				if (pipeElement.firstElementChild) {
-					pipeElement.firstElementChild.setAttributeNS(null, 'to', '0');
-				}
-				textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
-				textElement.setAttributeNS(null, 'fill', '#0a0');
+		if (textElement) {
+			while (textElement.firstChild) {
+				textElement.removeChild(textElement.firstChild);
 			}
-			
-		} else if (svgId === 'district-heating-power') {
-			this.flowCheck(svgObject, val, 'district-heating-pipe');
-			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
-			
-		} else if (svgId === 'solar-power') {
-			this.flowCheck(svgObject, val, 'solar-pipe');
-			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
-			
-		} else if (svgId === 'kitchen-power') {
-			this.flowCheck(svgObject, val, 'kitchen-pipe');
-			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
-			
-		} else if (svgId === 'other-power') {
-			this.flowCheck(svgObject, val, 'others-pipe');
-			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
-			
-		} else {
-			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+			// Check if 'geothermal-power' is giving or taking.
+			if (svgId === 'geothermal-power') {
+				const ps = {
+					'PORTRAIT':{
+						'give':'M 380,260 L 380,350',
+						'take':'M 380,350 L 380,260'
+					},
+					'SQUARE':{
+						'give':'M 670,260 L 670,330',
+						'take':'M 670,330 L 670,260'
+					},
+					'LANDSCAPE':{
+						'give':'M 1400,300 L 1400,380',
+						'take':'M 1400,380 L 1400,300'
+					}
+				};
+				const mode = this.controller.master.modelRepo.get('ResizeEventObserver').mode;
+				
+				if (val === 0) {
+					// Freeze the animation!
+					const pipeElement = svgObject.getElementById('geothermal-pipe');
+					if (pipeElement.firstElementChild) {
+						// from = "40" set also to = "40", this freezes the "flow".
+						pipeElement.firstElementChild.setAttributeNS(null, 'to', '40');
+					}
+					// Render power YELLOW color!
+					textElement.appendChild(document.createTextNode(Math.abs(val).toFixed(1) + " kW"));
+					textElement.setAttributeNS(null, 'fill', '#ff0');
+					
+				} else if (val < 0) {
+					const pipeElement = svgObject.getElementById('geothermal-pipe');
+					pipeElement.setAttributeNS(null, 'd', ps[mode]['take']);
+					// Remember to set flow back to normal.
+					if (pipeElement.firstElementChild) {
+						pipeElement.firstElementChild.setAttributeNS(null, 'to', '0');
+					}
+					textElement.appendChild(document.createTextNode(Math.abs(val).toFixed(1) + " kW"));
+					textElement.setAttributeNS(null, 'fill', '#f00');
+					
+				} else { // val > 0
+					const pipeElement = svgObject.getElementById('geothermal-pipe');
+					pipeElement.setAttributeNS(null, 'd', ps[mode]['give']);
+					// Remember to set flow back to normal.
+					if (pipeElement.firstElementChild) {
+						pipeElement.firstElementChild.setAttributeNS(null, 'to', '0');
+					}
+					textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+					textElement.setAttributeNS(null, 'fill', '#0a0');
+				}
+				
+			} else if (svgId === 'district-heating-power') {
+				this.flowCheck(svgObject, val, 'district-heating-pipe');
+				textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+				
+			} else if (svgId === 'solar-power') {
+				this.flowCheck(svgObject, val, 'solar-pipe');
+				textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+				
+			} else if (svgId === 'kitchen-power') {
+				this.flowCheck(svgObject, val, 'kitchen-pipe');
+				textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+				
+			} else if (svgId === 'other-power') {
+				this.flowCheck(svgObject, val, 'others-pipe');
+				textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+				
+			} else {
+				textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
+			}
 		}
 	}
 /*

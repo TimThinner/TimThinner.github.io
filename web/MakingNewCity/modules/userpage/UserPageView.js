@@ -68,15 +68,23 @@ export default class UserPageView extends View {
 	updateValueNow(type, first, second) {
 		// Remove old value.
 		let wrap_f = document.getElementById(type+'-now-first');
-		while(wrap_f.firstChild) wrap_f.removeChild(wrap_f.firstChild);
-		// Append new value.
-		wrap_f.appendChild(document.createTextNode(first));
+		if (wrap_f) {
+			while(wrap_f.firstChild) { 
+				wrap_f.removeChild(wrap_f.firstChild);
+			}
+			// Append new value.
+			wrap_f.appendChild(document.createTextNode(first));
+		}
 		
 		// Remove old value.
 		let wrap_s = document.getElementById(type+'-now-second');
-		while(wrap_s.firstChild) wrap_s.removeChild(wrap_s.firstChild);
-		// Append new value.
-		wrap_s.appendChild(document.createTextNode(second));
+		if (wrap_s) {
+			while(wrap_s.firstChild) { 
+				wrap_s.removeChild(wrap_s.firstChild);
+			}
+			// Append new value.
+			wrap_s.appendChild(document.createTextNode(second));
+		}
 	}
 	/*
 		apartmentId: 101

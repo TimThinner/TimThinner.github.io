@@ -78,10 +78,12 @@ export default class DistrictFView extends View {
 	
 	updateOne(svgObject, svgId, val) {
 		const textElement = svgObject.getElementById(svgId);
-		while (textElement.firstChild) {
-			textElement.removeChild(textElement.firstChild);
+		if (textElement) {
+			while (textElement.firstChild) {
+				textElement.removeChild(textElement.firstChild);
+			}
+			textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
 		}
-		textElement.appendChild(document.createTextNode(val.toFixed(1) + " kW"));
 	}
 	
 	/*

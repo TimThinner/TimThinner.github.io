@@ -435,7 +435,7 @@ export default class GridPageView extends View {
 			});
 		}
 		// The most outer black frame!
-		const frameWidth = 10;
+		const frameWidth = 9;
 		const cf = document.createElementNS(svgNS, "circle");
 		cf.setAttributeNS(null, 'cx', 0);
 		cf.setAttributeNS(null, 'cy', 0);
@@ -552,7 +552,7 @@ export default class GridPageView extends View {
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
 		c.style.stroke = this.colors.CLOCK_FACE_CIRCLE_STROKE;
-		c.style.strokeWidth = 9;
+		c.style.strokeWidth = 3;
 		c.style.fill = this.colors.CLOCK_FACE_CIRCLE_FILL;
 		group.appendChild(c);
 		

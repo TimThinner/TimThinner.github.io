@@ -312,7 +312,7 @@ export default class GridPageView extends View {
 		s_hand.style.strokeWidth = 2;
 		group.appendChild(s_hand);
 		*/
-		document.getElementById('space').appendChild(group);
+		document.getElementById('clock-space').appendChild(group);
 	}
 	
 	appendTick(group, r, a, h) {

@@ -1212,6 +1212,10 @@ export default class GridPageView extends View {
 				if (options.status === 200) {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
+						
+						
+						this.updatePriceForecast();
+						
 						if (typeof this.price_chart !== 'undefined') {
 							// SEE: https://www.amcharts.com/docs/v4/concepts/data/
 							// Manipulating existing data points
@@ -1227,6 +1231,7 @@ export default class GridPageView extends View {
 							const newdata = this.convertPriceData();
 							this.price_chart.data = newdata;
 							this.price_chart.invalidateRawData();
+							
 						} else {
 							console.log('RENDER CHART!');
 							this.renderPriceChart();
@@ -1250,6 +1255,7 @@ export default class GridPageView extends View {
 					//const res = this.models[options.model].results;
 					//console.log(['ELEVEN HOURS results=',res]);
 					this.populateShort();
+					this.updateEmissions();
 				} else {
 					console.log(['ELEVEN HOURS status=',options.status]);
 				}
@@ -1259,6 +1265,7 @@ export default class GridPageView extends View {
 					//const res = this.models[options.model].results;
 					//console.log(['FIVE DAYS PLUS ELEVEN HOURS results=',res]);
 					this.populateLong();
+					this.updateEmissions();
 					
 				} else {
 					console.log(['EmpoEmissionsFiveDays fetched status=',options.status]);
@@ -1275,11 +1282,8 @@ export default class GridPageView extends View {
 				});
 				
 				this.updateHands();
-				this.updateEmissions();
-				this.updatePriceForecast();
 				//this.updateDateNumberInMonth();
 				//this.updateMonth();
-				
 			}
 		}
 	}

@@ -426,15 +426,15 @@ export default class GridPageView extends View {
 				const lower_limit = val.fiveDayAve - val.fiveDayAve*0.05; // lower
 				
 				if (val.oneHourAve > upper_limit) {
-					console.log('UPDATE EMISSIONS key='+key+' RED!');
+					console.log('UPDATE PRICES key='+key+' RED!');
 					fill = this.colors.SECTOR_FILL_RED;
 					
 				} else if (val.oneHourAve < lower_limit) {
-					console.log('UPDATE EMISSIONS key='+key+' GREEN!');
+					console.log('UPDATE PRICES key='+key+' GREEN!');
 					fill = this.colors.SECTOR_FILL_GREEN;
 					
 				} else {
-					console.log('UPDATE EMISSIONS key='+key+' ORANGE!');
+					console.log('UPDATE PRICES key='+key+' ORANGE!');
 					fill = this.colors.SECTOR_FILL_ORANGE;
 				}
 			} else {
@@ -658,13 +658,13 @@ export default class GridPageView extends View {
 		let startTwoA = moment().subtract(11, 'hours');
 		let startTwoB = moment().subtract(11, 'hours');
 		
+		startTwoA.subtract(10, 'minutes');
+		startTwoB.add(10, 'minutes');
+		
 		if (data.length > 0) {
 			for (let i=0; i<11; i++) {
 				const key = 'H'+startMom.hours();
 				endMom.add(1, 'hours');
-				
-				startTwoA.subtract(5, 'minutes');
-				startTwoB.add(5, 'minutes');
 				
 				let sum = 0;
 				let count = 0;

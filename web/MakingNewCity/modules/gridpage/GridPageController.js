@@ -144,7 +144,7 @@ export default class GridPageController extends Controller {
 		
 		http://128.214.253.150/api/v1/resources/emissions/findByDate?country=FI&EmDB=EcoInvent&startdate=2022-04-04%2002:03&enddate=2022-04-04%2013:03
 		
-		http://128.214.253.150/api/v1/resources/emissions/findByDate?startdate=2022-04-04%2000:00&enddate=2022-04-04%2011:00&EmDB=EcoInvent&country=FI
+		http://128.214.253.150/api/v1/resources/emissions/findByDate?startdate=2022-04-05%2003:00&enddate=2022-04-05%2013:00&EmDB=EcoInvent&country=FI
 		
 		http://128.214.253.150/api/v1/resources/emissions/findByDate?country=FI&EmDB=EcoInvent&startdate=2022-03-30%2000:00:00&enddate=2022-04-04%2000:00:00
 		

@@ -77,6 +77,7 @@ export default class GridPageView extends View {
 			SECTOR_FILL_ORANGE: '#f80',
 			SECTOR_FILL_RED: '#f00',
 			SECTOR_FILL_GREY: '#eee',
+			SECTOR_FILL_DARK_GREY: '#ccc',
 			SECTOR_TXT_STROKE: '#888',
 			SECTOR_TXT_FILL: '#888',
 			FRAME_STROKE: '#000'
@@ -491,7 +492,7 @@ export default class GridPageView extends View {
 			const sa = 180-i*mAngle;
 			const ea = sa - mAngle;
 			const span = mAngle; // The "length" of sector.
-			let fill = this.colors.SECTOR_FILL_GREY;
+			let fill = this.colors.SECTOR_FILL_DARK_GREY;
 			
 			const key = 'H'+i;
 			const val = this.emissionAverages[key];

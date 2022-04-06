@@ -454,10 +454,11 @@ export default class GridPageView extends View {
 		if (hourNow > 11) {
 			hourNow -= 12; // always 0 ... 11
 		}
-		const start = hourNow+1;
-		//if (hourNow === 11) {
-			//start = 0;
-		//}
+		let start = hourNow+1;
+		if (start > 11) {
+			start = 0;
+		}
+		
 		const end = start+11;
 		const mAngle = 360/12; // angle for one hour
 		//const label = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];

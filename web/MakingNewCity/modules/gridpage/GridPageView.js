@@ -1172,6 +1172,9 @@ export default class GridPageView extends View {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						
+						const newdata = this.convertPriceData();
+						
+						console.log(['newdata=',newdata]);
 						
 						this.updatePriceForecast();
 						
@@ -1187,7 +1190,6 @@ export default class GridPageView extends View {
 								}
 							});
 							*/
-							const newdata = this.convertPriceData();
 							this.price_chart.data = newdata;
 							this.price_chart.invalidateRawData();
 							

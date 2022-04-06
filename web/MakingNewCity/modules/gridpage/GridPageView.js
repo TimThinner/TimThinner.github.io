@@ -653,11 +653,18 @@ export default class GridPageView extends View {
 		// From now-120 hours to now+36 hours
 		let startMom = moment().subtract(131, 'hours'); // timerange_start_subtract_hours = 131 (120 + 11 hours)
 		let endMom = moment().subtract(11, 'hours');
+		
 		let startTwo = moment().subtract(11, 'hours');
+		let startTwoA = moment().subtract(11, 'hours');
+		let startTwoB = moment().subtract(11, 'hours');
+		
 		if (data.length > 0) {
 			for (let i=0; i<11; i++) {
 				const key = 'H'+startMom.hours();
 				endMom.add(1, 'hours');
+				
+				startTwoA.subtract(5, 'minutes');
+				startTwoB.add(5, 'minutes');
 				
 				let sum = 0;
 				let count = 0;
@@ -669,7 +676,7 @@ export default class GridPageView extends View {
 						sum += r.price;
 						count++;
 					}
-					if (c.isSame(startTwo)) {
+					if (c.isBetween(startTwoA, startTwoB)) {
 						val = r.price;
 					}
 				});
@@ -681,6 +688,8 @@ export default class GridPageView extends View {
 				console.log(['POPULATE key=',key,' sum=',sum,' count=',count,' ave=',ave,' val=',val]);
 				startMom.add(1, 'hours');
 				startTwo.add(1, 'hours');
+				startTwoA.add(1, 'hours');
+				startTwoB.add(1, 'hours');
 			}
 		}
 	}

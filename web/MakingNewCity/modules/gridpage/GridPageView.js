@@ -494,7 +494,6 @@ export default class GridPageView extends View {
 			let fill = this.colors.SECTOR_FILL_GREY;
 			
 			const key = 'H'+i;
-			
 			const val = this.emissionAverages[key];
 			if (typeof val !== 'undefined' &&  
 				typeof val.fiveDayAve !== 'undefined' &&  val.fiveDayAve > 0 &&
@@ -504,15 +503,21 @@ export default class GridPageView extends View {
 				const lower_limit = val.fiveDayAve - val.fiveDayAve*0.05; // lower
 				
 				if (val.oneHourAve > upper_limit) {
+					console.log('UPDATE EMISSIONS key='+key+' RED!');
 					fill = this.colors.SECTOR_FILL_RED;
 					
 				} else if (val.oneHourAve < lower_limit) {
+					console.log('UPDATE EMISSIONS key='+key+' GREEN!');
 					fill = this.colors.SECTOR_FILL_GREEN;
 					
 				} else {
+					console.log('UPDATE EMISSIONS key='+key+' ORANGE!');
 					fill = this.colors.SECTOR_FILL_ORANGE;
 				}
+			} else {
+				console.log('UPDATE EMISSIONS key='+key+' NO VALUES!');
 			}
+			
 			// SECTOR
 			this.appendSector({
 				group: group,

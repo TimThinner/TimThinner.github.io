@@ -55,13 +55,7 @@ export default class GridPageView extends View {
 		this.category_Production_and_Import = 'Prod+import';
 		this.category_Consumption_and_Export = 'Cons+export';
 		
-		
-		/*
-			Will have 'hh':'5-day-average' key-value pairs.
-			Populated from 'EmpoEmissionsFiveDays'-model.
-		*/
-		this.longAverageElevenHours = {};
-		this.shortAverageElevenHours = {};
+		this.emissionAverages = {};
 		
 		// colors:   in styles.css background is '#ccc'
 		this.colors = {
@@ -168,15 +162,15 @@ export default class GridPageView extends View {
 		...
 	
 	
-	After populateShort() and populateLong() we have hourly averages in 
-		this.longAverageElevenHours = {};
-		this.shortAverageElevenHours = {};
+	After populate we have hourly averages in 
+		
+		
 			For example:
 			{
-				"H6" : 209.456787,
-				"H7": 209.345322,
+				"H6" : { fiveDayAve:209.456787, oneHourAve:32}
+				"H7": 
 				...
-				"H16": 211.987654
+				"H16": 
 			}
 		11 key,value pairs to visualize around the clock.
 		
@@ -184,9 +178,6 @@ export default class GridPageView extends View {
 		3 colors?
 		
 		outer circle for price forecast.. next 11 hours?
-		
-		
-		
 		
 	*/
 	createClockSpace() {
@@ -502,33 +493,25 @@ export default class GridPageView extends View {
 			let fill = this.colors.SECTOR_FILL_GREY;
 			
 			const key = 'H'+i;
-			const s_val = this.shortAverageElevenHours[key];
-			const l_val = this.longAverageElevenHours[key];
-			if (typeof s_val !== 'undefined' &&  s_val > 0 && typeof l_val !== 'undefined' &&  l_val > 0) {
+			
+			const val = this.emissionAverages[key];
+			if (typeof val !== 'undefined' &&  
+				typeof val.fiveDayAve !== 'undefined' &&  val.fiveDayAve > 0 &&
+				typeof val.oneHourAve !== 'undefined' &&  val.oneHourAve > 0) {
 				
-				const upper_limit = l_val+l_val*0.05; // upper
-				const lower_limit = l_val-l_val*0.05; // lower
+				const upper_limit = val.fiveDayAve + val.fiveDayAve*0.05; // upper
+				const lower_limit = val.fiveDayAve - val.fiveDayAve*0.05; // lower
 				
-				if (s_val > upper_limit) {
+				if (val.oneHourAve > upper_limit) {
 					fill = this.colors.SECTOR_FILL_RED;
-				} else if (s_val < lower_limit) {
+					
+				} else if (val.oneHourAve < lower_limit) {
 					fill = this.colors.SECTOR_FILL_GREEN;
+					
 				} else {
 					fill = this.colors.SECTOR_FILL_ORANGE;
 				}
 			}
-			/*
-			console.log(['SHORT LIST i=',i]);
-			Object.keys(this.shortAverageElevenHours).forEach(key => {
-				const val = this.shortAverageElevenHours[key];
-				console.log(['key=',key,' val=',val]);
-			});
-			console.log(['LONG LIST i=',i]);
-			Object.keys(this.longAverageElevenHours).forEach(key => {
-				const val = this.longAverageElevenHours[key];
-				console.log(['key=',key,' val=',val]);
-			});
-			*/
 			// SECTOR
 			this.appendSector({
 				group: group,
@@ -625,75 +608,14 @@ export default class GridPageView extends View {
 		document.getElementById('clock-space').appendChild(group);
 	}
 	
-	
-	populateShort() {
+	populateEmissionValues() {
 		const resuArray = [];
+		this.emissionAverages = {};
 		
-		this.shortAverageElevenHours = {};
-		
-		const timerange_start_subtract_hours = this.models['EmpoEmissionsElevenHours'].timerange_start_subtract_hours;
-		let startMom = moment().subtract(timerange_start_subtract_hours, 'hours');
-		let endMom = moment().subtract(timerange_start_subtract_hours, 'hours');
-		endMom.add(1, 'hours');
-		
-		const res = this.models['EmpoEmissionsElevenHours'].results;
-		//console.log(['res length=',res.length]);
-		if (res.length > 0) {
-			// Create a Date Object from date_time:
-			res.forEach(r=>{
-				if (Number.isFinite(r.em_cons)) {
-					const d = new Date(r.date_time);
-					resuArray.push({date:d, consumed:r.em_cons});
-				}
-			});
-		}
-		if (resuArray.length > 0) {
-			// Then sort array based according to time, oldest entry first.
-			resuArray.sort(function(a,b){
-				return a.date - b.date;
-			});
-			// Take a slice of resuArray and calculate average value for each hour.
-			// First slice is from B to B+1 hour.
-			//
-			// B          C
-			// |----------|
-			// | 11 hours |
-			
-			for (let i=0; i<11; i++) {
-				const key = 'H'+startMom.hours();
-				let sum = 0;
-				let count = 0;
-				resuArray.forEach(r=>{
-					const c = moment(r.date);
-					if (c.isBetween(startMom, endMom)) {
-						sum += r.consumed;
-						count++;
-					}
-				});
-				let ave = 0;
-				if (count > 0) {
-					ave = sum / count;
-				}
-				this.shortAverageElevenHours[key] = ave;
-				console.log(['POPULATE SHORT! key=',key,' sum=',sum,' count=',count,' ave=',ave]);
-				startMom.add(1, 'hours');
-				endMom.add(1, 'hours');
-			}
-			
-		} else {
-			console.log('POPULATE SHORT! resuArray is EMPTY!');
-		}
-	}
-	
-	populateLong() {
-		
-		const resuArray = [];
-		
-		this.longAverageElevenHours = {};
-		
-		//const timerange_start_subtract_hours = this.models['EmpoEmissionsFiveDays'].timerange_start_subtract_hours;
-		let startMom = moment().subtract(131, 'hours');
+		const timerange_start_subtract_hours = this.models['EmpoEmissionsFiveDays'].timerange_start_subtract_hours;
+		let startMom = moment().subtract(timerange_start_subtract_hours, 'hours'); // timerange_start_subtract_hours = 131 (120 + 11 hours)
 		let endMom = moment().subtract(11, 'hours');
+		let startTwo = moment().subtract(11, 'hours');
 		
 		const res = this.models['EmpoEmissionsFiveDays'].results;
 		//console.log(['res length=',res.length]);
@@ -719,27 +641,39 @@ export default class GridPageView extends View {
 			// |                                                  | 11 hours |
 			for (let i=0; i<11; i++) {
 				const key = 'H'+startMom.hours();
+				endMom.add(1, 'hours');
+				
 				let sum = 0;
 				let count = 0;
+				let sum2 = 0;
+				let count2 = 0;
 				resuArray.forEach(r=>{
 					const c = moment(r.date);
 					if (c.isBetween(startMom, endMom)) {
 						sum += r.consumed;
 						count++;
 					}
+					if (c.isBetween(startTwo, endMom)) {
+						sum2 += r.consumed;
+						count2++;
+					}
 				});
 				let ave = 0;
 				if (count > 0) {
 					ave = sum / count;
 				}
-				this.longAverageElevenHours[key] = ave;
-				console.log(['POPULATE LONG! key=',key,' sum=',sum,' count=',count,' ave=',ave]);
+				let ave2 = 0;
+				if (count2 > 0) {
+					ave2 = sum2 / count2;
+				}
+				this.emissionAverages[key] = {fiveDayAve:ave, oneHourAve:ave2};
+				console.log(['POPULATE key=',key,' sum=',sum,' count=',count,' ave=',ave,' sum2=',sum2,' count2=',count2,' ave2=',ave2]);
 				startMom.add(1, 'hours');
-				endMom.add(1, 'hours');
+				startTwo.add(1, 'hours');
 			}
 			
 		} else {
-			console.log('POPULATE LONG! resuArray is EMPTY!');
+			console.log('POPULATE resuArray is EMPTY!');
 		}
 	}
 	
@@ -1268,21 +1202,11 @@ export default class GridPageView extends View {
 					}
 				}
 				
-			} else if (options.model==='EmpoEmissionsElevenHours' && options.method==='fetched') {
-				if (options.status === 200) {
-					//const res = this.models[options.model].results;
-					//console.log(['ELEVEN HOURS results=',res]);
-					this.populateShort();
-					this.updateEmissions();
-				} else {
-					console.log(['ELEVEN HOURS status=',options.status]);
-				}
-				
 			} else if (options.model==='EmpoEmissionsFiveDays' && options.method==='fetched') {
 				if (options.status === 200) {
 					//const res = this.models[options.model].results;
 					//console.log(['FIVE DAYS PLUS ELEVEN HOURS results=',res]);
-					this.populateLong();
+					this.populateEmissionValues();
 					this.updateEmissions();
 					
 				} else {

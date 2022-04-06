@@ -110,8 +110,7 @@ export default class GridPageController extends Controller {
 				key === 'Fingrid202Model' || key === 'Fingrid201Model' ||
 				key === 'Fingrid89Model' || key === 'Fingrid180Model' ||
 				key === 'Fingrid87Model' || key === 'Fingrid195Model' ||
-				key === 'Fingrid187Model' || key === 'EntsoeEnergyPriceModel' ||
-				key === 'EmpoEmissionsElevenHours' || key === 'EmpoEmissionsFiveDays') {
+				key === 'Fingrid187Model' || key === 'EntsoeEnergyPriceModel' || key === 'EmpoEmissionsFiveDays') {
 				
 				this.master.modelRepo.remove(key);
 			}
@@ -153,6 +152,7 @@ export default class GridPageController extends Controller {
 		
 		
 		*/
+		/*
 		const mElevenHours = new EmpoModel({
 				name: 'EmpoEmissionsElevenHours',
 				src: 'emissions/findByDate?country=FI&EmDB=EcoInvent',
@@ -162,6 +162,7 @@ export default class GridPageController extends Controller {
 		mElevenHours.subscribe(this);
 		this.master.modelRepo.add('EmpoEmissionsElevenHours', mElevenHours);
 		this.models['EmpoEmissionsElevenHours'] = mElevenHours;
+		*/
 		
 		const mFiveDays = new EmpoModel({
 				name: 'EmpoEmissionsFiveDays',

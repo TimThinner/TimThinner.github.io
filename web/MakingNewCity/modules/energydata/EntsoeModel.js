@@ -367,7 +367,7 @@ export default class EntsoeModel extends Model {
 		//const body_period_start = moment.utc().subtract(1, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
 		//const body_period_end = moment.utc().add(23,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
 		
-		const body_period_start = moment.utc().subtract(120, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
+		const body_period_start = moment.utc().subtract(131, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
 		const body_period_end = moment.utc().add(36,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
 		console.log(['body_period_start=',body_period_start,' body_period_end=',body_period_end]);
 		

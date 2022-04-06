@@ -56,6 +56,7 @@ export default class GridPageView extends View {
 		this.category_Consumption_and_Export = 'Cons+export';
 		
 		this.emissionAverages = {};
+		this.priceAverages = {};
 		
 		// colors:   in styles.css background is '#ccc'
 		this.colors = {
@@ -413,7 +414,33 @@ export default class GridPageView extends View {
 			const sa = 180-i*mAngle;
 			const ea = sa - mAngle;
 			const span = mAngle; // The "length" of sector.
-			let fill = this.colors.SECTOR_FILL_GREEN;
+			let fill = this.colors.SECTOR_FILL_DARK_GREY;
+			
+			const key = 'H'+i;
+			const val = this.priceAverages[key];
+			if (typeof val !== 'undefined' &&  
+				typeof val.fiveDayAve !== 'undefined' &&  val.fiveDayAve > 0 &&
+				typeof val.oneHourAve !== 'undefined' &&  val.oneHourAve > 0) {
+				
+				const upper_limit = val.fiveDayAve + val.fiveDayAve*0.05; // upper
+				const lower_limit = val.fiveDayAve - val.fiveDayAve*0.05; // lower
+				
+				if (val.oneHourAve > upper_limit) {
+					console.log('UPDATE EMISSIONS key='+key+' RED!');
+					fill = this.colors.SECTOR_FILL_RED;
+					
+				} else if (val.oneHourAve < lower_limit) {
+					console.log('UPDATE EMISSIONS key='+key+' GREEN!');
+					fill = this.colors.SECTOR_FILL_GREEN;
+					
+				} else {
+					console.log('UPDATE EMISSIONS key='+key+' ORANGE!');
+					fill = this.colors.SECTOR_FILL_ORANGE;
+				}
+			} else {
+				console.log('UPDATE PRICES key='+key+' NO VALUES!');
+			}
+			
 			// SECTOR
 			this.appendSector({
 				group: group,
@@ -613,6 +640,49 @@ export default class GridPageView extends View {
 			this.appendTick(group, r, a, hours[i]);
 		});
 		document.getElementById('clock-space').appendChild(group);
+	}
+	
+	
+	populatePriceValues(data) {
+		
+		this.priceAverages = {};
+		// data is an array of {date: timestamp.toDate(), price: price} objects.
+		
+		// Fetched from ENTSOE data we get result in 
+		// timeInterval object with two arrays, for example: start "2021-12-01T23:00Z" and end "2021-12-02T23:00Z"
+		// From now-120 hours to now+36 hours
+		let startMom = moment().subtract(131, 'hours'); // timerange_start_subtract_hours = 131 (120 + 11 hours)
+		let endMom = moment().subtract(11, 'hours');
+		let startTwo = moment().subtract(11, 'hours');
+		if (data.length > 0) {
+			for (let i=0; i<11; i++) {
+				const key = 'H'+startMom.hours();
+				endMom.add(1, 'hours');
+				
+				let sum = 0;
+				let count = 0;
+				let val = 0;
+				
+				data.forEach(r=>{
+					const c = moment(r.date);
+					if (c.isBetween(startMom, endMom)) {
+						sum += r.price;
+						count++;
+					}
+					if (c.isSame(startTwo)) {
+						val = r.price;
+					}
+				});
+				let ave = 0;
+				if (count > 0) {
+					ave = sum / count;
+				}
+				this.priceAverages[key] = {fiveDayAve:ave, oneHourAve:val};
+				console.log(['POPULATE key=',key,' sum=',sum,' count=',count,' ave=',ave,' val=',val]);
+				startMom.add(1, 'hours');
+				startTwo.add(1, 'hours');
+			}
+		}
 	}
 	
 	populateEmissionValues() {
@@ -1172,10 +1242,12 @@ export default class GridPageView extends View {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						
+						
+						
 						const newdata = this.convertPriceData();
+						this.populatePriceValues(newdata);
 						
-						console.log(['newdata=',newdata]);
-						
+						//console.log(['newdata=',newdata]);
 						this.updatePriceForecast();
 						
 						if (typeof this.price_chart !== 'undefined') {

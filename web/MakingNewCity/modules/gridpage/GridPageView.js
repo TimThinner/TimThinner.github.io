@@ -384,6 +384,61 @@ export default class GridPageView extends View {
 		*/
 	}
 	
+	updatePriceText() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		// Start by removing old element.
+		let wrap = document.getElementById('clock-price-text');
+		if (wrap) {
+			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+			wrap.remove(); // Finally remove group.
+		}
+		
+		const group = document.createElementNS(svgNS, "g");
+		group.id = 'clock-price-text';
+		const defs = document.createElementNS(svgNS, 'defs');
+		/*
+		<defs>
+		<path id="MyPath" fill="none" stroke="red" d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
+		</defs>*/
+		// A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+		
+		//<path d="M-140,140 A140,140 0 0,1 140,140 Z" style="stroke:#aaa;stroke-width:12;fill:#ccc;opacity:1;" />
+		
+		const b_x = -140;
+		const b_y = 140;
+		const r_x = 140; const r_y = 140;
+		const e_x = 140;
+		const e_y = 140;
+		const d='M '+b_x+','+b_y+' A '+r_x+','+r_y+' 0,0,1 '+e_x+','+e_y;
+		const path = document.createElementNS(svgNS, "path");
+		path.id = 'PricePath';
+		path.setAttributeNS(null, 'd', d);
+		path.style.stroke = '#000';
+		path.style.strokeWidth = 1;
+		defs.appendChild(path);
+		group.appendChild(defs);
+		/*
+		<text>
+			<textPath href="#MyPath">
+				Quick brown fox jumps over the lazy dog.
+			</textPath>
+		</text>
+		*/
+		const txt = document.createElementNS(svgNS, 'text');
+		
+		const txtPath = document.createElementNS(svgNS, 'textPath');
+		txtPath.setAttributeNS(null, 'href', '#PricePath');
+		const text_node = document.createTextNode('price forecast');
+		txtPath.appendChild(text_node);
+		
+		txt.appendChild(textPath);
+		
+		group.appendChild(txt);
+		
+		document.getElementById('clock-space').appendChild(group);
+	}
 	/*
 		% Colour coding for the wheel
 		% I take a value of 5% around the moving average to assess the "Orange" colour, above the 5% limit it is "Red" and below the "Green"
@@ -404,7 +459,6 @@ export default class GridPageView extends View {
 		% 0.5 = 'Orange'
 		% 1   = 'Green'
 	*/
-	
 	updatePriceForecast() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
@@ -1239,13 +1293,12 @@ export default class GridPageView extends View {
 					if (this.rendered) {
 						$('#'+this.FELID).empty();
 						
-						
-						
 						const newdata = this.convertPriceData();
 						this.populatePriceValues(newdata);
 						
 						//console.log(['newdata=',newdata]);
 						this.updatePriceForecast();
+						this.updatePriceText();
 						
 						if (typeof this.price_chart !== 'undefined') {
 							// SEE: https://www.amcharts.com/docs/v4/concepts/data/

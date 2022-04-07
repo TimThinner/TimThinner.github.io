@@ -55,10 +55,10 @@ export default class VegeView extends View {
 					'</div>'+
 				'</div>'+
 			'</div>';
-			/*
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
+						/*
 						'<table class="striped">'+
 							'<thead>'+
 								'<tr>'+
@@ -85,9 +85,10 @@ export default class VegeView extends View {
 								'</tr>'+
 							'</tbody>'+
 						'</table>'+
-						'<p>&nbsp;</p>'+
+						*/
+						//'<p>&nbsp;</p>'+
 						'<button class="btn waves-effect waves-light" id="vege-ok" style="width:120px">OK</button>'+
-						'<p>&nbsp;</p>'+
+						//'<p>&nbsp;</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>';

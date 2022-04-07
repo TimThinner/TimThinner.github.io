@@ -388,6 +388,16 @@ export default class GridPageView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
 		
+		// Price sectors are positioned:
+		// 		innerRadius: r + r*0.3,
+		//		outerRadius: r + r*0.6,
+		// => text path has ARC with r + r*0.45
+		const b_x = 0;
+		const b_y = -r+r*0.45;
+		const r_x = r+r*0.45; const r_y = r+r*0.45; 
+		const e_x = r+r*0.45;
+		const e_y = 0;
+		
 		// Start by removing old element.
 		let wrap = document.getElementById('clock-price-text');
 		if (wrap) {
@@ -405,12 +415,6 @@ export default class GridPageView extends View {
 		// A rx ry x-axis-rotation large-arc-flag sweep-flag x y
 		
 		//<path d="M-140,140 A140,140 0 0,1 140,140 Z" style="stroke:#aaa;stroke-width:12;fill:#ccc;opacity:1;" />
-		
-		const b_x = -140;
-		const b_y = 140;
-		const r_x = 140; const r_y = 140;
-		const e_x = 140;
-		const e_y = 140;
 		const d='M '+b_x+','+b_y+' A '+r_x+','+r_y+' 0,0,1 '+e_x+','+e_y;
 		const path = document.createElementNS(svgNS, "path");
 		path.id = 'PricePath';
@@ -427,12 +431,10 @@ export default class GridPageView extends View {
 		</text>
 		*/
 		const txt = document.createElementNS(svgNS, 'text');
-		
 		const txtPath = document.createElementNS(svgNS, 'textPath');
 		txtPath.setAttributeNS(null, 'href', '#PricePath');
 		const text_node = document.createTextNode('price forecast');
 		txtPath.appendChild(text_node);
-		
 		txt.appendChild(txtPath);
 		
 		group.appendChild(txt);

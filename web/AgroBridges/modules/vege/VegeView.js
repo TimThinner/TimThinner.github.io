@@ -92,7 +92,6 @@ export default class VegeView extends View {
 					'</div>'+
 				'</div>'+
 			'</div>';
-			*/
 		$(this.el).append(html);
 		$('input[type=radio][name=vegeStatus]').change(function() {
 			if (this.value == 'no') {

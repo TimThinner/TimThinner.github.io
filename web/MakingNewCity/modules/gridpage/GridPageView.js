@@ -392,10 +392,11 @@ export default class GridPageView extends View {
 		// 		innerRadius: r + r*0.3,
 		//		outerRadius: r + r*0.6,
 		// => text path has ARC with r + r*0.45
+		const radius = r+r*0.45;
 		const b_x = 0;
-		const b_y = -r+r*0.45;
-		const r_x = r+r*0.45; const r_y = r+r*0.45; 
-		const e_x = r+r*0.45;
+		const b_y = -radius;
+		const r_x = radius; const r_y = radius;
+		const e_x = radius;
 		const e_y = 0;
 		
 		// Start by removing old element.

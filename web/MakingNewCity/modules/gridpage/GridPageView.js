@@ -384,6 +384,27 @@ export default class GridPageView extends View {
 		*/
 	}
 	
+	/*
+		% Colour coding for the wheel
+		% I take a value of 5% around the moving average to assess the "Orange" colour, above the 5% limit it is "Red" and below the "Green"
+		
+		emiT.cat(emiT.emissions > 1.05 * emiT.movingmean)                                       = .1 ;
+		emiT.cat(emiT.emissions >= emiT.movingmean & emiT.emissions <= 1.05*emiT.movingmean)    = .5 ;
+		emiT.cat(emiT.emissions < emiT.movingmean)                                              = 1 ;
+		
+		% For the pricing, 2 approaches can deployed, either the same approach than for the emissions <=> 5% around the moving average of the last 5 days.
+		% or take a fix value of 10€cts/kWh as the limit price and around the 5% of this limit, [9.5 10.5], this is orange, green blow this point, red above the threshold (Fingrid approach).
+		% For the making city project, we are taking the first appraoch <=> 5% around the moving average of the last 5 days.
+		
+		elsepost_array(elsepost_array > 1.05 * elsepost_array.movingmean)                                       = .1 ;
+		elsepost_array(elsepost_array >= elsepost_array.movingmean & elsepost_array <= 1.05*elsepost_array.movingmean)    = .5 ;
+		elsepost_array(elsepost_array < elsepost_array.movingmean)                                              = 1 ;
+		
+		% 0.1 = 'Red'
+		% 0.5 = 'Orange'
+		% 1   = 'Green'
+	*/
+	
 	updatePriceForecast() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
@@ -395,29 +416,24 @@ export default class GridPageView extends View {
 			wrap.remove(); // Finally remove group.
 		}
 		
-		let hourNow = moment().hours(); // Number 0 ... 23
-		if (hourNow > 11) {
-			hourNow -= 12; // always 0 ... 11
-		}
-		const start = hourNow;
-		//if (hourNow === 11) {
-		//	start = 0;
-		//}
-		const end = start+11;
 		const mAngle = 360/12; // angle for one hour
 		//const label = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-		
 		const group = document.createElementNS(svgNS, "g");
 		group.id = 'clock-price-forecast';
 		
-		for (let i=start; i<end; i++) {
-			const sa = 180-i*mAngle;
+		Object.keys(this.priceAverages).forEach(key => {
+			// key = HN  where N = 0 ... 23
+			//
+			let kk = parseInt(key.slice(1));
+			// map kk to 0...11
+			if (kk > 11) { kk -= 12; }
+			
+			const sa = 180-kk*mAngle;
 			const ea = sa - mAngle;
 			const span = mAngle; // The "length" of sector.
 			let fill = this.colors.SECTOR_FILL_DARK_GREY;
-			
-			const key = 'H'+i;
 			const val = this.priceAverages[key];
+			
 			if (typeof val !== 'undefined' &&  
 				typeof val.fiveDayAve !== 'undefined' &&  val.fiveDayAve > 0 &&
 				typeof val.oneHourAve !== 'undefined' &&  val.oneHourAve > 0) {
@@ -440,7 +456,6 @@ export default class GridPageView extends View {
 			} else {
 				console.log('UPDATE PRICES key='+key+' NO VALUES!');
 			}
-			
 			// SECTOR
 			this.appendSector({
 				group: group,
@@ -452,7 +467,7 @@ export default class GridPageView extends View {
 				//label: label[i],
 				fill: fill
 			});
-		}
+		});
 		// The most outer black frame!
 		const frameWidth = 9;
 		const cf = document.createElementNS(svgNS, "circle");
@@ -478,50 +493,23 @@ export default class GridPageView extends View {
 			wrap.remove(); // Finally remove group.
 		}
 		
-		let hourNow = moment().hours(); // Number 0 ... 23
-		if (hourNow > 11) {
-			hourNow -= 12; // always 0 ... 11
-		}
-		let start = hourNow+1;
-		if (start > 11) {
-			start = 0;
-		}
-		
-		const end = start+11;
 		const mAngle = 360/12; // angle for one hour
 		//const label = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-		
 		const group = document.createElementNS(svgNS, "g");
 		group.id = 'clock-emissions';
 		
-		/*
-		% Colour coding for the wheel
-		% I take a value of 5% around the moving average to assess the "Orange" colour, above the 5% limit it is "Red" and below the "Green"
-		
-		emiT.cat(emiT.emissions > 1.05 * emiT.movingmean)                                       = .1 ;
-		emiT.cat(emiT.emissions >= emiT.movingmean & emiT.emissions <= 1.05*emiT.movingmean)    = .5 ;
-		emiT.cat(emiT.emissions < emiT.movingmean)                                              = 1 ;
-		
-		% For the pricing, 2 approaches can deployed, either the same approach than for the emissions <=> 5% around the moving average of the last 5 days.
-		% or take a fix value of 10€cts/kWh as the limit price and around the 5% of this limit, [9.5 10.5], this is orange, green blow this point, red above the threshold (Fingrid approach).
-		% For the making city project, we are taking the first appraoch <=> 5% around the moving average of the last 5 days.
-		
-		elsepost_array(elsepost_array > 1.05 * elsepost_array.movingmean)                                       = .1 ;
-		elsepost_array(elsepost_array >= elsepost_array.movingmean & elsepost_array <= 1.05*elsepost_array.movingmean)    = .5 ;
-		elsepost_array(elsepost_array < elsepost_array.movingmean)                                              = 1 ;
-		
-		% 0.1 = 'Red'
-		% 0.5 = 'Orange'
-		% 1   = 'Green'
-		*/
-		
-		for (let i=start; i<end; i++) {
-			const sa = 180-i*mAngle;
+		Object.keys(this.emissionAverages).forEach(key => {
+			// key = HN  where N = 0 ... 23
+			//
+			let kk = parseInt(key.slice(1));
+			// map kk to 0...11
+			if (kk > 11) { kk -= 12; }
+			
+			const sa = 180-kk*mAngle;
 			const ea = sa - mAngle;
 			const span = mAngle; // The "length" of sector.
 			let fill = this.colors.SECTOR_FILL_DARK_GREY;
 			
-			const key = 'H'+i;
 			const val = this.emissionAverages[key];
 			if (typeof val !== 'undefined' &&  
 				typeof val.fiveDayAve !== 'undefined' &&  val.fiveDayAve > 0 &&

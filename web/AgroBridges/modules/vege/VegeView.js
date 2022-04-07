@@ -35,8 +35,8 @@ export default class VegeView extends View {
 	handleRangeChange(id) {
 		$("#"+id).val(0);
 		$("#"+id+"-count").empty().append('0');
-		}
-		$("#"+id).change(function(){
+		
+		$("#"+id).change(function() {
 			const val = $(this).val(); // "20"
 			const vali = parseInt(val, 10);
 			if (vali > 0) {

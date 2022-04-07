@@ -76,7 +76,7 @@ export default class GridPageView extends View {
 			SECTOR_PATH_STROKE: '#888',
 			SECTOR_FILL_GREEN: '#8f8',
 			SECTOR_FILL_ORANGE: '#f80',
-			SECTOR_FILL_RED: '#f00',
+			SECTOR_FILL_RED: '#f55',
 			SECTOR_FILL_GREY: '#eee',
 			SECTOR_FILL_DARK_GREY: '#ccc',
 			SECTOR_TXT_STROKE: '#888',

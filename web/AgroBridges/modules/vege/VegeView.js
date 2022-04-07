@@ -37,11 +37,28 @@ export default class VegeView extends View {
 		$(this.el).empty();
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
-		const html = '<div class="row">'+
+		const html =
+			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">FARM VEGETABLES</h3>'+
 						'<p><img src="./img/vege.png" height="150"/></p>'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<div class="input-field col s12">'+
+						'<h5>Are you offering these products?</h5>'+
+						'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>No</span></label></p>'+
+						'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
+					'</div>'+
+				'</div>'+
+			'</div>';
+			/*
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<div class="col s12 center">'+
 						'<table class="striped">'+
 							'<thead>'+
 								'<tr>'+
@@ -74,7 +91,16 @@ export default class VegeView extends View {
 					'</div>'+
 				'</div>'+
 			'</div>';
+			*/
 		$(this.el).append(html);
+		$('input[type=radio][name=vegeStatus]').change(function() {
+			if (this.value == 'no') {
+				console.log('Vege NO');
+			}
+			else if (this.value == 'yes') {
+				console.log('Vege YES');
+			}
+		});
 		
 		$("#vege-ok").on('click', function() {
 			self.controller.models['MenuModel'].setSelected('farm');

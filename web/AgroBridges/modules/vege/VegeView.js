@@ -88,12 +88,14 @@ export default class VegeView extends View {
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>How many different vegetables do you grow in total?</h6>'+
+						'<p style="font-size:16px;text-align:right;color:#000;" id="vegetables-total-count">5</p>'+
 						'<p class="range-field">'+
 							'<input type="range" id="vegetables-total" min="0" max="20"><span class="thumb"><span class="value"></span></span>'+
 						'</p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>On how many hectares do you grow vegetables?</h6>'+
+						'<p style="font-size:16px;text-align:right;color:#000;" id="Hectare-veggies-count">20</p>'+
 						'<p class="range-field">'+
 							'<input type="range" id="Hectare-veggies" min="0" max="500"><span class="thumb"><span class="value"></span></span>'+
 						'</p>'+

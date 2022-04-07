@@ -433,7 +433,7 @@ export default class GridPageView extends View {
 		const text_node = document.createTextNode('price forecast');
 		txtPath.appendChild(text_node);
 		
-		txt.appendChild(textPath);
+		txt.appendChild(txtPath);
 		
 		group.appendChild(txt);
 		

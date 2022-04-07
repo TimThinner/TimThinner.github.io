@@ -63,6 +63,11 @@ export default class VegeView extends View {
 						'<p><label><input type="checkbox" class="filled-in" id="cabbages" /><span>Cabbages (Broccoli, Kohlrabi, red and white cabbage...)</span></label></p>'+
 						'<p><label><input type="checkbox" class="filled-in" id="specialities" /><span>Specialities (Asparagus, Olives, Truffel....)</span></label></p>'+
 					'</div>'+
+					'<div class="input-field col s12">'+
+						'<p style="font-size:14px;text-align:left;" class="range-field">How many different vegetables do you grow in total?'+
+							'<input type="range" id="vegetables-total" min="0" max="30"><span class="thumb"><span class="value"></span></span>'+
+						'</p>'+
+					'</div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -106,8 +111,7 @@ export default class VegeView extends View {
 		
 		$('input[type=radio][name=vegeStatus]').change(function() {
 			if (this.value == 'no') {
-				console.log('vegeStatus NO');
-				// Dummy_veggie_farm NO
+				console.log('vegeStatus NO'); // Dummy_veggie_farm NO
 			}
 			else if (this.value == 'yes') {
 				console.log('vegeStatus YES');

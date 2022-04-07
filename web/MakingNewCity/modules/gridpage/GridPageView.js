@@ -533,7 +533,6 @@ export default class GridPageView extends View {
 			} else {
 				console.log('UPDATE EMISSIONS key='+key+' NO VALUES!');
 			}
-			
 			// SECTOR
 			this.appendSector({
 				group: group,
@@ -545,7 +544,7 @@ export default class GridPageView extends View {
 				//label: label[i],
 				fill: fill
 			});
-		}
+		});
 		document.getElementById('clock-space').appendChild(group);
 	}
 	

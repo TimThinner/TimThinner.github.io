@@ -127,7 +127,7 @@ export default class VegeView extends View {
 						*/
 						//'<p>&nbsp;</p>'+
 						'<button class="btn waves-effect waves-light" id="vege-ok" style="width:120px">OK</button>'+
-						//'<p>&nbsp;</p>'+
+						'<p>&nbsp;</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>';

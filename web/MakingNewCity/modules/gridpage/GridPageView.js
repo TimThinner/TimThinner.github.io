@@ -574,7 +574,7 @@ export default class GridPageView extends View {
 		//<path d="M-140,140 A140,140 0 0,1 140,140 Z" style="stroke:#aaa;stroke-width:12;fill:#ccc;opacity:1;" />
 		const d='M '+b_x+','+b_y+' A '+r_x+','+r_y+' 0,0,1 '+e_x+','+e_y;
 		const path = document.createElementNS(svgNS, "path");
-		path.id = 'PricePath';
+		path.id = 'EmissionsPath';
 		path.setAttributeNS(null, 'd', d);
 		path.style.stroke = '#000';
 		path.style.strokeWidth = 1;
@@ -589,7 +589,7 @@ export default class GridPageView extends View {
 		*/
 		const txt = document.createElementNS(svgNS, 'text');
 		const txtPath = document.createElementNS(svgNS, 'textPath');
-		txtPath.setAttributeNS(null, 'href', '#PricePath');
+		txtPath.setAttributeNS(null, 'href', '#EmissionsPath');
 		const text_node = document.createTextNode('emissions from the past 11 hours');
 		txtPath.appendChild(text_node);
 		txt.appendChild(txtPath);

@@ -32,28 +32,20 @@ export default class VegeView extends View {
 		console.log('VegeView NOTHING to Notify!');
 	}
 	
-	/*
 	handleRangeChange(id) {
-		const self = this;
-		
-		$("#"+id).val(initialPollingInterval);
-		if (initialPollingInterval > 0) {
-			$("#"+id+"-chart-refresh-note").empty().append(localized_string_auto_update_msg_1+' '+initialPollingInterval+' '+localized_string_auto_update_msg_2);
-		} else {
-			$("#"+id+"-chart-refresh-note").empty().append(localized_string_auto_update_msg_3);
+		$("#"+id).val(0);
+		$("#"+id+"-count").empty().append('0');
 		}
-		$("#"+id+"-chart-refresh-interval").change(function(){
+		$("#"+id).change(function(){
 			const val = $(this).val(); // "20"
-			const vali = parseInt(val, 10) * 1000;
+			const vali = parseInt(val, 10);
 			if (vali > 0) {
-				$("#"+id+"-chart-refresh-note").empty().append(localized_string_auto_update_msg_1+' '+val+' '+localized_string_auto_update_msg_2);
+				$("#"+id+"-count").empty().append(val);
 			} else {
-				$("#"+id+"-chart-refresh-note").empty().append(localized_string_auto_update_msg_3);
+				$("#"+id+"-count").empty().append('0');
 			}
 		});
-	}*/
-	
-	
+	}
 	
 	render() {
 		const self = this;
@@ -88,14 +80,14 @@ export default class VegeView extends View {
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>How many different vegetables do you grow in total?</h6>'+
-						'<p style="font-size:16px;text-align:right;color:#000;" id="vegetables-total-count">5</p>'+
+						'<p style="font-size:18px;text-align:right;color:#000;" id="vegetables-total-count">5</p>'+
 						'<p class="range-field">'+
 							'<input type="range" id="vegetables-total" min="0" max="20"><span class="thumb"><span class="value"></span></span>'+
 						'</p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>On how many hectares do you grow vegetables?</h6>'+
-						'<p style="font-size:16px;text-align:right;color:#000;" id="Hectare-veggies-count">20</p>'+
+						'<p style="font-size:18px;text-align:right;color:#000;" id="Hectare-veggies-count">20</p>'+
 						'<p class="range-field">'+
 							'<input type="range" id="Hectare-veggies" min="0" max="500"><span class="thumb"><span class="value"></span></span>'+
 						'</p>'+
@@ -140,6 +132,9 @@ export default class VegeView extends View {
 				'</div>'+
 			'</div>';
 		$(this.el).append(html);
+		
+		this.handleRangeChange('Hectare-veggies');
+		this.handleRangeChange('vegetables-total');
 		
 		$('input[type=radio][name=vegeStatus]').change(function() {
 			if (this.value == 'no') {

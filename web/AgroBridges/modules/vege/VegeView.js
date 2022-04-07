@@ -49,12 +49,22 @@ export default class VegeView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="input-field col s12">'+
-						'<h5>Are you offering these products?</h5>'+
+						'<h6>Are you offering these products?</h6>'+
 						'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>No</span></label></p>'+
 						'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
 					'</div>'+
+					'<div class="input-field col s12">'+
+						'<h6>Which of these vegetables do you grow?</h6>'+
+						'<p><label><input type="checkbox" class="filled-in" id="lettuce" /><span>Lettuce (Cut lettuce, Argula, Spinach, Swiss chard, Endivie...)</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="fruitlike" /><span>Fruitlike vegetables (Tomatoes, Peppers, Eggplant...)</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="pumpkins" /><span>Pumpkins and Courgettes</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="bulb" /><span>Bulb vegetables (Celeric and Fennel)</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="root" /><span>Root vegetables and Onions (Potatos, Carrots, Parsnip, Root Parsley, Black Salsify...)</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="cabbages" /><span>Cabbages (Broccoli, Kohlrabi, red and white cabbage...)</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="specialities" /><span>Specialities (Asparagus, Olives, Truffel....)</span></label></p>'+
+					'</div>'+
 				'</div>'+
-			'</div>';
+			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
@@ -93,12 +103,23 @@ export default class VegeView extends View {
 				'</div>'+
 			'</div>';
 		$(this.el).append(html);
+		
 		$('input[type=radio][name=vegeStatus]').change(function() {
 			if (this.value == 'no') {
-				console.log('Vege NO');
+				console.log('vegeStatus NO');
+				// Dummy_veggie_farm NO
 			}
 			else if (this.value == 'yes') {
-				console.log('Vege YES');
+				console.log('vegeStatus YES');
+				// Dummy_veggie_farm YES
+			}
+		});
+		
+		$("#lettuce").change(function() {
+			if(this.checked) {
+				console.log('Lettuce YES');
+			} else {
+				console.log('Lettuce NO');
 			}
 		});
 		

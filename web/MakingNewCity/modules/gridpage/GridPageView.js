@@ -393,8 +393,8 @@ export default class GridPageView extends View {
 		//		outerRadius: r + r*0.6,
 		// => text path has ARC with r + r*0.45
 		const radius = r+r*0.45;
-		const b_x = 0;
-		const b_y = -radius;
+		const b_x = -radius;
+		const b_y = 0;
 		const r_x = radius; const r_y = radius;
 		const e_x = radius;
 		const e_y = 0;
@@ -434,7 +434,7 @@ export default class GridPageView extends View {
 		const txt = document.createElementNS(svgNS, 'text');
 		const txtPath = document.createElementNS(svgNS, 'textPath');
 		txtPath.setAttributeNS(null, 'href', '#PricePath');
-		const text_node = document.createTextNode('price forecast');
+		const text_node = document.createTextNode('price forecast for the next 11 hours');
 		txtPath.appendChild(text_node);
 		txt.appendChild(txtPath);
 		
@@ -535,6 +535,66 @@ export default class GridPageView extends View {
 		cf.style.strokeWidth = frameWidth;
 		cf.style.fill = 'none';
 		group.appendChild(cf);
+		
+		document.getElementById('clock-space').appendChild(group);
+	}
+	
+	updateEmissionsText() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		// Emissions sectors are positioned:
+		//
+		//		innerRadius: r,
+		//		outerRadius: r + r*0.3,
+		// => text path has ARC with r + r*0.15
+		const radius = r+r*0.15;
+		const b_x = -radius;
+		const b_y = 0;
+		const r_x = radius; const r_y = radius;
+		const e_x = radius;
+		const e_y = 0;
+		
+		// Start by removing old element.
+		let wrap = document.getElementById('clock-emissions-text');
+		if (wrap) {
+			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+			wrap.remove(); // Finally remove group.
+		}
+		
+		const group = document.createElementNS(svgNS, "g");
+		group.id = 'clock-emissions-text';
+		const defs = document.createElementNS(svgNS, 'defs');
+		/*
+		<defs>
+		<path id="MyPath" fill="none" stroke="red" d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
+		</defs>*/
+		// A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+		
+		//<path d="M-140,140 A140,140 0 0,1 140,140 Z" style="stroke:#aaa;stroke-width:12;fill:#ccc;opacity:1;" />
+		const d='M '+b_x+','+b_y+' A '+r_x+','+r_y+' 0,0,1 '+e_x+','+e_y;
+		const path = document.createElementNS(svgNS, "path");
+		path.id = 'PricePath';
+		path.setAttributeNS(null, 'd', d);
+		path.style.stroke = '#000';
+		path.style.strokeWidth = 1;
+		defs.appendChild(path);
+		group.appendChild(defs);
+		/*
+		<text>
+			<textPath href="#MyPath">
+				Quick brown fox jumps over the lazy dog.
+			</textPath>
+		</text>
+		*/
+		const txt = document.createElementNS(svgNS, 'text');
+		const txtPath = document.createElementNS(svgNS, 'textPath');
+		txtPath.setAttributeNS(null, 'href', '#PricePath');
+		const text_node = document.createTextNode('emissions from the past 11 hours');
+		txtPath.appendChild(text_node);
+		txt.appendChild(txtPath);
+		
+		group.appendChild(txt);
 		
 		document.getElementById('clock-space').appendChild(group);
 	}

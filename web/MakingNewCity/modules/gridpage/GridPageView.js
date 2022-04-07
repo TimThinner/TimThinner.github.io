@@ -1358,8 +1358,6 @@ export default class GridPageView extends View {
 						
 						const newdata = this.convertPriceData();
 						this.populatePriceValues(newdata);
-						
-						//console.log(['newdata=',newdata]);
 						this.updatePriceForecast();
 						this.updatePriceText();
 						
@@ -1402,6 +1400,7 @@ export default class GridPageView extends View {
 					//console.log(['FIVE DAYS PLUS ELEVEN HOURS results=',res]);
 					this.populateEmissionValues();
 					this.updateEmissions();
+					this.updateEmissionsText();
 					
 				} else {
 					console.log(['EmpoEmissionsFiveDays fetched status=',options.status]);

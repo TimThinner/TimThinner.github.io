@@ -1314,9 +1314,6 @@ export default class GridPageView extends View {
 		if (this.controller.visible) {
 			
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				
-				
-				
 				//console.log("GridPageView resize => update all models!!!!!!!!!!!!!!");
 				//this.render();
 				/*Object.keys(this.models).forEach(key => {
@@ -1326,12 +1323,8 @@ export default class GridPageView extends View {
 				});*/
 				//this.renderChart();
 				//this.render();
-				
 				console.log('ResizeEventObserver resize => SHOW()!');
 				this.show();
-				
-				
-				
 				
 			} else if (key_array.includes(options.model) && options.method==='fetched') {
 				if (options.status === 200) {

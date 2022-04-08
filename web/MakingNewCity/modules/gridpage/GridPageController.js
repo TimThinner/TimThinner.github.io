@@ -140,7 +140,7 @@ export default class GridPageController extends Controller {
 		1. From now - 11 hours to now
 		2. From now - 5d 11h to now - 11h
 		
-		http://128.214.253.150/api/v1/resources/emissions/findByDate?country=FI&EmDB=EcoInvent&startdate=2022-04-04%2000:00&enddate=2022-04-04%2011:00
+		
 		
 		http://128.214.253.150/api/v1/resources/emissions/findByDate?country=FI&EmDB=EcoInvent&startdate=2022-04-04%2002:03&enddate=2022-04-04%2013:03
 		
@@ -148,6 +148,9 @@ export default class GridPageController extends Controller {
 		
 		http://128.214.253.150/api/v1/resources/emissions/findByDate?country=FI&EmDB=EcoInvent&startdate=2022-03-30%2000:00:00&enddate=2022-04-04%2000:00:00
 		
+		
+		Testing 
+		http://128.214.253.150/api/v1/resources/emissions/findByDate?country=FI&EmDB=EcoInvent&startdate=2022-04-07%2021:00&enddate=2022-04-08%2009:00
 		
 		
 		

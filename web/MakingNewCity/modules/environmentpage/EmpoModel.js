@@ -104,15 +104,13 @@ export default class EmpoModel extends Model {
 		let body_url = this.src;
 		if (body_url.indexOf('findByDate') >= 0) {
 			
-			const startdate = moment();
-			startdate.subtract(this.timerange_start_subtract_hours, 'hours');
+			const startdate = moment.utc().subtract(this.timerange_start_subtract_hours, 'hours');
 			//startdate.subtract(3, 'minutes');
 			startdate.minute(0);
 			startdate.second(0);
 			const start = startdate.format("YYYY-MM-DD HH:mm:ss");
 			
-			const enddate = moment();
-			enddate.subtract(this.timerange_end_subtract_hours, 'hours');
+			const enddate = moment.utc().subtract(this.timerange_end_subtract_hours, 'hours');
 			//enddate.subtract(3, 'minutes');
 			enddate.minute(0);
 			enddate.second(0);
@@ -129,7 +127,7 @@ export default class EmpoModel extends Model {
 		myHeaders.append("Content-Type", "application/json");
 		const data = {
 			url: body_url_encoded,
-			expiration_in_seconds: 3600 //180
+			expiration_in_seconds: 180 // 3 minutes
 		};
 		const myPost = {
 			method: 'POST',
@@ -138,7 +136,6 @@ export default class EmpoModel extends Model {
 		};
 		
 		this.results = []; // Start with fresh empty data.
-		
 		
 		const myRequest = new Request(url, myPost);
 		fetch(myRequest)

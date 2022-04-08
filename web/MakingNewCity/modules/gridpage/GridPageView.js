@@ -799,6 +799,12 @@ export default class GridPageView extends View {
 		}
 	}
 	
+	/*
+	NOTE:
+	The date given in response JSON is UTC time, even though it is like this: "date_time": "2022-04-07 21:55:25". 
+	Add necessary missing elements (T and Z) to timestamp, if they are not there: "2022-04-07T22:00:55Z"
+	*/
+	
 	populateEmissionValues() {
 		const resuArray = [];
 		this.emissionAverages = {};
@@ -814,7 +820,14 @@ export default class GridPageView extends View {
 			// Create a Date Object from date_time:
 			res.forEach(r=>{
 				if (Number.isFinite(r.em_cons)) {
-					const d = new Date(r.date_time);
+					let ds = r.date_time;
+					if (r.date_time.indexOf('T') === 0) {
+						ds = r.date_time.replace(' ', 'T');
+					}
+					if (r.date_time.endsWith('Z')===false) {
+						ds += 'Z';
+					}
+					const d = new Date(ds);
 					resuArray.push({date:d, consumed:r.em_cons});
 				}
 			});

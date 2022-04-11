@@ -509,6 +509,10 @@ export default class NewUserElectricityView extends View {
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Models are 'MenuModel', 'UserElectricityNowModel', ...
+				
+				
+				console.log('TIMEOUT!!!!');
+				
 				this.fetchQueue = [];
 				const UM = this.controller.master.modelRepo.get('UserModel');
 				if (UM) {

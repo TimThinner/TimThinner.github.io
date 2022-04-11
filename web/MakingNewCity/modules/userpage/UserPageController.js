@@ -1,6 +1,6 @@
 import Controller from '../common/Controller.js';
 import UserHeatingModel from '../userheating/UserHeatingModel.js';
-import UserElectricityModel from '../userelectricity/UserElectricityModel.js';
+import NewUserElectricityModel from '../userelectricity/NewUserElectricityModel.js';
 import UserPageView from './UserPageView.js';
 /*
 
@@ -59,7 +59,7 @@ export default class UserPageController extends Controller {
 			model_data.push({name:'UserElectricityNow'+i+'Model',index:i});
 		}
 		model_data.forEach(md => {
-			const m = new UserElectricityModel({
+			const m = new NewUserElectricityModel({
 				name: md.name,
 				src: 'data/sivakka/apartments/feeds.json',
 				type: 'energy',

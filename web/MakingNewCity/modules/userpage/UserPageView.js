@@ -101,7 +101,10 @@ export default class UserPageView extends View {
 		this.resuArray = [];
 		Object.keys(this.models).forEach(key => {
 			if (key.indexOf('UserElectricityNow') === 0) {
-				const meas = this.models[key].measurement; // is in normal situation an array.
+				
+				//const meas = this.models[key].measurement; // is in normal situation an array.
+				const meas = this.models[key].values; // is in normal situation an array.
+				
 				if (Array.isArray(meas) && meas.length > 0) {
 					const total = meas[0].totalEnergy;
 					const power = meas[0].averagePower;

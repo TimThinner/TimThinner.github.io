@@ -293,39 +293,52 @@ export default class NewUserElectricityView extends View {
 			const m = moment().subtract(index, 'days');
 			const YYYYMMDD = m.format('YYYYMMDD');
 			this.power[YYYYMMDD] = {sum:0, count:0, average:0, values:[]};
-			this.energy[YYYYMMDD] = {sum:0, count:0, average:0, values:[]};
+			// total energy for different timeranges.
+			this.energy[YYYYMMDD] = { day:0, hour:{}};
+			this.energy[YYYYMMDD]['day'] = temp_a[len-1].energy - temp_a[0].energy;
 			
-			// initialize poer and energy HOURLY values also.
+			// initialize power HOURLY values.
 			for (let i=0; i<10; i++) { // from '00' to '09'
-				const key = YYYYMMDD + '0' + i;
+				const HH = '0'+i;
+				const key = YYYYMMDD + HH;
 				this.power[key] = {sum:0, count:0, average:0};
-				this.energy[key] = {sum:0, count:0, average:0};
+				this.energy[YYYYMMDD]['hour'][HH] = undefined;
 			}
 			for (let i=10; i<24; i++) { // from '10' to '23'
-				const key = YYYYMMDD + i;
+				const HH = ''+i;
+				const key = YYYYMMDD + HH;
 				this.power[key] = {sum:0, count:0, average:0};
-				this.energy[key] = {sum:0, count:0, average:0};
+				this.energy[YYYYMMDD]['hour'][HH] = undefined;
 			}
+			
+			let temp_first = 0;
+			let temp_last = 0;
 			
 			for (let i=0; i<len-1; i++) {
 				const d = temp_a[i].date;
 				const p = temp_a[i].power;
 				const e = temp_a[i].energy;
+				
 				// Add to daily hash:
 				this.power[YYYYMMDD]['count']++;
 				this.power[YYYYMMDD]['sum'] += p;
 				this.power[YYYYMMDD]['values'].push(p);
 				
-				this.energy[YYYYMMDD]['count']++;
-				this.energy[YYYYMMDD]['sum'] += e;
-				this.energy[YYYYMMDD]['values'].push(e);
-				
 				// Add to hourly hash:
 				const YYYYMMDDHH = moment(d).format('YYYYMMDDHH');
+				const HH = YYYYMMDDHH.slice(8);
+				
+				if (typeof this.energy[YYYYMMDD]['hour'][HH] === 'undefined') {
+					// This is the first value for this HH
+					this.energy[YYYYMMDD]['hour'][HH] = 0;
+					temp_first = e;
+					temp_last = e;
+				} else {
+					temp_last = e;
+					this.energy[YYYYMMDD]['hour'][HH] = temp_last - temp_first;
+				}
 				this.power[YYYYMMDDHH]['count']++;
 				this.power[YYYYMMDDHH]['sum'] += p;
-				this.energy[YYYYMMDDHH]['count']++;
-				this.energy[YYYYMMDDHH]['sum'] += e;
 			}
 			// Calculate averages:
 			// For daily and for hourly:
@@ -334,12 +347,6 @@ export default class NewUserElectricityView extends View {
 					this.power[key]['average'] = this.power[key]['sum'] / this.power[key]['count'];
 				}
 			});
-			Object.keys(this.energy).forEach(key => {
-				if (this.energy[key]['sum'] > 0) {
-					this.energy[key]['average'] = this.energy[key]['sum'] / this.energy[key]['count'];
-				}
-			});
-			
 			// Print out the hashes:
 			Object.keys(this.power).forEach(key => {
 				console.log(['POWER key=',key,' value=',this.power[key]]);

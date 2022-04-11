@@ -295,6 +295,18 @@ export default class NewUserElectricityView extends View {
 			this.power[YYYYMMDD] = {sum:0, count:0, average:0, values:[]};
 			this.energy[YYYYMMDD] = {sum:0, count:0, average:0, values:[]};
 			
+			// initialize poer and energy HOURLY values also.
+			for (let i=0; i<10; i++) { // from '00' to '09'
+				const key = YYYYMMDD + '0' + i;
+				this.power[key] = {sum:0, count:0, average:0};
+				this.energy[key] = {sum:0, count:0, average:0};
+			}
+			for (let i=10; i<24; i++) { // from '10' to '23'
+				const key = YYYYMMDD + i;
+				this.power[key] = {sum:0, count:0, average:0};
+				this.energy[key] = {sum:0, count:0, average:0};
+			}
+			
 			for (let i=0; i<len-1; i++) {
 				const d = temp_a[i].date;
 				const p = temp_a[i].power;
@@ -310,20 +322,10 @@ export default class NewUserElectricityView extends View {
 				
 				// Add to hourly hash:
 				const YYYYMMDDHH = moment(d).format('YYYYMMDDHH');
-				if (this.power.hasOwnProperty(YYYYMMDDHH)) {
-					this.power[YYYYMMDDHH]['count']++;
-					this.power[YYYYMMDDHH]['sum'] += p;
-					this.power[YYYYMMDDHH]['values'].push(p);
-				} else { // initialize
-					this.power[YYYYMMDDHH] = {sum:0, count:0, average:0, values:[]};
-				}
-				if (this.energy.hasOwnProperty(YYYYMMDDHH)) {
-					this.energy[YYYYMMDDHH]['count']++;
-					this.energy[YYYYMMDDHH]['sum'] += e;
-					this.energy[YYYYMMDDHH]['values'].push(e);
-				} else { // initialize
-					this.energy[YYYYMMDDHH] = {sum:0, count:0, average:0, values:[]};
-				}
+				this.power[YYYYMMDDHH]['count']++;
+				this.power[YYYYMMDDHH]['sum'] += p;
+				this.energy[YYYYMMDDHH]['count']++;
+				this.energy[YYYYMMDDHH]['sum'] += e;
 			}
 			// Calculate averages:
 			// For daily and for hourly:
@@ -336,6 +338,14 @@ export default class NewUserElectricityView extends View {
 				if (this.energy[key]['sum'] > 0) {
 					this.energy[key]['average'] = this.energy[key]['sum'] / this.energy[key]['count'];
 				}
+			});
+			
+			// Print out the hashes:
+			Object.keys(this.power).forEach(key => {
+				console.log(['POWER key=',key,' value=',this.power[key]]);
+			});
+			Object.keys(this.energy).forEach(key => {
+				console.log(['ENERGY key=',key,' value=',this.energy[key]]);
 			});
 		}
 	}

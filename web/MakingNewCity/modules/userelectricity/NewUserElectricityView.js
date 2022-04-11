@@ -497,6 +497,15 @@ export default class NewUserElectricityView extends View {
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
 					if (options.status === 200) {
 						
+						
+						// TESTING!
+						this.processResults(options.index);
+						
+						
+						
+						
+						
+						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							

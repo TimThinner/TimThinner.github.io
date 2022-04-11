@@ -1,6 +1,11 @@
 import Controller from '../common/Controller.js';
+/*
 import UserElectricityModel from './UserElectricityModel.js';
 import UserElectricityView from './UserElectricityView.js';
+*/
+import NewUserElectricityModel from './NewUserElectricityModel.js';
+import NewUserElectricityView from './NewUserElectricityView.js';
+
 
 export default class UserElectricityController extends Controller {
 	
@@ -8,7 +13,10 @@ export default class UserElectricityController extends Controller {
 		super(options);
 		// NOTE: Put one extra day, because days consumption is always 
 		// calculated by subtracting previous days total from "todays" total.
-		this.numOfDays = 31;
+		//this.numOfDays = 31;
+		
+		// TEST with only 3 days
+		this.numOfDays = 3;
 	}
 	
 	remove() {
@@ -44,11 +52,12 @@ export default class UserElectricityController extends Controller {
 			model_data.push({name:'UserElectricity'+i+'Model',index:i});
 		}
 		model_data.forEach(md => {
-			const m = new UserElectricityModel({
+			//const m = new UserElectricityModel({
+			const m = new NewUserElectricityModel({
 				name: md.name,
 				src: 'data/sivakka/apartments/feeds.json',
 				type: 'energy',
-				limit: 1,
+				limit: 0,
 				index: md.index
 			});
 			m.subscribe(this);
@@ -59,6 +68,7 @@ export default class UserElectricityController extends Controller {
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		this.view = new UserElectricityView(this);
+		//this.view = new UserElectricityView(this);
+		this.view = new NewUserElectricityView(this);
 	}
 }

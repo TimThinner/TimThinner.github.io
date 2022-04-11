@@ -16,7 +16,7 @@ export default class NewUserElectricityModel extends Model {
 	Use URL:
 		https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&start=2022-04-07T00:00&end=2022-04-08T00:00
 	
-	Fetch one day at a time. It contains 1 minute interval= 1440 values per day.
+	Fetch one day at a time. It contains 1 minute interval => 1440 values per day.
 	Current day has only values so far.
 	
 	If today is 8.4.2022
@@ -40,7 +40,6 @@ export default class NewUserElectricityModel extends Model {
 	constructor(options) {
 		
 		super(options);
-		
 		this.type = options.type;
 		this.limit = options.limit;
 		this.index = options.index;
@@ -103,29 +102,32 @@ export default class NewUserElectricityModel extends Model {
 					console.log(['self.values=',self.values]);
 					
 				} else {
+					// If the response is NOT array => something went wrong. 
+					console.log(['myJson=',myJson]);
+					console.log(['resu=',resu]);
+					
 					if (myJson === 'No data!') {
 						self.status = 404;
 						message = self.name+': '+myJson;
 						self.errorMessage = message;
-						self.measurement = [];
+						self.values = [];
 						
 					} else if (myJson === 'Err:PROTOCOL_SEQUENCE_TIMEOUT') {
 						console.log('Err:PROTOCOL_SEQUENCE_TIMEOUT  !!!!!!!!!!!!!!!!!!?');
 						self.status = 404;
 						message = self.name+': '+myJson;
 						self.errorMessage = message;
-						self.measurement = [];
+						self.values = [];
 						
-					} else if (typeof self.measurement.message !== 'undefined') {
-						message = self.measurement.message;
+					} else if (typeof self.values.message !== 'undefined') {
+						message = self.values.message;
 						self.errorMessage = message;
-						self.measurement = [];
+						self.values = [];
+						
 					} else {
-						self.measurement = [];
+						self.values = [];
 					}
 				}
-				//console.log(['self.measurement=',self.measurement]);
-				//console.log([self.name+' fetch status=',self.status]);
 				self.fetching = false;
 				self.ready = true;
 				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message, index:self.index});
@@ -174,7 +176,7 @@ export default class NewUserElectricityModel extends Model {
 					limit:this.limit,
 					start: start_date,
 					end: end_date,
-					expiration_in_seconds: 3600
+					expiration_in_seconds: 3600 // 60x60 = 1 hour.
 				};
 				const myPost = {
 					method: 'POST',

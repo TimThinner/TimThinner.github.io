@@ -262,6 +262,8 @@ export default class NewUserElectricityView extends View {
 	To do: Find best approach so that we don't have to fetch old data over and over again... with ONE MINUTE INTERVAL!
 	
 	
+	Fetch one-day-at-a-time.
+	
 	
 	
 	*/
@@ -346,7 +348,7 @@ export default class NewUserElectricityView extends View {
 		const sel = LM.selected;
 		const localized_string_energy = LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE'];
 		
-		this.convertResults();
+		//this.convertResults();
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -453,6 +455,7 @@ export default class NewUserElectricityView extends View {
 				self.chartRangeStart = ev.target._start;
 				self.chartRangeEnd = ev.target._end;
 				// Calculate total based on this new selection.
+				
 				self.updateTotal();
 				//console.log(["ev.target._start: ", ev.target._start]); // 0
 				//console.log(["ev.target._end: ", ev.target._end]); // 1
@@ -496,7 +499,8 @@ export default class NewUserElectricityView extends View {
 							this.updateTotal();*/
 							
 						} else {
-							this.renderChart();
+							// TEST: Don't render the chart yet!
+							// this.renderChart();
 						}
 					}
 				} else {
@@ -565,8 +569,10 @@ export default class NewUserElectricityView extends View {
 		});
 		if (this.areModelsReady()) {
 			this.handleErrorMessages(this.FELID);
-			this.renderChart();
-			this.updateTotal();
+			
+			// TEST: NO render NO update!
+			//this.renderChart();
+			//this.updateTotal();
 		}
 	}
 }

@@ -348,12 +348,15 @@ export default class NewUserElectricityView extends View {
 				}
 			});
 			// Print out the hashes:
+			
+			/*
 			Object.keys(this.power).forEach(key => {
 				console.log(['POWER key=',key,' value=',this.power[key]]);
 			});
 			Object.keys(this.energy).forEach(key => {
 				console.log(['ENERGY key=',key,' value=',this.energy[key]]);
 			});
+			*/
 		}
 	}
 	

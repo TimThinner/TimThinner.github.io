@@ -205,7 +205,7 @@ export default class NewUserElectricityView extends View {
 		
 		// NOTE: Start from the oldest 
 		const oindex = this.controller.numOfDays-1;
-		for (let i=oindex; i>=0; i++) {
+		for (let i=oindex; i>=0; i--) {
 			const key = 'UserElectricity'+i+'Model';
 			console.log(['MERGE key=',key]);
 			//const index = this.models[key].index;

@@ -193,33 +193,27 @@ export default class NewUserElectricityView extends View {
 ​​​		meterId: 1001
 ​​​		residentId: 1
 ​​​		totalEnergy: 18797.376
+		
+		The UserElectricityController has this.numOfDays and each model is named like this:
+			'UserElectricity'+i+'Model', where i = 0,...,numOfDays-1
 	*/
 	
 	mergeValues() {
+		
+		// Reproduce this.resuArray
 		this.resuArray = [];
-		Object.keys(this.models).forEach(key => {
-			if (key.indexOf('UserElectricity') === 0) {
-				
-				console.log(['MERGE key=',key]);
-				
-				const vals = this.models[key].values; // is in normal situation an array.
-				if (Array.isArray(vals) && vals.length > 0) {
-					vals.forEach(v=>{
-						const d = new Date(v.created_at);
-						const ap = v.averagePower;
-						const tot = v.totalEnergy;
-						this.resuArray.push({date:d, power:ap, total:tot});
-					});
-				}
+		
+		// NOTE: Start from the oldest 
+		const oindex = this.controller.numOfDays-1;
+		for (let i=oindex; i>=0; i++) {
+			const key = 'UserElectricity'+i+'Model';
+			console.log(['MERGE key=',key]);
+			//const index = this.models[key].index;
+			//const date = moment().subtract(index, 'days').toDate();
+			//const vals = this.models[key].values; // is in normal situation an array.
+			if (typeof this.models[key].energy_day.date !== 'undefined') { // { date: modelDate, total: temp_a[len-1].energy - temp_a[0].energy };
+				this.resuArray.push(this.models[key].energy_day);
 			}
-		});
-		if (this.resuArray.length > 0) {
-			// Then sort array based according to date, oldest entry first.
-			this.resuArray.sort(function(a,b){
-				var bb = moment(b.date);
-				var aa = moment(a.date);
-				return aa - bb;
-			});
 		}
 	}
 	

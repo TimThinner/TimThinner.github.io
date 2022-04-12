@@ -64,7 +64,7 @@ export default class NewUserElectricityView extends View {
 		this.FELID = 'user-electricity-view-failure';
 		this.chart = undefined; // We have a chart!
 		
-		this.resuArray = [];
+		this.resuArray = [];// { date: , total: }
 		// Range is from 0 to 1.
 		this.chartRangeStart = 0;
 		this.chartRangeEnd = 1;
@@ -195,38 +195,31 @@ export default class NewUserElectricityView extends View {
 ​​​		totalEnergy: 18797.376
 	*/
 	
-	convertResults() {
-		const temp_a = [];
-		
+	mergeValues() {
 		this.resuArray = [];
-		
 		Object.keys(this.models).forEach(key => {
 			if (key.indexOf('UserElectricity') === 0) {
 				
+				console.log(['MERGE key=',key]);
 				
-				const meas = this.models[key].values; // is in normal situation an array.
-				if (Array.isArray(meas) && meas.length > 0) {
-					const total = meas[0].totalEnergy;
-					const d = new Date(meas[0].created_at);
-					temp_a.push({date:d, total:total});
+				const vals = this.models[key].values; // is in normal situation an array.
+				if (Array.isArray(vals) && vals.length > 0) {
+					vals.forEach(v=>{
+						const d = new Date(v.created_at);
+						const ap = v.averagePower;
+						const tot = v.totalEnergy;
+						this.resuArray.push({date:d, power:ap, total:tot});
+					});
 				}
 			}
 		});
-		const len = temp_a.length;
-		if (len > 1) {
+		if (this.resuArray.length > 0) {
 			// Then sort array based according to date, oldest entry first.
-			temp_a.sort(function(a,b){
+			this.resuArray.sort(function(a,b){
 				var bb = moment(b.date);
 				var aa = moment(a.date);
 				return aa - bb;
 			});
-			//console.log(['SORTED temp_a=',temp_a]);
-			for (let i=0; i<len-1; i++) {
-				const d = temp_a[i+1].date;
-				const tot = temp_a[i+1].total - temp_a[i].total;
-				this.resuArray.push({date:d, total:tot});
-			}
-			//console.log(['resuArray=',this.resuArray]);
 		}
 	}
 	
@@ -256,7 +249,7 @@ export default class NewUserElectricityView extends View {
 		const sel = LM.selected;
 		const localized_string_energy = LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE'];
 		
-		//this.convertResults();
+		this.mergeValues();
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -336,8 +329,8 @@ export default class NewUserElectricityView extends View {
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
 			series1.data = self.resuArray;
-			series1.dataFields.dateX = "date"; //"time";
-			series1.dataFields.valueY = "total"; //"temperature";
+			series1.dataFields.dateX = "date";
+			series1.dataFields.valueY = "total";
 			series1.name = "ENERGY";
 			series1.yAxis = valueAxis;
 			
@@ -395,25 +388,19 @@ export default class NewUserElectricityView extends View {
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
 					if (options.status === 200) {
 						
-						
-						// TESTING!
-						//this.processResults(options.index);
-						
-						
 						$('#'+this.FELID).empty();
+						
+						this.mergeValues();
+						
 						if (typeof this.chart !== 'undefined') {
 							
-							//this.convertResults();
-							//this.processResults(options.index);
-							//console.log(['resuArray.length = ',resuArray.length, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!']);
-							/*am4core.iter.each(this.chart.series.iterator(), function (s) {
+							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								s.data = self.resuArray;
 							});
-							this.updateTotal();*/
+							this.updateTotal();
 							
 						} else {
-							// TEST: Don't render the chart yet!
-							// this.renderChart();
+							this.renderChart();
 						}
 					}
 				} else {
@@ -486,10 +473,7 @@ export default class NewUserElectricityView extends View {
 		});
 		if (this.areModelsReady()) {
 			this.handleErrorMessages(this.FELID);
-			
-			// TEST: NO render NO update!
-			//this.renderChart();
-			//this.updateTotal();
+			this.renderChart();
 		}
 	}
 }

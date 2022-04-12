@@ -151,6 +151,24 @@ export default class NewUserElectricityModel extends Model {
 			// Energy 30 days (30 day values), 7 days (168 hour values), current day (up to 1440 values)
 			// Power 30 days (30 day values), 7 days (168 hour values), current day (up to 1440 values)
 			
+			
+			/*
+			What calculated values we should have available for each day?
+			
+			1. Energy used in day.
+			2. Energy used in each hour of the day.
+			2. Energy used in each minute of each hour.
+			
+			
+			
+			
+			
+			this.energy_day - energy consumed in day
+			this.energy_hours - energy consumed in each hour of the day
+			this.power - averages (minute data day: 1440), 1 hour (60),  hourly averages (24)
+			
+			*/
+			
 			/*
 			// initialize power HOURLY averages:
 			// this.power[YYYYMMDDHH] = {sum:0, count:0, average:0};

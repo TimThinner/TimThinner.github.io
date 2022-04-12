@@ -203,24 +203,14 @@ export default class NewUserElectricityView extends View {
 			//const index = this.models[key].index;
 			//const date = moment().subtract(index, 'days').toDate();
 			//const vals = this.models[key].values; // is in normal situation an array.
-//const array1 = ['a', 'b', 'c'];
-//const array2 = ['d', 'e', 'f'];
-//const array3 = array1.concat(array2);
-//console.log(array3);
-// expected output: Array ["a", "b", "c", "d", "e", "f"]
-			
+			/*
 			if (this.models[key].energy_hours.length > 0) {
 				this.resuArray = this.resuArray.concat(this.models[key].energy_hours);
-			}
-			/*
-			if (typeof this.models[key].energy_day.date !== 'undefined') {
-				
-				
-				
-				this.resuArray.push(this.models[key].energy_day);
-				
-				
 			}*/
+			
+			if (typeof this.models[key].energy_day.date !== 'undefined') {
+				this.resuArray.push(this.models[key].energy_day);
+			}
 		}
 	}
 	

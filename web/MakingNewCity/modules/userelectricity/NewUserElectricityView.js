@@ -361,7 +361,8 @@ export default class NewUserElectricityView extends View {
 			});
 			
 			series1.columns.template.events.on("hit", function(ev) {
-				console.log(["clicked on ",ev.target,"date=",ev.target._dataItem._dataContext.date]);
+				//console.log(["clicked on ",ev.target,"date=",ev.target._dataItem._dataContext.date]);
+				console.log(['date=',ev.target.dataItem.dataContext.date]);
 			}, this);
 			
 		}); // end am4core.ready()

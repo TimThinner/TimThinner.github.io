@@ -223,8 +223,12 @@ export default class NewUserElectricityModel extends Model {
 					
 					self.values = resu;
 					console.log(['self.values=',self.values]);
-					console.log('PROCESS VALUES');
-					self.processValues();
+					
+					// No need to process, if we fetch only limited set (1 value).
+					if (self.limit === 0) {
+						console.log('PROCESS VALUES');
+						self.processValues();
+					}
 					
 					
 				} else {

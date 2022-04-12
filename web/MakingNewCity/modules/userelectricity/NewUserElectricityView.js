@@ -325,6 +325,7 @@ export default class NewUserElectricityView extends View {
 			series1.name = "ENERGY";
 			series1.yAxis = valueAxis;
 			
+			
 			// Legend:
 			/*
 			self.chart.legend = new am4charts.Legend();
@@ -357,7 +358,12 @@ export default class NewUserElectricityView extends View {
 				self.chartRangeStart = 0;
 				self.chartRangeEnd = 1;
 				self.updateTotal();
-			})
+			});
+			
+			series1.columns.template.events.on("hit", function(ev) {
+				console.log("clicked on ", ev.target);
+			}, this);
+			
 		}); // end am4core.ready()
 		
 		this.updateTotal();

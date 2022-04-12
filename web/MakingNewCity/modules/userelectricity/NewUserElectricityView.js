@@ -68,12 +68,6 @@ export default class NewUserElectricityView extends View {
 		// Range is from 0 to 1.
 		this.chartRangeStart = 0;
 		this.chartRangeEnd = 1;
-		
-		
-		// These hashes contain DAILY and HOURLY averages in keys like YYYYMMDDHH and YYYYMMDD.
-		// ALL values are 
-		this.power = {};
-		this.energy = {};
 	}
 	
 	show() {
@@ -239,12 +233,6 @@ export default class NewUserElectricityView extends View {
 	/*
 	NOTE:
 	
-	
-	
-	
-	
-	
-	
 	Fetch one-day-at-a-time.
 	
 	this.power[YYYYMMDD] = {sum:0, count:0, average:0, values:[]}
@@ -260,100 +248,6 @@ export default class NewUserElectricityView extends View {
 		hourly totals
 		
 	*/
-	processResults(index) {
-		 // index is from 0 to N, 0 = current day, 1 = yesterday, etc.
-		const mname = 'UserElectricity'+index+'Model';
-		const temp_a = [];
-		
-		const vals = this.models[mname].values;
-		if (Array.isArray(vals) && vals.length > 0) {
-			vals.forEach(v=>{
-				const d = new Date(v.created_at);
-				const ap = v.averagePower;
-				const tot = v.totalEnergy;
-				temp_a.push({date:d, power:ap, energy:tot});
-			});
-		}
-		const len = temp_a.length;
-		if (len > 1) {
-			// Then sort array based according to date, oldest entry first.
-			temp_a.sort(function(a,b){
-				var bb = moment(b.date);
-				var aa = moment(a.date);
-				return aa - bb;
-			});
-			// Update DAILY hashes:
-			const m = moment().subtract(index, 'days');
-			const YYYYMMDD = m.format('YYYYMMDD');
-			this.power[YYYYMMDD] = {sum:0, count:0, average:0, values:[]};
-			// total energy for different timeranges.
-			this.energy[YYYYMMDD] = { day:0, hour:{}};
-			this.energy[YYYYMMDD]['day'] = temp_a[len-1].energy - temp_a[0].energy;
-			
-			// initialize power HOURLY values:
-			// this.power[YYYYMMDDHH] = {sum:0, count:0, average:0};
-			// Initialize energy HOURLY values:
-			// this.energy[YYYYMMDD]['hour'][HH] = undefined;
-			for (let i=0; i<10; i++) { // from '00' to '09'
-				const HH = '0'+i;
-				const key = YYYYMMDD + HH;
-				this.power[key] = {sum:0, count:0, average:0};
-				this.energy[YYYYMMDD]['hour'][HH] = undefined;
-			}
-			for (let i=10; i<24; i++) { // from '10' to '23'
-				const HH = ''+i;
-				const key = YYYYMMDD + HH;
-				this.power[key] = {sum:0, count:0, average:0};
-				this.energy[YYYYMMDD]['hour'][HH] = undefined;
-			}
-			
-			let temp_first = 0;
-			let temp_last = 0;
-			
-			for (let i=0; i<len-1; i++) {
-				const d = temp_a[i].date;
-				const p = temp_a[i].power;
-				const e = temp_a[i].energy;
-				
-				// Add to daily hash:
-				this.power[YYYYMMDD]['count']++;
-				this.power[YYYYMMDD]['sum'] += p;
-				this.power[YYYYMMDD]['values'].push(p);
-				
-				// Add to hourly hash:
-				const YYYYMMDDHH = moment(d).format('YYYYMMDDHH');
-				const HH = YYYYMMDDHH.slice(8);
-				
-				if (typeof this.energy[YYYYMMDD]['hour'][HH] === 'undefined') {
-					// This is the first value for this HH
-					this.energy[YYYYMMDD]['hour'][HH] = 0;
-					temp_first = e;
-					temp_last = e;
-				} else {
-					temp_last = e;
-					this.energy[YYYYMMDD]['hour'][HH] = temp_last - temp_first;
-				}
-				this.power[YYYYMMDDHH]['count']++;
-				this.power[YYYYMMDDHH]['sum'] += p;
-			}
-			// Calculate averages:
-			// For daily and for hourly:
-			Object.keys(this.power).forEach(key => {
-				if (this.power[key]['sum'] > 0) {
-					this.power[key]['average'] = this.power[key]['sum'] / this.power[key]['count'];
-				}
-			});
-			// Print out the hashes:
-			/*
-			Object.keys(this.power).forEach(key => {
-				console.log(['POWER key=',key,' value=',this.power[key]]);
-			});
-			Object.keys(this.energy).forEach(key => {
-				console.log(['ENERGY key=',key,' value=',this.energy[key]]);
-			});
-			*/
-		}
-	}
 	
 	renderChart() {
 		const self = this;
@@ -503,18 +397,14 @@ export default class NewUserElectricityView extends View {
 						
 						
 						// TESTING!
-						this.processResults(options.index);
-						
-						
-						
-						
+						//this.processResults(options.index);
 						
 						
 						$('#'+this.FELID).empty();
 						if (typeof this.chart !== 'undefined') {
 							
 							//this.convertResults();
-							this.processResults(options.index);
+							//this.processResults(options.index);
 							//console.log(['resuArray.length = ',resuArray.length, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!']);
 							/*am4core.iter.each(this.chart.series.iterator(), function (s) {
 								s.data = self.resuArray;

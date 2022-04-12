@@ -16,7 +16,7 @@ export default class UserElectricityController extends Controller {
 		//this.numOfDays = 31;
 		
 		// TEST with only 3 days
-		this.numOfDays = 3;
+		this.numOfDays = 7;
 	}
 	
 	remove() {

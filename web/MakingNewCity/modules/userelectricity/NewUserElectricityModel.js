@@ -43,7 +43,14 @@ export default class NewUserElectricityModel extends Model {
 		this.type = options.type;
 		this.limit = options.limit;
 		this.index = options.index;
+		// this.period is calculated dynamically before fetching (see setTimePeriod())
+		// but this model has quite static data values for one day. Except current day, which will be appended with new values once a minute.
+		// So we can minimize traffic and netload by using this information:
+		// 
+		// if this.period.start starts with same 'YYYY-MM-DD' => we have already fetched this data.
+		
 		this.period = {start: undefined, end: undefined};
+		this.dateYYYYMMDD = moment().subtract(this.index, 'days').format('YYYY-MM-DD');
 		this.values = [];
 	}
 	
@@ -83,6 +90,27 @@ export default class NewUserElectricityModel extends Model {
 			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
 			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
 		}
+	}
+	/*
+		Three cases where fetching is needed:
+		1. this.index === 0
+		2. this.values.length === 0
+		3. if this.dateYYYYMMDD !== moment().subtract(this.index, 'days').format('YYYY-MM-DD')
+		
+		Third is to check that the initial date for this model is still valid.
+	*/
+	needToFetch() {
+		let retval = false;
+		if (this.index === 0 || this.values.length === 0) {
+			retval = true;
+		}
+		// Third check is done separately because it should be done anyway to reset initial value, if needed.
+		const nowYYYYMMDD = moment().subtract(this.index, 'days').format('YYYY-MM-DD');
+		if (this.dateYYYYMMDD !== nowYYYYMMDD) {
+			retval = true;
+			this.dateYYYYMMDD = nowYYYYMMDD;
+		}
+		return retval;
 	}
 	
 	doTheFetch(url) {
@@ -143,13 +171,19 @@ export default class NewUserElectricityModel extends Model {
 	}
 	
 	fetch(token, readkey) {
+		// If already fetching, no need to start again.
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
 		}
-		
+		// Check if we already have valid values for this model.
+		if (this.needToFetch()===false) {
+			console.log('MODEL '+this.name+' NO NEED TO FETCH NOW!');
+			return;
+		}
 		// Always start with setting the TIME PERIOD!
 		this.setTimePeriod();
+		
 		this.status = 500; // error: 500
 		this.errorMessage = '';
 		this.fetching = true;

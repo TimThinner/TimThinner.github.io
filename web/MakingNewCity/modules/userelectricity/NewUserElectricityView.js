@@ -20,7 +20,7 @@ The "raw" data is:
 
 We can show "averagePower" as one minute precision for for example 7 days.
 7 x 1440 values = 10 080 values (4 weeks equals 40 320 values)
-We can calculate also averages of any timeperiod... for example 1 hour, 1 day, 1 week,...
+We can calculate also averages of any timeperiod... for example 1 hour, 1 day.
 
 this.power[YYYYMMDDHH] = {};
 this.power[YYYYMMDD] = {};
@@ -30,36 +30,19 @@ or extract hourly energy using "totalEnergy" and subtract (from end of hour and 
 this.energy[YYYYMMDDHH] = {};
 this.energy[YYYYMMDD] = {};
 
-Each hash key has initially value { sum: 0, count: 0, average: 0 }, which is then updated when response is converted.
 
-			
-		const now = moment();
-		let start = moment();
-		
-		if (timerange > 1) {
-			const diffe = timerange-1;
-			start = moment().subtract(diffe, 'days');
-		}
-		start.hours(0);
-		start.minutes(0);
-		start.seconds(0);
-		
-		// Make sure that Hour is entered into energy object AFTER it is fully done!
-		now.minutes(0);
-		now.seconds(0);
-		
-		this.energy = {};
-		
-		while(now.isAfter(start)) {
-			const YYYYMMDDHH = start.format('YYYYMMDDHH');
-			const startTimeDate = start.format();
-			this.energy[YYYYMMDDHH] = {};
-			this.energy[YYYYMMDDHH]['time'] = new Date(startTimeDate);
-			this.energy[YYYYMMDDHH]['sum'] = 0;
-			this.energy[YYYYMMDDHH]['count'] = 0;
-			this.energy[YYYYMMDDHH]['average'] = 0;
-			start.add(1, 'hours');
-		};
+	this.power[YYYYMMDD] = {sum:0, count:0, average:0, values:[]}
+	this.power[YYYYMMDDHH] = {sum:0, count:0, average:0}
+	this.energy[YYYYMMDD] = { day:0, hour:{}};
+	
+	power:
+		daily average
+		hourly average
+		minutely values (1440) in values array
+	
+	energy:
+		daily totals
+		hourly totals
 */
 import View from '../common/View.js';
 import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
@@ -73,7 +56,7 @@ export default class NewUserElectricityView extends View {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
-		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
+		this.PTO = new PeriodicTimeoutObserver({interval:60000}); // interval 1 minute.
 		this.PTO.subscribe(this);
 		
 		this.fetchQueue = [];
@@ -256,16 +239,26 @@ export default class NewUserElectricityView extends View {
 	/*
 	NOTE:
 	
-	When all models are processed.
-	We cannot always add to hashes, we must know when to reset whole data set.
-	How to do that ????
-	To do: Find best approach so that we don't have to fetch old data over and over again... with ONE MINUTE INTERVAL!
+	
+	
+	
+	
 	
 	
 	Fetch one-day-at-a-time.
 	
+	this.power[YYYYMMDD] = {sum:0, count:0, average:0, values:[]}
+	this.energy[YYYYMMDD] = { day:0, hour:{}}; hour has key HH for example: '00', '01', ... '23'
 	
+	power:
+		daily average
+		hourly average
+		minutely values (1440) in values array
 	
+	energy:
+		daily totals
+		hourly totals
+		
 	*/
 	processResults(index) {
 		 // index is from 0 to N, 0 = current day, 1 = yesterday, etc.
@@ -297,7 +290,10 @@ export default class NewUserElectricityView extends View {
 			this.energy[YYYYMMDD] = { day:0, hour:{}};
 			this.energy[YYYYMMDD]['day'] = temp_a[len-1].energy - temp_a[0].energy;
 			
-			// initialize power HOURLY values.
+			// initialize power HOURLY values:
+			// this.power[YYYYMMDDHH] = {sum:0, count:0, average:0};
+			// Initialize energy HOURLY values:
+			// this.energy[YYYYMMDD]['hour'][HH] = undefined;
 			for (let i=0; i<10; i++) { // from '00' to '09'
 				const HH = '0'+i;
 				const key = YYYYMMDD + HH;
@@ -348,7 +344,6 @@ export default class NewUserElectricityView extends View {
 				}
 			});
 			// Print out the hashes:
-			
 			/*
 			Object.keys(this.power).forEach(key => {
 				console.log(['POWER key=',key,' value=',this.power[key]]);
@@ -359,7 +354,6 @@ export default class NewUserElectricityView extends View {
 			*/
 		}
 	}
-	
 	
 	renderChart() {
 		const self = this;

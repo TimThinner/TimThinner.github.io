@@ -55,7 +55,8 @@ export default class NewUserElectricityModel extends Model {
 		// These hashes contain DAILY and HOURLY averages in keys like YYYYMMDDHH and YYYYMMDD.
 		// ALL values are 
 		this.power = {};
-		this.energy_day = {};
+		this.energy_day = {}; //   { date: ..., value: ... }
+		this.energy_hours = []; // { date: ..., value: ... }
 	}
 	
 	/*
@@ -119,7 +120,6 @@ export default class NewUserElectricityModel extends Model {
 	
 	processValues() {
 		const temp_a = [];
-		//const date = 
 		
 		const vals = this.values;
 		if (Array.isArray(vals) && vals.length > 0) {
@@ -141,30 +141,29 @@ export default class NewUserElectricityModel extends Model {
 			
 			//this.power = {};
 			// total energy for different timeranges.
-			//this.energy_hours = []; // {date: nnnn, total: xxx}
+			this.energy_hours = []; // {date: nnnn, value: xxx}
 			
 			const modelDate = moment(this.dateYYYYMMDD+'T12:00').toDate();
-			this.energy_day = { date: modelDate, total: temp_a[len-1].energy - temp_a[0].energy };
+			this.energy_day = { date: modelDate, value: temp_a[len-1].energy - temp_a[0].energy };
 			
+			
+			
+			// Energy 30 days (30 day values), 7 days (168 hour values), current day (up to 1440 values)
+			// Power 30 days (30 day values), 7 days (168 hour values), current day (up to 1440 values)
 			
 			/*
 			// initialize power HOURLY averages:
 			// this.power[YYYYMMDDHH] = {sum:0, count:0, average:0};
 			// Initialize energy HOURLY averages:
 			// this.energy[YYYYMMDD]['hour'][HH] = undefined;
+			*/
 			let energy_hh = {};
 			
-			for (let i=0; i<10; i++) { // from '00' to '09'
-				const HH = '0'+i;
+			for (let i=0; i<24; i++) { // from '0' to '23'
+				let HH = (i<10) ? '0'+i : ''+i;
 				const dd = moment(this.dateYYYYMMDD+'T'+HH).toDate();
-				this.power[HH] = {sum:0, count:0, average:0};
-				energy_hh[HH] = {date:dd, total:0};
-			}
-			for (let i=10; i<24; i++) { // from '10' to '23'
-				const HH = ''+i;
-				const dd = moment(this.dateYYYYMMDD+'T'+HH).toDate();
-				this.power[HH] = {sum:0, count:0, average:0};
-				energy_hh[HH] = {date:dd, total:0};
+				//this.power[HH] = {sum:0, count:0, average:0};
+				energy_hh[HH] = {date:dd, value:undefined};
 			}
 			
 			let temp_first = 0;
@@ -172,34 +171,39 @@ export default class NewUserElectricityModel extends Model {
 			
 			for (let i=0; i<len-1; i++) {
 				const d = temp_a[i].date;
-				const p = temp_a[i].power;
+				//const p = temp_a[i].power;
 				const e = temp_a[i].energy;
 				
 				// Add to hourly hash:
 				const HH = moment(d).format('HH');
-				if (typeof energy_hh[HH] === 'undefined') {
+				if (typeof energy_hh[HH].value === 'undefined') {
 					// This is the first value for this HH
-					energy_hh[HH] = 0;
 					temp_first = e;
 					temp_last = e;
+					energy_hh[HH].value = 0;
 				} else {
 					temp_last = e;
-					energy_hh[HH] = temp_last - temp_first;
+					energy_hh[HH].value = temp_last - temp_first;
 				}
-				this.power[HH]['count']++;
-				this.power[HH]['sum'] += p;
+				//this.power[HH]['count']++;
+				//this.power[HH]['sum'] += p;
+			}
+			for (let i=0; i<24; i++) { // from '00' to '23'
+				let HH = (i<10) ? '0'+i : ''+i;
+				// If value was not defined => set it to zero.
+				if (typeof energy_hh[HH].value === 'undefined') {
+					energy_hh[HH].value = 0;
+				}
+				this.energy_hours.push(energy_hh[HH]);
 			}
 			// Calculate averages:
 			// For daily and for hourly:
-			Object.keys(this.power).forEach(key => {
+			/*Object.keys(this.power).forEach(key => {
 				if (this.power[key]['sum'] > 0) {
 					this.power[key]['average'] = this.power[key]['sum'] / this.power[key]['count'];
 				}
 			});
 			*/
-			
-			
-			
 			
 			
 			// Print out the hashes:

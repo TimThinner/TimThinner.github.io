@@ -64,7 +64,7 @@ export default class NewUserElectricityView extends View {
 		this.FELID = 'user-electricity-view-failure';
 		this.chart = undefined; // We have a chart!
 		
-		this.resuArray = [];// { date: , total: }
+		this.resuArray = [];// { date: , value: }
 		// Range is from 0 to 1.
 		this.chartRangeStart = 0;
 		this.chartRangeEnd = 1;
@@ -151,7 +151,7 @@ export default class NewUserElectricityView extends View {
 			
 			
 			selection.forEach(v=>{
-				sum += v.total;
+				sum += v.value;
 			});
 			
 			// UM.price_energy_monthly		euros/month
@@ -174,14 +174,6 @@ export default class NewUserElectricityView extends View {
 			const html = '<p>'+localized_string_total+': <span style="color:#0f0">- kWh</span></p>';
 			$('#user-electricity-chart-total').empty().append(html);
 		}
-		/*
-		let total = 0;
-		this.resuArray.forEach(e=>{
-			total += e.total;
-		});
-		const html = '<p>TOTAL: <span style="color:#0f0">'+total.toFixed(1)+' kWh</span></p>';
-		$('#user-electricity-chart-total').empty().append(html);
-		*/
 	}
 	
 	/*
@@ -211,9 +203,24 @@ export default class NewUserElectricityView extends View {
 			//const index = this.models[key].index;
 			//const date = moment().subtract(index, 'days').toDate();
 			//const vals = this.models[key].values; // is in normal situation an array.
-			if (typeof this.models[key].energy_day.date !== 'undefined') { // { date: modelDate, total: temp_a[len-1].energy - temp_a[0].energy };
-				this.resuArray.push(this.models[key].energy_day);
+//const array1 = ['a', 'b', 'c'];
+//const array2 = ['d', 'e', 'f'];
+//const array3 = array1.concat(array2);
+//console.log(array3);
+// expected output: Array ["a", "b", "c", "d", "e", "f"]
+			
+			if (this.models[key].energy_hours.length > 0) {
+				this.resuArray = this.resuArray.concat(this.models[key].energy_hours);
 			}
+			/*
+			if (typeof this.models[key].energy_day.date !== 'undefined') {
+				
+				
+				
+				this.resuArray.push(this.models[key].energy_day);
+				
+				
+			}*/
 		}
 	}
 	
@@ -324,7 +331,7 @@ export default class NewUserElectricityView extends View {
 			series1.tooltip.label.fill = series1.stroke;
 			series1.data = self.resuArray;
 			series1.dataFields.dateX = "date";
-			series1.dataFields.valueY = "total";
+			series1.dataFields.valueY = "value";
 			series1.name = "ENERGY";
 			series1.yAxis = valueAxis;
 			
@@ -350,7 +357,6 @@ export default class NewUserElectricityView extends View {
 				self.chartRangeStart = ev.target._start;
 				self.chartRangeEnd = ev.target._end;
 				// Calculate total based on this new selection.
-				
 				self.updateTotal();
 				//console.log(["ev.target._start: ", ev.target._start]); // 0
 				//console.log(["ev.target._end: ", ev.target._end]); // 1

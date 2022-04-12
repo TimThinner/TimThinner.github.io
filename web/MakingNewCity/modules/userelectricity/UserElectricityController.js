@@ -14,7 +14,7 @@ export default class UserElectricityController extends Controller {
 		// NOTE: Put one extra day, because days consumption is always 
 		// calculated by subtracting previous days total from "todays" total.
 		//this.numOfDays = 31;
-		this.numOfDays = 31;
+		this.numOfDays = 30;
 	}
 	
 	remove() {

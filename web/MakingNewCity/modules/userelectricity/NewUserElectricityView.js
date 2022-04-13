@@ -65,6 +65,8 @@ export default class NewUserElectricityView extends View {
 		this.chart = undefined; // We have a chart!
 		
 		this.resuArray = [];// { date: , value: }
+		
+		this.viewMode = {range:'MONTH', target:undefined}; // // 'MONTH', 'DAY' or 'HOUR'
 		// Range is from 0 to 1.
 		this.chartRangeStart = 0;
 		this.chartRangeEnd = 1;
@@ -195,21 +197,39 @@ export default class NewUserElectricityView extends View {
 		// Reproduce this.resuArray
 		this.resuArray = [];
 		
-		// NOTE: Start from the oldest 
-		const oindex = this.controller.numOfDays-1;
-		for (let i=oindex; i>=0; i--) {
-			const key = 'UserElectricity'+i+'Model';
-			console.log(['MERGE key=',key]);
-			//const index = this.models[key].index;
-			//const date = moment().subtract(index, 'days').toDate();
-			//const vals = this.models[key].values; // is in normal situation an array.
-			/*
-			if (this.models[key].energy_hours.length > 0) {
-				this.resuArray = this.resuArray.concat(this.models[key].energy_hours);
-			}*/
-			
-			if (typeof this.models[key].energy_day.date !== 'undefined') {
-				this.resuArray.push(this.models[key].energy_day);
+		if (this.viewMode.range === 'MONTH') {
+			//this.viewMode.target is undefined;
+			// Go through all models and get one value per day 
+			// NOTE: Start from the oldest 
+			const last_index = this.controller.numOfDays-1;
+			for (let i=last_index; i>=0; i--) {
+				const key = 'UserElectricity'+i+'Model';
+				if (typeof this.models[key].energy_day.date !== 'undefined') {
+					this.resuArray.push(this.models[key].energy_day);
+				}
+			}
+		} else if (this.viewMode.range === 'DAY') {
+			//this.viewMode.target // is the date
+			const selected_date = moment(this.viewMode.target).format('YYYY-MM-DD');
+			const last_index = this.controller.numOfDays-1;
+			for (let i=0; i<last_index; i++) {
+				const key = 'UserElectricity'+i+'Model';
+				if (this.models[key].dateYYYYMMDD === selected_date) {
+					if (this.models[key].energy_hours.length > 0) {
+						this.resuArray = this.models[key].energy_hours;
+					}
+				}
+			}
+		} else {
+			//this.viewMode.target // contains the hour
+			const selected_date = moment(this.viewMode.target).format('YYYY-MM-DD');
+			const selected_hour = moment(this.viewMode.target).format('HH');
+			const last_index = this.controller.numOfDays-1;
+			for (let i=0; i<last_index; i--) {
+				const key = 'UserElectricity'+i+'Model';
+				if (this.models[key].dateYYYYMMDD === selected_date) {
+					this.resuArray = this.models[key].getEnergyMinutes(selected_hour);
+				}
 			}
 		}
 	}
@@ -325,7 +345,6 @@ export default class NewUserElectricityView extends View {
 			series1.name = "ENERGY";
 			series1.yAxis = valueAxis;
 			
-			
 			// Legend:
 			/*
 			self.chart.legend = new am4charts.Legend();
@@ -362,11 +381,33 @@ export default class NewUserElectricityView extends View {
 			
 			series1.columns.template.events.on("hit", function(ev) {
 				//console.log(["clicked on ",ev.target,"date=",ev.target._dataItem._dataContext.date]);
+				
 				console.log(['date=',ev.target.dataItem.dataContext.date]);
+				// Rotate 'MONTH' => 'DAY' => 'HOUR' => 'MONTH'
+				
+				if (self.viewMode.range === 'MONTH') {
+					// Date object can be used to switch to "DAY" view ... 24 hours
+					self.viewMode.range = 'DAY';
+					self.viewMode.target = ev.target.dataItem.dataContext.date;
+					// Redraw the chart.
+					self.renderChart();
+					
+				} else if (self.viewMode.range === 'DAY') {
+					// Date object can be used to switch to "HOUR" view ... 60 minutes
+					self.viewMode.range = 'HOUR';
+					self.viewMode.target = ev.target.dataItem.dataContext.date;
+					// Redraw the chart.
+					self.renderChart();
+					
+				} else { // From HOUR view we go back to MONTH view.
+					self.viewMode.target = undefined;
+					self.viewMode.range = 'MONTH';
+					// Redraw the chart.
+					self.renderChart();
+				}
 			}, this);
 			
 		}); // end am4core.ready()
-		
 		this.updateTotal();
 	}
 	

@@ -57,6 +57,7 @@ export default class NewUserElectricityModel extends Model {
 		this.power = {};
 		this.energy_day = {}; //   { date: ..., value: ... }
 		this.energy_hours = []; // { date: ..., value: ... }
+		this.energy_minutes = [];
 	}
 	
 	/*
@@ -118,6 +119,15 @@ export default class NewUserElectricityModel extends Model {
 		return retval;
 	}
 	
+	getEnergyMinutes(hh) {
+		this.energy_minutes = [];
+		for (let i=0; i<60; i++) { // from '0' to '59'
+			let mm = (i<10) ? '0'+i : ''+i;
+			const dd = moment(this.dateYYYYMMDD+'T'+hh+':'+mm).toDate();
+			this.energy_minutes.push({date:dd, value:i});
+		}
+	}
+	
 	processValues() {
 		const temp_a = [];
 		
@@ -165,6 +175,9 @@ export default class NewUserElectricityModel extends Model {
 			
 			this.energy_day - energy consumed in day
 			this.energy_hours - energy consumed in each hour of the day
+			
+			
+			
 			this.power - averages (minute data day: 1440), 1 hour (60),  hourly averages (24)
 			
 			*/

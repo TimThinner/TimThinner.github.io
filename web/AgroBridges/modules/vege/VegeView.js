@@ -80,6 +80,7 @@ export default class VegeView extends View {
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>How many different vegetables do you grow in total?</h6>'+
+						'<p>&nbsp;</p>'+
 						//'<p style="font-size:20px;text-align:center;color:#555;" id="vegetables-total-count">0</p>'+
 						'<div id="vegetables-total-slider"></div>'+
 						//'<p class="range-field">'+
@@ -88,6 +89,7 @@ export default class VegeView extends View {
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>On how many hectares do you grow vegetables?</h6>'+
+						'<p>&nbsp;</p>'+
 						//'<p style="font-size:20px;text-align:center;color:#555;" id="Hectare-veggies-count">0</p>'+
 						'<div id="Hectare-veggies-slider"></div>'+
 						//'<p class="range-field">'+
@@ -141,21 +143,36 @@ export default class VegeView extends View {
 		noUiSlider.create(vegeTotalSlider, {
 			start: [0],
 			connect: 'lower',
-			tooltips: [wNumb({decimals: 0})],
+			tooltips: true,
+			//tooltips: [wNumb({decimals: 0})],
+			keyboardSupport: true,
+			keyboardDefaultStep: 1,
 			range: {
 				'min': [0],
 				'max': [20]
 			}
 		});
+		vegeTotalSlider.noUiSlider.on('change', function (values) {
+			console.log(['values=',values]);
+			//self.updateEnergy(values);
+		});
+		
 		const hectareSlider = document.getElementById('Hectare-veggies-slider');
 		noUiSlider.create(hectareSlider, {
 			start: [0],
 			connect: 'lower',
-			tooltips: [wNumb({decimals: 0})],
+			tooltips: true,
+			//tooltips: [wNumb({decimals: 0})],
+			keyboardSupport: true,
+			keyboardDefaultStep: 1,
 			range: {
 				'min': [0],
 				'max': [500]
 			}
+		});
+		hectareSlider.noUiSlider.on('change', function (values) {
+			console.log(['values=',values]);
+			//self.updateEnergy(values);
 		});
 		
 		$('input[type=radio][name=vegeStatus]').change(function() {

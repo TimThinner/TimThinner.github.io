@@ -193,6 +193,8 @@ export default class NewUserElectricityModel extends Model {
 			// total energy for different timeranges.
 			this.energy_hours = []; // {date: nnnn, value: xxx}
 			
+			const modelDate = moment(this.dateYYYYMMDD+'T12:00').toDate();
+			this.energy_day = { date: modelDate, value: temp_a[len-1].energy - temp_a[0].energy };
 			// Energy 30 days (30 day values), 7 days (168 hour values), current day (up to 1440 values)
 			// Power 30 days (30 day values), 7 days (168 hour values), current day (up to 1440 values)
 			

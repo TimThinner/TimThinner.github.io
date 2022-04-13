@@ -120,12 +120,13 @@ export default class NewUserElectricityModel extends Model {
 	}
 	
 	getEnergyMinutes(hh) {
-		this.energy_minutes = [];
+		const energy_minutes = [];
 		for (let i=0; i<60; i++) { // from '0' to '59'
 			let mm = (i<10) ? '0'+i : ''+i;
 			const dd = moment(this.dateYYYYMMDD+'T'+hh+':'+mm).toDate();
-			this.energy_minutes.push({date:dd, value:i});
+			energy_minutes.push({date:dd, value:i});
 		}
+		return energy_minutes;
 	}
 	
 	processValues() {

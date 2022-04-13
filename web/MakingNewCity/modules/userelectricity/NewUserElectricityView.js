@@ -101,6 +101,17 @@ export default class NewUserElectricityView extends View {
 		$(this.el).empty();
 	}
 	
+	resetChart() {
+		if (typeof this.chart !== 'undefined') {
+			this.chart.dispose();
+			this.chart = undefined;
+		}
+		// Use the first Electricity Model to generate "reset" notification.
+		if (typeof this.models['UserElectricity0Model'] !== 'undefined') {
+			this.models['UserElectricity0Model'].resetChart();
+		}
+	}
+	
 	/*
 		const UM = this.controller.master.modelRepo.get('UserModel');
 		
@@ -389,21 +400,21 @@ export default class NewUserElectricityView extends View {
 					// Date object can be used to switch to "DAY" view ... 24 hours
 					self.viewMode.range = 'DAY';
 					self.viewMode.target = ev.target.dataItem.dataContext.date;
-					// Redraw the chart.
-					self.renderChart();
+					// Reset the chart.
+					self.resetChart();
 					
 				} else if (self.viewMode.range === 'DAY') {
 					// Date object can be used to switch to "HOUR" view ... 60 minutes
 					self.viewMode.range = 'HOUR';
 					self.viewMode.target = ev.target.dataItem.dataContext.date;
-					// Redraw the chart.
-					self.renderChart();
+					// Reset the chart.
+					self.resetChart();
 					
 				} else { // From HOUR view we go back to MONTH view.
 					self.viewMode.target = undefined;
 					self.viewMode.range = 'MONTH';
-					// Redraw the chart.
-					self.renderChart();
+					// Reset the chart.
+					self.resetChart();
 				}
 			}, this);
 			
@@ -425,18 +436,13 @@ export default class NewUserElectricityView extends View {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
 					if (options.status === 200) {
-						
 						$('#'+this.FELID).empty();
-						
 						this.mergeValues();
-						
 						if (typeof this.chart !== 'undefined') {
-							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								s.data = self.resuArray;
 							});
 							this.updateTotal();
-							
 						} else {
 							this.renderChart();
 						}
@@ -447,10 +453,6 @@ export default class NewUserElectricityView extends View {
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Models are 'MenuModel', 'UserElectricityNowModel', ...
-				
-				
-				console.log('TIMEOUT!!!!');
-				
 				this.fetchQueue = [];
 				const UM = this.controller.master.modelRepo.get('UserModel');
 				if (UM) {
@@ -464,6 +466,10 @@ export default class NewUserElectricityView extends View {
 						this.models[f.key].fetch(f.token, f.readkey);
 					}
 				}
+				
+			} else if (options.model==='UserElectricity0Model' && options.method==='reset') {
+				// We have removed old chart and now add a new one with different parameters.
+				this.renderChart();
 			}
 		}
 	}

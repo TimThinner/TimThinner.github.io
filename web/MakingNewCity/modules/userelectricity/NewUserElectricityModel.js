@@ -129,6 +129,12 @@ export default class NewUserElectricityModel extends Model {
 		return energy_minutes;
 	}
 	
+	resetChart() {
+		setTimeout(() => {
+			this.notifyAll({model:this.name, method:'reset'});
+		}, 250);
+	}
+	
 	processValues() {
 		const temp_a = [];
 		

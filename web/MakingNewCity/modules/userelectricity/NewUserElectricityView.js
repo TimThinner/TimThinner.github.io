@@ -102,10 +102,7 @@ export default class NewUserElectricityView extends View {
 	}
 	
 	resetChart() {
-		if (typeof this.chart !== 'undefined') {
-			this.chart.dispose();
-			this.chart = undefined;
-		}
+		this.hide();
 		// Use the first Electricity Model to generate "reset" notification.
 		if (typeof this.models['UserElectricity0Model'] !== 'undefined') {
 			this.models['UserElectricity0Model'].resetChart();
@@ -469,7 +466,8 @@ export default class NewUserElectricityView extends View {
 				
 			} else if (options.model==='UserElectricity0Model' && options.method==='reset') {
 				// We have removed old chart and now add a new one with different parameters.
-				this.renderChart();
+				this.show();
+				//this.renderChart();
 			}
 		}
 	}

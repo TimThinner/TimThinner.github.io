@@ -172,7 +172,6 @@ export default class NewUserElectricityView extends View {
 				timerange_days = 1;
 				
 			} else {
-				dateAxis.tooltipDateFormat = "m";
 				timerange_number = 60;
 				timerange_units = 'minutes';
 				timerange_days = 1/24;

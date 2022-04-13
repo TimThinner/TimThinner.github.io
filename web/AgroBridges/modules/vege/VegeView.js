@@ -143,9 +143,12 @@ export default class VegeView extends View {
 		noUiSlider.create(vegeTotalSlider, {
 			start: [0],
 			connect: 'lower',
-			tooltips: true,
-			//tooltips: [wNumb({decimals: 0})],
+			tooltips: [wNumb({decimals: 0})],
 			step: 1,
+			keyboardSupport: true,      // Default true
+			keyboardDefaultStep: 5,     // Default 10
+			keyboardPageMultiplier: 5,  // Default 5
+			keyboardMultiplier: 5,      // Default 1
 			range: {
 				'min': [0],
 				'max': [20]
@@ -160,9 +163,12 @@ export default class VegeView extends View {
 		noUiSlider.create(hectareSlider, {
 			start: [0],
 			connect: 'lower',
-			tooltips: true,
-			//tooltips: [wNumb({decimals: 0})],
+			tooltips: [wNumb({decimals: 0})],
 			step: 1,
+			keyboardSupport: true,      // Default true
+			keyboardDefaultStep: 5,     // Default 10
+			keyboardPageMultiplier: 50, // Default 5
+			keyboardMultiplier: 50,     // Default 1
 			range: {
 				'min': [0],
 				'max': [500]

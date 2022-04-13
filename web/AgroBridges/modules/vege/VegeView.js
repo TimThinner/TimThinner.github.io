@@ -80,8 +80,10 @@ export default class VegeView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<div class="input-field col s12">'+
+					'<div class="col s12">'+
 						'<h6>Are you offering these products?</h6>'+
+					'</div>'+
+					'<div class="col s12">'+
 						//'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>No</span></label></p>'+
 						//'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
 						'<label for="vegeStatus" class="toggle-switchy">'+

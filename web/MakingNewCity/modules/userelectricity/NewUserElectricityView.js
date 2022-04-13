@@ -161,12 +161,12 @@ export default class NewUserElectricityView extends View {
 			let timerange_units;
 			let timerange_days;
 			
-			if (self.viewMode.range === 'MONTH') {
+			if (this.viewMode.range === 'MONTH') {
 				timerange_number = slen;
 				timerange_units = 'days';
 				timerange_days = slen;
 				
-			} else if (self.viewMode.range === 'DAY') {
+			} else if (this.viewMode.range === 'DAY') {
 				timerange_number = 24;
 				timerange_units = 'hours';
 				timerange_days = 1;

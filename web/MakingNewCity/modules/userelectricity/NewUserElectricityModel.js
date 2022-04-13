@@ -144,7 +144,7 @@ export default class NewUserElectricityModel extends Model {
 			for (let i=1; i<len-1; i++) {
 				const d = temp_a[i].date;
 				//const p = temp_a[i].power;
-				const e = temp_a[i].energy;
+				//const e = temp_a[i].energy;
 				const dHHmm = moment(d).format('HH:mm');
 				if (hh === dHHmm.slice(0,2)) {
 					const dd = moment(this.dateYYYYMMDD+'T'+dHHmm).toDate();

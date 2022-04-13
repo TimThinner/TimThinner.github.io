@@ -157,8 +157,26 @@ export default class NewUserElectricityView extends View {
 			// Use moment because it has nice formatting functions.
 			const s_date = moment(selection[0].date); // Date of first value.
 			const e_date = moment(selection[slen-1].date); // Date of last value.
-			const timerange_days = slen;
+			let timerange_number;
+			let timerange_units;
+			let timerange_days;
 			
+			if (self.viewMode.range === 'MONTH') {
+				timerange_number = slen;
+				timerange_units = 'days';
+				timerange_days = slen;
+				
+			} else if (self.viewMode.range === 'DAY') {
+				timerange_number = 24;
+				timerange_units = 'hours';
+				timerange_days = 1;
+				
+			} else {
+				dateAxis.tooltipDateFormat = "m";
+				timerange_number = 60;
+				timerange_units = 'minutes';
+				timerange_days = 1/24;
+			}
 			
 			selection.forEach(v=>{
 				sum += v.value;
@@ -177,7 +195,7 @@ export default class NewUserElectricityView extends View {
 				localized_string_price+
 				': <span style="color:#0f0">'+price.toFixed(2)+'&euro;</span><br/>'+
 				'<span style="color:#ccc">'+range_title + s_date.format('DD.MM.YYYY HH:mm')+' - '+e_date.format('DD.MM.YYYY HH:mm')+'</span><br/>'+
-				'<span style="color:#aaa">('+timerange_days+' days)</span>'+
+				'<span style="color:#aaa">('+timerange_number+' '+timerange_units+')</span>'+
 				'</p>';
 			$('#user-electricity-chart-total').empty().append(html);
 		} else {
@@ -322,7 +340,14 @@ export default class NewUserElectricityView extends View {
 			
 			//dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
 			dateAxis.keepSelection = true;
-			dateAxis.tooltipDateFormat = "dd.MM.yyyy";
+			
+			if (self.viewMode.range === 'MONTH') {
+				dateAxis.tooltipDateFormat = "dd.MM.yyyy";
+			} else if (self.viewMode.range === 'DAY') {
+				dateAxis.tooltipDateFormat = "H";
+			} else {
+				dateAxis.tooltipDateFormat = "m";
+			}
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.renderer.fontSize = "0.75em";
@@ -397,20 +422,32 @@ export default class NewUserElectricityView extends View {
 					// Date object can be used to switch to "DAY" view ... 24 hours
 					self.viewMode.range = 'DAY';
 					self.viewMode.target = ev.target.dataItem.dataContext.date;
-					// Reset the chart.
+					
+					// Reset the chart. But DON'T do it directly within this eventhandler!
+					// To prevent "Uncaught Error: EventDispatcher is disposed", we must 
+					// work with MODEL and delayed "reset" notification.
+					
 					self.resetChart();
 					
 				} else if (self.viewMode.range === 'DAY') {
 					// Date object can be used to switch to "HOUR" view ... 60 minutes
 					self.viewMode.range = 'HOUR';
 					self.viewMode.target = ev.target.dataItem.dataContext.date;
-					// Reset the chart.
+					
+					// Reset the chart. But DON'T do it directly within this eventhandler!
+					// To prevent "Uncaught Error: EventDispatcher is disposed", we must 
+					// work with MODEL and delayed "reset" notification.
+					
 					self.resetChart();
 					
 				} else { // From HOUR view we go back to MONTH view.
 					self.viewMode.target = undefined;
 					self.viewMode.range = 'MONTH';
-					// Reset the chart.
+					
+					// Reset the chart. But DON'T do it directly within this eventhandler!
+					// To prevent "Uncaught Error: EventDispatcher is disposed", we must 
+					// work with MODEL and delayed "reset" notification.
+					
 					self.resetChart();
 				}
 			}, this);

@@ -120,11 +120,44 @@ export default class NewUserElectricityModel extends Model {
 	}
 	
 	getEnergyMinutes(hh) {
+		const temp_a = [];
 		const energy_minutes = [];
-		for (let i=0; i<60; i++) { // from '0' to '59'
-			let mm = (i<10) ? '0'+i : ''+i;
-			const dd = moment(this.dateYYYYMMDD+'T'+hh+':'+mm).toDate();
-			energy_minutes.push({date:dd, value:i});
+		
+		const vals = this.values;
+		if (Array.isArray(vals) && vals.length > 0) {
+			vals.forEach(v=>{
+				const d = new Date(v.created_at);
+				const ap = v.averagePower;
+				const tot = v.totalEnergy;
+				temp_a.push({date:d, power:ap, energy:tot});
+			});
+		}
+		const len = temp_a.length;
+		if (len > 1) {
+			// Then sort array based according to date, oldest entry first.
+			temp_a.sort(function(a,b){
+				var bb = moment(b.date);
+				var aa = moment(a.date);
+				return aa - bb;
+			});
+			
+			for (let i=1; i<len-1; i++) {
+				const d = temp_a[i].date;
+				//const p = temp_a[i].power;
+				const e = temp_a[i].energy;
+				const dHHmm = moment(d).format('HH:mm');
+				if (hh === dHHmm.slice(0,2)) {
+					const dd = moment(this.dateYYYYMMDD+'T'+dHHmm).toDate();
+					energy_minutes.push({date:dd, value:temp_a[i].energy - temp_a[i-1].energy});
+				}
+			}
+			/*
+			for (let i=0; i<60; i++) { // from '0' to '59'
+				let mm = (i<10) ? '0'+i : ''+i;
+				const dd = moment(this.dateYYYYMMDD+'T'+hh+':'+mm).toDate();
+				energy_minutes.push({date:dd, value:i});
+			}
+			*/
 		}
 		return energy_minutes;
 	}
@@ -160,11 +193,6 @@ export default class NewUserElectricityModel extends Model {
 			// total energy for different timeranges.
 			this.energy_hours = []; // {date: nnnn, value: xxx}
 			
-			const modelDate = moment(this.dateYYYYMMDD+'T12:00').toDate();
-			this.energy_day = { date: modelDate, value: temp_a[len-1].energy - temp_a[0].energy };
-			
-			
-			
 			// Energy 30 days (30 day values), 7 days (168 hour values), current day (up to 1440 values)
 			// Power 30 days (30 day values), 7 days (168 hour values), current day (up to 1440 values)
 			
@@ -176,17 +204,10 @@ export default class NewUserElectricityModel extends Model {
 			2. Energy used in each hour of the day.
 			2. Energy used in each minute of each hour.
 			
-			
-			
-			
-			
 			this.energy_day - energy consumed in day
 			this.energy_hours - energy consumed in each hour of the day
 			
-			
-			
 			this.power - averages (minute data day: 1440), 1 hour (60),  hourly averages (24)
-			
 			*/
 			
 			/*

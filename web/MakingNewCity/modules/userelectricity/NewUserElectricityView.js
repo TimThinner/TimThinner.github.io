@@ -225,7 +225,7 @@ export default class NewUserElectricityView extends View {
 			const selected_date = moment(this.viewMode.target).format('YYYY-MM-DD');
 			const selected_hour = moment(this.viewMode.target).format('HH');
 			const last_index = this.controller.numOfDays-1;
-			for (let i=0; i<last_index; i--) {
+			for (let i=0; i<last_index; i++) {
 				const key = 'UserElectricity'+i+'Model';
 				if (this.models[key].dateYYYYMMDD === selected_date) {
 					this.resuArray = this.models[key].getEnergyMinutes(selected_hour);

@@ -66,7 +66,7 @@ export default class UserModel extends Model {
 			Dummy_Milk: false,
 			Dummy_cheese_normal: false,
 			Dummy_cheese_reg_special: false,
-			Dummy_Dairy _Products: false,
+			Dummy_Dairy_Products: false,
 			Dummy_Beef: false,
 			Dummy_special_Beef: false,
 			Dummy_raw_milk_only: false,

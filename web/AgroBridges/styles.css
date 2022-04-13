@@ -31,3 +31,9 @@ html, body {
 	text-align: center;
 	border-top: 1px solid #0B7938;
 }
+.noUi-tooltip:hover, .noUi-tooltip:focus, .noUi-tooltip:active { 
+	outline: none;
+}
+.noUi-touch-area:hover, .noUi-touch-area:focus, .noUi-touch-area:active { 
+	outline: none;
+}

@@ -145,8 +145,7 @@ export default class VegeView extends View {
 			connect: 'lower',
 			tooltips: true,
 			//tooltips: [wNumb({decimals: 0})],
-			keyboardSupport: true,
-			keyboardDefaultStep: 1,
+			step: 1,
 			range: {
 				'min': [0],
 				'max': [20]
@@ -163,8 +162,7 @@ export default class VegeView extends View {
 			connect: 'lower',
 			tooltips: true,
 			//tooltips: [wNumb({decimals: 0})],
-			keyboardSupport: true,
-			keyboardDefaultStep: 1,
+			step: 1,
 			range: {
 				'min': [0],
 				'max': [500]

@@ -120,13 +120,14 @@ export default class MenuView extends View {
 					'</div>'+
 				'</div>'+
 			'</div>';
-			/*'<div class="row">'+
+			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<p style="color:#ccc;">W='+w+'px H='+h+'px</p>'+
+						//'<p style="color:#ccc;">W='+w+'px H='+h+'px</p>'+
+						'<p style="color:#ccc;">Version 22.04.13</p>'+
 					'</div>'+
 				'</div>'+
-			'</div>';*/
+			'</div>';
 		$(this.el).append(html);
 		
 		$("#login").on('click', function() {

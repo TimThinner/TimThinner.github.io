@@ -29,7 +29,7 @@ export default class UserModel extends Model {
 			Dummy_organic: 'No', // 'Yes'
 			
 			Cert_Min: false,
-			Cert_High false,
+			Cert_High: false,
 			Cert_uncertified: true,
 			
 			Harv_farmers_org: false,

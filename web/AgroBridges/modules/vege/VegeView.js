@@ -1,5 +1,22 @@
 import View from '../common/View.js';
 
+/*
+	UserModel:
+		this.profile = {
+			Dummy_veggie_farm: 'No', // 'Yes'
+			
+			Dummy_lettuce: false,
+			Dummy_fruit_vegetables: false,
+			Dummy_pumpkin: false,
+			Dummy_bulb: false,
+			Dummy_Root: false,
+			Dummy_Cabbage: false,
+			Dummy_Special: false,
+			
+			vegetables_total: 0,
+			Hectare_veggies: 0,
+*/
+
 export default class VegeView extends View {
 	
 	constructor(controller) {
@@ -65,8 +82,14 @@ export default class VegeView extends View {
 				'<div class="col s12">'+
 					'<div class="input-field col s12">'+
 						'<h6>Are you offering these products?</h6>'+
-						'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>No</span></label></p>'+
-						'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
+						//'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>No</span></label></p>'+
+						//'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
+						'<label for="vegeStatus" class="toggle-switchy">'+
+							'<input checked type="checkbox" id="vegeStatus">'+
+							'<span class="toggle">'+
+								'<span class="switch"></span>'+
+							'</span>'+
+						'</label>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>Which of these vegetables do you grow?</h6>'+
@@ -179,6 +202,7 @@ export default class VegeView extends View {
 			//self.updateEnergy(values);
 		});
 		
+		/*
 		$('input[type=radio][name=vegeStatus]').change(function() {
 			if (this.value == 'no') {
 				console.log('vegeStatus NO'); // Dummy_veggie_farm NO
@@ -188,10 +212,20 @@ export default class VegeView extends View {
 				// Dummy_veggie_farm YES
 			}
 		});
+		*/
+		$("#vegeStatus").change(function() {
+			if(this.checked) {
+				console.log('VEGETABLES YES');
+				//Dummy_lettuce: 
+			} else {
+				console.log('VEGETABLES NO');
+			}
+		});
 		
 		$("#lettuce").change(function() {
 			if(this.checked) {
 				console.log('Lettuce YES');
+				//Dummy_lettuce: 
 			} else {
 				console.log('Lettuce NO');
 			}

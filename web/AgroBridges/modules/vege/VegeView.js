@@ -31,7 +31,7 @@ export default class VegeView extends View {
 	notify(options) {
 		console.log('VegeView NOTHING to Notify!');
 	}
-	
+	/*
 	handleRangeChange(id) {
 		$("#"+id).val(0);
 		$("#"+id+"-count").empty().append('0');
@@ -46,7 +46,7 @@ export default class VegeView extends View {
 			}
 		});
 	}
-	
+	*/
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -80,17 +80,19 @@ export default class VegeView extends View {
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>How many different vegetables do you grow in total?</h6>'+
-						'<p style="font-size:20px;text-align:center;color:#555;" id="vegetables-total-count">0</p>'+
-						'<p class="range-field">'+
-							'<input type="range" id="vegetables-total" min="0" max="20"><span class="thumb"><span class="value"></span></span>'+
-						'</p>'+
+						//'<p style="font-size:20px;text-align:center;color:#555;" id="vegetables-total-count">0</p>'+
+						'<div id="vegetables-total-slider"></div>'+
+						//'<p class="range-field">'+
+						//	'<input type="range" id="vegetables-total" min="0" max="20"><span class="thumb"><span class="value"></span></span>'+
+						//'</p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>On how many hectares do you grow vegetables?</h6>'+
-						'<p style="font-size:20px;text-align:center;color:#555;" id="Hectare-veggies-count">0</p>'+
-						'<p class="range-field">'+
-							'<input type="range" id="Hectare-veggies" min="0" max="500"><span class="thumb"><span class="value"></span></span>'+
-						'</p>'+
+						//'<p style="font-size:20px;text-align:center;color:#555;" id="Hectare-veggies-count">0</p>'+
+						'<div id="Hectare-veggies-slider"></div>'+
+						//'<p class="range-field">'+
+						//	'<input type="range" id="Hectare-veggies" min="0" max="500"><span class="thumb"><span class="value"></span></span>'+
+						//'</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -133,8 +135,28 @@ export default class VegeView extends View {
 			'</div>';
 		$(this.el).append(html);
 		
-		this.handleRangeChange('Hectare-veggies');
-		this.handleRangeChange('vegetables-total');
+		//this.handleRangeChange('Hectare-veggies');
+		//this.handleRangeChange('vegetables-total');
+		const vegeTotalSlider = document.getElementById('vegetables-total-slider');
+		noUiSlider.create(vegeTotalSlider, {
+			start: [0],
+			connect: 'lower',
+			tooltips: [wNumb({decimals: 0})],
+			range: {
+				'min': [0],
+				'max': [20]
+			}
+		});
+		const hectareSlider = document.getElementById('Hectare-veggies-slider');
+		noUiSlider.create(hectareSlider, {
+			start: [0],
+			connect: 'lower',
+			tooltips: [wNumb({decimals: 0})],
+			range: {
+				'min': [0],
+				'max': [500]
+			}
+		});
 		
 		$('input[type=radio][name=vegeStatus]').change(function() {
 			if (this.value == 'no') {

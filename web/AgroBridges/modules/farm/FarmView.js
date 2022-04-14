@@ -113,6 +113,8 @@ export default class FarmView extends View {
 		let filled = 0;
 		let fillStatus = '4/4';
 		let filledColor = this.colors.LIGHT_YELLOW;
+		let strokeWidth = 2;
+		let strokeColor = this.colors.DARK_ORANGE;
 		
 		if (type === 'VEGETABLES') {
 			if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
@@ -140,12 +142,18 @@ export default class FarmView extends View {
 			
 			if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
 				filledColor = this.colors.LIGHT_RED;
+				strokeWidth = 4;
+				strokeColor = this.colors.DARK_RED;
 			}
 			if (this.USER_MODEL.profile.vegetables_total === 0) {
 				filledColor = this.colors.LIGHT_RED;
+				strokeWidth = 4;
+				strokeColor = this.colors.DARK_RED;
 			}
 			if (this.USER_MODEL.profile.Hectare_veggies === 0) {
 				filledColor = this.colors.LIGHT_RED;
+				strokeWidth = 4;
+				strokeColor = this.colors.DARK_RED;
 			}
 		}
 		
@@ -163,8 +171,8 @@ export default class FarmView extends View {
 		rect.setAttribute('height',2*fontsize);
 		rect.style.fill = filledColor;
 		rect.style.fillOpacity = 1;
-		rect.style.stroke = this.colors.DARK_ORANGE;
-		rect.style.strokeWidth = 2;
+		rect.style.stroke = strokeColor; //this.colors.DARK_ORANGE;
+		rect.style.strokeWidth = strokeWidth; //2;
 		svg.appendChild(rect);
 		
 		const title = document.createElementNS(svgNS, 'text');

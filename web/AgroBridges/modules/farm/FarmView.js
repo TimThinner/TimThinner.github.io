@@ -11,8 +11,8 @@ export default class FarmView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		//this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
-		//this.USER_MODEL.subscribe(this);
+		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+		this.USER_MODEL.subscribe(this);
 		
 		this.rendered = false;
 	}
@@ -31,7 +31,7 @@ export default class FarmView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
-		//this.USER_MODEL.unsubscribe(this);
+		this.USER_MODEL.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -110,6 +110,42 @@ export default class FarmView extends View {
 			fontsize = 18;
 		}
 		
+		let filled = 0;
+		if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
+			// 'undefined' or ''No' or 'Yes'
+		} else {
+			filled++;
+		}
+		
+		if (this.USER_MODEL.profile.Dummy_lettuce || 
+			this.USER_MODEL.profile.Dummy_fruit_vegetables || 
+			this.USER_MODEL.profile.Dummy_pumpkin || 
+			this.USER_MODEL.profile.Dummy_bulb || 
+			this.USER_MODEL.profile.Dummy_Root || 
+			this.USER_MODEL.profile.Dummy_Cabbage || 
+			this.USER_MODEL.profile.Dummy_Special) {
+			
+			filled++;
+		}
+		if (this.USER_MODEL.profile.vegetables_total > 0) {
+			filled++;
+		}
+		if (this.USER_MODEL.profile.Hectare_veggies > 0) {
+			filled++;
+		}
+		const fillStatus = filled + '/4';
+		
+		let filledColor = this.colors.LIGHT_YELLOW;
+		if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
+			filledColor = this.colors.LIGHT_RED;
+		}
+		if (this.USER_MODEL.profile.vegetables_total === 0) {
+			filledColor = this.colors.LIGHT_RED;
+		}
+		if (this.USER_MODEL.profile.Hectare_veggies === 0) {
+			filledColor = this.colors.LIGHT_RED;
+		}
+		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-r*0.5);
 		svg.setAttribute('y',r*0.75);
@@ -122,7 +158,7 @@ export default class FarmView extends View {
 		rect.setAttribute('y',0);
 		rect.setAttribute('width',r);
 		rect.setAttribute('height',2*fontsize);
-		rect.style.fill = this.colors.LIGHT_YELLOW;
+		rect.style.fill = filledColor;
 		rect.style.fillOpacity = 1;
 		rect.style.stroke = this.colors.DARK_ORANGE;
 		rect.style.strokeWidth = 2;
@@ -137,7 +173,7 @@ export default class FarmView extends View {
 		title.setAttribute('text-anchor','middle');
 		title.setAttribute('fill',this.colors.DARK_GREEN);
 		title.style.opacity = 1;
-		title.appendChild(document.createTextNode('3/8'));
+		title.appendChild(document.createTextNode(fillStatus));
 		svg.appendChild(title);
 		group.appendChild(svg);
 	}

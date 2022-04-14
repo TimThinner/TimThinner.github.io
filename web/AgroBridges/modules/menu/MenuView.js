@@ -124,7 +124,7 @@ export default class MenuView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						//'<p style="color:#ccc;">W='+w+'px H='+h+'px</p>'+
-						'<p style="color:#ccc;">Version 22.04.13-F</p>'+
+						'<p style="color:#ccc;">Version 22.04.14-A</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>';

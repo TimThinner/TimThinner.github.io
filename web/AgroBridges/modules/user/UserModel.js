@@ -36,7 +36,7 @@ export default class UserModel extends Model {
 			Harv_Clean_Sort_Ref: true,
 			
 			// FARM VEGETABLES:
-			Dummy_veggie_farm: 'No', // 'Yes'
+			Dummy_veggie_farm: undefined; //'No', // 'Yes'
 			
 			Dummy_lettuce: false,
 			Dummy_fruit_vegetables: false,
@@ -50,7 +50,7 @@ export default class UserModel extends Model {
 			Hectare_veggies: 0,
 			
 			// FARM ANIMALS:
-			Dummy_livestock: 'No', // 'Yes'
+			Dummy_livestock: undefined; // 'No', // 'Yes'
 			
 			Number_cows: false,
 			Number_goats: false,
@@ -72,7 +72,7 @@ export default class UserModel extends Model {
 			Dummy_raw_milk_only: false,
 			
 			// FARM FRUITS:
-			Dummy_fruit_farm: 'No', // 'Yes'
+			Dummy_fruit_farm: undefined; //'No', // 'Yes'
 			
 			Dummy_Stonefruits: false,
 			Dummy_Pomefruits: false,

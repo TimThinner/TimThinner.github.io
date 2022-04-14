@@ -25,6 +25,10 @@ export default class VegeView extends View {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
+		
+		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+		this.USER_MODEL.subscribe(this);
+		
 		this.rendered = false;
 	}
 	
@@ -41,6 +45,7 @@ export default class VegeView extends View {
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
+		this.USER_MODEL.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -64,6 +69,38 @@ export default class VegeView extends View {
 		});
 	}
 	*/
+	
+	
+	
+						/*
+						'<table class="striped">'+
+							'<thead>'+
+								'<tr>'+
+									'<th>Question</th>'+
+									'<th>Variables</th>'+
+								'</tr>'+
+							'</thead>'+
+							'<tbody>'+
+								'<tr>'+
+									'<td>Are you offering these products?</td>'+
+									'<td>Dummy_veggie_farm (No, Yes)</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Which of these vegetables do you grow?</td>'+
+									'<td>Dummy_lettuce, Dummy_fruit_vegetables, Dummy_pumpkin, Dummy_bulb, Dummy_Root, Dummy_Cabbage,Dummy_Special</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>How many different vegetables do you grow in total?</td>'+
+									'<td>vegetables_total</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>On how many hectares do you grow vegetables?</td>'+
+									'<td>Hectare_veggies</td>'+
+								'</tr>'+
+							'</tbody>'+
+						'</table>'+
+						*/
+	
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -125,35 +162,6 @@ export default class VegeView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						/*
-						'<table class="striped">'+
-							'<thead>'+
-								'<tr>'+
-									'<th>Question</th>'+
-									'<th>Variables</th>'+
-								'</tr>'+
-							'</thead>'+
-							'<tbody>'+
-								'<tr>'+
-									'<td>Are you offering these products?</td>'+
-									'<td>Dummy_veggie_farm (No, Yes)</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Which of these vegetables do you grow?</td>'+
-									'<td>Dummy_lettuce, Dummy_fruit_vegetables, Dummy_pumpkin, Dummy_bulb, Dummy_Root, Dummy_Cabbage,Dummy_Special</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>How many different vegetables do you grow in total?</td>'+
-									'<td>vegetables_total</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>On how many hectares do you grow vegetables?</td>'+
-									'<td>Hectare_veggies</td>'+
-								'</tr>'+
-							'</tbody>'+
-						'</table>'+
-						*/
-						//'<p>&nbsp;</p>'+
 						'<button class="btn waves-effect waves-light" id="vege-ok" style="width:120px">OK</button>'+
 						'<p>&nbsp;</p>'+
 					'</div>'+
@@ -161,8 +169,6 @@ export default class VegeView extends View {
 			'</div>';
 		$(this.el).append(html);
 		
-		//this.handleRangeChange('Hectare-veggies');
-		//this.handleRangeChange('vegetables-total');
 		const vegeTotalSlider = document.getElementById('vegetables-total-slider');
 		noUiSlider.create(vegeTotalSlider, {
 			start: [0],
@@ -180,7 +186,10 @@ export default class VegeView extends View {
 		});
 		vegeTotalSlider.noUiSlider.on('change', function (values) {
 			console.log(['values=',values]);
-			//self.updateEnergy(values);
+			if (Array.isArray(values) && values.length > 0) {
+				self.USER_MODEL.vegetables_total = Math.round(values[0]);
+				// DATABASE Update USER_MODEL
+			}
 		});
 		
 		const hectareSlider = document.getElementById('Hectare-veggies-slider');
@@ -199,36 +208,121 @@ export default class VegeView extends View {
 			}
 		});
 		hectareSlider.noUiSlider.on('change', function (values) {
-			console.log(['values=',values]);
-			//self.updateEnergy(values);
+			console.log(['values=',values]); // values is an array with one value, for example ["20.00"].
+			if (Array.isArray(values) && values.length > 0) {
+				self.USER_MODEL.Hectare_veggies = Math.round(values[0]);
+				// DATABASE Update USER_MODEL
+			}
 		});
-		
 		
 		$('input[type=radio][name=vegeStatus]').change(function() {
 			if (this.value == 'no') {
-				console.log('vegeStatus NO'); // Dummy_veggie_farm NO
-			}
-			else if (this.value == 'yes') {
-				console.log('vegeStatus YES');
-				// Dummy_veggie_farm YES
-			}
-		});
-		/*
-		$("#vegeStatus").change(function() {
-			if(this.checked) {
-				console.log('VEGETABLES YES');
-				//Dummy_lettuce: 
-			} else {
-				console.log('VEGETABLES NO');
+				console.log('Dummy_veggie_farm No'); // Dummy_veggie_farm NO
+				self.USER_MODEL.Dummy_veggie_farm = 'No';
+				// DATABASE Update USER_MODEL
+				
+			} else if (this.value == 'yes') {
+				console.log('Dummy_veggie_farm Yes');
+				self.USER_MODEL.Dummy_veggie_farm = 'Yes';
+				// DATABASE Update USER_MODEL
 			}
 		});
-		*/
+		
 		$("#lettuce").change(function() {
 			if(this.checked) {
-				console.log('Lettuce YES');
-				//Dummy_lettuce: 
+				console.log('Dummy_lettuce true');
+				self.USER_MODEL.Dummy_lettuce = true;
+				// DATABASE Update USER_MODEL
+				
 			} else {
-				console.log('Lettuce NO');
+				console.log('Dummy_lettuce false');
+				self.USER_MODEL.Dummy_lettuce = false;
+				// DATABASE Update USER_MODEL
+				
+			}
+		});
+		
+		$("#fruitlike").change(function() {
+			if(this.checked) {
+				console.log('Dummy_fruit_vegetables true');
+				self.USER_MODEL.Dummy_fruit_vegetables = true;
+				// DATABASE Update USER_MODEL
+				
+			} else {
+				console.log('Dummy_fruit_vegetables false');
+				self.USER_MODEL.Dummy_fruit_vegetables = false;
+				// DATABASE Update USER_MODEL
+				
+			}
+		});
+		
+		$("#pumpkins").change(function() {
+			if(this.checked) {
+				console.log('Dummy_pumpkin true');
+				self.USER_MODEL.Dummy_pumpkin = true;
+				// DATABASE Update USER_MODEL
+				
+			} else {
+				console.log('Dummy_pumpkin false');
+				self.USER_MODEL.Dummy_pumpkin = false;
+				// DATABASE Update USER_MODEL
+				
+			}
+		});
+		
+		$("#bulb").change(function() {
+			if(this.checked) {
+				console.log('Dummy_bulb true');
+				self.USER_MODEL.Dummy_bulb = true;
+				// DATABASE Update USER_MODEL
+				
+			} else {
+				console.log('Dummy_bulb false');
+				self.USER_MODEL.Dummy_bulb = false;
+				// DATABASE Update USER_MODEL
+				
+			}
+		});
+		
+		$("#root").change(function() {
+			if(this.checked) {
+				console.log('Dummy_Root true');
+				self.USER_MODEL.Dummy_Root = true;
+				// DATABASE Update USER_MODEL
+				
+			} else {
+				console.log('Dummy_Root false');
+				self.USER_MODEL.Dummy_Root = false;
+				// DATABASE Update USER_MODEL
+				
+			}
+		});
+		
+		$("#cabbages").change(function() {
+			if(this.checked) {
+				console.log('Dummy_Cabbage true');
+				self.USER_MODEL.Dummy_Cabbage = true;
+				// DATABASE Update USER_MODEL
+				
+			} else {
+				console.log('Dummy_Cabbage false');
+				self.USER_MODEL.Dummy_Cabbage = false;
+				// DATABASE Update USER_MODEL
+				
+			}
+		});
+		
+		$("#specialities").change(function() {
+			if(this.checked) {
+				console.log('Dummy_Special true');
+				self.USER_MODEL.Dummy_Special = true;
+				// DATABASE Update USER_MODEL
+				
+			} else {
+				console.log('Dummy_Special false');
+				self.USER_MODEL.Dummy_Special = false;
+				// DATABASE Update USER_MODEL
+				
 			}
 		});
 		

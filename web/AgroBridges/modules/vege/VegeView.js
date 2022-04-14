@@ -169,9 +169,61 @@ export default class VegeView extends View {
 			'</div>';
 		$(this.el).append(html);
 		
+		// Restore current selection:
+		const vegetables_total  = this.USER_MODEL.profile.vegetables_total;
+		const Hectare_veggies = this.USER_MODEL.profile.Hectare_veggies;
+		
+		if (this.USER_MODEL.profile.Dummy_veggie_farm === 'No') {
+			$("#vege-no").prop("checked", true);
+		} else if (this.USER_MODEL.profile.Dummy_veggie_farm === 'Yes') {
+			$("#vege-yes").prop("checked", true);
+		}
+		
+		if (this.USER_MODEL.profile.Dummy_lettuce) {
+			$("#lettuce").prop("checked", true);
+		} else {
+			$("#lettuce").prop("checked", false);
+		}
+		
+		if (this.USER_MODEL.profile.Dummy_fruit_vegetables) {
+			$("#fruitlike").prop("checked", true);
+		} else {
+			$("#fruitlike").prop("checked", false);
+		}
+		
+		if (this.USER_MODEL.profile.Dummy_pumpkin) {
+			$("#pumpkins").prop("checked", true);
+		} else {
+			$("#pumpkins").prop("checked", false);
+		}
+		
+		if (this.USER_MODEL.profile.Dummy_bulb) {
+			$("#bulb").prop("checked", true);
+		} else {
+			$("#bulb").prop("checked", false);
+		}
+		
+		if (this.USER_MODEL.profile.Dummy_Root) {
+			$("#root").prop("checked", true);
+		} else {
+			$("#root").prop("checked", false);
+		}
+		
+		if (this.USER_MODEL.profile.Dummy_Cabbage) {
+			$("#cabbages").prop("checked", true);
+		} else {
+			$("#cabbages").prop("checked", false);
+		}
+		
+		if (this.USER_MODEL.profile.Dummy_Special) {
+			$("#specialities").prop("checked", true);
+		} else {
+			$("#specialities").prop("checked", false);
+		}
+		
 		const vegeTotalSlider = document.getElementById('vegetables-total-slider');
 		noUiSlider.create(vegeTotalSlider, {
-			start: [0],
+			start: [vegetables_total],
 			connect: 'lower',
 			tooltips: [wNumb({decimals: 0})],
 			step: 1,
@@ -194,7 +246,7 @@ export default class VegeView extends View {
 		
 		const hectareSlider = document.getElementById('Hectare-veggies-slider');
 		noUiSlider.create(hectareSlider, {
-			start: [0],
+			start: [Hectare_veggies],
 			connect: 'lower',
 			tooltips: [wNumb({decimals: 0})],
 			step: 1,

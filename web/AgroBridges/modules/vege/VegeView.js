@@ -187,7 +187,7 @@ export default class VegeView extends View {
 		vegeTotalSlider.noUiSlider.on('change', function (values) {
 			console.log(['values=',values]);
 			if (Array.isArray(values) && values.length > 0) {
-				self.USER_MODEL.vegetables_total = Math.round(values[0]);
+				self.USER_MODEL.profile.vegetables_total = Math.round(values[0]);
 				// DATABASE Update USER_MODEL
 			}
 		});
@@ -210,7 +210,7 @@ export default class VegeView extends View {
 		hectareSlider.noUiSlider.on('change', function (values) {
 			console.log(['values=',values]); // values is an array with one value, for example ["20.00"].
 			if (Array.isArray(values) && values.length > 0) {
-				self.USER_MODEL.Hectare_veggies = Math.round(values[0]);
+				self.USER_MODEL.profile.Hectare_veggies = Math.round(values[0]);
 				// DATABASE Update USER_MODEL
 			}
 		});
@@ -218,12 +218,12 @@ export default class VegeView extends View {
 		$('input[type=radio][name=vegeStatus]').change(function() {
 			if (this.value == 'no') {
 				console.log('Dummy_veggie_farm No'); // Dummy_veggie_farm NO
-				self.USER_MODEL.Dummy_veggie_farm = 'No';
+				self.USER_MODEL.profile.Dummy_veggie_farm = 'No';
 				// DATABASE Update USER_MODEL
 				
 			} else if (this.value == 'yes') {
 				console.log('Dummy_veggie_farm Yes');
-				self.USER_MODEL.Dummy_veggie_farm = 'Yes';
+				self.USER_MODEL.profile.Dummy_veggie_farm = 'Yes';
 				// DATABASE Update USER_MODEL
 			}
 		});
@@ -231,12 +231,12 @@ export default class VegeView extends View {
 		$("#lettuce").change(function() {
 			if(this.checked) {
 				console.log('Dummy_lettuce true');
-				self.USER_MODEL.Dummy_lettuce = true;
+				self.USER_MODEL.profile.Dummy_lettuce = true;
 				// DATABASE Update USER_MODEL
 				
 			} else {
 				console.log('Dummy_lettuce false');
-				self.USER_MODEL.Dummy_lettuce = false;
+				self.USER_MODEL.profile.Dummy_lettuce = false;
 				// DATABASE Update USER_MODEL
 				
 			}
@@ -245,12 +245,12 @@ export default class VegeView extends View {
 		$("#fruitlike").change(function() {
 			if(this.checked) {
 				console.log('Dummy_fruit_vegetables true');
-				self.USER_MODEL.Dummy_fruit_vegetables = true;
+				self.USER_MODEL.profile.Dummy_fruit_vegetables = true;
 				// DATABASE Update USER_MODEL
 				
 			} else {
 				console.log('Dummy_fruit_vegetables false');
-				self.USER_MODEL.Dummy_fruit_vegetables = false;
+				self.USER_MODEL.profile.Dummy_fruit_vegetables = false;
 				// DATABASE Update USER_MODEL
 				
 			}
@@ -259,12 +259,12 @@ export default class VegeView extends View {
 		$("#pumpkins").change(function() {
 			if(this.checked) {
 				console.log('Dummy_pumpkin true');
-				self.USER_MODEL.Dummy_pumpkin = true;
+				self.USER_MODEL.profile.Dummy_pumpkin = true;
 				// DATABASE Update USER_MODEL
 				
 			} else {
 				console.log('Dummy_pumpkin false');
-				self.USER_MODEL.Dummy_pumpkin = false;
+				self.USER_MODEL.profile.Dummy_pumpkin = false;
 				// DATABASE Update USER_MODEL
 				
 			}
@@ -273,12 +273,12 @@ export default class VegeView extends View {
 		$("#bulb").change(function() {
 			if(this.checked) {
 				console.log('Dummy_bulb true');
-				self.USER_MODEL.Dummy_bulb = true;
+				self.USER_MODEL.profile.Dummy_bulb = true;
 				// DATABASE Update USER_MODEL
 				
 			} else {
 				console.log('Dummy_bulb false');
-				self.USER_MODEL.Dummy_bulb = false;
+				self.USER_MODEL.profile.Dummy_bulb = false;
 				// DATABASE Update USER_MODEL
 				
 			}
@@ -287,12 +287,12 @@ export default class VegeView extends View {
 		$("#root").change(function() {
 			if(this.checked) {
 				console.log('Dummy_Root true');
-				self.USER_MODEL.Dummy_Root = true;
+				self.USER_MODEL.profile.Dummy_Root = true;
 				// DATABASE Update USER_MODEL
 				
 			} else {
 				console.log('Dummy_Root false');
-				self.USER_MODEL.Dummy_Root = false;
+				self.USER_MODEL.profile.Dummy_Root = false;
 				// DATABASE Update USER_MODEL
 				
 			}
@@ -301,12 +301,12 @@ export default class VegeView extends View {
 		$("#cabbages").change(function() {
 			if(this.checked) {
 				console.log('Dummy_Cabbage true');
-				self.USER_MODEL.Dummy_Cabbage = true;
+				self.USER_MODEL.profile.Dummy_Cabbage = true;
 				// DATABASE Update USER_MODEL
 				
 			} else {
 				console.log('Dummy_Cabbage false');
-				self.USER_MODEL.Dummy_Cabbage = false;
+				self.USER_MODEL.profile.Dummy_Cabbage = false;
 				// DATABASE Update USER_MODEL
 				
 			}
@@ -315,12 +315,12 @@ export default class VegeView extends View {
 		$("#specialities").change(function() {
 			if(this.checked) {
 				console.log('Dummy_Special true');
-				self.USER_MODEL.Dummy_Special = true;
+				self.USER_MODEL.profile.Dummy_Special = true;
 				// DATABASE Update USER_MODEL
 				
 			} else {
 				console.log('Dummy_Special false');
-				self.USER_MODEL.Dummy_Special = false;
+				self.USER_MODEL.profile.Dummy_Special = false;
 				// DATABASE Update USER_MODEL
 				
 			}

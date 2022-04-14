@@ -82,16 +82,15 @@ export default class VegeView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12">'+
 						'<h6>Are you offering these products?</h6>'+
-					'</div>'+
-					'<div class="col s12">'+
-						//'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>No</span></label></p>'+
-						//'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
-						'<label for="vegeStatus" class="toggle-switchy">'+
+						'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>No</span></label></p>'+
+						'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
+						/*'<label for="vegeStatus" class="toggle-switchy">'+
 							'<input checked type="checkbox" id="vegeStatus">'+
 							'<span class="toggle">'+
 								'<span class="switch"></span>'+
 							'</span>'+
 						'</label>'+
+						*/
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>Which of these vegetables do you grow?</h6>'+
@@ -204,7 +203,7 @@ export default class VegeView extends View {
 			//self.updateEnergy(values);
 		});
 		
-		/*
+		
 		$('input[type=radio][name=vegeStatus]').change(function() {
 			if (this.value == 'no') {
 				console.log('vegeStatus NO'); // Dummy_veggie_farm NO
@@ -214,7 +213,7 @@ export default class VegeView extends View {
 				// Dummy_veggie_farm YES
 			}
 		});
-		*/
+		/*
 		$("#vegeStatus").change(function() {
 			if(this.checked) {
 				console.log('VEGETABLES YES');
@@ -223,7 +222,7 @@ export default class VegeView extends View {
 				console.log('VEGETABLES NO');
 			}
 		});
-		
+		*/
 		$("#lettuce").change(function() {
 			if(this.checked) {
 				console.log('Lettuce YES');

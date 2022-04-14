@@ -97,6 +97,9 @@ export default class FarmView extends View {
 		group.appendChild(svg);
 	}
 	
+	
+	} else if (type === 'VEGETABLES') {
+	
 	appendFillStatus(group, type, r) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let fontsize;
@@ -111,39 +114,42 @@ export default class FarmView extends View {
 		}
 		
 		let filled = 0;
-		if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
-			// 'undefined' or ''No' or 'Yes'
-		} else {
-			filled++;
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_lettuce || 
-			this.USER_MODEL.profile.Dummy_fruit_vegetables || 
-			this.USER_MODEL.profile.Dummy_pumpkin || 
-			this.USER_MODEL.profile.Dummy_bulb || 
-			this.USER_MODEL.profile.Dummy_Root || 
-			this.USER_MODEL.profile.Dummy_Cabbage || 
-			this.USER_MODEL.profile.Dummy_Special) {
-			
-			filled++;
-		}
-		if (this.USER_MODEL.profile.vegetables_total > 0) {
-			filled++;
-		}
-		if (this.USER_MODEL.profile.Hectare_veggies > 0) {
-			filled++;
-		}
-		const fillStatus = filled + '/4';
-		
+		let fillStatus = '4/4';
 		let filledColor = this.colors.LIGHT_YELLOW;
-		if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
-			filledColor = this.colors.LIGHT_RED;
-		}
-		if (this.USER_MODEL.profile.vegetables_total === 0) {
-			filledColor = this.colors.LIGHT_RED;
-		}
-		if (this.USER_MODEL.profile.Hectare_veggies === 0) {
-			filledColor = this.colors.LIGHT_RED;
+		
+		if (type === 'VEGETABLES') {
+			if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
+				// 'undefined' or ''No' or 'Yes'
+			} else {
+				filled++;
+			}
+			if (this.USER_MODEL.profile.Dummy_lettuce || 
+				this.USER_MODEL.profile.Dummy_fruit_vegetables || 
+				this.USER_MODEL.profile.Dummy_pumpkin || 
+				this.USER_MODEL.profile.Dummy_bulb || 
+				this.USER_MODEL.profile.Dummy_Root || 
+				this.USER_MODEL.profile.Dummy_Cabbage || 
+				this.USER_MODEL.profile.Dummy_Special) {
+				
+				filled++;
+			}
+			if (this.USER_MODEL.profile.vegetables_total > 0) {
+				filled++;
+			}
+			if (this.USER_MODEL.profile.Hectare_veggies > 0) {
+				filled++;
+			}
+			fillStatus = filled + '/4';
+			
+			if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
+				filledColor = this.colors.LIGHT_RED;
+			}
+			if (this.USER_MODEL.profile.vegetables_total === 0) {
+				filledColor = this.colors.LIGHT_RED;
+			}
+			if (this.USER_MODEL.profile.Hectare_veggies === 0) {
+				filledColor = this.colors.LIGHT_RED;
+			}
 		}
 		
 		const svg = document.createElementNS(svgNS, "svg");

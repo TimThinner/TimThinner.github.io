@@ -97,9 +97,6 @@ export default class FarmView extends View {
 		group.appendChild(svg);
 	}
 	
-	
-	} else if (type === 'VEGETABLES') {
-	
 	appendFillStatus(group, type, r) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let fontsize;

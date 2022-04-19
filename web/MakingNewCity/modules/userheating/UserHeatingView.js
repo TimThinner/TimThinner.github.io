@@ -302,8 +302,17 @@ export default class UserHeatingView extends View {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
 					
+					
+					
+					
+					
 					if (options.status === 200) {
 						$('#'+this.FELID).empty();
+						
+						
+						console.log(['HEY! measurements=',self.models['UserHeatingMonthModel'].measurements]);
+						
+						
 						if (typeof this.chart !== 'undefined') {
 							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {

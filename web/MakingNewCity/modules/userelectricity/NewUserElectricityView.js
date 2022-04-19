@@ -301,7 +301,15 @@ export default class NewUserElectricityView extends View {
 			self.chart.padding(30, 15, 30, 15);
 			//self.chart.colors.step = 3;
 			
-			self.chart.numberFormatter.numberFormat = "#.#";
+			
+			if (self.viewMode.range === 'MONTH') {
+				self.chart.numberFormatter.numberFormat = "#.#";
+			} else if (self.viewMode.range === 'DAY') {
+				self.chart.numberFormatter.numberFormat = "#.##";
+			} else {
+				self.chart.numberFormatter.numberFormat = "#.###";
+			}
+			
 			//self.chart.data = [];
 			
 			// [{"value":207.483000,"start_time":"2021-05-17T08:00:00+0000","end_time":"2021-05-17T09:00:00+0000"},...]
@@ -343,9 +351,9 @@ export default class NewUserElectricityView extends View {
 			if (self.viewMode.range === 'MONTH') {
 				dateAxis.tooltipDateFormat = "dd.MM.yyyy";
 			} else if (self.viewMode.range === 'DAY') {
-				dateAxis.tooltipDateFormat = "H";
+				dateAxis.tooltipDateFormat = "HH:mm";
 			} else {
-				dateAxis.tooltipDateFormat = "m";
+				dateAxis.tooltipDateFormat = "HH:mm";
 			}
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());

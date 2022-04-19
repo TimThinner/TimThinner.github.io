@@ -119,7 +119,6 @@ export default class UserElectricityView extends View {
 			const e_date = moment(selection[slen-1].date); // Date of last value.
 			const timerange_days = slen;
 			
-			
 			selection.forEach(v=>{
 				sum += v.total;
 			});

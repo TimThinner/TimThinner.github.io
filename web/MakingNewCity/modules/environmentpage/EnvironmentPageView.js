@@ -249,15 +249,7 @@ export default class EnvironmentPageView extends View {
 			// Create chart
 			self.chart = am4core.create('emissions-chart', am4charts.XYChart);
 			self.paddingRight = 20;
-			// https://github.com/amcharts/amcharts4/blob/master/src/lang/fi_FI.ts
-			//self.chart.numberFormatter.intlLocales = "fi-FI";
-			//self.chart.numberFormatter.numberFormat = "#.#";
-			// "_thousandSeparator": " ",
-			
-			console.log(['self.chart.numberFormatter=',self.chart.numberFormatter]);
-			//self.chart.numberFormatter = {
-			//	precision:-1,decimalSeparator:",",thousandsSeparator:" "
-			//};
+			self.chart.language.locale["_thousandSeparator"] = " "; 
 			
 			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
 			dateAxis.baseInterval = {"timeUnit": "minute","count": 3};

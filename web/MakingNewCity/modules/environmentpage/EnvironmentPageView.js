@@ -81,7 +81,7 @@ export default class EnvironmentPageView extends View {
 				$("#timestamp-now-value").empty().append(mom.format('DD.MM.YYYY HH:mm:ss'));
 			}
 		}
-		if (this.valueOutOfRangeCounter < 0) {
+		if (this.valueOutOfRangeCounter > 0) {
 			const outOfRageText = '<p style="padding:16px;border:1px solid #800;background-color:#fcc;">Received '+
 				this.valueOutOfRangeCounter+' values which were OUT OF RANGE (MAXIMUM VALUE='+this.MAXIMUM_VALUE+')</p>';
 			$("#out-of-range-wrapper").empty().append(outOfRageText);
@@ -354,7 +354,7 @@ export default class EnvironmentPageView extends View {
 			if (options.model.indexOf('EmpoEmissions') === 0 && options.method==='fetched') {
 				const f = this.fetchQueue.shift();
 				if (typeof f !== 'undefined') {
-					console.log('Fetch NEXT EmpoEmissions MODEL.');
+					//console.log('Fetch NEXT EmpoEmissions MODEL.');
 					this.models[f.key].fetch();
 				}
 				if (options.status === 200) {

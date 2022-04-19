@@ -249,6 +249,7 @@ export default class EnvironmentPageView extends View {
 			// Create chart
 			self.chart = am4core.create('emissions-chart', am4charts.XYChart);
 			self.paddingRight = 20;
+			// See: https://www.amcharts.com/docs/v4/concepts/locales/#Numbers
 			self.chart.language.locale["_thousandSeparator"] = " "; 
 			
 			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());

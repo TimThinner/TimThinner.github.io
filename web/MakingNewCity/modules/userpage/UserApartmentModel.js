@@ -116,6 +116,9 @@ export default class UserApartmentModel extends Model {
 			// ... it automatically snaps start to full hour of yesterday or day before that or ...
 			// which makes it different than calls to get only one value (limit==1).
 			const s_m = moment(e_m).subtract(s_v, s_u);
+			// Snap start to full hour.
+			s_m.minutes(0);
+			s_m.seconds(0);
 			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
 			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
 			

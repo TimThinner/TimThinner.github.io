@@ -32,6 +32,7 @@ export default class EnvironmentPageView extends View {
 		
 		this.MAXIMUM_VALUE = 1000; // If value is greater than this, it can be flagged as ERROR.
 		this.valueOutOfRangeCounter = 0;
+		this.valueCounter = 0;
 	}
 	
 	show() {
@@ -84,8 +85,8 @@ export default class EnvironmentPageView extends View {
 		if (this.valueOutOfRangeCounter > 0) {
 			
 			const style = "padding:16px; border:1px solid #800; background-color:#fee; color:#800;";
-			const outOfRageText = '<p style="'+style+'">Received '+
-				this.valueOutOfRangeCounter+' values which were OUT OF RANGE (MAXIMUM VALUE='+this.MAXIMUM_VALUE+')</p>';
+			const outOfRageText = '<p style="'+style+'">Received '+this.valueCounter+' values. '+
+				this.valueOutOfRangeCounter+' values was OUT OF RANGE (MAXIMUM VALUE='+this.MAXIMUM_VALUE+')</p>';
 			$("#out-of-range-wrapper").empty().append(outOfRageText);
 		} else {
 			$("#out-of-range-wrapper").empty();
@@ -139,10 +140,13 @@ export default class EnvironmentPageView extends View {
 		const resuArray = [];
 		const aveArray = [];
 		this.valueOutOfRangeCounter = 0;
+		this.valueCounter = 0;
 		
 		Object.keys(this.models).forEach(key => {
 			if (key.indexOf('EmpoEmissions') === 0) {
 				const res = this.models[key].results;
+				this.valueCounter += res.length;
+				
 				//console.log(['res length=',res.length]);
 				if (res.length > 0) {
 					// Create a Date Object from date_time:

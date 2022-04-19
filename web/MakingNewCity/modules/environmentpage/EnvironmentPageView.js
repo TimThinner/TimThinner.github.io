@@ -82,7 +82,9 @@ export default class EnvironmentPageView extends View {
 			}
 		}
 		if (this.valueOutOfRangeCounter > 0) {
-			const outOfRageText = '<p style="padding:16px;border:1px solid #800;background-color:#fcc;">Received '+
+			
+			const style = "padding:16px; border:1px solid #800; background-color:#fee; color:#800;";
+			const outOfRageText = '<p style="'+style+'">Received '+
 				this.valueOutOfRangeCounter+' values which were OUT OF RANGE (MAXIMUM VALUE='+this.MAXIMUM_VALUE+')</p>';
 			$("#out-of-range-wrapper").empty().append(outOfRageText);
 		} else {

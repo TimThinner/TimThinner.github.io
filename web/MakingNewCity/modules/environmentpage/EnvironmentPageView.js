@@ -30,7 +30,8 @@ export default class EnvironmentPageView extends View {
 		this.consumption_average = undefined;
 		this.production_latest = undefined;
 		
-		this.MAXIMUM_VALUE = 100000; // If value is greater than this, it can be flagged as ERROR.
+		this.MAXIMUM_VALUE = 1000; // If value is greater than this, it can be flagged as ERROR.
+		this.valueOutOfRangeCounter = 0;
 	}
 	
 	show() {
@@ -80,15 +81,23 @@ export default class EnvironmentPageView extends View {
 				$("#timestamp-now-value").empty().append(mom.format('DD.MM.YYYY HH:mm:ss'));
 			}
 		}
+		if (this.valueOutOfRangeCounter < 0) {
+			const outOfRageText = '<p style="padding:16px;border:1px solid #800;background-color:#fcc;">Received '+
+				this.valueOutOfRangeCounter+' values which were OUT OF RANGE (MAXIMUM VALUE='+this.MAXIMUM_VALUE+')</p>';
+			$("#out-of-range-wrapper").empty().append(outOfRageText);
+		} else {
+			$("#out-of-range-wrapper").empty();
+		}
 	}
 	//const aves = '('+ave.toFixed(0)+')';
+	/*
 	updateProductionNow() {
 		if (typeof this.production_latest !== 'undefined') {
 			// The Number.EPSILON property represents the difference between 1 and the smallest floating point number greater than 1.
 			const val = Math.round((this.production_latest + Number.EPSILON) * 100) / 100;
 			$("#production-now-value").empty().append(val);
 		}
-	}
+	}*/
 	
 	/*
 		Try to reduce the CHART doing repaint 30 times when result come one-by-one.
@@ -127,6 +136,7 @@ export default class EnvironmentPageView extends View {
 	convertResults() {
 		const resuArray = [];
 		const aveArray = [];
+		this.valueOutOfRangeCounter = 0;
 		
 		Object.keys(this.models).forEach(key => {
 			if (key.indexOf('EmpoEmissions') === 0) {
@@ -140,7 +150,8 @@ export default class EnvironmentPageView extends View {
 							const d = new Date(r.date_time);
 							resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
 						} else {
-							console.log(['r.em_cons OUT OF RANGE! ',r.em_cons,' r.date_time=',r.date_time]);
+							//console.log(['r.em_cons OUT OF RANGE! ',r.em_cons,' r.date_time=',r.date_time]);
+							this.valueOutOfRangeCounter++;
 						}
 					});
 				}
@@ -358,6 +369,9 @@ export default class EnvironmentPageView extends View {
 									s.data = resuArray;
 								});
 								this.updateConsumptionNow();
+								
+								
+								
 							} else {
 								this.renderChart();
 							}
@@ -441,6 +455,11 @@ export default class EnvironmentPageView extends View {
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					'<div id="emissions-chart" class="medium-chart"></div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center">'+
+					'<div id="out-of-range-wrapper"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

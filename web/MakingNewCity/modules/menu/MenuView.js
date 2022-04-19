@@ -183,7 +183,7 @@ export default class MenuView extends View {
 				//.. and start the fetching process with FIRST EmpoEmissions... model:
 				const f = this.fetchQueue.shift();
 				if (typeof f !== 'undefined') {
-					console.log('Fetch FIRST EmpoEmissions MODEL.');
+					//console.log('Fetch FIRST EmpoEmissions MODEL.');
 					this.models[f.key].fetch();
 				}
 				
@@ -200,7 +200,7 @@ export default class MenuView extends View {
 				//.. and start the fetching process with NEXT model:
 				const f = this.fetchQueue.shift();
 				if (typeof f !== 'undefined') {
-					console.log('Fetch NEXT EmpoEmissions MODEL.');
+					//console.log('Fetch NEXT EmpoEmissions MODEL.');
 					this.models[f.key].fetch();
 				}
 				if (options.status === 200) {

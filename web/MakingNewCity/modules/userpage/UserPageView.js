@@ -141,11 +141,11 @@ export default class UserPageView extends View {
 		if (Array.isArray(meas) && meas.length > 0) {
 			
 			const temp = meas[0].temperature;
-			if (typeof temp !== 'undefined') && temp > 0 && temp < 100) {
+			if (typeof temp !== 'undefined' && temp > 0 && temp < 100) {
 				first = temp.toFixed(1)+'°C';
 			}
 			const humi = meas[0].humidity;
-			if (typeof humi !== 'undefined') {
+			if (typeof humi !== 'undefined' && humi > 0 && humi < 100) {
 				second = humi.toFixed(1)+'%';
 			}
 		}

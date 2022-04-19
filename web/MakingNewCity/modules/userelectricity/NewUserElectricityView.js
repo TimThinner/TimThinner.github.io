@@ -300,7 +300,7 @@ export default class NewUserElectricityView extends View {
 			self.chart = am4core.create("user-electricity-chart", am4charts.XYChart);
 			self.chart.padding(30, 15, 30, 15);
 			//self.chart.colors.step = 3;
-			
+			//self.chart.numberFormatter.numberFormat = "#.#";
 			
 			if (self.viewMode.range === 'MONTH') {
 				self.chart.numberFormatter.numberFormat = "#.#";

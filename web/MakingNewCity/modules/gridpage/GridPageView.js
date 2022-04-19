@@ -1436,8 +1436,10 @@ export default class GridPageView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-		const localized_string_title = LM['translation'][sel]['GRID_PAGE_TITLE'];
-		const localized_string_description = LM['translation'][sel]['GRID_PAGE_DESCRIPTION'];
+		const localized_string_title = LM['translation'][sel]['GRID_PAGE_CLOCK_TITLE'];
+		const localized_string_description = LM['translation'][sel]['GRID_PAGE_CLOCK_DESCRIPTION'];
+		const localized_string_second_description = LM['translation'][sel]['GRID_PAGE_DESCRIPTION'];
+		const localized_string_price_description = LM['translation'][sel]['GRID_PAGE_PRICE_DURATION'];
 		const localized_string_updated_header = LM['translation'][sel]['UPDATED_HEADER_TEXT'];
 		
 		const html =
@@ -1452,10 +1454,20 @@ export default class GridPageView extends View {
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
+				'<div class="col s12">'+
+					'<p style="text-align:center;">'+localized_string_second_description+'</p>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
 					'<div id="fingrid-chart" class="extra-large-chart"></div>'+ // height = 600px
 				'</div>'+
 				'<div class="col s12"><p class="grid-timestamp">'+localized_string_updated_header+'<span id="update-timestamp"></span></p></div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<p style="text-align:center;">'+localized_string_price_description+'</p>'+
+				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+

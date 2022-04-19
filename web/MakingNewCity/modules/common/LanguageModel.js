@@ -34,9 +34,12 @@ export default class LanguageModel {
 				'USER_PAGE_ELECTRICITY':'Electricity',
 				'USER_PAGE_HEATING':'Heating',
 				'USER_PAGE_WATER':'Water',
+				'GRID_PAGE_CLOCK_TITLE':'The emissions vs price of electricity',
+				'GRID_PAGE_CLOCK_DESCRIPTION':'The clock visualizes the amount of emissions for past 11 hours (compared to previous 5 days average) and price prediction for next 11 hours.',
 				'GRID_PAGE_TITLE':'The Grid Page',
 				'GRID_PAGE_DESCRIPTION':'Here you will find more information about the aggregated load (from Fingrid open data). Values are updated once every 3 minutes.',
 				'GRID_PAGE_PRICE':'Price',
+				'GRID_PAGE_PRICE_DURATION':'The price from last 5 days and prediction for next 24 hours.',
 				'SOLAR_PAGE_TITLE':'The Solar Page',
 				'SOLAR_PAGE_DESCRIPTION':'Solar power generation forecast for the next 36 hours. Updated hourly.',
 				'SOLAR_ENERGY':'Solar power',
@@ -333,7 +336,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 22.04.19-H'
+				'MENU_VERSION':'v 22.04.19-I'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -366,9 +369,12 @@ export default class LanguageModel {
 				'USER_PAGE_ELECTRICITY':'Sähkö',
 				'USER_PAGE_HEATING':'Lämmitys',
 				'USER_PAGE_WATER':'Vesi',
+				'GRID_PAGE_CLOCK_TITLE':'Sähkön hiilijalanjälki vs hinta',
+				'GRID_PAGE_CLOCK_DESCRIPTION':'Kello kertoo sähkönkulutuksen aiheuttamat päästömäärät viimeiseltä 11 tunnilta ja hintaennusteen seuraavalle 11 tunnille.',
 				'GRID_PAGE_TITLE':'Sähköverkko',
 				'GRID_PAGE_DESCRIPTION':'Täältä löytyy lisätietoa sähköverkon kuormituksesta (Fingridin avoin data). Kaikki lukuarvot päivittyvät 3 minuutin välein.',
 				'GRID_PAGE_PRICE':'Hinta',
+				'GRID_PAGE_PRICE_DURATION':'Viimeisen viiden vuorokauden hintakehitys + ennuste seuraavalle vuorokaudelle.',
 				'SOLAR_PAGE_TITLE':'Aurinkoenergia',
 				'SOLAR_PAGE_DESCRIPTION':'Aurinkoenergian tuotantoennuste seuraaville 36 tunnille. Ennuste päivittyy tunnin välein.',
 				'SOLAR_ENERGY':'Aurinkoenergia',
@@ -665,7 +671,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 22.04.19-H'
+				'MENU_VERSION':'v 22.04.19-I'
 			}
 		}
 	}

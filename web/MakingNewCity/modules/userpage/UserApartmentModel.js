@@ -376,49 +376,50 @@ export default class UserApartmentModel extends Model {
 		this.errorMessage = '';
 		this.fetching = true;
 		
-		if (this.MOCKUP) {
-			this.fetch_d();
-		} else {
-			const start_date = this.period.start;
-			const end_date = this.period.end;
+		
+		const start_date = this.period.start;
+		const end_date = this.period.end;
+		
+		if (typeof token !== 'undefined') {
+			var myHeaders = new Headers();
+			var authorizationToken = 'Bearer '+token;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
 			
-			if (typeof token !== 'undefined') {
-				var myHeaders = new Headers();
-				var authorizationToken = 'Bearer '+token;
-				myHeaders.append("Authorization", authorizationToken);
-				myHeaders.append("Content-Type", "application/json");
+			if (typeof readkey !== 'undefined') {
+				// Normal user has a readkey, which was created when user registered into the system. 
+				const url = this.mongoBackend + '/apartments/feeds/';
 				
-				if (typeof readkey !== 'undefined') {
-					// Normal user has a readkey, which was created when user registered into the system. 
-					const url = this.mongoBackend + '/apartments/feeds/';
-					
-					// this.src = 'data/sivakka/apartments/feeds.json' 
-					const body_url = this.backend + '/' + this.src;
-					const data = {url:body_url, readkey:readkey, type: this.type, limit:this.limit, start: start_date, end: end_date };
-					
-					const myPost = {
-						method: 'POST',
-						headers: myHeaders,
-						body: JSON.stringify(data)
-					};
-					const myRequest = new Request(url, myPost);
-					this.doTheFetch(myRequest);
-					//this.doTheFetch(url, myPost);
-					
-				} else {
-					// Abnormal user (admin) => no readkey. Use direct url for testing purposes.
-					this.fetch_d();
-				}
+				// this.src = 'data/sivakka/apartments/feeds.json' 
+				const body_url = this.backend + '/' + this.src;
+				const data = {url:body_url, readkey:readkey, type: this.type, limit:this.limit, start: start_date, end: end_date };
 				
+				const myPost = {
+					method: 'POST',
+					headers: myHeaders,
+					body: JSON.stringify(data)
+				};
+				const myRequest = new Request(url, myPost);
+				this.doTheFetch(myRequest);
+				//this.doTheFetch(url, myPost);
 			} else {
-				// No token? Authentication failed (401).
-				this.status = 401;
+				// No readkey? Forbidden (403).
+				this.status = 403;
 				this.fetching = false;
 				this.ready = true;
-				const message = this.name+': Auth failed';
+				const message = this.name+': Forbidden';
 				this.errorMessage = message;
 				this.notifyAll({model:this.name, method:'fetched', status:this.status, message:message});
 			}
+			
+		} else {
+			// No token? Authentication failed (401).
+			this.status = 401;
+			this.fetching = false;
+			this.ready = true;
+			const message = this.name+': Auth failed';
+			this.errorMessage = message;
+			this.notifyAll({model:this.name, method:'fetched', status:this.status, message:message});
 		}
 	}
 }

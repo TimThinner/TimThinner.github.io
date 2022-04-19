@@ -92,7 +92,10 @@ export default class UserHeatingView extends View {
 		const sel = LM.selected;
 		const localized_string_average = LM['translation'][sel]['USER_HEATING_CHART_AVERAGE'];
 		
-		const values = this.models['UserHeatingMonthModel'].measurements;
+		// Use simulated data:  measurements => values  AND timestamp => time
+		
+		//const values = this.models['UserHeatingMonthModel'].measurements;
+		const values = this.models['UserHeatingMonthModel'].values;
 		
 		console.log(['appendAverage measurements=',values]);
 		
@@ -125,8 +128,8 @@ export default class UserHeatingView extends View {
 				let sum_humi = 0;
 				
 				// Use moment because it has nice formatting functions.
-				const s_date = moment(selection[0].timestamp); // Date of first value.
-				const e_date = moment(selection[slen-1].timestamp); // Date of last value.
+				const s_date = moment(selection[0].time); // Date of first value.
+				const e_date = moment(selection[slen-1].time); // Date of last value.
 				
 				// NOTE: By default, moment#diff will truncate the result to zero decimal places, returning an integer. 
 				// If you want a floating point number, pass true as the third argument.
@@ -217,8 +220,8 @@ export default class UserHeatingView extends View {
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			series1.data = self.models['UserHeatingMonthModel'].measurements;
-			series1.dataFields.dateX = "timestamp";
+			series1.data = self.models['UserHeatingMonthModel'].values;//measurements;
+			series1.dataFields.dateX = "time"; //"timestamp";
 			series1.dataFields.valueY = "temperature";
 			series1.name = localized_string_temperature;
 			series1.yAxis = valueAxis;
@@ -235,8 +238,8 @@ export default class UserHeatingView extends View {
 			series2.tooltip.background.fill = am4core.color("#000");
 			series2.tooltip.background.strokeWidth = 1;
 			series2.tooltip.label.fill = series2.stroke;
-			series2.data = self.models['UserHeatingMonthModel'].measurements;
-			series2.dataFields.dateX = "timestamp";
+			series2.data = self.models['UserHeatingMonthModel'].values;//measurements;
+			series2.dataFields.dateX = "time"; //"timestamp";
 			series2.dataFields.valueY = "humidity";
 			series2.name = localized_string_humidity;
 			series2.yAxis = valueAxis;
@@ -310,13 +313,16 @@ export default class UserHeatingView extends View {
 						$('#'+this.FELID).empty();
 						
 						
-						console.log(['HEY! measurements=',self.models['UserHeatingMonthModel'].measurements]);
 						
+						console.log(['HEY! values=',self.models['UserHeatingMonthModel'].values]);
+						// values => {time: Date, temperature: 20.23 , humidity: 45.45 }
 						
 						if (typeof this.chart !== 'undefined') {
 							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['UserHeatingMonthModel'].measurements;
+								//s.data = self.models['UserHeatingMonthModel'].measurements;
+								
+								
 							});
 							this.appendAverage();
 						} else {

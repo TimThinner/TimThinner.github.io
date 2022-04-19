@@ -100,6 +100,7 @@ export default class UserApartmentModel extends Model {
 	}
 	
 	setTimePeriod() {
+		// const mTR = {ends:{value:10,unit:'seconds'},starts:{value:30,unit:'days'}};
 		const e_v = this.range.ends.value;
 		const e_u = this.range.ends.unit;
 		let s_v;
@@ -109,18 +110,21 @@ export default class UserApartmentModel extends Model {
 		if (this.limit === 0) {
 			s_v = this.timerange;
 			s_u = 'days';
+			
 			const e_m = moment().subtract(e_v, e_u);
 			// Snap end to this current full hour.
-			e_m.minutes(0);
-			e_m.seconds(0);
+			//e_m.minutes(0);
+			//e_m.seconds(0);
 			// ... it automatically snaps start to full hour of yesterday or day before that or ...
 			// which makes it different than calls to get only one value (limit==1).
 			const s_m = moment(e_m).subtract(s_v, s_u);
 			// Snap start to full hour.
-			s_m.minutes(0);
-			s_m.seconds(0);
+			//s_m.minutes(0);
+			//s_m.seconds(0);
 			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
 			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
+			
+			console.log(['this.period.start=',this.period.start,' this.period.end=',this.period.end]);
 			
 		} else {
 			s_v = this.range.starts.value;
@@ -378,7 +382,6 @@ export default class UserApartmentModel extends Model {
 		this.status = 500; // error: 500
 		this.errorMessage = '';
 		this.fetching = true;
-		
 		
 		const start_date = this.period.start;
 		const end_date = this.period.end;

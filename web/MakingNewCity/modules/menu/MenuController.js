@@ -8,7 +8,7 @@ export default class MenuController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		this.numOfEmpoModels = 3;
+		this.numOfEmpoModels = 30;
 	}
 	/*
 	NOTE: Menumodel is NEVER removed!

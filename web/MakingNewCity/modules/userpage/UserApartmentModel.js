@@ -113,8 +113,8 @@ export default class UserApartmentModel extends Model {
 			
 			const e_m = moment().subtract(e_v, e_u);
 			// Snap end to this current full hour.
-			//e_m.minutes(0);
-			//e_m.seconds(0);
+			e_m.minutes(0);
+			e_m.seconds(0);
 			// ... it automatically snaps start to full hour of yesterday or day before that or ...
 			// which makes it different than calls to get only one value (limit==1).
 			const s_m = moment(e_m).subtract(s_v, s_u);

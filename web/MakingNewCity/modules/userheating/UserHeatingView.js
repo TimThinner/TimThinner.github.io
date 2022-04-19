@@ -28,6 +28,20 @@ A new measurement once every 10 minutes.
 
 Use "timestamp", "temperature" and "humidity".
 
+
+
+
+NOTE: When simulated data is used:
+
+const values = this.models['UserHeatingMonthModel'].values;
+Use "time", "temperature" and "humidity".
+
+
+NORMALLY USE:
+const values = this.models['UserHeatingMonthModel'].measurements;
+
+
+
 */
 import View from '../common/View.js';
 import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
@@ -97,7 +111,7 @@ export default class UserHeatingView extends View {
 		//const values = this.models['UserHeatingMonthModel'].measurements;
 		const values = this.models['UserHeatingMonthModel'].values;
 		
-		console.log(['appendAverage measurements=',values]);
+		//console.log(['appendAverage measurements=',values]);
 		
 		if (Array.isArray(values) && values.length > 0) {
 			//this.chartRangeStart = 0;
@@ -305,23 +319,17 @@ export default class UserHeatingView extends View {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
 					
-					
-					
-					
-					
 					if (options.status === 200) {
 						$('#'+this.FELID).empty();
 						
-						
-						
-						console.log(['HEY! values=',self.models['UserHeatingMonthModel'].values]);
+						//console.log(['HEY! values=',self.models['UserHeatingMonthModel'].values]);
 						// values => {time: Date, temperature: 20.23 , humidity: 45.45 }
 						
 						if (typeof this.chart !== 'undefined') {
 							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								//s.data = self.models['UserHeatingMonthModel'].measurements;
-								
+								s.data = self.models['UserHeatingMonthModel'].values;
 								
 							});
 							this.appendAverage();

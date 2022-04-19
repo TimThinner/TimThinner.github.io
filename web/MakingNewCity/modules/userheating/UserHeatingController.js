@@ -50,7 +50,7 @@ export default class UserHeatingController extends Controller {
 		this.models['UserHeatingMonthModel'] = model_Heating;
 		*/
 		
-		const mTR = {ends:{value:10,unit:'seconds'},starts:{value:3,unit:'days'}};
+		const mTR = {ends:{value:10,unit:'seconds'},starts:{value:31,unit:'days'}};
 		// Response is 24 x 60 x 7 values  = 10 080 measurements => 24 x 7 averages (168 averages).
 		//             24 x 60 x 30 values = 43 200 measurements => 24 x 30 averages (720 averages).
 		const model_Heating = new UserApartmentModel({
@@ -59,7 +59,7 @@ export default class UserHeatingController extends Controller {
 			type:'sensor',
 			limit:0,
 			range:mTR,
-			timerange: 3  // NOTE: This is always 30 days here! TEST: 3 days! 4320 values!
+			timerange: 31 // NOTE: This is always 30 days here! TEST: 3 days! 4320 values!
 		});
 		model_Heating.subscribe(this);
 		this.master.modelRepo.add('UserHeatingMonthModel',model_Heating);

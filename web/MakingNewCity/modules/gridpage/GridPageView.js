@@ -1436,26 +1436,31 @@ export default class GridPageView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-		const localized_string_title = LM['translation'][sel]['GRID_PAGE_CLOCK_TITLE'];
-		const localized_string_description = LM['translation'][sel]['GRID_PAGE_CLOCK_DESCRIPTION'];
-		const localized_string_second_description = LM['translation'][sel]['GRID_PAGE_DESCRIPTION'];
+		const localized_string_clock_title = LM['translation'][sel]['GRID_PAGE_CLOCK_TITLE'];
+		const localized_string_clock_description = LM['translation'][sel]['GRID_PAGE_CLOCK_DESCRIPTION'];
+		const localized_string_load_title = LM['translation'][sel]['GRID_PAGE_LOAD_TITLE'];
+		const localized_string_load_description = LM['translation'][sel]['GRID_PAGE_LOAD_DESCRIPTION'];
 		const localized_string_price_description = LM['translation'][sel]['GRID_PAGE_PRICE_DURATION'];
 		const localized_string_updated_header = LM['translation'][sel]['UPDATED_HEADER_TEXT'];
+		const localized_string_price_title = LM['translation'][sel]['GRID_PAGE_PRICE_TITLE'];
 		
 		const html =
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-					'<p style="text-align:center;">'+localized_string_description+'</p>'+
+					'<h4 style="text-align:center;">'+localized_string_clock_title+'</h4>'+
+					'<p style="text-align:center;">'+localized_string_clock_description+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12" id="clock-placeholder">'+
 				'</div>'+
 			'</div>'+
+			
+			
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<p style="text-align:center;">'+localized_string_second_description+'</p>'+
+					'<h4 style="text-align:center;">'+localized_string_load_title+'</h4>'+
+					'<p style="text-align:center;">'+localized_string_load_description+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -1466,6 +1471,7 @@ export default class GridPageView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
+					'<h4 style="text-align:center;">'+localized_string_price_title+'</h4>'+
 					'<p style="text-align:center;">'+localized_string_price_description+'</p>'+
 				'</div>'+
 			'</div>'+

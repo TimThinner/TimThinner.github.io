@@ -526,6 +526,7 @@ export default class NewUserElectricityView extends View {
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
 		const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
+		const localized_string_zooming_tip = LM['translation'][sel]['USER_ELECTRICITY_ZOOMING_TIP'];
 		
 		const html =
 			'<div class="row">'+
@@ -533,6 +534,11 @@ export default class NewUserElectricityView extends View {
 					'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
 					'<p style="text-align:center;"><img src="./svg/electricity.svg" height="80"/></p>'+
 					'<p style="text-align:center;">'+localized_string_description+'</p>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<p style="text-align:center; padding:16px; border:1px solid #8f8; background-color:#efe;>'+localized_string_zooming_tip+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

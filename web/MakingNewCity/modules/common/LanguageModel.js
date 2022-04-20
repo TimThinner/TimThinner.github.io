@@ -93,6 +93,7 @@ export default class LanguageModel {
 				'USER_DATA_WATER_COLD':'COLD (L)',
 				'USER_ELECTRICITY_TITLE':'Electricity',
 				'USER_ELECTRICITY_DESCRIPTION':'Here you will find more information about your electricity consumption.',
+				'USER_ELECTRICITY_ZOOMING_TIP':'NOTE: You can zoom to hourly consumption view by clicking any bar. First click takes you to selected days hourly view, second takes to selected hours minute level view and third takes back to monthly view.',
 				'USER_ELECTRICITY_CHART_TITLE':'Electricity consumption',
 				'USER_CHART_X_DAYS':'days',
 				'USER_CHART_X_DAYS_WAIT':'Electricity consumption data not available yet... check tomorrow again.',
@@ -337,7 +338,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 22.04.20-A'
+				'MENU_VERSION':'v 22.04.20-B'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -429,6 +430,7 @@ export default class LanguageModel {
 				'USER_DATA_WATER_COLD':'KYLMÄ (L)',
 				'USER_ELECTRICITY_TITLE':'Asuntokohtainen sähkönkulutus',
 				'USER_ELECTRICITY_DESCRIPTION':'Täältä löytyvät tiedot asuntokohtaisesta sähkönkulutuksesta.',
+				'USER_ELECTRICITY_ZOOMING_TIP':'HUOM: Voit tarkastella päiväkohtaista kulutusta tarkemmin klikkaamalla mitä tahansa pylvästä. Ensimmäinen klikkaus vie valitun päivän tuntikohtaiseen näkymään, toinen klikkaus vie valitun tunnin minuuttitasolle ja kolmas takaisin kuukausinäkymään.',
 				'USER_ELECTRICITY_CHART_TITLE':'Sähkönkulutus',
 				'USER_CHART_X_DAYS':'päivää',
 				'USER_CHART_X_DAYS_WAIT':'Kulutustietoa ei vielä saatavilla... katso huomenna uudelleen.',
@@ -673,7 +675,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 22.04.20-A'
+				'MENU_VERSION':'v 22.04.20-B'
 			}
 		}
 	}

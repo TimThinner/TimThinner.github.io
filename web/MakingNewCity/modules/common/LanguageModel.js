@@ -93,7 +93,7 @@ export default class LanguageModel {
 				'USER_DATA_WATER_COLD':'COLD (L)',
 				'USER_ELECTRICITY_TITLE':'Electricity',
 				'USER_ELECTRICITY_DESCRIPTION':'Here you will find more information about your electricity consumption.',
-				'USER_ELECTRICITY_ZOOMING_TIP':'NOTE: You can zoom to hourly consumption view by clicking any bar. First click takes you to selected days hourly view, second takes to selected hours minute level view and third takes back to monthly view.',
+				'USER_ELECTRICITY_ZOOMING_TIP':'NOTE: You can zoom to hourly consumption view by clicking any bar. First click takes you to selected days hourly view, second takes to selected hours minute level and third takes back to monthly view.',
 				'USER_ELECTRICITY_CHART_TITLE':'Electricity consumption',
 				'USER_CHART_X_DAYS':'days',
 				'USER_CHART_X_DAYS_WAIT':'Electricity consumption data not available yet... check tomorrow again.',

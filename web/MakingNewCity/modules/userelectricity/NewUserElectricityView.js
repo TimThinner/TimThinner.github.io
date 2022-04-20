@@ -538,7 +538,7 @@ export default class NewUserElectricityView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<p style="text-align:center; padding:16px; border:1px solid #8f8; background-color:#efe;>'+localized_string_zooming_tip+'</p>'+
+					'<p style="text-align:center; padding:16px; border:1px solid #8f8; background-color:#efe;">'+localized_string_zooming_tip+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

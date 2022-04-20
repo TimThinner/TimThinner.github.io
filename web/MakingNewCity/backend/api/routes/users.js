@@ -152,6 +152,16 @@ router.post("/signup", (req,res,next)=>{
 											if (err) {
 												return res.status(500).json({error:err});
 											} else {
+												let point_id_a = '';
+												let point_id_b = '';
+												let point_id_c = '';
+												if (email_lc === 'testa@test.fi' || email_lc === 'testb@test.fi' ||
+													email_lc === 'testc@test.fi' || email_lc === 'testd@test.fi' ||
+													email_lc === 'teste@test.fi' || email_lc === 'testf@test.fi') {
+													point_id_a = '123';
+													point_id_b = '456';
+													point_id_c = '789';
+												}
 												const user = new User({
 													_id: new mongoose.Types.ObjectId(),
 													email: email_lc, // Store lowercase version of email.
@@ -160,7 +170,10 @@ router.post("/signup", (req,res,next)=>{
 													readkey: result._id, // Ref to Readkey
 													request_for_tablet: request_for_tablet,
 													consent_a: consent_a,
-													consent_b: consent_b
+													consent_b: consent_b,
+													point_id_a: point_id_a,
+													point_id_b: point_id_b,
+													point_id_c: point_id_c
 												});
 												user
 													.save()

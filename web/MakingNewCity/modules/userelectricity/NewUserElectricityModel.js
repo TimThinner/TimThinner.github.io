@@ -343,7 +343,13 @@ export default class NewUserElectricityModel extends Model {
 			});
 	}
 	
-	fetch(token, readkey) {
+	fetch(token, readkey, pid) {
+		//
+		// TODO: Add pid into body_url when REST API is available.
+		//
+		// See UserHeatingModel for example usage:
+		// let body_url = this.backend + '/' + this.src + '?pointId='+pid;
+		//
 		// If already fetching, no need to start again.
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');

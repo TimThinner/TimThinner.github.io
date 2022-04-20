@@ -470,7 +470,7 @@ export default class NewUserElectricityView extends View {
 				//.. and start the fetching process with NEXT model:
 				const f = this.fetchQueue.shift();
 				if (typeof f !== 'undefined') {
-					this.models[f.key].fetch(f.token, f.readkey);
+					this.models[f.key].fetch(f.token, f.readkey, f.pid);
 				}
 				
 				if (this.rendered) {
@@ -498,13 +498,13 @@ export default class NewUserElectricityView extends View {
 				const UM = this.controller.master.modelRepo.get('UserModel');
 				if (UM) {
 					Object.keys(this.models).forEach(key => {
-						this.fetchQueue.push({'key':key,'token':UM.token,'readkey':UM.readkey});
+						this.fetchQueue.push({'key':key,'token':UM.token,'readkey':UM.readkey,'pid':UM.point_id_b});
 						//this.models[key].fetch(UM.token, UM.readkey);
 					});
 					//.. and start the fetching process with FIRST model:
 					const f = this.fetchQueue.shift();
 					if (typeof f !== 'undefined') {
-						this.models[f.key].fetch(f.token, f.readkey);
+						this.models[f.key].fetch(f.token, f.readkey, f.pid);
 					}
 				}
 				

@@ -207,7 +207,7 @@ export default class UserPageView extends View {
 					if (key === 'UserHeatingNowModel') {
 						this.models[key].fetch(this.USER_MODEL.token, this.USER_MODEL.readkey, this.USER_MODEL.point_id_a);
 					} else if (key.indexOf('UserElectricityNow') === 0) {
-						this.models[key].fetch(this.USER_MODEL.token, this.USER_MODEL.readkey);
+						this.models[key].fetch(this.USER_MODEL.token, this.USER_MODEL.readkey, this.USER_MODEL.point_id_b);
 					}
 				});
 			} else if (options.model==='UserHeatingNowModel' && options.method==='fetched') {

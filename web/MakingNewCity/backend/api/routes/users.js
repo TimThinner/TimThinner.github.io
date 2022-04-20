@@ -152,15 +152,15 @@ router.post("/signup", (req,res,next)=>{
 											if (err) {
 												return res.status(500).json({error:err});
 											} else {
-												let point_id_a = '';
-												let point_id_b = '';
-												let point_id_c = '';
+												let point_id_a = ''; // Heating
+												let point_id_b = ''; // Electricity
+												let point_id_c = ''; // Water
 												if (email_lc === 'testa@test.fi' || email_lc === 'testb@test.fi' ||
 													email_lc === 'testc@test.fi' || email_lc === 'testd@test.fi' ||
 													email_lc === 'teste@test.fi' || email_lc === 'testf@test.fi') {
+													// Assign dummy point id values to Heating and Electricity
 													point_id_a = '123';
 													point_id_b = '456';
-													point_id_c = '789';
 												}
 												const user = new User({
 													_id: new mongoose.Types.ObjectId(),

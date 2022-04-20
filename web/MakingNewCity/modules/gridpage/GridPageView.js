@@ -388,6 +388,10 @@ export default class GridPageView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
 		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_clock_price = LM['translation'][sel]['GRID_CLOCK_PRICE_TEXT']; // 'price prediction for the next 11 hours'
+		
 		// Price sectors are positioned:
 		// 		innerRadius: r + r*0.3,
 		//		outerRadius: r + r*0.6,
@@ -434,7 +438,7 @@ export default class GridPageView extends View {
 		const txt = document.createElementNS(svgNS, 'text');
 		const txtPath = document.createElementNS(svgNS, 'textPath');
 		txtPath.setAttributeNS(null, 'href', '#PricePath');
-		const text_node = document.createTextNode('price forecast for the next 11 hours');
+		const text_node = document.createTextNode(localized_string_clock_price);
 		txtPath.appendChild(text_node);
 		txt.appendChild(txtPath);
 		
@@ -543,6 +547,10 @@ export default class GridPageView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius();
 		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_clock_emissions = LM['translation'][sel]['GRID_CLOCK_EMISSIONS_TEXT']; // 'emissions from the past 11 hours'
+		
 		// Emissions sectors are positioned:
 		//
 		//		innerRadius: r,
@@ -590,7 +598,7 @@ export default class GridPageView extends View {
 		const txt = document.createElementNS(svgNS, 'text');
 		const txtPath = document.createElementNS(svgNS, 'textPath');
 		txtPath.setAttributeNS(null, 'href', '#EmissionsPath');
-		const text_node = document.createTextNode('emissions from the past 11 hours');
+		const text_node = document.createTextNode(localized_string_clock_emissions);
 		txtPath.appendChild(text_node);
 		txt.appendChild(txtPath);
 		

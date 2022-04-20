@@ -1446,6 +1446,7 @@ export default class GridPageView extends View {
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_clock_title = LM['translation'][sel]['GRID_PAGE_CLOCK_TITLE'];
 		const localized_string_clock_description = LM['translation'][sel]['GRID_PAGE_CLOCK_DESCRIPTION'];
+		const localized_string_clock_colors = LM['translation'][sel]['GRID_PAGE_CLOCK_COLORS'];
 		const localized_string_load_title = LM['translation'][sel]['GRID_PAGE_LOAD_TITLE'];
 		const localized_string_load_description = LM['translation'][sel]['GRID_PAGE_LOAD_DESCRIPTION'];
 		const localized_string_price_description = LM['translation'][sel]['GRID_PAGE_PRICE_DURATION'];
@@ -1457,6 +1458,7 @@ export default class GridPageView extends View {
 				'<div class="col s12">'+
 					'<h4 style="text-align:center;">'+localized_string_clock_title+'</h4>'+
 					'<p style="text-align:center;">'+localized_string_clock_description+'</p>'+
+					'<p style="text-align:center;">'+localized_string_clock_colors+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+

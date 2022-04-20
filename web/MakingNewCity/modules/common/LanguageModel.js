@@ -37,6 +37,7 @@ export default class LanguageModel {
 				'GRID_PAGE_CLOCK_TITLE':'Electricity Emissions vs Price',
 				'GRID_PAGE_CLOCK_DESCRIPTION':'The clock visualizes the amount of emissions for past 11 hours (counterclockwise) and price prediction for next 11 hours (clockwise).',
 				'GRID_PAGE_CLOCK_COLORS':'Color coding: Green = emissions and price smaller. Orange = emissions and price same. Red = emissions and price bigger',
+				'GRID_CLOCK_PRICE_TEXT':'price prediction for next 11 hours',
 				'GRID_CLOCK_EMISSIONS_TEXT':'emissions from the past 11 hours',
 				'GRID_PAGE_LOAD_TITLE':'The Grid Load',
 				'GRID_PAGE_LOAD_DESCRIPTION':'Here you will find more information about the aggregated load (from Fingrid open data). Values are updated once every 3 minutes.',

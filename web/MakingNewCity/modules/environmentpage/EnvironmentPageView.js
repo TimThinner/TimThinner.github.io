@@ -153,7 +153,15 @@ export default class EnvironmentPageView extends View {
 					res.forEach(r=>{
 						if (Number.isFinite(r.em_cons) && r.em_cons > 0 && r.em_cons < this.MAXIMUM_VALUE) {
 							//Number.isFinite(r.em_prod) && r.em_prod > 0 && r.em_prod < this.MAXIMUM_VALUE) {
-							const d = new Date(r.date_time);
+							//const d = new Date(r.date_time);
+							let ds = r.date_time;
+							if (r.date_time.indexOf('T') === 0) {
+								ds = r.date_time.replace(' ', 'T');
+							}
+							if (r.date_time.endsWith('Z')===false) {
+								ds += 'Z';
+							}
+							const d = new Date(ds);
 							resuArray.push({date:d, consumed:r.em_cons, produced:r.em_prod});
 						} else {
 							//console.log(['r.em_cons OUT OF RANGE! ',r.em_cons,' r.date_time=',r.date_time]);

@@ -436,6 +436,11 @@ export default class GridPageView extends View {
 		</text>
 		*/
 		const txt = document.createElementNS(svgNS, 'text');
+		if (this.REO.width > 600) {
+			txt.style.fontSize = '16px';
+		} else {
+			txt.style.fontSize = '14px';
+		}
 		const txtPath = document.createElementNS(svgNS, 'textPath');
 		txtPath.setAttributeNS(null, 'href', '#PricePath');
 		const text_node = document.createTextNode(localized_string_clock_price);
@@ -596,6 +601,11 @@ export default class GridPageView extends View {
 		</text>
 		*/
 		const txt = document.createElementNS(svgNS, 'text');
+		if (this.REO.width > 600) {
+			txt.style.fontSize = '16px';
+		} else {
+			txt.style.fontSize = '14px';
+		}
 		const txtPath = document.createElementNS(svgNS, 'textPath');
 		txtPath.setAttributeNS(null, 'href', '#EmissionsPath');
 		const text_node = document.createTextNode(localized_string_clock_emissions);

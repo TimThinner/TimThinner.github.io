@@ -16,8 +16,6 @@ export default class UserModel extends Model {
 		this.is_superuser = false;
 		this.localStorageLabel = 'AgroBridgesUserModel';
 		
-		
-		
 		this.profile = {
 			// FARM LOCATION:
 			Country: undefined,
@@ -151,6 +149,47 @@ export default class UserModel extends Model {
 		- how many questions are completed?
 		- what is the status? GREEN (ready = true) or RED (ready = false)?
 	*/
+	profileAnimalsState() {
+		let retval = {'total':3,'filled':0,'ready':false};
+		
+		if (typeof this.profile.Dummy_livestock === 'undefined') {
+			// 'undefined' or ''No' or 'Yes'
+		} else {
+			retval.filled++;
+			retval.ready = true;
+		}
+		
+		if (this.profile.Number_cows || 
+			this.profile.Number_goats || 
+			this.profile.Number_beef || 
+			this.profile.Number_other_poultry || 
+			this.profile.Number_layer_Hens || 
+			this.profile.Number_hogs || 
+			this.profile.Dummy_spec_hog || 
+			this.profile.Number_fish || 
+			this.profile.Dummy_animal_welfare || 
+			this.profile.Dummy_Beef_2) {
+			
+			retval.filled++;
+		}
+		if (this.profile.Dummy_Milk || 
+			this.profile.Dummy_cheese_normal || 
+			this.profile.Dummy_cheese_reg_special || 
+			this.profile.Dummy_Dairy_Products || 
+			this.profile.Dummy_Beef || 
+			this.profile.Dummy_special_Beef || 
+			this.profile.Dummy_raw_milk_only) {
+			
+			retval.filled++;
+		}
+		return retval;
+	}
+	
+	/*
+		- how many questions are there?
+		- how many questions are completed?
+		- what is the status? GREEN (ready = true) or RED (ready = false)?
+	*/
 	profileFruitsState() {
 		let retval = {'total':4,'filled':0,'ready':false};
 		if (typeof this.profile.Dummy_fruit_farm === 'undefined') {
@@ -199,9 +238,13 @@ export default class UserModel extends Model {
 		if (fruitsState.ready===true) {
 			retval.filled++;
 		}
-		// FARM is ready when all subcomponents are ready.
-		retval.ready = vegeState.ready && fruitsState.ready;
 		
+		const animalsState = this.profileAnimalsState();
+		if (animalsState.ready===true) {
+			retval.filled++;
+		}
+		// FARM is ready when all subcomponents are ready.
+		retval.ready = vegeState.ready && fruitsState.ready && animalsState;
 		return retval;
 	}
 	

@@ -37,3 +37,7 @@ html, body {
 .noUi-touch-area:hover, .noUi-touch-area:focus, .noUi-touch-area:active { 
 	outline: none;
 }
+.required:after {
+	content:" *";
+	color: red;
+}

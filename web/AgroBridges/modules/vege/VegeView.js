@@ -118,7 +118,7 @@ export default class VegeView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12">'+
-						'<h6>Are you offering these products?</h6>'+
+						'<h6 class="required">Are you offering these products?</h6>'+
 						'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>No</span></label></p>'+
 						'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
 						/*'<label for="vegeStatus" class="toggle-switchy">'+
@@ -140,7 +140,7 @@ export default class VegeView extends View {
 						'<p><label><input type="checkbox" class="filled-in" id="specialities" /><span>Specialities (Asparagus, Olives, Truffel....)</span></label></p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6>How many different vegetables do you grow in total?</h6>'+
+						'<h6 class="required">How many different vegetables do you grow in total?</h6>'+
 						'<p>&nbsp;</p>'+
 						//'<p style="font-size:20px;text-align:center;color:#555;" id="vegetables-total-count">0</p>'+
 						'<div id="vegetables-total-slider"></div>'+
@@ -149,7 +149,7 @@ export default class VegeView extends View {
 						//'</p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6>On how many hectares do you grow vegetables?</h6>'+
+						'<h6 class="required">On how many hectares do you grow vegetables?</h6>'+
 						'<p>&nbsp;</p>'+
 						//'<p style="font-size:20px;text-align:center;color:#555;" id="Hectare-veggies-count">0</p>'+
 						'<div id="Hectare-veggies-slider"></div>'+

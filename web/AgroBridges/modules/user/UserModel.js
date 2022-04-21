@@ -104,10 +104,6 @@ export default class UserModel extends Model {
 			Likert_welcome_farm: undefined, // 5 scale from "I agree" to "I disagree"
 			Likert_consumer_con: undefined  // 5 scale from "I agree" to "I disagree"
 		}
-		
-		
-		
-		
 	}
 	/*
 		- how many questions are there?

@@ -11,8 +11,8 @@ export default class MainView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
-		//this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
-		//this.USER_MODEL.subscribe(this);
+		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+		this.USER_MODEL.subscribe(this);
 		
 		this.rendered = false;
 	}
@@ -31,7 +31,7 @@ export default class MainView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
-		//this.USER_MODEL.unsubscribe(this);
+		this.USER_MODEL.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -141,6 +141,29 @@ export default class MainView extends View {
 			fontsize = 18;
 		}
 		
+		let fillStatus = '4/4';
+		let filledColor = this.colors.GREEN;
+		let strokeWidth = 2;
+		let strokeColor = this.colors.DARK_GREEN;
+		
+		if (type === 'FARM') {
+			
+			const farmState = this.USER_MODEL.profileFarmState();
+			fillStatus = farmState.filled+'/'+farmState.total;
+			if (farmState.ready===false) {
+				filledColor = this.colors.LIGHT_RED;
+				strokeWidth = 4;
+				strokeColor = this.colors.DARK_RED;
+			}
+			
+			
+		} else if (type === 'ACTIVITIES') {
+			
+			
+		} else if (type === 'PRODUCER') {
+			
+		}
+		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-r*0.5);
 		svg.setAttribute('y',r*0.75);
@@ -153,10 +176,10 @@ export default class MainView extends View {
 		rect.setAttribute('y',0);
 		rect.setAttribute('width',r);
 		rect.setAttribute('height',2*fontsize);
-		rect.style.fill = this.colors.LIGHT_YELLOW;
+		rect.style.fill = filledColor;
 		rect.style.fillOpacity = 1;
-		rect.style.stroke = this.colors.DARK_ORANGE;
-		rect.style.strokeWidth = 2;
+		rect.style.stroke = strokeColor;
+		rect.style.strokeWidth = strokeWidth;
 		svg.appendChild(rect);
 		
 		const title = document.createElementNS(svgNS, 'text');
@@ -168,7 +191,7 @@ export default class MainView extends View {
 		title.setAttribute('text-anchor','middle');
 		title.setAttribute('fill',this.colors.DARK_GREEN);
 		title.style.opacity = 1;
-		title.appendChild(document.createTextNode('3/8'));
+		title.appendChild(document.createTextNode(fillStatus));
 		svg.appendChild(title);
 		group.appendChild(svg);
 	}

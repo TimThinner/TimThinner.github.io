@@ -110,56 +110,19 @@ export default class FarmView extends View {
 			fontsize = 18;
 		}
 		
-		let filled = 0;
+		
 		let fillStatus = '4/4';
 		let filledColor = this.colors.GREEN;
 		let strokeWidth = 2;
 		let strokeColor = this.colors.DARK_GREEN;
 		
 		if (type === 'VEGETABLES') {
-			if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
-				// 'undefined' or ''No' or 'Yes'
-			} else {
-				filled++;
-			}
-			if (this.USER_MODEL.profile.Dummy_lettuce || 
-				this.USER_MODEL.profile.Dummy_fruit_vegetables || 
-				this.USER_MODEL.profile.Dummy_pumpkin || 
-				this.USER_MODEL.profile.Dummy_bulb || 
-				this.USER_MODEL.profile.Dummy_Root || 
-				this.USER_MODEL.profile.Dummy_Cabbage || 
-				this.USER_MODEL.profile.Dummy_Special) {
-				
-				filled++;
-			}
-			if (this.USER_MODEL.profile.vegetables_total > 0) {
-				filled++;
-			}
-			if (this.USER_MODEL.profile.Hectare_veggies > 0) {
-				filled++;
-			}
-			fillStatus = filled + '/4';
-			
-			if (this.USER_MODEL.profile.Dummy_veggie_farm === 'No') {
-				// Color is always "GREEN". No need to check any of the rest inputs.
-				
-				
-			} else {
-				if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
-					filledColor = this.colors.LIGHT_RED;
-					strokeWidth = 4;
-					strokeColor = this.colors.DARK_RED;
-				}
-				if (this.USER_MODEL.profile.vegetables_total === 0) {
-					filledColor = this.colors.LIGHT_RED;
-					strokeWidth = 4;
-					strokeColor = this.colors.DARK_RED;
-				}
-				if (this.USER_MODEL.profile.Hectare_veggies === 0) {
-					filledColor = this.colors.LIGHT_RED;
-					strokeWidth = 4;
-					strokeColor = this.colors.DARK_RED;
-				}
+			const vegeState = this.USER_MODEL.profileVegeState();
+			fillStatus = vegeState.filled+'/'+vegeState.total;
+			if (vegeState.ready===false) {
+				filledColor = this.colors.LIGHT_RED;
+				strokeWidth = 4;
+				strokeColor = this.colors.DARK_RED;
 			}
 		}
 		
@@ -177,8 +140,8 @@ export default class FarmView extends View {
 		rect.setAttribute('height',2*fontsize);
 		rect.style.fill = filledColor;
 		rect.style.fillOpacity = 1;
-		rect.style.stroke = strokeColor; //this.colors.DARK_ORANGE;
-		rect.style.strokeWidth = strokeWidth; //2;
+		rect.style.stroke = strokeColor;
+		rect.style.strokeWidth = strokeWidth;
 		svg.appendChild(rect);
 		
 		const title = document.createElementNS(svgNS, 'text');

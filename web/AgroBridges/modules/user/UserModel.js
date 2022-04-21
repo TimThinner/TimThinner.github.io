@@ -16,6 +16,8 @@ export default class UserModel extends Model {
 		this.is_superuser = false;
 		this.localStorageLabel = 'AgroBridgesUserModel';
 		
+		
+		
 		this.profile = {
 			// FARM LOCATION:
 			Country: undefined,
@@ -102,6 +104,62 @@ export default class UserModel extends Model {
 			Likert_welcome_farm: undefined, // 5 scale from "I agree" to "I disagree"
 			Likert_consumer_con: undefined  // 5 scale from "I agree" to "I disagree"
 		}
+		
+		
+		
+		
+	}
+	/*
+		- how many questions are there?
+		- how many questions are completed?
+		- what is the status? GREEN (ready = true) or RED (ready = false)?
+	*/
+	profileVegeState() {
+		let retval = {'total':4,'filled':0,'ready':false};
+		if (typeof this.profile.Dummy_veggie_farm === 'undefined') {
+			// 'undefined' or ''No' or 'Yes'
+		} else {
+			retval.filled++;
+			retval.ready = true;
+		}
+		if (this.profile.Dummy_lettuce || 
+			this.profile.Dummy_fruit_vegetables || 
+			this.profile.Dummy_pumpkin || 
+			this.profile.Dummy_bulb || 
+			this.profile.Dummy_Root || 
+			this.profile.Dummy_Cabbage || 
+			this.profile.Dummy_Special) {
+			
+			retval.filled++;
+		}
+		if (this.profile.vegetables_total > 0) {
+			retval.filled++;
+		}
+		if (this.profile.Hectare_veggies > 0) {
+			retval.filled++;
+		}
+		if (this.profile.Dummy_veggie_farm === 'Yes') {
+			// If 'Yes' => check that amounts are given.
+			if (this.profile.vegetables_total === 0) {
+				retval.ready = false;
+			}
+			if (this.profile.Hectare_veggies === 0) {
+				retval.ready = false;
+			}
+		}
+		return retval;
+	}
+	/*
+		Use "child"-states to determine "parent"-state.
+	*/
+	profileFarmState() {
+		let retval = {'total':5,'filled':0,'ready':false};
+		const vegeState = this.profileVegeState();
+		if (vegeState.ready===true) {
+			retval.filled++;
+		}
+		retval.ready = vegeState.ready;
+		return retval;
 	}
 	
 	isLoggedIn() {

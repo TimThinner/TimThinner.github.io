@@ -51,59 +51,20 @@ export default class VegeView extends View {
 	}
 	
 	notify(options) {
-		console.log('VegeView NOTHING to Notify!');
-	}
-	/*
-	handleRangeChange(id) {
-		$("#"+id).val(0);
-		$("#"+id+"-count").empty().append('0');
 		
-		$("#"+id).change(function() {
-			const val = $(this).val(); // "20"
-			const vali = parseInt(val, 10);
-			if (vali > 0) {
-				$("#"+id+"-count").empty().append(val);
-			} else {
-				$("#"+id+"-count").empty().append('0');
-			}
-		});
 	}
-	*/
-	
-	
-	
-						/*
-						'<table class="striped">'+
-							'<thead>'+
-								'<tr>'+
-									'<th>Question</th>'+
-									'<th>Variables</th>'+
-								'</tr>'+
-							'</thead>'+
-							'<tbody>'+
-								'<tr>'+
-									'<td>Are you offering these products?</td>'+
-									'<td>Dummy_veggie_farm (No, Yes)</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Which of these vegetables do you grow?</td>'+
-									'<td>Dummy_lettuce, Dummy_fruit_vegetables, Dummy_pumpkin, Dummy_bulb, Dummy_Root, Dummy_Cabbage,Dummy_Special</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>How many different vegetables do you grow in total?</td>'+
-									'<td>vegetables_total</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>On how many hectares do you grow vegetables?</td>'+
-									'<td>Hectare_veggies</td>'+
-								'</tr>'+
-							'</tbody>'+
-						'</table>'+
-						*/
 	
 	render() {
 		const self = this;
 		$(this.el).empty();
+		
+		const ll_lettuce = 'Lettuce (Cut lettuce, Argula, Spinach, Swiss chard, Endivie...)';
+		const ll_fruitlike = 'Fruitlike vegetables (Tomatoes, Peppers, Eggplant...)';
+		const ll_pumpkins = 'Pumpkins and Courgettes';
+		const ll_bulb = 'Bulb vegetables (Celeric and Fennel)';
+		const ll_root = 'Root vegetables and Onions (Potatos, Carrots, Parsnip, Root Parsley, Black Salsify...)';
+		const ll_cabbages = 'Cabbages (Broccoli, Kohlrabi, red and white cabbage...)';
+		const ll_specialities = 'Specialities (Asparagus, Olives, Truffel....)'; 
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html =
@@ -121,41 +82,26 @@ export default class VegeView extends View {
 						'<h6 class="required">Are you offering these products?</h6>'+
 						'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>No</span></label></p>'+
 						'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
-						/*'<label for="vegeStatus" class="toggle-switchy">'+
-							'<input checked type="checkbox" id="vegeStatus">'+
-							'<span class="toggle">'+
-								'<span class="switch"></span>'+
-							'</span>'+
-						'</label>'+
-						*/
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>Which of these vegetables do you grow?</h6>'+
-						'<p><label><input type="checkbox" class="filled-in" id="lettuce" /><span>Lettuce (Cut lettuce, Argula, Spinach, Swiss chard, Endivie...)</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="fruitlike" /><span>Fruitlike vegetables (Tomatoes, Peppers, Eggplant...)</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="pumpkins" /><span>Pumpkins and Courgettes</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="bulb" /><span>Bulb vegetables (Celeric and Fennel)</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="root" /><span>Root vegetables and Onions (Potatos, Carrots, Parsnip, Root Parsley, Black Salsify...)</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="cabbages" /><span>Cabbages (Broccoli, Kohlrabi, red and white cabbage...)</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="specialities" /><span>Specialities (Asparagus, Olives, Truffel....)</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="lettuce" /><span>'+ll_lettuce+'</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="fruitlike" /><span>'+ll_fruitlike+'</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="pumpkins" /><span>'+ll_pumpkins+'</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="bulb" /><span>'+ll_bulb+'</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="root" /><span>'+ll_root+'</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="cabbages" /><span>'+ll_cabbages+'</span></label></p>'+
+						'<p><label><input type="checkbox" class="filled-in" id="specialities" /><span>'+ll_specialities+'</span></label></p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6 class="required">How many different vegetables do you grow in total?</h6>'+
 						'<p>&nbsp;</p>'+
-						//'<p style="font-size:20px;text-align:center;color:#555;" id="vegetables-total-count">0</p>'+
 						'<div id="vegetables-total-slider"></div>'+
-						//'<p class="range-field">'+
-						//	'<input type="range" id="vegetables-total" min="0" max="20"><span class="thumb"><span class="value"></span></span>'+
-						//'</p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6 class="required">On how many hectares do you grow vegetables?</h6>'+
 						'<p>&nbsp;</p>'+
-						//'<p style="font-size:20px;text-align:center;color:#555;" id="Hectare-veggies-count">0</p>'+
 						'<div id="Hectare-veggies-slider"></div>'+
-						//'<p class="range-field">'+
-						//	'<input type="range" id="Hectare-veggies" min="0" max="500"><span class="thumb"><span class="value"></span></span>'+
-						//'</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -384,3 +330,31 @@ export default class VegeView extends View {
 		this.rendered = true;
 	}
 }
+						/*
+						'<table class="striped">'+
+							'<thead>'+
+								'<tr>'+
+									'<th>Question</th>'+
+									'<th>Variables</th>'+
+								'</tr>'+
+							'</thead>'+
+							'<tbody>'+
+								'<tr>'+
+									'<td>Are you offering these products?</td>'+
+									'<td>Dummy_veggie_farm (No, Yes)</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Which of these vegetables do you grow?</td>'+
+									'<td>Dummy_lettuce, Dummy_fruit_vegetables, Dummy_pumpkin, Dummy_bulb, Dummy_Root, Dummy_Cabbage,Dummy_Special</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>How many different vegetables do you grow in total?</td>'+
+									'<td>vegetables_total</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>On how many hectares do you grow vegetables?</td>'+
+									'<td>Hectare_veggies</td>'+
+								'</tr>'+
+							'</tbody>'+
+						'</table>'+
+						*/

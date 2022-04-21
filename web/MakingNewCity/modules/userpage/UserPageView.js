@@ -653,13 +653,13 @@ export default class UserPageView extends View {
 		*/
 		let fontsize;
 		if (r <= 75) {
-			fontsize = 18;
+			fontsize = 16; // 18;
 		} else if (r > 75 && r <= 124) {
-			fontsize = 22;
+			fontsize = 20; //22;
 		} else if (r > 124 && r <= 150) {
-			fontsize = 26;
+			fontsize = 24; // 26;
 		} else {
-			fontsize = 30;
+			fontsize = 28; //30;
 		}
 		const d_fontsize = fontsize-6;
 		

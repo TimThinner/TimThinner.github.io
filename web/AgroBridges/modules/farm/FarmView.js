@@ -112,9 +112,9 @@ export default class FarmView extends View {
 		
 		let filled = 0;
 		let fillStatus = '4/4';
-		let filledColor = this.colors.LIGHT_YELLOW;
+		let filledColor = this.colors.GREEN;
 		let strokeWidth = 2;
-		let strokeColor = this.colors.DARK_ORANGE;
+		let strokeColor = this.colors.DARK_GREEN;
 		
 		if (type === 'VEGETABLES') {
 			if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
@@ -140,20 +140,26 @@ export default class FarmView extends View {
 			}
 			fillStatus = filled + '/4';
 			
-			if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
-				filledColor = this.colors.LIGHT_RED;
-				strokeWidth = 4;
-				strokeColor = this.colors.DARK_RED;
-			}
-			if (this.USER_MODEL.profile.vegetables_total === 0) {
-				filledColor = this.colors.LIGHT_RED;
-				strokeWidth = 4;
-				strokeColor = this.colors.DARK_RED;
-			}
-			if (this.USER_MODEL.profile.Hectare_veggies === 0) {
-				filledColor = this.colors.LIGHT_RED;
-				strokeWidth = 4;
-				strokeColor = this.colors.DARK_RED;
+			if (this.USER_MODEL.profile.Dummy_veggie_farm === 'No') {
+				// Color is always "GREEN". No need to check any of the rest inputs.
+				
+				
+			} else {
+				if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
+					filledColor = this.colors.LIGHT_RED;
+					strokeWidth = 4;
+					strokeColor = this.colors.DARK_RED;
+				}
+				if (this.USER_MODEL.profile.vegetables_total === 0) {
+					filledColor = this.colors.LIGHT_RED;
+					strokeWidth = 4;
+					strokeColor = this.colors.DARK_RED;
+				}
+				if (this.USER_MODEL.profile.Hectare_veggies === 0) {
+					filledColor = this.colors.LIGHT_RED;
+					strokeWidth = 4;
+					strokeColor = this.colors.DARK_RED;
+				}
 			}
 		}
 		

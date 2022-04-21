@@ -12,6 +12,7 @@ export default class View {
 			LIGHT_GREY:'#EEEEEE',
 			DARK_GREY:'#CCCCCC',
 			LIGHT_GREEN:'#EEF8EB',
+			GREEN:'#AAFFAA',
 			DARK_GREEN:'#0B7938',
 			LIGHT_ORANGE:'#F4D25A',
 			DARK_ORANGE:'#EF8806',

@@ -145,6 +145,46 @@ export default class UserModel extends Model {
 		}
 		return retval;
 	}
+	
+	/*
+		- how many questions are there?
+		- how many questions are completed?
+		- what is the status? GREEN (ready = true) or RED (ready = false)?
+	*/
+	profileFruitsState() {
+		let retval = {'total':4,'filled':0,'ready':false};
+		if (typeof this.profile.Dummy_fruit_farm === 'undefined') {
+			// 'undefined' or ''No' or 'Yes'
+		} else {
+			retval.filled++;
+			retval.ready = true;
+		}
+		if (this.profile.Dummy_Stonefruits || 
+			this.profile.Dummy_Pomefruits || 
+			this.profile.Dummy_Berries || 
+			this.profile.Dummy_Citrus || 
+			this.profile.Dummy_exotic_fruits) {
+			
+			retval.filled++;
+		}
+		if (this.profile.fruits_total > 0) {
+			retval.filled++;
+		}
+		if (this.profile.Hectare_fruits > 0) {
+			retval.filled++;
+		}
+		if (this.profile.Dummy_fruit_farm === 'Yes') {
+			// If 'Yes' => check that amounts are given.
+			if (this.profile.fruits_total === 0) {
+				retval.ready = false;
+			}
+			if (this.profile.Hectare_fruits === 0) {
+				retval.ready = false;
+			}
+		}
+		return retval;
+	}
+	
 	/*
 		Use "child"-states to determine "parent"-state.
 	*/
@@ -154,7 +194,14 @@ export default class UserModel extends Model {
 		if (vegeState.ready===true) {
 			retval.filled++;
 		}
-		retval.ready = vegeState.ready;
+		
+		const fruitsState = this.profileFruitsState();
+		if (fruitsState.ready===true) {
+			retval.filled++;
+		}
+		// FARM is ready when all subcomponents are ready.
+		retval.ready = vegeState.ready && fruitsState.ready;
+		
 		return retval;
 	}
 	

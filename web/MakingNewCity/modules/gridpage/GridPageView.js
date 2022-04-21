@@ -948,7 +948,8 @@ export default class GridPageView extends View {
 			
 			var valueAxis = self.price_chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-				return text + " " + currency + '/' + price_unit;
+				//return text + " " + currency + '/' + price_unit;
+				return text;
 			});
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_price + ': ' + currency + '/' + price_unit;
@@ -970,6 +971,7 @@ export default class GridPageView extends View {
 	
 	renderChart() {
 		const self = this;
+		
 		am4core.ready(function() {
 			
 			// Themes begin
@@ -1021,8 +1023,12 @@ export default class GridPageView extends View {
 			];
 			//self.chart.colors.step = 2;
 			self.chart.padding(30, 30, 10, 30);
-			self.chart.legend = new am4charts.Legend();
+			// If we have a small screen, do not create Legend at all, because it takes too much space.
+			if (self.REO.width > 600) {
+				self.chart.legend = new am4charts.Legend();
+			}
 			var categoryAxis = self.chart.xAxes.push(new am4charts.CategoryAxis());
+			
 			categoryAxis.dataFields.category = "category";
 			categoryAxis.renderer.grid.template.location = 0;
 			

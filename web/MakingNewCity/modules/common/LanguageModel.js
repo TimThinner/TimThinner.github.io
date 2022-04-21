@@ -37,7 +37,7 @@ export default class LanguageModel {
 				'GRID_PAGE_CLOCK_TITLE':'Electricity Emissions vs Price',
 				'GRID_PAGE_CLOCK_DESCRIPTION':'The clock visualizes the amount of emissions for past 11 hours (counterclockwise) and price prediction for next 11 hours (clockwise).',
 				'GRID_PAGE_CLOCK_COLORS':'Color coding: Green = emissions and price smaller. Orange = emissions and price same. Red = emissions and price bigger',
-				'GRID_CLOCK_PRICE_TEXT':'price prediction for next 11 hours',
+				'GRID_CLOCK_PRICE_TEXT':'price prediction for the next 11 hours',
 				'GRID_CLOCK_EMISSIONS_TEXT':'emissions from the past 11 hours',
 				'GRID_PAGE_LOAD_TITLE':'The Grid Load',
 				'GRID_PAGE_LOAD_DESCRIPTION':'Here you will find more information about the aggregated load (from Fingrid open data). Values are updated once every 3 minutes.',
@@ -341,7 +341,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 22.04.20-C'
+				'MENU_VERSION':'v 22.04.21'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -681,7 +681,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 22.04.20-C'
+				'MENU_VERSION':'v 22.04.21'
 			}
 		}
 	}

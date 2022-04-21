@@ -104,7 +104,7 @@ export default class AnimalsView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<button class="btn waves-effect waves-light" id="vege-ok" style="width:120px">OK</button>'+
+						'<button class="btn waves-effect waves-light" id="animals-ok" style="width:120px">OK</button>'+
 						'<p>&nbsp;</p>'+
 					'</div>'+
 				'</div>'+

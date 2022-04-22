@@ -95,7 +95,7 @@ export default class VegeView extends View {
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>Which of these vegetables do you grow?</h6>'+
-						'div id="vege-options-wrapper"></div>'+
+						'<div id="vege-options-wrapper"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6 class="required">How many different vegetables do you grow in total?</h6>'+

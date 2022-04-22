@@ -3,7 +3,7 @@ import View from '../common/View.js';
 /*
 	UserModel:
 		this.profile = {
-			Dummy_veggie_farm: 'No', // 'Yes'
+			Dummy_veggie_farm: undefined; //'No','Yes'
 			
 			Dummy_lettuce: false,
 			Dummy_fruit_vegetables: false,

@@ -1,5 +1,28 @@
 import View from '../common/View.js';
-
+/*
+	UserModel:
+		this.profile = {
+			Dummy_livestock: undefined, // 'No', // 'Yes'
+			
+			Number_cows: false,
+			Number_goats: false,
+			Number_beef: false,
+			Number_other_poultry: false,
+			Number_layer_Hens: false,
+			Number_hogs: false,
+			Dummy_spec_hog: false,
+			Number_fish: false,
+			Dummy_animal_welfare: false,
+			Dummy_Beef_2: false,
+			
+			Dummy_Milk: false,
+			Dummy_cheese_normal: false,
+			Dummy_cheese_reg_special: false,
+			Dummy_Dairy_Products: false,
+			Dummy_Beef: false,
+			Dummy_special_Beef: false,
+			Dummy_raw_milk_only: false,
+*/
 export default class AnimalsView extends View {
 	
 	constructor(controller) {
@@ -41,25 +64,41 @@ export default class AnimalsView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		const ll_animals_a = ['Dairy Cows',
-			'Goats and Sheep',
-			'Beef Cattle',
-			'Poultry',
-			'Layer Hens (more than 1200 hens)',
-			'Hogs',
-			'Are you keeping fattening pigs know for high qulity meat (such as Mangalitza, Angler Sattelschwein or Iberico)?',
-			'Fish',
-			'Are offering  a higher animal welfare standard (playing material & increased space & outdoor areas)?',
-			'Are you offering meat products such as ham, sausages etc.?'
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const ll_offering_query = LM['translation'][sel]['products_offering_query'];
+		
+		const anim_a_Options = [
+			{prop:'Number_cows',id:'cows',label:''},
+			{prop:'Number_goats',id:'goats',label:''},
+			{prop:'Number_beef',id:'beef',label:''},
+			{prop:'Number_other_poultry',id:'poultry',label:''},
+			{prop:'Number_layer_Hens',id:'hens',label:''},
+			{prop:'Number_hogs',id:'hogs',label:''},
+			{prop:'Dummy_spec_hog',id:'spec-hog',label:''},
+			{prop:'Number_fish',id:'fish',label:''},
+			{prop:'Dummy_animal_welfare',id:'welfare',label:''},
+			{prop:'Dummy_Beef_2',id:'beef-2',label:''}
 		];
-		const ll_animals_b = ['Milk (pasteurized and homogenized)',
-			'Cheese (regular varieties)',
-			'Cheese (regional speciality)',
-			'Dairy Yoghurt',
-			'Beef (Steaks, Sausages, minced meat)',
-			'Are you keeping beef cows known to produce high quality meat (such as Charolais, Hereford, Angus or Wagyu)?',
-			'None of the above (I produce raw milk only)'
+		
+		const anim_b_Options = [
+			{prop:'Dummy_Milk',id:'milk',label:''},
+			{prop:'Dummy_cheese_normal',id:'cheese',label:''},
+			{prop:'Dummy_cheese_reg_special',id:'cheese-special',label:''},
+			{prop:'Dummy_Dairy_Products',id:'diary-prod',label:''},
+			{prop:'Dummy_Beef',id:'steaks',label:''},
+			{prop:'Dummy_special_Beef',id:'high-quality-meat',label:''},
+			{prop:'Dummy_raw_milk_only',id:'milk-only',label:''}
 		];
+		
+		// Fill in the labels:
+		anim_a_Options.forEach(o=>{
+			o.label = LM['translation'][sel][o.prop];
+		});
+		anim_b_Options.forEach(o=>{
+			o.label = LM['translation'][sel][o.prop];
+		});
+		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = '<div class="row">'+
 				'<div class="col s12">'+
@@ -72,32 +111,17 @@ export default class AnimalsView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12">'+
-						'<h6 class="required">Are you offering these products?</h6>'+
+						'<h6 class="required">'+ll_offering_query+'</h6>'+
 						'<p><label><input class="with-gap" name="animalsStatus" id="animals-no" type="radio" value="no" /><span>No</span></label></p>'+
 						'<p><label><input class="with-gap" name="animalsStatus" id="animals-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>Which animals are you keeping (hobby livestock excluded)?</h6>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-a-a" /><span>'+ll_animals_a[0]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-a-b" /><span>'+ll_animals_a[1]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-a-c" /><span>'+ll_animals_a[2]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-a-d" /><span>'+ll_animals_a[3]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-a-e" /><span>'+ll_animals_a[4]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-a-f" /><span>'+ll_animals_a[5]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-a-g" /><span>'+ll_animals_a[6]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-a-h" /><span>'+ll_animals_a[7]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-a-i" /><span>'+ll_animals_a[8]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-a-j" /><span>'+ll_animals_a[9]+'</span></label></p>'+
+						'<div id="anim-a-options-wrapper"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>Are you selling the following dairy products?</h6>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-b-a" /><span>'+ll_animals_b[0]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-b-b" /><span>'+ll_animals_b[1]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-b-c" /><span>'+ll_animals_b[2]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-b-d" /><span>'+ll_animals_b[3]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-b-e" /><span>'+ll_animals_b[4]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-b-f" /><span>'+ll_animals_b[5]+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="animals-b-g" /><span>'+ll_animals_b[6]+'</span></label></p>'+
+						'<div id="anim-b-options-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -111,6 +135,15 @@ export default class AnimalsView extends View {
 			'</div>';
 			
 		$(this.el).append(html);
+		// Insert checkbox markup for options:
+		anim_a_Options.forEach(o=>{
+			const html = '<p><label><input type="checkbox" class="filled-in" id="'+o.id+'" /><span>'+o.label+'</span></label></p>';
+			$('#anim-a-options-wrapper').append(html);
+		});
+		anim_b_Options.forEach(o=>{
+			const html = '<p><label><input type="checkbox" class="filled-in" id="'+o.id+'" /><span>'+o.label+'</span></label></p>';
+			$('#anim-b-options-wrapper').append(html);
+		});
 		
 		// Restore current selection:
 		if (this.USER_MODEL.profile.Dummy_livestock === 'No') {
@@ -119,67 +152,21 @@ export default class AnimalsView extends View {
 			$("#animals-yes").prop("checked", true);
 		}
 		
-		if (this.USER_MODEL.profile.Number_cows) {
-			$("#animals-a-a").prop("checked", true);
-		} else {
-			$("#animals-a-a").prop("checked", false);
-		}
+		anim_a_Options.forEach(o=>{
+			if (this.USER_MODEL.profile[o.prop]===true) {
+				$("#"+o.id).prop("checked", true);
+			} else {
+				$("#"+o.id).prop("checked", false);
+			}
+		});
 		
-		if (this.USER_MODEL.profile.Number_goats) {
-			$("#animals-a-b").prop("checked", true);
-		} else {
-			$("#animals-a-b").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Number_beef) {
-			$("#animals-a-c").prop("checked", true);
-		} else {
-			$("#animals-a-c").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Number_other_poultry) {
-			$("#animals-a-d").prop("checked", true);
-		} else {
-			$("#animals-a-d").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Number_layer_Hens) {
-			$("#animals-a-e").prop("checked", true);
-		} else {
-			$("#animals-a-e").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Number_hogs) {
-			$("#animals-a-f").prop("checked", true);
-		} else {
-			$("#animals-a-f").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_spec_hog) {
-			$("#animals-a-g").prop("checked", true);
-		} else {
-			$("#animals-a-g").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Number_fish) {
-			$("#animals-a-h").prop("checked", true);
-		} else {
-			$("#animals-a-h").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_animal_welfare) {
-			$("#animals-a-i").prop("checked", true);
-		} else {
-			$("#animals-a-i").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_Beef_2) {
-			$("#animals-a-j").prop("checked", true);
-		} else {
-			$("#animals-a-j").prop("checked", false);
-		}
-		
-		
+		anim_b_Options.forEach(o=>{
+			if (this.USER_MODEL.profile[o.prop]===true) {
+				$("#"+o.id).prop("checked", true);
+			} else {
+				$("#"+o.id).prop("checked", false);
+			}
+		});
 		
 		$('input[type=radio][name=animalsStatus]').change(function() {
 			if (this.value == 'no') {
@@ -194,30 +181,30 @@ export default class AnimalsView extends View {
 			}
 		});
 		
-		$("#animals-a-a").change(function() {
-			if(this.checked) {
-				console.log('Number_cows true');
-				self.USER_MODEL.profile.Number_cows = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Number_cows false');
-				self.USER_MODEL.profile.Number_cows = false;
-				// DATABASE Update USER_MODEL
-				
-			}
+		// Set checkbox change -handlers:
+		anim_a_Options.forEach(o=>{
+			$("#"+o.id).change(function() {
+				if(this.checked) {
+					self.USER_MODEL.profile[o.prop] = true;
+					// DATABASE Update USER_MODEL
+				} else {
+					self.USER_MODEL.profile[o.prop] = false;
+					// DATABASE Update USER_MODEL
+				}
+			});
 		});
-		//
-		// TODO: Maybe this could be done with more sophistication! with loops.
-		// 
-		// same handler for all 10 check-boxes 
-		//    AND
-		// same handler for all 7 check-boxes 
-		//
-		// Do a structure where labels, id's and property-names are mapped.
-		//
-		//
 		
+		anim_b_Options.forEach(o=>{
+			$("#"+o.id).change(function() {
+				if(this.checked) {
+					self.USER_MODEL.profile[o.prop] = true;
+					// DATABASE Update USER_MODEL
+				} else {
+					self.USER_MODEL.profile[o.prop] = false;
+					// DATABASE Update USER_MODEL
+				}
+			});
+		});
 		
 		$("#animals-ok").on('click', function() {
 			self.controller.models['MenuModel'].setSelected('farm');
@@ -225,27 +212,3 @@ export default class AnimalsView extends View {
 		this.rendered = true;
 	}
 }
-/*
-						'<table class="striped">'+
-							'<thead>'+
-								'<tr>'+
-									'<th>Question</th>'+
-									'<th>Variables</th>'+
-								'</tr>'+
-							'</thead>'+
-							'<tbody>'+
-								'<tr>'+
-									'<td>Are you offering these products?</td>'+
-									'<td>Dummy_livestock (No, Yes)</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Which animals are you keeping (hobby livestock excluded)?</td>'+
-									'<td>Number_cows, Number_goats, Number_beef, Number_other_poultry, Number_layer_Hens, Number_hogs, Dummy_spec_hog, Number_fish, Dummy_animal_welfare, Dummy_Beef_2</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Are you offering following dairy products?</td>'+
-									'<td>Dummy_Milk, Dummy_cheese_normal, Dummy_cheese_reg_special, Dummy_Dairy _Products, Dummy_Beef, Dummy_special_Beef, Dummy_raw_milk_only</td>'+
-								'</tr>'+
-							'</tbody>'+
-						'</table>'+
-*/

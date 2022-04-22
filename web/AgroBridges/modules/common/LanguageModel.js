@@ -1,4 +1,6 @@
-export default class LanguageModel {
+import Model from '../common/Model.js';
+
+export default class LanguageModel extends Model {
 	constructor() {
 		this.languages = ['en','fi'];
 		this.selected = 'en';

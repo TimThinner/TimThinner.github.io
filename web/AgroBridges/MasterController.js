@@ -1,5 +1,6 @@
 import ModelRepo from './modules/common/ModelRepo.js';
 import ResizeEventObserver from './modules/common/ResizeEventObserver.js';
+import LanguageModel from './modules/common/LanguageModel.js';
 import UserModel from './modules/user/UserModel.js';
 
 import MenuController from './modules/menu/MenuController.js';
@@ -59,6 +60,10 @@ class MasterController {
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
 		this.modelRepo.add('ResizeEventObserver',REO);
+		
+		const LM = new LanguageModel({name:'LanguageModel'});
+		LM.subscribe(this); // Now we will receive notifications from the LanguageModel.
+		this.modelRepo.add('LanguageModel',LM);
 		
 		console.log('Create UserModel!');
 		const UM = new UserModel({name:'UserModel'});

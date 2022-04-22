@@ -58,7 +58,7 @@ export default class AnimalsView extends View {
 			'Dairy Yoghurt',
 			'Beef (Steaks, Sausages, minced meat)',
 			'Are you keeping beef cows known to produce high quality meat (such as Charolais, Hereford, Angus or Wagyu)?',
-			'Do you only produce raw milk'
+			'None of the above (I produce raw milk only)'
 		];
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = '<div class="row">'+
@@ -178,6 +178,46 @@ export default class AnimalsView extends View {
 		} else {
 			$("#animals-a-j").prop("checked", false);
 		}
+		
+		
+		
+		$('input[type=radio][name=animalsStatus]').change(function() {
+			if (this.value == 'no') {
+				console.log('Dummy_livestock No'); // Dummy_veggie_farm NO
+				self.USER_MODEL.profile.Dummy_livestock = 'No';
+				// DATABASE Update USER_MODEL
+				
+			} else if (this.value == 'yes') {
+				console.log('Dummy_livestock Yes');
+				self.USER_MODEL.profile.Dummy_livestock = 'Yes';
+				// DATABASE Update USER_MODEL
+			}
+		});
+		
+		$("#animals-a-a").change(function() {
+			if(this.checked) {
+				console.log('Number_cows true');
+				self.USER_MODEL.profile.Number_cows = true;
+				// DATABASE Update USER_MODEL
+				
+			} else {
+				console.log('Number_cows false');
+				self.USER_MODEL.profile.Number_cows = false;
+				// DATABASE Update USER_MODEL
+				
+			}
+		});
+		//
+		// TODO: Maybe this could be done with more sophistication! with loops.
+		// 
+		// same handler for all 10 check-boxes 
+		//    AND
+		// same handler for all 7 check-boxes 
+		//
+		// Do a structure where labels, id's and property-names are mapped.
+		//
+		//
+		
 		
 		$("#animals-ok").on('click', function() {
 			self.controller.models['MenuModel'].setSelected('farm');

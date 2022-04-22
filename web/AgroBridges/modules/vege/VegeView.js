@@ -58,13 +58,23 @@ export default class VegeView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		const ll_lettuce = 'Lettuce (Cut lettuce, Argula, Spinach, Swiss chard, Endivie...)';
-		const ll_fruitlike = 'Fruitlike vegetables (Tomatoes, Peppers, Eggplant...)';
-		const ll_pumpkins = 'Pumpkins and Courgettes';
-		const ll_bulb = 'Bulb vegetables (Celeric and Fennel)';
-		const ll_root = 'Root vegetables and Onions (Potatos, Carrots, Parsnip, Root Parsley, Black Salsify...)';
-		const ll_cabbages = 'Cabbages (Broccoli, Kohlrabi, red and white cabbage...)';
-		const ll_specialities = 'Specialities (Asparagus, Olives, Truffel....)'; 
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const ll_offering_query = LM['translation'][sel]['products_offering_query'];
+		
+		const vegeOptions = [
+			{prop:'Dummy_lettuce',id:'lettuce',label:''},
+			{prop:'Dummy_fruit_vegetables',id:'fruitlike',label:''},
+			{prop:'Dummy_pumpkin',id:'pumpkins',label:''},
+			{prop:'Dummy_bulb',id:'bulb',label:''},
+			{prop:'Dummy_Root',id:'root',label:''},
+			{prop:'Dummy_Cabbage',id:'cabbages',label:''},
+			{prop:'Dummy_Special',id:'specialities',label:''}
+		];
+		// Fill in the labels:
+		vegeOptions.forEach(o=>{
+			o.label = LM['translation'][sel][o.prop];
+		});
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html =
@@ -79,19 +89,13 @@ export default class VegeView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12">'+
-						'<h6 class="required">Are you offering these products?</h6>'+
+						'<h6 class="required">'+ll_offering_query+'</h6>'+
 						'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>No</span></label></p>'+
 						'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6>Which of these vegetables do you grow?</h6>'+
-						'<p><label><input type="checkbox" class="filled-in" id="lettuce" /><span>'+ll_lettuce+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="fruitlike" /><span>'+ll_fruitlike+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="pumpkins" /><span>'+ll_pumpkins+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="bulb" /><span>'+ll_bulb+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="root" /><span>'+ll_root+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="cabbages" /><span>'+ll_cabbages+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="specialities" /><span>'+ll_specialities+'</span></label></p>'+
+						'div id="vege-options-wrapper"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
 						'<h6 class="required">How many different vegetables do you grow in total?</h6>'+
@@ -114,6 +118,11 @@ export default class VegeView extends View {
 				'</div>'+
 			'</div>';
 		$(this.el).append(html);
+		// Insert checkbox markup for options:
+		vegeOptions.forEach(o=>{
+			const html = '<p><label><input type="checkbox" class="filled-in" id="'+o.id+'" /><span>'+o.label+'</span></label></p>';
+			$('#vege-options-wrapper').append(html);
+		});
 		
 		// Restore current selection:
 		const vegetables_total  = this.USER_MODEL.profile.vegetables_total;
@@ -124,48 +133,13 @@ export default class VegeView extends View {
 		} else if (this.USER_MODEL.profile.Dummy_veggie_farm === 'Yes') {
 			$("#vege-yes").prop("checked", true);
 		}
-		
-		if (this.USER_MODEL.profile.Dummy_lettuce) {
-			$("#lettuce").prop("checked", true);
-		} else {
-			$("#lettuce").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_fruit_vegetables) {
-			$("#fruitlike").prop("checked", true);
-		} else {
-			$("#fruitlike").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_pumpkin) {
-			$("#pumpkins").prop("checked", true);
-		} else {
-			$("#pumpkins").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_bulb) {
-			$("#bulb").prop("checked", true);
-		} else {
-			$("#bulb").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_Root) {
-			$("#root").prop("checked", true);
-		} else {
-			$("#root").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_Cabbage) {
-			$("#cabbages").prop("checked", true);
-		} else {
-			$("#cabbages").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_Special) {
-			$("#specialities").prop("checked", true);
-		} else {
-			$("#specialities").prop("checked", false);
-		}
+		vegeOptions.forEach(o=>{
+			if (this.USER_MODEL.profile[o.prop]===true) {
+				$("#"+o.id).prop("checked", true);
+			} else {
+				$("#"+o.id).prop("checked", false);
+			}
+		});
 		
 		const vegeTotalSlider = document.getElementById('vegetables-total-slider');
 		noUiSlider.create(vegeTotalSlider, {
@@ -226,102 +200,17 @@ export default class VegeView extends View {
 			}
 		});
 		
-		$("#lettuce").change(function() {
-			if(this.checked) {
-				console.log('Dummy_lettuce true');
-				self.USER_MODEL.profile.Dummy_lettuce = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_lettuce false');
-				self.USER_MODEL.profile.Dummy_lettuce = false;
-				// DATABASE Update USER_MODEL
-				
-			}
-		});
-		
-		$("#fruitlike").change(function() {
-			if(this.checked) {
-				console.log('Dummy_fruit_vegetables true');
-				self.USER_MODEL.profile.Dummy_fruit_vegetables = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_fruit_vegetables false');
-				self.USER_MODEL.profile.Dummy_fruit_vegetables = false;
-				// DATABASE Update USER_MODEL
-				
-			}
-		});
-		
-		$("#pumpkins").change(function() {
-			if(this.checked) {
-				console.log('Dummy_pumpkin true');
-				self.USER_MODEL.profile.Dummy_pumpkin = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_pumpkin false');
-				self.USER_MODEL.profile.Dummy_pumpkin = false;
-				// DATABASE Update USER_MODEL
-				
-			}
-		});
-		
-		$("#bulb").change(function() {
-			if(this.checked) {
-				console.log('Dummy_bulb true');
-				self.USER_MODEL.profile.Dummy_bulb = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_bulb false');
-				self.USER_MODEL.profile.Dummy_bulb = false;
-				// DATABASE Update USER_MODEL
-				
-			}
-		});
-		
-		$("#root").change(function() {
-			if(this.checked) {
-				console.log('Dummy_Root true');
-				self.USER_MODEL.profile.Dummy_Root = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_Root false');
-				self.USER_MODEL.profile.Dummy_Root = false;
-				// DATABASE Update USER_MODEL
-				
-			}
-		});
-		
-		$("#cabbages").change(function() {
-			if(this.checked) {
-				console.log('Dummy_Cabbage true');
-				self.USER_MODEL.profile.Dummy_Cabbage = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_Cabbage false');
-				self.USER_MODEL.profile.Dummy_Cabbage = false;
-				// DATABASE Update USER_MODEL
-				
-			}
-		});
-		
-		$("#specialities").change(function() {
-			if(this.checked) {
-				console.log('Dummy_Special true');
-				self.USER_MODEL.profile.Dummy_Special = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_Special false');
-				self.USER_MODEL.profile.Dummy_Special = false;
-				// DATABASE Update USER_MODEL
-				
-			}
+		// Set checkbox change -handlers:
+		vegeOptions.forEach(o=>{
+			$("#"+o.id).change(function() {
+				if(this.checked) {
+					self.USER_MODEL.profile[o.prop] = true;
+					// DATABASE Update USER_MODEL
+				} else {
+					self.USER_MODEL.profile[o.prop] = false;
+					// DATABASE Update USER_MODEL
+				}
+			});
 		});
 		
 		$("#vege-ok").on('click', function() {
@@ -330,31 +219,3 @@ export default class VegeView extends View {
 		this.rendered = true;
 	}
 }
-						/*
-						'<table class="striped">'+
-							'<thead>'+
-								'<tr>'+
-									'<th>Question</th>'+
-									'<th>Variables</th>'+
-								'</tr>'+
-							'</thead>'+
-							'<tbody>'+
-								'<tr>'+
-									'<td>Are you offering these products?</td>'+
-									'<td>Dummy_veggie_farm (No, Yes)</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Which of these vegetables do you grow?</td>'+
-									'<td>Dummy_lettuce, Dummy_fruit_vegetables, Dummy_pumpkin, Dummy_bulb, Dummy_Root, Dummy_Cabbage,Dummy_Special</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>How many different vegetables do you grow in total?</td>'+
-									'<td>vegetables_total</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>On how many hectares do you grow vegetables?</td>'+
-									'<td>Hectare_veggies</td>'+
-								'</tr>'+
-							'</tbody>'+
-						'</table>'+
-						*/

@@ -261,7 +261,7 @@ export default class UserModel extends Model {
 			retval.filled++;
 		}
 		// FARM is ready when all subcomponents are ready.
-		retval.ready = vegeState.ready && fruitsState.ready && animalsState;
+		retval.ready = vegeState.ready && fruitsState.ready && animalsState.ready;
 		return retval;
 	}
 	

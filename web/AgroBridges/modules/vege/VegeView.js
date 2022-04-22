@@ -94,16 +94,16 @@ export default class VegeView extends View {
 						'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6>Which of these vegetables do you grow?</h6>'+
+						'<h6 id="required-A">Which of these vegetables do you grow?</h6>'+
 						'<div id="vege-options-wrapper"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6 class="required">How many different vegetables do you grow in total?</h6>'+
+						'<h6 id="required-B">How many different vegetables do you grow in total?</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="vegetables-total-slider"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6 class="required">On how many hectares do you grow vegetables?</h6>'+
+						'<h6 id="required-C">On how many hectares do you grow vegetables?</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="Hectare-veggies-slider"></div>'+
 					'</div>'+
@@ -130,8 +130,13 @@ export default class VegeView extends View {
 		
 		if (this.USER_MODEL.profile.Dummy_veggie_farm === 'No') {
 			$("#vege-no").prop("checked", true);
+			
 		} else if (this.USER_MODEL.profile.Dummy_veggie_farm === 'Yes') {
 			$("#vege-yes").prop("checked", true);
+			// Add class="required" to all 3 other questions:
+			$('#required-A').addClass('required');
+			$('#required-B').addClass('required');
+			$('#required-C').addClass('required');
 		}
 		vegeOptions.forEach(o=>{
 			if (this.USER_MODEL.profile[o.prop]===true) {
@@ -191,11 +196,19 @@ export default class VegeView extends View {
 			if (this.value == 'no') {
 				console.log('Dummy_veggie_farm No'); // Dummy_veggie_farm NO
 				self.USER_MODEL.profile.Dummy_veggie_farm = 'No';
+				// Remove class="required" from all 3 other questions:
+				if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
+				if ($("#required-B").hasClass("required")) { $('#required-B').removeClass('required'); }
+				if ($("#required-C").hasClass("required")) { $('#required-C').removeClass('required'); }
 				// DATABASE Update USER_MODEL
 				
 			} else if (this.value == 'yes') {
 				console.log('Dummy_veggie_farm Yes');
 				self.USER_MODEL.profile.Dummy_veggie_farm = 'Yes';
+				// Add class="required" to all 3 other questions:
+				if (!$("#required-A").hasClass("required")) { $('#required-A').addClass('required'); }
+				if (!$("#required-B").hasClass("required")) { $('#required-B').addClass('required'); }
+				if (!$("#required-C").hasClass("required")) { $('#required-C').addClass('required'); }
 				// DATABASE Update USER_MODEL
 			}
 		});

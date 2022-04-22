@@ -58,11 +58,21 @@ export default class FruitsView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		const ll_stonefruits = 'Stonefruits (Peach, Nectarine, Apricot, Cherries...)';
-		const ll_pomefruits = 'Pome fruits (Apple, Pear, Quince...)';
-		const ll_berries = 'Berries (Rapsberries, Strawberries, Blueberries...)';
-		const ll_citrus = 'Citrus (Orange, Tangerine, Lemon...)';
-		const ll_exotic = 'Other exotic fruits (banana, date, kiwi, mango...)';
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const ll_offering_query = LM['translation'][sel]['products_offering_query'];
+		
+		const fruitOptions = [
+			{prop:'Dummy_Stonefruits',id:'stonefruits',label:''},
+			{prop:'Dummy_Promefruits',id:'pomefruits',label:''},
+			{prop:'Dummy_Berries',id:'berries',label:''},
+			{prop:'Dummy_Citrus',id:'citrus',label:''},
+			{prop:'Dummy_exotic_fruits',id:'exotic',label:''},
+		];
+		// Fill in the labels:
+		fruitOptions.forEach(o=>{
+			o.label = LM['translation'][sel][o.prop];
+		});
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html =
@@ -77,25 +87,21 @@ export default class FruitsView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12">'+
-						'<h6 class="required">Are you offering these products?</h6>'+
+						'<h6 class="required">'+ll_offering_query+'</h6>'+
 						'<p><label><input class="with-gap" name="fruitsStatus" id="fruits-no" type="radio" value="no" /><span>No</span></label></p>'+
 						'<p><label><input class="with-gap" name="fruitsStatus" id="fruits-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6>Which of these fruits do you grow?</h6>'+
-						'<p><label><input type="checkbox" class="filled-in" id="stonefruits" /><span>'+ll_stonefruits+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="pomefruits" /><span>'+ll_pomefruits+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="berries" /><span>'+ll_berries+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="citrus" /><span>'+ll_citrus+'</span></label></p>'+
-						'<p><label><input type="checkbox" class="filled-in" id="exotic" /><span>'+ll_exotic+'</span></label></p>'+
+						'<h6 id="required-A">Which of these fruits do you grow?</h6>'+
+						'<div id="fruit-options-wrapper"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6 class="required">How many different fruits do you approximately grow in total?</h6>'+
+						'<h6 id="required-B">How many different fruits do you approximately grow in total?</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="fruits-total-slider"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6 class="required">On how many hectares do you grow fruits?</h6>'+
+						'<h6 id="required-C">On how many hectares do you grow fruits?</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="Hectare-fruits-slider"></div>'+
 					'</div>'+
@@ -110,7 +116,11 @@ export default class FruitsView extends View {
 				'</div>'+
 			'</div>';
 		$(this.el).append(html);
-		
+		// Insert checkbox markup for options:
+		fruitOptions.forEach(o=>{
+			const html = '<p><label><input type="checkbox" class="filled-in" id="'+o.id+'" /><span>'+o.label+'</span></label></p>';
+			$('#fruit-options-wrapper').append(html);
+		});
 		
 		// Restore current selection:
 		const fruits_total = this.USER_MODEL.profile.fruits_total;
@@ -118,39 +128,21 @@ export default class FruitsView extends View {
 		
 		if (this.USER_MODEL.profile.Dummy_fruit_farm === 'No') {
 			$("#fruits-no").prop("checked", true);
+			
 		} else if (this.USER_MODEL.profile.Dummy_fruit_farm === 'Yes') {
 			$("#fruits-yes").prop("checked", true);
+			// Add class="required" to all 3 other questions:
+			$('#required-A').addClass('required');
+			$('#required-B').addClass('required');
+			$('#required-C').addClass('required');
 		}
-		
-		if (this.USER_MODEL.profile.Dummy_Stonefruits) {
-			$("#stonefruits").prop("checked", true);
-		} else {
-			$("#stonefruits").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_Pomefruits) {
-			$("#pomefruits").prop("checked", true);
-		} else {
-			$("#pomefruits").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_Berries) {
-			$("#berries").prop("checked", true);
-		} else {
-			$("#berries").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_Citrus) {
-			$("#citrus").prop("checked", true);
-		} else {
-			$("#citrus").prop("checked", false);
-		}
-		
-		if (this.USER_MODEL.profile.Dummy_exotic_fruits) {
-			$("#exotic").prop("checked", true);
-		} else {
-			$("#exotic").prop("checked", false);
-		}
+		fruitOptions.forEach(o=>{
+			if (this.USER_MODEL.profile[o.prop]===true) {
+				$("#"+o.id).prop("checked", true);
+			} else {
+				$("#"+o.id).prop("checked", false);
+			}
+		});
 		
 		const fruitsTotalSlider = document.getElementById('fruits-total-slider');
 		noUiSlider.create(fruitsTotalSlider, {
@@ -174,7 +166,6 @@ export default class FruitsView extends View {
 				// DATABASE Update USER_MODEL
 			}
 		});
-		
 		
 		const hectareSlider = document.getElementById('Hectare-fruits-slider');
 		noUiSlider.create(hectareSlider, {
@@ -203,90 +194,34 @@ export default class FruitsView extends View {
 			if (this.value == 'no') {
 				console.log('Dummy_fruit_farm No'); // Dummy_fruit_farm NO
 				self.USER_MODEL.profile.Dummy_fruit_farm = 'No';
+				// Remove class="required" from all 3 other questions:
+				if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
+				if ($("#required-B").hasClass("required")) { $('#required-B').removeClass('required'); }
+				if ($("#required-C").hasClass("required")) { $('#required-C').removeClass('required'); }
 				// DATABASE Update USER_MODEL
 				
 			} else if (this.value == 'yes') {
 				console.log('Dummy_fruit_farm Yes');
 				self.USER_MODEL.profile.Dummy_fruit_farm = 'Yes';
+				// Add class="required" to all 3 other questions:
+				if (!$("#required-A").hasClass("required")) { $('#required-A').addClass('required'); }
+				if (!$("#required-B").hasClass("required")) { $('#required-B').addClass('required'); }
+				if (!$("#required-C").hasClass("required")) { $('#required-C').addClass('required'); }
 				// DATABASE Update USER_MODEL
 			}
 		});
 		
-		/*
-		'<p><label><input type="checkbox" class="filled-in" id="stonefruits" /><span>'+ll_stonefruits+'</span></label></p>'+
-		'<p><label><input type="checkbox" class="filled-in" id="pomefruits" /><span>'+ll_pomefruits+'</span></label></p>'+
-		'<p><label><input type="checkbox" class="filled-in" id="berries" /><span>'+ll_berries+'</span></label></p>'+
-		'<p><label><input type="checkbox" class="filled-in" id="citrus" /><span>'+ll_citrus+'</span></label></p>'+
-		'<p><label><input type="checkbox" class="filled-in" id="exotic" /><span>'+ll_exotic+'</span></label></p>'+
-		*/
-		$("#stonefruits").change(function() {
-			if(this.checked) {
-				console.log('Dummy_Stonefruits true');
-				self.USER_MODEL.profile.Dummy_Stonefruits = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_Stonefruits false');
-				self.USER_MODEL.profile.Dummy_Stonefruits = false;
-				// DATABASE Update USER_MODEL
-				
-			}
-		});
-		
-		$("#pomefruits").change(function() {
-			if(this.checked) {
-				console.log('Dummy_Pomefruits true');
-				self.USER_MODEL.profile.Dummy_Pomefruits = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_Pomefruits false');
-				self.USER_MODEL.profile.Dummy_Pomefruits = false;
-				// DATABASE Update USER_MODEL
-				
-			}
-		});
-		
-		$("#berries").change(function() {
-			if(this.checked) {
-				console.log('Dummy_Berries true');
-				self.USER_MODEL.profile.Dummy_Berries = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_Berries false');
-				self.USER_MODEL.profile.Dummy_Berries = false;
-				// DATABASE Update USER_MODEL
-				
-			}
-		});
-		
-		$("#citrus").change(function() {
-			if(this.checked) {
-				console.log('Dummy_Citrus true');
-				self.USER_MODEL.profile.Dummy_Citrus = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_Citrus false');
-				self.USER_MODEL.profile.Dummy_Citrus = false;
-				// DATABASE Update USER_MODEL
-				
-			}
-		});
-		
-		$("#exotic").change(function() {
-			if(this.checked) {
-				console.log('Dummy_exotic_fruits true');
-				self.USER_MODEL.profile.Dummy_exotic_fruits = true;
-				// DATABASE Update USER_MODEL
-				
-			} else {
-				console.log('Dummy_exotic_fruits false');
-				self.USER_MODEL.profile.Dummy_exotic_fruits = false;
-				// DATABASE Update USER_MODEL
-				
-			}
+		// Set checkbox change -handlers:
+		fruitOptions.forEach(o=>{
+			$("#"+o.id).change(function() {
+				if(this.checked) {
+					self.USER_MODEL.profile[o.prop] = true;
+					// DATABASE Update USER_MODEL
+				} else {
+					self.USER_MODEL.profile[o.prop] = false;
+					// DATABASE Update USER_MODEL
+				}
+			});
 		});
 		
 		$("#fruits-ok").on('click', function() {
@@ -295,31 +230,3 @@ export default class FruitsView extends View {
 		this.rendered = true;
 	}
 }
-/*
-						'<table class="striped">'+
-							'<thead>'+
-								'<tr>'+
-									'<th>Question</th>'+
-									'<th>Variables</th>'+
-								'</tr>'+
-							'</thead>'+
-							'<tbody>'+
-								'<tr>'+
-									'<td>Are you offering these products?</td>'+
-									'<td>Dummy_fruit_farm (No, Yes)</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Which of these fruits do you grow?</td>'+
-									'<td>Dummy_Stonefruits, Dummy_Pomefruits, Dummy_Berries, Dummy_Citrus, Dummy_exotic_fruits</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>How many different fruits do you approximately grow in total?</td>'+
-									'<td>fruits_total</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>On how many hectares do you grow fruits?</td>'+
-									'<td>Hectare_fruits</td>'+
-								'</tr>'+
-							'</tbody>'+
-						'</table>'+
-*/

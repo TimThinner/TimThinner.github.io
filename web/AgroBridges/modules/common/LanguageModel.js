@@ -5,10 +5,10 @@ export default class LanguageModel {
 		this.translation = {
 			'en':{
 				'location_query':'In which country is your farm located?',
-				'marketting_channel_query'; 'Where are you currently selling your products?',
+				'marketting_channel_query':'Where are you currently selling your products?',
 				'offering_query':'Do you already offer',
 				'self_desc_query':'How would you describe yourself?',
-				'organic_query';'I am an organic farmer',
+				'organic_query':'I am an organic farmer',
 				'shops_close_query':'Are there many farm shops in close by (5-10 km radius)',
 				'distance_drive_small_query':'How long is the driving distance to the next bigger town (100.000 inhabitants)?',
 				'distance_drive_major_query':'How long is the driving distance to a major city (1.000.000 inhabitants)?',

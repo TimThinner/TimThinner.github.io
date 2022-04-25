@@ -66,7 +66,6 @@ export default class AnimalsView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const ll_offering_query = LM['translation'][sel]['products_offering_query'];
 		
 		const ll_yes = LM['translation'][sel]['dummy_yes'];
 		const ll_no = LM['translation'][sel]['dummy_no'];

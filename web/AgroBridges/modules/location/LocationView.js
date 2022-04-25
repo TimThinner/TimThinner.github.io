@@ -123,9 +123,9 @@ export default class LocationView extends View {
 		
 			const value = $(this).val();
 			console.log(["select2:select value=", value]);
-			const data = e.params.data;
-			console.log(["select2:select data=", data]);
-			console.log(["element option data.element=", data.element]);
+			//const data = e.params.data;
+			//console.log(["select2:select data=", data]);
+			//console.log(["element option data.element=", data.element]);
 			
 		});
 		/*$('.select-country').on("select2:unselect", function (e) { 

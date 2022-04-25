@@ -60,7 +60,13 @@ export default class VegeView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
+		
+		const ll_yes = LM['translation'][sel]['dummy_yes'];
+		const ll_no = LM['translation'][sel]['dummy_no'];
 		const ll_offering_query = LM['translation'][sel]['products_offering_query'];
+		const ll_vege_query = LM['translation'][sel]['vegetables_query'];
+		const ll_how_many_query = LM['translation'][sel]['vegetables_how_many_query'];
+		const ll_hectares_query = LM['translation'][sel]['vege_hectare_query'];
 		
 		const vegeOptions = [
 			{prop:'Dummy_lettuce',id:'lettuce',label:''},
@@ -90,20 +96,20 @@ export default class VegeView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12">'+
 						'<h6 class="required">'+ll_offering_query+'</h6>'+
-						'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>No</span></label></p>'+
-						'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
+						'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>'+ll_no+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>'+ll_yes+'</span></label></p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6 id="required-A">Which of these vegetables do you grow?</h6>'+
+						'<h6 id="required-A">'+ll_vege_query+'</h6>'+
 						'<div id="vege-options-wrapper"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6 id="required-B">How many different vegetables do you grow in total?</h6>'+
+						'<h6 id="required-B">'+ll_how_many_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="vegetables-total-slider"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6 id="required-C">On how many hectares do you grow vegetables?</h6>'+
+						'<h6 id="required-C">'+ll_hectares_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="Hectare-veggies-slider"></div>'+
 					'</div>'+

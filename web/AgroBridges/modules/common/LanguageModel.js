@@ -7,6 +7,8 @@ export default class LanguageModel extends Model {
 		this.selected = 'en';
 		this.translation = {
 			'en':{
+				'dummy_yes':'Yes',
+				'dummy_no':'No',
 				'location_query':'In which country is your farm located?',
 				'marketting_channel_query':'Where are you currently selling your products?',
 				'offering_query':'Do you already offer',
@@ -17,7 +19,6 @@ export default class LanguageModel extends Model {
 				'distance_drive_major_query':'How long is the driving distance to a major city (1.000.000 inhabitants)?',
 				'products_offering_query':'Are you offering these products?',
 				'vege_hectare_query':'On how many hectares do you grow vegetables?',
-				
 				'fruit_hectare_query':'On how many hectars do you grow fruits?',
 				'farm_hectare_query':'How large is your farm in total?',
 				'greenhouse_query':'Do you also produce in greenhouses?',
@@ -28,18 +29,15 @@ export default class LanguageModel extends Model {
 				'fruits_query':'Which of these fruits do you grow?',
 				'fruits_how_many_query':'How many different fruits do you approximately grow in total?',
 				'vegetables_query':'Which of these vegetables do you grow?',
-				
 				'grow_herbs_query':'Do you also grow herbs?',
 				'grow_nuts_query':'Do you grow nuts (Walnut, Hazelnut, Marone...)?',
 				'quality_cert_query':'Which quality certification standards do you fullfil?',
 				'harvest_query':'How do you handle your products after the harvest?',
 				'vegetables_how_many_query':'How many different vegetables do you grow in total?',
 				'harvets_query':'How do you handle your products after the harvest?',
-				
 				'Dummy_fruit_farm':'Fruits',
 				'Dummy_veggie_farm':'Vegetables',
 				'Dummy_livestock':'Animal Products',
-				
 				'Dummy_lettuce':'Lettuce (cut lettuce, Argula, Spinach, Swiss Chard, Endivie...)',
 				'Dummy_fruit_vegetables':'Fruitlike vegetables (tomatoes, peppers, Eggplant...)',
 				'Dummy_pumpkin':'Pumpkins and Courgettes',
@@ -47,7 +45,6 @@ export default class LanguageModel extends Model {
 				'Dummy_Root':'Root vegetables and Onions (Potatos, Carrots, Parsnip, Root parsley, Black salsify...)',
 				'Dummy_Cabbage':'Cabbages (Broccoli, Kohlrabi, red and white cabbage...)',
 				'Dummy_Special':'Specialities (Asparagus, olives, truffle, sweet potato...)',
-				
 				'Number_cows':'Dairy Cows',
 				'Number_goats':'Goats and Sheep',
 				'Number_beef':'Beef Cattle',
@@ -58,7 +55,6 @@ export default class LanguageModel extends Model {
 				'Number_fish':'Fish',
 				'Dummy_animal_welfare':'Are offering  a higher animal welfare standard (playing material & increased space & outdoor areas)?',
 				'Dummy_Beef_2':'Are you offering meat products such as ham, sausages etc.?',
-				
 				'Dummy_Milk':'Milk (pasteurized and homogenized)',
 				'Dummy_cheese_normal':'Cheese (regular varieties)',
 				'Dummy_cheese_reg_special':'Cheese (regional speciality)',
@@ -66,7 +62,6 @@ export default class LanguageModel extends Model {
 				'Dummy_Beef':'Beef (Steaks, Sausages, minced meat)',
 				'Dummy_special_Beef':'Are you keeping beef cows known to produce high qulity meat (such as Charolais, Hereford, Angus or Wagyu)?',
 				'Dummy_raw_milk_only':'None of the above (I produce raw milk only)',
-				
 				'Dummy_Stonefruits':'Stonefruits (Peach, Nectarine, Apricot, Cherries...)',
 				'Dummy_Promefruits':'Pome fruits (Apple, Pear, Quince...)',
 				'Dummy_Berries':'Berries (Rapsberries, Strawberries, Blueberries...)',
@@ -74,6 +69,8 @@ export default class LanguageModel extends Model {
 				'Dummy_exotic_fruits':'Other exotic fruits (banana, date, kiwi, mango...)'
 			},
 			'fi':{
+				'dummy_yes':'Kyllä',
+				'dummy_no':'Ei',
 				'location_query':'Missä maassa tilasi sijaitsee?',
 				'marketting_channel_query':'Missä myyt tuotteitasi tällä hetkellä?',
 				'offering_query':'Tarjoatko jo',
@@ -84,7 +81,6 @@ export default class LanguageModel extends Model {
 				'distance_drive_major_query':'Kuinka pitkä ajomatka on seuraavaan suureen kaupunkiin (1000 000 asukasta)?',
 				'products_offering_query':'Tarjoatko näitä tuotteita?',
 				'vege_hectare_query':'Kuinka monella hehtaarilla kasvatat vihanneksia?',
-				
 				'fruit_hectare_query':'Kuinka monella hehtaarilla kasvatat hedelmiä?',
 				'farm_hectare_query':'Kuinka suuri tilasi on yhteensä?',
 				'greenhouse_query':'Kasvatatko myös kasvihuoneissa?',
@@ -95,18 +91,15 @@ export default class LanguageModel extends Model {
 				'fruits_query':'Mitä näistä hedelmistä kasvatat?',
 				'fruits_how_many_query':'Kuinka monta eri hedelmälajiketta kasvatat yhteensä?',
 				'vegetables_query':'Mitä näistä vihanneksista kasvatat?',
-				
 				'grow_herbs_query':'Kasvatatko myös yrttejä?',
 				'grow_nuts_query':'Kasvatatko pähkinöitä (saksanpähkinä, hasselpähkinä, marone...)?',
 				'quality_cert_query':'Minkä laatusertifiointistandardien vaatimukset täytät?',
 				'harvest_query':'Miten käsittelet tuotteitasi sadonkorjuun jälkeen?',
 				'vegetables_how_many_query':'Kuinka monta eri vihanneslajiketta kasvatat yhteensä?',
 				'harvest_query':'Miten käsittelet tuotteitasi sadonkorjuun jälkeen?',
-				
 				'Dummy_fruit_farm':'Hedelmiä',
 				'Dummy_veggie_farm':'Vihanneksia',
 				'Dummy_livestock':'Eläintuotteita',
-				
 				'Dummy_lettuce':'Salaattia (leikattu salaatti, argula, pinaatti, mangoldi, endivie...)',
 				'Dummy_fruit_vegetables':'Hedelmän tapaisia vihanneksia (tomaatit, paprikat, munakoiso...)',
 				'Dummy_pumpkin':'Kurpitsoja ja kesäkurpitsoja',
@@ -114,7 +107,6 @@ export default class LanguageModel extends Model {
 				'Dummy_Root':'Juureksia ja sipuleita (perunat, porkkanat, palsternakka, juuripersilja, musta salsify...)',
 				'Dummy_Cabbage':'Kaalia (parsakaali, kyssäkaali, puna- ja valkokaali...)',
 				'Dummy_Special':'Erikoistuotteita (parsa, oliivit, tryffeli, bataatti...)',
-				
 				'Number_cows':'Lypsylehmiä',
 				'Number_goats':'Vuohia  ja lampaita',
 				'Number_beef':'Lihakarjaa',
@@ -125,7 +117,6 @@ export default class LanguageModel extends Model {
 				'Number_fish':'Kaloja',
 				'Dummy_animal_welfare':'Tarjoatko korkeampaa eläinten hyvinvointistandardia (leikkivälineitä, enemmän tilaa ja ulkoalueita)?',
 				'Dummy_Beef_2':'Tarjoatko lihatuotteita, kuten kinkkua, makkaroita jne.?',
-				
 				'Dummy_Milk':'Maito (pastoroitu ja homogenoitu)',
 				'Dummy_cheese_normal':'Juusto (tavalliset lajikkeet)',
 				'Dummy_cheese_reg_special':'Juusto (alueellinen erikoisuus)',
@@ -133,13 +124,11 @@ export default class LanguageModel extends Model {
 				'Dummy_Beef':'Naudanliha (pihvit, makkarat, jauheliha)',
 				'Dummy_special_Beef':'Pidätkö lihakarjaa, joiden tiedetään tuottavan korkealaatuista lihaa (kuten Charolais, Hereford, Angus tai Wagyu)?',
 				'Dummy_raw_milk_only':'Ei mikään yllä olevista (tuotan vain raakamaitoa)',
-				
 				'Dummy_Stonefruits':'Kivihedelmät (persikka, nektariini, aprikoosi, kirsikat...)',
 				'Dummy_Promefruits':'Siemenhedelmät (omena, päärynä, kvitteni...)',
 				'Dummy_Berries':'Marjat (vadelmat, mansikat, mustikat...)',
 				'Dummy_Citrus':'Sitrushedelmät (appelsiini, mandariini, sitruuna...)',
 				'Dummy_exotic_fruits':'Muut eksoottiset hedelmät (banaani, taateli, kiivi, mango...)'
-				
 			}
 		}
 	}

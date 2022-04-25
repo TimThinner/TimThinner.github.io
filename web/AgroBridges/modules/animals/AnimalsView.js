@@ -68,6 +68,12 @@ export default class AnimalsView extends View {
 		const sel = LM.selected;
 		const ll_offering_query = LM['translation'][sel]['products_offering_query'];
 		
+		const ll_yes = LM['translation'][sel]['dummy_yes'];
+		const ll_no = LM['translation'][sel]['dummy_no'];
+		const ll_offering_query = LM['translation'][sel]['products_offering_query'];
+		const ll_animals_query = LM['translation'][sel]['animals_query'];
+		const ll_dairy_query = LM['translation'][sel]['dairy_products_query'];
+		
 		const anim_a_Options = [
 			{prop:'Number_cows',id:'cows',label:''},
 			{prop:'Number_goats',id:'goats',label:''},
@@ -112,15 +118,15 @@ export default class AnimalsView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12">'+
 						'<h6 class="required">'+ll_offering_query+'</h6>'+
-						'<p><label><input class="with-gap" name="animalsStatus" id="animals-no" type="radio" value="no" /><span>No</span></label></p>'+
-						'<p><label><input class="with-gap" name="animalsStatus" id="animals-yes" type="radio" value="yes" /><span>Yes</span></label></p>'+
+						'<p><label><input class="with-gap" name="animalsStatus" id="animals-no" type="radio" value="no" /><span>'+ll_no+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="animalsStatus" id="animals-yes" type="radio" value="yes" /><span>'+ll_yes+'</span></label></p>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6>Which animals are you keeping (hobby livestock excluded)?</h6>'+
+						'<h6>'+ll_animals_query+'</h6>'+
 						'<div id="anim-a-options-wrapper"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6>Are you selling the following dairy products?</h6>'+
+						'<h6>'+ll_dairy_query+'</h6>'+
 						'<div id="anim-b-options-wrapper"></div>'+
 					'</div>'+
 				'</div>'+

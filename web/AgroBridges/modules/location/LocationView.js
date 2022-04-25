@@ -46,12 +46,14 @@ export default class LocationView extends View {
 					'</div>'+
 				'</div>'+
 			'</div>'+
+			
+			
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h6 class="required">In which country is your farm located?</h6>'+
 						//'<label for="id-select-country">In which country is your farm located?'+
-							'<select class="select-country" id="id-select-country">'+
+							'<select class="select-country" style="width:75%">'+ // id="id-select-country">'+
 								'<option value="BE">Belgique/België</option>'+
 								'<option value="BG">България</option>'+
 								'<option value="CZ">Česko</option>'+
@@ -104,8 +106,9 @@ export default class LocationView extends View {
 			'</div>';
 		$(this.el).append(html);
 		// Initialize the "plugin"
-		$('.select-country').select2();
-		
+		$('.select-country').select2({
+			width: 'resolve' // need to override the changed default
+		});
 		
 		// See: https://select2.org/programmatic-control/events
 		/*

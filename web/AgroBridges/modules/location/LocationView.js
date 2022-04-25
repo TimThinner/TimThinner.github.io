@@ -105,22 +105,27 @@ export default class LocationView extends View {
 		// Initialize the "plugin"
 		$('.select-country').select2();
 		
+		
+		// See: https://select2.org/programmatic-control/events
+		/*
 		$('.select-country').on("select2:open", function (e) { 
-			console.log(["select2:open e=", e]); 
+			console.log(["select2:open e=", e]);
 		});
 		$('.select-country').on("select2:close", function (e) { 
-			console.log(["select2:close e=", e]); 
+			console.log(["select2:close e=", e]);
 		});
+		*/
 		$('.select-country').on("select2:select", function (e) { 
-			console.log(["select2:select e=", e]); 
+			const data = e.params.data;
+			console.log(["select2:select data=", data]);
 		});
-		$('.select-country').on("select2:unselect", function (e) { 
-			console.log(["select2:unselect e=", e]); 
+		/*$('.select-country').on("select2:unselect", function (e) { 
+			console.log(["select2:unselect e=", e]);
 		});
 		$('.select-country').on("change", function (e) { 
-			console.log(["select2:change e=", e]); 
+			console.log(["select2:change e=", e]);
 		});
-		
+		*/
 		
 		$("#location-ok").on('click', function() {
 			self.controller.models['MenuModel'].setSelected('farm');

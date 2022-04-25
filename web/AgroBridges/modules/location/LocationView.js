@@ -49,7 +49,8 @@ export default class LocationView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<label for="id-select-country">In which country is your farm located?'+
+						'<h6 class="required">In which country is your farm located?</h6>'+
+						//'<label for="id-select-country">In which country is your farm located?'+
 							'<select class="select-country" id="id-select-country">'+
 								'<option value="BE">Belgique/België</option>'+
 								'<option value="BG">България</option>'+
@@ -89,7 +90,7 @@ export default class LocationView extends View {
 								'<option value="RS">Srbija/Сpбија</option>'+
 								'<option value="TR">Türkiye</option>'+
 							'</select>'+
-						'</label>'+
+						//'</label>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -118,6 +119,7 @@ export default class LocationView extends View {
 		$('.select-country').on("select2:select", function (e) { 
 		
 			const value = $(this).val();
+			console.log(["select2:select value=", value]);
 			const data = e.params.data;
 			console.log(["select2:select data=", data]);
 			console.log(["element option data.element=", data.element]);

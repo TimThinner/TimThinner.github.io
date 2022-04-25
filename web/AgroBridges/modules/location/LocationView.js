@@ -116,8 +116,12 @@ export default class LocationView extends View {
 		});
 		*/
 		$('.select-country').on("select2:select", function (e) { 
+		
+			const value = $(this).val();
 			const data = e.params.data;
 			console.log(["select2:select data=", data]);
+			console.log(["element option data.element=", data.element]);
+			
 		});
 		/*$('.select-country').on("select2:unselect", function (e) { 
 			console.log(["select2:unselect e=", e]);

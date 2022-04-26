@@ -77,7 +77,7 @@ export default class LocationView extends View {
 			self.models['RegionsModel'].fetch(value);
 		});
 		// Finally initialize also the REGIONS with old selection or FIRST COUNTRY'S regions.
-		this.models['RegionsModel'].fetch(value);
+		this.models['RegionsModel'].fetch(selected_country_id);
 	}
 	
 	resetRegionSelect() {

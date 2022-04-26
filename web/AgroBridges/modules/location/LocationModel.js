@@ -141,6 +141,8 @@ export default class LocationModel extends Model {
 			})
 			.then(function(myJson) {
 				
+				
+				
 				const headofJSON = myJson.slice(0, 512);
 				
 				console.log(['headofJSON=',headofJSON]);
@@ -159,6 +161,10 @@ export default class LocationModel extends Model {
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
 			})
 			.catch(error => {
+				
+				console.log(['error=',error]);
+				
+				
 				self.fetching = false;
 				self.ready = true;
 				self.errorMessage = error;

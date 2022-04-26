@@ -37,75 +37,22 @@ NUTS_LB_2021_3035.json
 }]}}}
 
 */
-export default class LocationModel extends Model {
+export default class RegionsModel extends Model {
 	constructor(options) {
 		super(options);
-		this.countries = ['BE'];
-		this.selected = 'BE';
+		//this.countries = ['BE'];
+		//this.selected = 'BE';
 		
 		this.regions = [];
-		
-		
-		this.data = {
-			'BE':{
-				'BE100':'Arr. de Bruxelles-Capitale/Arr. Brussel-Hoofdstad',
-				'BE211':'Arr. Antwerpen',
-				'BE212':'Arr. Mechelen',
-				'BE213':'Arr. Turnhout',
-				'BE223':'Arr. Tongeren',
-				'BE224':'Arr. Hasselt',
-				'BE225':'Arr. Maaseik',
-				'BE231':'Arr. Aalst',
-				'BE232':'Arr. Dendermonde',
-				'BE233':'Arr. Eeklo',
-				'BE234':'Arr. Gent',
-				'BE235':'Arr. Oudenaarde',
-				'BE236':'Arr. Sint-Niklaas',
-				'BE241':'Arr. Halle-Vilvoorde',
-				'BE242':'Arr. Leuven',
-				'BE251':'Arr. Brugge',
-				'BE252':'Arr. Diksmuide',
-				'BE253':'Arr. Ieper',
-				'BE254':'Arr. Kortrijk',
-				'BE255':'Arr. Oostende',
-				'BE256':'Arr. Roeselare',
-				'BE257':'Arr. Tielt',
-				'BE258':'Arr. Veurne',
-				'BE310':'Arr. Nivelles',
-				'BE323':'Arr. Mons',
-				'BE328':'Arr. Tournai-Mouscron',
-				'BE329':'Arr. La Louvière',
-				'BE32A':'Arr. Ath',
-				'BE32B':'Arr. Charleroi',
-				'BE32C':'Arr. Soignies',
-				'BE32D':'Arr. Thuin',
-				'BE331':'Arr. Huy',
-				'BE332':'Arr. Liège',
-				'BE334':'Arr. Waremme',
-				'BE335':'Arr. Verviers — communes francophones',
-				'BE336':'Bezirk Verviers — Deutschsprachige Gemeinschaft',
-				'BE341':'Arr. Arlon',
-				'BE342':'Arr. Bastogne',
-				'BE343':'Arr. Marche-en-Famenne',
-				'BE344':'Arr. Neufchâteau',
-				'BE345':'Arr. Virton',
-				'BE351':'Arr. Dinant',
-				'BE352':'Arr. Namur',
-				'BE353':'Arr. Philippeville',
-				'BEZZZ':'Extra-Regio'
-			}
-		}
-		
-		
 	}
 	
 	// Extract only NUTS-3 regions from data.
-	extract(cc){
-		let country_regions = [];
-		this.regions.forEach(r=>{
+	extract(geometries, cc){
+		this.regions = [];
+		geometries.forEach(r=>{
 			if (typeof r.properties !== 'undefined') {
 				if (r.properties.CNTR_CODE === cc && r.properties.LEVL_CODE === 3) {
-					country_regions.push({
+					this.regions.push({
 						id: r.properties.NUTS_ID,
 						name: r.properties.NUTS_NAME,
 						name_latn: r.properties.NAME_LATN
@@ -119,7 +66,7 @@ export default class LocationModel extends Model {
 				
 			}
 		});
-		console.log(['EXTRACTED country_regions for ',cc,'=',country_regions]);
+		//console.log(['EXTRACTED country_regions for ',cc,'=',country_regions]);
 	}
 	
 	fetch(context) {
@@ -132,7 +79,7 @@ export default class LocationModel extends Model {
 			return;
 		}
 		this.fetching = true;
-		this.regions = [];
+		
 		const url = this.src;
 		console.log (['fetch url=',url]);
 		fetch(url)
@@ -145,9 +92,9 @@ export default class LocationModel extends Model {
 				const resu = myJson;
 				//console.log(['resu=',resu]);
 				if (typeof resu.objects !== 'undefined' && typeof resu.objects['NUTS_LB_2021_3035'] !== 'undefined') {
-					self.regions = resu.objects['NUTS_LB_2021_3035'].geometries;
-					if (Array.isArray(self.regions) && self.regions.length > 0) {
-						self.extract(context);
+					const geometries = resu.objects['NUTS_LB_2021_3035'].geometries;
+					if (Array.isArray(geometries) && geometries.length > 0) {
+						self.extract(geometries, context);
 					}
 				}
 				self.fetching = false;

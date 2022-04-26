@@ -137,6 +137,10 @@ export default class UserModel extends Model {
 	}
 	
 	
+	profileInfoState() {
+		let retval = {'total':5,'filled':0,'ready':false};
+		return retval;
+	}
 	/*
 		- how many questions are there?
 		- how many questions are completed?
@@ -286,6 +290,11 @@ export default class UserModel extends Model {
 			retval.filled++;
 		}
 		
+		const infoState = this.profileInfoState();
+		if (infoState.ready===true) {
+			retval.filled++;
+		}
+		
 		const vegeState = this.profileVegeState();
 		if (vegeState.ready===true) {
 			retval.filled++;
@@ -301,7 +310,16 @@ export default class UserModel extends Model {
 			retval.filled++;
 		}
 		// FARM is ready when all subcomponents are ready.
-		retval.ready = locationState.ready && vegeState.ready && fruitsState.ready && animalsState.ready;
+		retval.ready = locationState.ready && infoState.ready && vegeState.ready && fruitsState.ready && animalsState.ready;
+		return retval;
+	}
+	
+	profileActivitiesState() {
+		let retval = {'total':2,'filled':0,'ready':false};
+		return retval;
+	}
+	profileProducerState() {
+		let retval = {'total':2,'filled':0,'ready':false};
 		return retval;
 	}
 	

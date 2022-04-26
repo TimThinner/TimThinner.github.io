@@ -124,6 +124,15 @@ export default class FarmView extends View {
 				strokeColor = this.colors.DARK_RED;
 			}
 			
+		} else if (type === 'INFO') {
+			const state = this.USER_MODEL.profileInfoState();
+			fillStatus = state.filled+'/'+state.total;
+			if (state.ready===false) {
+				filledColor = this.colors.LIGHT_RED;
+				strokeWidth = 4;
+				strokeColor = this.colors.DARK_RED;
+			}
+			
 		} else if (type === 'VEGETABLES') {
 			const state = this.USER_MODEL.profileVegeState();
 			fillStatus = state.filled+'/'+state.total;

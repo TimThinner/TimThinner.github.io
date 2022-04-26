@@ -147,10 +147,9 @@ export default class MainView extends View {
 		let strokeColor = this.colors.DARK_GREEN;
 		
 		if (type === 'FARM') {
-			
-			const farmState = this.USER_MODEL.profileFarmState();
-			fillStatus = farmState.filled+'/'+farmState.total;
-			if (farmState.ready===false) {
+			const aState = this.USER_MODEL.profileFarmState();
+			fillStatus = aState.filled+'/'+aState.total;
+			if (aState.ready===false) {
 				filledColor = this.colors.LIGHT_RED;
 				strokeWidth = 4;
 				strokeColor = this.colors.DARK_RED;
@@ -158,10 +157,22 @@ export default class MainView extends View {
 			
 			
 		} else if (type === 'ACTIVITIES') {
-			
+			const aState = this.USER_MODEL.profileActivitiesState();
+			fillStatus = aState.filled+'/'+aState.total;
+			if (aState.ready===false) {
+				filledColor = this.colors.LIGHT_RED;
+				strokeWidth = 4;
+				strokeColor = this.colors.DARK_RED;
+			}
 			
 		} else if (type === 'PRODUCER') {
-			
+			const aState = this.USER_MODEL.profileProducerState();
+			fillStatus = aState.filled+'/'+aState.total;
+			if (aState.ready===false) {
+				filledColor = this.colors.LIGHT_RED;
+				strokeWidth = 4;
+				strokeColor = this.colors.DARK_RED;
+			}
 		}
 		
 		const svg = document.createElementNS(svgNS, "svg");

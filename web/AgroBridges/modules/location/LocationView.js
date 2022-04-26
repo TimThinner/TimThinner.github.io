@@ -38,14 +38,27 @@ export default class LocationView extends View {
 		const self = this;
 		$('#countries-wrapper').empty(); // Clear old select, if any.
 		
+		const selected_country_id = this.USER_MODEL.profile['Country'];
+		
 		let html = '<select class="select-country" style="width:75%">';
 		const countries = this.models['CountriesModel'].countries;
 		if (Array.isArray(countries) && countries.length > 0) {
 			countries.forEach(r=> {
+				let sel_prop = '';
+				// If there is no selection => set FIRST country as selected.
+				if (typeof selected_country_id === 'undefined') {
+					
+					selected_country_id = r.id;
+					sel_prop = 'selected="selected"';
+					
+				} else if (r.id === selected_country_id) {
+					// <option selected="selected">orange</option>
+					sel_prop = 'selected="selected"';
+				}
 				if (r.name === r.name_latn) {
-					html += '<option value="'+r.id+'">'+r.name+'</option>';
+					html += '<option value="'+r.id+'" '+sel_prop+'>'+r.name+'</option>';
 				} else {
-					html += '<option value="'+r.id+'">'+r.name+' / '+r.name_latn+'</option>';
+					html += '<option value="'+r.id+'" '+sel_prop+'>'+r.name+' / '+r.name_latn+'</option>';
 				}
 			});
 		}
@@ -63,20 +76,34 @@ export default class LocationView extends View {
 			self.USER_MODEL.profile['Country'] = value;
 			self.models['RegionsModel'].fetch(value);
 		});
+		// Finally initialize also the REGIONS with old selection or FIRST COUNTRY'S regions.
+		this.models['RegionsModel'].fetch(value);
 	}
 	
 	resetRegionSelect() {
 		const self = this;
 		$('#regions-wrapper').empty(); // Clear old select, if any.
 		
+		const selected_region_id = this.USER_MODEL.profile['NUTS3'];
+		
 		let html = '<select class="select-region" style="width:75%">';
 		const regions = this.models['RegionsModel'].regions;
 		if (Array.isArray(regions) && regions.length > 0) {
 			regions.forEach(r=> {
+				let sel_prop = '';
+				// If there is no selection => set FIRST country as selected.
+				if (typeof selected_region_id === 'undefined') {
+					
+					selected_region_id = r.id;
+					sel_prop = 'selected="selected"';
+					
+				} else if (r.id === selected_region_id) {
+					sel_prop = 'selected="selected"';
+				}
 				if (r.name === r.name_latn) {
-					html += '<option value="'+r.id+'">'+r.name+'</option>';
+					html += '<option value="'+r.id+'" '+sel_prop+'>'+r.name+'</option>';
 				} else {
-					html += '<option value="'+r.id+'">'+r.name+' / '+r.name_latn+'</option>';
+					html += '<option value="'+r.id+'" '+sel_prop+'>'+r.name+' / '+r.name_latn+'</option>';
 				}
 			});
 		}

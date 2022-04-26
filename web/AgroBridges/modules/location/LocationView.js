@@ -5,6 +5,7 @@ export default class LocationView extends View {
 	constructor(controller) {
 		super(controller);
 		Object.keys(this.controller.models).forEach(key => {
+			// 'LocationModel' and 'MenuModel' are added to View models.
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
@@ -29,7 +30,24 @@ export default class LocationView extends View {
 	}
 	
 	notify(options) {
-		console.log('LocationView NOTHING to Notify!');
+		if (this.controller.visible) {
+			if (options.model==='LocationModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					if (this.rendered) {
+						
+						//$('#'+this.FELID).empty();
+						console.log('LocationModel fetched OK!');
+						
+					} else {
+						this.render();
+					}
+				} else { // Error in fetching.
+					//this.notifyError(options);
+					console.log('ERROR in LocationModel fetching...');
+				}
+				
+			}
+		}
 	}
 	
 	render() {
@@ -46,8 +64,6 @@ export default class LocationView extends View {
 					'</div>'+
 				'</div>'+
 			'</div>'+
-			
-			
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
@@ -123,10 +139,7 @@ export default class LocationView extends View {
 		
 			const value = $(this).val();
 			console.log(["select2:select value=", value]);
-			//const data = e.params.data;
-			//console.log(["select2:select data=", data]);
-			//console.log(["element option data.element=", data.element]);
-			
+			self.models['LocationModel'].fetch(value);
 		});
 		/*$('.select-country').on("select2:unselect", function (e) { 
 			console.log(["select2:unselect e=", e]);
@@ -137,7 +150,7 @@ export default class LocationView extends View {
 		*/
 		
 		$("#location-ok").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('farm');
+			self.models['MenuModel'].setSelected('farm');
 		});
 		this.rendered = true;
 	}

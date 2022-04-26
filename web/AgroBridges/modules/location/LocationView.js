@@ -49,6 +49,9 @@ export default class LocationView extends View {
 				if (typeof selected_country_id === 'undefined') {
 					
 					selected_country_id = r.id;
+					this.USER_MODEL.profile['Country'] = selected_country_id;
+					// NOTE: We also automaically set the USER_MODEL => DATABASE Update USER_MODEL
+					
 					sel_prop = 'selected="selected"';
 					
 				} else if (r.id === selected_country_id) {
@@ -73,7 +76,9 @@ export default class LocationView extends View {
 		$('.select-country').on("select2:select", function (e) { 
 			const value = $(this).val();
 			console.log(["select2:select value=", value]);
-			self.USER_MODEL.profile['Country'] = value;
+			self.USER_MODEL.profile['Country'] = value; // DATABASE Update USER_MODEL
+			
+			
 			self.models['RegionsModel'].fetch(value);
 		});
 		// Finally initialize also the REGIONS with old selection or FIRST COUNTRY'S regions.
@@ -95,6 +100,9 @@ export default class LocationView extends View {
 				if (typeof selected_region_id === 'undefined') {
 					
 					selected_region_id = r.id;
+					this.USER_MODEL.profile['NUTS3'] = selected_region_id;
+					// NOTE: We also automaically set the USER_MODEL => DATABASE Update USER_MODEL
+					
 					sel_prop = 'selected="selected"';
 					
 				} else if (r.id === selected_region_id) {
@@ -118,7 +126,7 @@ export default class LocationView extends View {
 		$('.select-region').on("select2:select", function (e) { 
 			const value = $(this).val();
 			console.log(["select2:select region value=", value]);
-			self.USER_MODEL.profile['NUTS3'] = value;
+			self.USER_MODEL.profile['NUTS3'] = value; // DATABASE Update USER_MODEL
 		});
 	}
 	

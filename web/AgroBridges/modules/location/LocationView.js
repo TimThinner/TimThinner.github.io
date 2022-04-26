@@ -240,7 +240,7 @@ export default class LocationView extends View {
 		noUiSlider.create(distanceTownSlider, {
 			start: [distance_to_town],
 			connect: 'lower',
-			tooltips: [wNumb({decimals: 0})],
+			tooltips: [wNumb({decimals:0,suffix:'km'})],
 			step: 1,
 			keyboardSupport: true,      // Default true
 			keyboardDefaultStep: 5,     // Default 10
@@ -263,7 +263,7 @@ export default class LocationView extends View {
 		noUiSlider.create(distanceCitySlider, {
 			start: [distance_to_city],
 			connect: 'lower',
-			tooltips: [wNumb({decimals: 0})],
+			tooltips: [wNumb({decimals:0,suffix:'km'})],
 			step: 1,
 			keyboardSupport: true,      // Default true
 			keyboardDefaultStep: 5,     // Default 10

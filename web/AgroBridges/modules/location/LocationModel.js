@@ -140,7 +140,13 @@ export default class LocationModel extends Model {
 				return response.json();
 			})
 			.then(function(myJson) {
+				
+				const headofJSON = myJson.slice(0, 512);
+				
+				console.log(['headofJSON=',headofJSON]);
+				
 				const resu = JSON.parse(myJson);
+				
 				//console.log(['resu=',resu]);
 				if (typeof resu.objects !== 'undefined' && typeof resu.objects['NUTS_LB_2021_3035'] !== 'undefined') {
 					self.regions = resu.objects['NUTS_LB_2021_3035'].geometries;

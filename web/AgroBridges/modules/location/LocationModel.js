@@ -99,11 +99,12 @@ export default class LocationModel extends Model {
 		
 	}
 	
+	// Extract only NUTS-3 regions from data.
 	extract(cc){
 		let country_regions = [];
 		this.regions.forEach(r=>{
 			if (typeof r.properties !== 'undefined') {
-				if (r.properties.CNTR_CODE === cc) {
+				if (r.properties.CNTR_CODE === cc && r.properties.LEVL_CODE === 3) {
 					country_regions.push({
 						id: r.properties.NUTS_ID,
 						name: r.properties.NUTS_NAME,
@@ -140,16 +141,9 @@ export default class LocationModel extends Model {
 				return response.json();
 			})
 			.then(function(myJson) {
-				
-				
-				
-				//const headofJSON = myJson.slice(0, 512);
-				
-				//console.log(['headofJSON=',headofJSON]);
-				
 				//const resu = JSON.parse(myJson);
 				const resu = myJson;
-				console.log(['resu=',resu]);
+				//console.log(['resu=',resu]);
 				if (typeof resu.objects !== 'undefined' && typeof resu.objects['NUTS_LB_2021_3035'] !== 'undefined') {
 					self.regions = resu.objects['NUTS_LB_2021_3035'].geometries;
 					if (Array.isArray(self.regions) && self.regions.length > 0) {
@@ -161,10 +155,7 @@ export default class LocationModel extends Model {
 				self.notifyAll({model:self.name, method:'fetched', status:status, message:'OK'});
 			})
 			.catch(error => {
-				
-				console.log(['error=',error]);
-				
-				
+				//console.log(['error=',error]);
 				self.fetching = false;
 				self.ready = true;
 				self.errorMessage = error;

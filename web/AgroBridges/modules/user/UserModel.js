@@ -103,6 +103,40 @@ export default class UserModel extends Model {
 			Likert_consumer_con: undefined  // 5 scale from "I agree" to "I disagree"
 		}
 	}
+	
+	
+	/*
+		- how many questions are there?
+		- how many questions are completed?
+		- what is the status? GREEN (ready = true) or RED (ready = false)?
+	*/
+	profileLocationState() {
+		let retval = {'total':4,'filled':0,'ready':false};
+		
+		if (typeof this.profile.Country !== 'undefined') {
+			retval.filled++;
+		}
+		if (typeof this.profile.NUTS3 !== 'undefined') {
+			retval.filled++;
+		}
+		if (this.profile.Distance_Drive_small > 0) {
+			retval.filled++;
+		}
+		if (this.profile.Distance_Drive_major > 0) {
+			retval.filled++;
+		}
+		
+		if (typeof this.profile.Country !== 'undefined' && 
+			typeof this.profile.NUTS3 !== 'undefined' &&
+			this.profile.Distance_Drive_small > 0 &&
+			this.profile.Distance_Drive_major > 0) {
+			
+			retval.ready = true;
+		}
+		return retval;
+	}
+	
+	
 	/*
 		- how many questions are there?
 		- how many questions are completed?
@@ -246,6 +280,12 @@ export default class UserModel extends Model {
 	*/
 	profileFarmState() {
 		let retval = {'total':5,'filled':0,'ready':false};
+		
+		const locationState = this.profileLocationState();
+		if (locationState.ready===true) {
+			retval.filled++;
+		}
+		
 		const vegeState = this.profileVegeState();
 		if (vegeState.ready===true) {
 			retval.filled++;
@@ -261,7 +301,7 @@ export default class UserModel extends Model {
 			retval.filled++;
 		}
 		// FARM is ready when all subcomponents are ready.
-		retval.ready = vegeState.ready && fruitsState.ready && animalsState.ready;
+		retval.ready = locationState.ready && vegeState.ready && fruitsState.ready && animalsState.ready;
 		return retval;
 	}
 	

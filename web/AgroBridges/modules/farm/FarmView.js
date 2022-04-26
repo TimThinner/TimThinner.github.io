@@ -110,13 +110,21 @@ export default class FarmView extends View {
 			fontsize = 18;
 		}
 		
-		
 		let fillStatus = '4/4';
 		let filledColor = this.colors.GREEN;
 		let strokeWidth = 2;
 		let strokeColor = this.colors.DARK_GREEN;
 		
-		if (type === 'VEGETABLES') {
+		if (type === 'LOCATION') {
+			const state = this.USER_MODEL.profileLocationState();
+			fillStatus = state.filled+'/'+state.total;
+			if (state.ready===false) {
+				filledColor = this.colors.LIGHT_RED;
+				strokeWidth = 4;
+				strokeColor = this.colors.DARK_RED;
+			}
+			
+		} else if (type === 'VEGETABLES') {
 			const state = this.USER_MODEL.profileVegeState();
 			fillStatus = state.filled+'/'+state.total;
 			if (state.ready===false) {

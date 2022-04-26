@@ -168,6 +168,14 @@ export default class LocationView extends View {
 		const self = this;
 		$(this.el).empty();
 		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		
+		const ll_location_query = LM['translation'][sel]['location_query'];
+		const ll_region_query = LM['translation'][sel]['region_query'];
+		const ll_distance_small_query = LM['translation'][sel]['distance_drive_small_query'];
+		const ll_distance_major_query = LM['translation'][sel]['distance_drive_major_query'];
+		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
@@ -181,20 +189,20 @@ export default class LocationView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h6 class="required">In which country is your farm located?</h6>'+
+						'<h6 class="required">'+ll_location_query+'</h6>'+
 						'<div id="countries-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 center">'+
-						'<h6 class="required">In which region is your farm located?</h6>'+
+						'<h6 class="required">'+ll_region_query+'</h6>'+
 						'<div id="regions-wrapper"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6>How long is the driving distance to the next bigger town?</h6>'+
+						'<h6 class="required">'+ll_distance_small_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="distance-bigger-town-slider"></div>'+
 					'</div>'+
 					'<div class="input-field col s12">'+
-						'<h6>How long is the driving distance to the major city?</h6>'+
+						'<h6 class="required">'+ll_distance_major_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="distance-major-city-slider"></div>'+
 					'</div>'+

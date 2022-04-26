@@ -38,7 +38,7 @@ export default class LocationView extends View {
 		const self = this;
 		$('#countries-wrapper').empty(); // Clear old select, if any.
 		
-		const selected_country_id = this.USER_MODEL.profile['Country'];
+		let selected_country_id = this.USER_MODEL.profile['Country'];
 		
 		let html = '<select class="select-country" style="width:75%">';
 		const countries = this.models['CountriesModel'].countries;
@@ -84,7 +84,7 @@ export default class LocationView extends View {
 		const self = this;
 		$('#regions-wrapper').empty(); // Clear old select, if any.
 		
-		const selected_region_id = this.USER_MODEL.profile['NUTS3'];
+		let selected_region_id = this.USER_MODEL.profile['NUTS3'];
 		
 		let html = '<select class="select-region" style="width:75%">';
 		const regions = this.models['RegionsModel'].regions;

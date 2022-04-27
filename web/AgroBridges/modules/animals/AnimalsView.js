@@ -115,16 +115,16 @@ export default class AnimalsView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1">'+
 						'<h6 class="required">'+ll_offering_query+'</h6>'+
 						'<p><label><input class="with-gap" name="animalsStatus" id="animals-no" type="radio" value="no" /><span>'+ll_no+'</span></label></p>'+
 						'<p><label><input class="with-gap" name="animalsStatus" id="animals-yes" type="radio" value="yes" /><span>'+ll_yes+'</span></label></p>'+
 					'</div>'+
-					'<div class="input-field col s12">'+
+					'<div class="input-field col s12 m10 offset-m1">'+
 						'<h6>'+ll_animals_query+'</h6>'+
 						'<div id="anim-a-options-wrapper"></div>'+
 					'</div>'+
-					'<div class="input-field col s12">'+
+					'<div class="input-field col s12 m10 offset-m1">'+
 						'<h6>'+ll_dairy_query+'</h6>'+
 						'<div id="anim-b-options-wrapper"></div>'+
 					'</div>'+

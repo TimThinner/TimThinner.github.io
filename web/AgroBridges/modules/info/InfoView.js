@@ -92,7 +92,7 @@ export default class InfoView extends View {
 		noUiSlider.create(farmSizeSlider, {
 			start: [farm_size],
 			connect: 'lower',
-			tooltips: [wNumb({decimals:0})],
+			tooltips: [wNumb({decimals:0,suffix:' ha'})],
 			step: 1,
 			keyboardSupport: true,      // Default true
 			keyboardDefaultStep: 5,     // Default 10

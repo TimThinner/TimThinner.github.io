@@ -177,7 +177,7 @@ export default class FruitsView extends View {
 		noUiSlider.create(hectareSlider, {
 			start: [Hectare_fruits],
 			connect: 'lower',
-			tooltips: [wNumb({decimals: 0})],
+			tooltips: [wNumb({decimals:0,suffix:' ha'})],
 			step: 1,
 			keyboardSupport: true,      // Default true
 			keyboardDefaultStep: 5,     // Default 10

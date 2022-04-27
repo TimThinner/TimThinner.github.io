@@ -359,11 +359,11 @@ export default class MainView extends View {
 		if (r <= 75) {
 			fontsize = 14;
 		} else if (r > 75 && r <= 124) {
-			fontsize = 16;
-		} else if (r > 124 && r <= 150) {
 			fontsize = 18;
+		} else if (r > 124 && r <= 150) {
+			fontsize = 22;
 		} else {
-			fontsize = 20;
+			fontsize = 26;
 		}
 		const titleSVGHeight = fontsize;
 		
@@ -432,12 +432,12 @@ export default class MainView extends View {
 		title.setAttribute('x','50%');
 		title.setAttribute('y','50%');
 		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		title.setAttribute('font-size',fontsize*1.2);
+		title.setAttribute('font-size',fontsize);
 		title.setAttribute('dominant-baseline','middle');
 		title.setAttribute('text-anchor','middle');
 		if (mainState.ready === true) {
 			title.setAttribute('fill',this.colors.DARK_ORANGE);
-			title.setAttribute('font-weight','bold');
+			//title.setAttribute('font-weight','bold');
 		} else {
 			title.setAttribute('fill',this.colors.DARK_GREY);
 		}

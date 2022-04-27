@@ -23,7 +23,7 @@ export default class LanguageModel extends Model {
 				'fruit_hectare_query':'On how many hectars do you grow fruits?',
 				'farm_hectare_query':'How large is your farm in total?',
 				'greenhouse_query':'Do you also produce in greenhouses?',
-				'delivery_month_total_query':'How long could you deliver fresh products (month)?',
+				'delivery_month_total_query':'How long could you deliver fresh products (months)?',
 				'animals_query':'Which animals are you keeping (hobby livestock excluded)?',
 				'dairy_products_query':'Are you offering the following dairy products?',
 				'neighbor_sells_milk_query':'Is someone in your neighborhood selling milk and milk products directly (farm shop, vending machine)?',
@@ -66,7 +66,12 @@ export default class LanguageModel extends Model {
 				'Dummy_Promefruits':'Pome fruits (Apple, Pear, Quince...)',
 				'Dummy_Berries':'Berries (Rapsberries, Strawberries, Blueberries...)',
 				'Dummy_Citrus':'Citrus (Orange, Tangerine, Lemon...)',
-				'Dummy_exotic_fruits':'Other exotic fruits (banana, date, kiwi, mango...)'
+				'Dummy_exotic_fruits':'Other exotic fruits (banana, date, kiwi, mango...)',
+				'Cert_Min':'I am certified (basic hygiene requirements)',
+				'Cert_High':'I am highly certified (HACCP and IFS)',
+				'Cert_uncertified':'I am uncertified',
+				'Harv_farmers_org':'I harvest only, all processing steps (sorting, cleaning) are performed by a farmers organisation',
+				'Harv_Clean_Sort_Ref':'I harvest, clean the products, sort them and store them (refigerated if necessary)'
 			},
 			'fi':{
 				'dummy_yes':'Kyllä',
@@ -128,7 +133,12 @@ export default class LanguageModel extends Model {
 				'Dummy_Promefruits':'Siemenhedelmät (omena, päärynä, kvitteni...)',
 				'Dummy_Berries':'Marjat (vadelmat, mansikat, mustikat...)',
 				'Dummy_Citrus':'Sitrushedelmät (appelsiini, mandariini, sitruuna...)',
-				'Dummy_exotic_fruits':'Muut eksoottiset hedelmät (banaani, taateli, kiivi, mango...)'
+				'Dummy_exotic_fruits':'Muut eksoottiset hedelmät (banaani, taateli, kiivi, mango...)',
+				'Cert_Min':'Olen sertifioitu (perushygieniavaatimukset)',
+				'Cert_High':'Olen korkeasti sertifioitu (HACCP ja IFS)',
+				'Cert_uncertified':'Olen sertifioimaton',
+				'Harv_farmers_org':'Korjaan vain sadon, kaikki käsittelyvaiheet (lajittelu, puhdistus) suorittaa viljelijäorganisaatio',
+				'Harv_Clean_Sort_Ref':'Korjaan, puhdistan tuotteet, lajittelen ja varastoin (tarvittaessa kylmässä)'
 			}
 		}
 	}

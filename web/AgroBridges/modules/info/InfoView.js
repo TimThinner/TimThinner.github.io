@@ -46,8 +46,18 @@ export default class InfoView extends View {
 		
 		const ll_farm_size_query = LM['translation'][sel]['farm_hectare_query'];
 		const ll_deliver_months_query = LM['translation'][sel]['delivery_month_total_query'];
+		const ll_organic_query = LM['translation'][sel]['organic_query'];
+		const ll_yes = LM['translation'][sel]['dummy_yes'];
+		const ll_no = LM['translation'][sel]['dummy_no'];
+		
 		const ll_quality_query = LM['translation'][sel]['quality_cert_query'];
+		const ll_cert_min = LM['translation'][sel]['Cert_Min'];
+		const ll_cert_high = LM['translation'][sel]['Cert_High'];
+		const ll_cert_uncertified = LM['translation'][sel]['Cert_uncertified'];
+		
 		const ll_harvest_query = LM['translation'][sel]['harvest_query'];
+		const ll_harvest_only = LM['translation'][sel]['Harv_farmers_org'];
+		const ll_harvest_plus = LM['translation'][sel]['Harv_Clean_Sort_Ref'];
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
@@ -71,6 +81,22 @@ export default class InfoView extends View {
 						'<p>&nbsp;</p>'+
 						'<div id="deliver-months-slider"></div>'+
 					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h6>'+ll_organic_query+'</h6>'+
+						'<p><label><input class="with-gap" name="organicStatus" id="organic-no" type="radio" value="no" /><span>'+ll_no+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="organicStatus" id="organic-yes" type="radio" value="yes" /><span>'+ll_yes+'</span></label></p>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h6>'+ll_quality_query+'</h6>'+
+						'<p><label><input class="with-gap" name="qualityStatus" id="quality-min" type="radio" value="min" /><span>'+ll_cert_min+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="qualityStatus" id="quality-hight" type="radio" value="high" /><span>'+ll_cert_high+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="qualityStatus" id="quality-uncertified" type="radio" value="uncertified" /><span>'+ll_cert_uncertified+'</span></label></p>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h6>'+ll_harvest_query+'</h6>'+
+						'<p><label><input class="with-gap" name="harvestStatus" id="harvest-only" type="radio" value="only" /><span>'+ll_harvest_only+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="harvestStatus" id="harvest-plus" type="radio" value="plus" /><span>'+ll_harvest_plus+'</span></label></p>'+
+					'</div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -87,6 +113,32 @@ export default class InfoView extends View {
 		// Restore current selection:
 		const farm_size = this.USER_MODEL.profile.Hectare_farm;
 		const delivery_month_total = this.USER_MODEL.profile.Delivery_month_total;
+		
+		if (this.USER_MODEL.profile.Dummy_organic === 'No') {
+			$("#organic-no").prop("checked", true);
+			
+		} else if (this.USER_MODEL.profile.Dummy_organic === 'Yes') {
+			$("#organic-yes").prop("checked", true);
+		}
+		
+		// Only one of these can be true at any one time (radio buttons).
+		if (this.USER_MODEL.profile.Cert_Min === true) {
+			$("#quality-min").prop("checked", true);
+			
+		} else if (this.USER_MODEL.profile.Cert_High === true) {
+			$("#quality-high").prop("checked", true);
+			
+		} else if (this.USER_MODEL.profile.Cert_uncertified === true) {
+			$("#quality-uncertified").prop("checked", true);
+		}
+		
+		
+		if (this.USER_MODEL.profile.Harv_farmers_org === true) {
+			$("#harvest-only").prop("checked", true);
+		} else if (this.USER_MODEL.profile.Harv_Clean_Sort_Ref === true) {
+			$("#harvest-plus").prop("checked", true);
+		}
+		
 		
 		const farmSizeSlider = document.getElementById('farm-size-slider');
 		noUiSlider.create(farmSizeSlider, {
@@ -134,41 +186,50 @@ export default class InfoView extends View {
 			}
 		});
 		
+		$('input[type=radio][name=organicStatus]').change(function() {
+			if (this.value == 'no') {
+				self.USER_MODEL.profile.Dummy_organic = 'No';
+				// DATABASE Update USER_MODEL
+				
+			} else if (this.value == 'yes') {
+				self.USER_MODEL.profile.Dummy_organic = 'Yes';
+				// DATABASE Update USER_MODEL
+			}
+		});
+		
+		$('input[type=radio][name=qualityStatus]').change(function() {
+			if (this.value == 'min') {
+				self.USER_MODEL.profile.Cert_Min = true;
+				self.USER_MODEL.profile.Cert_High = false;
+				self.USER_MODEL.profile.Cert_uncertified = false;
+				// DATABASE Update USER_MODEL
+			} else if (this.value == 'high') {
+				self.USER_MODEL.profile.Cert_Min = false;
+				self.USER_MODEL.profile.Cert_High = true;
+				self.USER_MODEL.profile.Cert_uncertified = false;
+				// DATABASE Update USER_MODEL
+			} else {
+				self.USER_MODEL.profile.Cert_Min = false;
+				self.USER_MODEL.profile.Cert_High = false;
+				self.USER_MODEL.profile.Cert_uncertified = true;
+				// DATABASE Update USER_MODEL
+			}
+		});
+		
+		$('input[type=radio][name=harvestStatus]').change(function() {
+			if (this.value == 'only') {
+				self.USER_MODEL.profile.Harv_farmers_org = true;
+				self.USER_MODEL.profile.Harv_Clean_Sort_Ref = false;
+			} else {
+				self.USER_MODEL.profile.Harv_farmers_org = false;
+				self.USER_MODEL.profile.Harv_Clean_Sort_Ref = true;
+			}
+		});
+		
 		$("#info-ok").on('click', function() {
 			self.models['MenuModel'].setSelected('farm');
 		});
+		
 		this.rendered = true;
 	}
 }
-/*
-						'<table class="striped">'+
-							'<thead>'+
-								'<tr>'+
-									'<th>Question</th>'+
-									'<th>Variables</th>'+
-								'</tr>'+
-							'</thead>'+
-							'<tbody>'+
-								'<tr>'+
-									'<td>How large is your farm in total?</td>'+
-									'<td>Hectare_farm</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>How long could you deliver fresh products (months)?</td>'+
-									'<td>Delivery_month_total</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>I am an organic farmer</td>'+
-									'<td>Dummy_organic (No, Yes)</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>Which quality certification standards do you fulfil?</td>'+
-									'<td>Cert_Min, Cert_High, Cert_uncertified</td>'+
-								'</tr>'+
-								'<tr>'+
-									'<td>How do you handle your products after the harvest?</td>'+
-									'<td>Harv_farmers_org, Harv_Clean_Sort_Ref</td>'+
-								'</tr>'+
-							'</tbody>'+
-						'</table>'+
-*/

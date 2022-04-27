@@ -380,6 +380,27 @@ export default class UserModel extends Model {
 		return retval;
 	}
 	
+	mainState() {
+		let retval = {'total':3,'filled':0,'ready':false};
+		
+		const farmState = this.profileFarmState();
+		if (farmState.ready===true) {
+			retval.filled++;
+		}
+		
+		const activitiesState = this.profileActivitiesState();
+		if (activitiesState.ready===true) {
+			retval.filled++;
+		}
+		
+		const producerState = this.profileProducerState();
+		if (producerState.ready===true) {
+			retval.filled++;
+		}
+		retval.ready = farmState.ready && activitiesState.ready && producerState.ready;
+		return retval;
+	}
+	
 	isLoggedIn() {
 		let retval = false;
 		if (typeof this.token !== 'undefined') {

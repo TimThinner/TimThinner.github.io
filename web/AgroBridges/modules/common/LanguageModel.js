@@ -89,7 +89,7 @@ export default class LanguageModel extends Model {
 				'Dummy_no_SFSC':'none of the above',
 				'Dummy_commu_supp_agri':'Fields for community supported agriculture',
 				'Dummy_Pickyourown':'Pick your own activities',
-				'Likert_welcome_farm':'I like to welcome consumers and tourist at my farm...',
+				'Likert_welcome_farm':'I like to welcome consumers and tourists at my farm...',
 				'Likert_consumer_con':'I enjoy direct consumer contact...'
 			},
 			'fi':{

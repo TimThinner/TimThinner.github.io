@@ -8,6 +8,10 @@ export default class InfoView extends View {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
+		
+		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
+		this.USER_MODEL.subscribe(this);
+		
 		this.rendered = false;
 	}
 	
@@ -24,6 +28,7 @@ export default class InfoView extends View {
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
+		this.USER_MODEL.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}

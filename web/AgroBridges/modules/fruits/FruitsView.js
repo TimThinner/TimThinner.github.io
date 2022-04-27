@@ -92,22 +92,21 @@ export default class FruitsView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1">'+
 						'<h6 class="required">'+ll_offering_query+'</h6>'+
 						'<p><label><input class="with-gap" name="fruitsStatus" id="fruits-no" type="radio" value="no" /><span>'+ll_no+'</span></label></p>'+
 						'<p><label><input class="with-gap" name="fruitsStatus" id="fruits-yes" type="radio" value="yes" /><span>'+ll_yes+'</span></label></p>'+
 					'</div>'+
-					'<div class="input-field col s12">'+
+					'<div class="input-field col s12 m10 offset-m1">'+
 						'<h6 id="required-A">'+ll_fruits_query+'</h6>'+
 						'<div id="fruit-options-wrapper"></div>'+
 					'</div>'+
-					// NOTE: Make all sliders 16,6667% narrower than "full" width => margin is one column to the left and right.
-					'<div class="input-field col s10 offset-s1">'+ // s12 => s10 offset-s1
+					'<div class="input-field col s12 m10 offset-m1">'+
 						'<h6 id="required-B">'+ll_how_many_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="fruits-total-slider"></div>'+
 					'</div>'+
-					'<div class="input-field col s10 offset-s1">'+
+					'<div class="input-field col s12 m10 offset-m1">'+
 						'<h6 id="required-C">'+ll_hectares_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="Hectare-fruits-slider"></div>'+

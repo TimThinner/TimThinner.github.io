@@ -61,12 +61,12 @@ export default class InfoView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<div class="input-field col s10 offset-s1">'+ // s12 => s10 offset-s1
+					'<div class="input-field col s12 m10 offset-m1">'+
 						'<h6 class="required">'+ll_farm_size_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="farm-size-slider"></div>'+
 					'</div>'+
-					'<div class="input-field col s10 offset-s1">'+ // s12 => s10 offset-s1
+					'<div class="input-field col s12 m10 offset-m1">'+
 						'<h6 class="required">'+ll_deliver_months_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="deliver-months-slider"></div>'+

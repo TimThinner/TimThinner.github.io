@@ -118,13 +118,9 @@ export default class MenuView extends View {
 					'<div class="col s2 center">'+
 						'<p><img src="./img/logo2.png" class="responsive-img" /></p>'+ // Original logo is 960 x 540 pixels.
 					'</div>'+
-				'</div>'+
-			'</div>'+
-			'<div class="row">'+
-				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						//'<p style="color:#ccc;">W='+w+'px H='+h+'px</p>'+
-						'<p style="color:#ccc;">Version 22.04.27</p>'+
+						'<p style="color:#ccc;">Version 22.04.27-A</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>';

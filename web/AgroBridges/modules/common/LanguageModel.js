@@ -88,7 +88,9 @@ export default class LanguageModel extends Model {
 				'Dummy_public_canteens':'to institutions (canteens of i.e. schools or hospitals)',
 				'Dummy_no_SFSC':'none of the above',
 				'Dummy_commu_supp_agri':'Fields for community supported agriculture',
-				'Dummy_Pickyourown':'Pick your own activities'
+				'Dummy_Pickyourown':'Pick your own activities',
+				'Likert_welcome_farm':'I like to welcome consumers and tourist at my farm...',
+				'Likert_consumer_con':'I enjoy direct consumer contact...'
 			},
 			'fi':{
 				'dummy_yes':'Kyllä',
@@ -172,7 +174,9 @@ export default class LanguageModel extends Model {
 				'Dummy_public_canteens':'laitoksille (esim. koulujen tai sairaaloiden ruokaloihin)',
 				'Dummy_no_SFSC':'ei mikään yllä mainituista',
 				'Dummy_commu_supp_agri':'Peltoja yhteisöviljelyyn',
-				'Dummy_Pickyourown':'Mahdollisuuksia itsepoimintaan'
+				'Dummy_Pickyourown':'Mahdollisuuksia itsepoimintaan',
+				'Likert_welcome_farm':'Haluan toivottaa kuluttajat ja turistit tervetulleiksi tilalleni...',
+				'Likert_consumer_con':'Pidän suorasta kuluttajakontaktista...'
 			}
 		}
 	}

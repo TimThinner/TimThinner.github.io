@@ -316,10 +316,30 @@ export default class UserModel extends Model {
 	
 	profileActivitiesState() {
 		let retval = {'total':2,'filled':0,'ready':false};
+		/*
+			Dummy_wholesale: false,
+			Dummy_supermarket_regional: false,
+			Dummy_supermarket_noregio: false,
+			Dummy_farmer_market: false,
+			Dummy_farmer_shop: false,
+			Dummy_food_assemblies: false,
+			Dummy_food_box_delivery: false,
+			Dummy_restaurant: false,
+			Dummy_public_canteens: false,
+			Dummy_no_SFSC: false,
+			
+			Dummy_commu_supp_agri: false,
+			Dummy_Pickyourown: false,
+		*/
 		return retval;
 	}
 	profileProducerState() {
 		let retval = {'total':2,'filled':0,'ready':false};
+		/*
+		
+			Likert_welcome_farm: undefined, // 5 scale from "I agree" to "I disagree"
+			Likert_consumer_con: undefined  // 5 scale from "I agree" to "I disagree"
+		*/
 		return retval;
 	}
 	

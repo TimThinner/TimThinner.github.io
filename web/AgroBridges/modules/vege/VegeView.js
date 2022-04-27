@@ -103,12 +103,13 @@ export default class VegeView extends View {
 						'<h6 id="required-A">'+ll_vege_query+'</h6>'+
 						'<div id="vege-options-wrapper"></div>'+
 					'</div>'+
-					'<div class="input-field col s12">'+
+					// NOTE: Make all sliders 16,6667% narrower than "full" width => margin is one column to the left and right.
+					'<div class="input-field col s10 offset-s1">'+ // s12 => s10 offset-s1
 						'<h6 id="required-B">'+ll_how_many_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="vegetables-total-slider"></div>'+
 					'</div>'+
-					'<div class="input-field col s12">'+
+					'<div class="input-field col s10 offset-s1">'+ // s12 => s10 offset-s1
 						'<h6 id="required-C">'+ll_hectares_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="Hectare-veggies-slider"></div>'+

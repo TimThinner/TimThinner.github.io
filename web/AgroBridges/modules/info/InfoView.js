@@ -36,12 +36,106 @@ export default class InfoView extends View {
 		const self = this;
 		$(this.el).empty();
 		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		
+		const ll_farm_size_query = LM['translation'][sel]['farm_hectare_query'];
+		const ll_deliver_months_query = LM['translation'][sel]['delivery_month_total_query'];
+		const ll_quality_query = LM['translation'][sel]['quality_cert_query'];
+		const ll_harvest_query = LM['translation'][sel]['harvest_query'];
+		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
-		const html = '<div class="row">'+
+		const html = 
+			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">FARM INFO</h3>'+
 						'<p><img src="./img/info.png" height="150"/></p>'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<div class="input-field col s10 offset-s1">'+ // s12 => s10 offset-s1
+						'<h6 class="required">'+ll_farm_size_query+'</h6>'+
+						'<p>&nbsp;</p>'+
+						'<div id="farm-size-slider"></div>'+
+					'</div>'+
+					'<div class="input-field col s10 offset-s1">'+ // s12 => s10 offset-s1
+						'<h6 class="required">'+ll_deliver_months_query+'</h6>'+
+						'<p>&nbsp;</p>'+
+						'<div id="deliver-months-slider"></div>'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<div class="col s12 center">'+
+						'<button class="btn waves-effect waves-light" id="info-ok" style="width:120px">OK</button>'+
+						'<p>&nbsp;</p>'+
+					'</div>'+
+				'</div>'+
+			'</div>';
+		$(this.el).append(html);
+		
+		
+		// Restore current selection:
+		const farm_size = this.USER_MODEL.profile.Hectare_farm;
+		const delivery_month_total = this.USER_MODEL.profile.Delivery_month_total;
+		
+		const farmSizeSlider = document.getElementById('farm-size-slider');
+		noUiSlider.create(farmSizeSlider, {
+			start: [farm_size],
+			connect: 'lower',
+			tooltips: [wNumb({decimals:0})],
+			step: 1,
+			keyboardSupport: true,      // Default true
+			keyboardDefaultStep: 5,     // Default 10
+			keyboardPageMultiplier: 5,  // Default 5
+			keyboardMultiplier: 5,      // Default 1
+			range: {
+				'min': [0],
+				'max': [500]
+			}
+		});
+		farmSizeSlider.noUiSlider.on('change', function (values) {
+			console.log(['values=',values]);
+			if (Array.isArray(values) && values.length > 0) {
+				self.USER_MODEL.profile.Hectare_farm = Math.round(values[0]);
+				// DATABASE Update USER_MODEL
+			}
+		});
+		
+		const deliverySlider = document.getElementById('deliver-months-slider');
+		noUiSlider.create(deliverySlider, {
+			start: [delivery_month_total],
+			connect: 'lower',
+			tooltips: [wNumb({decimals:0})],
+			step: 1,
+			keyboardSupport: true,      // Default true
+			keyboardDefaultStep: 5,     // Default 10
+			keyboardPageMultiplier: 5,  // Default 5
+			keyboardMultiplier: 5,      // Default 1
+			range: {
+				'min': [0],
+				'max': [12]
+			}
+		});
+		deliverySlider.noUiSlider.on('change', function (values) {
+			console.log(['values=',values]);
+			if (Array.isArray(values) && values.length > 0) {
+				self.USER_MODEL.profile.Delivery_month_total = Math.round(values[0]);
+				// DATABASE Update USER_MODEL
+			}
+		});
+		
+		$("#info-ok").on('click', function() {
+			self.models['MenuModel'].setSelected('farm');
+		});
+		this.rendered = true;
+	}
+}
+/*
 						'<table class="striped">'+
 							'<thead>'+
 								'<tr>'+
@@ -72,17 +166,4 @@ export default class InfoView extends View {
 								'</tr>'+
 							'</tbody>'+
 						'</table>'+
-						'<p>&nbsp;</p>'+
-						'<button class="btn waves-effect waves-light" id="location-ok" style="width:120px">OK</button>'+
-						'<p>&nbsp;</p>'+
-					'</div>'+
-				'</div>'+
-			'</div>';
-		$(this.el).append(html);
-		
-		$("#location-ok").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('farm');
-		});
-		this.rendered = true;
-	}
-}
+*/

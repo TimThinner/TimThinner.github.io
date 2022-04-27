@@ -204,12 +204,12 @@ export default class LocationView extends View {
 						'<h6 class="required">'+ll_region_query+'</h6>'+
 						'<div id="regions-wrapper"></div>'+
 					'</div>'+
-					'<div class="input-field col s12">'+
+					'<div class="input-field col s10 offset-s1">'+ // s12 => s10 offset-s1
 						'<h6 class="required">'+ll_distance_small_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="distance-bigger-town-slider"></div>'+
 					'</div>'+
-					'<div class="input-field col s12">'+
+					'<div class="input-field col s10 offset-s1">'+ // s12 => s10 offset-s1
 						'<h6 class="required">'+ll_distance_major_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="distance-major-city-slider"></div>'+

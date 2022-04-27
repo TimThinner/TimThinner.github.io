@@ -432,10 +432,14 @@ export default class MainView extends View {
 		title.setAttribute('x','50%');
 		title.setAttribute('y','50%');
 		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		title.setAttribute('font-size',fontsize);
+		title.setAttribute('font-size',fontsize*2);
 		title.setAttribute('dominant-baseline','middle');
 		title.setAttribute('text-anchor','middle');
-		title.setAttribute('fill',this.colors.DARK_GREY);
+		if (mainState.ready === true) {
+			title.setAttribute('fill',this.colors.DARK_ORANGE);
+		} else {
+			title.setAttribute('fill',this.colors.DARK_GREY);
+		}
 		title.style.opacity = 1;
 		title.appendChild(document.createTextNode('ANALYSIS'));
 		svg.appendChild(title);

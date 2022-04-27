@@ -84,8 +84,8 @@ export default class LanguageModel extends Model {
 				'Dummy_farmer_shop':"at my own farmer's shop",
 				'Dummy_food_assemblies':'to others (in cooperation with farmer assemblies, other farm shops)',
 				'Dummy_food_box_delivery':'online (own delivery or delivered by post)',
-				'Dummy_restraurant':'to restaurants',
-				'Dummy_pulic_canteens':'to institutions (canteens of i.e. schools or hospitals)',
+				'Dummy_restaurant':'to restaurants',
+				'Dummy_public_canteens':'to institutions (canteens of i.e. schools or hospitals)',
 				'Dummy_no_SFSC':'none of the above',
 				'Dummy_commu_supp_agri':'Fields for community supported agriculture',
 				'Dummy_Pickyourown':'Pick your own activities'
@@ -168,8 +168,8 @@ export default class LanguageModel extends Model {
 				'Dummy_farmer_shop':'oman maatilan kaupassa',
 				'Dummy_food_assemblies':'muille (yhteistyössä viljelijäyhdistysten, muiden maatilakauppojen kanssa)',
 				'Dummy_food_box_delivery':'verkossa (oma toimitus tai toimitetaan postitse)',
-				'Dummy_restraurant':'ravintoloihin',
-				'Dummy_pulic_canteens':'laitoksille (esim. koulujen tai sairaaloiden ruokaloihin)',
+				'Dummy_restaurant':'ravintoloihin',
+				'Dummy_public_canteens':'laitoksille (esim. koulujen tai sairaaloiden ruokaloihin)',
 				'Dummy_no_SFSC':'ei mikään yllä mainituista',
 				'Dummy_commu_supp_agri':'Peltoja yhteisöviljelyyn',
 				'Dummy_Pickyourown':'Mahdollisuuksia itsepoimintaan'

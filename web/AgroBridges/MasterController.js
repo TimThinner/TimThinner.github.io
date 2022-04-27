@@ -14,6 +14,8 @@ import FruitsController from './modules/fruits/FruitsController.js';
 
 import ActivitiesController from './modules/activities/ActivitiesController.js';
 import ProducerController from './modules/producer/ProducerController.js';
+
+import AnalysisController from './modules/analysis/AnalysisController.js';
 /*
 EventObserver	Model					MenuModel
 				ResizeEventObserver		
@@ -108,6 +110,9 @@ class MasterController {
 		this.controllers['activities'].init();
 		this.controllers['producer'] = new ProducerController({name:'producer', master:this, el:'#content', visible:false});
 		this.controllers['producer'].init();
+		
+		this.controllers['analysis'] = new AnalysisController({name:'analysis', master:this, el:'#content', visible:false});
+		this.controllers['analysis'].init();
 	}
 	
 	forceLogout() {

@@ -345,7 +345,11 @@ export default class MainView extends View {
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#space').append(group);
 	}
+	/*
 	
+	Note:
+	Analysis "button" is always rendered, but it is "active" if all required questions are fllled.
+	*/
 	appendAnalysisButton() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -362,6 +366,14 @@ export default class MainView extends View {
 			fontsize = 20;
 		}
 		const titleSVGHeight = fontsize;
+		
+		const mainState = this.USER_MODEL.mainState();
+		/*if (mainState.ready === true) {
+			// Analysis "button" is active
+		} else {
+			// Analysis "button" is not active
+		}*/
+		
 		
 		/*
 		let icon_w = 2*r;
@@ -384,9 +396,14 @@ export default class MainView extends View {
 		border.setAttributeNS(null, 'cx', 0);
 		border.setAttributeNS(null, 'cy', 0);
 		border.setAttributeNS(null, 'r', r);
-		border.style.fill = this.colors.LIGHT_GREY;
+		if (mainState.ready === true) {
+			border.style.fill = this.colors.LIGHT_ORANGE;
+			border.style.stroke = this.colors.DARK_ORANGE;
+		} else {
+			border.style.fill = this.colors.LIGHT_GREY;
+			border.style.stroke = this.colors.DARK_GREY;
+		}
 		border.style.fillOpacity = 0.75;
-		border.style.stroke = this.colors.DARK_GREY;
 		border.style.strokeWidth = 5;
 		group.appendChild(border);
 		
@@ -394,9 +411,14 @@ export default class MainView extends View {
 		ca.setAttributeNS(null, 'cx', 0);
 		ca.setAttributeNS(null, 'cy', 0);
 		ca.setAttributeNS(null, 'r', r2);
-		ca.style.fill = this.colors.LIGHT_GREY;
+		if (mainState.ready === true) {
+			ca.style.fill = this.colors.LIGHT_ORANGE;
+			ca.style.stroke = this.colors.DARK_ORANGE;
+		} else {
+			ca.style.fill = this.colors.LIGHT_GREY;
+			ca.style.stroke = this.colors.DARK_GREY;
+		}
 		ca.style.fillOpacity = 1;
-		ca.style.stroke = this.colors.DARK_GREY;
 		ca.style.strokeWidth = 1;
 		group.appendChild(ca);
 		
@@ -423,23 +445,38 @@ export default class MainView extends View {
 		surface.setAttributeNS(null, 'cx', 0);
 		surface.setAttributeNS(null, 'cy', 0);
 		surface.setAttributeNS(null, 'r', r);
-		surface.style.stroke = this.colors.DARK_GREY;
+		if (mainState.ready === true) {
+			surface.style.stroke = this.colors.DARK_ORANGE;
+		} else {
+			surface.style.stroke = this.colors.DARK_GREY;
+		}
 		surface.style.strokeWidth = 1;
 		surface.style.fillOpacity = 0;
+		surface.style.opacity = 0;
 		surface.style.cursor = 'pointer';
 		
 		// Select which pages open...
-		
 		surface.addEventListener("click", function(){
-			//self.models['MenuModel'].setSelected('farm');
-			console.log('ANALYSIS!');
+			if (mainState.ready === true) {
+				self.models['MenuModel'].setSelected('analysis');
+			} else {
+				console.log('ANALYSIS!');
+			}
 		}, false);
 		
 		surface.addEventListener("mouseover", function(event){ 
-			border.style.fill = self.colors.DARK_GREY;
+			if (mainState.ready === true) {
+				border.style.fill = self.colors.DARK_ORANGE;
+			} else {
+				border.style.fill = self.colors.DARK_GREY;
+			}
 		}, false);
 		surface.addEventListener("mouseout", function(event){ 
-			border.style.fill = self.colors.LIGHT_GREY;
+			if (mainState.ready === true) {
+				border.style.fill = self.colors.LIGHT_ORANGE;
+			} else {
+				border.style.fill = self.colors.LIGHT_GREY;
+			}
 		}, false);
 		
 		group.appendChild(surface);

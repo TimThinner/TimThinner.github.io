@@ -432,11 +432,12 @@ export default class MainView extends View {
 		title.setAttribute('x','50%');
 		title.setAttribute('y','50%');
 		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		title.setAttribute('font-size',fontsize*2);
+		title.setAttribute('font-size',fontsize*1.2);
 		title.setAttribute('dominant-baseline','middle');
 		title.setAttribute('text-anchor','middle');
 		if (mainState.ready === true) {
 			title.setAttribute('fill',this.colors.DARK_ORANGE);
+			title.setAttribute('font-weight','bold');
 		} else {
 			title.setAttribute('fill',this.colors.DARK_GREY);
 		}

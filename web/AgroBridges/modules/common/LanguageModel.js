@@ -71,7 +71,24 @@ export default class LanguageModel extends Model {
 				'Cert_High':'I am highly certified (HACCP and IFS)',
 				'Cert_uncertified':'I am uncertified',
 				'Harv_farmers_org':'I harvest only, all processing steps (sorting, cleaning) are performed by a farmers organisation',
-				'Harv_Clean_Sort_Ref':'I harvest, clean the products, sort them and store them (refigerated if necessary)'
+				'Harv_Clean_Sort_Ref':'I harvest, clean the products, sort them and store them (refigerated if necessary)',
+				'Self_desc_likert_value_1':'I fully agree',
+				'Self_desc_likert_value_2':'I agree',
+				'Self_desc_likert_value_3':'I do not know',
+				'Self_desc_likert_value_4':'I slightly disagree',
+				'Self_desc_likert_value_5':'I fully disagree',
+				'Dummy_wholesale':'the wholesale market (or distributors or producers organisations)',
+				'Dummy_supermarket_regional':'to supermarkets (the regional origin is highlighted)',
+				'Dummy_supermarket_noregio':'to supermarkets (the regional origin is not highlighted)',
+				'Dummy_farmer_market':"at farmer's markets",
+				'Dummy_farmer_shop':"at my own farmer's shop",
+				'Dummy_food_assemblies':'to others (in cooperation with farmer assemblies, other farm shops)',
+				'Dummy_food_box_delivery':'online (own delivery or delivered by post)',
+				'Dummy_restraurant':'to restaurants',
+				'Dummy_pulic_canteens':'to institutions (canteens of i.e. schools or hospitals)',
+				'Dummy_no_SFSC':'none of the above',
+				'Dummy_commu_supp_agri':'Fields for community supported agriculture',
+				'Dummy_Pickyourown':'Pick your own activities'
 			},
 			'fi':{
 				'dummy_yes':'Kyllä',
@@ -138,7 +155,24 @@ export default class LanguageModel extends Model {
 				'Cert_High':'Olen korkeasti sertifioitu (HACCP ja IFS)',
 				'Cert_uncertified':'Olen sertifioimaton',
 				'Harv_farmers_org':'Korjaan vain sadon, kaikki käsittelyvaiheet (lajittelu, puhdistus) suorittaa viljelijäorganisaatio',
-				'Harv_Clean_Sort_Ref':'Korjaan, puhdistan tuotteet, lajittelen ja varastoin (tarvittaessa kylmässä)'
+				'Harv_Clean_Sort_Ref':'Korjaan, puhdistan tuotteet, lajittelen ja varastoin (tarvittaessa kylmässä)',
+				'Self_desc_likert_value_1':'Olen täysin samaa mieltä',
+				'Self_desc_likert_value_2':'Olen samaa mieltä',
+				'Self_desc_likert_value_3':'En osaa sanoa',
+				'Self_desc_likert_value_4':'Olen hieman erimieltä',
+				'Self_desc_likert_value_5':'Olen täysin erimieltä',
+				'Dummy_wholesale':'tukkumarkkinat (tai jakelijat tai tuottajaorganisaatiot)',
+				'Dummy_supermarket_regional':'supermarketteihin (alueellista alkuperää korostetaan)',
+				'Dummy_supermarket_noregio':'supermarketteihin (alueellista alkuperää ei korosteta)',
+				'Dummy_farmer_market':'maatilojen kaupoissa',
+				'Dummy_farmer_shop':'oman maatilan kaupassa',
+				'Dummy_food_assemblies':'muille (yhteistyössä viljelijäyhdistysten, muiden maatilakauppojen kanssa)',
+				'Dummy_food_box_delivery':'verkossa (oma toimitus tai toimitetaan postitse)',
+				'Dummy_restraurant':'ravintoloihin',
+				'Dummy_pulic_canteens':'laitoksille (esim. koulujen tai sairaaloiden ruokaloihin)',
+				'Dummy_no_SFSC':'ei mikään yllä mainituista',
+				'Dummy_commu_supp_agri':'Peltoja yhteisöviljelyyn',
+				'Dummy_Pickyourown':'Mahdollisuuksia itsepoimintaan'
 			}
 		}
 	}

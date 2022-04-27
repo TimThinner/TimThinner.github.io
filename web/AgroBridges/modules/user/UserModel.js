@@ -334,30 +334,49 @@ export default class UserModel extends Model {
 	
 	profileActivitiesState() {
 		let retval = {'total':2,'filled':0,'ready':false};
-		/*
-			Dummy_wholesale: false,
-			Dummy_supermarket_regional: false,
-			Dummy_supermarket_noregio: false,
-			Dummy_farmer_market: false,
-			Dummy_farmer_shop: false,
-			Dummy_food_assemblies: false,
-			Dummy_food_box_delivery: false,
-			Dummy_restaurant: false,
-			Dummy_public_canteens: false,
-			Dummy_no_SFSC: false,
+		let fillOne = false;
+		let fillTwo = false;
+		
+		if (this.profile.Dummy_wholesale ||
+			this.profile.Dummy_supermarket_regional ||
+			this.profile.Dummy_supermarket_noregio ||
+			this.profile.Dummy_farmer_market ||
+			this.profile.Dummy_farmer_shop ||
+			this.profile.Dummy_food_assemblies ||
+			this.profile.Dummy_food_box_delivery ||
+			this.profile.Dummy_restaurant ||
+			this.profile.Dummy_public_canteens ||
+			this.profile.Dummy_no_SFSC) {
 			
-			Dummy_commu_supp_agri: false,
-			Dummy_Pickyourown: false,
-		*/
+			fillOne = true;
+			retval.filled++;
+		}
+		if (this.profile.Dummy_commu_supp_agri ||
+			this.profile.Dummy_Pickyourown) {
+			
+			fillTwo = true;
+			retval.filled++;
+		}
+		if (fillOne || fillTwo) {
+			retval.ready = true;
+		}
 		return retval;
 	}
+	
 	profileProducerState() {
 		let retval = {'total':2,'filled':0,'ready':false};
-		/*
 		
-			Likert_welcome_farm: undefined, // 5 scale from "I agree" to "I disagree"
-			Likert_consumer_con: undefined  // 5 scale from "I agree" to "I disagree"
-		*/
+		if (typeof this.profile.Likert_welcome_farm !== 'undefined') {
+			retval.filled++;
+		}
+		if (typeof this.profile.Likert_consumer_con !== 'undefined') {
+			retval.filled++;
+		}
+		if (typeof this.profile.Likert_welcome_farm !== 'undefined' &&
+			typeof this.profile.Likert_consumer_con !== 'undefined') {
+			
+			retval.ready = true;
+		}
 		return retval;
 	}
 	

@@ -138,7 +138,25 @@ export default class UserModel extends Model {
 	
 	
 	profileInfoState() {
-		let retval = {'total':5,'filled':0,'ready':false};
+		let retval = {'total':5,'filled':3,'ready':false};
+		// 3 questionsa are already filled BY DEFAULT:
+		// Dummy_organic: 'No', // 'Yes'
+		// Cert_Min: false,
+		// Cert_High: false,
+		// Cert_uncertified: true,
+		// Harv_farmers_org: false,
+		// Harv_Clean_Sort_Ref: true,
+		
+		if (this.profile.Hectare_farm > 0) {
+			retval.filled++;
+		}
+		if (this.profile.Delivery_month_total > 0) {
+			retval.filled++;
+		}
+		
+		if (this.profile.Hectare_farm > 0 && this.profile.Delivery_month_total > 0) {
+			retval.ready = true;
+		}
 		return retval;
 	}
 	/*

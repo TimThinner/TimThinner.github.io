@@ -56,6 +56,10 @@ export default class AnalysisView extends View {
 		}
 	}
 	
+	/* Note:
+		light-blue background:	#e5ecf6
+		blue line:				#5965fa
+	*/
 	drawSpider(diagram) {
 		
 		$('#spider').empty();
@@ -152,7 +156,7 @@ export default class AnalysisView extends View {
 				//.attr("cy", 300)
 				.attr("cx", horiz_center) // min_dim)
 				.attr("cy", verti_center) // min_dim)
-				.attr("fill", "#fff") // "none"
+				.attr("fill", "#e5ecf6") // "none"
 				.attr("stroke", "gray")
 				.attr("r", radialScale(t))
 		);
@@ -182,13 +186,13 @@ export default class AnalysisView extends View {
 			if (ft_name === 'Volume') {
 				label_coordinate.x -= fontsize*3; // 6 characters
 			} else if (ft_name === 'Consumer Contact') { // 16 characters
-				label_coordinate.x -= fontsize*8;
+				label_coordinate.x -= fontsize*7;
 			} else if (ft_name === 'Gender Equality') { // 15 characters
-				label_coordinate.x -= fontsize*6;
+				label_coordinate.x -= fontsize*5;
 			} else if (ft_name === 'Lower Labor Produce Ratio') { // 25 characters
-				label_coordinate.x -= fontsize*10;
-			} else if (ft_name === 'Lower Carbon Footprint') { // 22 characters
 				label_coordinate.x -= fontsize*8;
+			} else if (ft_name === 'Lower Carbon Footprint') { // 22 characters
+				label_coordinate.x -= fontsize*4;
 			} else if (ft_name === 'Chain Added Value') { // 17 characters
 				label_coordinate.x -= fontsize*4;
 			} else if (ft_name === 'Price Premium') { // 13 characters
@@ -209,7 +213,7 @@ export default class AnalysisView extends View {
 		//drawing the line for the spider chart
 		let line = d3.line().x(d => d.x).y(d => d.y);
 		//let colors = ["darkorange", "gray", "navy"];
-		let colors = ["navy","darkorange","gray"];
+		let colors = ["#5965fa","darkorange","gray"];
 		//get coordinates for a data point
 		function getPathCoordinates(d) {
 			let coordinates = [];

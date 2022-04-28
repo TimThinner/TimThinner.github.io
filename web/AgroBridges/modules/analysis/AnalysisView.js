@@ -107,15 +107,15 @@ export default class AnalysisView extends View {
 		// Gender_Equality;		0.498997996
 		// Consumer_Contact		0.2
 		if (diagram === 'wholesale') {
-			data = [
-				{"Volume":1},
-				{"Consumer Contact":0.2},
-				{"Gender Equality":0.498997996},
-				{"Lower Labor Produce Ratio":1},
-				{"Lower Carbon Footprint":0.27142858},
-				{"Chain Added Value":0.093587522},
-				{"Price Premium":0.243019648}
-			];
+			data = [{
+				"Volume":1,
+				"Consumer Contact":0.2,
+				"Gender Equality":0.498997996,
+				"Lower Labor Produce Ratio":1,
+				"Lower Carbon Footprint":0.27142858,
+				"Chain Added Value":0.093587522,
+				"Price Premium":0.243019648
+			}];
 			//data.push({"Volume":1});
 			//data.push({"Consumer Contact":0.2});
 			//data.push({"Gender Equality":0.498997996}); 
@@ -260,14 +260,10 @@ export default class AnalysisView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">ANALYSIS</h3>'+
-						'<p>&nbsp;</p>'+
-						'<p>&nbsp;</p>'+
-						'<p>ANALYSIS UNDER CONSTRUCTION!</p>'+
-						'<p>&nbsp;</p>'+
-						'<p>&nbsp;</p>'+
 					'</div>'+
 					'<div class="col s12 center">'+
 						'<h6>Sales over the Wholesale market</h6>'+
+						'<p>&nbsp;</p>'+
 						'<div id="spider-wrapper"></div>'+
 					'</div>'+
 				'</div>'+

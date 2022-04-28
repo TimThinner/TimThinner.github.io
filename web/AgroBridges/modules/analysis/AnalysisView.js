@@ -56,7 +56,7 @@ export default class AnalysisView extends View {
 		}
 	}
 	
-	drawSpider() {
+	drawSpider(diagram) {
 		
 		$('#spider').empty();
 		
@@ -73,6 +73,17 @@ export default class AnalysisView extends View {
 		const min_dim = Math.min(horiz_center, verti_center);
 		const range = min_dim - 0.15*min_dim;
 		
+		let fontsize;
+		if (w <= 600) {
+			fontsize = 12;
+		} else if (w > 600 && w <= 992) {
+			fontsize = 14;
+		} else if (w > 992 && w <= 1200) {
+			fontsize = 16;
+		} else {
+			fontsize = 18;
+		}
+		
 		let data = [];
 		let features = [
 			"Volume", 
@@ -83,14 +94,47 @@ export default class AnalysisView extends View {
 			"Chain Added Value",
 			"Price Premium"]; // 7!
 		//generate the data (only one set)
-		for (var i = 0; i < 1; i++) {
-			var point = {}
-			//each feature will be a random number from 2-8
-			//features.forEach(f => point[f] = 1 + Math.random() * 8);
-			//each feature will be a random number from 0 to 1
-			features.forEach(f => point[f] = Math.random());
-			data.push(point);
+		
+		//wholesale diagram results:
+		//diagram_title_id;Volume;Price_Premium;Chain_Added_Value;Carbon_Footprint;Labor_Produce;Gender_Equality;Consumer_Contact
+		//Wholesale;1;0,243019648;0,093587522;0,27142858;1;0,498997996;0,2
+		
+		// Volume;				1
+		// Price_Premium;		0.243019648;
+		// Chain_Added_Value;	0.093587522;
+		// Carbon_Footprint;	0.27142858;
+		// Labor_Produce;		1
+		// Gender_Equality;		0.498997996
+		// Consumer_Contact		0.2
+		if (diagram === 'wholesale') {
+			data = [
+				{"Volume":1},
+				{"Consumer Contact":0.2},
+				{"Gender Equality":0.498997996},
+				{"Lower Labor Produce Ratio":1},
+				{"Lower Carbon Footprint":0.27142858},
+				{"Chain Added Value":0.093587522},
+				{"Price Premium":0.243019648}
+			];
+			//data.push({"Volume":1});
+			//data.push({"Consumer Contact":0.2});
+			//data.push({"Gender Equality":0.498997996}); 
+			//data.push({"Lower Labor Produce Ratio":1});
+			//data.push({"Lower Carbon Footprint":0.27142858});
+			//data.push({"Chain Added Value":0.093587522});
+			//data.push({"Price Premium":0.243019648});
+			
+		} else {
+			for (let i = 0; i < 1; i++) {
+				let point = {}
+				//each feature will be a random number from 2-8
+				//features.forEach(f => point[f] = 1 + Math.random() * 8);
+				//each feature will be a random number from 0 to 1
+				features.forEach(f => point[f] = Math.random());
+				data.push(point);
+			}
 		}
+		
 		//let svg = d3.select("spider").append("svg").attr("width", 600).attr("height", 600);
 		
 		//let radialScale = d3.scaleLinear().domain([0, 10]).range([0, 250]);
@@ -145,7 +189,6 @@ export default class AnalysisView extends View {
 			} else if (ft_name === 'Price Premium') {
 				label_coordinate.x -= 20;
 			}
-			
 			svg.append("line")
 				.attr("x1", horiz_center)//min_dim 300)
 				.attr("y1", verti_center)//min_dim 300)
@@ -155,6 +198,7 @@ export default class AnalysisView extends View {
 			svg.append("text")
 				.attr("x", label_coordinate.x)
 				.attr("y", label_coordinate.y)
+				.attr("font-size",fontsize)
 				.text(ft_name);
 		}
 		//drawing the line for the spider chart
@@ -201,7 +245,7 @@ export default class AnalysisView extends View {
 		
 		const html = '<svg id="spider" width="'+width+'" height="'+height+'"></svg>';
 		$(html).appendTo('#spider-wrapper');
-		this.drawSpider();
+		this.drawSpider('wholesale');
 	}
 	
 	render() {
@@ -223,6 +267,7 @@ export default class AnalysisView extends View {
 						'<p>&nbsp;</p>'+
 					'</div>'+
 					'<div class="col s12 center">'+
+						'<h6>Sales over the Wholesale market</h6>'+
 						'<div id="spider-wrapper"></div>'+
 					'</div>'+
 				'</div>'+

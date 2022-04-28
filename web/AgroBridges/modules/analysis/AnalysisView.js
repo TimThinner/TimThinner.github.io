@@ -92,8 +92,8 @@ export default class AnalysisView extends View {
 			svg.append("circle")
 				//.attr("cx", 300)
 				//.attr("cy", 300)
-				.attr("cx", min_dim)
-				.attr("cy", min_dim)
+				.attr("cx", horiz_center) // min_dim)
+				.attr("cy", verti_center) // min_dim)
 				.attr("fill", "none")
 				.attr("stroke", "gray")
 				.attr("r", radialScale(t))
@@ -103,8 +103,8 @@ export default class AnalysisView extends View {
 			svg.append("text")
 				//.attr("x", 305)
 				//.attr("y", 300 - radialScale(t))
-				.attr("x", min_dim+5)
-				.attr("y", min_dim - radialScale(t))
+				.attr("x", horiz_center+5)
+				.attr("y", verti_center - radialScale(t))
 				.text(t.toString())
 		);
 		//draw axis for each feature
@@ -112,7 +112,7 @@ export default class AnalysisView extends View {
 			let x = Math.cos(angle) * radialScale(value);
 			let y = Math.sin(angle) * radialScale(value);
 			//return { "x": 300 + x, "y": 300 - y };
-			return { "x": min_dim + x, "y": min_dim - y };
+			return { "x": horiz_center + x, "y": verti_center - y };
 		}
 		for (var i = 0; i < features.length; i++) {
 			let ft_name = features[i];
@@ -120,8 +120,8 @@ export default class AnalysisView extends View {
 			let line_coordinate = angleToCoordinate(angle, 10);
 			let label_coordinate = angleToCoordinate(angle, 10.5);
 			svg.append("line")
-				.attr("x1", min_dim)//300)
-				.attr("y1", min_dim)//300)
+				.attr("x1", horiz_center)//min_dim 300)
+				.attr("y1", verti_center)//min_dim 300)
 				.attr("x2", line_coordinate.x)
 				.attr("y2", line_coordinate.y)
 				.attr("stroke", "black");

@@ -103,7 +103,7 @@ export default class AnalysisView extends View {
 				//.attr("cy", 300)
 				.attr("cx", horiz_center) // min_dim)
 				.attr("cy", verti_center) // min_dim)
-				.attr("fill", "none")
+				.attr("fill", "#fff") // "none"
 				.attr("stroke", "gray")
 				.attr("r", radialScale(t))
 		);
@@ -128,6 +128,21 @@ export default class AnalysisView extends View {
 			let angle = (Math.PI / 2) + (2 * Math.PI * i / features.length);
 			let line_coordinate = angleToCoordinate(angle, 1);//10);
 			let label_coordinate = angleToCoordinate(angle, 1.1); // 10.5);
+			
+			if (ft_name === 'Consumer Contact') {
+				label_coordinate.x -= 80;
+			} else if (ft_name === 'Gender Equality') {
+				label_coordinate.x -= 80;
+			} else if (ft_name === 'Lower Labor Produce Ratio') {
+				label_coordinate.x -= 120;
+			} else if (ft_name === 'Lower Carbon Footprint') {
+				label_coordinate.x -= 100;
+			} else if (ft_name === 'Chain Added Value') {
+				label_coordinate.x -= 30;
+			} else if (ft_name === 'Price Premium') {
+				label_coordinate.x -= 20;
+			}
+			
 			svg.append("line")
 				.attr("x1", horiz_center)//min_dim 300)
 				.attr("y1", verti_center)//min_dim 300)
@@ -151,6 +166,8 @@ export default class AnalysisView extends View {
 				let angle = (Math.PI / 2) + (2 * Math.PI * i / features.length);
 				coordinates.push(angleToCoordinate(angle, d[ft_name]));
 			}
+			// Add also the last connecting coordinate from last point to the first point.
+			coordinates.push(angleToCoordinate(Math.PI/2, d[features[0]]));
 			return coordinates;
 		}
 		
@@ -167,7 +184,7 @@ export default class AnalysisView extends View {
 				.attr("stroke", color)
 				.attr("fill", "none")//color)
 				.attr("stroke-opacity", 1)
-				.attr("opacity", 0.1) //0.5);
+				.attr("opacity", 1) //0.5);
 		}
 	}
 	

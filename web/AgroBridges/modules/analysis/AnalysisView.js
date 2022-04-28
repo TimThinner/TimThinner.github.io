@@ -74,19 +74,28 @@ export default class AnalysisView extends View {
 		const range = min_dim - 0.15*min_dim;
 		
 		let data = [];
-		let features = ["A", "B", "C", "D", "E", "F"];
+		let features = [
+			"Volume", 
+			"Consumer Contact", 
+			"Gender Equality", 
+			"Lower Labor Produce Ratio", 
+			"Lower Carbon Footprint", 
+			"Chain Added Value",
+			"Price Premium"]; // 7!
 		//generate the data (only one set)
 		for (var i = 0; i < 1; i++) {
 			var point = {}
 			//each feature will be a random number from 2-8
-			features.forEach(f => point[f] = 1 + Math.random() * 8);
+			//features.forEach(f => point[f] = 1 + Math.random() * 8);
+			//each feature will be a random number from 0 to 1
+			features.forEach(f => point[f] = Math.random());
 			data.push(point);
 		}
 		//let svg = d3.select("spider").append("svg").attr("width", 600).attr("height", 600);
 		
 		//let radialScale = d3.scaleLinear().domain([0, 10]).range([0, 250]);
-		let radialScale = d3.scaleLinear().domain([0, 10]).range([0, range]);
-		let ticks = [2, 4, 6, 8, 10];
+		let radialScale = d3.scaleLinear().domain([0, 1]).range([0, range]);
+		let ticks = [0.2, 0.4, 0.6, 0.8, 1];
 		//draw grid lines (circles)
 		ticks.forEach(t =>
 			svg.append("circle")
@@ -117,8 +126,8 @@ export default class AnalysisView extends View {
 		for (var i = 0; i < features.length; i++) {
 			let ft_name = features[i];
 			let angle = (Math.PI / 2) + (2 * Math.PI * i / features.length);
-			let line_coordinate = angleToCoordinate(angle, 10);
-			let label_coordinate = angleToCoordinate(angle, 10.5);
+			let line_coordinate = angleToCoordinate(angle, 1);//10);
+			let label_coordinate = angleToCoordinate(angle, 1.1); // 10.5);
 			svg.append("line")
 				.attr("x1", horiz_center)//min_dim 300)
 				.attr("y1", verti_center)//min_dim 300)
@@ -132,8 +141,8 @@ export default class AnalysisView extends View {
 		}
 		//drawing the line for the spider chart
 		let line = d3.line().x(d => d.x).y(d => d.y);
-		let colors = ["darkorange", "gray", "navy"];
-		
+		//let colors = ["darkorange", "gray", "navy"];
+		let colors = ["navy","darkorange","gray"];
 		//get coordinates for a data point
 		function getPathCoordinates(d) {
 			let coordinates = [];
@@ -156,9 +165,9 @@ export default class AnalysisView extends View {
 				.attr("d", line)
 				.attr("stroke-width", 3)
 				.attr("stroke", color)
-				.attr("fill", color)
+				.attr("fill", "none")//color)
 				.attr("stroke-opacity", 1)
-				.attr("opacity", 0.5);
+				.attr("opacity", 0.1) //0.5);
 		}
 	}
 	

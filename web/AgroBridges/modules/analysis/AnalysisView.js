@@ -75,13 +75,13 @@ export default class AnalysisView extends View {
 		
 		let fontsize;
 		if (w <= 600) {
-			fontsize = 12;
+			fontsize = 10;
 		} else if (w > 600 && w <= 992) {
-			fontsize = 14;
+			fontsize = 12;
 		} else if (w > 992 && w <= 1200) {
-			fontsize = 16;
+			fontsize = 14;
 		} else {
-			fontsize = 18;
+			fontsize = 16;
 		}
 		
 		let data = [];

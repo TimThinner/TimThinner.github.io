@@ -368,7 +368,7 @@ export default class MainView extends View {
 		const mainState = this.USER_MODEL.mainState();
 		if (mainState.ready === true) {
 			// Analysis "button" is active
-			fontsize = fontsize+4;
+			fontsize = fontsize+2;
 		}
 		const titleSVGHeight = fontsize;
 		

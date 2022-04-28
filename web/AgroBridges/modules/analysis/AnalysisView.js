@@ -157,16 +157,18 @@ export default class AnalysisView extends View {
 				.attr("cx", horiz_center) // min_dim)
 				.attr("cy", verti_center) // min_dim)
 				.attr("fill", "#e5ecf6") // "none"
-				.attr("stroke", "gray")
+				.attr("stroke", "#fff")//"gray")
 				.attr("r", radialScale(t))
 		);
-		//draw tick labels
+		// draw tick labels
+		// fontsize = 8,10,12,14
 		ticks.forEach(t =>
 			svg.append("text")
 				//.attr("x", 305)
 				//.attr("y", 300 - radialScale(t))
 				.attr("x", horiz_center+5)
 				.attr("y", verti_center - radialScale(t))
+				.attr("font-size",fontsize+2)
 				.text(t.toString())
 		);
 		//draw axis for each feature
@@ -203,7 +205,7 @@ export default class AnalysisView extends View {
 				.attr("y1", verti_center)//min_dim 300)
 				.attr("x2", line_coordinate.x)
 				.attr("y2", line_coordinate.y)
-				.attr("stroke", "black");
+				.attr("stroke", "#fff");//"black");
 			svg.append("text")
 				.attr("x", label_coordinate.x)
 				.attr("y", label_coordinate.y)

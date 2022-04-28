@@ -80,9 +80,9 @@ export default class AnalysisView extends View {
 		let fontsize;
 		if (range <= 120) {
 			fontsize = 8;
-		} else if (w > 120 && w <= 160) {
+		} else if (range > 120 && range <= 160) {
 			fontsize = 10;
-		} else if (w > 160 && w <= 200) {
+		} else if (range > 160 && range <= 200) {
 			fontsize = 12;
 		} else {
 			fontsize = 14;
@@ -178,20 +178,21 @@ export default class AnalysisView extends View {
 			let line_coordinate = angleToCoordinate(angle, 1);//10);
 			let label_coordinate = angleToCoordinate(angle, 1.1); // 10.5);
 			
+			// fontsize = 8,10,12,14
 			if (ft_name === 'Volume') {
-				label_coordinate.x -= 30;
-			} else if (ft_name === 'Consumer Contact') {
-				label_coordinate.x -= 80;
-			} else if (ft_name === 'Gender Equality') {
-				label_coordinate.x -= 80;
-			} else if (ft_name === 'Lower Labor Produce Ratio') {
-				label_coordinate.x -= 140;
-			} else if (ft_name === 'Lower Carbon Footprint') {
-				label_coordinate.x -= 80;
-			} else if (ft_name === 'Chain Added Value') {
-				label_coordinate.x -= 40;
-			} else if (ft_name === 'Price Premium') {
-				label_coordinate.x -= 20;
+				label_coordinate.x -= fontsize*3; // 6 characters
+			} else if (ft_name === 'Consumer Contact') { // 16 characters
+				label_coordinate.x -= fontsize*8;
+			} else if (ft_name === 'Gender Equality') { // 15 characters
+				label_coordinate.x -= fontsize*7;
+			} else if (ft_name === 'Lower Labor Produce Ratio') { // 25 characters
+				label_coordinate.x -= fontsize*12;
+			} else if (ft_name === 'Lower Carbon Footprint') { // 22 characters
+				label_coordinate.x -= fontsize*11;
+			} else if (ft_name === 'Chain Added Value') { // 17 characters
+				label_coordinate.x -= fontsize*8;
+			} else if (ft_name === 'Price Premium') { // 13 characters
+				label_coordinate.x -= fontsize*6;
 			}
 			svg.append("line")
 				.attr("x1", horiz_center)//min_dim 300)

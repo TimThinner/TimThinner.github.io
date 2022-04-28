@@ -74,17 +74,18 @@ export default class AnalysisView extends View {
 		
 		// Make spider a litle bit smaller:
 		//const range = min_dim - 0.15*min_dim;
-		const range = min_dim - 0.25*min_dim;
+		const range = min_dim - 0.333*min_dim;
+		console.log(['range=',range]);
 		
 		let fontsize;
-		if (w <= 600) {
+		if (range <= 120) {
+			fontsize = 8;
+		} else if (w > 120 && w <= 160) {
 			fontsize = 10;
-		} else if (w > 600 && w <= 992) {
+		} else if (w > 160 && w <= 200) {
 			fontsize = 12;
-		} else if (w > 992 && w <= 1200) {
-			fontsize = 14;
 		} else {
-			fontsize = 16;
+			fontsize = 14;
 		}
 		
 		let data = [];

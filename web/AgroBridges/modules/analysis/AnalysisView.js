@@ -75,8 +75,8 @@ export default class AnalysisView extends View {
 		
 		let data = [];
 		let features = ["A", "B", "C", "D", "E", "F"];
-		//generate the data
-		for (var i = 0; i < 3; i++) {
+		//generate the data (only one set)
+		for (var i = 0; i < 1; i++) {
 			var point = {}
 			//each feature will be a random number from 2-8
 			features.forEach(f => point[f] = 1 + Math.random() * 8);

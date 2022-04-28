@@ -95,7 +95,8 @@ export default class AnalysisView extends View {
 		
 		//let radialScale = d3.scaleLinear().domain([0, 10]).range([0, 250]);
 		let radialScale = d3.scaleLinear().domain([0, 1]).range([0, range]);
-		let ticks = [0.2, 0.4, 0.6, 0.8, 1];
+		//let ticks = [0.2, 0.4, 0.6, 0.8, 1];
+		let ticks = [1, 0.8, 0.6, 0.4, 0.2];
 		//draw grid lines (circles)
 		ticks.forEach(t =>
 			svg.append("circle")
@@ -129,16 +130,18 @@ export default class AnalysisView extends View {
 			let line_coordinate = angleToCoordinate(angle, 1);//10);
 			let label_coordinate = angleToCoordinate(angle, 1.1); // 10.5);
 			
-			if (ft_name === 'Consumer Contact') {
+			if (ft_name === 'Volume') {
+				label_coordinate.x -= 30;
+			} else if (ft_name === 'Consumer Contact') {
 				label_coordinate.x -= 80;
 			} else if (ft_name === 'Gender Equality') {
 				label_coordinate.x -= 80;
 			} else if (ft_name === 'Lower Labor Produce Ratio') {
-				label_coordinate.x -= 120;
+				label_coordinate.x -= 140;
 			} else if (ft_name === 'Lower Carbon Footprint') {
-				label_coordinate.x -= 100;
+				label_coordinate.x -= 80;
 			} else if (ft_name === 'Chain Added Value') {
-				label_coordinate.x -= 30;
+				label_coordinate.x -= 40;
 			} else if (ft_name === 'Price Premium') {
 				label_coordinate.x -= 20;
 			}

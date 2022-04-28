@@ -365,15 +365,12 @@ export default class MainView extends View {
 		} else {
 			fontsize = 26;
 		}
-		const titleSVGHeight = fontsize;
-		
 		const mainState = this.USER_MODEL.mainState();
-		/*if (mainState.ready === true) {
+		if (mainState.ready === true) {
 			// Analysis "button" is active
-		} else {
-			// Analysis "button" is not active
-		}*/
-		
+			fontsize = fontsize+4;
+		}
+		const titleSVGHeight = fontsize;
 		
 		/*
 		let icon_w = 2*r;
@@ -437,7 +434,6 @@ export default class MainView extends View {
 		title.setAttribute('text-anchor','middle');
 		if (mainState.ready === true) {
 			title.setAttribute('fill',this.colors.DARK_ORANGE);
-			//title.setAttribute('font-weight','bold');
 		} else {
 			title.setAttribute('fill',this.colors.DARK_GREY);
 		}

@@ -71,7 +71,10 @@ export default class AnalysisView extends View {
 		const verti_center = height*0.5;
 		
 		const min_dim = Math.min(horiz_center, verti_center);
-		const range = min_dim - 0.15*min_dim;
+		
+		// Make spider a litle bit smaller:
+		//const range = min_dim - 0.15*min_dim;
+		const range = min_dim - 0.25*min_dim;
 		
 		let fontsize;
 		if (w <= 600) {

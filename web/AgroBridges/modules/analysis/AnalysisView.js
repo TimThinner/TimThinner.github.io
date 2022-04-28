@@ -74,7 +74,7 @@ export default class AnalysisView extends View {
 		
 		// Make spider a litle bit smaller:
 		//const range = min_dim - 0.15*min_dim;
-		const range = min_dim - 0.333*min_dim;
+		const range = min_dim - 0.25*min_dim;
 		console.log(['range=',range]);
 		
 		let fontsize;
@@ -184,15 +184,15 @@ export default class AnalysisView extends View {
 			} else if (ft_name === 'Consumer Contact') { // 16 characters
 				label_coordinate.x -= fontsize*8;
 			} else if (ft_name === 'Gender Equality') { // 15 characters
-				label_coordinate.x -= fontsize*7;
-			} else if (ft_name === 'Lower Labor Produce Ratio') { // 25 characters
-				label_coordinate.x -= fontsize*12;
-			} else if (ft_name === 'Lower Carbon Footprint') { // 22 characters
-				label_coordinate.x -= fontsize*11;
-			} else if (ft_name === 'Chain Added Value') { // 17 characters
-				label_coordinate.x -= fontsize*8;
-			} else if (ft_name === 'Price Premium') { // 13 characters
 				label_coordinate.x -= fontsize*6;
+			} else if (ft_name === 'Lower Labor Produce Ratio') { // 25 characters
+				label_coordinate.x -= fontsize*10;
+			} else if (ft_name === 'Lower Carbon Footprint') { // 22 characters
+				label_coordinate.x -= fontsize*8;
+			} else if (ft_name === 'Chain Added Value') { // 17 characters
+				label_coordinate.x -= fontsize*4;
+			} else if (ft_name === 'Price Premium') { // 13 characters
+				label_coordinate.x -= fontsize*3;
 			}
 			svg.append("line")
 				.attr("x1", horiz_center)//min_dim 300)

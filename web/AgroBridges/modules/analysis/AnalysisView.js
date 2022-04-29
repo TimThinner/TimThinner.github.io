@@ -56,6 +56,29 @@ export default class AnalysisView extends View {
 		}
 	}
 	
+	renderBusinessModelsText() {
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const ll_intro = LM['translation'][sel]['Intro_Definition_Business_Models'];
+		const ll_def_csa = LM['translation'][sel]['Definition_CSA'];
+		const ll_def_f2f = LM['translation'][sel]['Definition_Face_2_Face'];
+		const ll_def_online_trade = LM['translation'][sel]['Definition_Online_Trade'];
+		const ll_def_retail_trade = LM['translation'][sel]['Definition_Retail_Trade'];
+		const ll_def_improved_logistics = LM['translation'][sel]['Definition_Improved_Logistics'];
+		const ll_def_more_info = LM['translation'][sel]['More_Info_Business_Models'];
+		
+		const html = '<p>'+ll_intro+'</p>'+
+			'<p>'+ll_def_csa+'</p>'+
+			'<p>'+ll_def_f2f+'</p>'+
+			'<p>'+ll_def_online_trade+'</p>'+
+			'<p>'+ll_def_retail_trade+'</p>'+
+			'<p>'+ll_def_improved_logistics+'</p>'+
+			'<p>'+ll_def_more_info+'</p>';
+		
+		 $("#business-models-text-wrapper").empty().append(html);
+	}
+	
 	/* Note:
 		light-blue background:	#e5ecf6
 		blue line:				#5965fa
@@ -262,9 +285,11 @@ export default class AnalysisView extends View {
 	render() {
 		const self = this;
 		$(this.el).empty();
-		
+		/*
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
+		const ll_intro = LM['translation'][sel]['Intro_Definition_Business_Models'];
+		*/
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
@@ -276,6 +301,11 @@ export default class AnalysisView extends View {
 						'<h6>Sales over the Wholesale market</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="spider-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 center">'+
+						'<h6>Business models for Short Food Supply Chain</h6>'+
+						'<p>&nbsp;</p>'+
+						'<div id="business-models-text-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -293,6 +323,7 @@ export default class AnalysisView extends View {
 			self.controller.models['MenuModel'].setSelected('main');
 		});
 		this.renderSpider();
+		this.renderBusinessModelsText();
 		this.rendered = true;
 	}
 }

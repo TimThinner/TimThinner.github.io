@@ -94,8 +94,59 @@ export default class AnalysisView extends View {
 		const ll_r1_only_1_suitable = LM['translation'][sel]['Results1_only_one_channel'];
 		const ll_r2_only_1_suitable = LM['translation'][sel]['Results2_only_one_channel'];
 		
-		const html = '<p>'+ll_intro+'</p>';
+		let html = '<p>'+ll_intro+'</p>';
+		const numberOfResults = 3;
+		if (numberOfResults === 0) {
+			html += '<p>'+ll_r1_no_suitable+'</p>';
+			
+		} else if(numberOfResults === 1) {
+			html += '<p>'+ll_r1_only_1_suitable+'</p>';
+			
+		} else { // Two or more...
+			html += '<p>'+ll_r1_more_than_2_suitable+'</p>';
+		}
+		// SHOW EXAMPLE TABLE:
+		// RANK	SALES_CHANNEL			BUSINESS_MODEL
+		// 1	On_Farm_Shop_extensive	Face-to-Face
+		// 2	Online_Sales_Post		Online Trade
+		// 3	Retail_Store			Retail Trade
+		html += 
+			'<table>'+
+				'<thead>'+
+					'<tr>'+
+						'<th>Rank</th>'+
+						'<th>Sales Channel</th>'+
+						'<th>Business Model</th>'+
+					'</tr>'+
+				'</thead>'+
+				'<tbody>'+
+					'<tr>'+
+						'<td>1</td>'+
+						'<td>On_Farm_Shop_extensive</td>'+
+						'<td>Face-to-Face</td>'+
+					'</tr>'+
+					'<tr>'+
+						'<td>2</td>'+
+						'<td>Online_Sales_Post</td>'+
+						'<td>Online Trade</td>'+
+					'</tr>'+
+					'<tr>'+
+						'<td>3</td>'+
+						'<td>Retail_Store</td>'+
+						'<td>Retail Trade</td>'+
+					'</tr>'+
+				'</tbody>'+
+			'</table>';
 		
+		if (numberOfResults === 0) {
+			html += '<p>'+ll_r2_no_suitable+'</p>';
+			
+		} else if(numberOfResults === 1) {
+			html += '<p>'+ll_r2_only_1_suitable+'</p>';
+			
+		} else { // Two or more...
+			html += '<p>'+ll_r2_more_than_2_suitable+'</p>';
+		}
 		$("#recommendations-text-wrapper").empty().append(html);
 	}
 	

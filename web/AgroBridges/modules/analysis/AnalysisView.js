@@ -154,11 +154,11 @@ export default class AnalysisView extends View {
 		light-blue background:	#e5ecf6
 		blue line:				#5965fa
 	*/
-	drawSpider(diagram) {
+	drawSpider(name, spider_id) {
 		
-		$('#spider').empty();
+		$('#'+spider_id).empty();
 		
-		const svg = d3.select('#spider'); // <svg id="spider">
+		const svg = d3.select('#'+spider_id);
 		
 		let w = this.REO.width;
 		if (w > 1600) { w = 1600; }
@@ -208,7 +208,7 @@ export default class AnalysisView extends View {
 		// Labor_Produce;		1
 		// Gender_Equality;		0.498997996
 		// Consumer_Contact		0.2
-		if (diagram === 'wholesale') {
+		if (name === 'wholesale') {
 			data = [{
 				"Volume":1,
 				"Consumer Contact":0.2,
@@ -350,7 +350,38 @@ export default class AnalysisView extends View {
 		
 		const html = '<svg id="spider" width="'+width+'" height="'+height+'"></svg>';
 		$(html).appendTo('#spider-wrapper');
-		this.drawSpider('wholesale');
+		this.drawSpider('wholesale','spider');
+	}
+	
+	renderResultsSpiders() {
+		
+		$('#results-spiders-wrapper').empty();
+		
+		let w = this.REO.width;
+		if (w > 1600) { w = 1600; }
+		
+		const width = w*0.9;				// 90% of width
+		const height = this.REO.height*0.4;	// 40% of height
+		
+		let xwidth = width;		// small screen has only one spider per row.
+		if (w > 600) {			// medium or bigger screen...
+			xwidth = width/3;	// has 3 equal wide cols to hold spiders.
+		}
+		const html = 
+			'<div class="col s12 m4 center">'+
+				'<svg id="spider-r1" width="'+xwidth+'" height="'+height+'"></svg>'+
+			'</div>'+
+			'<div class="col s12 m4 center">'+
+				'<svg id="spider-r2" width="'+xwidth+'" height="'+height+'"></svg>'+
+			'</div>'+
+			'<div class="col s12 m4 center">'+
+				'<svg id="spider-r3" width="'+xwidth+'" height="'+height+'"></svg>'+
+			'</div>';
+		$(html).appendTo('#results-spiders-wrapper');
+		
+		this.drawSpider('diagram1',' spider-r1');
+		this.drawSpider('diagram2', 'spider-r2');
+		this.drawSpider('diagram3', 'spider-r3');
 	}
 	
 	render() {
@@ -370,16 +401,18 @@ export default class AnalysisView extends View {
 					'</div>'+
 					'<div class="col s12 center">'+
 						'<h6>Sales over the Wholesale market</h6>'+
-						'<p>&nbsp;</p>'+
 						'<div id="spider-wrapper"></div>'+
 					'</div>'+
-					'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1">'+
 						'<h6 style="text-align:center">Business models for Short Food Supply Chain</h6>'+
 						'<div id="business-models-text-wrapper"></div>'+
 					'</div>'+
-					'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1">'+
 						'<h6 style="text-align:center">Recommendations for Short Food Supply Chain</h6>'+
 						'<div id="recommendations-text-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="results-spiders-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -399,6 +432,7 @@ export default class AnalysisView extends View {
 		this.renderSpider();
 		this.renderBusinessModelsText();
 		this.renderRecommendationsText();
+		this.renderResultsSpiders();
 		this.rendered = true;
 	}
 }

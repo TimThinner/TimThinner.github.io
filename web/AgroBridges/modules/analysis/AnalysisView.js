@@ -379,7 +379,7 @@ export default class AnalysisView extends View {
 			'</div>';
 		$(html).appendTo('#results-spiders-wrapper');
 		
-		this.drawSpider('diagram1',' spider-r1');
+		this.drawSpider('diagram1', 'spider-r1');
 		this.drawSpider('diagram2', 'spider-r2');
 		this.drawSpider('diagram3', 'spider-r3');
 	}

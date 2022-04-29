@@ -41,3 +41,6 @@ html, body {
 	content:" *";
 	color: red;
 }
+li.agro-item:not(:last-child) { 
+	margin-bottom: 12px;
+}

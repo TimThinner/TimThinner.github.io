@@ -57,7 +57,6 @@ export default class AnalysisView extends View {
 	}
 	
 	renderBusinessModelsText() {
-		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const ll_intro = LM['translation'][sel]['Intro_Definition_Business_Models'];
@@ -68,14 +67,36 @@ export default class AnalysisView extends View {
 		const ll_def_improved_logistics = LM['translation'][sel]['Definition_Improved_Logistics'];
 		const ll_def_more_info = LM['translation'][sel]['More_Info_Business_Models'];
 		
+		// Note: put little bit of vertical space below each li-item!
+		// See styles.css:
+		// li.agro-item:not(:last-child) { 
+		//		margin-bottom: 12px;
+		// }
 		const html = '<p>'+ll_intro+'</p>'+
-			'<ul class="browser-default"><li>'+ll_def_csa+'</li>'+
-			'<li>'+ll_def_f2f+'</li>'+
-			'<li>'+ll_def_online_trade+'</li>'+
-			'<li>'+ll_def_retail_trade+'</li>'+
-			'<li>'+ll_def_improved_logistics+'</li></ul>'+
+			'<ul class="browser-default"><li class="agro-item">'+ll_def_csa+'</li>'+
+			'<li class="agro-item">'+ll_def_f2f+'</li>'+
+			'<li class="agro-item">'+ll_def_online_trade+'</li>'+
+			'<li class="agro-item">'+ll_def_retail_trade+'</li>'+
+			'<li class="agro-item">'+ll_def_improved_logistics+'</li></ul>'+
 			'<p>'+ll_def_more_info+'</p>';
-		 $("#business-models-text-wrapper").empty().append(html);
+		$("#business-models-text-wrapper").empty().append(html);
+	}
+	
+	renderRecommendationsText() {
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const ll_intro = LM['translation'][sel]['Result1_Models_Considered'];
+		
+		const ll_r1_more_than_2_suitable = LM['translation'][sel]['Result_Farms_more_than_2_suitable'];
+		const ll_r2_more_than_2_suitable = LM['translation'][sel]['Results2_Farm_more_2_suitable'];
+		const ll_r1_no_suitable = LM['translation'][sel]['Results1_farms_no_suitable_channels'];
+		const ll_r2_no_suitable = LM['translation'][sel]['Results2_farm_no_suitable_Channels'];
+		const ll_r1_only_1_suitable = LM['translation'][sel]['Results1_only_one_channel'];
+		const ll_r2_only_1_suitable = LM['translation'][sel]['Results2_only_one_channel'];
+		
+		const html = '<p>'+ll_intro+'</p>';
+		
+		$("#recommendations-text-wrapper").empty().append(html);
 	}
 	
 	/* Note:
@@ -305,6 +326,10 @@ export default class AnalysisView extends View {
 						'<h6 style="text-align:center">Business models for Short Food Supply Chain</h6>'+
 						'<div id="business-models-text-wrapper"></div>'+
 					'</div>'+
+					'<div class="col s12">'+
+						'<h6 style="text-align:center">Recommendations for Short Food Supply Chain</h6>'+
+						'<div id="recommendations-text-wrapper"></div>'+
+					'</div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -322,6 +347,7 @@ export default class AnalysisView extends View {
 		});
 		this.renderSpider();
 		this.renderBusinessModelsText();
+		this.renderRecommendationsText();
 		this.rendered = true;
 	}
 }

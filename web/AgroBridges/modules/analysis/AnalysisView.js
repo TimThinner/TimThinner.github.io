@@ -477,7 +477,7 @@ export default class AnalysisView extends View {
 						'<div id="additional-description-text-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<div id="disclaimer-text-wrapper"></div>'+
+						'<div id="disclaimer-text-wrapper" style="color:#888; border:1px solid #888; padding:16px;"></div>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

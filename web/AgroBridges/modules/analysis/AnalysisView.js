@@ -69,13 +69,12 @@ export default class AnalysisView extends View {
 		const ll_def_more_info = LM['translation'][sel]['More_Info_Business_Models'];
 		
 		const html = '<p>'+ll_intro+'</p>'+
-			'<p>'+ll_def_csa+'</p>'+
-			'<p>'+ll_def_f2f+'</p>'+
-			'<p>'+ll_def_online_trade+'</p>'+
-			'<p>'+ll_def_retail_trade+'</p>'+
-			'<p>'+ll_def_improved_logistics+'</p>'+
+			'<ul><li>'+ll_def_csa+'</li>'+
+			'<li>'+ll_def_f2f+'</li>'+
+			'<li>'+ll_def_online_trade+'</li>'+
+			'<li>'+ll_def_retail_trade+'</li>'+
+			'<li>'+ll_def_improved_logistics+'</li></ul>'+
 			'<p>'+ll_def_more_info+'</p>';
-		
 		 $("#business-models-text-wrapper").empty().append(html);
 	}
 	
@@ -302,9 +301,8 @@ export default class AnalysisView extends View {
 						'<p>&nbsp;</p>'+
 						'<div id="spider-wrapper"></div>'+
 					'</div>'+
-					'<div class="col s12 center">'+
-						'<h6>Business models for Short Food Supply Chain</h6>'+
-						'<p>&nbsp;</p>'+
+					'<div class="col s12">'+
+						'<h6 style="text-align:center">Business models for Short Food Supply Chain</h6>'+
 						'<div id="business-models-text-wrapper"></div>'+
 					'</div>'+
 				'</div>'+

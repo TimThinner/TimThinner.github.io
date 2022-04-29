@@ -393,12 +393,15 @@ export default class AnalysisView extends View {
 		}
 		const html = 
 			'<div class="col s12 l4 center">'+
+				'<h6 style="text-align:center">Extensive, unstaffed On-Farm Shop</h6>'+
 				'<svg id="spider-r1" width="'+xwidth+'" height="'+height+'"></svg>'+
 			'</div>'+
 			'<div class="col s12 l4 center">'+
+				'<h6 style="text-align:center">Sales over Reatail Stores (e.g. Supermarkets Highlighting Origin)</h6>'+
 				'<svg id="spider-r2" width="'+xwidth+'" height="'+height+'"></svg>'+
 			'</div>'+
 			'<div class="col s12 l4 center">'+
+				'<h6 style="text-align:center">Online Sales on Demand (Delivery by Post)</h6>'+
 				'<svg id="spider-r3" width="'+xwidth+'" height="'+height+'"></svg>'+
 			'</div>';
 		$(html).appendTo('#results-spiders-wrapper');

@@ -69,7 +69,7 @@ export default class AnalysisView extends View {
 		const ll_def_more_info = LM['translation'][sel]['More_Info_Business_Models'];
 		
 		const html = '<p>'+ll_intro+'</p>'+
-			'<ul><li>'+ll_def_csa+'</li>'+
+			'<ul class="browser-default"><li>'+ll_def_csa+'</li>'+
 			'<li>'+ll_def_f2f+'</li>'+
 			'<li>'+ll_def_online_trade+'</li>'+
 			'<li>'+ll_def_retail_trade+'</li>'+

@@ -360,7 +360,7 @@ export default class AnalysisView extends View {
 		const height = this.REO.height*0.4;	// 40% of height
 		
 		let xwidth = width;		// small screen has only one spider per row.
-		if (w > 871) {			// NOTE REO gives 8px smaller value 992-8 = 984 for scren width...
+		if (w > 984) {			// NOTE REO gives 8px smaller value 992-8 = 984 for scren width...
 			xwidth = width*0.3;	// has 3 equal wide cols to hold spiders.
 		}
 		const html = 
@@ -407,7 +407,7 @@ export default class AnalysisView extends View {
 						'<h6 style="text-align:center">Recommendations for Short Food Supply Chain</h6>'+
 						'<div id="recommendations-text-wrapper"></div>'+
 					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
+					'<div class="col s12">'+
 						'<div id="results-spiders-wrapper"></div>'+
 					'</div>'+
 				'</div>'+

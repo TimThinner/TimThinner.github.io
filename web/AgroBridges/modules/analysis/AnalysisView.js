@@ -419,19 +419,25 @@ export default class AnalysisView extends View {
 		const ll_add_d = LM['translation'][sel]['Intro_not_all_sales_channels_con'];
 		const ll_add_e = LM['translation'][sel]['Relative_Attractiveness'];
 		const ll_add_f = LM['translation'][sel]['Suitability_farm_Characterstics'];
-		const ll_add_g = LM['translation'][sel]['Disclaimer_Header'];
-		const ll_add_h = LM['translation'][sel]['Disclaimer'];
 		
 		const html = '<p>'+ll_add_a+'</p>'+
 			'<p>'+ll_add_b+'</p>'+
 			'<p>'+ll_add_c+'</p>'+
 			'<p>'+ll_add_d+'</p>'+
 			'<p>'+ll_add_e+'</p>'+
-			'<p>'+ll_add_f+'</p>'+
-			'<p style="font-weight:bold">'+ll_add_g+'</p>'+
-			'<p>'+ll_add_h+'</p>';
-			
+			'<p>'+ll_add_f+'</p>';
 		$("#additional-description-text-wrapper").empty().append(html);
+	}
+	
+	renderDisclaimer() {
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const ll_d_title = LM['translation'][sel]['Disclaimer_Header'];
+		const ll_d_text = LM['translation'][sel]['Disclaimer'];
+		
+		const html = '<h6>'+ll_d_title+'</h6><p>'+ll_d_text+'</p>';
+		
+		$("#disclaimer-text-wrapper").empty().append(html);
 	}
 	
 	render() {
@@ -450,15 +456,15 @@ export default class AnalysisView extends View {
 						'<h3 style="color:'+color+'">ANALYSIS</h3>'+
 					'</div>'+
 					'<div class="col s12 center">'+
-						'<h6>Sales over the Wholesale market</h6>'+
+						'<h4>Sales over the Wholesale market</h4>'+
 						'<div id="spider-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<h6 style="text-align:center">Business models for Short Food Supply Chain</h6>'+
+						'<h4 style="text-align:center">Business models for Short Food Supply Chain</h4>'+
 						'<div id="business-models-text-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<h6 style="text-align:center">Recommendations for Short Food Supply Chain</h6>'+
+						'<h4 style="text-align:center">Recommendations for Short Food Supply Chain</h4>'+
 						'<div id="recommendations-text-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12">'+
@@ -466,6 +472,9 @@ export default class AnalysisView extends View {
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="additional-description-text-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="disclaimer-text-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -487,6 +496,8 @@ export default class AnalysisView extends View {
 		this.renderRecommendationsText();
 		this.renderResultsSpiders();
 		this.renderAdditionalDescription();
+		this.renderDisclaimer();
+		
 		this.rendered = true;
 	}
 }

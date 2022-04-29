@@ -213,14 +213,42 @@ export default class AnalysisView extends View {
 				"Chain Added Value":0.093587522,
 				"Price Premium":0.243019648
 			}];
-			//data.push({"Volume":1});
-			//data.push({"Consumer Contact":0.2});
-			//data.push({"Gender Equality":0.498997996}); 
-			//data.push({"Lower Labor Produce Ratio":1});
-			//data.push({"Lower Carbon Footprint":0.27142858});
-			//data.push({"Chain Added Value":0.093587522});
-			//data.push({"Price Premium":0.243019648});
-			
+		} else if (name === 'diagram1') {
+			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
+			// 0,2	0,729058945		0,694974003				0,074509829			0,3125			0,645290581			0,4
+			data = [{
+				"Volume":0.2,
+				"Consumer Contact":0.4,
+				"Gender Equality":0.645290581,
+				"Lower Labor Produce Ratio":0.3125,
+				"Lower Carbon Footprint":0.074509829,
+				"Chain Added Value":0.694974003,
+				"Price Premium":0.729058945
+			}];
+		} else if (name === 'diagram2') {
+			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
+			// 0,2	0,728024819	0,620450607					1					0,020243		0,503006012		0,2
+			data = [{
+				"Volume":0.2,
+				"Consumer Contact":0.2,
+				"Gender Equality":0.503006012,
+				"Lower Labor Produce Ratio":0.020243,
+				"Lower Carbon Footprint":1,
+				"Chain Added Value":0.620450607,
+				"Price Premium":0.728024819
+			}];
+		} else if (name === 'diagram3') {
+			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
+			// 0,4			0,640124095		0,402079723			0,504424796			0,3125			0,509018036			0,4
+			data = [{
+				"Volume":0.4,
+				"Consumer Contact":0.4,
+				"Gender Equality":0.509018036,
+				"Lower Labor Produce Ratio":0.3125,
+				"Lower Carbon Footprint":0.504424796,
+				"Chain Added Value":0.402079723,
+				"Price Premium":0.640124095
+			}];
 		} else {
 			for (let i = 0; i < 1; i++) {
 				let point = {}

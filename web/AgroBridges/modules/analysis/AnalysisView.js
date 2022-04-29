@@ -360,7 +360,7 @@ export default class AnalysisView extends View {
 		const height = this.REO.height*0.4;	// 40% of height
 		
 		let xwidth = width;		// small screen has only one spider per row.
-		if (w > 984) {			// NOTE REO gives 8px smaller value 992-8 = 984 for scren width...
+		if (w > 871) {			// NOTE REO gives 8px smaller value 992-8 = 984 for scren width...
 			xwidth = width*0.3;	// has 3 equal wide cols to hold spiders.
 		}
 		const html = 

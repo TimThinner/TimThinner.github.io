@@ -361,17 +361,17 @@ export default class AnalysisView extends View {
 		const height = this.REO.height*0.4;	// 40% of height
 		
 		let xwidth = width;		// small screen has only one spider per row.
-		if (w > 600) {			// medium or bigger screen...
-			xwidth = width/3;	// has 3 equal wide cols to hold spiders.
+		if (w > 992) {			// desktop or bigger screen...
+			xwidth = width*0.3;	// has 3 equal wide cols to hold spiders.
 		}
 		const html = 
-			'<div class="col s12 m4 center">'+
+			'<div class="col s12 l4 center">'+
 				'<svg id="spider-r1" width="'+xwidth+'" height="'+height+'"></svg>'+
 			'</div>'+
-			'<div class="col s12 m4 center">'+
+			'<div class="col s12 l4 center">'+
 				'<svg id="spider-r2" width="'+xwidth+'" height="'+height+'"></svg>'+
 			'</div>'+
-			'<div class="col s12 m4 center">'+
+			'<div class="col s12 l4 center">'+
 				'<svg id="spider-r3" width="'+xwidth+'" height="'+height+'"></svg>'+
 			'</div>';
 		$(html).appendTo('#results-spiders-wrapper');

@@ -380,6 +380,32 @@ export default class AnalysisView extends View {
 		this.drawSpider('diagram3', 'spider-r3', xwidth, height);
 	}
 	
+	renderAdditionalDescription() {
+		//'Additional_Info_PickU'
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		
+		const ll_add_a = LM['translation'][sel]['Describtion_Spiderweb'];
+		const ll_add_b = LM['translation'][sel]['How_calculated'];
+		const ll_add_c = LM['translation'][sel]['Definition_Criteria'];
+		const ll_add_d = LM['translation'][sel]['Intro_not_all_sales_channels_con'];
+		const ll_add_e = LM['translation'][sel]['Relative_Attractiveness'];
+		const ll_add_f = LM['translation'][sel]['Suitability_farm_Characterstics'];
+		const ll_add_g = LM['translation'][sel]['Disclaimer_Header'];
+		const ll_add_h = LM['translation'][sel]['Disclaimer'];
+		
+		const html = '<p>'+ll_add_a+'</p>'+
+			'<p>'+ll_add_b+'</p>'+
+			'<p>'+ll_add_c+'</p>'+
+			'<p>'+ll_add_d+'</p>'+
+			'<p>'+ll_add_e+'</p>'+
+			'<p>'+ll_add_f+'</p>'+
+			'<p style="font-weight:bold">'+ll_add_g+'</p>'+
+			'<p>'+ll_add_h+'</p>';
+			
+		$("#additional-description-text-wrapper").empty().append(html);
+	}
+	
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -410,6 +436,9 @@ export default class AnalysisView extends View {
 					'<div class="col s12">'+
 						'<div id="results-spiders-wrapper"></div>'+
 					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="additional-description-text-wrapper"></div>'+
+					'</div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -429,6 +458,7 @@ export default class AnalysisView extends View {
 		this.renderBusinessModelsText();
 		this.renderRecommendationsText();
 		this.renderResultsSpiders();
+		this.renderAdditionalDescription();
 		this.rendered = true;
 	}
 }

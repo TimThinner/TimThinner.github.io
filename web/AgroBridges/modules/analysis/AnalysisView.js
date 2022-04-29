@@ -154,16 +154,11 @@ export default class AnalysisView extends View {
 		light-blue background:	#e5ecf6
 		blue line:				#5965fa
 	*/
-	drawSpider(name, spider_id) {
+	drawSpider(name, spider_id, width, height) {
 		
 		$('#'+spider_id).empty();
 		
 		const svg = d3.select('#'+spider_id);
-		
-		let w = this.REO.width;
-		if (w > 1600) { w = 1600; }
-		const width = w*0.9;				// 90% of width
-		const height = this.REO.height*0.5;	// 50% of height
 		
 		const horiz_center = width*0.5;
 		const verti_center = height*0.5;
@@ -174,6 +169,7 @@ export default class AnalysisView extends View {
 		//const range = min_dim - 0.15*min_dim;
 		const range = min_dim - 0.25*min_dim;
 		console.log(['range=',range]);
+		
 		
 		let fontsize;
 		if (range <= 120) {
@@ -345,12 +341,13 @@ export default class AnalysisView extends View {
 		
 		let w = this.REO.width;
 		if (w > 1600) { w = 1600; }
+		
 		const width = w*0.9;				// 90% of width
 		const height = this.REO.height*0.5;	// 50% of height
 		
 		const html = '<svg id="spider" width="'+width+'" height="'+height+'"></svg>';
 		$(html).appendTo('#spider-wrapper');
-		this.drawSpider('wholesale','spider');
+		this.drawSpider('wholesale','spider', width, height);
 	}
 	
 	renderResultsSpiders() {
@@ -379,9 +376,9 @@ export default class AnalysisView extends View {
 			'</div>';
 		$(html).appendTo('#results-spiders-wrapper');
 		
-		this.drawSpider('diagram1', 'spider-r1');
-		this.drawSpider('diagram2', 'spider-r2');
-		this.drawSpider('diagram3', 'spider-r3');
+		this.drawSpider('diagram1', 'spider-r1', xwidth, height);
+		this.drawSpider('diagram2', 'spider-r2', xwidth, height);
+		this.drawSpider('diagram3', 'spider-r3', xwidth, height);
 	}
 	
 	render() {

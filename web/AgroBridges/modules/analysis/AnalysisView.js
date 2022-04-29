@@ -459,15 +459,15 @@ export default class AnalysisView extends View {
 						'<h3 style="color:'+color+'">ANALYSIS</h3>'+
 					'</div>'+
 					'<div class="col s12 center">'+
-						'<h4>Sales over the Wholesale market</h4>'+
+						'<h5>Sales over the Wholesale market</h5>'+
 						'<div id="spider-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<h4 style="text-align:center">Business models for Short Food Supply Chain</h4>'+
+						'<h5 style="text-align:center">Business models for Short Food Supply Chain</h5>'+
 						'<div id="business-models-text-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<h4 style="text-align:center">Recommendations for Short Food Supply Chain</h4>'+
+						'<h5 style="text-align:center">Recommendations for Short Food Supply Chain</h5>'+
 						'<div id="recommendations-text-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12">'+

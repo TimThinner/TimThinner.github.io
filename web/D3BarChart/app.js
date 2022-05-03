@@ -49,8 +49,8 @@ render = function() {
 	
 	$('svg').empty();
 	
-	const w = $(window).width();
-	const h = $(window).height();
+	const w = $(window).width()-10; // set a little margin in both dimensions.
+	const h = $(window).height()-10;
 	
 	const xScale = d3
 		.scaleBand()

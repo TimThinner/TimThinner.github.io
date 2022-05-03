@@ -62,7 +62,7 @@ render = function() {
 	const container = d3.select('svg')//.classed('container', true);
 		.attr('width',w+'px')
 		.attr('height',h+'px')
-		.style('border':'1px solid #720570');
+		.style('border','1px solid #720570');
 	
 	const bars = container
 		.selectAll('.bar')

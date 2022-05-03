@@ -46,7 +46,7 @@ const DUMMY_DATA = [
 ];
 
 render = function() {
-	console.log('render v2.0');
+	console.log('render v3.0');
 	$('svg').empty();
 	
 	const w = $(window).width()-40; // set a little margin in both dimensions.
@@ -55,9 +55,9 @@ render = function() {
 	const xScale = d3
 		.scaleBand()
 		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
-		.rangeRound([20, w])
+		.rangeRound([0, w])
 		.padding(0.1);
-	const yScale = d3.scaleLinear().domain([0, 700000]).range([h, 20]);
+	const yScale = d3.scaleLinear().domain([0, 700000]).range([h, 0]);
 	
 	const container = d3.select('svg')//.classed('container', true);
 		.attr('width',w+'px')

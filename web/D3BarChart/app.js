@@ -45,26 +45,42 @@ const DUMMY_DATA = [
 	{name: "36", value:538670}
 ];
 
-const xScale = d3
-  .scaleBand()
-  .domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
-  .rangeRound([0, 1280])
-  .padding(0.1);
-const yScale = d3.scaleLinear().domain([0, 700000]).range([600, 0]);
-
-const container = d3.select('svg').classed('container', true);
-
-const bars = container
-  .selectAll('.bar')
-  .data(DUMMY_DATA)
-  .enter()
-  .append('rect')
-  .classed('bar', true)
-  .attr('width', xScale.bandwidth())
-  .attr('height', (data) => 600 - yScale(data.value))
-  .attr('x', data => xScale(data.name))
-  .attr('y', data => yScale(data.value));
-
+render = function() {
+	
+	$('svg').empty();
+	
+	const w = $(window).width();
+	const h = $(window).height();
+	
+	const xScale = d3
+		.scaleBand()
+		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
+		.rangeRound([0, w])
+		.padding(0.1);
+	const yScale = d3.scaleLinear().domain([0, 700000]).range([h, 0]);
+	
+	const container = d3.select('svg')//.classed('container', true);
+		.attr('width',w+'px')
+		.attr('height',h+'px')
+		.style('border':'1px solid #720570');
+	
+	const bars = container
+		.selectAll('.bar')
+		.data(DUMMY_DATA)
+		.enter()
+		.append('rect')
+		.classed('bar', true)
+		.attr('width', xScale.bandwidth())
+		.attr('height', (data) => h - yScale(data.value))
+		.attr('x', data => xScale(data.name))
+		.attr('y', data => yScale(data.value));
+}
 /*setTimeout(() => {
   bars.data(DUMMY_DATA.slice(0, 2)).exit().remove();
 }, 2000);*/
+
+$(window).on('resize', function() {
+	render();
+});
+
+render();

@@ -64,7 +64,7 @@ render = function() {
 	const h = $(window).height();
 	
 	const w_svg = w-40;
-	const h_svg = h*0.8; // 80% of screen height
+	const h_svg = h*0.5; // 50% of screen height
 	
 	const xScale = d3
 		.scaleBand()

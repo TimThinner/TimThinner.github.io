@@ -110,6 +110,13 @@ export default class AnalysisView extends View {
 		// 1	On_Farm_Shop_extensive	Face-to-Face
 		// 2	Online_Sales_Post		Online Trade
 		// 3	Retail_Store			Retail Trade
+		
+		
+		//Sales Channel: 
+		// 1.	On-Farm Shop (extensively managed, unstaffed)
+		// 2.	Post delivery (sales on demand)
+		// 3.	Retail store
+		
 		html += 
 			'<table>'+
 				'<thead>'+
@@ -122,17 +129,17 @@ export default class AnalysisView extends View {
 				'<tbody>'+
 					'<tr>'+
 						'<td>1</td>'+
-						'<td>On_Farm_Shop_extensive</td>'+
+						'<td>On-Farm Shop (extensively managed, unstaffed)</td>'+
 						'<td>Face-to-Face</td>'+
 					'</tr>'+
 					'<tr>'+
 						'<td>2</td>'+
-						'<td>Online_Sales_Post</td>'+
+						'<td>Post delivery (sales on demand)</td>'+
 						'<td>Online Trade</td>'+
 					'</tr>'+
 					'<tr>'+
 						'<td>3</td>'+
-						'<td>Retail_Store</td>'+
+						'<td>Retail store</td>'+
 						'<td>Retail Trade</td>'+
 					'</tr>'+
 				'</tbody>'+
@@ -393,15 +400,15 @@ export default class AnalysisView extends View {
 		}
 		const html = 
 			'<div class="col s12 l4 center">'+
-				'<h6 style="text-align:center">Extensive, unstaffed On-Farm Shop</h6>'+
+				'<h6 style="text-align:center">On-Farm Shop (extensively managed, unstaffed)</h6>'+
 				'<svg id="spider-r1" width="'+xwidth+'" height="'+height+'"></svg>'+
 			'</div>'+
 			'<div class="col s12 l4 center">'+
-				'<h6 style="text-align:center">Sales over Reatail Stores (e.g. Supermarkets Highlighting Origin)</h6>'+
+				'<h6 style="text-align:center">Online Sales on Demand - Delivery by Post</h6>'+
 				'<svg id="spider-r2" width="'+xwidth+'" height="'+height+'"></svg>'+
 			'</div>'+
 			'<div class="col s12 l4 center">'+
-				'<h6 style="text-align:center">Online Sales on Demand (Delivery by Post)</h6>'+
+				'<h6 style="text-align:center">Retail Store (e.g. supermarket highlighting origin)</h6>'+
 				'<svg id="spider-r3" width="'+xwidth+'" height="'+height+'"></svg>'+
 			'</div>';
 		$(html).appendTo('#results-spiders-wrapper');
@@ -420,14 +427,15 @@ export default class AnalysisView extends View {
 		const ll_add_b = LM['translation'][sel]['How_calculated'];
 		const ll_add_c = LM['translation'][sel]['Definition_Criteria'];
 		const ll_add_d = LM['translation'][sel]['Intro_not_all_sales_channels_con'];
-		const ll_add_e = LM['translation'][sel]['Relative_Attractiveness'];
+		const ll_add_e = LM['translation'][sel]['Relative_Attractiveness']; // add the result of ?
 		const ll_add_f = LM['translation'][sel]['Suitability_farm_Characterstics'];
+		const result = 'medium';
 		
 		const html = '<p>'+ll_add_a+'</p>'+
 			'<p>'+ll_add_b+'</p>'+
 			'<p>'+ll_add_c+'</p>'+
 			'<p>'+ll_add_d+'</p>'+
-			'<p>'+ll_add_e+'</p>'+
+			'<p style="font-weight:bold; font-size:120%">'+ll_add_e+' '+result+'</p>'+
 			'<p>'+ll_add_f+'</p>';
 		$("#additional-description-text-wrapper").empty().append(html);
 	}
@@ -459,7 +467,7 @@ export default class AnalysisView extends View {
 						'<h3 style="color:'+color+'">ANALYSIS</h3>'+
 					'</div>'+
 					'<div class="col s12 center">'+
-						'<h5>Sales over the Wholesale market</h5>'+
+						'<h5>Wholesale</h5>'+
 						'<div id="spider-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+

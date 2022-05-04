@@ -55,7 +55,7 @@ Margins
     30
 */
 render = function() {
-	console.log('render v5.0');
+	console.log('render v6.0');
 	$('svg').empty();
 	let w = $(window).width();
 	if (w > 1600) {

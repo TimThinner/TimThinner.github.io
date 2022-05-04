@@ -44,9 +44,9 @@ const DUMMY_DATA = [
 	{name: "35", value:621009},
 	{name: "36", value:538670},
 	{name: "37", value:0},
-	{name: "38", value:1000},
+	{name: "38", value:10000},
 	{name: "39", value:700000},
-	{name: "40", value:699000}
+	{name: "40", value:690000}
 ];
 /*
 Margins 
@@ -55,7 +55,7 @@ Margins
     30
 */
 render = function() {
-	console.log('render v4.0');
+	console.log('render v5.0');
 	$('svg').empty();
 	let w = $(window).width();
 	if (w > 1600) {
@@ -77,7 +77,7 @@ render = function() {
 	const container = d3.select('svg')//.classed('container', true);
 		.attr('width',w_svg+'px')
 		.attr('height',h_svg+'px')
-		.style('border','1px solid #720570');
+		.style('border','1px solid #aaa');
 	
 	const bars = container
 		.selectAll('.bar')

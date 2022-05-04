@@ -45,19 +45,31 @@ const DUMMY_DATA = [
 	{name: "36", value:538670}
 ];
 
+/*
+
+Margins 
+   8
+
+8       30
+
+  30
+*/
+
 render = function() {
-	console.log('render v3.0');
+	console.log('render v4.0');
 	$('svg').empty();
-	
-	const w = $(window).width()-40; // set a little margin in both dimensions.
-	const h = $(window).height()-40;
-	
+	let w = $(window).width();
+	if (w > 1600) {
+		w = 1600;
+	}
+	const h = $(window).height();
 	const xScale = d3
 		.scaleBand()
 		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
 		.rangeRound([0, w])
 		.padding(0.1);
-	const yScale = d3.scaleLinear().domain([0, 700000]).range([h, 0]);
+	// margin is 20 pixels at bottom and 20 pixels at top.
+	const yScale = d3.scaleLinear().domain([0, 700000]).range([h-20, 20]); 
 	
 	const container = d3.select('svg')//.classed('container', true);
 		.attr('width',w+'px')

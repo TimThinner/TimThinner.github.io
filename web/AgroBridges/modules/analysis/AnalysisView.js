@@ -431,11 +431,13 @@ export default class AnalysisView extends View {
 		const ll_add_f = LM['translation'][sel]['Suitability_farm_Characterstics'];
 		const result = 'medium';
 		
-		const html = '<p>'+ll_add_a+'</p>'+
+		let html = '<p>'+ll_add_a+'</p>'+
 			'<p>'+ll_add_b+'</p>'+
 			'<p>'+ll_add_c+'</p>'+
 			'<p>'+ll_add_d+'</p>'+
-			'<p style="font-weight:bold; font-size:120%">'+ll_add_e+' '+result+'</p>'+
+			'<div class="highlighted-message">'+
+				'<p style="font-weight:bold; font-size:120%">'+ll_add_e+' '+result+'</p>'+
+			'</div>'+
 			'<p>'+ll_add_f+'</p>';
 		$("#additional-description-text-wrapper").empty().append(html);
 	}

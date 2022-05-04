@@ -44,17 +44,12 @@ const DUMMY_DATA = [
 	{name: "35", value:621009},
 	{name: "36", value:538670}
 ];
-
 /*
-
 Margins 
-   8
-
+    8
 8       30
-
-  30
+    30
 */
-
 render = function() {
 	console.log('render v4.0');
 	$('svg').empty();
@@ -63,17 +58,21 @@ render = function() {
 		w = 1600;
 	}
 	const h = $(window).height();
+	
+	const w_svg = w-40;
+	const h_svg = h-40;
+	
 	const xScale = d3
 		.scaleBand()
 		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
-		.rangeRound([0, w])
+		.rangeRound([0, w_svg])
 		.padding(0.1);
 	// margin is 20 pixels at bottom and 20 pixels at top.
-	const yScale = d3.scaleLinear().domain([0, 700000]).range([h-20, 20]); 
+	const yScale = d3.scaleLinear().domain([0, 700000]).range([h_svg, 20]);
 	
 	const container = d3.select('svg')//.classed('container', true);
-		.attr('width',w+'px')
-		.attr('height',h+'px')
+		.attr('width',w_svg+'px')
+		.attr('height',h_svg+'px')
 		.style('border','1px solid #720570');
 	
 	const bars = container
@@ -83,7 +82,7 @@ render = function() {
 		.append('rect')
 		.classed('bar', true)
 		.attr('width', xScale.bandwidth())
-		.attr('height', (data) => h - yScale(data.value))
+		.attr('height', (data) => h_svg - yScale(data.value))
 		.attr('x', data => xScale(data.name))
 		.attr('y', data => yScale(data.value));
 }

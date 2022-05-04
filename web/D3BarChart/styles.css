@@ -2,7 +2,7 @@ html, body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
 	color: #000;
-	background-color: #EEF8EB;
+	background-color: #FFEEEE;
 }
 @media screen and (min-width: 601px) {
 	html, body {
@@ -11,7 +11,7 @@ html, body {
 }
 /* Materialize CSS */
 .container {
-	background-color: #EEF8EB;
+	background-color: #FFEEEE;
 	color: #000;
 	margin: 0 auto;
 	max-width: 1600px;

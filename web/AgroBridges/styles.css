@@ -45,8 +45,8 @@ li.agro-item:not(:last-child) {
 	margin-bottom: 12px;
 }
 .highlighted-message {
-	border: 1px solid #8f8;
-	background-color: #efe;
+	border: 1px solid #0B7938;
+	background-color: #fff;
 	padding-left: 1rem;
 	padding-right: 1rem;
 }

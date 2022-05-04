@@ -42,7 +42,11 @@ const DUMMY_DATA = [
 	{name: "33", value:520614},
 	{name: "34", value:518082},
 	{name: "35", value:621009},
-	{name: "36", value:538670}
+	{name: "36", value:538670},
+	{name: "37", value:0},
+	{name: "38", value:1000},
+	{name: "39", value:700000},
+	{name: "40", value:699000}
 ];
 /*
 Margins 
@@ -68,7 +72,7 @@ render = function() {
 		.rangeRound([0, w_svg])
 		.padding(0.1);
 	// margin is 20 pixels at bottom and 20 pixels at top.
-	const yScale = d3.scaleLinear().domain([0, 700000]).range([h_svg, 20]);
+	const yScale = d3.scaleLinear().domain([0, 700000]).range([h_svg, 0]);
 	
 	const container = d3.select('svg')//.classed('container', true);
 		.attr('width',w_svg+'px')

@@ -73,8 +73,8 @@ render = function() {
 	const xPadding = 0.1; // amount of x-range to reserve to separate bars
 	
 	
-	const xRange = [marginLeft, w_svg - marginRight], // [left, right]
-	const yRange = [h_svg - marginBottom, marginTop], // [bottom, top]
+	const xRange = [marginLeft, w_svg - marginRight]; // [left, right]
+	const yRange = [h_svg - marginBottom, marginTop]; // [bottom, top]
 	
 	const xScale = d3
 		.scaleBand()

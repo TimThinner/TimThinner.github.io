@@ -47,22 +47,22 @@ https://observablehq.com/@d3/margin-convention?collection=@d3/d3-axis
 render = function() {
 	$('svg').empty();
 	
-	console.log('Testing main v 1.0');
+	console.log('Testing main v 2.0');
 	
 	const margin = {top: 20, right: 20, bottom: 20, left: 60};
 	
-	const w = $(window).width()-40;
+	let w = $(window).width()-40;
+	if (w > 1600) {
+		w = 1600;
+	}
 	const h = w*0.5; //$(window).height();
-	
 	const xRange = [margin.left, w - margin.right]; // [left, right]
 	const yRange = [h - margin.bottom, margin.top]; // [bottom, top]
-	
 	/*
 	const xScale = d3.scaleLinear()
 		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
 		.range(xRange)
 		*/
-		
 	const xScale = d3
 		.scaleBand()
 		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
@@ -86,7 +86,7 @@ render = function() {
 		.attr('height',h)
 		.attr("viewBox", [0, 0, w, h])
 		.style('border','1px solid #aaa');
-	
+	// Paint SVG (chart) background white.
 	svg.append('rect')
 		.attr('width', w)
 		.attr('height', h)
@@ -108,9 +108,8 @@ render = function() {
 		.attr('class', 'y-grid')
 		.attr('transform', 'translate(' + margin.left + ', 0)')
 		.call(yGrid)
-		
-	const bars = svg
-		.selectAll('.bar')
+	
+	svg.selectAll('.bar')
 		.data(DUMMY_DATA)
 		.enter()
 		.append('rect')
@@ -131,8 +130,52 @@ render = function() {
 			.attr('height', d => h - margin.bottom - yScale(d.value))
 			.attr('fill', 'yellow')
 	*/
+	
+	svg.selectAll("text.bar")
+		.data(data)
+		.enter()
+		.append("text")
+		.attr("class", "bar")
+		.attr("text-anchor", "middle")
+		.attr("x", function(d) { return xScale(d.name) + xScale.bandwidth()/2; })
+		.attr("y", function(d) { return yScale(d.value) - 5; })
+		.text(function(d) { return d.value/1000; });
 }
 $(window).on('resize', function() {
 	render();
 });
 render();
+
+/*
+See 
+http://bl.ocks.org/larskotthoff/601c66edfb83a11cf2bb
+
+
+svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Frequency");
+
+  svg.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.letter); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.frequency); })
+      .attr("height", function(d) { return height - y(d.frequency); });
+
+  svg.selectAll("text.bar")
+      .data(data)
+    .enter().append("text")
+      .attr("class", "bar")
+      .attr("text-anchor", "middle")
+      .attr("x", function(d) { return x(d.letter) + x.rangeBand()/2; })
+      .attr("y", function(d) { return y(d.frequency) - 5; })
+      .text(function(d) { return d.frequency; });
+*/

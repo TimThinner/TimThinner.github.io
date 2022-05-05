@@ -34,11 +34,11 @@ const DUMMY_DATA = [
 	{name: "33", value:520614},
 	{name: "34", value:518082},
 	{name: "35", value:621009},
-	{name: "36", value:538670},
-	{name: "37", value:0},
-	{name: "38", value:10000},
-	{name: "39", value:700000},
-	{name: "40", value:690000}
+	{name: "36", value:538670}
+	//{name: "37", value:0},
+	//{name: "38", value:10000},
+	//{name: "39", value:700000},
+	//{name: "40", value:690000}
 ];
 /*
 https://bl.ocks.org/mbostock/3019563
@@ -82,10 +82,17 @@ render = function() {
 		.call(d3.axisLeft(yScale))
 	
 	const svg = d3.select('svg')//.classed('container', true);
-		.attr('width',w+'px')
-		.attr('height',h+'px')
+		.attr('width',w)
+		.attr('height',h)
 		.attr("viewBox", [0, 0, w, h])
 		.style('border','1px solid #aaa');
+	
+	svg.append('rect')
+		.attr('width', w)
+		.attr('height', h)
+		.attr('x', 0)
+		.attr('y', 0)
+		.attr('fill','#fff');
 	
 	svg.append("g").call(xAxis);
 	

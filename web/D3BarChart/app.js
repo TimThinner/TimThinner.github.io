@@ -55,7 +55,7 @@ Margins
     30
 */
 render = function() {
-	console.log('render v6.0');
+	console.log('render v8.0');
 	$('svg').empty();
 	let w = $(window).width();
 	if (w > 1600) {
@@ -66,13 +66,24 @@ render = function() {
 	const w_svg = w-40;
 	const h_svg = h*0.5; // 50% of screen height
 	
+	const marginTop = 20; // the top margin, in pixels
+	const marginRight = 0; // the right margin, in pixels
+	const marginBottom = 30; // the bottom margin, in pixels
+	const marginLeft = 40; // the left margin, in pixels
+	const xPadding = 0.1; // amount of x-range to reserve to separate bars
+	
+	
+	const xRange = [marginLeft, w_svg - marginRight], // [left, right]
+	const yRange = [h_svg - marginBottom, marginTop], // [bottom, top]
+	
 	const xScale = d3
 		.scaleBand()
 		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
-		.rangeRound([0, w_svg])
-		.padding(0.1);
+		//.rangeRound([0, w_svg])
+		.rangeRound(xRange)
+		.padding(xPadding);
 	// margin is 20 pixels at bottom and 20 pixels at top.
-	const yScale = d3.scaleLinear().domain([0, 700000]).range([h_svg, 0]);
+	const yScale = d3.scaleLinear().domain([0, 700000]).range(yRange);
 	
 	const container = d3.select('svg')//.classed('container', true);
 		.attr('width',w_svg+'px')
@@ -99,3 +110,5 @@ $(window).on('resize', function() {
 });
 
 render();
+
+

@@ -67,6 +67,7 @@ render = function() {
 		.scaleBand()
 		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
 		.rangeRound(xRange);
+		.padding(0.1);
 		
 	const yScale = d3.scaleLinear()
 		.domain([0, 700000])
@@ -75,11 +76,10 @@ render = function() {
 	const xAxis = g => g
 		.attr("transform", `translate(0,${h - margin.bottom})`)
 		.call(d3.axisBottom(xScale))
-	
+		
 	const yAxis = g => g
 		.attr("transform", `translate(${margin.left},0)`)
 		.call(d3.axisLeft(yScale))
-	
 	
 	const svg = d3.select('svg')//.classed('container', true);
 		.attr('width',w+'px')

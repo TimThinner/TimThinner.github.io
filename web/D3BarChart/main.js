@@ -66,7 +66,7 @@ render = function() {
 	const xScale = d3
 		.scaleBand()
 		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
-		.rangeRound(xRange);
+		.rangeRound(xRange)
 		.padding(0.1);
 		
 	const yScale = d3.scaleLinear()

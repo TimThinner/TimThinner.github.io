@@ -57,22 +57,22 @@ render = function() {
 	const xRange = [margin.left, w - margin.right]; // [left, right]
 	const yRange = [h - margin.bottom, margin.top]; // [bottom, top]
 	
-	const x = d3.scaleLinear()
+	const xScale = d3.scaleLinear()
 		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
 		.range(xRange)
 		
-	const y = d3.scaleLinear()
+	const yScale = d3.scaleLinear()
 		.domain([0, 700000])
 		.range(yRange);
 		
 	const xAxis = g => g
 		.attr("transform", `translate(0,${h - margin.bottom})`)
-		.call(d3.axisBottom(x))
+		.call(d3.axisBottom(xScale))
 	
 	const yAxis = g => g
 		.attr("transform", `translate(${margin.left},0)`)
-		.call(d3.axisRight(y)
-			.tickSize(w - margin.left - margin.right))
+		.call(d3.axisLeft(yScale))
+	
 	
 	const svg = d3.select('svg')//.classed('container', true);
 		.attr('width',w+'px')
@@ -83,6 +83,40 @@ render = function() {
 	svg.append("g").call(xAxis);
 	
 	svg.append("g").call(yAxis);
+	
+	const yGrid = d3.axisLeft()
+		.scale(yScale)
+		.tickFormat('')
+		.ticks(14)
+		.tickSizeInner(-w + margin.left + margin.right)
+	
+	svg.append('g')
+		.attr('class', 'y-grid')
+		.attr('transform', 'translate(' + margin.left + ', 0)')
+		.call(yGrid)
+		
+	const bars = svg
+		.selectAll('.bar')
+		.data(DUMMY_DATA)
+		.enter()
+		.append('rect')
+			.classed('bar', true)
+			.attr('width', xScale.bandwidth())
+			.attr('height', (data) => h - margin.bottom - yScale(data.value))
+			.attr('x', data => xScale(data.name))
+			.attr('y', data => yScale(data.value));
+	/*
+	svg
+		.selectAll('rect')
+		.data(DUMMY_DATA)
+		.enter()
+		.append('rect')
+			.attr('x', d => xScale(d.location))
+			.attr('y', d => yScale(d.new_deaths))
+			.attr('width', xScale.bandwidth())
+			.attr('height', d => h - margin.bottom - yScale(d.value))
+			.attr('fill', 'yellow')
+	*/
 }
 $(window).on('resize', function() {
 	render();

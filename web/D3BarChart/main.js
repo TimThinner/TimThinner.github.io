@@ -57,9 +57,16 @@ render = function() {
 	const xRange = [margin.left, w - margin.right]; // [left, right]
 	const yRange = [h - margin.bottom, margin.top]; // [bottom, top]
 	
+	/*
 	const xScale = d3.scaleLinear()
 		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
 		.range(xRange)
+		*/
+		
+	const xScale = d3
+		.scaleBand()
+		.domain(DUMMY_DATA.map((dataPoint) => dataPoint.name))
+		.rangeRound(xRange);
 		
 	const yScale = d3.scaleLinear()
 		.domain([0, 700000])

@@ -76,7 +76,7 @@ render = function() {
 	const svg = d3.select('svg')//.classed('container', true);
 		.attr('width',w+'px')
 		.attr('height',h+'px')
-		.attr("viewBox", [0, 0, w, h]);
+		.attr("viewBox", [0, 0, w, h])
 		.style('border','1px solid #aaa');
 	
 	svg.append("g").call(xAxis);

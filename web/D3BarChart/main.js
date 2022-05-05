@@ -71,7 +71,8 @@ render = function() {
 	
 	const yAxis = g => g
 		.attr("transform", `translate(${margin.left},0)`)
-		.call(d3.axisLeft(y))
+		.call(d3.axisLeft(y)
+			.tickSize(w - margin.left - margin.right))
 	
 	const svg = d3.select('svg')//.classed('container', true);
 		.attr('width',w+'px')

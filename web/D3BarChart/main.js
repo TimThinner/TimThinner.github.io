@@ -132,7 +132,7 @@ render = function() {
 	*/
 	
 	svg.selectAll("text.bar")
-		.data(data)
+		.data(DUMMY_DATA)
 		.enter()
 		.append("text")
 		.attr("class", "bar")

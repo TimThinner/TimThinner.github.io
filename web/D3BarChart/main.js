@@ -139,7 +139,7 @@ render = function() {
 		.attr("text-anchor", "middle")
 		.attr("x", function(d) { return xScale(d.name) + xScale.bandwidth()/2; })
 		.attr("y", function(d) { return yScale(d.value) - 5; })
-		.text(function(d) { return d.value/1000; });
+		.text(function(d) { return (d.value/1000).toFixed(0); });
 }
 $(window).on('resize', function() {
 	render();
@@ -147,11 +147,74 @@ $(window).on('resize', function() {
 render();
 
 /*
-See 
+See:
 http://bl.ocks.org/larskotthoff/601c66edfb83a11cf2bb
 
+<style>
 
-svg.append("g")
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+</style>
+<body>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10, "%");
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.tsv("data.tsv", type, function(error, data) {
+  x.domain(data.map(function(d) { return d.letter; }));
+  y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
       .attr("class", "y axis")
       .call(yAxis)
     .append("text")
@@ -178,4 +241,13 @@ svg.append("g")
       .attr("x", function(d) { return x(d.letter) + x.rangeBand()/2; })
       .attr("y", function(d) { return y(d.frequency) - 5; })
       .text(function(d) { return d.frequency; });
+});
+
+function type(d) {
+  d.frequency = +d.frequency;
+  return d;
+}
+
+</script>
+
 */

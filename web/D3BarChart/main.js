@@ -49,7 +49,7 @@ render = function() {
 	
 	console.log('Testing main v 1.0');
 	
-	const margin = {top: 20, right: 20, bottom: 20, left: 20};
+	const margin = {top: 20, right: 20, bottom: 20, left: 60};
 	
 	const w = $(window).width()-40;
 	const h = w*0.5; //$(window).height();

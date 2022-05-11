@@ -210,6 +210,8 @@ export default class AnalysisView extends View {
 		// Labor_Produce;		1
 		// Gender_Equality;		0.498997996
 		// Consumer_Contact		0.2
+		
+		
 		if (name === 'wholesale') {
 			data = [{
 				"Volume":1,
@@ -220,7 +222,9 @@ export default class AnalysisView extends View {
 				"Chain Added Value":0.093587522,
 				"Price Premium":0.243019648
 			}];
-		} else if (name === 'diagram1') {
+		} else {
+			// RANK 1 RESULT:
+			// Ranked 1 result:
 			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
 			// 0,2	0,729058945		0,694974003				0,074509829			0,3125			0,645290581			0,4
 			data = [{
@@ -231,11 +235,11 @@ export default class AnalysisView extends View {
 				"Lower Carbon Footprint":0.074509829,
 				"Chain Added Value":0.694974003,
 				"Price Premium":0.729058945
-			}];
-		} else if (name === 'diagram2') {
+			},
+			// RANK 2 RESULT:
 			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
 			// 0,2	0,728024819	0,620450607					1					0,020243		0,503006012		0,2
-			data = [{
+			{
 				"Volume":0.2,
 				"Consumer Contact":0.2,
 				"Gender Equality":0.503006012,
@@ -243,11 +247,11 @@ export default class AnalysisView extends View {
 				"Lower Carbon Footprint":1,
 				"Chain Added Value":0.620450607,
 				"Price Premium":0.728024819
-			}];
-		} else if (name === 'diagram3') {
+			},
+			// RANK 3 RESULT:
 			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
 			// 0,4			0,640124095		0,402079723			0,504424796			0,3125			0,509018036			0,4
-			data = [{
+			{
 				"Volume":0.4,
 				"Consumer Contact":0.4,
 				"Gender Equality":0.509018036,
@@ -256,15 +260,6 @@ export default class AnalysisView extends View {
 				"Chain Added Value":0.402079723,
 				"Price Premium":0.640124095
 			}];
-		} else {
-			for (let i = 0; i < 1; i++) {
-				let point = {}
-				//each feature will be a random number from 2-8
-				//features.forEach(f => point[f] = 1 + Math.random() * 8);
-				//each feature will be a random number from 0 to 1
-				features.forEach(f => point[f] = Math.random());
-				data.push(point);
-			}
 		}
 		
 		//let svg = d3.select("spider").append("svg").attr("width", 600).attr("height", 600);
@@ -382,6 +377,24 @@ export default class AnalysisView extends View {
 		const html = '<svg id="spider" width="'+width+'" height="'+height+'"></svg>';
 		$(html).appendTo('#spider-wrapper');
 		this.drawSpider('wholesale','spider', width, height);
+	}
+	
+	renderResultsSpider() {
+		$('#results-spiders-wrapper').empty();
+		
+		let w = this.REO.width;
+		if (w > 1600) { w = 1600; }
+		
+		const width = w*0.9;				// 90% of width
+		const height = this.REO.height*0.4;	// 40% of height
+		
+		const html = 
+			'<div class="col s12 center">'+
+				'<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>'+
+			'</div>';
+		$(html).appendTo('#results-spiders-wrapper');
+		
+		this.drawSpider('peterparker', 'spider-r', width, height);
 	}
 	
 	renderResultsSpiders() {
@@ -507,7 +520,8 @@ export default class AnalysisView extends View {
 		this.renderSpider();
 		this.renderBusinessModelsText();
 		this.renderRecommendationsText();
-		this.renderResultsSpiders();
+		//this.renderResultsSpiders();
+		this.renderResultsSpider();
 		this.renderAdditionalDescription();
 		this.renderDisclaimer();
 		

@@ -113,6 +113,8 @@ export default class AnalysisView extends View {
 		const ll_r2_no_suitable = LM['translation'][sel]['Results2_farm_no_suitable_Channels'];
 		const ll_r2_only_1_suitable = LM['translation'][sel]['Results2_only_one_channel'];
 		
+		
+		
 		const numberOfResults = 3;
 		
 		let html = '';
@@ -125,6 +127,8 @@ export default class AnalysisView extends View {
 		} else { // Two or more...
 			html += '<p>'+ll_r2_more_than_2_suitable+'</p>';
 		}
+		
+		
 		$("#recommendations-text-part-2-wrapper").empty().append(html);
 	}
 	
@@ -398,7 +402,7 @@ export default class AnalysisView extends View {
 		let w = this.REO.width;
 		if (w > 1600) { w = 1600; }
 		
-		const width = w*0.5;				// 50% of width
+		const width = w*0.45;				// 45% of width
 		const height = this.REO.height*0.4;	// 40% of height
 		
 		const html = 
@@ -444,7 +448,33 @@ export default class AnalysisView extends View {
 		this.drawSpider('diagram3', 'spider-r3', xwidth, height);
 	}
 	
-	renderAdditionalDescription() {
+	renderAdditionalDescriptionPart1() {
+		//'Additional_Info_PickU'
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		
+		const ll_add_a = LM['translation'][sel]['Describtion_Spiderweb'];
+		//const ll_add_b = LM['translation'][sel]['How_calculated'];
+		//const ll_add_c = LM['translation'][sel]['Definition_Criteria'];
+		
+		//const ll_add_d = LM['translation'][sel]['Intro_not_all_sales_channels_con'];
+		const ll_add_e = LM['translation'][sel]['Relative_Attractiveness']; // add the result of ?
+		const ll_add_f = LM['translation'][sel]['Suitability_farm_Characterstics'];
+		const result = 'medium';
+		
+		let html = '<p>'+ll_add_a+'</p>'+
+			//'<p>'+ll_add_b+'</p>'+
+			//'<p>'+ll_add_c+'</p>'+
+			//'<p>'+ll_add_d+'</p>'+
+			'<div class="highlighted-message">'+
+				'<p style="font-weight:bold; font-size:120%">'+ll_add_e+' '+result+'</p>'+
+			'</div>'+
+			'<p>'+ll_add_f+'</p>';
+		$("#additional-description-text-part-1-wrapper").empty().append(html);
+	}
+	
+	/*
+	renderAdditionalDescriptionPart2() {
 		//'Additional_Info_PickU'
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
@@ -465,8 +495,9 @@ export default class AnalysisView extends View {
 				'<p style="font-weight:bold; font-size:120%">'+ll_add_e+' '+result+'</p>'+
 			'</div>'+
 			'<p>'+ll_add_f+'</p>';
-		$("#additional-description-text-wrapper").empty().append(html);
-	}
+		$("#additional-description-text-part-1-wrapper").empty().append(html);
+	}*/
+	
 	
 	renderDisclaimer() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
@@ -509,6 +540,9 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-2-wrapper"></div>'+
 					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="additional-description-text-part-1-wrapper"></div>'+
+					'</div>'+
 					'<div class="col s12 center">'+
 						'<h5>Wholesale</h5>'+
 						'<div id="spider-wrapper"></div>'+
@@ -516,9 +550,6 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">Business models for Short Food Supply Chain</h5>'+
 						'<div id="business-models-text-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<div id="additional-description-text-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="disclaimer-text-wrapper" style="font-size:75%; color:#888; border:1px solid #888; margin-top:16px; padding:16px;"></div>'+
@@ -544,10 +575,12 @@ export default class AnalysisView extends View {
 		this.renderRecommendationsPart2Text();
 		this.renderSpider();
 		
+		this.renderAdditionalDescriptionPart1();
+		
 		this.renderBusinessModelsText();
 		//this.renderResultsSpiders();
 		
-		this.renderAdditionalDescription();
+		//this.renderAdditionalDescriptionPart2();
 		this.renderDisclaimer();
 		
 		this.rendered = true;

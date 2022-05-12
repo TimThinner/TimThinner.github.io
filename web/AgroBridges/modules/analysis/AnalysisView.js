@@ -153,15 +153,15 @@ export default class AnalysisView extends View {
 		const html = 
 			'<div class="row">'+
 				'<div class="col s6">'+
-					'<p>Sales Channel</p>'+
+					'<p style="font-weight:bold">Sales Channel</p>'+
 				'</div>'+
 				'<div class="col s6">'+
-					'<p>Business Model</p>'+
+					'<p style="font-weight:bold">Business Model</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s6">'+
-					'<p>On-Farm Shop (extensively managed, unstaffed)</p>'+
+					'<p style="color:'+colors[0]+'">On-Farm Shop (extensively managed, unstaffed)</p>'+
 				'</div>'+
 				'<div class="col s6">'+
 					'<p style="color:'+colors[0]+'">Face-to-Face</p>'+
@@ -169,7 +169,7 @@ export default class AnalysisView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s6">'+
-					'<p>Post delivery (sales on demand)</p>'+
+					'<p style="color:'+colors[1]+'">Post delivery (sales on demand)</p>'+
 				'</div>'+
 				'<div class="col s6">'+
 					'<p style="color:'+colors[1]+'">Online Trade</p>'+
@@ -177,7 +177,7 @@ export default class AnalysisView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s6">'+
-					'<p>Retail store</p>'+
+					'<p style="color:'+colors[2]+'">Retail store</p>'+
 				'</div>'+
 				'<div class="col s6">'+
 					'<p style="color:'+colors[2]+'">Retail Trade</p>'+
@@ -553,11 +553,13 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-1-wrapper"></div>'+
 					'</div>'+
-					'<div class="col s6" id="recommendations-list-wrapper">'+
-						
-					'</div>'+
-					'<div class="col s6" id="recommendations-spider-wrapper">'+
-						
+					'<div class="col s12 m10 offset-m1">'+
+						'<div class="row">'+
+							'<div class="col s6" id="recommendations-list-wrapper">'+
+							'</div>'+
+							'<div class="col s6" id="recommendations-spider-wrapper">'+
+							'</div>'+
+						'</div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-2-wrapper"></div>'+

@@ -56,32 +56,6 @@ export default class AnalysisView extends View {
 		}
 	}
 	
-	renderBusinessModelsText() {
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		const ll_intro = LM['translation'][sel]['Intro_Definition_Business_Models'];
-		const ll_def_csa = LM['translation'][sel]['Definition_CSA'];
-		const ll_def_f2f = LM['translation'][sel]['Definition_Face_2_Face'];
-		const ll_def_online_trade = LM['translation'][sel]['Definition_Online_Trade'];
-		const ll_def_retail_trade = LM['translation'][sel]['Definition_Retail_Trade'];
-		const ll_def_improved_logistics = LM['translation'][sel]['Definition_Improved_Logistics'];
-		const ll_def_more_info = LM['translation'][sel]['More_Info_Business_Models'];
-		
-		// Note: put little bit of vertical space below each li-item!
-		// See styles.css:
-		// li.agro-item:not(:last-child) { 
-		//		margin-bottom: 12px;
-		// }
-		const html = '<p>'+ll_intro+'</p>'+
-			'<ul class="browser-default"><li class="agro-item">'+ll_def_csa+'</li>'+
-			'<li class="agro-item">'+ll_def_f2f+'</li>'+
-			'<li class="agro-item">'+ll_def_online_trade+'</li>'+
-			'<li class="agro-item">'+ll_def_retail_trade+'</li>'+
-			'<li class="agro-item">'+ll_def_improved_logistics+'</li></ul>'+
-			'<p>'+ll_def_more_info+'</p>';
-		$("#business-models-text-wrapper").empty().append(html);
-	}
-	
 	renderRecommendationsPart1Text() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
@@ -125,8 +99,6 @@ export default class AnalysisView extends View {
 		} else { // Two or more...
 			html += '<p>'+ll_r2_more_than_2_suitable+'</p>';
 		}
-		
-		
 		$("#recommendations-text-part-2-wrapper").empty().append(html);
 	}
 	
@@ -403,15 +375,12 @@ export default class AnalysisView extends View {
 		const width = w*0.45;				// 45% of width
 		const height = this.REO.height*0.4;	// 40% of height
 		
-		const html = 
-			'<div class="col s12 center">'+
-				'<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>'+
-			'</div>';
+		const html = '<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>';
 		$(html).appendTo('#recommendations-spider-wrapper');
 		
 		this.drawSpider('peterparker', 'spider-r', width, height);
 	}
-	
+	/*
 	renderResultsSpiders() {
 		
 		$('#results-spiders-wrapper').empty();
@@ -445,9 +414,9 @@ export default class AnalysisView extends View {
 		this.drawSpider('diagram2', 'spider-r2', xwidth, height);
 		this.drawSpider('diagram3', 'spider-r3', xwidth, height);
 	}
-	
+	*/
 	renderAdditionalDescriptionPart1() {
-		//'Additional_Info_PickU'
+		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const ll_add_a = LM['translation'][sel]['Describtion_Spiderweb'];
@@ -455,8 +424,8 @@ export default class AnalysisView extends View {
 		$("#additional-description-text-part-1-wrapper").empty().append(html);
 	}
 	
-	renderAdditionalDescriptionPart2() {
-		//'Additional_Info_PickU'
+	renderAnalysisRegionAttractiveness() {
+		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const ll_add_e = LM['translation'][sel]['Relative_Attractiveness']; // add the result of ?
@@ -467,11 +436,11 @@ export default class AnalysisView extends View {
 				'<p style="font-weight:bold; font-size:120%">'+ll_add_e+' '+result+'</p>'+
 			'</div>'+
 			'<p>'+ll_add_f+'</p>';
-		$("#additional-description-text-part-2-wrapper").empty().append(html);
+		$("#analysis-region-attractiveness-wrapper").empty().append(html);
 	}
 	
-	renderAdditionalDescriptionPart3() {
-		//'Additional_Info_PickU'
+	renderAdditionalDescriptionPart2() {
+		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const ll_add_b = LM['translation'][sel]['How_calculated'];
@@ -480,7 +449,33 @@ export default class AnalysisView extends View {
 		const html = '<p>'+ll_add_b+'</p>'+
 			'<p>'+ll_add_c+'</p>'+
 			'<p>'+ll_add_d+'</p>';
-		$("#additional-description-text-part-3-wrapper").empty().append(html);
+		$("#additional-description-text-part-2-wrapper").empty().append(html);
+	}
+	
+	renderBusinessModelsText() {
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const ll_intro = LM['translation'][sel]['Intro_Definition_Business_Models'];
+		const ll_def_csa = LM['translation'][sel]['Definition_CSA'];
+		const ll_def_f2f = LM['translation'][sel]['Definition_Face_2_Face'];
+		const ll_def_online_trade = LM['translation'][sel]['Definition_Online_Trade'];
+		const ll_def_retail_trade = LM['translation'][sel]['Definition_Retail_Trade'];
+		const ll_def_improved_logistics = LM['translation'][sel]['Definition_Improved_Logistics'];
+		const ll_def_more_info = LM['translation'][sel]['More_Info_Business_Models'];
+		
+		// Note: put little bit of vertical space below each li-item!
+		// See styles.css:
+		// li.agro-item:not(:last-child) { 
+		//		margin-bottom: 12px;
+		// }
+		const html = '<p>'+ll_intro+'</p>'+
+			'<ul class="browser-default"><li class="agro-item">'+ll_def_csa+'</li>'+
+			'<li class="agro-item">'+ll_def_f2f+'</li>'+
+			'<li class="agro-item">'+ll_def_online_trade+'</li>'+
+			'<li class="agro-item">'+ll_def_retail_trade+'</li>'+
+			'<li class="agro-item">'+ll_def_improved_logistics+'</li></ul>'+
+			'<p>'+ll_def_more_info+'</p>';
+		$("#business-models-text-wrapper").empty().append(html);
 	}
 	
 	renderDisclaimer() {
@@ -497,11 +492,7 @@ export default class AnalysisView extends View {
 	render() {
 		const self = this;
 		$(this.el).empty();
-		/*
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		const ll_intro = LM['translation'][sel]['Intro_Definition_Business_Models'];
-		*/
+		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
@@ -532,10 +523,10 @@ export default class AnalysisView extends View {
 						'<div id="spider-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<div id="additional-description-text-part-2-wrapper"></div>'+
+						'<div id="analysis-region-attractiveness-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<div id="additional-description-text-part-3-wrapper"></div>'+
+						'<div id="additional-description-text-part-2-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">Business models for Short Food Supply Chain</h5>'+
@@ -566,12 +557,10 @@ export default class AnalysisView extends View {
 		
 		this.renderAdditionalDescriptionPart1();
 		this.renderSpider();
-		
+		this.renderAnalysisRegionAttractiveness();
 		this.renderAdditionalDescriptionPart2();
-		this.renderAdditionalDescriptionPart3();
 		
 		this.renderBusinessModelsText();
-		
 		this.renderDisclaimer();
 		
 		this.rendered = true;

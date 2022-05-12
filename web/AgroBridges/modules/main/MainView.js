@@ -398,7 +398,7 @@ export default class MainView extends View {
 			border.style.stroke = this.colors.DARK_ORANGE;
 		} else {
 			border.style.fill = this.colors.LIGHT_GREY;
-			border.style.stroke = this.colors.DARK_GREY;
+			border.style.stroke = this.colors.GREY;
 		}
 		border.style.fillOpacity = 0.75;
 		border.style.strokeWidth = 5;
@@ -413,7 +413,7 @@ export default class MainView extends View {
 			ca.style.stroke = this.colors.DARK_ORANGE;
 		} else {
 			ca.style.fill = this.colors.LIGHT_GREY;
-			ca.style.stroke = this.colors.DARK_GREY;
+			ca.style.stroke = this.colors.GREY;
 		}
 		ca.style.fillOpacity = 1;
 		ca.style.strokeWidth = 1;
@@ -435,7 +435,7 @@ export default class MainView extends View {
 		if (mainState.ready === true) {
 			title.setAttribute('fill',this.colors.DARK_ORANGE);
 		} else {
-			title.setAttribute('fill',this.colors.DARK_GREY);
+			title.setAttribute('fill',this.colors.GREY);
 		}
 		title.style.opacity = 1;
 		title.appendChild(document.createTextNode('ANALYSIS'));
@@ -449,7 +449,7 @@ export default class MainView extends View {
 		if (mainState.ready === true) {
 			surface.style.stroke = this.colors.DARK_ORANGE;
 		} else {
-			surface.style.stroke = this.colors.DARK_GREY;
+			surface.style.stroke = this.colors.GREY;
 		}
 		surface.style.strokeWidth = 1;
 		surface.style.fillOpacity = 0;
@@ -469,7 +469,7 @@ export default class MainView extends View {
 			if (mainState.ready === true) {
 				border.style.fill = self.colors.DARK_ORANGE;
 			} else {
-				border.style.fill = self.colors.DARK_GREY;
+				border.style.fill = self.colors.GREY;
 			}
 		}, false);
 		surface.addEventListener("mouseout", function(event){ 

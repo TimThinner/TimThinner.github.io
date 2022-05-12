@@ -10,7 +10,7 @@ export default class View {
 			SPACE_FILL:'#EEF8EB',
 			WHITE:'#fff',
 			LIGHT_GREY:'#EEEEEE',
-			DARK_GREY:'#CCCCCC',
+			GREY:'#CCCCCC',
 			LIGHT_GREEN:'#EEF8EB',
 			GREEN:'#AAFFAA',
 			DARK_GREEN:'#0B7938',

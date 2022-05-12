@@ -292,6 +292,12 @@ export default class AnalysisView extends View {
 		}
 		
 		//let svg = d3.select("spider").append("svg").attr("width", 600).attr("height", 600);
+		const colors = [
+			this.colors.DARK_GREEN,
+			this.colors.DARK_ORANGE,
+			this.colors.DARK_BLUE,
+			this.colors.GREY
+		];
 		
 		//let radialScale = d3.scaleLinear().domain([0, 10]).range([0, 250]);
 		let radialScale = d3.scaleLinear().domain([0, 1]).range([0, range]);
@@ -304,8 +310,8 @@ export default class AnalysisView extends View {
 				//.attr("cy", 300)
 				.attr("cx", horiz_center) // min_dim)
 				.attr("cy", verti_center) // min_dim)
-				.attr("fill", "#e5ecf6") // "none"
-				.attr("stroke", "#fff")//"gray")
+				.attr("fill", '#fff')//"#e5ecf6") // "none"
+				.attr("stroke", colors[3])
 				.attr("r", radialScale(t))
 		);
 		// draw tick labels
@@ -353,7 +359,7 @@ export default class AnalysisView extends View {
 				.attr("y1", verti_center)//min_dim 300)
 				.attr("x2", line_coordinate.x)
 				.attr("y2", line_coordinate.y)
-				.attr("stroke", "#fff");//"black");
+				.attr("stroke", colors[3]);
 			svg.append("text")
 				.attr("x", label_coordinate.x)
 				.attr("y", label_coordinate.y)
@@ -362,13 +368,6 @@ export default class AnalysisView extends View {
 		}
 		//drawing the line for the spider chart
 		let line = d3.line().x(d => d.x).y(d => d.y);
-		//let colors = ["darkorange", "gray", "navy"];
-		//let colors = ["#5965fa","darkorange","gray"];
-		const colors = [
-			this.colors.DARK_GREEN,
-			this.colors.DARK_ORANGE,
-			this.colors.DARK_BLUE
-		];
 		//get coordinates for a data point
 		function getPathCoordinates(d) {
 			let coordinates = [];
@@ -381,8 +380,8 @@ export default class AnalysisView extends View {
 			coordinates.push(angleToCoordinate(Math.PI/2, d[features[0]]));
 			return coordinates;
 		}
-		
-		for (var i = 0; i < data.length; i++) {
+		// Draw in reverse order => RANK 3 is in background and RANK 1 in foreground.
+		for (let i=data.length-1; i>=0; i--) {
 			let d = data[i];
 			let color = colors[i];
 			let coordinates = getPathCoordinates(d);

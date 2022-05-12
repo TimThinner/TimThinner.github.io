@@ -102,7 +102,7 @@ export default class AnalysisView extends View {
 		$("#recommendations-text-part-2-wrapper").empty().append(html);
 	}
 	
-	renderRecommendationsTable() {
+	renderRecommendationsList() {
 		// SHOW EXAMPLE TABLE:
 		// RANK	SALES_CHANNEL			BUSINESS_MODEL
 		// 1	On_Farm_Shop_extensive	Face-to-Face
@@ -113,7 +113,7 @@ export default class AnalysisView extends View {
 		// 1.	On-Farm Shop (extensively managed, unstaffed)
 		// 2.	Post delivery (sales on demand)
 		// 3.	Retail store
-		const html = 
+		/*const html = 
 			'<table>'+
 				'<thead>'+
 					'<tr>'+
@@ -141,8 +141,50 @@ export default class AnalysisView extends View {
 				'</tbody>'+
 			'</table>';
 		$("#recommendations-table-wrapper").empty().append(html);
+		*/
+		
+		// What is the number of recommendations?
+		const numberOfResults = 3;
+		const colors = [
+			this.colors.DARK_GREEN,
+			this.colors.DARK_ORANGE,
+			this.colors.DARK_BLUE
+		];
+		const html = 
+			'<div class="row">'+
+				'<div class="col s6">'+
+					'<p>Sales Channel</p>'+
+				'</div>'+
+				'<div class="col s6">'+
+					'<p>Business Model</p>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s6">'+
+					'<p>On-Farm Shop (extensively managed, unstaffed)</p>'+
+				'</div>'+
+				'<div class="col s6">'+
+					'<p style="color:'+colors[0]+'">Face-to-Face</p>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s6">'+
+					'<p>Post delivery (sales on demand)</p>'+
+				'</div>'+
+				'<div class="col s6">'+
+					'<p style="color:'+colors[1]+'">Online Trade</p>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s6">'+
+					'<p>Retail store</p>'+
+				'</div>'+
+				'<div class="col s6">'+
+					'<p style="color:'+colors[2]+'">Retail Trade</p>'+
+				'</div>'+
+			'</div>';
+		$("#recommendations-list-wrapper").empty().append(html);
 	}
-	
 	
 	/* Note:
 		light-blue background:	#e5ecf6
@@ -321,7 +363,12 @@ export default class AnalysisView extends View {
 		//drawing the line for the spider chart
 		let line = d3.line().x(d => d.x).y(d => d.y);
 		//let colors = ["darkorange", "gray", "navy"];
-		let colors = ["#5965fa","darkorange","gray"];
+		//let colors = ["#5965fa","darkorange","gray"];
+		const colors = [
+			this.colors.DARK_GREEN,
+			this.colors.DARK_ORANGE,
+			this.colors.DARK_BLUE
+		];
 		//get coordinates for a data point
 		function getPathCoordinates(d) {
 			let coordinates = [];
@@ -506,11 +553,11 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-1-wrapper"></div>'+
 					'</div>'+
-					'<div class="col s6">'+
-						'<div id="recommendations-table-wrapper"></div>'+
+					'<div class="col s6" id="recommendations-list-wrapper">'+
+						
 					'</div>'+
-					'<div class="col s6">'+
-						'<div id="recommendations-spider-wrapper"></div>'+
+					'<div class="col s6" id="recommendations-spider-wrapper">'+
+						
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-2-wrapper"></div>'+
@@ -551,7 +598,7 @@ export default class AnalysisView extends View {
 			self.controller.models['MenuModel'].setSelected('main');
 		});
 		this.renderRecommendationsPart1Text();
-		this.renderRecommendationsTable();
+		this.renderRecommendationsList();
 		this.renderResultsSpider();
 		this.renderRecommendationsPart2Text();
 		

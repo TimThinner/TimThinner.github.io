@@ -58,10 +58,18 @@ export default class AnalysisView extends View {
 		}
 	}
 	
+	renderBusinessModelsText() {
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const ll_intro = LM['translation'][sel]['Intro_Definition_Business_Models'];
+		const html = '<p>'+ll_intro+'</p>';
+		$("#business-models-intro-wrapper").empty().append(html);
+	}
+	
 	renderRecommendationsPart1Text() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const ll_intro_business = LM['translation'][sel]['Intro_Definition_Business_Models'];
+		
 		const ll_intro = LM['translation'][sel]['Result1_Models_Considered'];
 		const ll_r1_more_than_2_suitable = LM['translation'][sel]['Result_Farms_more_than_2_suitable'];
 		const ll_r1_no_suitable = LM['translation'][sel]['Results1_farms_no_suitable_channels'];
@@ -569,7 +577,7 @@ export default class AnalysisView extends View {
 						'<h5 style="text-align:center">Recommendations for Short Food Supply Chain</h5>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<div id="recommendations-text-part-1-wrapper"></div>'+
+						'<div id="business-models-intro-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						//'<h5 style="text-align:center">Business models for Short Food Supply Chain</h5>'+
@@ -580,6 +588,9 @@ export default class AnalysisView extends View {
 						'</div>'+
 						'<div class="col s12" id="preview-placeholder">'+ // style="margin-bottom:16px">'+
 						'</div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="recommendations-text-part-1-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div class="row">'+
@@ -627,11 +638,14 @@ export default class AnalysisView extends View {
 		$("#analysis-ok").on('click', function() {
 			self.controller.models['MenuModel'].setSelected('main');
 		});
-		this.renderRecommendationsPart1Text();
 		
-		//this.renderBusinessModelsTextAsAccordion();
-		
-		
+		this.renderBusinessModelsText();
+		if (this.previewOpen ) {
+			this.renderBusinessModels(); //('preview-placeholder', p);
+			$('#preview-placeholder').css({"border":"3px solid #005794","padding":"8px"});
+			// update the button text
+			$('#preview-business-models').html('CLOSE');
+		}
 		$('#preview-business-models').on('click', function(){
 			// TOGGLE THE PREVIEW
 			if (self.previewOpen) {
@@ -651,6 +665,7 @@ export default class AnalysisView extends View {
 			}
 		});
 		
+		this.renderRecommendationsPart1Text();
 		this.renderRecommendationsList();
 		this.renderResultsSpider();
 		this.renderRecommendationsPart2Text();

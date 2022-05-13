@@ -465,7 +465,7 @@ export default class AnalysisView extends View {
 			// draw the path element
 			// IF THE SHOW CHECKBOX is checked!!!!
 			// BUT do not block the "wholesale" spider!
-			if (data.length > 1 && this.showRecommendation[i] === true) {
+			if (data.length === 1 || this.showRecommendation[i] === true) {
 				
 				let d = data[i];
 				let color = colors[i];

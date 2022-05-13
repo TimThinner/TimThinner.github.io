@@ -183,7 +183,7 @@ export default class AnalysisView extends View {
 		}
 		
 		const html = 
-			'<div class="row">'+
+			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s5">'+
 					'<p style="font-weight:bold">Sales Channel</p>'+
 				'</div>'+
@@ -194,7 +194,7 @@ export default class AnalysisView extends View {
 					'<p style="font-weight:bold">Show</p>'+
 				'</div>'+
 			'</div>'+
-			'<div class="row">'+
+			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s5">'+
 					'<p style="color:'+colors[0]+'">On-Farm Shop (extensively managed, unstaffed)</p>'+
 				'</div>'+
@@ -205,7 +205,7 @@ export default class AnalysisView extends View {
 					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-0" '+checked_0+' /><span></span></label></p>'+
 				'</div>'+
 			'</div>'+
-			'<div class="row">'+
+			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s5">'+
 					'<p style="color:'+colors[1]+'">Post delivery (sales on demand)</p>'+
 				'</div>'+
@@ -216,7 +216,7 @@ export default class AnalysisView extends View {
 					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-1" '+checked_1+' /><span></span></label></p>'+
 				'</div>'+
 			'</div>'+
-			'<div class="row">'+
+			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s5">'+
 					'<p style="color:'+colors[2]+'">Retail store</p>'+
 				'</div>'+

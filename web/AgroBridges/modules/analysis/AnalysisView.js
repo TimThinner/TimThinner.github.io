@@ -201,7 +201,7 @@ export default class AnalysisView extends View {
 				'<div class="col s5">'+
 					'<p style="color:'+colors[0]+';font-size:14px">Face-to-Face</p>'+
 				'</div>'+
-				'<div class="input-field col s2">'+
+				'<div class="input-field col s2" style="padding-top:0">'+
 					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-0" '+checked_0+' /><span></span></label></p>'+
 				'</div>'+
 			'</div>'+
@@ -212,7 +212,7 @@ export default class AnalysisView extends View {
 				'<div class="col s5">'+
 					'<p style="color:'+colors[1]+';font-size:14px">Online Trade</p>'+
 				'</div>'+
-				'<div class="input-field col s2">'+
+				'<div class="input-field col s2" style="padding-top:0">'+
 					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-1" '+checked_1+' /><span></span></label></p>'+
 				'</div>'+
 			'</div>'+
@@ -223,7 +223,7 @@ export default class AnalysisView extends View {
 				'<div class="col s5">'+
 					'<p style="color:'+colors[2]+';font-size:14px">Retail Trade</p>'+
 				'</div>'+
-				'<div class="input-field col s2">'+
+				'<div class="input-field col s2" style="padding-top:0">'+
 					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-2" '+checked_2+' /><span></span></label></p>'+
 				'</div>'+
 			'</div>';

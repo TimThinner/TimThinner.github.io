@@ -326,7 +326,7 @@ export default class AnalysisView extends View {
 			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
 			// 0,2	0,729058945		0,694974003				0,074509829			0,3125			0,645290581			0,4
 			
-			if (this.showRecommendation[0] === true) {
+			//if (this.showRecommendation[0] === true) {
 				data.push(
 				{
 				"Volume":0.2,
@@ -337,11 +337,11 @@ export default class AnalysisView extends View {
 				"Chain Added Value":0.694974003,
 				"Price Premium":0.729058945
 				});
-			}
+			//}
 			// RANK 2 RESULT:
 			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
 			// 0,2	0,728024819	0,620450607					1					0,020243		0,503006012		0,2
-			if (this.showRecommendation[1] === true) {
+			//if (this.showRecommendation[1] === true) {
 				data.push(
 				{
 				"Volume":0.2,
@@ -352,11 +352,11 @@ export default class AnalysisView extends View {
 				"Chain Added Value":0.620450607,
 				"Price Premium":0.728024819
 				});
-			}
+			//}
 			// RANK 3 RESULT:
 			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
 			// 0,4			0,640124095		0,402079723			0,504424796			0,3125			0,509018036			0,4
-			if (this.showRecommendation[2] === true) {
+			//if (this.showRecommendation[2] === true) {
 				data.push(
 				{
 				"Volume":0.4,
@@ -367,7 +367,7 @@ export default class AnalysisView extends View {
 				"Chain Added Value":0.402079723,
 				"Price Premium":0.640124095
 				});
-			}
+			//}
 		}
 		
 		//let svg = d3.select("spider").append("svg").attr("width", 600).attr("height", 600);
@@ -461,19 +461,24 @@ export default class AnalysisView extends View {
 		}
 		// Draw in reverse order => RANK 3 is in background and RANK 1 in foreground.
 		for (let i=data.length-1; i>=0; i--) {
-			let d = data[i];
-			let color = colors[i];
-			let coordinates = getPathCoordinates(d);
 			
-			//draw the path element
-			svg.append("path")
-				.datum(coordinates)
-				.attr("d", line)
-				.attr("stroke-width", 3)
-				.attr("stroke", color)
-				.attr("fill", "none")//color)
-				.attr("stroke-opacity", 1)
-				.attr("opacity", 1) //0.5);
+			// draw the path element
+			// IF THE SHOW CHECKBOX is checked!!!!
+			if (this.showRecommendation[i] === true) {
+				
+				let d = data[i];
+				let color = colors[i];
+				let coordinates = getPathCoordinates(d);
+				
+				svg.append("path")
+					.datum(coordinates)
+					.attr("d", line)
+					.attr("stroke-width", 2)
+					.attr("stroke", color)
+					.attr("fill", "none")//color)
+					.attr("stroke-opacity", 1)
+					.attr("opacity", 1) //0.5);
+			}
 		}
 	}
 	

@@ -571,7 +571,7 @@ export default class AnalysisView extends View {
 		$(this.el).empty();
 		
 		let li_open_tag = '<li>';
-		if (this.previewOpen ) {
+		if (this.previewOpen) {
 			li_open_tag = '<li class="active">';
 		}
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
@@ -662,8 +662,10 @@ export default class AnalysisView extends View {
 		
 		this.renderBusinessModelsText(); // to #business-models-info-text
 		
-		$('.collapsible').collapsible();
-		
+		$('.collapsible').collapsible({
+			onOpenEnd: function() { self.previewOpen=true; },
+			onCloseEnd: function() { self.previewOpen=false; }
+		});
 		/*
 		this.renderBusinessModelsIntro();
 		if (this.previewOpen ) {

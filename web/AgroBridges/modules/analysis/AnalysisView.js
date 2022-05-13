@@ -31,6 +31,7 @@ export default class AnalysisView extends View {
 		//this.preview_online_Open = false;
 		//this.preview_retail_Open = false;
 		//this.preview_logistics_Open = false;
+		this.showRecommendation = [true, true, true, true, true, true, true, true];
 		
 		this.rendered = false;
 	}
@@ -119,6 +120,7 @@ export default class AnalysisView extends View {
 	}
 	
 	renderRecommendationsList() {
+		const self = this;
 		// SHOW EXAMPLE TABLE:
 		// RANK	SALES_CHANNEL			BUSINESS_MODEL
 		// 1	On_Farm_Shop_extensive	Face-to-Face
@@ -186,7 +188,7 @@ export default class AnalysisView extends View {
 					'<p style="color:'+colors[0]+'">Face-to-Face</p>'+
 				'</div>'+
 				'<div class="col s2">'+
-					'<input type="checkbox" class="filled-in" checked="checked" />'+
+					'<input type="checkbox" id="show-recommendation-0" class="filled-in" checked="checked" />'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -197,7 +199,7 @@ export default class AnalysisView extends View {
 					'<p style="color:'+colors[1]+'">Online Trade</p>'+
 				'</div>'+
 				'<div class="col s2">'+
-					'<input type="checkbox" class="filled-in" checked="checked" />'+
+					'<input type="checkbox" id="show-recommendation-1" class="filled-in" checked="checked" />'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -208,10 +210,35 @@ export default class AnalysisView extends View {
 					'<p style="color:'+colors[2]+'">Retail Trade</p>'+
 				'</div>'+
 				'<div class="col s2">'+
-					'<input type="checkbox" class="filled-in" checked="checked" />'+
+					'<input type="checkbox" id="show-recommendation-2" class="filled-in" checked="checked" />'+
 				'</div>'+
 			'</div>';
 		$("#recommendations-list-wrapper").empty().append(html);
+		
+		$('#show-recommendation-0').on('click', function(){
+			if (self.showRecommendation[0] === true) {
+				self.showRecommendation[0] = false; // Toggle
+			} else {
+				self.showRecommendation[0] = true; // Toggle
+			}
+			self.renderResultsSpider();
+		});
+		$('#show-recommendation-1').on('click', function(){
+			if (self.showRecommendation[1] === true) {
+				self.showRecommendation[1] = false; // Toggle
+			} else {
+				self.showRecommendation[1] = true; // Toggle
+			}
+			self.renderResultsSpider();
+		});
+		$('#show-recommendation-2').on('click', function(){
+			if (self.showRecommendation[2] === true) {
+				self.showRecommendation[2] = false; // Toggle
+			} else {
+				self.showRecommendation[2] = true; // Toggle
+			}
+			self.renderResultsSpider();
+		});
 	}
 	
 	/* Note:
@@ -284,7 +311,10 @@ export default class AnalysisView extends View {
 			// Ranked 1 result:
 			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
 			// 0,2	0,729058945		0,694974003				0,074509829			0,3125			0,645290581			0,4
-			data = [{
+			
+			if (this.showRecommendation[0] === true) {
+				data.push(
+				{
 				"Volume":0.2,
 				"Consumer Contact":0.4,
 				"Gender Equality":0.645290581,
@@ -292,11 +322,14 @@ export default class AnalysisView extends View {
 				"Lower Carbon Footprint":0.074509829,
 				"Chain Added Value":0.694974003,
 				"Price Premium":0.729058945
-			},
+				});
+			}
 			// RANK 2 RESULT:
 			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
 			// 0,2	0,728024819	0,620450607					1					0,020243		0,503006012		0,2
-			{
+			if (this.showRecommendation[1] === true) {
+				data.push(
+				{
 				"Volume":0.2,
 				"Consumer Contact":0.2,
 				"Gender Equality":0.503006012,
@@ -304,11 +337,14 @@ export default class AnalysisView extends View {
 				"Lower Carbon Footprint":1,
 				"Chain Added Value":0.620450607,
 				"Price Premium":0.728024819
-			},
+				});
+			}
 			// RANK 3 RESULT:
 			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
 			// 0,4			0,640124095		0,402079723			0,504424796			0,3125			0,509018036			0,4
-			{
+			if (this.showRecommendation[2] === true) {
+				data.push(
+				{
 				"Volume":0.4,
 				"Consumer Contact":0.4,
 				"Gender Equality":0.509018036,
@@ -316,7 +352,8 @@ export default class AnalysisView extends View {
 				"Lower Carbon Footprint":0.504424796,
 				"Chain Added Value":0.402079723,
 				"Price Premium":0.640124095
-			}];
+				});
+			}
 		}
 		
 		//let svg = d3.select("spider").append("svg").attr("width", 600).attr("height", 600);

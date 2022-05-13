@@ -25,6 +25,8 @@ export default class AnalysisView extends View {
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		this.USER_MODEL.subscribe(this);
 		
+		this.previewOpen = false;
+		
 		this.rendered = false;
 	}
 	
@@ -59,12 +61,17 @@ export default class AnalysisView extends View {
 	renderRecommendationsPart1Text() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const ll_intro = LM['translation'][sel]['Result1_Models_Considered']; // 'The following business models and sales channels were considered in your analysis:'
+		const ll_intro_business = LM['translation'][sel]['Intro_Definition_Business_Models'];
+		const ll_intro = LM['translation'][sel]['Result1_Models_Considered'];
 		const ll_r1_more_than_2_suitable = LM['translation'][sel]['Result_Farms_more_than_2_suitable'];
 		const ll_r1_no_suitable = LM['translation'][sel]['Results1_farms_no_suitable_channels'];
 		const ll_r1_only_1_suitable = LM['translation'][sel]['Results1_only_one_channel'];
 		
-		let html = '<p>'+ll_intro+'</p>';
+		let html = '<p>'+ll_intro_business+'</p>';
+		// This next will be "accordion", where user opens or closes addtional text.
+		
+		
+		html += '<p>'+ll_intro+'</p>';
 		const numberOfResults = 3;
 		if (numberOfResults === 0) {
 			html += '<p>'+ll_r1_no_suitable+'</p>';
@@ -498,10 +505,10 @@ export default class AnalysisView extends View {
 		$("#additional-description-text-part-2-wrapper").empty().append(html);
 	}
 	
-	renderBusinessModelsText() {
+	renderBusinessModels() { //TextAsAccordion() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const ll_intro = LM['translation'][sel]['Intro_Definition_Business_Models'];
+		//const ll_intro = LM['translation'][sel]['Intro_Definition_Business_Models'];
 		const ll_def_csa = LM['translation'][sel]['Definition_CSA'];
 		const ll_def_f2f = LM['translation'][sel]['Definition_Face_2_Face'];
 		const ll_def_online_trade = LM['translation'][sel]['Definition_Online_Trade'];
@@ -514,14 +521,26 @@ export default class AnalysisView extends View {
 		// li.agro-item:not(:last-child) { 
 		//		margin-bottom: 12px;
 		// }
-		const html = '<p>'+ll_intro+'</p>'+
+		const html = //'<p>'+ll_intro+'</p>'+
 			'<ul class="browser-default"><li class="agro-item">'+ll_def_csa+'</li>'+
 			'<li class="agro-item">'+ll_def_f2f+'</li>'+
 			'<li class="agro-item">'+ll_def_online_trade+'</li>'+
 			'<li class="agro-item">'+ll_def_retail_trade+'</li>'+
 			'<li class="agro-item">'+ll_def_improved_logistics+'</li></ul>'+
-			'<p>'+ll_def_more_info+'</p>';
-		$("#business-models-text-wrapper").empty().append(html);
+			'<p>'+ll_def_more_info+'</p>'+
+			
+			//'<div class="col s12 center" style="margin-top:16px;margin-bottom:32px;">'+
+			'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="bottom-close-preview">CLOSE</button>';
+			//'</div>'
+		//$("#business-models-text-accordion-wrapper").empty().append(html);
+		$("#preview-placeholder").empty().append(html);
+		
+		$('#bottom-close-preview').on('click', function(){
+			$('#preview-placeholder').empty();
+			$('#preview-placeholder').css({"border":"none","padding":"0"});
+			self.previewOpen = false;
+			$('#preview-business-models').html('OPEN');
+		});
 	}
 	
 	renderDisclaimer() {
@@ -553,6 +572,16 @@ export default class AnalysisView extends View {
 						'<div id="recommendations-text-part-1-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
+						//'<h5 style="text-align:center">Business models for Short Food Supply Chain</h5>'+
+						//'<div id="business-models-text-accordion-wrapper"></div>'+
+						// PREVIEW business models BUTTON:
+						'<div class="col s12 center" id="preview-button-wrapper">'+ // style="margin-top:16px;margin-bottom:16px;">'+
+							'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="preview-business-models">OPEN</button>'+
+						'</div>'+
+						'<div class="col s12" id="preview-placeholder">'+ // style="margin-bottom:16px">'+
+						'</div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
 						'<div class="row">'+
 							'<div class="col s6" id="recommendations-list-wrapper">'+
 							'</div>'+
@@ -576,10 +605,10 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="additional-description-text-part-2-wrapper"></div>'+
 					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<h5 style="text-align:center">Business models for Short Food Supply Chain</h5>'+
-						'<div id="business-models-text-wrapper"></div>'+
-					'</div>'+
+					//'<div class="col s12 m10 offset-m1">'+
+						//'<h5 style="text-align:center">Business models for Short Food Supply Chain</h5>'+
+						//'<div id="business-models-text-wrapper"></div>'+
+					//'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="disclaimer-text-wrapper" style="font-size:75%; color:#888; border:1px solid #888; margin-top:16px; padding:16px;"></div>'+
 					'</div>'+
@@ -599,6 +628,29 @@ export default class AnalysisView extends View {
 			self.controller.models['MenuModel'].setSelected('main');
 		});
 		this.renderRecommendationsPart1Text();
+		
+		//this.renderBusinessModelsTextAsAccordion();
+		
+		
+		$('#preview-business-models').on('click', function(){
+			// TOGGLE THE PREVIEW
+			if (self.previewOpen) {
+				$('#preview-placeholder').empty();
+				// reset CSS
+				$('#preview-placeholder').css({"border":"none","padding":"0"});
+				self.previewOpen = false;
+				// update the button text
+				$('#preview-business-models').html('OPEN');
+			} else {
+				self.renderBusinessModels(); //('preview-placeholder', p);
+				// add CSS
+				$('#preview-placeholder').css({"border":"3px solid #005794","padding":"8px"});
+				self.previewOpen = true;
+				// update the button text
+				$('#preview-business-models').html('CLOSE');
+			}
+		});
+		
 		this.renderRecommendationsList();
 		this.renderResultsSpider();
 		this.renderRecommendationsPart2Text();
@@ -608,7 +660,7 @@ export default class AnalysisView extends View {
 		this.renderAnalysisRegionAttractiveness();
 		this.renderAdditionalDescriptionPart2();
 		
-		this.renderBusinessModelsText();
+		
 		this.renderDisclaimer();
 		
 		this.rendered = true;

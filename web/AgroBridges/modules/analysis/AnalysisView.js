@@ -75,11 +75,7 @@ export default class AnalysisView extends View {
 		const ll_r1_no_suitable = LM['translation'][sel]['Results1_farms_no_suitable_channels'];
 		const ll_r1_only_1_suitable = LM['translation'][sel]['Results1_only_one_channel'];
 		
-		let html = '<p>'+ll_intro_business+'</p>';
-		// This next will be "accordion", where user opens or closes addtional text.
-		
-		
-		html += '<p>'+ll_intro+'</p>';
+		let html = '<p>'+ll_intro+'</p>';
 		const numberOfResults = 3;
 		if (numberOfResults === 0) {
 			html += '<p>'+ll_r1_no_suitable+'</p>';

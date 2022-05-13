@@ -187,8 +187,8 @@ export default class AnalysisView extends View {
 				'<div class="col s5">'+
 					'<p style="color:'+colors[0]+'">Face-to-Face</p>'+
 				'</div>'+
-				'<div class="col s2">'+
-					'<input type="checkbox" id="show-recommendation-0" class="filled-in" checked="checked" />'+
+				'<div class="input-field col s2">'+
+					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-0" checked="checked" /><span></span></label></p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -198,8 +198,9 @@ export default class AnalysisView extends View {
 				'<div class="col s5">'+
 					'<p style="color:'+colors[1]+'">Online Trade</p>'+
 				'</div>'+
-				'<div class="col s2">'+
-					'<input type="checkbox" id="show-recommendation-1" class="filled-in" checked="checked" />'+
+				'<div class="input-field col s2">'+
+					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-1" checked="checked" /><span></span></label></p>'+
+					//'<input type="checkbox" id="show-recommendation-1" class="filled-in" checked="checked" />'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -209,8 +210,9 @@ export default class AnalysisView extends View {
 				'<div class="col s5">'+
 					'<p style="color:'+colors[2]+'">Retail Trade</p>'+
 				'</div>'+
-				'<div class="col s2">'+
-					'<input type="checkbox" id="show-recommendation-2" class="filled-in" checked="checked" />'+
+				'<div class="input-field col s2">'+
+					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-2" checked="checked" /><span></span></label></p>'+
+					//'<input type="checkbox" id="show-recommendation-2" class="filled-in" checked="checked" />'+
 				'</div>'+
 			'</div>';
 		$("#recommendations-list-wrapper").empty().append(html);

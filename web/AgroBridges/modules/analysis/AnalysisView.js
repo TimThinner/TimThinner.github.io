@@ -71,20 +71,20 @@ export default class AnalysisView extends View {
 		const sel = LM.selected;
 		
 		const ll_intro = LM['translation'][sel]['Result1_Models_Considered'];
-		const ll_r1_more_than_2_suitable = LM['translation'][sel]['Result_Farms_more_than_2_suitable'];
 		const ll_r1_no_suitable = LM['translation'][sel]['Results1_farms_no_suitable_channels'];
 		const ll_r1_only_1_suitable = LM['translation'][sel]['Results1_only_one_channel'];
+		const ll_r1_more_than_2_suitable = LM['translation'][sel]['Result_Farms_more_than_2_suitable'];
 		
-		let html = '<p>'+ll_intro+'</p>';
+		let html;
 		const numberOfResults = 3;
 		if (numberOfResults === 0) {
-			html += '<p>'+ll_r1_no_suitable+'</p>';
+			html = '<p>'+ll_intro+' '+ll_r1_no_suitable+'</p>';
 			
 		} else if(numberOfResults === 1) {
-			html += '<p>'+ll_r1_only_1_suitable+'</p>';
+			html = '<p>'+ll_intro+' '+ll_r1_only_1_suitable+'</p>';
 			
 		} else { // Two or more...
-			html += '<p>'+ll_r1_more_than_2_suitable+'</p>';
+			html = '<p>'+ll_intro+' '+ll_r1_more_than_2_suitable+'</p>';
 		}
 		$("#recommendations-text-part-1-wrapper").empty().append(html);
 	}
@@ -534,7 +534,7 @@ export default class AnalysisView extends View {
 			'<p>'+ll_def_more_info+'</p>'+
 			
 			//'<div class="col s12 center" style="margin-top:16px;margin-bottom:32px;">'+
-			'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="bottom-close-preview">CLOSE</button>';
+			'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="bottom-close-preview">CLOSE DEFINITION</button>';
 			//'</div>'
 		//$("#business-models-text-accordion-wrapper").empty().append(html);
 		$("#preview-placeholder").empty().append(html);
@@ -543,7 +543,7 @@ export default class AnalysisView extends View {
 			$('#preview-placeholder').empty();
 			$('#preview-placeholder').css({"border":"none","padding":"0"});
 			self.previewOpen = false;
-			$('#preview-business-models').html('OPEN');
+			$('#preview-business-models').html('SEE DEFINITION');
 		});
 	}
 	
@@ -580,7 +580,7 @@ export default class AnalysisView extends View {
 						//'<div id="business-models-text-accordion-wrapper"></div>'+
 						// PREVIEW business models BUTTON:
 						'<div class="col s12 center" id="preview-button-wrapper">'+ // style="margin-top:16px;margin-bottom:16px;">'+
-							'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="preview-business-models">OPEN</button>'+
+							'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="preview-business-models">SEE DEFINITION</button>'+
 						'</div>'+
 						'<div class="col s12" id="preview-placeholder">'+ // style="margin-bottom:16px">'+
 						'</div>'+
@@ -640,7 +640,7 @@ export default class AnalysisView extends View {
 			this.renderBusinessModels(); //('preview-placeholder', p);
 			$('#preview-placeholder').css({"border":"3px solid #005794","padding":"8px"});
 			// update the button text
-			$('#preview-business-models').html('CLOSE');
+			$('#preview-business-models').html('CLOSE DEFINITION');
 		}
 		$('#preview-business-models').on('click', function(){
 			// TOGGLE THE PREVIEW
@@ -650,14 +650,14 @@ export default class AnalysisView extends View {
 				$('#preview-placeholder').css({"border":"none","padding":"0"});
 				self.previewOpen = false;
 				// update the button text
-				$('#preview-business-models').html('OPEN');
+				$('#preview-business-models').html('SEE DEFINITION');
 			} else {
 				self.renderBusinessModels(); //('preview-placeholder', p);
 				// add CSS
 				$('#preview-placeholder').css({"border":"3px solid #005794","padding":"8px"});
 				self.previewOpen = true;
 				// update the button text
-				$('#preview-business-models').html('CLOSE');
+				$('#preview-business-models').html('CLOSE DEFINITION');
 			}
 		});
 		

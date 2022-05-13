@@ -423,7 +423,7 @@ export default class AnalysisView extends View {
 			} else if (ft_name === 'Consumer Contact') { // 16 characters
 				label_coordinate.x -= fontsize*7;
 			} else if (ft_name === 'Gender Equality') { // 15 characters
-				label_coordinate.x -= fontsize*5;
+				label_coordinate.x -= fontsize*3;
 			} else if (ft_name === 'Lower Labor Produce Ratio') { // 25 characters
 				label_coordinate.x -= fontsize*8;
 			} else if (ft_name === 'Lower Carbon Footprint') { // 22 characters
@@ -506,7 +506,7 @@ export default class AnalysisView extends View {
 		let width = w*0.5;					// 50% of width
 		let height = this.REO.height*0.5;	// 50% of height
 		
-		if (w < 587) { // s12 => takes "whole width"  should be 601, but because we are "cropping" a little bit...
+		if (w < 581) { // s12 => takes "whole width"  should be 601, but because we are "cropping" a little bit...
 			width = w*0.9;					// 90% of width
 			height = this.REO.height*0.5;	// 50% of height
 		}

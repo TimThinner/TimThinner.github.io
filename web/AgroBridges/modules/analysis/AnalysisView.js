@@ -25,7 +25,12 @@ export default class AnalysisView extends View {
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		this.USER_MODEL.subscribe(this);
 		
-		this.previewOpen = false;
+		//this.previewOpen = false;
+		this.preview_csa_Open = false;
+		this.preview_f2f_Open = false;
+		this.preview_online_Open = false;
+		this.preview_retail_Open = false;
+		this.preview_logistics_Open = false;
 		
 		this.rendered = false;
 	}
@@ -534,18 +539,14 @@ export default class AnalysisView extends View {
 			'<li class="agro-item">'+ll_def_improved_logistics+'</li></ul>'+
 			'<p>'+ll_def_more_info+'</p>'+
 		*/
-			
-		const html = ll_def_csa+'<br/><br/>'+
-			ll_def_f2f+'<br/><br/>'+
-			ll_def_online_trade+'<br/><br/>'+
-			ll_def_retail_trade+'<br/><br/>'+
-			ll_def_improved_logistics+'<br/><br/>'+
-			ll_def_more_info;
-			//'<div class="col s12 center" style="margin-top:16px;margin-bottom:32px;">'+
-			//'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="bottom-close-preview">CLOSE DEFINITION</button>';
-			//'</div>'
-		//$("#business-models-text-accordion-wrapper").empty().append(html);
-		$("#business-models-info-text").empty().append(html);
+		$("#business-models-csa-text").empty().append(ll_def_csa);
+		$("#business-models-f2f-text").empty().append(ll_def_f2f);
+		$("#business-models-online-text").empty().append(ll_def_online_trade);
+		$("#business-models-retail-text").empty().append(ll_def_retail_trade);
+		$("#business-models-logistics-text").empty().append(ll_def_improved_logistics);
+		
+		
+		$("#business-models-more-info-wrapper").empty().append(ll_def_more_info);
 		
 		/*$('#bottom-close-preview').on('click', function(){
 			$('#preview-placeholder').empty();
@@ -570,10 +571,10 @@ export default class AnalysisView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		let li_open_tag = '<li>';
-		if (this.previewOpen) {
-			li_open_tag = '<li class="active">';
-		}
+		//let li_open_tag = '<li>';
+		//if (this.previewOpen) {
+			//li_open_tag = '<li class="active">';
+		//}
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
@@ -591,21 +592,36 @@ export default class AnalysisView extends View {
 						//'<h5 style="text-align:center">Business models for Short Food Supply Chain</h5>'+
 						//'<div id="business-models-text-accordion-wrapper"></div>'+
 						// PREVIEW business models BUTTON:
-						
 						'<ul class="collapsible">'+
-							li_open_tag+
-								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Business models definitions</div>'+
-								'<div class="collapsible-body"><span id="business-models-info-text"></span></div>'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Consumer Supported Agriculture (CSA)</div>'+
+								'<div class="collapsible-body"><span id="business-models-csa-text"></span></div>'+
+							'</li>'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Face-to-Face Sales</div>'+
+								'<div class="collapsible-body"><span id="business-models-f2f-text"></span></div>'+
+							'</li>'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Online Trade</div>'+
+								'<div class="collapsible-body"><span id="business-models-online-text"></span></div>'+
+							'</li>'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Retail Trade</div>'+
+								'<div class="collapsible-body"><span id="business-models-retail-text"></span></div>'+
+							'</li>'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Improved Logistics</div>'+
+								'<div class="collapsible-body"><span id="business-models-logistics-text"></span></div>'+
 							'</li>'+
 						'</ul>'+
-						
 						//'<div class="col s12 center" id="preview-button-wrapper">'+ // style="margin-top:16px;margin-bottom:16px;">'+
 							//'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="preview-business-models">SEE DEFINITION</button>'+
 						//'</div>'+
 						//'<div class="col s12" id="preview-placeholder">'+ // style="margin-bottom:16px">'+
 						//'</div>'+
-						
-						
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="business-models-more-info-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-1-wrapper"></div>'+
@@ -663,8 +679,9 @@ export default class AnalysisView extends View {
 		this.renderBusinessModelsText(); // to #business-models-info-text
 		
 		$('.collapsible').collapsible({
-			onOpenEnd: function() { self.previewOpen=true; },
-			onCloseEnd: function() { self.previewOpen=false; }
+			accordion true,
+			onOpenEnd: function(el) { console.log(['open el=',el]); /*self.previewOpen=true;*/ },
+			onCloseEnd: function(el) { console.log(['close el=',el]); /*self.previewOpen=false;*/ }
 		});
 		/*
 		this.renderBusinessModelsIntro();

@@ -58,7 +58,7 @@ export default class AnalysisView extends View {
 		}
 	}
 	
-	renderBusinessModelsText() {
+	renderBusinessModelsIntro() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const ll_intro = LM['translation'][sel]['Intro_Definition_Business_Models'];
@@ -509,10 +509,10 @@ export default class AnalysisView extends View {
 		$("#additional-description-text-part-2-wrapper").empty().append(html);
 	}
 	
-	renderBusinessModels() { //TextAsAccordion() {
+	renderBusinessModelsText() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		//const ll_intro = LM['translation'][sel]['Intro_Definition_Business_Models'];
+		
 		const ll_def_csa = LM['translation'][sel]['Definition_CSA'];
 		const ll_def_f2f = LM['translation'][sel]['Definition_Face_2_Face'];
 		const ll_def_online_trade = LM['translation'][sel]['Definition_Online_Trade'];
@@ -525,26 +525,34 @@ export default class AnalysisView extends View {
 		// li.agro-item:not(:last-child) { 
 		//		margin-bottom: 12px;
 		// }
-		const html = //'<p>'+ll_intro+'</p>'+
+		/*
+		const html =
 			'<ul class="browser-default"><li class="agro-item">'+ll_def_csa+'</li>'+
 			'<li class="agro-item">'+ll_def_f2f+'</li>'+
 			'<li class="agro-item">'+ll_def_online_trade+'</li>'+
 			'<li class="agro-item">'+ll_def_retail_trade+'</li>'+
 			'<li class="agro-item">'+ll_def_improved_logistics+'</li></ul>'+
 			'<p>'+ll_def_more_info+'</p>'+
+		*/
 			
+		const html = ll_def_csa+'<br/>'+
+			ll_def_f2f+'<br/>'+
+			+ll_def_online_trade+'<br/>'+
+			ll_def_retail_trade+'<br/>'+
+			ll_def_improved_logistics+'<br/><br/>'+
+			ll_def_more_info;
 			//'<div class="col s12 center" style="margin-top:16px;margin-bottom:32px;">'+
-			'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="bottom-close-preview">CLOSE DEFINITION</button>';
+			//'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="bottom-close-preview">CLOSE DEFINITION</button>';
 			//'</div>'
 		//$("#business-models-text-accordion-wrapper").empty().append(html);
-		$("#preview-placeholder").empty().append(html);
+		$("#business-models-info-text").empty().append(html);
 		
-		$('#bottom-close-preview').on('click', function(){
+		/*$('#bottom-close-preview').on('click', function(){
 			$('#preview-placeholder').empty();
 			$('#preview-placeholder').css({"border":"none","padding":"0"});
 			self.previewOpen = false;
 			$('#preview-business-models').html('SEE DEFINITION');
-		});
+		});*/
 	}
 	
 	renderDisclaimer() {
@@ -562,6 +570,10 @@ export default class AnalysisView extends View {
 		const self = this;
 		$(this.el).empty();
 		
+		let li_open_tag = '<li>';
+		if (this.previewOpen ) {
+			li_open_tag = '<li class="active">';
+		}
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
@@ -579,11 +591,21 @@ export default class AnalysisView extends View {
 						//'<h5 style="text-align:center">Business models for Short Food Supply Chain</h5>'+
 						//'<div id="business-models-text-accordion-wrapper"></div>'+
 						// PREVIEW business models BUTTON:
-						'<div class="col s12 center" id="preview-button-wrapper">'+ // style="margin-top:16px;margin-bottom:16px;">'+
-							'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="preview-business-models">SEE DEFINITION</button>'+
-						'</div>'+
-						'<div class="col s12" id="preview-placeholder">'+ // style="margin-bottom:16px">'+
-						'</div>'+
+						
+						'<ul class="collapsible">'+
+							li_open_tag+
+								'<div class="collapsible-header"><i class="material-icons">info</i></div>'+
+								'<div class="collapsible-body"><span id="business-models-info-text"></span></div>'+
+							'</li>'+
+						'</ul>'+
+						
+						//'<div class="col s12 center" id="preview-button-wrapper">'+ // style="margin-top:16px;margin-bottom:16px;">'+
+							//'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="preview-business-models">SEE DEFINITION</button>'+
+						//'</div>'+
+						//'<div class="col s12" id="preview-placeholder">'+ // style="margin-bottom:16px">'+
+						//'</div>'+
+						
+						
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-1-wrapper"></div>'+
@@ -635,9 +657,17 @@ export default class AnalysisView extends View {
 			self.controller.models['MenuModel'].setSelected('main');
 		});
 		
-		this.renderBusinessModelsText();
+		
+		this.renderBusinessModelsIntro();
+		
+		this.renderBusinessModelsText(); // to #business-models-info-text
+		
+		$('.collapsible').collapsible();
+		
+		/*
+		this.renderBusinessModelsIntro();
 		if (this.previewOpen ) {
-			this.renderBusinessModels(); //('preview-placeholder', p);
+			this.renderBusinessModelsText(); //('preview-placeholder', p);
 			$('#preview-placeholder').css({"border":"3px solid #005794","padding":"8px"});
 			// update the button text
 			$('#preview-business-models').html('CLOSE DEFINITION');
@@ -652,14 +682,14 @@ export default class AnalysisView extends View {
 				// update the button text
 				$('#preview-business-models').html('SEE DEFINITION');
 			} else {
-				self.renderBusinessModels(); //('preview-placeholder', p);
+				self.renderBusinessModelsText(); //('preview-placeholder', p);
 				// add CSS
 				$('#preview-placeholder').css({"border":"3px solid #005794","padding":"8px"});
 				self.previewOpen = true;
 				// update the button text
 				$('#preview-business-models').html('CLOSE DEFINITION');
 			}
-		});
+		});*/
 		
 		this.renderRecommendationsPart1Text();
 		this.renderRecommendationsList();

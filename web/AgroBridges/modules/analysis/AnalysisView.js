@@ -679,7 +679,7 @@ export default class AnalysisView extends View {
 		this.renderBusinessModelsText(); // to #business-models-info-text
 		
 		$('.collapsible').collapsible({
-			accordion true,
+			accordion: true,
 			onOpenEnd: function(el) { console.log(['open el=',el]); /*self.previewOpen=true;*/ },
 			onCloseEnd: function(el) { console.log(['close el=',el]); /*self.previewOpen=false;*/ }
 		});

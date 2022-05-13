@@ -503,8 +503,13 @@ export default class AnalysisView extends View {
 		let w = this.REO.width;
 		if (w > 1600) { w = 1600; }
 		
-		const width = w*0.45;				// 45% of width
-		const height = this.REO.height*0.4;	// 40% of height
+		let width = w*0.5;					// 50% of width
+		let height = this.REO.height*0.5;	// 50% of height
+		
+		if (w < 601) { // s12 => takes "whole width"
+			width = w*0.9;					// 90% of width
+			height = this.REO.height*0.5;	// 50% of height
+		}
 		
 		const html = '<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>';
 		$(html).appendTo('#recommendations-spider-wrapper');

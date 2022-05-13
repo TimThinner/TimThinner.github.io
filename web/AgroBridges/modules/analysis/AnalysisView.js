@@ -535,10 +535,10 @@ export default class AnalysisView extends View {
 			'<p>'+ll_def_more_info+'</p>'+
 		*/
 			
-		const html = ll_def_csa+'<br/>'+
-			ll_def_f2f+'<br/>'+
-			+ll_def_online_trade+'<br/>'+
-			ll_def_retail_trade+'<br/>'+
+		const html = ll_def_csa+'<br/><br/>'+
+			ll_def_f2f+'<br/><br/>'+
+			ll_def_online_trade+'<br/><br/>'+
+			ll_def_retail_trade+'<br/><br/>'+
 			ll_def_improved_logistics+'<br/><br/>'+
 			ll_def_more_info;
 			//'<div class="col s12 center" style="margin-top:16px;margin-bottom:32px;">'+
@@ -594,7 +594,7 @@ export default class AnalysisView extends View {
 						
 						'<ul class="collapsible">'+
 							li_open_tag+
-								'<div class="collapsible-header"><i class="material-icons">info</i></div>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Business models definitions</div>'+
 								'<div class="collapsible-body"><span id="business-models-info-text"></span></div>'+
 							'</li>'+
 						'</ul>'+

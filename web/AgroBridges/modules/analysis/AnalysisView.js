@@ -26,11 +26,11 @@ export default class AnalysisView extends View {
 		this.USER_MODEL.subscribe(this);
 		
 		//this.previewOpen = false;
-		this.preview_csa_Open = false;
-		this.preview_f2f_Open = false;
-		this.preview_online_Open = false;
-		this.preview_retail_Open = false;
-		this.preview_logistics_Open = false;
+		//this.preview_csa_Open = false;
+		//this.preview_f2f_Open = false;
+		//this.preview_online_Open = false;
+		//this.preview_retail_Open = false;
+		//this.preview_logistics_Open = false;
 		
 		this.rendered = false;
 	}
@@ -168,35 +168,47 @@ export default class AnalysisView extends View {
 		];
 		const html = 
 			'<div class="row">'+
-				'<div class="col s6">'+
+				'<div class="col s5">'+
 					'<p style="font-weight:bold">Sales Channel</p>'+
 				'</div>'+
-				'<div class="col s6">'+
+				'<div class="col s5">'+
 					'<p style="font-weight:bold">Business Model</p>'+
 				'</div>'+
+				'<div class="col s2">'+
+					'<p style="font-weight:bold">Show</p>'+
+				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s6">'+
+				'<div class="col s5">'+
 					'<p style="color:'+colors[0]+'">On-Farm Shop (extensively managed, unstaffed)</p>'+
 				'</div>'+
-				'<div class="col s6">'+
+				'<div class="col s5">'+
 					'<p style="color:'+colors[0]+'">Face-to-Face</p>'+
 				'</div>'+
+				'<div class="col s2">'+
+					'<input type="checkbox" class="filled-in" checked="checked" />'+
+				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s6">'+
+				'<div class="col s5">'+
 					'<p style="color:'+colors[1]+'">Post delivery (sales on demand)</p>'+
 				'</div>'+
-				'<div class="col s6">'+
+				'<div class="col s5">'+
 					'<p style="color:'+colors[1]+'">Online Trade</p>'+
+				'</div>'+
+				'<div class="col s2">'+
+					'<input type="checkbox" class="filled-in" checked="checked" />'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s6">'+
+				'<div class="col s5">'+
 					'<p style="color:'+colors[2]+'">Retail store</p>'+
 				'</div>'+
-				'<div class="col s6">'+
+				'<div class="col s5">'+
 					'<p style="color:'+colors[2]+'">Retail Trade</p>'+
+				'</div>'+
+				'<div class="col s2">'+
+					'<input type="checkbox" class="filled-in" checked="checked" />'+
 				'</div>'+
 			'</div>';
 		$("#recommendations-list-wrapper").empty().append(html);

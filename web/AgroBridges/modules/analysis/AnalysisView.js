@@ -168,6 +168,20 @@ export default class AnalysisView extends View {
 			this.colors.DARK_ORANGE,
 			this.colors.DARK_BLUE
 		];
+		
+		let checked_0 = '';
+		let checked_1 = '';
+		let checked_2 = '';
+		if (this.showRecommendation[0] === true) {
+			checked_0 = 'checked="checked"';
+		}
+		if (this.showRecommendation[1] === true) {
+			checked_1 = 'checked="checked"';
+		}
+		if (this.showRecommendation[2] === true) {
+			checked_2 = 'checked="checked"';
+		}
+		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s5">'+
@@ -188,7 +202,7 @@ export default class AnalysisView extends View {
 					'<p style="color:'+colors[0]+'">Face-to-Face</p>'+
 				'</div>'+
 				'<div class="input-field col s2">'+
-					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-0" checked="checked" /><span></span></label></p>'+
+					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-0" '+checked_0+' /><span></span></label></p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -199,8 +213,7 @@ export default class AnalysisView extends View {
 					'<p style="color:'+colors[1]+'">Online Trade</p>'+
 				'</div>'+
 				'<div class="input-field col s2">'+
-					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-1" checked="checked" /><span></span></label></p>'+
-					//'<input type="checkbox" id="show-recommendation-1" class="filled-in" checked="checked" />'+
+					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-1" '+checked_1+' /><span></span></label></p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -211,8 +224,7 @@ export default class AnalysisView extends View {
 					'<p style="color:'+colors[2]+'">Retail Trade</p>'+
 				'</div>'+
 				'<div class="input-field col s2">'+
-					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-2" checked="checked" /><span></span></label></p>'+
-					//'<input type="checkbox" id="show-recommendation-2" class="filled-in" checked="checked" />'+
+					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-2" '+checked_2+' /><span></span></label></p>'+
 				'</div>'+
 			'</div>';
 		$("#recommendations-list-wrapper").empty().append(html);

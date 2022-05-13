@@ -464,7 +464,8 @@ export default class AnalysisView extends View {
 			
 			// draw the path element
 			// IF THE SHOW CHECKBOX is checked!!!!
-			if (this.showRecommendation[i] === true) {
+			// BUT do not block the "wholesale" spider!
+			if (data.length > 1 && this.showRecommendation[i] === true) {
 				
 				let d = data[i];
 				let color = colors[i];
@@ -639,10 +640,6 @@ export default class AnalysisView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		//let li_open_tag = '<li>';
-		//if (this.previewOpen) {
-			//li_open_tag = '<li class="active">';
-		//}
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
@@ -654,12 +651,33 @@ export default class AnalysisView extends View {
 						'<h5 style="text-align:center">Recommendations for Short Food Supply Chain</h5>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
+						'<div id="recommendations-text-part-1-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div class="row">'+
+							'<div class="col s12 m5" id="recommendations-list-wrapper">'+
+							'</div>'+
+							'<div class="col s12 m7" id="recommendations-spider-wrapper">'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="recommendations-text-part-2-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="additional-description-text-part-1-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 center">'+
+						'<h5>Wholesale</h5>'+
+						'<div id="spider-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="analysis-region-attractiveness-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
 						'<div id="business-models-intro-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
-						//'<h5 style="text-align:center">Business models for Short Food Supply Chain</h5>'+
-						//'<div id="business-models-text-accordion-wrapper"></div>'+
-						// PREVIEW business models BUTTON:
 						'<ul class="collapsible">'+
 							'<li>'+
 								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Consumer Supported Agriculture (CSA)</div>'+
@@ -682,46 +700,13 @@ export default class AnalysisView extends View {
 								'<div class="collapsible-body"><span id="business-models-logistics-text"></span></div>'+
 							'</li>'+
 						'</ul>'+
-						//'<div class="col s12 center" id="preview-button-wrapper">'+ // style="margin-top:16px;margin-bottom:16px;">'+
-							//'<button class="btn waves-effect waves-light" style="background-color:#eee;color:#000" id="preview-business-models">SEE DEFINITION</button>'+
-						//'</div>'+
-						//'<div class="col s12" id="preview-placeholder">'+ // style="margin-bottom:16px">'+
-						//'</div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="business-models-more-info-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<div id="recommendations-text-part-1-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<div class="row">'+
-							'<div class="col s5" id="recommendations-list-wrapper">'+
-							'</div>'+
-							'<div class="col s7" id="recommendations-spider-wrapper">'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<div id="recommendations-text-part-2-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<div id="additional-description-text-part-1-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 center">'+
-						'<h5>Wholesale</h5>'+
-						'<div id="spider-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<div id="analysis-region-attractiveness-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
 						'<div id="additional-description-text-part-2-wrapper"></div>'+
 					'</div>'+
-					//'<div class="col s12 m10 offset-m1">'+
-						//'<h5 style="text-align:center">Business models for Short Food Supply Chain</h5>'+
-						//'<div id="business-models-text-wrapper"></div>'+
-					//'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="disclaimer-text-wrapper" style="font-size:75%; color:#888; border:1px solid #888; margin-top:16px; padding:16px;"></div>'+
 					'</div>'+
@@ -741,43 +726,6 @@ export default class AnalysisView extends View {
 			self.controller.models['MenuModel'].setSelected('main');
 		});
 		
-		
-		this.renderBusinessModelsIntro();
-		
-		this.renderBusinessModelsText(); // to #business-models-info-text
-		
-		$('.collapsible').collapsible({
-			accordion: true,
-			onOpenEnd: function(el) { console.log(['open el=',el]); /*self.previewOpen=true;*/ },
-			onCloseEnd: function(el) { console.log(['close el=',el]); /*self.previewOpen=false;*/ }
-		});
-		/*
-		this.renderBusinessModelsIntro();
-		if (this.previewOpen ) {
-			this.renderBusinessModelsText(); //('preview-placeholder', p);
-			$('#preview-placeholder').css({"border":"3px solid #005794","padding":"8px"});
-			// update the button text
-			$('#preview-business-models').html('CLOSE DEFINITION');
-		}
-		$('#preview-business-models').on('click', function(){
-			// TOGGLE THE PREVIEW
-			if (self.previewOpen) {
-				$('#preview-placeholder').empty();
-				// reset CSS
-				$('#preview-placeholder').css({"border":"none","padding":"0"});
-				self.previewOpen = false;
-				// update the button text
-				$('#preview-business-models').html('SEE DEFINITION');
-			} else {
-				self.renderBusinessModelsText(); //('preview-placeholder', p);
-				// add CSS
-				$('#preview-placeholder').css({"border":"3px solid #005794","padding":"8px"});
-				self.previewOpen = true;
-				// update the button text
-				$('#preview-business-models').html('CLOSE DEFINITION');
-			}
-		});*/
-		
 		this.renderRecommendationsPart1Text();
 		this.renderRecommendationsList();
 		this.renderResultsSpider();
@@ -786,8 +734,16 @@ export default class AnalysisView extends View {
 		this.renderAdditionalDescriptionPart1();
 		this.renderSpider();
 		this.renderAnalysisRegionAttractiveness();
-		this.renderAdditionalDescriptionPart2();
 		
+		this.renderBusinessModelsIntro();
+		this.renderBusinessModelsText(); // to #business-models-info-text
+		$('.collapsible').collapsible({
+			accordion: true,
+			onOpenEnd: function(el) { console.log(['open el=',el]); /*self.previewOpen=true;*/ },
+			onCloseEnd: function(el) { console.log(['close el=',el]); /*self.previewOpen=false;*/ }
+		});
+		
+		this.renderAdditionalDescriptionPart2();
 		
 		this.renderDisclaimer();
 		

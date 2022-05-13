@@ -185,21 +185,21 @@ export default class AnalysisView extends View {
 		const html = 
 			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s5">'+
-					'<p style="font-weight:bold;font-size:14px">Sales Channel</p>'+
+					'<p style="font-weight:bold;">Sales Channel</p>'+
 				'</div>'+
 				'<div class="col s5">'+
-					'<p style="font-weight:bold;font-size:14px">Business Model</p>'+
+					'<p style="font-weight:bold;">Business Model</p>'+
 				'</div>'+
 				'<div class="col s2">'+
-					'<p style="font-weight:bold;font-size:14px">Show</p>'+
+					'<p style="font-weight:bold;">Show</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s5">'+
-					'<p style="color:'+colors[0]+';font-size:14px">On-Farm Shop (extensively managed, unstaffed)</p>'+
+					'<p style="color:'+colors[0]+'">On-Farm Shop (extensively managed, unstaffed)</p>'+
 				'</div>'+
 				'<div class="col s5">'+
-					'<p style="color:'+colors[0]+';font-size:14px">Face-to-Face</p>'+
+					'<p style="color:'+colors[0]+'">Face-to-Face</p>'+
 				'</div>'+
 				'<div class="input-field col s2" style="padding-top:0">'+
 					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-0" '+checked_0+' /><span></span></label></p>'+
@@ -207,10 +207,10 @@ export default class AnalysisView extends View {
 			'</div>'+
 			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s5">'+
-					'<p style="color:'+colors[1]+';font-size:14px">Post delivery (sales on demand)</p>'+
+					'<p style="color:'+colors[1]+'">Post delivery (sales on demand)</p>'+
 				'</div>'+
 				'<div class="col s5">'+
-					'<p style="color:'+colors[1]+';font-size:14px">Online Trade</p>'+
+					'<p style="color:'+colors[1]+'">Online Trade</p>'+
 				'</div>'+
 				'<div class="input-field col s2" style="padding-top:0">'+
 					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-1" '+checked_1+' /><span></span></label></p>'+
@@ -218,10 +218,10 @@ export default class AnalysisView extends View {
 			'</div>'+
 			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s5">'+
-					'<p style="color:'+colors[2]+';font-size:14px">Retail store</p>'+
+					'<p style="color:'+colors[2]+'">Retail store</p>'+
 				'</div>'+
 				'<div class="col s5">'+
-					'<p style="color:'+colors[2]+';font-size:14px">Retail Trade</p>'+
+					'<p style="color:'+colors[2]+'">Retail Trade</p>'+
 				'</div>'+
 				'<div class="input-field col s2" style="padding-top:0">'+
 					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-2" '+checked_2+' /><span></span></label></p>'+

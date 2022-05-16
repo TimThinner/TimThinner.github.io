@@ -521,4 +521,5 @@ export default class UserModel extends Model {
 					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:error});
 				});
 		}
+	}
 }

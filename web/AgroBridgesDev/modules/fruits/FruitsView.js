@@ -82,7 +82,7 @@ export default class FruitsView extends View {
 							if (!$("#required-B").hasClass("required")) { $('#required-B').addClass('required'); }
 							if (!$("#required-C").hasClass("required")) { $('#required-C').addClass('required'); }
 						}
-					}
+					});
 					
 				} else {
 					// Report error.

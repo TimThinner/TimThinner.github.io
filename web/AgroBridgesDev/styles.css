@@ -1,0 +1,64 @@
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	color: #000;
+	background-color: #EEF8EB;
+}
+/*@media screen and (min-width: 601px) {
+	html, body {
+		font-size: 16px;
+	}
+}*/
+/* Materialize CSS */
+.container {
+	background-color: #EEF8EB;
+	color: #000;
+	margin: 0 auto;
+	max-width: 1920px;
+	width: 100%; /* 90%; */
+	/*padding: 0 1rem 1rem 1rem;*/
+	padding: 0;
+}
+.hero {
+	background: url("./img/field_mod2.jpg") no-repeat center center;
+	background-size: cover;
+	height: 50vh; /* Leave 50% space at the bottom to FOOTER. */
+	/*border-top: 1px solid #eee;*/
+}
+.footer {
+	padding: 2em;
+	margin-top: 2em;
+	text-align: center;
+	border-top: 1px solid #0B7938;
+}
+.noUi-tooltip:hover, .noUi-tooltip:focus, .noUi-tooltip:active { 
+	outline: none;
+}
+.noUi-touch-area:hover, .noUi-touch-area:focus, .noUi-touch-area:active { 
+	outline: none;
+}
+.required:after {
+	content:" *";
+	color: red;
+}
+li.agro-item:not(:last-child) { 
+	margin-bottom: 12px;
+}
+.highlighted-message {
+	border: 1px solid #0B7938;
+	background-color: #fff;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+.error-message {
+	border: 1px solid #f88;
+	background-color: #fee;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+.success-message {
+	border: 1px solid #8f8;
+	background-color: #efe;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}

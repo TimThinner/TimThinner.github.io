@@ -109,7 +109,7 @@ export default class FruitsView extends View {
 		
 		const fruitOptions = [
 			{prop:'Dummy_Stonefruits',id:'stonefruits',label:''},
-			{prop:'Dummy_Promefruits',id:'pomefruits',label:''},
+			{prop:'Dummy_Pomefruits',id:'pomefruits',label:''},
 			{prop:'Dummy_Berries',id:'berries',label:''},
 			{prop:'Dummy_Citrus',id:'citrus',label:''},
 			{prop:'Dummy_exotic_fruits',id:'exotic',label:''},

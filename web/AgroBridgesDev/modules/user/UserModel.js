@@ -485,7 +485,13 @@ export default class UserModel extends Model {
 		
 		if (this.MOCKUP) {
 			
+			validData.forEach(d => {
+				if (Object.keys(this.profile).includes(d.propName)) {
+					this.profile[d.propName] = d.value;
+				}
+			});
 			setTimeout(() => this.notifyAll({model:self.name, method:'updateUserProfile', status:200, message:'OK', data:validData}), 500);
+			
 			
 		} else {
 			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)

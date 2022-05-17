@@ -36,6 +36,7 @@ export default class AnimalsView extends View {
 		this.USER_MODEL.subscribe(this);
 		
 		this.rendered = false;
+		this.FELID = 'animals-message';
 	}
 	
 	show() {
@@ -57,7 +58,30 @@ export default class AnimalsView extends View {
 	}
 	
 	notify(options) {
-		
+		//self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:myJson.message});
+		if (this.controller.visible) {
+			if (options.model==='UserModel' && options.method==='updateUserProfile') {
+				if (options.status === 200) {
+					
+					$('#'+this.FELID).empty();
+					// const msg = 'Feedback submitted OK';
+					// Show Toast: Saved OK!
+					const LM = this.controller.master.modelRepo.get('LanguageModel');
+					const sel = LM.selected;
+					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					M.toast({
+						displayLength:500, 
+						html: save_ok,
+						classes: 'green darken-1'
+					});
+					
+				} else {
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
+				}
+			}
+		}
 	}
 	
 	render() {
@@ -176,13 +200,21 @@ export default class AnimalsView extends View {
 		$('input[type=radio][name=animalsStatus]').change(function() {
 			if (this.value == 'no') {
 				console.log('Dummy_livestock No'); // Dummy_veggie_farm NO
-				self.USER_MODEL.profile.Dummy_livestock = 'No';
+				//self.USER_MODEL.profile.Dummy_livestock = 'No';
 				// DATABASE Update USER_MODEL
+				const data = [
+					{propName:'Dummy_livestock', value:'No'}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 				
 			} else if (this.value == 'yes') {
 				console.log('Dummy_livestock Yes');
-				self.USER_MODEL.profile.Dummy_livestock = 'Yes';
+				//self.USER_MODEL.profile.Dummy_livestock = 'Yes';
 				// DATABASE Update USER_MODEL
+				const data = [
+					{propName:'Dummy_livestock', value:'Yes'}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		
@@ -190,11 +222,20 @@ export default class AnimalsView extends View {
 		anim_a_Options.forEach(o=>{
 			$("#"+o.id).change(function() {
 				if(this.checked) {
-					self.USER_MODEL.profile[o.prop] = true;
+					//self.USER_MODEL.profile[o.prop] = true;
 					// DATABASE Update USER_MODEL
+					const data = [
+						{propName:o.prop, value:true}
+					];
+					self.USER_MODEL.updateUserProfile(data);
+					
 				} else {
-					self.USER_MODEL.profile[o.prop] = false;
+					//self.USER_MODEL.profile[o.prop] = false;
 					// DATABASE Update USER_MODEL
+					const data = [
+						{propName:o.prop, value:false}
+					];
+					self.USER_MODEL.updateUserProfile(data);
 				}
 			});
 		});
@@ -202,11 +243,20 @@ export default class AnimalsView extends View {
 		anim_b_Options.forEach(o=>{
 			$("#"+o.id).change(function() {
 				if(this.checked) {
-					self.USER_MODEL.profile[o.prop] = true;
+					//self.USER_MODEL.profile[o.prop] = true;
 					// DATABASE Update USER_MODEL
+					const data = [
+						{propName:o.prop, value:true}
+					];
+					self.USER_MODEL.updateUserProfile(data);
+					
 				} else {
-					self.USER_MODEL.profile[o.prop] = false;
+					//self.USER_MODEL.profile[o.prop] = false;
 					// DATABASE Update USER_MODEL
+					const data = [
+						{propName:o.prop, value:false}
+					];
+					self.USER_MODEL.updateUserProfile(data);
 				}
 			});
 		});

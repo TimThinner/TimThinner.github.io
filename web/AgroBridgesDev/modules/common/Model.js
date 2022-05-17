@@ -10,7 +10,9 @@ export default class Model extends EventObserver {
 		this.errorMessage = '';
 		this.status = 500;
 		this.fetching = false;
+		
 		this.MOCKUP = true;
+		this.mongoBackend = 'http://localhost:3000';
 	}
 	
 	/* Dummy reset. */

@@ -53,7 +53,6 @@ export default class FruitsView extends View {
 	
 	notify(options) {
 		//self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:myJson.message});
-		
 		if (this.controller.visible) {
 			if (options.model==='UserModel' && options.method==='updateUserProfile') {
 				if (options.status === 200) {
@@ -65,7 +64,7 @@ export default class FruitsView extends View {
 					const sel = LM.selected;
 					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
 					M.toast({
-						displayLength:1000, 
+						displayLength:500, 
 						html: save_ok,
 						classes: 'green darken-1'
 					});
@@ -215,12 +214,12 @@ export default class FruitsView extends View {
 			if (Array.isArray(values) && values.length > 0) {
 				//self.USER_MODEL.profile.fruits_total = Math.round(values[0]);
 				// DATABASE Update USER_MODEL
-				const key = 'fruits_total'
+				const key = 'fruits_total';
 				const value = Math.round(values[0]);
 				const data = [
 					{propName:key, value:value}
 				];
-				self.USER_MODEL.updateUserProfile(1, data, 'token');
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		
@@ -244,12 +243,12 @@ export default class FruitsView extends View {
 			if (Array.isArray(values) && values.length > 0) {
 				//self.USER_MODEL.profile.Hectare_fruits = Math.round(values[0]);
 				// DATABASE Update USER_MODEL];
-				const key = 'Hectare_fruits'
+				const key = 'Hectare_fruits';
 				const value = Math.round(values[0]);
 				const data = [
 					{propName:key, value:value}
 				];
-				self.USER_MODEL.updateUserProfile(1, data, 'token');
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		
@@ -261,13 +260,12 @@ export default class FruitsView extends View {
 				const data = [
 					{propName:'Dummy_fruit_farm', value:'No'}
 				];
-				self.USER_MODEL.updateUserProfile(1, data, 'token');
+				self.USER_MODEL.updateUserProfile(data);
 				
 				// Remove class="required" from all 3 other questions:
 				//if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
 				//if ($("#required-B").hasClass("required")) { $('#required-B').removeClass('required'); }
 				//if ($("#required-C").hasClass("required")) { $('#required-C').removeClass('required'); }
-				
 				
 			} else if (this.value == 'yes') {
 				console.log('Dummy_fruit_farm Yes');
@@ -276,13 +274,12 @@ export default class FruitsView extends View {
 				const data = [
 					{propName:'Dummy_fruit_farm', value:'Yes'}
 				];
-				self.USER_MODEL.updateUserProfile(1, data, 'token');
+				self.USER_MODEL.updateUserProfile(data);
 				
 				// Add class="required" to all 3 other questions:
 				//if (!$("#required-A").hasClass("required")) { $('#required-A').addClass('required'); }
 				//if (!$("#required-B").hasClass("required")) { $('#required-B').addClass('required'); }
 				//if (!$("#required-C").hasClass("required")) { $('#required-C').addClass('required'); }
-				
 			}
 		});
 		
@@ -295,7 +292,7 @@ export default class FruitsView extends View {
 					const data = [
 						{propName:o.prop, value:true}
 					];
-					self.USER_MODEL.updateUserProfile(1, data, 'token');
+					self.USER_MODEL.updateUserProfile(data);
 					
 				} else {
 					//self.USER_MODEL.profile[o.prop] = false;
@@ -303,7 +300,7 @@ export default class FruitsView extends View {
 					const data = [
 						{propName:o.prop, value:false}
 					];
-					self.USER_MODEL.updateUserProfile(1, data, 'token');
+					self.USER_MODEL.updateUserProfile(data);
 				}
 			});
 		});

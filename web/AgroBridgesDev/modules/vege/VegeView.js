@@ -30,6 +30,7 @@ export default class VegeView extends View {
 		this.USER_MODEL.subscribe(this);
 		
 		this.rendered = false;
+		this.FELID = 'vege-message';
 	}
 	
 	show() {
@@ -51,7 +52,44 @@ export default class VegeView extends View {
 	}
 	
 	notify(options) {
-		
+		//self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:myJson.message});
+		if (this.controller.visible) {
+			if (options.model==='UserModel' && options.method==='updateUserProfile') {
+				if (options.status === 200) {
+					
+					$('#'+this.FELID).empty();
+					// const msg = 'Feedback submitted OK';
+					// Show Toast: Saved OK!
+					const LM = this.controller.master.modelRepo.get('LanguageModel');
+					const sel = LM.selected;
+					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					M.toast({
+						displayLength:500, 
+						html: save_ok,
+						classes: 'green darken-1'
+					});
+					options.data.forEach(d => {
+						if (d.propName==='Dummy_veggie_farm' && d.value==='No') {
+							// Remove class="required" from all 3 other questions:
+							if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
+							if ($("#required-B").hasClass("required")) { $('#required-B').removeClass('required'); }
+							if ($("#required-C").hasClass("required")) { $('#required-C').removeClass('required'); }
+							
+						} else if (d.propName==='Dummy_veggie_farm' && d.value==='Yes') {
+							// Add class="required" to all 3 other questions:
+							if (!$("#required-A").hasClass("required")) { $('#required-A').addClass('required'); }
+							if (!$("#required-B").hasClass("required")) { $('#required-B').addClass('required'); }
+							if (!$("#required-C").hasClass("required")) { $('#required-C').addClass('required'); }
+						}
+					});
+					
+				} else {
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
+				}
+			}
+		}
 	}
 	
 	render() {
@@ -119,6 +157,12 @@ export default class VegeView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1" id="'+this.FELID+'">'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<button class="btn waves-effect waves-light" id="vege-ok" style="width:120px">OK</button>'+
 						'<p>&nbsp;</p>'+
@@ -172,8 +216,14 @@ export default class VegeView extends View {
 		vegeTotalSlider.noUiSlider.on('change', function (values) {
 			console.log(['values=',values]);
 			if (Array.isArray(values) && values.length > 0) {
-				self.USER_MODEL.profile.vegetables_total = Math.round(values[0]);
+				//self.USER_MODEL.profile.vegetables_total = Math.round(values[0]);
 				// DATABASE Update USER_MODEL
+				const key = 'vegetables_total';
+				const value = Math.round(values[0]);
+				const data = [
+					{propName:key, value:value}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		
@@ -195,29 +245,45 @@ export default class VegeView extends View {
 		hectareSlider.noUiSlider.on('change', function (values) {
 			console.log(['values=',values]); // values is an array with one value, for example ["20.00"].
 			if (Array.isArray(values) && values.length > 0) {
-				self.USER_MODEL.profile.Hectare_veggies = Math.round(values[0]);
+				//self.USER_MODEL.profile.Hectare_veggies = Math.round(values[0]);
 				// DATABASE Update USER_MODEL
+				const key = 'Hectare_veggies';
+				const value = Math.round(values[0]);
+				const data = [
+					{propName:key, value:value}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		
 		$('input[type=radio][name=vegeStatus]').change(function() {
 			if (this.value == 'no') {
 				console.log('Dummy_veggie_farm No'); // Dummy_veggie_farm NO
-				self.USER_MODEL.profile.Dummy_veggie_farm = 'No';
-				// Remove class="required" from all 3 other questions:
-				if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
-				if ($("#required-B").hasClass("required")) { $('#required-B').removeClass('required'); }
-				if ($("#required-C").hasClass("required")) { $('#required-C').removeClass('required'); }
+				//self.USER_MODEL.profile.Dummy_veggie_farm = 'No';
 				// DATABASE Update USER_MODEL
+				const data = [
+					{propName:'Dummy_veggie_farm', value:'No'}
+				];
+				self.USER_MODEL.updateUserProfile(data);
+				
+				// Remove class="required" from all 3 other questions:
+				//if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
+				//if ($("#required-B").hasClass("required")) { $('#required-B').removeClass('required'); }
+				//if ($("#required-C").hasClass("required")) { $('#required-C').removeClass('required'); }
 				
 			} else if (this.value == 'yes') {
 				console.log('Dummy_veggie_farm Yes');
-				self.USER_MODEL.profile.Dummy_veggie_farm = 'Yes';
-				// Add class="required" to all 3 other questions:
-				if (!$("#required-A").hasClass("required")) { $('#required-A').addClass('required'); }
-				if (!$("#required-B").hasClass("required")) { $('#required-B').addClass('required'); }
-				if (!$("#required-C").hasClass("required")) { $('#required-C').addClass('required'); }
+				//self.USER_MODEL.profile.Dummy_veggie_farm = 'Yes';
 				// DATABASE Update USER_MODEL
+				const data = [
+					{propName:'Dummy_veggie_farm', value:'Yes'}
+				];
+				self.USER_MODEL.updateUserProfile(data);
+				
+				// Add class="required" to all 3 other questions:
+				//if (!$("#required-A").hasClass("required")) { $('#required-A').addClass('required'); }
+				//if (!$("#required-B").hasClass("required")) { $('#required-B').addClass('required'); }
+				//if (!$("#required-C").hasClass("required")) { $('#required-C').addClass('required'); }
 			}
 		});
 		
@@ -225,11 +291,20 @@ export default class VegeView extends View {
 		vegeOptions.forEach(o=>{
 			$("#"+o.id).change(function() {
 				if(this.checked) {
-					self.USER_MODEL.profile[o.prop] = true;
+					//self.USER_MODEL.profile[o.prop] = true;
 					// DATABASE Update USER_MODEL
+					const data = [
+						{propName:o.prop, value:true}
+					];
+					self.USER_MODEL.updateUserProfile(data);
+					
 				} else {
-					self.USER_MODEL.profile[o.prop] = false;
+					//self.USER_MODEL.profile[o.prop] = false;
 					// DATABASE Update USER_MODEL
+					const data = [
+						{propName:o.prop, value:false}
+					];
+					self.USER_MODEL.updateUserProfile(data);
 				}
 			});
 		});

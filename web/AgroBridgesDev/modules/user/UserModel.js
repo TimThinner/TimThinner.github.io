@@ -470,7 +470,7 @@ export default class UserModel extends Model {
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:200,message:'OK'}), 100);
 	}
 	
-	updateUserProfile(id, data, token) {
+	updateUserProfile(data) {
 		const self = this;
 		/*const data = [
 			{propName:'Hectare_farm', value:20},
@@ -484,7 +484,7 @@ export default class UserModel extends Model {
 		});
 		
 		if (this.MOCKUP) {
-			
+			// Just update UserModel profile and notify.
 			validData.forEach(d => {
 				if (Object.keys(this.profile).includes(d.propName)) {
 					this.profile[d.propName] = d.value;
@@ -492,12 +492,11 @@ export default class UserModel extends Model {
 			});
 			setTimeout(() => this.notifyAll({model:self.name, method:'updateUserProfile', status:200, message:'OK', data:validData}), 500);
 			
-			
 		} else {
 			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
 			
 			const myHeaders = new Headers();
-			const authorizationToken = 'Bearer '+token;
+			const authorizationToken = 'Bearer '+this.token;
 			myHeaders.append("Authorization", authorizationToken);
 			myHeaders.append("Content-Type", "application/json");
 			
@@ -506,7 +505,7 @@ export default class UserModel extends Model {
 				headers: myHeaders,
 				body: JSON.stringify(validData)
 			};
-			const myRequest = new Request(this.mongoBackend + '/users/'+id, myPut);
+			const myRequest = new Request(this.mongoBackend + '/users/'+this.id, myPut);
 			fetch(myRequest)
 				.then(function(response){
 					status = response.status;

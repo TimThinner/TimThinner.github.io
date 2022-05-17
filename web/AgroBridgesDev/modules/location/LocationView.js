@@ -14,6 +14,7 @@ export default class LocationView extends View {
 		this.USER_MODEL.subscribe(this);
 		
 		this.rendered = false;
+		this.FELID = 'location-message';
 	}
 	
 	show() {
@@ -49,9 +50,12 @@ export default class LocationView extends View {
 				if (typeof selected_country_id === 'undefined') {
 					
 					selected_country_id = r.id;
-					this.USER_MODEL.profile['Country'] = selected_country_id;
+					//this.USER_MODEL.profile['Country'] = selected_country_id;
 					// NOTE: We also automaically set the USER_MODEL => DATABASE Update USER_MODEL
-					
+					const data = [
+						{propName:'Country', value:selected_country_id}
+					];
+					this.USER_MODEL.updateUserProfile(data);
 					sel_prop = 'selected="selected"';
 					
 				} else if (r.id === selected_country_id) {
@@ -76,9 +80,11 @@ export default class LocationView extends View {
 		$('.select-country').on("select2:select", function (e) { 
 			const value = $(this).val();
 			console.log(["select2:select value=", value]);
-			self.USER_MODEL.profile['Country'] = value; // DATABASE Update USER_MODEL
-			
-			
+			//self.USER_MODEL.profile['Country'] = value; // DATABASE Update USER_MODEL
+			const data = [
+				{propName:'Country', value:value}
+			];
+			self.USER_MODEL.updateUserProfile(data);
 			self.models['RegionsModel'].fetch(value);
 		});
 		// Finally initialize also the REGIONS with old selection or FIRST COUNTRY'S regions.
@@ -96,13 +102,16 @@ export default class LocationView extends View {
 		if (Array.isArray(regions) && regions.length > 0) {
 			regions.forEach(r=> {
 				let sel_prop = '';
-				// If there is no selection => set FIRST country as selected.
+				// If there is no selection => set FIRST region as selected.
 				if (typeof selected_region_id === 'undefined') {
 					
 					selected_region_id = r.id;
-					this.USER_MODEL.profile['NUTS3'] = selected_region_id;
+					//this.USER_MODEL.profile['NUTS3'] = selected_region_id;
 					// NOTE: We also automaically set the USER_MODEL => DATABASE Update USER_MODEL
-					
+					const data = [
+						{propName:'NUTS3', value:selected_region_id}
+					];
+					this.USER_MODEL.updateUserProfile(data);
 					sel_prop = 'selected="selected"';
 					
 				} else if (r.id === selected_region_id) {
@@ -126,7 +135,11 @@ export default class LocationView extends View {
 		$('.select-region').on("select2:select", function (e) { 
 			const value = $(this).val();
 			console.log(["select2:select region value=", value]);
-			self.USER_MODEL.profile['NUTS3'] = value; // DATABASE Update USER_MODEL
+			//self.USER_MODEL.profile['NUTS3'] = value; // DATABASE Update USER_MODEL
+			const data = [
+				{propName:'NUTS3', value:value}
+			];
+			this.USER_MODEL.updateUserProfile(data);
 		});
 	}
 	
@@ -136,6 +149,7 @@ export default class LocationView extends View {
 				if (options.status === 200) {
 					if (this.rendered) {
 						
+						$('#'+this.FELID).empty();
 						console.log(options.model+' fetched OK!');
 						this.resetCountrySelect();
 						
@@ -143,24 +157,47 @@ export default class LocationView extends View {
 						this.render();
 					}
 				} else { // Error in fetching.
-					//this.notifyError(options);
-					console.log('ERROR in '+options.model+' fetching...');
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
 				}
 				
 			} else if (options.model==='RegionsModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					if (this.rendered) {
 						
-						//$('#'+this.FELID).empty();
+						$('#'+this.FELID).empty();
 						console.log(options.model+' fetched OK!');
 						this.resetRegionSelect();
 						
 					} else {
 						this.render();
 					}
-				} else { // Error in fetching.
-					//this.notifyError(options);
-					console.log('ERROR in '+options.model+' fetching...');
+				} else {
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
+				}
+				
+			} else if (options.model==='UserModel' && options.method==='updateUserProfile') {
+				if (options.status === 200) {
+					
+					$('#'+this.FELID).empty();
+					// const msg = 'Feedback submitted OK';
+					// Show Toast: Saved OK!
+					const LM = this.controller.master.modelRepo.get('LanguageModel');
+					const sel = LM.selected;
+					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					M.toast({
+						displayLength:500, 
+						html: save_ok,
+						classes: 'green darken-1'
+					});
+					
+				} else {
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
 				}
 			}
 		}
@@ -218,6 +255,12 @@ export default class LocationView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1" id="'+this.FELID+'">'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<button class="btn waves-effect waves-light" id="location-ok" style="width:120px">OK</button>'+
 						'<p>&nbsp;</p>'+
@@ -254,8 +297,14 @@ export default class LocationView extends View {
 		distanceTownSlider.noUiSlider.on('change', function (values) {
 			console.log(['values=',values]);
 			if (Array.isArray(values) && values.length > 0) {
-				self.USER_MODEL.profile.Distance_Drive_small = Math.round(values[0]);
+				//self.USER_MODEL.profile.Distance_Drive_small = Math.round(values[0]);
 				// DATABASE Update USER_MODEL
+				const key = 'Distance_Drive_small';
+				const value = Math.round(values[0]);
+				const data = [
+					{propName:key, value:value}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		
@@ -277,8 +326,14 @@ export default class LocationView extends View {
 		distanceCitySlider.noUiSlider.on('change', function (values) {
 			console.log(['values=',values]);
 			if (Array.isArray(values) && values.length > 0) {
-				self.USER_MODEL.profile.Distance_Drive_major = Math.round(values[0]);
+				//self.USER_MODEL.profile.Distance_Drive_major = Math.round(values[0]);
 				// DATABASE Update USER_MODEL
+				const key = 'Distance_Drive_major';
+				const value = Math.round(values[0]);
+				const data = [
+					{propName:key, value:value}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		

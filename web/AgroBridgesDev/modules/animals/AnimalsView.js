@@ -129,7 +129,8 @@ export default class AnimalsView extends View {
 		});
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
-		const html = '<div class="row">'+
+		const html = 
+			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">FARM ANIMALS</h3>'+
@@ -151,6 +152,12 @@ export default class AnimalsView extends View {
 					'<div class="input-field col s12 m10 offset-m1">'+
 						'<h6>'+ll_dairy_query+'</h6>'+
 						'<div id="anim-b-options-wrapper"></div>'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1" id="'+this.FELID+'">'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

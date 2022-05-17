@@ -13,6 +13,7 @@ export default class InfoView extends View {
 		this.USER_MODEL.subscribe(this);
 		
 		this.rendered = false;
+		this.FELID = 'info-message';
 	}
 	
 	show() {
@@ -34,7 +35,29 @@ export default class InfoView extends View {
 	}
 	
 	notify(options) {
-		
+		if (this.controller.visible) {
+			if (options.model==='UserModel' && options.method==='updateUserProfile') {
+				if (options.status === 200) {
+					
+					$('#'+this.FELID).empty();
+					// const msg = 'Feedback submitted OK';
+					// Show Toast: Saved OK!
+					const LM = this.controller.master.modelRepo.get('LanguageModel');
+					const sel = LM.selected;
+					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					M.toast({
+						displayLength:500, 
+						html: save_ok,
+						classes: 'green darken-1'
+					});
+					
+				} else {
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
+				}
+			}
+		}
 	}
 	
 	render() {
@@ -89,13 +112,19 @@ export default class InfoView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<h6>'+ll_quality_query+'</h6>'+
 						'<p><label><input class="with-gap" name="qualityStatus" id="quality-min" type="radio" value="min" /><span>'+ll_cert_min+'</span></label></p>'+
-						'<p><label><input class="with-gap" name="qualityStatus" id="quality-hight" type="radio" value="high" /><span>'+ll_cert_high+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="qualityStatus" id="quality-high" type="radio" value="high" /><span>'+ll_cert_high+'</span></label></p>'+
 						'<p><label><input class="with-gap" name="qualityStatus" id="quality-uncertified" type="radio" value="uncertified" /><span>'+ll_cert_uncertified+'</span></label></p>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h6>'+ll_harvest_query+'</h6>'+
 						'<p><label><input class="with-gap" name="harvestStatus" id="harvest-only" type="radio" value="only" /><span>'+ll_harvest_only+'</span></label></p>'+
 						'<p><label><input class="with-gap" name="harvestStatus" id="harvest-plus" type="radio" value="plus" /><span>'+ll_harvest_plus+'</span></label></p>'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1" id="'+this.FELID+'">'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -108,7 +137,6 @@ export default class InfoView extends View {
 				'</div>'+
 			'</div>';
 		$(this.el).append(html);
-		
 		
 		// Restore current selection:
 		const farm_size = this.USER_MODEL.profile.Hectare_farm;
@@ -131,7 +159,6 @@ export default class InfoView extends View {
 		} else if (this.USER_MODEL.profile.Cert_uncertified === true) {
 			$("#quality-uncertified").prop("checked", true);
 		}
-		
 		
 		if (this.USER_MODEL.profile.Harv_farmers_org === true) {
 			$("#harvest-only").prop("checked", true);
@@ -158,8 +185,14 @@ export default class InfoView extends View {
 		farmSizeSlider.noUiSlider.on('change', function (values) {
 			console.log(['values=',values]);
 			if (Array.isArray(values) && values.length > 0) {
-				self.USER_MODEL.profile.Hectare_farm = Math.round(values[0]);
+				//self.USER_MODEL.profile.Hectare_farm = Math.round(values[0]);
 				// DATABASE Update USER_MODEL
+				const key = 'Hectare_farm';
+				const value = Math.round(values[0]);
+				const data = [
+					{propName:key, value:value}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		
@@ -181,48 +214,93 @@ export default class InfoView extends View {
 		deliverySlider.noUiSlider.on('change', function (values) {
 			console.log(['values=',values]);
 			if (Array.isArray(values) && values.length > 0) {
-				self.USER_MODEL.profile.Delivery_month_total = Math.round(values[0]);
+				//self.USER_MODEL.profile.Delivery_month_total = Math.round(values[0]);
 				// DATABASE Update USER_MODEL
+				const key = 'Delivery_month_total';
+				const value = Math.round(values[0]);
+				const data = [
+					{propName:key, value:value}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		
 		$('input[type=radio][name=organicStatus]').change(function() {
 			if (this.value == 'no') {
-				self.USER_MODEL.profile.Dummy_organic = 'No';
+				//self.USER_MODEL.profile.Dummy_organic = 'No';
 				// DATABASE Update USER_MODEL
+				const data = [
+					{propName:'Dummy_organic', value:'No'}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 				
 			} else if (this.value == 'yes') {
-				self.USER_MODEL.profile.Dummy_organic = 'Yes';
+				//self.USER_MODEL.profile.Dummy_organic = 'Yes';
 				// DATABASE Update USER_MODEL
+				const data = [
+					{propName:'Dummy_organic', value:'Yes'}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		
 		$('input[type=radio][name=qualityStatus]').change(function() {
 			if (this.value == 'min') {
-				self.USER_MODEL.profile.Cert_Min = true;
-				self.USER_MODEL.profile.Cert_High = false;
-				self.USER_MODEL.profile.Cert_uncertified = false;
+				//self.USER_MODEL.profile.Cert_Min = true;
+				//self.USER_MODEL.profile.Cert_High = false;
+				//self.USER_MODEL.profile.Cert_uncertified = false;
 				// DATABASE Update USER_MODEL
+				const data = [
+					{propName:'Cert_Min', value:true},
+					{propName:'Cert_High', value:false},
+					{propName:'Cert_uncertified', value:false}
+				];
+				self.USER_MODEL.updateUserProfile(data);
+				
 			} else if (this.value == 'high') {
-				self.USER_MODEL.profile.Cert_Min = false;
-				self.USER_MODEL.profile.Cert_High = true;
-				self.USER_MODEL.profile.Cert_uncertified = false;
+				//self.USER_MODEL.profile.Cert_Min = false;
+				//self.USER_MODEL.profile.Cert_High = true;
+				//self.USER_MODEL.profile.Cert_uncertified = false;
 				// DATABASE Update USER_MODEL
+				const data = [
+					{propName:'Cert_Min', value:false},
+					{propName:'Cert_High', value:true},
+					{propName:'Cert_uncertified', value:false}
+				];
+				self.USER_MODEL.updateUserProfile(data);
+				
 			} else {
-				self.USER_MODEL.profile.Cert_Min = false;
-				self.USER_MODEL.profile.Cert_High = false;
-				self.USER_MODEL.profile.Cert_uncertified = true;
+				//self.USER_MODEL.profile.Cert_Min = false;
+				//self.USER_MODEL.profile.Cert_High = false;
+				//self.USER_MODEL.profile.Cert_uncertified = true;
 				// DATABASE Update USER_MODEL
+				const data = [
+					{propName:'Cert_Min', value:false},
+					{propName:'Cert_High', value:false},
+					{propName:'Cert_uncertified', value:true}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		
 		$('input[type=radio][name=harvestStatus]').change(function() {
 			if (this.value == 'only') {
-				self.USER_MODEL.profile.Harv_farmers_org = true;
-				self.USER_MODEL.profile.Harv_Clean_Sort_Ref = false;
+				//self.USER_MODEL.profile.Harv_farmers_org = true;
+				//self.USER_MODEL.profile.Harv_Clean_Sort_Ref = false;
+				const data = [
+					{propName:'Harv_farmers_org', value:true},
+					{propName:'Harv_Clean_Sort_Ref', value:false}
+				];
+				self.USER_MODEL.updateUserProfile(data);
+				
 			} else {
-				self.USER_MODEL.profile.Harv_farmers_org = false;
-				self.USER_MODEL.profile.Harv_Clean_Sort_Ref = true;
+				//self.USER_MODEL.profile.Harv_farmers_org = false;
+				//self.USER_MODEL.profile.Harv_Clean_Sort_Ref = true;
+				const data = [
+					{propName:'Harv_farmers_org', value:false},
+					{propName:'Harv_Clean_Sort_Ref', value:true}
+				];
+				self.USER_MODEL.updateUserProfile(data);
 			}
 		});
 		

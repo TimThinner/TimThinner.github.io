@@ -74,6 +74,8 @@ export default class AnimalsView extends View {
 						html: save_ok,
 						classes: 'green darken-1'
 					});
+					// After 1 second go back to FARM-page automatically.
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 1000);
 					
 				} else {
 					// Report error.
@@ -204,24 +206,15 @@ export default class AnimalsView extends View {
 			}
 		});
 		
+		// EVENT HANDLERS:
 		$('input[type=radio][name=animalsStatus]').change(function() {
 			if (this.value == 'no') {
-				console.log('Dummy_livestock No'); // Dummy_veggie_farm NO
-				//self.USER_MODEL.profile.Dummy_livestock = 'No';
-				// DATABASE Update USER_MODEL
-				const data = [
-					{propName:'Dummy_livestock', value:'No'}
-				];
-				self.USER_MODEL.updateUserProfile(data);
+				console.log('Dummy_livestock No');
+				self.USER_MODEL.profile.Dummy_livestock = 'No';
 				
 			} else if (this.value == 'yes') {
 				console.log('Dummy_livestock Yes');
-				//self.USER_MODEL.profile.Dummy_livestock = 'Yes';
-				// DATABASE Update USER_MODEL
-				const data = [
-					{propName:'Dummy_livestock', value:'Yes'}
-				];
-				self.USER_MODEL.updateUserProfile(data);
+				self.USER_MODEL.profile.Dummy_livestock = 'Yes';
 			}
 		});
 		
@@ -229,20 +222,9 @@ export default class AnimalsView extends View {
 		anim_a_Options.forEach(o=>{
 			$("#"+o.id).change(function() {
 				if(this.checked) {
-					//self.USER_MODEL.profile[o.prop] = true;
-					// DATABASE Update USER_MODEL
-					const data = [
-						{propName:o.prop, value:true}
-					];
-					self.USER_MODEL.updateUserProfile(data);
-					
+					self.USER_MODEL.profile[o.prop] = true;
 				} else {
-					//self.USER_MODEL.profile[o.prop] = false;
-					// DATABASE Update USER_MODEL
-					const data = [
-						{propName:o.prop, value:false}
-					];
-					self.USER_MODEL.updateUserProfile(data);
+					self.USER_MODEL.profile[o.prop] = false;
 				}
 			});
 		});
@@ -250,26 +232,25 @@ export default class AnimalsView extends View {
 		anim_b_Options.forEach(o=>{
 			$("#"+o.id).change(function() {
 				if(this.checked) {
-					//self.USER_MODEL.profile[o.prop] = true;
-					// DATABASE Update USER_MODEL
-					const data = [
-						{propName:o.prop, value:true}
-					];
-					self.USER_MODEL.updateUserProfile(data);
-					
+					self.USER_MODEL.profile[o.prop] = true;
 				} else {
-					//self.USER_MODEL.profile[o.prop] = false;
-					// DATABASE Update USER_MODEL
-					const data = [
-						{propName:o.prop, value:false}
-					];
-					self.USER_MODEL.updateUserProfile(data);
+					self.USER_MODEL.profile[o.prop] = false;
 				}
 			});
 		});
 		
 		$("#animals-ok").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('farm');
+			// Save all
+			const data = [
+				{propName:'Dummy_livestock', value:self.USER_MODEL.profile.Dummy_livestock}
+			];
+			anim_a_Options.forEach(o=>{
+				data.push({propName:o.prop, value:self.USER_MODEL.profile[o.prop]});
+			});
+			anim_b_Options.forEach(o=>{
+				data.push({propName:o.prop, value:self.USER_MODEL.profile[o.prop]});
+			});
+			self.USER_MODEL.updateUserProfile(data);
 		});
 		this.rendered = true;
 	}

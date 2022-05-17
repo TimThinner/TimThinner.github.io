@@ -139,7 +139,7 @@ export default class LocationView extends View {
 			const data = [
 				{propName:'NUTS3', value:value}
 			];
-			this.USER_MODEL.updateUserProfile(data);
+			self.USER_MODEL.updateUserProfile(data);
 		});
 	}
 	

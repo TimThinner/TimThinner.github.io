@@ -250,6 +250,7 @@ export default class AnimalsView extends View {
 			anim_b_Options.forEach(o=>{
 				data.push({propName:o.prop, value:self.USER_MODEL.profile[o.prop]});
 			});
+			console.log(['About to save data=',data]);
 			self.USER_MODEL.updateUserProfile(data);
 		});
 		this.rendered = true;

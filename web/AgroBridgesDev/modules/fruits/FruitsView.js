@@ -50,7 +50,6 @@ export default class FruitsView extends View {
 	}
 	
 	notify(options) {
-		//self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:myJson.message});
 		if (this.controller.visible) {
 			if (options.model==='UserModel' && options.method==='updateUserProfile') {
 				if (options.status === 200) {

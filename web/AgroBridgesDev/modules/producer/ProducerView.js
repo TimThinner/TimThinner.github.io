@@ -13,6 +13,7 @@ export default class ProducerView extends View {
 		this.USER_MODEL.subscribe(this);
 		
 		this.rendered = false;
+		this.FELID = 'producer-message';
 	}
 	
 	show() {
@@ -34,7 +35,32 @@ export default class ProducerView extends View {
 	}
 	
 	notify(options) {
-		
+		if (this.controller.visible) {
+			if (options.model==='UserModel' && options.method==='updateUserProfile') {
+				if (options.status === 200) {
+					
+					$('#'+this.FELID).empty();
+					// const msg = 'Feedback submitted OK';
+					// Show Toast: Saved OK!
+					const LM = this.controller.master.modelRepo.get('LanguageModel');
+					const sel = LM.selected;
+					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					M.toast({
+						displayLength:500, 
+						html: save_ok,
+						classes: 'green darken-1'
+					});
+					
+					// After 1 second go back to MAIN-page automatically.
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('main'), 1000);
+					
+				} else {
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
+				}
+			}
+		}
 	}
 	
 	render() {
@@ -89,6 +115,12 @@ export default class ProducerView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1" id="'+this.FELID+'">'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<button class="btn waves-effect waves-light" id="producer-ok" style="width:120px">OK</button>'+
 						'<p>&nbsp;</p>'+
@@ -105,17 +137,21 @@ export default class ProducerView extends View {
 		$('input[type=radio][name=welcomeStatus]').change(function() {
 			const val = parseInt(this.value);
 			self.USER_MODEL.profile.Likert_welcome_farm = val;
-			// DATABASE Update USER_MODEL
 		});
 		
 		$('input[type=radio][name=consumerStatus]').change(function() {
 			const val = parseInt(this.value);
 			self.USER_MODEL.profile.Likert_consumer_con = val;
-			// DATABASE Update USER_MODEL
 		});
 		
 		$("#producer-ok").on('click', function() {
-			self.models['MenuModel'].setSelected('main');
+			// Save all
+			const data = [
+				{propName:'Likert_welcome_farm', value:self.USER_MODEL.profile.Likert_welcome_farm},
+				{propName:'Likert_consumer_con', value:self.USER_MODEL.profile.Likert_consumer_con}
+			];
+			console.log(['About to save data=',data]);
+			self.USER_MODEL.updateUserProfile(data);
 		});
 		this.rendered = true;
 	}

@@ -13,6 +13,7 @@ export default class ActivitiesView extends View {
 		this.USER_MODEL.subscribe(this);
 		
 		this.rendered = false;
+		this.FELID = 'activities-message';
 	}
 	
 	show() {
@@ -34,7 +35,31 @@ export default class ActivitiesView extends View {
 	}
 	
 	notify(options) {
-		
+		if (this.controller.visible) {
+			if (options.model==='UserModel' && options.method==='updateUserProfile') {
+				if (options.status === 200) {
+					
+					$('#'+this.FELID).empty();
+					// const msg = 'Feedback submitted OK';
+					// Show Toast: Saved OK!
+					const LM = this.controller.master.modelRepo.get('LanguageModel');
+					const sel = LM.selected;
+					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					M.toast({
+						displayLength:500, 
+						html: save_ok,
+						classes: 'green darken-1'
+					});
+					// After 1 second go back to MAIN-page automatically.
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('main'), 1000);
+					
+				} else {
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
+				}
+			}
+		}
 	}
 	
 	render() {
@@ -95,6 +120,12 @@ export default class ActivitiesView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1" id="'+this.FELID+'">'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<button class="btn waves-effect waves-light" id="activities-ok" style="width:120px">OK</button>'+
 						'<p>&nbsp;</p>'+
@@ -134,10 +165,8 @@ export default class ActivitiesView extends View {
 			$("#"+o.id).change(function() {
 				if(this.checked) {
 					self.USER_MODEL.profile[o.prop] = true;
-					// DATABASE Update USER_MODEL
 				} else {
 					self.USER_MODEL.profile[o.prop] = false;
-					// DATABASE Update USER_MODEL
 				}
 			});
 		});
@@ -146,16 +175,26 @@ export default class ActivitiesView extends View {
 			$("#"+o.id).change(function() {
 				if(this.checked) {
 					self.USER_MODEL.profile[o.prop] = true;
-					// DATABASE Update USER_MODEL
+					
 				} else {
 					self.USER_MODEL.profile[o.prop] = false;
-					// DATABASE Update USER_MODEL
+					
 				}
 			});
 		});
 		
 		$("#activities-ok").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('main');
+			// Save all
+			const data = [];
+			
+			a_Options.forEach(o=>{
+				data.push({propName:o.prop, value:self.USER_MODEL.profile[o.prop]});
+			});
+			b_Options.forEach(o=>{
+				data.push({propName:o.prop, value:self.USER_MODEL.profile[o.prop]});
+			});
+			console.log(['About to save data=',data]);
+			self.USER_MODEL.updateUserProfile(data);
 		});
 		this.rendered = true;
 	}

@@ -50,12 +50,8 @@ export default class LocationView extends View {
 				if (typeof selected_country_id === 'undefined') {
 					
 					selected_country_id = r.id;
-					//this.USER_MODEL.profile['Country'] = selected_country_id;
-					// NOTE: We also automaically set the USER_MODEL => DATABASE Update USER_MODEL
-					const data = [
-						{propName:'Country', value:selected_country_id}
-					];
-					this.USER_MODEL.updateUserProfile(data);
+					// NOTE: We also automatically set the USER_MODEL
+					this.USER_MODEL.profile['Country'] = selected_country_id;
 					sel_prop = 'selected="selected"';
 					
 				} else if (r.id === selected_country_id) {
@@ -80,11 +76,7 @@ export default class LocationView extends View {
 		$('.select-country').on("select2:select", function (e) { 
 			const value = $(this).val();
 			console.log(["select2:select value=", value]);
-			//self.USER_MODEL.profile['Country'] = value; // DATABASE Update USER_MODEL
-			const data = [
-				{propName:'Country', value:value}
-			];
-			self.USER_MODEL.updateUserProfile(data);
+			self.USER_MODEL.profile['Country'] = value;
 			self.models['RegionsModel'].fetch(value);
 		});
 		// Finally initialize also the REGIONS with old selection or FIRST COUNTRY'S regions.
@@ -106,12 +98,8 @@ export default class LocationView extends View {
 				if (typeof selected_region_id === 'undefined') {
 					
 					selected_region_id = r.id;
-					//this.USER_MODEL.profile['NUTS3'] = selected_region_id;
-					// NOTE: We also automaically set the USER_MODEL => DATABASE Update USER_MODEL
-					const data = [
-						{propName:'NUTS3', value:selected_region_id}
-					];
-					this.USER_MODEL.updateUserProfile(data);
+					// NOTE: We also automatically set the USER_MODEL
+					this.USER_MODEL.profile['NUTS3'] = selected_region_id;
 					sel_prop = 'selected="selected"';
 					
 				} else if (r.id === selected_region_id) {
@@ -135,11 +123,7 @@ export default class LocationView extends View {
 		$('.select-region').on("select2:select", function (e) { 
 			const value = $(this).val();
 			console.log(["select2:select region value=", value]);
-			//self.USER_MODEL.profile['NUTS3'] = value; // DATABASE Update USER_MODEL
-			const data = [
-				{propName:'NUTS3', value:value}
-			];
-			self.USER_MODEL.updateUserProfile(data);
+			self.USER_MODEL.profile['NUTS3'] = value;
 		});
 	}
 	
@@ -183,7 +167,6 @@ export default class LocationView extends View {
 				if (options.status === 200) {
 					
 					$('#'+this.FELID).empty();
-					// const msg = 'Feedback submitted OK';
 					// Show Toast: Saved OK!
 					const LM = this.controller.master.modelRepo.get('LanguageModel');
 					const sel = LM.selected;
@@ -193,6 +176,8 @@ export default class LocationView extends View {
 						html: save_ok,
 						classes: 'green darken-1'
 					});
+					// After 1 second go back to FARM-page automatically.
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 1000);
 					
 				} else {
 					// Report error.
@@ -297,14 +282,7 @@ export default class LocationView extends View {
 		distanceTownSlider.noUiSlider.on('change', function (values) {
 			console.log(['values=',values]);
 			if (Array.isArray(values) && values.length > 0) {
-				//self.USER_MODEL.profile.Distance_Drive_small = Math.round(values[0]);
-				// DATABASE Update USER_MODEL
-				const key = 'Distance_Drive_small';
-				const value = Math.round(values[0]);
-				const data = [
-					{propName:key, value:value}
-				];
-				self.USER_MODEL.updateUserProfile(data);
+				self.USER_MODEL.profile.Distance_Drive_small = Math.round(values[0]);
 			}
 		});
 		
@@ -326,19 +304,20 @@ export default class LocationView extends View {
 		distanceCitySlider.noUiSlider.on('change', function (values) {
 			console.log(['values=',values]);
 			if (Array.isArray(values) && values.length > 0) {
-				//self.USER_MODEL.profile.Distance_Drive_major = Math.round(values[0]);
-				// DATABASE Update USER_MODEL
-				const key = 'Distance_Drive_major';
-				const value = Math.round(values[0]);
-				const data = [
-					{propName:key, value:value}
-				];
-				self.USER_MODEL.updateUserProfile(data);
+				self.USER_MODEL.profile.Distance_Drive_major = Math.round(values[0]);
 			}
 		});
 		
 		$("#location-ok").on('click', function() {
-			self.models['MenuModel'].setSelected('farm');
+			// Save all
+			const data = [
+				{propName:'Country', value:self.USER_MODEL.profile['Country']},
+				{propName:'NUTS3', value:self.USER_MODEL.profile['NUTS3']},
+				{propName:'Distance_Drive_small', value:self.USER_MODEL.profile.Distance_Drive_small},
+				{propName:'Distance_Drive_major', value:self.USER_MODEL.profile.Distance_Drive_major}
+			];
+			console.log(['About to save data=',data]);
+			self.USER_MODEL.updateUserProfile(data);
 		});
 		this.rendered = true;
 	}

@@ -490,7 +490,7 @@ export default class UserModel extends Model {
 					this.profile[d.propName] = d.value;
 				}
 			});
-			setTimeout(() => this.notifyAll({model:self.name, method:'updateUserProfile', status:200, message:'OK', data:validData}), 500);
+			setTimeout(() => this.notifyAll({model:self.name, method:'updateUserProfile', status:200, message:'OK'}), 500);
 			
 		} else {
 			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
@@ -520,7 +520,7 @@ export default class UserModel extends Model {
 						});
 						//self.store();
 					}
-					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:myJson.message, data:validData});
+					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:myJson.message});
 				})
 				.catch(function(error){
 					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:error});

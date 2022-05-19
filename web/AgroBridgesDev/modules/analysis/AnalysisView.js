@@ -25,15 +25,13 @@ export default class AnalysisView extends View {
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		this.USER_MODEL.subscribe(this);
 		
-		//this.previewOpen = false;
-		//this.preview_csa_Open = false;
-		//this.preview_f2f_Open = false;
-		//this.preview_online_Open = false;
-		//this.preview_retail_Open = false;
-		//this.preview_logistics_Open = false;
-		this.showRecommendation = [true, true, true, true, true, true, true, true];
-		
+		this.showRecommendation = {};
+		// "R0":{id:'show-r-0',value:true, color:this.colors.DARK_GREEN}
+		// "R1":{id:'show-r-1',value:true, color:this.colors.DARK_ORANGE}
+		// "R2":{id:'show-r-2',value:true, color:this.colors.DARK_BLUE}
+		// ...
 		this.rendered = false;
+		this.FELID = 'analysis-message';
 	}
 	
 	show() {
@@ -60,6 +58,25 @@ export default class AnalysisView extends View {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				//console.log('ResizeEventObserver resize => SHOW()!');
 				this.show();
+			} else if (options.model==='UserModel' && options.method==='runAnalysis') {
+				if (options.status === 200) {
+					
+					
+					$('#'+this.FELID).empty();
+					
+					
+					
+					this.setRecommendations();
+					this.renderRecommendationsPart1Text();
+					this.renderRecommendationsList();
+					this.renderRecommendationsSpider();
+					this.renderRecommendationsPart2Text();
+					
+				} else {
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
+				}
 			}
 		}
 	}
@@ -72,193 +89,6 @@ export default class AnalysisView extends View {
 		$("#business-models-intro-wrapper").empty().append(html);
 	}
 	
-	renderRecommendationsPart1Text() {
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		
-		const ll_intro = LM['translation'][sel]['Result1_Models_Considered'];
-		const ll_r1_no_suitable = LM['translation'][sel]['Results1_farms_no_suitable_channels'];
-		const ll_r1_only_1_suitable = LM['translation'][sel]['Results1_only_one_channel'];
-		const ll_r1_more_than_2_suitable = LM['translation'][sel]['Result_Farms_more_than_2_suitable'];
-		
-		let html;
-		const numberOfResults = 3;
-		if (numberOfResults === 0) {
-			html = '<p>'+ll_intro+' '+ll_r1_no_suitable+'</p>';
-			
-		} else if(numberOfResults === 1) {
-			html = '<p>'+ll_intro+' '+ll_r1_only_1_suitable+'</p>';
-			
-		} else { // Two or more...
-			html = '<p>'+ll_intro+' '+ll_r1_more_than_2_suitable+'</p>';
-		}
-		$("#recommendations-text-part-1-wrapper").empty().append(html);
-	}
-	
-	
-	renderRecommendationsPart2Text() {
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		
-		const ll_r2_more_than_2_suitable = LM['translation'][sel]['Results2_Farm_more_2_suitable'];
-		const ll_r2_no_suitable = LM['translation'][sel]['Results2_farm_no_suitable_Channels'];
-		const ll_r2_only_1_suitable = LM['translation'][sel]['Results2_only_one_channel'];
-		
-		const numberOfResults = 3;
-		
-		let html = '';
-		if (numberOfResults === 0) {
-			html += '<p>'+ll_r2_no_suitable+'</p>';
-			
-		} else if(numberOfResults === 1) {
-			html += '<p>'+ll_r2_only_1_suitable+'</p>';
-			
-		} else { // Two or more...
-			html += '<p>'+ll_r2_more_than_2_suitable+'</p>';
-		}
-		$("#recommendations-text-part-2-wrapper").empty().append(html);
-	}
-	
-	renderRecommendationsList() {
-		const self = this;
-		// SHOW EXAMPLE TABLE:
-		// RANK	SALES_CHANNEL			BUSINESS_MODEL
-		// 1	On_Farm_Shop_extensive	Face-to-Face
-		// 2	Online_Sales_Post		Online Trade
-		// 3	Retail_Store			Retail Trade
-		
-		//Sales Channel: 
-		// 1.	On-Farm Shop (extensively managed, unstaffed)
-		// 2.	Post delivery (sales on demand)
-		// 3.	Retail store
-		/*const html = 
-			'<table>'+
-				'<thead>'+
-					'<tr>'+
-						'<th>Rank</th>'+
-						'<th>Sales Channel</th>'+
-						'<th>Business Model</th>'+
-					'</tr>'+
-				'</thead>'+
-				'<tbody>'+
-					'<tr>'+
-						'<td>1</td>'+
-						'<td>On-Farm Shop (extensively managed, unstaffed)</td>'+
-						'<td>Face-to-Face</td>'+
-					'</tr>'+
-					'<tr>'+
-						'<td>2</td>'+
-						'<td>Post delivery (sales on demand)</td>'+
-						'<td>Online Trade</td>'+
-					'</tr>'+
-					'<tr>'+
-						'<td>3</td>'+
-						'<td>Retail store</td>'+
-						'<td>Retail Trade</td>'+
-					'</tr>'+
-				'</tbody>'+
-			'</table>';
-		$("#recommendations-table-wrapper").empty().append(html);
-		*/
-		
-		// What is the number of recommendations?
-		const numberOfResults = 3;
-		const colors = [
-			this.colors.DARK_GREEN,
-			this.colors.DARK_ORANGE,
-			this.colors.DARK_BLUE
-		];
-		
-		let checked_0 = '';
-		let checked_1 = '';
-		let checked_2 = '';
-		if (this.showRecommendation[0] === true) {
-			checked_0 = 'checked="checked"';
-		}
-		if (this.showRecommendation[1] === true) {
-			checked_1 = 'checked="checked"';
-		}
-		if (this.showRecommendation[2] === true) {
-			checked_2 = 'checked="checked"';
-		}
-		
-		const html = 
-			'<div class="row" style="margin-bottom:0;">'+
-				'<div class="col s5">'+
-					'<p style="font-weight:bold;">Sales Channel</p>'+
-				'</div>'+
-				'<div class="col s5">'+
-					'<p style="font-weight:bold;">Business Model</p>'+
-				'</div>'+
-				'<div class="col s2">'+
-					'<p style="font-weight:bold;">Show</p>'+
-				'</div>'+
-			'</div>'+
-			'<div class="row" style="margin-bottom:0;">'+
-				'<div class="col s5">'+
-					'<p style="color:'+colors[0]+'">On-Farm Shop (extensively managed, unstaffed)</p>'+
-				'</div>'+
-				'<div class="col s5">'+
-					'<p style="color:'+colors[0]+'">Face-to-Face</p>'+
-				'</div>'+
-				'<div class="input-field col s2" style="padding-top:0">'+
-					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-0" '+checked_0+' /><span></span></label></p>'+
-				'</div>'+
-			'</div>'+
-			'<div class="row" style="margin-bottom:0;">'+
-				'<div class="col s5">'+
-					'<p style="color:'+colors[1]+'">Post delivery (sales on demand)</p>'+
-				'</div>'+
-				'<div class="col s5">'+
-					'<p style="color:'+colors[1]+'">Online Trade</p>'+
-				'</div>'+
-				'<div class="input-field col s2" style="padding-top:0">'+
-					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-1" '+checked_1+' /><span></span></label></p>'+
-				'</div>'+
-			'</div>'+
-			'<div class="row" style="margin-bottom:0;">'+
-				'<div class="col s5">'+
-					'<p style="color:'+colors[2]+'">Retail store</p>'+
-				'</div>'+
-				'<div class="col s5">'+
-					'<p style="color:'+colors[2]+'">Retail Trade</p>'+
-				'</div>'+
-				'<div class="input-field col s2" style="padding-top:0">'+
-					'<p><label><input type="checkbox" class="filled-in" id="show-recommendation-2" '+checked_2+' /><span></span></label></p>'+
-				'</div>'+
-			'</div>';
-		$("#recommendations-list-wrapper").empty().append(html);
-		
-		$('#show-recommendation-0').on('click', function(){
-			if (self.showRecommendation[0] === true) {
-				self.showRecommendation[0] = false; // Toggle
-			} else {
-				self.showRecommendation[0] = true; // Toggle
-			}
-			self.renderResultsSpider();
-		});
-		$('#show-recommendation-1').on('click', function(){
-			if (self.showRecommendation[1] === true) {
-				self.showRecommendation[1] = false; // Toggle
-			} else {
-				self.showRecommendation[1] = true; // Toggle
-			}
-			self.renderResultsSpider();
-		});
-		$('#show-recommendation-2').on('click', function(){
-			if (self.showRecommendation[2] === true) {
-				self.showRecommendation[2] = false; // Toggle
-			} else {
-				self.showRecommendation[2] = true; // Toggle
-			}
-			self.renderResultsSpider();
-		});
-	}
-	
-	/* Note:
-		light-blue background:	#e5ecf6
-		blue line:				#5965fa
-	*/
 	drawSpider(name, spider_id, width, height) {
 		
 		$('#'+spider_id).empty();
@@ -294,13 +124,9 @@ export default class AnalysisView extends View {
 			"Lower Labor Produce Ratio", 
 			"Lower Carbon Footprint", 
 			"Chain Added Value",
-			"Price Premium"]; // 7!
-		//generate the data (only one set)
+			"Price Premium"]; // 7 features
 		
-		//wholesale diagram results:
-		//diagram_title_id;Volume;Price_Premium;Chain_Added_Value;Carbon_Footprint;Labor_Produce;Gender_Equality;Consumer_Contact
-		//Wholesale;1;0,243019648;0,093587522;0,27142858;1;0,498997996;0,2
-		
+		// Wholesale:
 		// Volume;				1
 		// Price_Premium;		0.243019648;
 		// Chain_Added_Value;	0.093587522;
@@ -308,7 +134,6 @@ export default class AnalysisView extends View {
 		// Labor_Produce;		1
 		// Gender_Equality;		0.498997996
 		// Consumer_Contact		0.2
-		
 		
 		if (name === 'wholesale') {
 			data = [{
@@ -321,63 +146,12 @@ export default class AnalysisView extends View {
 				"Price Premium":0.243019648
 			}];
 		} else {
-			// RANK 1 RESULT:
-			// Ranked 1 result:
-			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
-			// 0,2	0,729058945		0,694974003				0,074509829			0,3125			0,645290581			0,4
-			
-			//if (this.showRecommendation[0] === true) {
-				data.push(
-				{
-				"Volume":0.2,
-				"Consumer Contact":0.4,
-				"Gender Equality":0.645290581,
-				"Lower Labor Produce Ratio":0.3125,
-				"Lower Carbon Footprint":0.074509829,
-				"Chain Added Value":0.694974003,
-				"Price Premium":0.729058945
-				});
-			//}
-			// RANK 2 RESULT:
-			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
-			// 0,2	0,728024819	0,620450607					1					0,020243		0,503006012		0,2
-			//if (this.showRecommendation[1] === true) {
-				data.push(
-				{
-				"Volume":0.2,
-				"Consumer Contact":0.2,
-				"Gender Equality":0.503006012,
-				"Lower Labor Produce Ratio":0.020243,
-				"Lower Carbon Footprint":1,
-				"Chain Added Value":0.620450607,
-				"Price Premium":0.728024819
-				});
-			//}
-			// RANK 3 RESULT:
-			// Volume	Price_Premium	Chain_Added_Value	Carbon_Footprint	Labor_Produce	Gender_Equality	Consumer_Contact
-			// 0,4			0,640124095		0,402079723			0,504424796			0,3125			0,509018036			0,4
-			//if (this.showRecommendation[2] === true) {
-				data.push(
-				{
-				"Volume":0.4,
-				"Consumer Contact":0.4,
-				"Gender Equality":0.509018036,
-				"Lower Labor Produce Ratio":0.3125,
-				"Lower Carbon Footprint":0.504424796,
-				"Chain Added Value":0.402079723,
-				"Price Premium":0.640124095
-				});
-			//}
+			if (this.USER_MODEL.analysisReady) {
+				data = this.USER_MODEL.analysisResult.recommendations;
+			}
 		}
 		
 		//let svg = d3.select("spider").append("svg").attr("width", 600).attr("height", 600);
-		const colors = [
-			this.colors.DARK_GREEN,
-			this.colors.DARK_ORANGE,
-			this.colors.DARK_BLUE,
-			this.colors.GREY
-		];
-		
 		//let radialScale = d3.scaleLinear().domain([0, 10]).range([0, 250]);
 		let radialScale = d3.scaleLinear().domain([0, 1]).range([0, range]);
 		//let ticks = [0.2, 0.4, 0.6, 0.8, 1];
@@ -390,7 +164,7 @@ export default class AnalysisView extends View {
 				.attr("cx", horiz_center) // min_dim)
 				.attr("cy", verti_center) // min_dim)
 				.attr("fill", '#fff')//"#e5ecf6") // "none"
-				.attr("stroke", colors[3])
+				.attr("stroke", this.colors.GREY)
 				.attr("r", radialScale(t))
 		);
 		// draw tick labels
@@ -438,7 +212,7 @@ export default class AnalysisView extends View {
 				.attr("y1", verti_center)//min_dim 300)
 				.attr("x2", line_coordinate.x)
 				.attr("y2", line_coordinate.y)
-				.attr("stroke", colors[3]);
+				.attr("stroke", this.colors.GREY);
 			svg.append("text")
 				.attr("x", label_coordinate.x)
 				.attr("y", label_coordinate.y)
@@ -465,10 +239,10 @@ export default class AnalysisView extends View {
 			// draw the path element
 			// IF THE SHOW CHECKBOX is checked!!!!
 			// BUT do not block the "wholesale" spider!
-			if (data.length === 1 || this.showRecommendation[i] === true) {
+			if (data.length === 1 || this.showRecommendation['R'+i].value === true) {
 				
 				let d = data[i];
-				let color = colors[i];
+				let color = this.showRecommendation['R'+i].color;
 				let coordinates = getPathCoordinates(d);
 				
 				svg.append("path")
@@ -483,21 +257,56 @@ export default class AnalysisView extends View {
 		}
 	}
 	
-	renderSpider() {
-		$('#spider-wrapper').empty();
+	renderRecommendationsPart1Text() {
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
 		
-		let w = this.REO.width;
-		if (w > 1600) { w = 1600; }
+		const ll_intro = LM['translation'][sel]['Result1_Models_Considered'];
+		const ll_r1_no_suitable = LM['translation'][sel]['Results1_farms_no_suitable_channels'];
+		const ll_r1_only_1_suitable = LM['translation'][sel]['Results1_only_one_channel'];
+		const ll_r1_more_than_2_suitable = LM['translation'][sel]['Result_Farms_more_than_2_suitable'];
 		
-		const width = w*0.9;				// 90% of width
-		const height = this.REO.height*0.5;	// 50% of height
 		
-		const html = '<svg id="spider" width="'+width+'" height="'+height+'"></svg>';
-		$(html).appendTo('#spider-wrapper');
-		this.drawSpider('wholesale','spider', width, height);
+		const numberOfResults = this.USER_MODEL.analysisResult.recommendations.length;
+		
+		let html;
+		
+		if (numberOfResults === 0) {
+			html = '<p>'+ll_intro+' '+ll_r1_no_suitable+'</p>';
+			
+		} else if(numberOfResults === 1) {
+			html = '<p>'+ll_intro+' '+ll_r1_only_1_suitable+'</p>';
+			
+		} else { // Two or more...
+			html = '<p>'+ll_intro+' '+ll_r1_more_than_2_suitable+'</p>';
+		}
+		$("#recommendations-text-part-1-wrapper").empty().append(html);
 	}
 	
-	renderResultsSpider() {
+	renderRecommendationsPart2Text() {
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		
+		const ll_r2_more_than_2_suitable = LM['translation'][sel]['Results2_Farm_more_2_suitable'];
+		const ll_r2_no_suitable = LM['translation'][sel]['Results2_farm_no_suitable_Channels'];
+		const ll_r2_only_1_suitable = LM['translation'][sel]['Results2_only_one_channel'];
+		
+		const numberOfResults = this.USER_MODEL.analysisResult.recommendations.length;
+		
+		let html = '';
+		if (numberOfResults === 0) {
+			html += '<p>'+ll_r2_no_suitable+'</p>';
+			
+		} else if(numberOfResults === 1) {
+			html += '<p>'+ll_r2_only_1_suitable+'</p>';
+			
+		} else { // Two or more...
+			html += '<p>'+ll_r2_more_than_2_suitable+'</p>';
+		}
+		$("#recommendations-text-part-2-wrapper").empty().append(html);
+	}
+	
+	renderRecommendationsSpider() {
 		$('#recommendations-spider-wrapper').empty();
 		
 		let w = this.REO.width;
@@ -516,41 +325,118 @@ export default class AnalysisView extends View {
 		
 		this.drawSpider('peterparker', 'spider-r', width, height);
 	}
-	/*
-	renderResultsSpiders() {
+	
+	setRecommendations() {
+		this.showRecommendation = {};
 		
-		$('#results-spiders-wrapper').empty();
+		const colors = [
+			this.colors.DARK_GREEN, // First recommendation.
+			this.colors.DARK_ORANGE, // Second recommendation.
+			this.colors.DARK_BLUE, // Third recommendation.
+			this.colors.DARK_RED
+		];
+		// "R0":{id:'show-r-0',value:true, color:this.colors.DARK_GREEN}
+		// "R1":{id:'show-r-1',value:true, color:this.colors.DARK_ORANGE}
+		// "R2":{id:'show-r-2',value:true, color:this.colors.DARK_BLUE}
+		
+		this.USER_MODEL.analysisResult.recommendations.forEach((r,index) => {
+			/*
+			r["Sales Channel"]
+			r["Business Model"]
+			r["Volume"]
+			r["Consumer Contact"]
+			r["Gender Equality"]
+			r["Lower Labor Produce Ratio"]
+			r["Lower Carbon Footprint"]
+			r["Chain Added Value"]
+			r["Price Premium"]
+			*/
+			let color = '#000000';
+			if (index < 4) {
+				color = colors[index];
+			}
+			this.showRecommendation["R"+index] = {id:'show-r-'+index, value:true, color:color};
+		});
+	}
+	
+	renderRecommendationsList() {
+		const self = this;
+		
+		// Generate following HTML dynamically based on analysis recommendations:
+		let html = 
+			'<div class="row" style="margin-bottom:0;">'+
+				'<div class="col s5">'+
+					'<p style="font-weight:bold;">Sales Channel</p>'+
+				'</div>'+
+				'<div class="col s5">'+
+					'<p style="font-weight:bold;">Business Model</p>'+
+				'</div>'+
+				'<div class="col s2">'+
+					'<p style="font-weight:bold;">Show</p>'+
+				'</div>'+
+			'</div>';
+		
+		this.USER_MODEL.analysisResult.recommendations.forEach((r,index) => {
+			/*
+			r["Sales Channel"]
+			r["Business Model"]
+			r["Volume"]
+			r["Consumer Contact"]
+			r["Gender Equality"]
+			r["Lower Labor Produce Ratio"]
+			r["Lower Carbon Footprint"]
+			r["Chain Added Value"]
+			r["Price Premium"]
+			*/
+			const id = this.showRecommendation["R"+index].id;
+			let checked = '';
+			if (this.showRecommendation["R"+index].value===true) {
+				checked = 'checked="checked" ';
+			}
+			html += '<div class="row" style="margin-bottom:0;">'+
+				'<div class="col s5">'+
+					'<p style="color:'+this.showRecommendation["R"+index].color+'">'+r["Sales Channel"]+'</p>'+
+				'</div>'+
+				'<div class="col s5">'+
+					'<p style="color:'+this.showRecommendation["R"+index].color+'">'+r["Business Model"]+'</p>'+
+				'</div>'+
+				'<div class="input-field col s2" style="padding-top:0">'+
+					'<p><label><input type="checkbox" class="filled-in" id="'+id+'" '+checked+'/><span></span></label></p>'+
+				'</div>'+
+			'</div>';
+		});
+		$("#recommendations-list-wrapper").empty().append(html);
+		
+		this.USER_MODEL.analysisResult.recommendations.forEach((r,index) => {
+			
+			const id = this.showRecommendation["R"+index].id;
+			
+			$('#'+id).on('click', function(){
+				if (self.showRecommendation["R"+index].value === true) {
+					self.showRecommendation["R"+index].value = false;
+				} else {
+					self.showRecommendation["R"+index].value = true;
+				}
+				self.renderRecommendationsSpider();
+			});
+		});
+	}
+	
+	
+	renderSpider() {
+		$('#spider-wrapper').empty();
 		
 		let w = this.REO.width;
 		if (w > 1600) { w = 1600; }
 		
 		const width = w*0.9;				// 90% of width
-		const height = this.REO.height*0.4;	// 40% of height
+		const height = this.REO.height*0.5;	// 50% of height
 		
-		let xwidth = width;		// small screen has only one spider per row.
-		if (w > 871) {			// NOTE REO gives 8px smaller value 992-8 = 984 for scren width...
-			xwidth = width*0.3;	// has 3 equal wide cols to hold spiders.
-		}
-		const html = 
-			'<div class="col s12 l4 center">'+
-				'<h6 style="text-align:center">On-Farm Shop (extensively managed, unstaffed)</h6>'+
-				'<svg id="spider-r1" width="'+xwidth+'" height="'+height+'"></svg>'+
-			'</div>'+
-			'<div class="col s12 l4 center">'+
-				'<h6 style="text-align:center">Online Sales on Demand - Delivery by Post</h6>'+
-				'<svg id="spider-r2" width="'+xwidth+'" height="'+height+'"></svg>'+
-			'</div>'+
-			'<div class="col s12 l4 center">'+
-				'<h6 style="text-align:center">Retail Store (e.g. supermarket highlighting origin)</h6>'+
-				'<svg id="spider-r3" width="'+xwidth+'" height="'+height+'"></svg>'+
-			'</div>';
-		$(html).appendTo('#results-spiders-wrapper');
-		
-		this.drawSpider('diagram1', 'spider-r1', xwidth, height);
-		this.drawSpider('diagram2', 'spider-r2', xwidth, height);
-		this.drawSpider('diagram3', 'spider-r3', xwidth, height);
+		const html = '<svg id="spider" width="'+width+'" height="'+height+'"></svg>';
+		$(html).appendTo('#spider-wrapper');
+		this.drawSpider('wholesale','spider', width, height);
 	}
-	*/
+	
 	renderAdditionalDescriptionPart1() {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
@@ -655,6 +541,8 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">Recommendations for Short Food Supply Chain</h5>'+
 					'</div>'+
+					
+					
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-1-wrapper"></div>'+
 					'</div>'+
@@ -669,6 +557,9 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-2-wrapper"></div>'+
 					'</div>'+
+					
+					
+					
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="additional-description-text-part-1-wrapper"></div>'+
 					'</div>'+
@@ -731,10 +622,17 @@ export default class AnalysisView extends View {
 			self.controller.models['MenuModel'].setSelected('main');
 		});
 		
-		this.renderRecommendationsPart1Text();
-		this.renderRecommendationsList();
-		this.renderResultsSpider();
-		this.renderRecommendationsPart2Text();
+		if (this.USER_MODEL.analysisReady) {
+			
+			this.setRecommendations();
+			this.renderRecommendationsPart1Text();
+			this.renderRecommendationsList();
+			this.renderRecommendationsSpider();
+			this.renderRecommendationsPart2Text();
+			
+		} else {
+			this.showSpinner('#recommendations-text-part-1-wrapper');
+		}
 		
 		this.renderAdditionalDescriptionPart1();
 		this.renderSpider();

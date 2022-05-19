@@ -12,7 +12,7 @@ export default class Model extends EventObserver {
 		this.fetching = false;
 		
 		this.MOCKUP = true;
-		this.mongoBackend = 'http://localhost:3000';
+		this.backend = 'http://localhost:3000';
 	}
 	
 	/* Dummy reset. */

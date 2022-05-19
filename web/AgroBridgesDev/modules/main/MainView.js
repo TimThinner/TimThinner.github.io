@@ -459,6 +459,9 @@ export default class MainView extends View {
 		// Select which pages open...
 		surface.addEventListener("click", function(){
 			if (mainState.ready === true) {
+				
+				// Start the analysis and open AnalysisView.
+				self.USER_MODEL.runAnalysis({optional:'data'});
 				self.models['MenuModel'].setSelected('analysis');
 			} else {
 				console.log('ANALYSIS!');

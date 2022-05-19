@@ -102,6 +102,9 @@ export default class UserModel extends Model {
 			Likert_welcome_farm: undefined, // 5 scale from "I agree" to "I disagree"
 			Likert_consumer_con: undefined  // 5 scale from "I agree" to "I disagree"
 		}
+		
+		this.analysisResult = {};
+		this.analysisReady = false;
 	}
 	
 	
@@ -379,7 +382,10 @@ export default class UserModel extends Model {
 		}
 		return retval;
 	}
+	/*
+		if mainState is true, then ANALYSIS is active and can be clicked.
 	
+	*/
 	mainState() {
 		let retval = {'total':3,'filled':0,'ready':false};
 		
@@ -505,7 +511,7 @@ export default class UserModel extends Model {
 				headers: myHeaders,
 				body: JSON.stringify(validData)
 			};
-			const myRequest = new Request(this.mongoBackend + '/users/'+this.id, myPut);
+			const myRequest = new Request(this.backend + '/users/'+this.id, myPut);
 			fetch(myRequest)
 				.then(function(response){
 					status = response.status;
@@ -524,6 +530,88 @@ export default class UserModel extends Model {
 				})
 				.catch(function(error){
 					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:error});
+				});
+		}
+	}
+	
+	runAnalysis(data) {
+		const self = this;
+		this.analysisReady = false;
+		this.analysisResult = {};
+		if (this.MOCKUP) {
+			setTimeout(() => 
+				// After 2 seconds of delay (to simulate analysis delay) fill in the results data.
+				this.analysisResult = {
+					attractiveness:"medium",
+					recommendations:[
+						{
+						"Sales Channel":"On-Farm Shop (extensively managed, unstaffed)",
+						"Business Model":"Face-to-Face",
+						"Volume":0.2,
+						"Consumer Contact":0.4,
+						"Gender Equality":0.645290581,
+						"Lower Labor Produce Ratio":0.3125,
+						"Lower Carbon Footprint":0.074509829,
+						"Chain Added Value":0.694974003,
+						"Price Premium":0.729058945
+						},
+						{
+						"Sales Channel":"Post delivery (sales on demand)",
+						"Business Model":"Online Trade",
+						"Volume":0.2,
+						"Consumer Contact":0.2,
+						"Gender Equality":0.503006012,
+						"Lower Labor Produce Ratio":0.020243,
+						"Lower Carbon Footprint":1,
+						"Chain Added Value":0.620450607,
+						"Price Premium":0.728024819
+						},
+						{
+						"Sales Channel":"Retail store",
+						"Business Model":"Retail Trade",
+						"Volume":0.4,
+						"Consumer Contact":0.4,
+						"Gender Equality":0.509018036,
+						"Lower Labor Produce Ratio":0.3125,
+						"Lower Carbon Footprint":0.504424796,
+						"Chain Added Value":0.402079723,
+						"Price Premium":0.640124095
+						}
+					]
+				};
+				this.analysisReady = true;
+				this.notifyAll({model:self.name, method:'runAnalysis', status:200, message:'OK'});
+				
+			, 2000);
+			
+		} else {
+			// Send a command to start analysis for this User (id= ) 
+			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+			
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+this.token;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myPost = {
+				method: 'POST',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(this.backend + '/analysis/'+this.id, myPost);
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					//if (status === 200) {
+					//	
+					//}
+					self.notifyAll({model:self.name, method:'runAnalysis', status:status, message:myJson.message});
+				})
+				.catch(function(error){
+					self.notifyAll({model:self.name, method:'runAnalysis', status:status, message:error});
 				});
 		}
 	}

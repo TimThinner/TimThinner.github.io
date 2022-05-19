@@ -582,7 +582,7 @@ export default class UserModel extends Model {
 				this.analysisReady = true;
 				this.notifyAll({model:self.name, method:'runAnalysis', status:200, message:'OK'});
 				
-			}), 2000);
+			}, 2000);
 			
 		} else {
 			// Send a command to start analysis for this User (id= ) 

@@ -25,11 +25,12 @@ export default class AnalysisView extends View {
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		this.USER_MODEL.subscribe(this);
 		
-		this.showRecommendation = {};
-		// "R0":{id:'show-r-0',value:true, color:this.colors.DARK_GREEN}
-		// "R1":{id:'show-r-1',value:true, color:this.colors.DARK_ORANGE}
-		// "R2":{id:'show-r-2',value:true, color:this.colors.DARK_BLUE}
-		// ...
+		this.showRecommendation = {
+			"R0":{id:'show-r-0', value:true, color:this.colors.DARK_GREEN},
+			"R1":{id:'show-r-1', value:true, color:this.colors.DARK_ORANGE},
+			"R2":{id:'show-r-2', value:true, color:this.colors.DARK_BLUE},
+			"R3":{id:'show-r-3', value:true, color:this.colors.DARK_RED}
+		};
 		this.rendered = false;
 		this.FELID = 'analysis-message';
 	}
@@ -58,19 +59,19 @@ export default class AnalysisView extends View {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				//console.log('ResizeEventObserver resize => SHOW()!');
 				this.show();
+				
 			} else if (options.model==='UserModel' && options.method==='runAnalysis') {
 				if (options.status === 200) {
 					
-					
 					$('#'+this.FELID).empty();
-					
-					
 					
 					this.setRecommendations();
 					this.renderRecommendationsPart1Text();
 					this.renderRecommendationsList();
 					this.renderRecommendationsSpider();
 					this.renderRecommendationsPart2Text();
+					
+					this.renderAnalysisRegionAttractiveness();
 					
 				} else {
 					// Report error.
@@ -457,10 +458,13 @@ export default class AnalysisView extends View {
 		const sel = LM.selected;
 		const ll_add_e = LM['translation'][sel]['Relative_Attractiveness']; // add the result of ?
 		const ll_add_f = LM['translation'][sel]['Suitability_farm_Characterstics'];
-		const result = 'medium';
+		
+		// To do: take result from recommendation response.
+		const result = this.USER_MODEL.analysisResult.attractiveness;
+		const color = this.colors.DARK_GREEN;
 		const html = 
 			'<div class="highlighted-message">'+
-				'<p style="font-weight:bold; font-size:120%">'+ll_add_e+' '+result+'</p>'+
+				'<p style="font-weight:bold; font-size:120%">'+ll_add_e+' <span style="color:'+color+'">'+result+'</span></p>'+
 			'</div>'+
 			'<p>'+ll_add_f+'</p>';
 		$("#analysis-region-attractiveness-wrapper").empty().append(html);
@@ -629,19 +633,23 @@ export default class AnalysisView extends View {
 		
 		if (this.USER_MODEL.analysisReady) {
 			
-			this.setRecommendations();
+			//this.setRecommendations();
 			this.renderRecommendationsPart1Text();
 			this.renderRecommendationsList();
 			this.renderRecommendationsSpider();
 			this.renderRecommendationsPart2Text();
 			
+			this.renderAnalysisRegionAttractiveness();
+			
+			
 		} else {
 			this.showSpinner('#recommendations-text-part-1-wrapper');
+			this.showSpinner('#analysis-region-attractiveness-wrapper');
 		}
 		
 		this.renderAdditionalDescriptionPart1();
 		this.renderSpider();
-		this.renderAnalysisRegionAttractiveness();
+		
 		
 		this.renderBusinessModelsIntro();
 		this.renderBusinessModelsText(); // to #business-models-info-text

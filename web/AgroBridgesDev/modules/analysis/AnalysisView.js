@@ -235,16 +235,21 @@ export default class AnalysisView extends View {
 		}
 		// Draw in reverse order => RANK 3 is in background and RANK 1 in foreground.
 		for (let i=data.length-1; i>=0; i--) {
-			
 			// draw the path element
 			// IF THE SHOW CHECKBOX is checked!!!!
 			// BUT do not block the "wholesale" spider!
 			if (data.length === 1 || this.showRecommendation['R'+i].value === true) {
 				
 				let d = data[i];
-				let color = this.showRecommendation['R'+i].color;
+				let color;
+				// Note that when we show "wholesale" spider, we do not have access to 
+				// this.showRecommendation['R'+i] -object.
+				if (name === 'wholesale') {
+					color = this.colors.DARK_GREEN;
+				} else {
+					color = this.showRecommendation['R'+i].color;
+				}
 				let coordinates = getPathCoordinates(d);
-				
 				svg.append("path")
 					.datum(coordinates)
 					.attr("d", line)

@@ -280,7 +280,7 @@ export default class UserHeatingView extends View {
 				self.chartRangeStart = ev.target._start;
 				self.chartRangeEnd = ev.target._end;
 				// Calculate averages based on this new selection.
-				self.appendAverage();
+				//self.appendAverage();
 				//console.log(["ev.target._start: ", ev.target._start]); // 0
 				//console.log(["ev.target._end: ", ev.target._end]); // 1
 			});
@@ -289,11 +289,11 @@ export default class UserHeatingView extends View {
 				// console.log('zoomOutButton hit event!');
 				self.chartRangeStart = 0;
 				self.chartRangeEnd = 1;
-				self.appendAverage();
+				//self.appendAverage();
 			})
 		}); // end am4core.ready()
 		
-		this.appendAverage();
+		//this.appendAverage();
 	}
 	
 	/*
@@ -335,7 +335,7 @@ export default class UserHeatingView extends View {
 								//s.data = self.models['UserHeatingMonthModel'].values; 
 								
 							});
-							this.appendAverage();
+							//this.appendAverage();
 						} else {
 							console.log('chart not yet done => renderChart!');
 							this.renderChart();

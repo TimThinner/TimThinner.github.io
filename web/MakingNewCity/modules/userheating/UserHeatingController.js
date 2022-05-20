@@ -42,7 +42,7 @@ export default class UserHeatingController extends Controller {
 			src: 'data/sivakka/wlsensordata/feeds.json',
 			//type: 'sensor', // // type = sensor (Temperature and Humidity)
 			//limit: 0, // 0 = no limit
-			timerange: 30 // 30 days
+			timerange: 3 // 30 days
 		});
 		model_Heating.subscribe(this);
 		this.master.modelRepo.add('UserHeatingMonthModel',model_Heating);

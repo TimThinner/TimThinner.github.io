@@ -329,6 +329,9 @@ export default class UserHeatingView extends View {
 						
 						if (typeof this.chart !== 'undefined') {
 							
+							console.log('CHART defined => update chart data');
+							console.log(['time=',moment().format('x')]); // Unix time in milliseconds.]);
+							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								s.data = self.models['UserHeatingMonthModel'].measurements;
 								// NOTE: simulation use values
@@ -486,6 +489,7 @@ export default class UserHeatingView extends View {
 			this.handleErrorMessages(this.FELID);
 			
 			console.log('Models ready => renderChart');
+			console.log(['time=',moment().format('x')]); // Unix time in milliseconds.]);
 			this.renderChart();
 			
 			this.rendered = true;

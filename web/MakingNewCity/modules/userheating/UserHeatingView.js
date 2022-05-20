@@ -391,7 +391,7 @@ export default class UserHeatingView extends View {
 	render() {
 		const self = this;
 		$(this.el).empty();
-		if (this.areModelsReady()) {
+		//if (this.areModelsReady()) {
 			
 			const LM = this.controller.master.modelRepo.get('LanguageModel');
 			const sel = LM.selected;
@@ -488,18 +488,19 @@ export default class UserHeatingView extends View {
 					}
 				}
 			});
-			this.handleErrorMessages(this.FELID);
+			//this.handleErrorMessages(this.FELID);
 			
-			console.log('Models ready => renderChart');
-			console.log(['time=',moment().format('x')]); // Unix time in milliseconds.]);
-			this.renderChart();
+			console.log('render DONE => renderChart when model is fetched!');
+			//console.log('Models ready => renderChart');
+			//console.log(['time=',moment().format('x')]); // Unix time in milliseconds.]);
+			//this.renderChart();
 			
 			this.rendered = true;
 			
-		} else {
-			console.log('UserHeatingView => render Model IS NOT READY!!!!');
+		//} else {
+			//console.log('UserHeatingView => render Model IS NOT READY!!!!');
 			// this.el = '#content'
-			this.showSpinner(this.el);
-		}
+			//this.showSpinner(this.el);
+		//}
 	}
 }

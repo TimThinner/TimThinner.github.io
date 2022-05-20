@@ -221,8 +221,8 @@ export default class UserHeatingView extends View {
 			});
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_heating;
-			valueAxis.min = 0;
-			valueAxis.max = 100;
+			//valueAxis.min = 0;
+			//valueAxis.max = 100;
 			
 			// {"created_at":"2021-12-31T20:20:16","timestamp":"2021-12-31T20:16:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.6},
 			const series1 = self.chart.series.push(new am4charts.LineSeries());
@@ -345,7 +345,9 @@ export default class UserHeatingView extends View {
 							
 						} else {
 							console.log('chart not yet done => renderChart!');
-							this.renderChart();
+							setTimeout(() => {
+								this.renderChart();
+							}, 500);
 						}
 					}
 				} else {
@@ -424,7 +426,7 @@ export default class UserHeatingView extends View {
 				'</div>'+
 				'<div class="row">'+
 					'<div class="col s12 chart-wrapper dark-theme">'+
-						'<div id="user-heating-chart" class="medium-chart"></div>'+
+						'<div id="user-heating-chart" class="large-chart"></div>'+ // large => height 500px
 						'<div style="text-align:center;" id="user-heating-chart-average"></div>'+
 					'</div>'+
 				'</div>'+

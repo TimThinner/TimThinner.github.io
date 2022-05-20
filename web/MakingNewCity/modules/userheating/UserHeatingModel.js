@@ -103,7 +103,7 @@ Use "timestamp", "temperature" and "humidity".
 						let humi = r.humidity;
 						let valid = true;
 						// Make sure we have sane values:
-						const res = {timestamp: r.timestamp};
+						const res = {timestamp: new Date(r.timestamp)};
 						if (temp && temp > 0 && temp < 100) {
 							res.temperature = temp; // OK
 						} else {

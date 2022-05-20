@@ -482,9 +482,12 @@ export default class UserHeatingView extends View {
 					}
 				}
 			});
-			
 			this.handleErrorMessages(this.FELID);
-			this.renderChart();
+			
+			setTimeout(() => {
+				this.renderChart();
+			}, 200);
+			
 			this.rendered = true;
 			
 		} else {

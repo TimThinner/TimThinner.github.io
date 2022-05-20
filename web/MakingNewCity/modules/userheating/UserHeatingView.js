@@ -108,8 +108,8 @@ export default class UserHeatingView extends View {
 		
 		// Use simulated data:  measurements => values  AND timestamp => time
 		
-		//const values = this.models['UserHeatingMonthModel'].measurements;
-		const values = this.models['UserHeatingMonthModel'].values;
+		const values = this.models['UserHeatingMonthModel'].measurements;
+		//const values = this.models['UserHeatingMonthModel'].values;
 		
 		//console.log(['appendAverage measurements=',values]);
 		
@@ -234,8 +234,8 @@ export default class UserHeatingView extends View {
 			series1.tooltip.background.fill = am4core.color("#000");
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
-			series1.data = self.models['UserHeatingMonthModel'].values;//measurements;
-			series1.dataFields.dateX = "time"; //"timestamp";
+			series1.data = self.models['UserHeatingMonthModel'].measurements; // values;
+			series1.dataFields.dateX = "timestamp"; // "time";
 			series1.dataFields.valueY = "temperature";
 			series1.name = localized_string_temperature;
 			series1.yAxis = valueAxis;
@@ -252,8 +252,8 @@ export default class UserHeatingView extends View {
 			series2.tooltip.background.fill = am4core.color("#000");
 			series2.tooltip.background.strokeWidth = 1;
 			series2.tooltip.label.fill = series2.stroke;
-			series2.data = self.models['UserHeatingMonthModel'].values;//measurements;
-			series2.dataFields.dateX = "time"; //"timestamp";
+			series2.data = self.models['UserHeatingMonthModel'].measurements; // values;
+			series2.dataFields.dateX = "timestamp"; //"time";
 			series2.dataFields.valueY = "humidity";
 			series2.name = localized_string_humidity;
 			series2.yAxis = valueAxis;
@@ -328,8 +328,9 @@ export default class UserHeatingView extends View {
 						if (typeof this.chart !== 'undefined') {
 							
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								//s.data = self.models['UserHeatingMonthModel'].measurements;
-								s.data = self.models['UserHeatingMonthModel'].values;
+								s.data = self.models['UserHeatingMonthModel'].measurements;
+								// NOTE: simulation use values
+								//s.data = self.models['UserHeatingMonthModel'].values; 
 								
 							});
 							this.appendAverage();

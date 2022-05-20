@@ -136,8 +136,8 @@ export default class UserPageView extends View {
 		let first = '---';
 		let second = '---';
 		
-		// NOTE: Use now simulated data!!!
-		const meas = this.models['UserHeatingNowModel'].measurement; // is in normal situation an array.
+		// NOTE: This is how simulated data is used:
+		/*const meas = this.models['UserHeatingNowModel'].measurement; // is in normal situation an array.
 		if (Array.isArray(meas) && meas.length > 0) {
 			
 			const temp = meas[0].temperature;
@@ -150,9 +150,7 @@ export default class UserPageView extends View {
 			}
 		}
 		this.updateValueNow('heating', first, second);
-		/*
-		
-		
+		*/
 		const temp = this.models['UserHeatingNowModel'].measurement.temperature;
 		if (typeof temp !== 'undefined' && temp > 0 && temp < 100) {
 			first = temp.toFixed(1)+'°C';
@@ -162,7 +160,6 @@ export default class UserPageView extends View {
 			second = humi.toFixed(1)+'%';
 		}
 		this.updateValueNow('heating', first, second);
-		*/
 	}
 	
 	updateElectricityNow() {

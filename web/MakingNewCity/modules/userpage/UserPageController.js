@@ -1,10 +1,8 @@
 import Controller from '../common/Controller.js';
 
-
-
-//import UserHeatingModel from '../userheating/UserHeatingModel.js';
+import UserHeatingModel from '../userheating/UserHeatingModel.js';
 // NOTE: To simulate apartment heating measurements, we use UserApartmentModel. 
-import UserApartmentModel from './UserApartmentModel.js';
+//import UserApartmentModel from './UserApartmentModel.js';
 
 import NewUserElectricityModel from '../userelectricity/NewUserElectricityModel.js';
 import UserPageView from './UserPageView.js';
@@ -51,7 +49,7 @@ export default class UserPageController extends Controller {
 	}
 	
 	init() {
-		/*
+		
 		const m = new UserHeatingModel({
 			name: 'UserHeatingNowModel',
 			src: 'data/sivakka/wlsensordata/last.json'
@@ -59,14 +57,15 @@ export default class UserPageController extends Controller {
 		m.subscribe(this);
 		this.master.modelRepo.add('UserHeatingNowModel',m);
 		this.models['UserHeatingNowModel'] = m;
-		*/
+		
+		/*
+		// To simulate use this model:
 		const nowTR = {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}};
 		const m = new UserApartmentModel({name:'UserHeatingNowModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:1,range:nowTR});
 		m.subscribe(this);
 		this.master.modelRepo.add('UserHeatingNowModel',m);
 		this.models['UserHeatingNowModel'] = m;
-		
-		
+		*/
 		
 		// NOTE: Range is created dynamically at each fetching cycle.
 		const model_data = [];

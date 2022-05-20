@@ -1,9 +1,8 @@
 import Controller from '../common/Controller.js';
 
-
-//import UserHeatingModel from './UserHeatingModel.js';
+import UserHeatingModel from './UserHeatingModel.js';
 // NOTE: To simulate apartment heating measurements, we use UserApartmentModel. 
-import UserApartmentModel from '../userpage/UserApartmentModel.js';
+//import UserApartmentModel from '../userpage/UserApartmentModel.js';
 
 import FeedbackModel from '../common/FeedbackModel.js';
 import UserHeatingView from './UserHeatingView.js';
@@ -37,7 +36,7 @@ export default class UserHeatingController extends Controller {
 	*/
 	init() {
 		// Response is 24 x 60 x 30 values = 43 200 measurements => 24 x 30 averages (720 averages).
-		/*const model_Heating = new UserHeatingModel({
+		const model_Heating = new UserHeatingModel({
 			name: 'UserHeatingMonthModel',
 			//src: 'data/sivakka/apartments/feeds.json',
 			src: 'data/sivakka/wlsensordata/feeds.json',
@@ -48,8 +47,8 @@ export default class UserHeatingController extends Controller {
 		model_Heating.subscribe(this);
 		this.master.modelRepo.add('UserHeatingMonthModel',model_Heating);
 		this.models['UserHeatingMonthModel'] = model_Heating;
-		*/
 		
+		/*
 		const mTR = {ends:{value:10,unit:'seconds'},starts:{value:30,unit:'days'}};
 		// Response is 24 x 60 x 7 values  = 10 080 measurements => 24 x 7 averages (168 averages).
 		//             24 x 60 x 30 values = 43 200 measurements => 24 x 30 averages (720 averages).
@@ -64,9 +63,7 @@ export default class UserHeatingController extends Controller {
 		model_Heating.subscribe(this);
 		this.master.modelRepo.add('UserHeatingMonthModel',model_Heating);
 		this.models['UserHeatingMonthModel'] = model_Heating;
-		
-		
-		
+		*/
 		
 		const model_Feedback = new FeedbackModel({name:'FeedbackModel',src:''});
 		model_Feedback.subscribe(this);

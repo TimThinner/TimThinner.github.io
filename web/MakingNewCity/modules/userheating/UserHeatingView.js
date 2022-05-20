@@ -111,7 +111,7 @@ export default class UserHeatingView extends View {
 		const values = this.models['UserHeatingMonthModel'].measurements;
 		//const values = this.models['UserHeatingMonthModel'].values;
 		
-		//console.log(['appendAverage measurements=',values]);
+		console.log(['appendAverage measurements=',values]);
 		
 		if (Array.isArray(values) && values.length > 0) {
 			//this.chartRangeStart = 0;
@@ -142,8 +142,8 @@ export default class UserHeatingView extends View {
 				let sum_humi = 0;
 				
 				// Use moment because it has nice formatting functions.
-				const s_date = moment(selection[0].time); // Date of first value.
-				const e_date = moment(selection[slen-1].time); // Date of last value.
+				const s_date = moment(selection[0].timestamp); // Date of first value.   time => timestamp
+				const e_date = moment(selection[slen-1].timestamp); // Date of last value. time => timestamp
 				
 				// NOTE: By default, moment#diff will truncate the result to zero decimal places, returning an integer. 
 				// If you want a floating point number, pass true as the third argument.

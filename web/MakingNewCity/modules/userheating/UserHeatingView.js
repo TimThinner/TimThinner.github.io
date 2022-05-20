@@ -221,7 +221,8 @@ export default class UserHeatingView extends View {
 			});
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_heating;
-			
+			valueAxis.min = 0;
+			valueAxis.max = 100;
 			
 			// {"created_at":"2021-12-31T20:20:16","timestamp":"2021-12-31T20:16:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.6},
 			const series1 = self.chart.series.push(new am4charts.LineSeries());

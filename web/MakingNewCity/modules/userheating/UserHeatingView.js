@@ -336,6 +336,7 @@ export default class UserHeatingView extends View {
 								
 							});
 							this.appendAverage();
+							
 						} else {
 							console.log('chart not yet done => renderChart!');
 							this.renderChart();
@@ -484,9 +485,8 @@ export default class UserHeatingView extends View {
 			});
 			this.handleErrorMessages(this.FELID);
 			
-			setTimeout(() => {
-				this.renderChart();
-			}, 200);
+			console.log('Models ready => renderChart');
+			this.renderChart();
 			
 			this.rendered = true;
 			

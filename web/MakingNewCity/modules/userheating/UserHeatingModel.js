@@ -93,9 +93,8 @@ Use "timestamp", "temperature" and "humidity".
 				const resu = JSON.parse(myJson);
 				if (Array.isArray(resu)) {
 					
-					
-					const resu2 = self.removeDuplicates(resu, 'created_at');
-					const resu3 = self.removeDuplicates(resu, 'timestamp');
+					const resu2 = self.removeDuplicates(resu, 'timestamp');
+					const resu3 = self.removeDuplicates(resu2, 'created_at');
 					
 					const resa = [];
 					let notvalid = 0;

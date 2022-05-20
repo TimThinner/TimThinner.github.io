@@ -139,8 +139,10 @@ Use "timestamp", "temperature" and "humidity".
 			
 			if (typeof readkey !== 'undefined') {
 				// Normal user has a readkey, which was created when user registered into the system. 
-				//const url = this.mongoBackend + '/apartments/feeds/';
-				const url = this.mongoBackend + '/proxes/apartments';
+				const url = this.mongoBackend + '/apartments/feeds/';
+				
+				
+				// const url = this.mongoBackend + '/proxes/apartments';  // SIMULATION uses this!
 				// this.src = 'data/sivakka/apartments/feeds.json' 
 				
 				/* NOTE:

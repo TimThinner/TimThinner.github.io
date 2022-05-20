@@ -209,7 +209,7 @@ export default class UserHeatingView extends View {
 				//"timeUnit": "hour",
 				//"count": 1
 				"timeUnit": "minute",
-				"count": 5
+				"count": 10
 			};
 			//dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
 			dateAxis.keepSelection = true;

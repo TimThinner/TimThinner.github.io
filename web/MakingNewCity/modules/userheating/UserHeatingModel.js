@@ -71,36 +71,47 @@ Use "timestamp", "temperature" and "humidity".
 				const resu = JSON.parse(myJson);
 				if (Array.isArray(resu)) {
 					const resa = [];
+					let notvalid = 0;
 					resu.forEach(r=>{
 						let temp = r.temperature;
 						let humi = r.humidity;
+						let valid = true;
+						
 						// Make sure we have sane values:
 						const res = {timestamp: r.timestamp};
-						if (typeof temp !== 'undefined' && temp > 0 && temp < 100) {
+						if (temp && temp > 0 && temp < 100) {
 							res.temperature = temp; // OK
 						} else {
-							res.temperature = 0;
+							valid = false;
 						}
-						if (typeof humi !== 'undefined' && humi > 0 && humi < 100) {
+						if (humi && humi > 0 && humi < 100) {
 							res.humidity = humi;
 						} else {
-							res.humidity = 0;
+							valid = false;
 						}
-						resa.push(res);
+						if (valid) { 
+							resa.push(res);
+						} else {
+							notvalid++;
+						}
 					});
+					
 					self.measurements = resa;
+					console.log(['notvalid count=',notvalid]);
+					console.log(['self.measurements=',self.measurements]);
 					
 				} else {
 					let temp = resu.temperature;
 					let humi = resu.humidity;
+					
 					// Make sure we have sane values:
 					const res = {timestamp: resu.timestamp};
-					if (typeof temp !== 'undefined' && temp > 0 && temp < 100) {
+					if (temp && temp > 0 && temp < 100) {
 						res.temperature = temp; // OK
 					} else {
 						res.temperature = 0;
 					}
-					if (typeof humi !== 'undefined' && humi > 0 && humi < 100) {
+					if (humi && humi > 0 && humi < 100) {
 						res.humidity = humi;
 					} else {
 						res.humidity = 0;

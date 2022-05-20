@@ -100,6 +100,15 @@ Use "timestamp", "temperature" and "humidity".
 					console.log(['notvalid count=',notvalid]);
 					console.log(['self.measurements=',self.measurements]);
 					
+					// Then sort array based according to time, oldest entry first.
+					self.measurements.sort(function(a,b){
+						var bb = moment(b.timestamp);
+						var aa = moment(a.timestamp);
+						return aa - bb;
+					});
+					console.log(['SORTED self.measurements=',self.measurements]);
+					
+					
 				} else {
 					let temp = resu.temperature;
 					let humi = resu.humidity;

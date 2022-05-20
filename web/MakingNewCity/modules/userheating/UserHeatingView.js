@@ -194,7 +194,7 @@ export default class UserHeatingView extends View {
 			am4core.options.autoSetClassName = true;
 			am4core.options.autoDispose = true;
 			
-			//console.log(['values=',self.models['UserHeatingMonthModel'].values]);
+			console.log(['measurements=',self.models['UserHeatingMonthModel'].measurements]);
 			
 			// Create chart
 			self.chart = am4core.create("user-heating-chart", am4charts.XYChart);

@@ -206,8 +206,10 @@ export default class UserHeatingView extends View {
 			
 			const dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
 			dateAxis.baseInterval = {
-				"timeUnit": "hour",
-				"count": 1
+				//"timeUnit": "hour",
+				//"count": 1
+				"timeUnit": "minute",
+				"count": 5
 			};
 			//dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
 			dateAxis.keepSelection = true;

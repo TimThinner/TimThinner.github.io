@@ -280,6 +280,7 @@ export default class UserHeatingView extends View {
 				self.chartRangeStart = ev.target._start;
 				self.chartRangeEnd = ev.target._end;
 				// Calculate averages based on this new selection.
+				console.log("RANGE CHANGED!");
 				self.appendAverage();
 				//console.log(["ev.target._start: ", ev.target._start]); // 0
 				//console.log(["ev.target._end: ", ev.target._end]); // 1
@@ -289,6 +290,7 @@ export default class UserHeatingView extends View {
 				// console.log('zoomOutButton hit event!');
 				self.chartRangeStart = 0;
 				self.chartRangeEnd = 1;
+				console.log("HIT ZOOMOUT!");
 				self.appendAverage();
 			})
 		}); // end am4core.ready()

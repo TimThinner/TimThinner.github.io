@@ -194,7 +194,7 @@ export default class UserHeatingView extends View {
 			am4core.options.autoSetClassName = true;
 			am4core.options.autoDispose = true;
 			
-			console.log(['measurements=',self.models['UserHeatingMonthModel'].measurements]);
+			//console.log(['measurements=',self.models['UserHeatingMonthModel'].measurements]);
 			
 			// Create chart
 			self.chart = am4core.create("user-heating-chart", am4charts.XYChart);
@@ -221,11 +221,11 @@ export default class UserHeatingView extends View {
 			});
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_heating;
-			valueAxis.min = 10;
-			valueAxis.max = 50;
+			//valueAxis.min = 10;
+			//valueAxis.max = 50;
 			// Pad values by 20%
-			valueAxis.extraMin = 0.2;
-			valueAxis.extraMax = 0.2; 
+			//valueAxis.extraMin = 0.2;
+			//valueAxis.extraMax = 0.2; 
 			
 			// {"created_at":"2021-12-31T20:20:16","timestamp":"2021-12-31T20:16:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.6},
 			const series1 = self.chart.series.push(new am4charts.LineSeries());
@@ -323,37 +323,37 @@ export default class UserHeatingView extends View {
 		if (this.controller.visible) {
 			
 			if (options.model==='UserHeatingMonthModel' && options.method==='fetched') {
-				if (this.rendered) {
+				//if (this.rendered) {
+				$('#'+this.FELID).empty();
+				this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
+				
+				if (options.status === 200) {
 					$('#'+this.FELID).empty();
-					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
+				
+					//console.log(['HEY! values=',self.models['UserHeatingMonthModel'].values]);
+					// values => {time: Date, temperature: 20.23 , humidity: 45.45 }
 					
-					if (options.status === 200) {
-						$('#'+this.FELID).empty();
+					if (typeof this.chart !== 'undefined') {
 						
-						//console.log(['HEY! values=',self.models['UserHeatingMonthModel'].values]);
-						// values => {time: Date, temperature: 20.23 , humidity: 45.45 }
+						//console.log('CHART defined => update chart data');
+						//console.log(['time=',moment().format('x')]); // Unix time in milliseconds.]);
 						
-						if (typeof this.chart !== 'undefined') {
+						am4core.iter.each(this.chart.series.iterator(), function (s) {
+							s.data = self.models['UserHeatingMonthModel'].measurements;
+							// NOTE: simulation use values
+							//s.data = self.models['UserHeatingMonthModel'].values; 
 							
-							console.log('CHART defined => update chart data');
-							console.log(['time=',moment().format('x')]); // Unix time in milliseconds.]);
-							
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								s.data = self.models['UserHeatingMonthModel'].measurements;
-								// NOTE: simulation use values
-								//s.data = self.models['UserHeatingMonthModel'].values; 
-								
-							});
-							this.appendAverage();
-							
-						} else {
-							console.log('chart not yet done => renderChart!');
-							this.renderChart();
-						}
+						});
+						this.appendAverage();
+						
+					} else {
+						//console.log('chart not yet done => renderChart!');
+						this.renderChart();
 					}
-				} else {
-					this.render();
 				}
+				//} else {
+				//	this.render();
+				//}
 			/*} else if (options.model==='FeedbackModel' && options.method==='fetched') {
 				if (this.rendered) {
 					$('#'+this.FELID).empty();
@@ -395,116 +395,112 @@ export default class UserHeatingView extends View {
 	render() {
 		const self = this;
 		$(this.el).empty();
-		//if (this.areModelsReady()) {
-			
-			const LM = this.controller.master.modelRepo.get('LanguageModel');
-			const sel = LM.selected;
-			const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
-			const localized_string_title = LM['translation'][sel]['USER_HEATING_TITLE'];
-			const localized_string_description = LM['translation'][sel]['USER_HEATING_DESCRIPTION'];
-			const localized_string_feedback_prompt = LM['translation'][sel]['USER_HEATING_FEEDBACK_PROMPT'];
-			const localized_string_send_feedback = LM['translation'][sel]['USER_HEATING_SEND_FEEDBACK'];
-			
-			const html =
-				'<div class="row">'+
-					'<div class="col s12">'+
-						'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
-						'<p style="text-align:center;"><img src="./svg/radiator.svg" height="80"/></p>'+
-						'<p style="text-align:center;">'+localized_string_description+'</p>'+
-					'</div>'+
-					'<div class="col s12 center">'+
-						'<p style="text-align:center;">'+localized_string_feedback_prompt+'</p>'+
-						//'<p style="text-align:center;"><img src="./svg/userpage/SmileyHappy.svg" height="60"/></p>'+
-						'<a href="javascript:void(0);" id="fb-smiley-1" class="feedback-smiley"><img src="./img/UX_F2F_faces-1.png" height="60"/></a>'+
-						'<a href="javascript:void(0);" id="fb-smiley-2" class="feedback-smiley"><img src="./img/UX_F2F_faces-2.png" height="60"/></a>'+
-						'<a href="javascript:void(0);" id="fb-smiley-3" class="feedback-smiley"><img src="./img/UX_F2F_faces-3.png" height="60"/></a>'+
-						'<a href="javascript:void(0);" id="fb-smiley-4" class="feedback-smiley"><img src="./img/UX_F2F_faces-4.png" height="60"/></a>'+
-						'<a href="javascript:void(0);" id="fb-smiley-5" class="feedback-smiley"><img src="./img/UX_F2F_faces-5.png" height="60"/></a>'+
-					'</div>'+
-					'<div class="col s12 center" style="margin-top:16px;margin-bottom:16px;">'+
-						'<button class="btn waves-effect waves-light disabled" id="submit-feedback">'+localized_string_send_feedback+'</button>'+
-					'</div>'+
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
+		const localized_string_title = LM['translation'][sel]['USER_HEATING_TITLE'];
+		const localized_string_description = LM['translation'][sel]['USER_HEATING_DESCRIPTION'];
+		const localized_string_feedback_prompt = LM['translation'][sel]['USER_HEATING_FEEDBACK_PROMPT'];
+		const localized_string_send_feedback = LM['translation'][sel]['USER_HEATING_SEND_FEEDBACK'];
+		
+		const html =
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
+					'<p style="text-align:center;"><img src="./svg/radiator.svg" height="80"/></p>'+
+					'<p style="text-align:center;">'+localized_string_description+'</p>'+
 				'</div>'+
-				'<div class="row">'+
-					'<div class="col s12 chart-wrapper dark-theme">'+
-						'<div id="user-heating-chart" class="large-chart"></div>'+ // large => height 500px
-						'<div style="text-align:center;" id="user-heating-chart-average"></div>'+
-					'</div>'+
+				'<div class="col s12 center">'+
+					'<p style="text-align:center;">'+localized_string_feedback_prompt+'</p>'+
+					//'<p style="text-align:center;"><img src="./svg/userpage/SmileyHappy.svg" height="60"/></p>'+
+					'<a href="javascript:void(0);" id="fb-smiley-1" class="feedback-smiley"><img src="./img/UX_F2F_faces-1.png" height="60"/></a>'+
+					'<a href="javascript:void(0);" id="fb-smiley-2" class="feedback-smiley"><img src="./img/UX_F2F_faces-2.png" height="60"/></a>'+
+					'<a href="javascript:void(0);" id="fb-smiley-3" class="feedback-smiley"><img src="./img/UX_F2F_faces-3.png" height="60"/></a>'+
+					'<a href="javascript:void(0);" id="fb-smiley-4" class="feedback-smiley"><img src="./img/UX_F2F_faces-4.png" height="60"/></a>'+
+					'<a href="javascript:void(0);" id="fb-smiley-5" class="feedback-smiley"><img src="./img/UX_F2F_faces-5.png" height="60"/></a>'+
 				'</div>'+
-				'<div class="row">'+
-					'<div class="col s12 center" style="margin-top:16px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
-							'<i class="material-icons left">arrow_back</i>'+
-						'</button>'+
-					'</div>'+
+				'<div class="col s12 center" style="margin-top:16px;margin-bottom:16px;">'+
+					'<button class="btn waves-effect waves-light disabled" id="submit-feedback">'+localized_string_send_feedback+'</button>'+
 				'</div>'+
-				'<div class="row">'+
-					'<div class="col s12 center" id="'+this.FELID+'"></div>'+
-				'</div>';
-			$(html).appendTo(this.el);
-			
-			$('#back').on('click',function() {
-				self.models['MenuModel'].setSelected('userpage');
-			});
-			
-			// Smileys act like radio buttons, only one can be selected at any one time.
-			// The last selection is shown. Can user just de-select?
-			for (let i=1; i<6; i++) {
-				$('#fb-smiley-'+i).on('click',function() {
-					// If this smiley was already "selected" => de-select it and disable submit-feedback -button.
-					if ($('#fb-smiley-'+i).hasClass('selected')) {
-						$('#fb-smiley-'+i).removeClass('selected');
-						$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'.png');
-						$('#submit-feedback').removeClass('teal lighten-1');
-						$('#submit-feedback').addClass('disabled');
-						
-					} else {
-						self.resetSelectedSmiley();
-						$('#fb-smiley-'+i).addClass('selected');
-						$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'-grey.png');
-						$('#submit-feedback').removeClass('disabled');
-						$('#submit-feedback').addClass('teal lighten-1');
-					}
-				});
-			}
-			
-			// 'UX_F2F_faces-1.png'
-			// 'UX_F2F_faces-1-grey.png'
-			
-			$('#submit-feedback').on('click',function() {
-				for (let i=1; i<6; i++) {
-					if ($('#fb-smiley-'+i).hasClass('selected')) {
-						const selected = i;
-						// FeedbackModel send (data, token) 
-							//const refToUser = req.body.refToUser;
-							//const fbType = req.body.feedbackType;
-							//const fb = req.body.feedback;
-						const UM = self.controller.master.modelRepo.get('UserModel');
-						if (UM) {
-							console.log(['Sending Feedback ',selected]);
-							const data = {
-								refToUser: UM.id, // UserModel id
-								feedbackType: 'Heating',
-								feedback: selected
-							}
-							self.models['FeedbackModel'].send(data, UM.token); // see notify for the response...
-						}
-					}
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 chart-wrapper dark-theme">'+
+					'<div id="user-heating-chart" class="large-chart"></div>'+ // large => height 500px
+					'<div style="text-align:center;" id="user-heating-chart-average"></div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center" style="margin-top:16px;">'+
+					'<button class="btn waves-effect waves-light" id="back">'+localized_string_da_back+
+						'<i class="material-icons left">arrow_back</i>'+
+					'</button>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 center" id="'+this.FELID+'"></div>'+
+			'</div>';
+		$(html).appendTo(this.el);
+		
+		$('#back').on('click',function() {
+			self.models['MenuModel'].setSelected('userpage');
+		});
+		
+		// Smileys act like radio buttons, only one can be selected at any one time.
+		// The last selection is shown. Can user just de-select?
+		for (let i=1; i<6; i++) {
+			$('#fb-smiley-'+i).on('click',function() {
+				// If this smiley was already "selected" => de-select it and disable submit-feedback -button.
+				if ($('#fb-smiley-'+i).hasClass('selected')) {
+					$('#fb-smiley-'+i).removeClass('selected');
+					$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'.png');
+					$('#submit-feedback').removeClass('teal lighten-1');
+					$('#submit-feedback').addClass('disabled');
+					
+				} else {
+					self.resetSelectedSmiley();
+					$('#fb-smiley-'+i).addClass('selected');
+					$('#fb-smiley-'+i+' > img').attr('src','./img/UX_F2F_faces-'+i+'-grey.png');
+					$('#submit-feedback').removeClass('disabled');
+					$('#submit-feedback').addClass('teal lighten-1');
 				}
 			});
-			//this.handleErrorMessages(this.FELID);
-			
-			console.log('render DONE => renderChart when model is fetched!');
-			//console.log('Models ready => renderChart');
-			//console.log(['time=',moment().format('x')]); // Unix time in milliseconds.]);
-			//this.renderChart();
-			
-			this.rendered = true;
-			
-		//} else {
-			//console.log('UserHeatingView => render Model IS NOT READY!!!!');
-			// this.el = '#content'
-			//this.showSpinner(this.el);
-		//}
+		}
+		
+		// 'UX_F2F_faces-1.png'
+		// 'UX_F2F_faces-1-grey.png'
+		
+		$('#submit-feedback').on('click',function() {
+			for (let i=1; i<6; i++) {
+				if ($('#fb-smiley-'+i).hasClass('selected')) {
+					const selected = i;
+					// FeedbackModel send (data, token) 
+						//const refToUser = req.body.refToUser;
+						//const fbType = req.body.feedbackType;
+						//const fb = req.body.feedback;
+					const UM = self.controller.master.modelRepo.get('UserModel');
+					if (UM) {
+						console.log(['Sending Feedback ',selected]);
+						const data = {
+							refToUser: UM.id, // UserModel id
+							feedbackType: 'Heating',
+							feedback: selected
+						}
+						self.models['FeedbackModel'].send(data, UM.token); // see notify for the response...
+					}
+				}
+			}
+		});
+		
+		
+		console.log('render DONE => renderChart when model is fetched!');
+		//console.log('Models ready => renderChart');
+		//console.log(['time=',moment().format('x')]); // Unix time in milliseconds.]);
+		
+		if (this.areModelsReady()) {
+			this.handleErrorMessages(this.FELID);
+			this.renderChart();
+		}
+		this.rendered = true;
 	}
 }

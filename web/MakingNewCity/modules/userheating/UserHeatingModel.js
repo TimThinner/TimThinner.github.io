@@ -58,6 +58,28 @@ Use "timestamp", "temperature" and "humidity".
 		//this.period = {start: undefined, end: undefined};
 	}
 	
+	// Remove "duplicates"
+	
+	// NOTE: Which one to use: "timestamp" or "created_at"?
+	
+	removeDuplicates(a, prop) {
+		// Check if there are timestamp duplicates?
+		const test = {};
+		const b = [];
+		let ignored = 0;
+		a.forEach(item => {
+			const ts = item[prop];
+			if (test.hasOwnProperty(ts)) {
+				ignored++;
+			} else {
+				test[ts] = item;
+				b.push(item);
+			}
+		});
+		console.log(['DUPLICATES IGNORED with (',prop,') count=',ignored]);
+		return b;
+	}
+	
 	doTheFetch(url) {
 		const self = this;
 		
@@ -70,13 +92,17 @@ Use "timestamp", "temperature" and "humidity".
 				let message = 'OK';
 				const resu = JSON.parse(myJson);
 				if (Array.isArray(resu)) {
+					
+					
+					const resu2 = self.removeDuplicates(resu, 'created_at');
+					const resu3 = self.removeDuplicates(resu, 'timestamp');
+					
 					const resa = [];
 					let notvalid = 0;
-					resu.forEach(r=>{
+					resu3.forEach(r=>{
 						let temp = r.temperature;
 						let humi = r.humidity;
 						let valid = true;
-						
 						// Make sure we have sane values:
 						const res = {timestamp: r.timestamp};
 						if (temp && temp > 0 && temp < 100) {

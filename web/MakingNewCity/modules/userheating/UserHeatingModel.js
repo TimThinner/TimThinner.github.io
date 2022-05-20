@@ -55,7 +55,7 @@ Use "timestamp", "temperature" and "humidity".
 		// Response is either an array of measurements (feeds.json) or one mesurement (last.json).
 		this.measurements = [];
 		this.measurement = {};
-		this.period = {start: undefined, end: undefined};
+		//this.period = {start: undefined, end: undefined};
 	}
 	
 	doTheFetch(url) {
@@ -170,6 +170,10 @@ Use "timestamp", "temperature" and "humidity".
 				if (this.limit > 0) {
 					body_url += '&limit='+this.limit;
 				}
+				
+				console.log(['body_url=',body_url]);
+				
+				
 				const data = {
 					url:body_url, 
 					readkey:readkey, 

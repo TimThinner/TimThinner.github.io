@@ -8,7 +8,7 @@ export default class JSONReaderModel extends Model {
 		this.result = [];
 	}
 	
-	extract(e) {
+	extract(name, e) {
 		const idstitle = e["ids:title"];
 		const id = e["@id"];
 		let title;
@@ -19,28 +19,28 @@ export default class JSONReaderModel extends Model {
 				title = idstitle;
 			}
 		}
-		this.result.push({id:id,title:title});
+		this.result.push({name:name,id:id,title:title});
 	}
 	
 	getAllIds() {
 		this.result = [];
 		
 		this.json.connectors.forEach(c=>{
-			this.extract(c);
+			this.extract('connector',c);
 			
 			c.catalogs.forEach(cat=>{
-				this.extract(cat);
+				this.extract('catalog',cat);
 				
 				cat["ids:offeredResource"].forEach(offe=>{
-					this.extract(offe);
+					this.extract('offeredResource', offe);
 					
 					if (offe["ids:representation"]) {
 						offe["ids:representation"].forEach(rep=>{
+							this.extract('representation',rep);
 							
-							this.extract(rep);
 							if (rep["ids:instance"]) {
 								rep["ids:instance"].forEach(ins=>{
-									this.extract(ins);
+									this.extract('instance',ins);
 								});
 							}
 						});
@@ -48,10 +48,10 @@ export default class JSONReaderModel extends Model {
 					if (offe["ids:contractOffer"]) {
 						offe["ids:contractOffer"].forEach(con=>{
 							
-							this.extract(con);
+							this.extract('contractOffer',con);
 							if (con["ids:permission"]) {
 								con["ids:permission"].forEach(per=>{
-									this.extract(per);
+									this.extract('permission',per);
 								});
 							}
 						});
@@ -102,28 +102,3 @@ export default class JSONReaderModel extends Model {
 			});
 	}
 }
-
-/*
-		if (type === 'connector') {
-			this.json.connectors.forEach(c=>{
-				const idstitle = c["ids:title"];
-				
-				
-				
-				console.log(['idstitle=',idstitle]);
-				
-				if (typeof idstitle !== 'undefined') {
-					if (Array.isArray(idstitle)) {
-						if (idstitle[0] === title) {
-							this.result.push(c);
-						}
-					} else {
-						if (idstitle === title) {
-							this.result.push(c);
-						}
-					}
-					
-				}
-			});
-		}
-*/

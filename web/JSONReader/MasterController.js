@@ -21,18 +21,20 @@ class MasterController {
 	notify(options) {
 		if (options.model==='JSONReaderModel' && options.method==='fetched') {
 			
-			const json = this.modelRepo.get('JSONReaderModel').json();
-			console.log(['JSON fetched json=',json]);
-			
-			setTimeout(() => {
-				this.modelRepo.get('JSONReaderModel').get({type:'connector',name:"Luke's Farm"});
-			}, 1000);
-			
+			const rm = this.modelRepo.get('JSONReaderModel');
+			if (rm) {
+				console.log(['JSON fetched json=',rm.json]);
+				setTimeout(() => {
+					rm.get({type:'connector',title:"Luke's Farm"});
+				}, 1000);
+			}
 			
 		} else if (options.model==='JSONReaderModel' && options.method==='get' && options.type==='connector') {
 			
-			const resu = this.modelRepo.get('JSONReaderModel').result();
-			console.log(['JSON get connector data=',resu]);
+			const rm = this.modelRepo.get('JSONReaderModel');
+			if (rm) {
+				console.log(['JSON get connector data=',rm.result]);
+			}
 		}
 	}
 	

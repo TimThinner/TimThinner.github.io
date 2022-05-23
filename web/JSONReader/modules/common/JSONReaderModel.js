@@ -8,23 +8,25 @@ export default class JSONReaderModel extends Model {
 		this.result = [];
 	}
 	
-	json() {
-		return this.json;
-	}
-	
-	result() {
-		return this.result;
-	}
-	
 	get(options) {
 		const type = options.type;
-		const name = options.name;
+		const title = options.title;
 		
 		this.result = [];
 		
 		if (type === 'connectors') {
 			this.json.connectors.forEach(c=>{
-				if (c["ids:title"] === name) {
+				const idstitle = c["ids:title"];
+				if (typeof idstitle !== 'undefined') {
+					if (Array.isArray(idstitle)) {
+						if (idstitle[0] === title) {
+							this.result.push(c);
+						}
+					} else {
+						if (idstitle === title) {
+							this.result.push(c);
+						}
+					}
 					this.result.push(c);
 				}
 			});

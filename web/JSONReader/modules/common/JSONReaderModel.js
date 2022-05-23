@@ -14,7 +14,7 @@ export default class JSONReaderModel extends Model {
 		
 		this.result = [];
 		
-		if (type === 'connectors') {
+		if (type === 'connector') {
 			this.json.connectors.forEach(c=>{
 				const idstitle = c["ids:title"];
 				if (typeof idstitle !== 'undefined') {

@@ -34,18 +34,28 @@ export default class JSONReaderModel extends Model {
 				cat["ids:offeredResource"].forEach(offe=>{
 					this.extract(offe);
 					
-					offe["ids:representation"].forEach(rep=>{
-						this.extract(rep);
-						rep["ids:instance"].forEach(ins=>{
-							this.extract(ins);
+					if (offe["ids:representation"]) {
+						offe["ids:representation"].forEach(rep=>{
+							
+							this.extract(rep);
+							if (rep["ids:instance"]) {
+								rep["ids:instance"].forEach(ins=>{
+									this.extract(ins);
+								});
+							}
 						});
-					});
-					offe["ids:contractOffer"].forEach(con=>{
-						this.extract(con);
-						con["ids:permission"].forEach(per=>{
-							this.extract(per);
+					}
+					if (offe["ids:contractOffer"]) {
+						offe["ids:contractOffer"].forEach(con=>{
+							
+							this.extract(con);
+							if (con["ids:permission"]) {
+								con["ids:permission"].forEach(per=>{
+									this.extract(per);
+								});
+							}
 						});
-					});
+					}
 				});
 			});
 		});

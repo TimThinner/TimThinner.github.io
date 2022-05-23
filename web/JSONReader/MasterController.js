@@ -24,9 +24,9 @@ class MasterController {
 			const json = this.modelRepo.get('JSONReaderModel').json();
 			console.log(['JSON fetched json=',json]);
 			
-			setTimeout(() => 
+			setTimeout(() => {
 				this.modelRepo.get('JSONReaderModel').get({type:'connector',name:"Luke's Farm"});
-			, 1000);
+			}, 1000);
 			
 			
 		} else if (options.model==='JSONReaderModel' && options.method==='get' && options.type==='connector') {
@@ -41,7 +41,7 @@ class MasterController {
 		const JSONRM = new JSONReaderModel({name:'JSONReaderModel',src:'db.json'});
 		this.modelRepo.add('JSONReaderModel',JSONRM);
 		JSONRM.subscribe(this); // Now we will receive notifications from the JSONReaderModel
-		JSONRM.fetch(); // Just call PCM.fetch() anytime to clean the proxy cache!
+		JSONRM.fetch(); // Fetch the JSON.
 	}
 }
 new MasterController().init();

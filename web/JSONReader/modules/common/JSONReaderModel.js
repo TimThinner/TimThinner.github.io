@@ -49,7 +49,7 @@ export default class JSONReaderModel extends Model {
 	
 	getAllIdsR(e) {
 		if (e && Array.isArray(e)) {
-			if (typeof e === 'string') {
+			if (e.length === 1 && typeof e[0] === 'string') {
 				console.log(['LEAF string=',e]);
 			} else {
 				e.forEach(ee=>{

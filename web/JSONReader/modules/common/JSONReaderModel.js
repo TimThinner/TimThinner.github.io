@@ -36,6 +36,15 @@ export default class JSONReaderModel extends Model {
 					
 					offe["ids:representation"].forEach(rep=>{
 						this.extract(rep);
+						rep["ids:instance"].forEach(ins=>{
+							this.extract(ins);
+						});
+					});
+					offe["ids:contractOffer"].forEach(con=>{
+						this.extract(con);
+						con["ids:permission"].forEach(per=>{
+							this.extract(per);
+						});
 					});
 				});
 			});

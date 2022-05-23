@@ -8,33 +8,40 @@ export default class JSONReaderModel extends Model {
 		this.result = [];
 	}
 	
-	get(options) {
-		const type = options.type;
-		const title = options.title;
+	extract(e) {
+		const idstitle = e["ids:title"];
+		const id = e["@id"];
+		let title;
+		if (typeof idstitle !== 'undefined') {
+			if (Array.isArray(idstitle)) {
+				title = idstitle[0];
+			} else {
+				title = idstitle;
+			}
+		this.result.push({id:id,title:title});
+	}
+	
+	getAllIds() {
+		
+		
 		
 		this.result = [];
 		
 		if (type === 'connector') {
 			this.json.connectors.forEach(c=>{
-				const idstitle = c["ids:title"];
-				
-				console.log(['idstitle=',idstitle]);
-				
-				if (typeof idstitle !== 'undefined') {
-					if (Array.isArray(idstitle)) {
-						if (idstitle[0] === title) {
-							this.result.push(c);
-						}
-					} else {
-						if (idstitle === title) {
-							this.result.push(c);
-						}
-					}
-					
-				}
+				this.extract(c);
+				c.catalogs.forEach(cat=>{
+					this.extract(cat);
+					cat["ids:offeredResource"].forEach(offe=>{
+						this.extract(offe);
+						offe["ids:representation"].forEach(rep=>{
+							this.extract(rep);
+						});
+					});
+				});
 			});
 		}
-		this.notifyAll({model:this.name, method:'get', type:type});
+		this.notifyAll({model:this.name, method:'getAllIds'});
 	}
 	
 	fetch() {
@@ -76,3 +83,28 @@ export default class JSONReaderModel extends Model {
 			});
 	}
 }
+
+/*
+		if (type === 'connector') {
+			this.json.connectors.forEach(c=>{
+				const idstitle = c["ids:title"];
+				
+				
+				
+				console.log(['idstitle=',idstitle]);
+				
+				if (typeof idstitle !== 'undefined') {
+					if (Array.isArray(idstitle)) {
+						if (idstitle[0] === title) {
+							this.result.push(c);
+						}
+					} else {
+						if (idstitle === title) {
+							this.result.push(c);
+						}
+					}
+					
+				}
+			});
+		}
+*/

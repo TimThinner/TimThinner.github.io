@@ -1,4 +1,3 @@
-import ModelRepo from './modules/common/ModelRepo.js';
 import JSONReaderModel from './modules/common/JSONReaderModel.js';
 /*
 	"connectors": [
@@ -14,36 +13,48 @@ import JSONReaderModel from './modules/common/JSONReaderModel.js';
 class MasterController {
 	
 	constructor() {
-		//this.controllers = {};
-		this.modelRepo = new ModelRepo();
+		this.JSONReader = undefined;
 	}
 	
 	notify(options) {
 		if (options.model==='JSONReaderModel' && options.method==='fetched') {
 			
-			const rm = this.modelRepo.get('JSONReaderModel');
-			if (rm) {
-				console.log(['JSON fetched json=',rm.json]);
-				setTimeout(() => {
-					rm.get({type:'connector',title:"Luke's Farm"});
-				}, 1000);
-			}
+			const rm = this.JSONReader;
+			console.log(['JSON fetched json=',rm.json]);
+			setTimeout(() => {
+				rm.getAllIds();
+			}, 1000);
 			
-		} else if (options.model==='JSONReaderModel' && options.method==='get' && options.type==='connector') {
 			
-			const rm = this.modelRepo.get('JSONReaderModel');
-			if (rm) {
-				console.log(['JSON get connector result=',rm.result]);
-			}
+			//setTimeout(() => {
+				//rm.get({type:'connector',title:"Luke's Farm"});
+			//}, 1000);
+			
+			
+		} else if (options.model==='JSONReaderModel' && options.method==='getAllIds') {
+			
+			const rm = this.JSONReader;
+			console.log(['JSON get connector result=',rm.result]);
+			
+			//setTimeout(() => {
+				//rm.get({type:'connector',title:"Luke's Farm"});
+			//}, 1000);
+			
+			
+			
 		}
+		
+		// List "catalogs" for specific "connector"...
+		
+		// List "ids:offeredResource"s  for specific "catalog"...
+		// How do we maintain the path to element...
 	}
 	
 	init() {
 		console.log('Create JSONReaderModel');
-		const JSONRM = new JSONReaderModel({name:'JSONReaderModel',src:'db.json'});
-		this.modelRepo.add('JSONReaderModel',JSONRM);
-		JSONRM.subscribe(this); // Now we will receive notifications from the JSONReaderModel
-		JSONRM.fetch(); // Fetch the JSON.
+		this.JSONReader = new JSONReaderModel({name:'JSONReaderModel',src:'db.json'});
+		this.JSONReader.subscribe(this); // Now we will receive notifications from the JSONReaderModel
+		this.JSONReader.fetch(); // Fetch the JSON.
 	}
 }
 new MasterController().init();

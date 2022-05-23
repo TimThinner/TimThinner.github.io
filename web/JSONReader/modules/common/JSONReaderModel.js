@@ -60,7 +60,7 @@ export default class JSONReaderModel extends Model {
 			Object.keys(e).forEach(key => {
 				console.log(['key=',key,' value=',e[key]]);
 			});
-			if (e && Array.isArray(e) {
+			if (e && Array.isArray(e)) {
 				e.forEach(ee=>{
 					this.getAllIdsR(ee);
 				});

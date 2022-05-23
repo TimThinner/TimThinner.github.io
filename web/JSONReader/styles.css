@@ -1,0 +1,20 @@
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	color: #777;
+	background-color: #eee;
+}
+@media screen and (min-width: 601px) {
+	html, body {
+		font-size: 18px;
+	}
+}
+/* Materialize CSS */
+.container {
+	background-color: #eee;
+	color: #777;
+	margin: 0 auto;
+	max-width: 1920px;
+	width: 100%; /* 90%; */
+	padding: 0;
+}

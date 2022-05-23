@@ -1,0 +1,607 @@
+{
+  "connectors": [
+    {
+      "ids:type": "ids:connector",
+      "@id" : "https://url-of-this-connector-api/1",
+      "ids:title" : ["Luke's Farm"],
+      "ids:description": ["Description of connector"],
+      "catalogs": [ 
+        {  
+          "@type" : "ids:ResourceCatalog",
+          "@id" : "https://url-of-this-connector-api/catalogs/1",
+          "ids:description" : ["Purpose of catalog ", "More info on catalog"],
+          "ids:title" : ["Drone Missions"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/1",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["PestSurveyMission_2206_01_PlotA"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": [
+                  {
+                    "@type": "ids:Representation",
+                    "@id": "url/representations/1",
+                    "ids:mediaType": {"@type":"ids:IANAMediaType", "ids:filenameExtension": "jpg"},
+                    "ids:created": "datetimestamp",
+                    "ids:modified": "datetimestamp",
+                    "ids:instance": [
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/1",
+                          "ids:fileName": "Pest.jpg",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        },
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/2",
+                          "ids:fileName": "Helicoverpa.jpg",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        },
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/3",
+                          "ids:fileName": "Mirid.jpg",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        }
+                      ]
+                  },
+                  {
+                    "@type": "ids:Representation",
+                    "@id": "url/representations/2",
+                    "ids:mediaType": {"@type":"ids:IANAMediaType", "ids:filenameExtension": "jpg"},
+                    "ids:created": "datetimestamp",
+                    "ids:modified": "datetimestamp",                  
+                    "ids:instance": [
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/4",
+                          "ids:fileName": "Aphid.jpg",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        },
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/5",
+                          "ids:fileName": "Whitefly.jpg",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        },
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/6",
+                          "ids:fileName": "Thrip.jpeg",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        }
+                      ]
+                  }
+                ],
+              "ids:contractOffer": [
+                {
+                  "@id": "url/contracts/1",
+                  "ids:title": "Contract A",
+                  "ids:contractStart": "2022-01-01T11:33:44.995Z",
+                  "ids:contractEnd": "2023-01-01T11:33:44.995Z",
+                  "ids:contractDate": "2022-04-28T12:40:04.505Z", 
+                  "ids:permission":[
+                      {
+                        "@type": "ids:Permission",
+                        "id": "url/rules/####",
+                        "ids:description" : "Permission to USE access to artifact etc.",
+                        "ids:title": "Permission X",
+                        "ids:action": ["USE"],
+                        "ids:target" : "url/artifacts/#id-of-artifact"
+                      },
+                      {
+                        "@type": "ids:Permission",
+                        "id": "url/rules/####",
+                        "ids:description" : "Permission to USE access to artifact etc.",
+                        "ids:title": "Permission Y",
+                        "ids:action": ["USE"],
+                        "ids:target" : "url/artifacts/#id-of-artifact"
+                      }
+                    ] 
+                },
+                {
+                  "@id": "url/contracts/2",
+                  "ids:title": "Contract B",
+                  "ids:contractStart": "2022-01-01T11:33:44.995Z",
+                  "ids:contractEnd": "2023-01-01T11:33:44.995Z",
+                  "ids:contractDate": "2022-04-28T12:40:04.505Z", 
+                  "ids:permission":[
+                      {
+                        "@type": "ids:Permission",
+                        "id": "url/rules/3",
+                        "ids:description" : "Permission to USE access to artifact etc.",
+                        "ids:title": "Permission X",
+                        "ids:action": ["USE"],
+                        "ids:target" : "url/artifacts/#id-of-artifact"
+                      },
+                      {
+                        "@type": "ids:Permission",
+                        "id": "url/rules/4",
+                        "ids:description" : "Permission to USE access to artifact etc.",
+                        "ids:title": "Permission Y",
+                        "ids:action": ["USE"],
+                        "ids:target" : "url/artifacts/#id-of-artifact"
+                      }
+                    ] 
+                }
+              ]
+            },
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/2",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["PestSurveyMission_2206_02_PlotA"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": [
+                  {
+                    "@type": "ids:Representation",
+                    "@id": "url/representations/2",
+                    "ids:mediaType": {"@type":"ids:IANAMediaType", "ids:filenameExtension": "json"},
+                    "ids:created": "datetimestamp",
+                    "ids:modified": "datetimestamp",                  
+                    "ids:instance": [
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/7",
+                          "ids:fileName": "Foxtail.jpg",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        },
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/8",
+                          "ids:fileName": "Morningglory.bmp",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        },
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/9",
+                          "ids:fileName": "Waterhemp.jpeg",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        }
+                      ]
+                  },
+                  {
+                    "@type": "ids:Representation",
+                    "@id": "url/representations/3",
+                    "ids:mediaType": {"@type":"ids:IANAMediaType", "ids:filenameExtension": "json"},
+                    "ids:created": "datetimestamp",
+                    "ids:modified": "datetimestamp",                  
+                    "ids:instance": [
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/10",
+                          "ids:fileName": "Horseweed.jpg",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        },
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/11",
+                          "ids:fileName": "Barnyardgrass.gif",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        },
+                        {
+                          "@type": "ids:Artifact",
+                          "@id": "url/artifacts/12",
+                          "ids:fileName": "Velvetleaf.jpeg",
+                          "ids:creationDate": "datetimestamp",
+                          "ids:byteSize": 1111                        
+                        }
+                      ]
+                  }
+              ],
+              "ids:contractOffer": [
+                {
+                  "@id": "url/contracts/3",
+                  "ids:title": "Contract A",
+                  "ids:contractStart": "2022-01-01T11:33:44.995Z",
+                  "ids:contractEnd": "2023-01-01T11:33:44.995Z",
+                  "ids:contractDate": "2022-04-28T12:40:04.505Z", 
+                  "ids:permission":[
+                      {
+                        "@type": "ids:Permission",
+                        "id": "url/rules/5",
+                        "ids:description" : "Permission to USE access to artifact etc.",
+                        "ids:title": "Permission X",
+                        "ids:action": ["USE"],
+                        "ids:target" : "url/artifacts/#id-of-artifact"
+                      },
+                      {
+                        "@type": "ids:Permission",
+                        "id": "url/rules/6",
+                        "ids:description" : "Permission to USE access to artifact etc.",
+                        "ids:title": "Permission Y",
+                        "ids:action": ["USE"],
+                        "ids:target" : "url/artifacts/#id-of-artifact"
+                      }
+                    ] 
+                  },
+                  {
+                    "@id": "url/contracts/4",
+                    "ids:title": "Contract B",
+                    "ids:contractStart": "2022-01-01T11:33:44.995Z",
+                    "ids:contractEnd": "2023-01-01T11:33:44.995Z",
+                    "ids:contractDate": "2022-04-28T12:40:04.505Z", 
+                    "ids:permission":[
+                        {
+                          "@type": "ids:Permission",
+                          "id": "url/rules/7",
+                          "ids:description" : "Permission to USE access to artifact etc.",
+                          "ids:title": "Permission X",
+                          "ids:action": ["USE"],
+                          "ids:target" : "url/artifacts/#id-of-artifact"
+                        },
+                        {
+                          "@type": "ids:Permission",
+                          "id": "url/rules/8",
+                          "ids:description" : "Permission to USE access to artifact etc.",
+                          "ids:title": "Permission Y",
+                          "ids:action": ["USE"],
+                          "ids:target" : "url/artifacts/#id-of-artifact"
+                      }
+                      ] 
+                    }
+              ]
+            },
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/3",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["PestSprayingMission_2208_01_PlotA"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            },
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/4",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["SilageSurveyMission_2207_01_PotX"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            },
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/5",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["WeedSurveyMission_2206_01_PlotY"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]        
+        },
+        {
+          "@type" : "ids:ResourceCatalog",
+          "@id": "https://url-of-this-connector-api/catalogs/2",
+          "ids:description" : ["Purpose of catalog ", "More info on catalog"],
+          "ids:title": ["Robot Missions"],
+          "ids:offeredResource": [
+            {  
+                "@type" : "ids:Resource",
+                "@id" : "https://url-of-connector-api/resources/6",
+                "ids:description" : ["Description of resource"],
+                "ids:title" : ["SilageHarvestinMission_2207_plotA"],
+                "ids:publisher": {"@id": "https://vtt.fi/"},
+                "ids:representation": []
+            },
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/7",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["WeedingMission_2206_01_PlotY"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        }
+      ],
+      "resources":[],
+      "representations":[],
+      "artifacts":[],
+      "contracts":[],
+      "rules":[]
+    },
+    {
+      "ids:type": "ids:connector",
+      "@id" : "https://url-of-this-connector-api/2",
+      "ids:title" : ["Luke's Data Store"],
+      "ids:description": ["Description of connector"],
+      "catalogs": [ 
+        {  
+          "@type" : "ids:ResourceCatalog",
+          "@id" : "https://url-of-this-connector-api/catalogs/3",
+          "ids:description" : ["Purpose of catalog ", "More info on catalog"],
+          "ids:title" : ["Farm Image Data Sets"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+               "@id" : "https://url-of-connector-api/resources/8",
+               "ids:description" : ["Description of resource"],
+               "ids:title" : ["PestImages_2206_01_PlotC"],
+               "ids:publisher": {"@id": "https://vtt.fi/"},
+               "ids:representation": []
+              },
+              {  
+                "@type" : "ids:Resource",
+                "@id" : "https://url-of-connector-api/resources/9",
+                "ids:description" : ["Description of resource"],
+                "ids:title" : ["PestImages_2206_01_PlotD"],
+                "ids:publisher": {"@id": "https://vtt.fi/"},
+                "ids:representation": []
+              },
+              {  
+                "@type" : "ids:Resource",
+                "@id" : "https://url-of-connector-api/resources/10",
+                "ids:description" : ["Description of resource"],
+                "ids:title" : ["RumexImages_2207_PlotF"],
+                "ids:publisher": {"@id": "https://vtt.fi/"},
+                "ids:representation": []
+              }
+          ]        
+        },
+        {  
+          "@type" : "ids:ResourceCatalog",
+          "@id" : "https://url-of-this-connector-api/catalogs/4",
+          "ids:description" : ["Purpose of catalog ", "More info on catalog"],
+          "ids:title" : ["Drone Task Files"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/11",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["Plot_A_DJIDrone_task_file"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        },
+        {  
+          "@type" : "ids:ResourceCatalog",
+          "@id" : "https://url-of-this-connector-api/catalogs/5",
+          "ids:description" : ["Purpose of catalog ", "More info on catalog"],
+          "ids:title" : ["Robot Task Files"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/12",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["Harvesting_ISOBUS_task_file_PlotA"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        }
+      ],
+      "resources":[],
+      "representations":[],
+      "artifacts":[],
+      "contracts":[],
+      "rules":[]
+    },
+    {
+      "ids:type": "ids:connector",
+      "@id" : "https://url-of-this-connector-api/3",
+      "ids:title" : ["Luke's Context Data"],
+      "ids:description": ["Description of connector"],
+      "catalogs": [
+        {
+          "@type" : "ids:ResourceCatalog",
+          "@id": "https://url-of-this-connector-api/catalogs/6",
+          "ids:title" : ["ContextAPIs (not to be used in UI)"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/13",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["DroneX_mqqt_API"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            },
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/14",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["RobotX_mqqt_API"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        },
+        {
+          "@type" : "ids:ResourceCatalog",
+          "@id": "https://url-of-this-connector-api/catalogs/7",
+          "ids:title" : ["Mission Reports"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/15",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["DroneSurveyMissionData_2206_02"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            },
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/16",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["SilageMissionReport_2206_plotA"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ids:type": "ids:connector",
+      "@id" : "https://url-of-this-connector-api/4",
+      "ids:title" : ["Jere's Drone Operations"],
+      "ids:description": ["Description of connector"],
+      "catalogs": [
+        {
+          "@type" : "ids:ResourceCatalog",
+          "@id": "https://url-of-this-connector-api/catalogs/8",
+          "ids:title" : ["Labelled Data Sets"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/17",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["PestImages_22006"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            },
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/18",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["RumexImages_2207"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        },
+        {
+          "@type" : "ids:ResourceCatalog",
+          "@id": "https://url-of-this-connector-api/catalogs/9",
+          "ids:title" : ["Drone Reports"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/19",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["Report_Luke_2206_01_PlotA"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        },
+        {
+          "@type" : "ids:ResourceCatalog",
+          "@id": "https://url-of-this-connector-api/catalogs/10",
+          "ids:title" : ["DroneAPIs (to be skipped at UI now)"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/20",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["DroneX_mqqt_API"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ids:type": "ids:connector",
+      "@id" : "https://url-of-this-connector-api/5",
+      "ids:title" : ["Juha's Robot Operations"],
+      "ids:description": ["Description of connector"],
+      "catalogs": [
+        {
+          "@type" : "ids:ResourceCatalog",
+          "@id": "https://url-of-this-connector-api/catalogs/11",
+          "ids:title" : ["Robot Reports"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/21",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["RobotX_report_2207_02_PlotB"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        },
+        {
+          "@type" : "ids:ResourceCatalog",
+          "@id": "https://url-of-this-connector-api/catalogs/12",
+          "ids:title" : ["Robots APIs (to be skipped at UI now)"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "id": 22,
+              "@id" : "https://url-of-connector-api/resources/22",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["RobotX_mqqt_API"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ids:type": "ids:connector",
+      "@id" : "https://url-of-this-connector-api/6",
+      "ids:title" : ["Daniel's AI Services"],
+      "ids:description": ["Description of connector"],
+      "catalogs": [
+        {
+          "@type" : "ids:ResourceCatalog",
+          "@id": "https://url-of-this-connector-api/catalogs/13",
+          "ids:title" : ["AI Service APIs (to be skipped at UI now)"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/23",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["ObjectDetectionAPI"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        },
+        {
+          "@type" : "ids:ResourceCatalog",
+          "@id": "https://url-of-this-connector-api/catalogs/14",
+          "ids:title" : ["Pest Maps"],
+          "ids:offeredResource": [
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/24",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["Luke_PestMap_PlotA"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            },
+            {  
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/25",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["LukePestMap_PlotB"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        },
+        {
+          "@type" : "ids:ResourceCatalog",
+          "@id": "https://url-of-this-connector-api/catalogs/15",
+          "ids:title" : ["Weed Maps"],
+          "ids:offeredResource": [
+            {
+              "@type" : "ids:Resource",
+              "@id" : "https://url-of-connector-api/resources/26",
+              "ids:description" : ["Description of resource"],
+              "ids:title" : ["LukeWeedMap_PlotC"],
+              "ids:publisher": {"@id": "https://vtt.fi/"},
+              "ids:representation": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

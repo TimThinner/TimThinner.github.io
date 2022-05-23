@@ -18,29 +18,29 @@ export default class JSONReaderModel extends Model {
 			} else {
 				title = idstitle;
 			}
+		}
 		this.result.push({id:id,title:title});
 	}
 	
 	getAllIds() {
-		
-		
-		
 		this.result = [];
 		
-		if (type === 'connector') {
-			this.json.connectors.forEach(c=>{
-				this.extract(c);
-				c.catalogs.forEach(cat=>{
-					this.extract(cat);
-					cat["ids:offeredResource"].forEach(offe=>{
-						this.extract(offe);
-						offe["ids:representation"].forEach(rep=>{
-							this.extract(rep);
-						});
+		this.json.connectors.forEach(c=>{
+			this.extract(c);
+			
+			c.catalogs.forEach(cat=>{
+				this.extract(cat);
+				
+				cat["ids:offeredResource"].forEach(offe=>{
+					this.extract(offe);
+					
+					offe["ids:representation"].forEach(rep=>{
+						this.extract(rep);
 					});
 				});
 			});
-		}
+		});
+		
 		this.notifyAll({model:this.name, method:'getAllIds'});
 	}
 	

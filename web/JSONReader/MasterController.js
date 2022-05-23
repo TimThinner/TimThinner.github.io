@@ -22,7 +22,8 @@ class MasterController {
 			const rm = this.JSONReader;
 			console.log(['JSON fetched json=',rm.json]);
 			setTimeout(() => {
-				rm.getAllIds();
+				//rm.getAllIds();
+				rm.getAll();
 			}, 1000);
 			
 			

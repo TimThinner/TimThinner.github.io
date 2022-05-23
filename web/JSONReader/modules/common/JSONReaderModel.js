@@ -1,5 +1,29 @@
 import Model from './Model.js';
 
+
+/*
+"connectors": [
+	"ids:title" : ["Luke's Farm"],
+	"ids:description": ["Description of connector"],
+	"catalogs": [ 
+		"ids:offeredResource": [
+			"ids:representation": [
+				"ids:instance": [
+			"ids:contractOffer": [
+				"ids:permission":[
+					"ids:action": ["USE"],
+					
+Recursive travering might be 
+
+Object.keys()
+if Array.isArray => forEach 
+NOTE Array can be just a string.
+
+
+
+*/
+
+
 export default class JSONReaderModel extends Model {
 	
 	constructor(options) {
@@ -20,6 +44,33 @@ export default class JSONReaderModel extends Model {
 			}
 		}
 		this.result.push({name:name,id:id,title:title});
+	}
+	
+	
+	getAllIdsR(e) {
+		if (typeof e === 'string') {
+			
+			console.log(['LEAF string=',e]);
+			
+		} else {
+			if (e["@type"]) {
+				console.log(['type=',e["@type"]]);
+			}
+			// get all keys => values
+			Object.keys(e).forEach(key => {
+				console.log(['key=',key,' value=',e[key]]);
+			});
+			if (e && Array.isArray(e) {
+				e.forEach(ee=>{
+					this.getAllIdsR(ee);
+				});
+			}
+		}
+	}
+	
+	getAll() {
+		this.result = [];
+		this.getAllIdsR(this.json.connectors);
 	}
 	
 	getAllIds() {

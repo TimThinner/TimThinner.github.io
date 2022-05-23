@@ -1,7 +1,7 @@
 {
   "connectors": [
     {
-      "ids:type": "ids:connector",
+      "@type": "ids:connector",
       "@id" : "https://url-of-this-connector-api/1",
       "ids:title" : ["Luke's Farm"],
       "ids:description": ["Description of connector"],
@@ -312,7 +312,7 @@
       "rules":[]
     },
     {
-      "ids:type": "ids:connector",
+      "@type": "ids:connector",
       "@id" : "https://url-of-this-connector-api/2",
       "ids:title" : ["Luke's Data Store"],
       "ids:description": ["Description of connector"],
@@ -389,7 +389,7 @@
       "rules":[]
     },
     {
-      "ids:type": "ids:connector",
+      "@type": "ids:connector",
       "@id" : "https://url-of-this-connector-api/3",
       "ids:title" : ["Luke's Context Data"],
       "ids:description": ["Description of connector"],
@@ -443,7 +443,7 @@
       ]
     },
     {
-      "ids:type": "ids:connector",
+      "@type": "ids:connector",
       "@id" : "https://url-of-this-connector-api/4",
       "ids:title" : ["Jere's Drone Operations"],
       "ids:description": ["Description of connector"],
@@ -504,7 +504,7 @@
       ]
     },
     {
-      "ids:type": "ids:connector",
+      "@type": "ids:connector",
       "@id" : "https://url-of-this-connector-api/5",
       "ids:title" : ["Juha's Robot Operations"],
       "ids:description": ["Description of connector"],
@@ -543,7 +543,7 @@
       ]
     },
     {
-      "ids:type": "ids:connector",
+      "@type": "ids:connector",
       "@id" : "https://url-of-this-connector-api/6",
       "ids:title" : ["Daniel's AI Services"],
       "ids:description": ["Description of connector"],

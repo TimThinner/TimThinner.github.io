@@ -33,7 +33,7 @@ class MasterController {
 			
 			const rm = this.modelRepo.get('JSONReaderModel');
 			if (rm) {
-				console.log(['JSON get connector data=',rm.result]);
+				console.log(['JSON get connector result=',rm.result]);
 			}
 		}
 	}

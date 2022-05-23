@@ -17,6 +17,9 @@ export default class JSONReaderModel extends Model {
 		if (type === 'connector') {
 			this.json.connectors.forEach(c=>{
 				const idstitle = c["ids:title"];
+				
+				console.log(['idstitle=',idstitle]);
+				
 				if (typeof idstitle !== 'undefined') {
 					if (Array.isArray(idstitle)) {
 						if (idstitle[0] === title) {
@@ -27,7 +30,7 @@ export default class JSONReaderModel extends Model {
 							this.result.push(c);
 						}
 					}
-					this.result.push(c);
+					
 				}
 			});
 		}

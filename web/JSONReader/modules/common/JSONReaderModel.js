@@ -48,29 +48,33 @@ export default class JSONReaderModel extends Model {
 	
 	
 	getAllIdsR(e) {
-		if (typeof e === 'string') {
-			
-			console.log(['LEAF string=',e]);
-			
-		} else {
-			if (e["@type"]) {
-				console.log(['type=',e["@type"]]);
-			}
-			// get all keys => values
-			Object.keys(e).forEach(key => {
-				console.log(['key=',key,' value=',e[key]]);
-			});
-			if (e && Array.isArray(e)) {
+		if (e && Array.isArray(e)) {
+			if (typeof e === 'string') {
+				console.log(['LEAF string=',e]);
+			} else {
 				e.forEach(ee=>{
 					this.getAllIdsR(ee);
 				});
 			}
+		} else {
+			// Object (but not Array)
+			// get all keys => values
+			if (e["@type"]) {
+				console.log(['@type=',e["@type"]]);
+			}
+			Object.keys(e).forEach(key => {
+				console.log(['key=',key,' value=',e[key]]);
+				if (e[key] && Array.isArray(e[key])) {
+					this.getAllIdsR(e[key]);
+				}
+			});
 		}
 	}
 	
 	getAll() {
 		this.result = [];
-		this.getAllIdsR(this.json.connectors);
+		const root = this.json.connectors;
+		this.getAllIdsR(root);
 	}
 	
 	getAllIds() {

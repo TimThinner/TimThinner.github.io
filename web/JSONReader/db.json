@@ -82,6 +82,7 @@
                 ],
               "ids:contractOffer": [
                 {
+				"@type":"ids:ContractOffer",
                   "@id": "url/contracts/1",
                   "ids:title": "Contract A",
                   "ids:contractStart": "2022-01-01T11:33:44.995Z",
@@ -107,6 +108,7 @@
                     ] 
                 },
                 {
+					"@type":"ids:ContractOffer",
                   "@id": "url/contracts/2",
                   "ids:title": "Contract B",
                   "ids:contractStart": "2022-01-01T11:33:44.995Z",
@@ -203,6 +205,7 @@
               ],
               "ids:contractOffer": [
                 {
+					"@type":"ids:ContractOffer",
                   "@id": "url/contracts/3",
                   "ids:title": "Contract A",
                   "ids:contractStart": "2022-01-01T11:33:44.995Z",
@@ -228,6 +231,7 @@
                     ] 
                   },
                   {
+					"@type":"ids:ContractOffer",
                     "@id": "url/contracts/4",
                     "ids:title": "Contract B",
                     "ids:contractStart": "2022-01-01T11:33:44.995Z",

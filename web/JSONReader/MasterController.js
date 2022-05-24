@@ -22,8 +22,7 @@ class MasterController {
 			const rm = this.JSONReader;
 			console.log(['JSON fetched json=',rm.json]);
 			setTimeout(() => {
-				//rm.getAllIds();
-				rm.getAll();
+				rm.findR(e, "ids:connector");
 			}, 1000);
 			
 			
@@ -32,7 +31,7 @@ class MasterController {
 			//}, 1000);
 			
 			
-		} else if (options.model==='JSONReaderModel' && options.method==='getAllIds') {
+		} else if (options.model==='JSONReaderModel' && options.method==='found') {
 			
 			const rm = this.JSONReader;
 			console.log(['JSON get connector result=',rm.result]);

@@ -1,6 +1,4 @@
 import Model from './Model.js';
-
-
 /*
 "connectors": [
 	"ids:title" : ["Luke's Farm"],
@@ -13,16 +11,21 @@ import Model from './Model.js';
 				"ids:permission":[
 					"ids:action": ["USE"],
 					
+					
 Recursive travering might be 
 
 Object.keys()
 if Array.isArray => forEach 
 NOTE Array can be just a string.
 
-
-
+Connector			"@type": "ids:connector"
+	Catalog				"@type" : "ids:ResourceCatalog"
+		OfferedResource		"@type" : "ids:Resource"
+			Representation		@type": "ids:Representation",
+				Instance			"@type": "ids:Artifact"
+			ContractOffer			 @type IS MISSING!
+				Permission			"@type": "ids:Permission",
 */
-
 
 export default class JSONReaderModel extends Model {
 	
@@ -30,8 +33,9 @@ export default class JSONReaderModel extends Model {
 		super(options);
 		this.json = {};
 		this.result = [];
+		
 	}
-	
+	/*
 	extract(name, e) {
 		const idstitle = e["ids:title"];
 		const id = e["@id"];
@@ -45,10 +49,103 @@ export default class JSONReaderModel extends Model {
 		}
 		this.result.push({name:name,id:id,title:title});
 	}
+	*/
 	
-	
-	getAllIdsR(e) {
+	getChildren(e, type) {
 		if (e && Array.isArray(e)) {
+			e.forEach(ee=>{
+				if (ee["@type"] === type) {
+					this.result.push(ee);
+				}
+			});
+		}
+		this.notifyAll({model:this.name, method:'found'});
+	}
+	
+	
+	/*
+		get all elements of type = type below root or below element id = pid.
+		
+	*/
+	findR(e, type, pid) {
+		
+		if (typeof pid !== 'undefined') {
+			if (pid === e["@id"]) {
+				// found 
+				this.getChildren(e, type);
+			} else {
+				Object.keys(e).forEach(key => {
+					this.findR(key, type, pid);
+				});
+			}
+			
+		} else {
+			// no pid (use root) and type = "ids:connector"
+			this.getChildren(e, type);
+		}
+	}
+	
+	/*
+		"ids:title" : ["Luke's Farm"],
+		"ids:description": ["Description of connector"],
+		"ids:description" : ["Purpose of catalog ", "More info on catalog"],
+		"ids:title": "Contract A",
+		"ids:description" : "Permission to USE access to artifact etc.",
+		
+		"@type"
+		
+	*/
+	/*
+	getAllR(e, options) {
+		// e = current object
+		// options.type = if defined => type of wanted objects
+		// options.p = if defined => direct parent id
+		// returns array of objects. 
+		
+		if (typeof options !== 'undefined' && typeof options.type !== 'undefined') {
+			if (e["@type"] === options.type) {
+				this.result.push(e);
+			}
+		}
+		
+		
+		if (e["@type"] === "ids:connector") {
+			const c = new ConnectorModel();
+			c.id = e["@id"];
+			c.title = e["ids:title"];
+			c.description = e["ids:description"];
+			c.catalogs = [];
+		}
+		if (e["@type"] === "ids:ResourceCatalog") {
+			
+			
+		} else {
+			if (e && Array.isArray(e)) {
+			
+			
+		}
+		
+		if (e["ids:title"]) : ["Luke's Farm"],
+		if (e["ids:description"]: ["Description of connector"],
+
+		if (e && Array.isArray(e)) {
+			// Check if this is a PLAIN string(s) array...
+			let ps = true;
+			for (let i=0; i<e.length; i++) {
+				if (typeof e[i] !== 'string') {
+					ps = false;
+				}
+			}
+			if (ps) {
+				
+			} else {
+				e.forEach(ee=>{
+					this.getAllIdsR(ee);
+				});
+			}
+			
+			
+			
 			if (e.length === 1 && typeof e[0] === 'string') {
 				console.log(['LEAF string=',e]);
 			} else {
@@ -69,14 +166,14 @@ export default class JSONReaderModel extends Model {
 				}
 			});
 		}
-	}
-	
+	}*/
+	/*
 	getAll() {
 		this.result = [];
 		const root = this.json.connectors;
 		this.getAllIdsR(root);
-	}
-	
+	}*/
+	/*
 	getAllIds() {
 		this.result = [];
 		
@@ -116,7 +213,7 @@ export default class JSONReaderModel extends Model {
 		});
 		
 		this.notifyAll({model:this.name, method:'getAllIds'});
-	}
+	}*/
 	
 	fetch() {
 		const self = this;

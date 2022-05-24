@@ -22,7 +22,7 @@ class MasterController {
 			const rm = this.JSONReader;
 			console.log(['JSON fetched json=',rm.json]);
 			setTimeout(() => {
-				rm.findR(e, "ids:connector");
+				rm.findR(rm.json.connectors, "ids:connector");
 			}, 1000);
 			
 			

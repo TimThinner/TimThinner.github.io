@@ -96,7 +96,6 @@ Use "timestamp", "temperature" and "humidity".
 					
 					//const resu2 = self.removeDuplicates(resu, 'timestamp');
 					//const resu3 = self.removeDuplicates(resu2, 'created_at');
-					
 					const resa = [];
 					let notvalid = 0;
 					resu.forEach(r=>{
@@ -104,6 +103,12 @@ Use "timestamp", "temperature" and "humidity".
 						let humi = r.humidity;
 						let valid = true;
 						// Make sure we have sane values:
+						
+						// NOTE: r.timestamp is in UTC, but it has no timezone "signature" (Z),
+						// so we have to add it here ("2021-12-31T20:16:29" => "2021-12-31T20:16:29Z")
+						if (r.timestamp.endsWith('Z')===false) {
+							r.timestamp += 'Z';
+						}
 						const res = {timestamp: new Date(r.timestamp)};
 						if (temp && temp > 0 && temp < 100) {
 							res.temperature = temp; // OK

@@ -224,11 +224,11 @@ export default class UserHeatingView extends View {
 			});
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_heating;
-			//valueAxis.min = 10;
-			//valueAxis.max = 50;
+			valueAxis.min = 10;
+			valueAxis.max = 50;
 			// Pad values by 20%
-			//valueAxis.extraMin = 0.2;
-			//valueAxis.extraMax = 0.2; 
+			valueAxis.extraMin = 0.2;
+			valueAxis.extraMax = 0.2; 
 			
 			// {"created_at":"2021-12-31T20:20:16","timestamp":"2021-12-31T20:16:29","apartmentId":1,"tMeterId":11534143,"hMeterId":11534144,"temperature":21.1,"humidity":20.6},
 			const series1 = self.chart.series.push(new am4charts.LineSeries());
@@ -494,7 +494,6 @@ export default class UserHeatingView extends View {
 				}
 			}
 		});
-		
 		
 		//console.log('render DONE => renderChart when model is fetched!');
 		//console.log('Models ready => renderChart');

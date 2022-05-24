@@ -34,7 +34,7 @@ class MasterController {
 				if (options.type === 'ids:connector') {
 					console.log(['CONNECTORS rm.result=',rm.result]);
 					const cid = rm.result[0]["@id"];
-					// Get Catalogs from second connector
+					// Get Catalogs from first connector
 					setTimeout(() => {
 						rm.findR(rm.json.connectors, "ids:ResourceCatalog", cid);
 					}, 1000);

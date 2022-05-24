@@ -61,7 +61,7 @@ Use "timestamp", "temperature" and "humidity".
 	// Remove "duplicates"
 	
 	// NOTE: Which one to use: "timestamp" or "created_at"?
-	
+	/*
 	removeDuplicates(a, prop) {
 		// Check if there are timestamp duplicates?
 		const test = {};
@@ -76,9 +76,10 @@ Use "timestamp", "temperature" and "humidity".
 				b.push(item);
 			}
 		});
-		console.log(['DUPLICATES IGNORED with (',prop,') count=',ignored]);
+		//console.log(['DUPLICATES IGNORED with (',prop,') count=',ignored]);
 		return b;
 	}
+	*/
 	
 	doTheFetch(url) {
 		const self = this;
@@ -93,12 +94,12 @@ Use "timestamp", "temperature" and "humidity".
 				const resu = JSON.parse(myJson);
 				if (Array.isArray(resu)) {
 					
-					const resu2 = self.removeDuplicates(resu, 'timestamp');
-					const resu3 = self.removeDuplicates(resu2, 'created_at');
+					//const resu2 = self.removeDuplicates(resu, 'timestamp');
+					//const resu3 = self.removeDuplicates(resu2, 'created_at');
 					
 					const resa = [];
 					let notvalid = 0;
-					resu3.forEach(r=>{
+					resu.forEach(r=>{
 						let temp = r.temperature;
 						let humi = r.humidity;
 						let valid = true;
@@ -122,8 +123,8 @@ Use "timestamp", "temperature" and "humidity".
 					});
 					
 					self.measurements = resa;
-					console.log(['notvalid count=',notvalid]);
-					console.log(['self.measurements=',self.measurements]);
+					//console.log(['notvalid count=',notvalid]);
+					//console.log(['self.measurements=',self.measurements]);
 					
 					// Then sort array based according to time, oldest entry first.
 					self.measurements.sort(function(a,b){
@@ -131,7 +132,7 @@ Use "timestamp", "temperature" and "humidity".
 						var aa = moment(a.timestamp);
 						return aa - bb;
 					});
-					console.log(['SORTED self.measurements=',self.measurements]);
+					//console.log(['SORTED self.measurements=',self.measurements]);
 					
 					
 				} else {
@@ -215,7 +216,7 @@ Use "timestamp", "temperature" and "humidity".
 					body_url += '&limit='+this.limit;
 				}
 				
-				console.log(['body_url=',body_url]);
+				//console.log(['body_url=',body_url]);
 				
 				
 				const data = {

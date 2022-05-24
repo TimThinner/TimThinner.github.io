@@ -111,7 +111,7 @@ export default class UserHeatingView extends View {
 		const values = this.models['UserHeatingMonthModel'].measurements;
 		//const values = this.models['UserHeatingMonthModel'].values;
 		
-		console.log(['appendAverage measurements=',values]);
+		//console.log(['appendAverage measurements=',values]);
 		
 		if (Array.isArray(values) && values.length > 0) {
 			//this.chartRangeStart = 0;
@@ -178,6 +178,9 @@ export default class UserHeatingView extends View {
 	
 	renderChart() {
 		const self = this;
+		
+		// remove the spinner if it was there.
+		$('#user-heating-chart').empty();
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
@@ -284,7 +287,7 @@ export default class UserHeatingView extends View {
 				self.chartRangeStart = ev.target._start;
 				self.chartRangeEnd = ev.target._end;
 				// Calculate averages based on this new selection.
-				console.log("RANGE CHANGED!");
+				//console.log("RANGE CHANGED!");
 				self.appendAverage();
 				//console.log(["ev.target._start: ", ev.target._start]); // 0
 				//console.log(["ev.target._end: ", ev.target._end]); // 1
@@ -294,7 +297,7 @@ export default class UserHeatingView extends View {
 				// console.log('zoomOutButton hit event!');
 				self.chartRangeStart = 0;
 				self.chartRangeEnd = 1;
-				console.log("HIT ZOOMOUT!");
+				//console.log("HIT ZOOMOUT!");
 				self.appendAverage();
 			})
 		}); // end am4core.ready()
@@ -382,7 +385,7 @@ export default class UserHeatingView extends View {
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Models are 'MenuModel', 'UserHeatingMonthModel', 'FeedbackModel'.
 				Object.keys(this.models).forEach(key => {
-					console.log(['FETCH MODEL key=',key]);
+					//console.log(['FETCH MODEL key=',key]);
 					const UM = this.controller.master.modelRepo.get('UserModel');
 					if (UM) {
 						this.models[key].fetch(UM.token, UM.readkey, UM.point_id_a);
@@ -480,7 +483,7 @@ export default class UserHeatingView extends View {
 						//const fb = req.body.feedback;
 					const UM = self.controller.master.modelRepo.get('UserModel');
 					if (UM) {
-						console.log(['Sending Feedback ',selected]);
+						//console.log(['Sending Feedback ',selected]);
 						const data = {
 							refToUser: UM.id, // UserModel id
 							feedbackType: 'Heating',
@@ -493,13 +496,15 @@ export default class UserHeatingView extends View {
 		});
 		
 		
-		console.log('render DONE => renderChart when model is fetched!');
+		//console.log('render DONE => renderChart when model is fetched!');
 		//console.log('Models ready => renderChart');
 		//console.log(['time=',moment().format('x')]); // Unix time in milliseconds.]);
 		
 		if (this.areModelsReady()) {
 			this.handleErrorMessages(this.FELID);
 			this.renderChart();
+		} else {
+			this.showSpinner('#user-heating-chart');
 		}
 		this.rendered = true;
 	}

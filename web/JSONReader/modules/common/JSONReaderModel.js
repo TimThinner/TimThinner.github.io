@@ -59,7 +59,7 @@ export default class JSONReaderModel extends Model {
 				}
 			});
 		}
-		this.notifyAll({model:this.name, method:'found'});
+		this.notifyAll({model:this.name, method:'found', type:type});
 	}
 	
 	

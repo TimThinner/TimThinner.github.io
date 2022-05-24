@@ -25,29 +25,24 @@ class MasterController {
 				rm.findR(rm.json.connectors, "ids:connector");
 			}, 1000);
 			
-			
-			//setTimeout(() => {
-				//rm.get({type:'connector',title:"Luke's Farm"});
-			//}, 1000);
-			
-			
 		} else if (options.model==='JSONReaderModel' && options.method==='found') {
 			
 			const rm = this.JSONReader;
 			console.log(['JSON get connector result=',rm.result]);
-			
-			//setTimeout(() => {
-				//rm.get({type:'connector',title:"Luke's Farm"});
-			//}, 1000);
-			
-			
-			
+			// rm.result is an array of elements if they were found.
+			if (rm.result.length > 0) {
+				if (options.type === 'ids:connector') {
+					console.log(['CONNECTORS rm.result=',rm.result]);
+					const cid = rm.result[0]["@id"];
+					// Get Catalogs from second connector
+					setTimeout(() => {
+						rm.findR(rm.json.connectors, "ids:ResourceCatalog", cid);
+					}, 1000);
+				} else if (options.type === 'ids:ResourceCatalog') {
+					console.log(['CATALOGS rm.result=',rm.result]);
+				}
+			}
 		}
-		
-		// List "catalogs" for specific "connector"...
-		
-		// List "ids:offeredResource"s  for specific "catalog"...
-		// How do we maintain the path to element...
 	}
 	
 	init() {

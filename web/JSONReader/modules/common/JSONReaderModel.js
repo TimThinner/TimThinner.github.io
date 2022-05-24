@@ -75,7 +75,7 @@ export default class JSONReaderModel extends Model {
 				this.getChildren(e, type);
 			} else {
 				Object.keys(e).forEach(key => {
-					this.findR(key, type, pid);
+					console.log(['key=',key]);
 				});
 			}
 			

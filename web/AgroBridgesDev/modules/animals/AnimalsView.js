@@ -146,11 +146,12 @@ export default class AnimalsView extends View {
 						'<p><label><input class="with-gap" name="animalsStatus" id="animals-no" type="radio" value="no" /><span>'+ll_no+'</span></label></p>'+
 						'<p><label><input class="with-gap" name="animalsStatus" id="animals-yes" type="radio" value="yes" /><span>'+ll_yes+'</span></label></p>'+
 					'</div>'+
-					'<div class="input-field col s12 m10 offset-m1">'+
+					// Add id for both query sets, so that we can hide/show them depending on "no"/"yes" answer above. 
+					'<div id="animals-query-1" class="input-field col s12 m10 offset-m1">'+
 						'<h6>'+ll_animals_query+'</h6>'+
 						'<div id="anim-a-options-wrapper"></div>'+
 					'</div>'+
-					'<div class="input-field col s12 m10 offset-m1">'+
+					'<div id="animals-query-2" class="input-field col s12 m10 offset-m1">'+
 						'<h6>'+ll_dairy_query+'</h6>'+
 						'<div id="anim-b-options-wrapper"></div>'+
 					'</div>'+
@@ -170,7 +171,6 @@ export default class AnimalsView extends View {
 					'</div>'+
 				'</div>'+
 			'</div>';
-			
 		$(this.el).append(html);
 		// Insert checkbox markup for options:
 		anim_a_Options.forEach(o=>{
@@ -185,8 +185,13 @@ export default class AnimalsView extends View {
 		// Restore current selection:
 		if (this.USER_MODEL.profile.Dummy_livestock === 'No') {
 			$("#animals-no").prop("checked", true);
+			$("#animals-query-1").hide();
+			$("#animals-query-2").hide();
+			
 		} else if (this.USER_MODEL.profile.Dummy_livestock === 'Yes') {
 			$("#animals-yes").prop("checked", true);
+			$("#animals-query-1").show();
+			$("#animals-query-2").show();
 		}
 		
 		anim_a_Options.forEach(o=>{
@@ -210,10 +215,14 @@ export default class AnimalsView extends View {
 			if (this.value == 'no') {
 				console.log('Dummy_livestock No');
 				self.USER_MODEL.profile.Dummy_livestock = 'No';
+				$("#animals-query-1").hide();
+				$("#animals-query-2").hide();
 				
 			} else if (this.value == 'yes') {
 				console.log('Dummy_livestock Yes');
 				self.USER_MODEL.profile.Dummy_livestock = 'Yes';
+				$("#animals-query-1").show();
+				$("#animals-query-2").show();
 			}
 		});
 		

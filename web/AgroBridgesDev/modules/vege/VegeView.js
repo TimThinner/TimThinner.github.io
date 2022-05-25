@@ -125,18 +125,18 @@ export default class VegeView extends View {
 						'<p><label><input class="with-gap" name="vegeStatus" id="vege-no" type="radio" value="no" /><span>'+ll_no+'</span></label></p>'+
 						'<p><label><input class="with-gap" name="vegeStatus" id="vege-yes" type="radio" value="yes" /><span>'+ll_yes+'</span></label></p>'+
 					'</div>'+
-					'<div class="input-field col s12 m10 offset-m1">'+
+					'<div id="vege-query-1" class="input-field col s12 m10 offset-m1">'+
 						'<h6 id="required-A">'+ll_vege_query+'</h6>'+
 						'<div id="vege-options-wrapper"></div>'+
 					'</div>'+
 					// NOTE: Make all sliders 16,6667% narrower than "full" width => margin is one column to the left and right.
 					// But not in mobile => do it from Tablet devices and higher resolution screens. 
-					'<div class="input-field col s12 m10 offset-m1">'+ // s12 => s10 offset-s1
+					'<div id="vege-query-2" class="input-field col s12 m10 offset-m1">'+ // s12 => s10 offset-s1
 						'<h6 id="required-B">'+ll_how_many_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="vegetables-total-slider"></div>'+
 					'</div>'+
-					'<div class="input-field col s12 m10 offset-m1">'+
+					'<div id="vege-query-3" class="input-field col s12 m10 offset-m1">'+
 						'<h6 id="required-C">'+ll_hectares_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="Hectare-veggies-slider"></div>'+
@@ -170,9 +170,17 @@ export default class VegeView extends View {
 		
 		if (this.USER_MODEL.profile.Dummy_veggie_farm === 'No') {
 			$("#vege-no").prop("checked", true);
+			$("#vege-query-1").hide();
+			$("#vege-query-2").hide();
+			$("#vege-query-3").hide();
 			
 		} else if (this.USER_MODEL.profile.Dummy_veggie_farm === 'Yes') {
 			$("#vege-yes").prop("checked", true);
+			
+			$("#vege-query-1").show();
+			$("#vege-query-2").show();
+			$("#vege-query-3").show();
+			
 			// Add class="required" to all 3 other questions:
 			$('#required-A').addClass('required');
 			$('#required-B').addClass('required');
@@ -235,6 +243,10 @@ export default class VegeView extends View {
 				console.log('Dummy_veggie_farm No'); // Dummy_veggie_farm NO
 				self.USER_MODEL.profile.Dummy_veggie_farm = 'No';
 				
+				$("#vege-query-1").hide();
+				$("#vege-query-2").hide();
+				$("#vege-query-3").hide();
+				
 				// Remove class="required" from all 3 other questions:
 				if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
 				if ($("#required-B").hasClass("required")) { $('#required-B').removeClass('required'); }
@@ -243,6 +255,10 @@ export default class VegeView extends View {
 			} else if (this.value == 'yes') {
 				console.log('Dummy_veggie_farm Yes');
 				self.USER_MODEL.profile.Dummy_veggie_farm = 'Yes';
+				
+				$("#vege-query-1").show();
+				$("#vege-query-2").show();
+				$("#vege-query-3").show();
 				
 				// Add class="required" to all 3 other questions:
 				if (!$("#required-A").hasClass("required")) { $('#required-A').addClass('required'); }

@@ -120,16 +120,16 @@ export default class FruitsView extends View {
 						'<p><label><input class="with-gap" name="fruitsStatus" id="fruits-no" type="radio" value="no" /><span>'+ll_no+'</span></label></p>'+
 						'<p><label><input class="with-gap" name="fruitsStatus" id="fruits-yes" type="radio" value="yes" /><span>'+ll_yes+'</span></label></p>'+
 					'</div>'+
-					'<div class="input-field col s12 m10 offset-m1">'+
+					'<div id="fruits-query-1" class="input-field col s12 m10 offset-m1">'+
 						'<h6 id="required-A">'+ll_fruits_query+'</h6>'+
 						'<div id="fruit-options-wrapper"></div>'+
 					'</div>'+
-					'<div class="input-field col s12 m10 offset-m1">'+
+					'<div id="fruits-query-2" class="input-field col s12 m10 offset-m1">'+
 						'<h6 id="required-B">'+ll_how_many_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="fruits-total-slider"></div>'+
 					'</div>'+
-					'<div class="input-field col s12 m10 offset-m1">'+
+					'<div id="fruits-query-3" class="input-field col s12 m10 offset-m1">'+
 						'<h6 id="required-C">'+ll_hectares_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="Hectare-fruits-slider"></div>'+
@@ -163,9 +163,17 @@ export default class FruitsView extends View {
 		
 		if (this.USER_MODEL.profile.Dummy_fruit_farm === 'No') {
 			$("#fruits-no").prop("checked", true);
+			$("#fruits-query-1").hide();
+			$("#fruits-query-2").hide();
+			$("#fruits-query-3").hide();
 			
 		} else if (this.USER_MODEL.profile.Dummy_fruit_farm === 'Yes') {
 			$("#fruits-yes").prop("checked", true);
+			
+			$("#fruits-query-1").show();
+			$("#fruits-query-2").show();
+			$("#fruits-query-3").show();
+			
 			// Add class="required" to all 3 other questions:
 			$('#required-A').addClass('required');
 			$('#required-B').addClass('required');
@@ -228,6 +236,10 @@ export default class FruitsView extends View {
 				console.log('Dummy_fruit_farm No'); // Dummy_fruit_farm NO
 				self.USER_MODEL.profile.Dummy_fruit_farm = 'No';
 				
+				$("#fruits-query-1").hide();
+				$("#fruits-query-2").hide();
+				$("#fruits-query-3").hide();
+				
 				// Remove class="required" from all 3 other questions:
 				if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
 				if ($("#required-B").hasClass("required")) { $('#required-B').removeClass('required'); }
@@ -236,6 +248,10 @@ export default class FruitsView extends View {
 			} else if (this.value == 'yes') {
 				console.log('Dummy_fruit_farm Yes');
 				self.USER_MODEL.profile.Dummy_fruit_farm = 'Yes';
+				
+				$("#fruits-query-1").show();
+				$("#fruits-query-2").show();
+				$("#fruits-query-3").show();
 				
 				// Add class="required" to all 3 other questions:
 				if (!$("#required-A").hasClass("required")) { $('#required-A').addClass('required'); }

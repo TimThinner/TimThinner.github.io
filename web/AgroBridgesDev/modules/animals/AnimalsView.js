@@ -146,7 +146,7 @@ export default class AnimalsView extends View {
 						'<p><label><input class="with-gap" name="animalsStatus" id="animals-no" type="radio" value="no" /><span>'+ll_no+'</span></label></p>'+
 						'<p><label><input class="with-gap" name="animalsStatus" id="animals-yes" type="radio" value="yes" /><span>'+ll_yes+'</span></label></p>'+
 					'</div>'+
-					// Add id for both query sets, so that we can hide/show them depending on "no"/"yes" answer above. 
+					// Add id for both query sets, so that we can hide/show them depending on "no"/"yes" answer above.
 					'<div id="animals-query-1" class="input-field col s12 m10 offset-m1">'+
 						'<h6>'+ll_animals_query+'</h6>'+
 						'<div id="anim-a-options-wrapper"></div>'+
@@ -211,6 +211,9 @@ export default class AnimalsView extends View {
 		});
 		
 		// EVENT HANDLERS:
+		// NOTE: jQuery function hide and show are used here.
+		// hide() adds style="display:none;" to div element.
+		// show() changes style="display:block;" to div element.
 		$('input[type=radio][name=animalsStatus]').change(function() {
 			if (this.value == 'no') {
 				console.log('Dummy_livestock No');

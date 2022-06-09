@@ -533,11 +533,16 @@ export default class UserModel extends Model {
 		}
 	}
 	
-	runAnalysis(data) {
+	runAnalysis(data, uid) {
 		const self = this;
 		this.analysisReady = false;
 		this.analysisResult = {};
-		if (this.MOCKUP) {
+		
+		if (typeof uid !== 'undefined') {
+			// do something with user id.
+		}
+		
+		if (this.MOCKUP || typeof uid === 'undefined') {
 			setTimeout(() => {
 				// After 2 seconds of delay (to simulate analysis delay) fill in the results data.
 				this.analysisResult = {

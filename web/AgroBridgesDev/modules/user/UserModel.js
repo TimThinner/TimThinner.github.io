@@ -495,12 +495,7 @@ export default class UserModel extends Model {
 		console.log(['updateUserProfile validData=',validData]);
 		
 		if (this.MOCKUP || typeof uid === 'undefined') {
-			// Just update UserModel profile and notify.
-			//validData.forEach(d => {
-			//	if (Object.keys(this.profile).includes(d.propName)) {
-			//		this.profile[d.propName] = d.value;
-			//	}
-			//});
+			
 			setTimeout(() => this.notifyAll({model:self.name, method:'updateUserProfile', status:200, message:'OK'}), 500);
 			
 		} else {
@@ -524,14 +519,6 @@ export default class UserModel extends Model {
 					return response.json();
 				})
 				.then(function(myJson){
-					if (status === 200) {
-						//validData.forEach(d => {
-						//	if (Object.keys(self.profile).includes(d.propName)) {
-						//		self.profile[d.propName] = d.value;
-						//	}
-						//});
-						//self.store();
-					}
 					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:myJson.message});
 				})
 				.catch(function(error){
@@ -617,13 +604,16 @@ export default class UserModel extends Model {
 					return response.json();
 				})
 				.then(function(myJson){
-					//if (status === 200) {
-					//	
-					//}
 					self.notifyAll({model:self.name, method:'runAnalysis', status:status, message:myJson.message});
 				})
 				.catch(function(error){
-					self.notifyAll({model:self.name, method:'runAnalysis', status:status, message:error});
+					let msg = "Error: ";
+					if (typeof error.message !== 'undefined') {
+						msg += error.message;
+					} else {
+						msg += 'NOT SPECIFIED in error.message.';
+					}
+					self.notifyAll({model:self.name, method:'runAnalysis', status:status, message:msg});
 				});
 		}
 	}

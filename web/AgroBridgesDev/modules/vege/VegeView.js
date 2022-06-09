@@ -75,6 +75,9 @@ export default class VegeView extends View {
 					// Report error.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
+					
+					// After 3 seconds go back to FARM-page automatically.
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 3000);
 				}
 			}
 		}

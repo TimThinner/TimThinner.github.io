@@ -222,9 +222,11 @@ export default class AnimalsView extends View {
 				// Must reset all properties;
 				anim_a_Options.forEach(o=>{
 					self.USER_MODEL.profile[o.prop] = false;
+					$("#"+o.id).prop("checked", false);
 				});
 				anim_b_Options.forEach(o=>{
 					self.USER_MODEL.profile[o.prop] = false;
+					$("#"+o.id).prop("checked", false);
 				});
 				
 				$("#animals-query-1").hide();

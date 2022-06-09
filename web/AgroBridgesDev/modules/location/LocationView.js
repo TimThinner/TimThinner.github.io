@@ -58,11 +58,7 @@ export default class LocationView extends View {
 					// <option selected="selected">orange</option>
 					sel_prop = 'selected="selected"';
 				}
-				if (r.name === r.name_latn) {
-					html += '<option value="'+r.id+'" '+sel_prop+'>'+r.name+'</option>';
-				} else {
-					html += '<option value="'+r.id+'" '+sel_prop+'>'+r.name+' / '+r.name_latn+'</option>';
-				}
+				html += '<option value="'+r.id+'" '+sel_prop+'>'+r.name+'</option>';
 			});
 		}
 		html += '</select>';
@@ -105,11 +101,7 @@ export default class LocationView extends View {
 				} else if (r.id === selected_region_id) {
 					sel_prop = 'selected="selected"';
 				}
-				if (r.name === r.name_latn) {
-					html += '<option value="'+r.id+'" '+sel_prop+'>'+r.name+'</option>';
-				} else {
-					html += '<option value="'+r.id+'" '+sel_prop+'>'+r.name+' / '+r.name_latn+'</option>';
-				}
+				html += '<option value="'+r.id+'" '+sel_prop+'>'+r.name+'</option>';
 			});
 		}
 		html += '</select>';
@@ -144,6 +136,9 @@ export default class LocationView extends View {
 					// Report error.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
+					
+					
+					
 				}
 				
 			} else if (options.model==='RegionsModel' && options.method==='fetched') {
@@ -161,6 +156,11 @@ export default class LocationView extends View {
 					// Report error.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
+					
+					
+					
+					
+					
 				}
 				
 			} else if (options.model==='UserModel' && options.method==='updateUserProfile') {
@@ -183,6 +183,9 @@ export default class LocationView extends View {
 					// Report error.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
+					
+					// After 2 seconds go back to FARM-page automatically.
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 2000);
 				}
 			}
 		}

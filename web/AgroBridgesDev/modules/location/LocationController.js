@@ -7,7 +7,7 @@ export default class LocationController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		
+		/*
 		this.cids = [
 			"BE",
 			"BG",
@@ -46,10 +46,11 @@ export default class LocationController extends Controller {
 			"AL",
 			"RS",
 			"TR"
-		];
+		];*/
 	}
 	
 	init() {
+		/*
 		const cm = new CountriesModel({name:'CountriesModel',src:'./data/NUTS_LB_2021_3035.json'});
 		cm.subscribe(this);
 		this.master.modelRepo.add('CountriesModel',cm);
@@ -57,6 +58,17 @@ export default class LocationController extends Controller {
 		this.models['CountriesModel'].fetch(this.cids); // This "configuration" does not change, so we can fetch this at Controller init() -time.
 		
 		const rm = new RegionsModel({name:'RegionsModel',src:'./data/NUTS_LB_2021_3035.json'});
+		rm.subscribe(this);
+		this.master.modelRepo.add('RegionsModel',rm);
+		this.models['RegionsModel'] = rm;
+		*/
+		const cm = new CountriesModel({name:'CountriesModel',src:''});
+		cm.subscribe(this);
+		this.master.modelRepo.add('CountriesModel',cm);
+		this.models['CountriesModel'] = cm;
+		this.models['CountriesModel'].fetch(); // This "configuration" does not change, so we can fetch this at Controller init() -time.
+		
+		const rm = new RegionsModel({name:'RegionsModel',src:''});
 		rm.subscribe(this);
 		this.master.modelRepo.add('RegionsModel',rm);
 		this.models['RegionsModel'] = rm;

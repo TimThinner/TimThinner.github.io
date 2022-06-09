@@ -540,6 +540,9 @@ export default class UserModel extends Model {
 		
 		if (typeof uid !== 'undefined') {
 			// do something with user id.
+			// "http://localhost:6969/analysis?user_id=prod_nl_1&lang=en"
+			
+			//const myRequest = new Request(this.backend + '/analysis?user_id=' + uid + '&lang=en', myPut);
 		}
 		
 		if (this.MOCKUP || typeof uid === 'undefined') {

@@ -218,6 +218,15 @@ export default class AnimalsView extends View {
 			if (this.value == 'no') {
 				console.log('Dummy_livestock No');
 				self.USER_MODEL.profile.Dummy_livestock = 'No';
+				
+				// Must reset all properties;
+				anim_a_Options.forEach(o=>{
+					self.USER_MODEL.profile[o.prop] = false;
+				});
+				anim_b_Options.forEach(o=>{
+					self.USER_MODEL.profile[o.prop] = false;
+				});
+				
 				$("#animals-query-1").hide();
 				$("#animals-query-2").hide();
 				

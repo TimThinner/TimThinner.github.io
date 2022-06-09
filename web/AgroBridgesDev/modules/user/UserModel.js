@@ -489,6 +489,8 @@ export default class UserModel extends Model {
 			}
 		});
 		
+		validData['user_id'] = "prod_nl_1";
+		
 		console.log(['updateUserProfile validData=',validData]);
 		
 		if (this.MOCKUP) {
@@ -513,7 +515,8 @@ export default class UserModel extends Model {
 				headers: myHeaders,
 				body: JSON.stringify(validData)
 			};
-			const myRequest = new Request(this.backend + '/users/'+this.id, myPut);
+			//const myRequest = new Request(this.backend + '/users/'+this.id, myPut);
+			const myRequest = new Request(this.backend + '/update_user_data', myPut);
 			fetch(myRequest)
 				.then(function(response){
 					status = response.status;

@@ -320,7 +320,8 @@ export default class LocationView extends View {
 				{propName:'Distance_Drive_major', value:self.USER_MODEL.profile.Distance_Drive_major}
 			];
 			console.log(['About to save data=',data]);
-			self.USER_MODEL.updateUserProfile(data);
+			
+			self.USER_MODEL.updateUserProfile(data, "prod_nl_1");
 		});
 		this.rendered = true;
 	}

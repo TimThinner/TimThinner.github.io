@@ -489,6 +489,8 @@ export default class UserModel extends Model {
 			}
 		});
 		
+		console.log(['updateUserProfile validData=',validData]);
+		
 		if (this.MOCKUP) {
 			// Just update UserModel profile and notify.
 			validData.forEach(d => {

@@ -759,10 +759,12 @@ export default class RegionsModel extends Model {
 						resu = myJson;
 					}
 					console.log(['resu=',resu]);
-					Object.keys(resu).forEach(key => {
+					
+					const cc = resu[code];
+					Object.keys(cc).forEach(key => {
 						self.regions.push({
 							id: key,
-							name: resu[key]
+							name: cc[key]
 						});
 					});
 					self.fetching = false;

@@ -240,6 +240,12 @@ export default class FruitsView extends View {
 				$("#fruits-query-2").hide();
 				$("#fruits-query-3").hide();
 				
+				// Must reset all properties;
+				fruitOptions.forEach(o=>{
+					self.USER_MODEL.profile[o.prop] = false;
+					$("#"+o.id).prop("checked", false);
+				});
+				
 				// Remove class="required" from all 3 other questions:
 				if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
 				if ($("#required-B").hasClass("required")) { $('#required-B').removeClass('required'); }
@@ -273,13 +279,23 @@ export default class FruitsView extends View {
 		
 		$("#fruits-ok").on('click', function() {
 			// Save all
-			const data = [
-				{propName:'Dummy_fruit_farm', value:self.USER_MODEL.profile.Dummy_fruit_farm},
-				{propName:'fruits_total', value:self.USER_MODEL.profile.fruits_total},
-				{propName:'Hectare_fruits', value:self.USER_MODEL.profile.Hectare_fruits}
-			];
+			// Note: change all boolean values (true => 1 and false => 0)
+			// and 'Yes' => 1 and 'No' => 0 if indicated that way.
+			const data = [];
+			if (self.USER_MODEL.profile.Dummy_fruit_farm === 'Yes') {
+				data.push({propName:'Dummy_fruit_farm', value:1});
+			} else {
+				data.push({propName:'Dummy_fruit_farm', value:0});
+			}
+			data.push({propName:'fruits_total', value:self.USER_MODEL.profile.fruits_total});
+			data.push({propName:'Hectare_fruits', value:self.USER_MODEL.profile.Hectare_fruits});
+			
 			fruitOptions.forEach(o=>{
-				data.push({propName:o.prop, value:self.USER_MODEL.profile[o.prop]});
+				if (self.USER_MODEL.profile[o.prop]) {
+					data.push({propName:o.prop, value:1});
+				} else {
+					data.push({propName:o.prop, value:0});
+				}
 			});
 			console.log(['About to save data=',data]);
 			self.USER_MODEL.updateUserProfile(data);

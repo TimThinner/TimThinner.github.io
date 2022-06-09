@@ -534,7 +534,13 @@ export default class UserModel extends Model {
 					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:myJson.message});
 				})
 				.catch(function(error){
-					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:error});
+					let msg = "Error: ";
+					if (typeof error.message !== 'undefined') {
+						msg += error.message;
+					} else {
+						msg += 'NOT SPECIFIED in error.message.';
+					}
+					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:msg});
 				});
 		}
 	}

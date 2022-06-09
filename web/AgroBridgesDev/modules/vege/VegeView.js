@@ -247,10 +247,17 @@ export default class VegeView extends View {
 				$("#vege-query-2").hide();
 				$("#vege-query-3").hide();
 				
+				// Must reset all properties;
+				vegeOptions.forEach(o=>{
+					self.USER_MODEL.profile[o.prop] = false;
+					$("#"+o.id).prop("checked", false);
+				});
+				
 				// Remove class="required" from all 3 other questions:
 				if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
 				if ($("#required-B").hasClass("required")) { $('#required-B').removeClass('required'); }
 				if ($("#required-C").hasClass("required")) { $('#required-C').removeClass('required'); }
+				
 				
 			} else if (this.value == 'yes') {
 				console.log('Dummy_veggie_farm Yes');
@@ -280,13 +287,24 @@ export default class VegeView extends View {
 		
 		$("#vege-ok").on('click', function() {
 			// Save all
-			const data = [
-				{propName:'Dummy_veggie_farm', value:self.USER_MODEL.profile.Dummy_veggie_farm},
-				{propName:'vegetables_total', value:self.USER_MODEL.profile.vegetables_total},
-				{propName:'Hectare_veggies', value:self.USER_MODEL.profile.Hectare_veggies}
-			];
+			// Note: change all boolean values (true => 1 and false => 0)
+			// and 'Yes' => 1 and 'No' => 0 if indicated that way.
+			
+			const data = [];
+			if (self.USER_MODEL.profile.Dummy_veggie_farm === 'Yes') {
+				data.push({propName:'Dummy_veggie_farm', value:1});
+			} else {
+				data.push({propName:'Dummy_veggie_farm', value:0});
+			}
+			data.push({propName:'vegetables_total', value:self.USER_MODEL.profile.vegetables_total});
+			data.push({propName:'Hectare_veggies', value:self.USER_MODEL.profile.Hectare_veggies});
+			
 			vegeOptions.forEach(o=>{
-				data.push({propName:o.prop, value:self.USER_MODEL.profile[o.prop]});
+				if (self.USER_MODEL.profile[o.prop]) {
+					data.push({propName:o.prop, value:1});
+				} else {
+					data.push({propName:o.prop, value:0});
+				}
 			});
 			console.log(['About to save data=',data]);
 			self.USER_MODEL.updateUserProfile(data);

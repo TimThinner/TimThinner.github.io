@@ -263,14 +263,27 @@ export default class AnimalsView extends View {
 		
 		$("#animals-ok").on('click', function() {
 			// Save all
-			const data = [
-				{propName:'Dummy_livestock', value:self.USER_MODEL.profile.Dummy_livestock}
-			];
+			// Note: change all boolean values (true => 1 and false => 0)
+			// and 'Yes' => 1 and 'No' => 0 if indicated that way.
+			const data = [];
+			if (self.USER_MODEL.profile.Dummy_livestock === 'Yes') {
+				data.push({propName:'Dummy_livestock', value:1});
+			} else {
+				data.push({propName:'Dummy_livestock', value:0});
+			}
 			anim_a_Options.forEach(o=>{
-				data.push({propName:o.prop, value:self.USER_MODEL.profile[o.prop]});
+				if (self.USER_MODEL.profile[o.prop]) {
+					data.push({propName:o.prop, value:1});
+				} else {
+					data.push({propName:o.prop, value:0});
+				}
 			});
 			anim_b_Options.forEach(o=>{
-				data.push({propName:o.prop, value:self.USER_MODEL.profile[o.prop]});
+				if (self.USER_MODEL.profile[o.prop]) {
+					data.push({propName:o.prop, value:1});
+				} else {
+					data.push({propName:o.prop, value:0});
+				}
 			});
 			console.log(['About to save data=',data]);
 			self.USER_MODEL.updateUserProfile(data);

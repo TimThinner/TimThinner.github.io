@@ -482,10 +482,10 @@ export default class UserModel extends Model {
 			{propName:'Hectare_farm', value:20},
 			{propName:'Delivery_month_total', value:3}
 		];*/
-		const validData = [];
+		const validData = {};
 		data.forEach(d => {
 			if (Object.keys(self.profile).includes(d.propName)) {
-				validData.push(d);
+				validData[d.propName] = d.value;
 			}
 		});
 		
@@ -493,11 +493,11 @@ export default class UserModel extends Model {
 		
 		if (this.MOCKUP) {
 			// Just update UserModel profile and notify.
-			validData.forEach(d => {
-				if (Object.keys(this.profile).includes(d.propName)) {
-					this.profile[d.propName] = d.value;
-				}
-			});
+			//validData.forEach(d => {
+			//	if (Object.keys(this.profile).includes(d.propName)) {
+			//		this.profile[d.propName] = d.value;
+			//	}
+			//});
 			setTimeout(() => this.notifyAll({model:self.name, method:'updateUserProfile', status:200, message:'OK'}), 500);
 			
 		} else {
@@ -521,11 +521,11 @@ export default class UserModel extends Model {
 				})
 				.then(function(myJson){
 					if (status === 200) {
-						validData.forEach(d => {
-							if (Object.keys(self.profile).includes(d.propName)) {
-								self.profile[d.propName] = d.value;
-							}
-						});
+						//validData.forEach(d => {
+						//	if (Object.keys(self.profile).includes(d.propName)) {
+						//		self.profile[d.propName] = d.value;
+						//	}
+						//});
 						//self.store();
 					}
 					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:myJson.message});

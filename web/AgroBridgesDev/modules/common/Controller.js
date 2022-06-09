@@ -25,7 +25,7 @@ export default class Controller {
 	}
 	
 	hide() {
-		console.log(['HIDE CONTROLLER ',this.name]);
+		//console.log(['HIDE CONTROLLER ',this.name]);
 		if (this.view) {
 			this.view.hide();
 		}
@@ -35,7 +35,7 @@ export default class Controller {
 	// So it is important to make sure that before polling starts we have right parameters 
 	// set at the models.
 	show() {
-		console.log(['SHOW CONTROLLER ',this.name]);
+		//console.log(['SHOW CONTROLLER ',this.name]);
 		if (this.visible && this.view) {
 			console.log('Show the VIEW...');
 			this.view.show();
@@ -57,7 +57,7 @@ export default class Controller {
 	*/
 	notify(options) {
 		if (options.model==='MenuModel' && options.method==='selected') {
-			console.log(['In ',this.name,' selected = ',options.selected]);
+			//console.log(['In ',this.name,' selected = ',options.selected]);
 			if (this.name === options.selected) {
 				setTimeout(() => {
 					this.visible = true;

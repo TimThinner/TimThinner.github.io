@@ -507,7 +507,7 @@ export default class UserModel extends Model {
 			myHeaders.append("Content-Type", "application/json");
 			
 			const myPut = {
-				method: 'PUT',
+				method: 'POST',
 				headers: myHeaders,
 				body: JSON.stringify(validData)
 			};

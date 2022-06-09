@@ -286,7 +286,7 @@ export default class AnimalsView extends View {
 				}
 			});
 			console.log(['About to save data=',data]);
-			self.USER_MODEL.updateUserProfile(data);
+			self.USER_MODEL.updateUserProfile(data, "prod_nl_1");
 		});
 		this.rendered = true;
 	}

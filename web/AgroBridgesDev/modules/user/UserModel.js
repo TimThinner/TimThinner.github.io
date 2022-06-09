@@ -476,7 +476,7 @@ export default class UserModel extends Model {
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:200,message:'OK'}), 100);
 	}
 	
-	updateUserProfile(data) {
+	updateUserProfile(data, uid) {
 		const self = this;
 		/*const data = [
 			{propName:'Hectare_farm', value:20},
@@ -489,11 +489,12 @@ export default class UserModel extends Model {
 			}
 		});
 		
-		validData['user_id'] = "prod_nl_1";
-		
+		if (typeof uid !== 'undefined') {
+			validData['user_id'] = uid; //"prod_nl_1";
+		}
 		console.log(['updateUserProfile validData=',validData]);
 		
-		if (this.MOCKUP) {
+		if (this.MOCKUP || typeof uid === 'undefined') {
 			// Just update UserModel profile and notify.
 			//validData.forEach(d => {
 			//	if (Object.keys(this.profile).includes(d.propName)) {

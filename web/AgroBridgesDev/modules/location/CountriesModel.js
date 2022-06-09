@@ -92,7 +92,7 @@ export default class CountriesModel extends Model {
 	*/
 	
 	fillSimulated() {
-		console.log(['FILL SIMULATED COUNTRIES');
+		console.log('FILL SIMULATED COUNTRIES');
 		
 		const c = this.simulation_backup;
 		Object.keys(c).forEach(key => {

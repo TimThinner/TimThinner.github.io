@@ -58,6 +58,7 @@ export default class ProducerView extends View {
 					// Report error.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
+					$('#producer-ok').removeClass('disabled');
 					
 					// After 1 second go back to MAIN-page automatically.
 					setTimeout(() => this.controller.models['MenuModel'].setSelected('main'), 1000);
@@ -134,20 +135,48 @@ export default class ProducerView extends View {
 		
 		// Restore current selection:
 		// Only one of these can be true at any one time (radio buttons).
-		$("#welcome-"+this.USER_MODEL.profile.Likert_welcome_farm).prop("checked", true);
-		$("#consumer-"+this.USER_MODEL.profile.Likert_consumer_con).prop("checked", true);
+		if (typeof self.USER_MODEL.profile.Likert_welcome_farm !== 'undefined') {
+			$("#welcome-"+this.USER_MODEL.profile.Likert_welcome_farm).prop("checked", true);
+		}
+		
+		if (typeof self.USER_MODEL.profile.Likert_consumer_con !== 'undefined') {
+			$("#consumer-"+this.USER_MODEL.profile.Likert_consumer_con).prop("checked", true);
+		}
+		
+		if (typeof self.USER_MODEL.profile.Likert_consumer_con !== 'undefined' && typeof self.USER_MODEL.profile.Likert_welcome_farm !== 'undefined') {
+			// OK.
+		} else {
+			$('#producer-ok').addClass('disabled');
+		}
 		
 		$('input[type=radio][name=welcomeStatus]').change(function() {
 			const val = parseInt(this.value);
 			self.USER_MODEL.profile.Likert_welcome_farm = val;
+			
+			if (typeof self.USER_MODEL.profile.Likert_consumer_con !== 'undefined' && 
+				typeof self.USER_MODEL.profile.Likert_welcome_farm !== 'undefined') {
+				$('#producer-ok').removeClass('disabled');
+			} else {
+				$('#producer-ok').addClass('disabled');
+			}
 		});
 		
 		$('input[type=radio][name=consumerStatus]').change(function() {
 			const val = parseInt(this.value);
 			self.USER_MODEL.profile.Likert_consumer_con = val;
+			
+			if (typeof self.USER_MODEL.profile.Likert_consumer_con !== 'undefined' && 
+				typeof self.USER_MODEL.profile.Likert_welcome_farm !== 'undefined') {
+				$('#producer-ok').removeClass('disabled');
+			} else {
+				$('#producer-ok').addClass('disabled');
+			}
 		});
 		
 		$("#producer-ok").on('click', function() {
+			
+			console.log('producer-ok CLICKED!');
+			$('#producer-ok').addClass('disabled');
 			
 			// Tell user that this might take some time...
 			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';

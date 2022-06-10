@@ -221,7 +221,8 @@ export default class MainView extends View {
 		*/
 		let icon_w = 2*r;
 		let icon_x = -icon_w*0.5;
-		let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		//let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		let icon_h = icon_w; // NEW: all used photos are square!
 		let icon_y = - icon_h*0.5;
 		
 		//const image_w = r;
@@ -280,7 +281,7 @@ export default class MainView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './img/farm.png');
+			img.setAttribute('href', './img/photo-farm.jpg');
 			group.appendChild(img);
 			
 			
@@ -291,7 +292,7 @@ export default class MainView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './img/activities.png');
+			img.setAttribute('href', './img/photo-activities.jpg');
 			group.appendChild(img);
 			
 			
@@ -301,7 +302,7 @@ export default class MainView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './img/farmer.png');
+			img.setAttribute('href', './img/photo-farmer.jpg');
 			group.appendChild(img);
 		}
 		this.appendLabel(group, type, r);

@@ -73,7 +73,7 @@ export default class FruitsView extends View {
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
 					
-					// After 2 seconds go back to FARM-page automatically.
+					// After 1 second go back to FARM-page automatically.
 					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 1000);
 				}
 			}

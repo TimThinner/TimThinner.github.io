@@ -53,10 +53,14 @@ export default class ActivitiesView extends View {
 					// After 1 second go back to MAIN-page automatically.
 					setTimeout(() => this.controller.models['MenuModel'].setSelected('main'), 1000);
 					
+					
 				} else {
 					// Report error.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
+					
+					// After 1 second go back to MAIN-page automatically.
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('main'), 1000);
 				}
 			}
 		}
@@ -184,17 +188,30 @@ export default class ActivitiesView extends View {
 		});
 		
 		$("#activities-ok").on('click', function() {
+			
+			// Tell user that this might take some time...
+			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			$('#'+self.FELID).empty().append(html);
+			
 			// Save all
 			const data = [];
 			
 			a_Options.forEach(o=>{
-				data.push({propName:o.prop, value:self.USER_MODEL.profile[o.prop]});
+				if (self.USER_MODEL.profile[o.prop]) {
+					data.push({propName:o.prop, value:1});
+				} else {
+					data.push({propName:o.prop, value:0});
+				}
 			});
 			b_Options.forEach(o=>{
-				data.push({propName:o.prop, value:self.USER_MODEL.profile[o.prop]});
+				if (self.USER_MODEL.profile[o.prop]) {
+					data.push({propName:o.prop, value:1});
+				} else {
+					data.push({propName:o.prop, value:0});
+				}
 			});
 			console.log(['About to save data=',data]);
-			self.USER_MODEL.updateUserProfile(data);
+			self.USER_MODEL.updateUserProfile(data, "prod_nl_1");
 		});
 		this.rendered = true;
 	}

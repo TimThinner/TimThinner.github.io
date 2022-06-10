@@ -369,7 +369,7 @@ export default class FarmView extends View {
 	appendTitle() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const r = this.sunRadius(); // Radius 12,5%
-		const fontsize = r;
+		const fontsize = 0.75*r;
 		/*if (r <= 75) {
 			fontsize = 50;
 		} else if (r > 75 && r <= 124) {

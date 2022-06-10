@@ -268,6 +268,10 @@ export default class AnimalsView extends View {
 			// Save all
 			// Note: change all boolean values (true => 1 and false => 0)
 			// and 'Yes' => 1 and 'No' => 0 if indicated that way.
+			// Tell user that this might take some time...
+			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			$('#'+self.FELID).empty().append(html);
+			
 			const data = [];
 			if (self.USER_MODEL.profile.Dummy_livestock === 'Yes') {
 				data.push({propName:'Dummy_livestock', value:1});

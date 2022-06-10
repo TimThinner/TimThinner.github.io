@@ -215,9 +215,10 @@ export default class FarmView extends View {
 		LIGHT_ORANGE:'#F4D25A',
 		DARK_ORANGE:'#EF8806'
 		*/
-		let icon_w = 2*r;
+		let icon_w = 1.5*r;
 		let icon_x = -icon_w*0.5;
-		let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		//let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		let icon_h = icon_w; // NEW: all used photos are square!
 		let icon_y = - icon_h*0.5;
 		
 		const image_w = 1.8*r;
@@ -275,7 +276,7 @@ export default class FarmView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './img/location.png');
+			img.setAttribute('href', './img/photo-location.png');
 			group.appendChild(img);
 			
 		} else if (type === 'INFO') {
@@ -284,7 +285,7 @@ export default class FarmView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './img/info.png');
+			img.setAttribute('href', './img/photo-info.png');
 			group.appendChild(img);
 			
 		} else if (type === 'VEGETABLES') {
@@ -293,7 +294,7 @@ export default class FarmView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './img/vege.png');
+			img.setAttribute('href', './img/photo-veges.png');
 			group.appendChild(img);
 			
 		} else if (type === 'ANIMALS') {
@@ -302,7 +303,7 @@ export default class FarmView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './img/animals.png');
+			img.setAttribute('href', './img/photo-animals.png');
 			group.appendChild(img);
 			
 		} else if (type === 'FRUITS') {
@@ -311,7 +312,7 @@ export default class FarmView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './img/fruits.png');
+			img.setAttribute('href', './img/photo-fruits.png');
 			group.appendChild(img);
 		}
 		this.appendLabel(group, type, r);

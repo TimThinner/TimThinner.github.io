@@ -185,7 +185,7 @@ export default class LocationView extends View {
 					$('#'+this.FELID).empty().append(html);
 					
 					// After 2 seconds go back to FARM-page automatically.
-					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 2000);
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 1000);
 				}
 			}
 		}
@@ -312,6 +312,11 @@ export default class LocationView extends View {
 		});
 		
 		$("#location-ok").on('click', function() {
+			
+			// Tell user that this might take some time...
+			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			$('#'+self.FELID).empty().append(html);
+			
 			// Save all
 			const data = [
 				{propName:'Country', value:self.USER_MODEL.profile['Country']},

@@ -82,7 +82,7 @@ export default class AnimalsView extends View {
 					$('#'+this.FELID).empty().append(html);
 					
 					// After 2 seconds go back to FARM-page automatically.
-					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 2000);
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 1000);
 				}
 			}
 		}

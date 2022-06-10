@@ -219,7 +219,7 @@ export default class MainView extends View {
 		LIGHT_ORANGE:'#F4D25A',
 		DARK_ORANGE:'#EF8806'
 		*/
-		let icon_w = 2*r;
+		let icon_w = 1.5*r;
 		let icon_x = -icon_w*0.5;
 		//let icon_h = icon_w*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
 		let icon_h = icon_w; // NEW: all used photos are square!

@@ -102,7 +102,7 @@ export default class ActivitiesView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">ACTIVITIES</h3>'+
-						'<p><img src="./img/activities.png" height="150"/></p>'+
+						'<p><img src="./img/photo-activities.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

@@ -215,7 +215,7 @@ export default class LocationView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">FARM LOCATION</h3>'+
-						'<p><img src="./img/location.png" height="150"/></p>'+
+						'<p><img src="./img/photo-location.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

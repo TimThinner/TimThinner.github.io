@@ -138,7 +138,7 @@ export default class AnimalsView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">FARM ANIMALS</h3>'+
-						'<p><img src="./img/animals.png" height="150"/></p>'+
+						'<p><img src="./img/photo-animals.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

@@ -112,7 +112,7 @@ export default class FruitsView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">FARM FRUITS</h3>'+
-						'<p><img src="./img/fruits.png" height="150"/></p>'+
+						'<p><img src="./img/photo-fruits.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

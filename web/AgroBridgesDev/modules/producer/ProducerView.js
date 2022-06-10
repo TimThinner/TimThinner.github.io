@@ -86,7 +86,7 @@ export default class ProducerView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">PRODUCER</h3>'+
-						'<p><img src="./img/farmer.png" height="150"/></p>'+
+						'<p><img src="./img/photo-farmer.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

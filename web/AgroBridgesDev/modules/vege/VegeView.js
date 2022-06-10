@@ -117,7 +117,7 @@ export default class VegeView extends View {
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">FARM VEGETABLES</h3>'+
-						'<p><img src="./img/vege.png" height="150"/></p>'+
+						'<p><img src="./img/photo-veges.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

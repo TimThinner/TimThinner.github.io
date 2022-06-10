@@ -302,7 +302,7 @@ export default class MainView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './img/photo-farmer.jpg');
+			img.setAttribute('href', './img/photo-farmer.png');
 			group.appendChild(img);
 		}
 		this.appendLabel(group, type, r);

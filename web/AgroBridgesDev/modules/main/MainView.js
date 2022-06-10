@@ -281,7 +281,7 @@ export default class MainView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './img/photo-farm.jpg');
+			img.setAttribute('href', './img/photo-farm.png');
 			group.appendChild(img);
 			
 			
@@ -292,7 +292,7 @@ export default class MainView extends View {
 			img.setAttribute('y', icon_y);
 			img.setAttribute('width', icon_w);
 			img.setAttribute('height', icon_h);
-			img.setAttribute('href', './img/photo-activities.jpg');
+			img.setAttribute('href', './img/photo-activities.png');
 			group.appendChild(img);
 			
 			

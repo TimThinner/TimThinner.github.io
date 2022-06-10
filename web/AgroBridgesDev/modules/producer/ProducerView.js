@@ -58,7 +58,10 @@ export default class ProducerView extends View {
 					// Report error.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
-					$('#producer-ok').removeClass('disabled');
+					
+					// If we do not go back we must remove the "disabled" -class..
+					// OR we must allow some kind of BACK-button way to solve this "stalemate".
+					// $('#producer-ok').removeClass('disabled');
 					
 					// After 1 second go back to MAIN-page automatically.
 					setTimeout(() => this.controller.models['MenuModel'].setSelected('main'), 1000);

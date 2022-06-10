@@ -77,6 +77,8 @@ export default class VegeView extends View {
 					$('#'+this.FELID).empty().append(html);
 					
 					// After 1 second go back to FARM-page automatically.
+					// $('#vege-ok').removeClass('disabled');
+					
 					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 1000);
 				}
 			}
@@ -171,7 +173,12 @@ export default class VegeView extends View {
 		const vegetables_total  = this.USER_MODEL.profile.vegetables_total;
 		const Hectare_veggies = this.USER_MODEL.profile.Hectare_veggies;
 		
-		if (this.USER_MODEL.profile.Dummy_veggie_farm === 'No') {
+		
+		if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
+			
+			$('#vege-ok').addClass('disabled');
+			
+		} else if (this.USER_MODEL.profile.Dummy_veggie_farm === 'No') {
 			$("#vege-no").prop("checked", true);
 			$("#vege-query-1").hide();
 			$("#vege-query-2").hide();
@@ -180,9 +187,9 @@ export default class VegeView extends View {
 		} else if (this.USER_MODEL.profile.Dummy_veggie_farm === 'Yes') {
 			$("#vege-yes").prop("checked", true);
 			
-			$("#vege-query-1").show();
-			$("#vege-query-2").show();
-			$("#vege-query-3").show();
+			//$("#vege-query-1").show(); These are already shown
+			//$("#vege-query-2").show();
+			//$("#vege-query-3").show();
 			
 			// Add class="required" to all 3 other questions:
 			$('#required-A').addClass('required');
@@ -242,6 +249,12 @@ export default class VegeView extends View {
 		});
 		
 		$('input[type=radio][name=vegeStatus]').change(function() {
+			
+			// Enable the OK-button.
+			if ($('#vege-ok').hasClass('disabled')) {
+				$('#vege-ok').removeClass('disabled');
+			}
+			
 			if (this.value == 'no') {
 				console.log('Dummy_veggie_farm No'); // Dummy_veggie_farm NO
 				self.USER_MODEL.profile.Dummy_veggie_farm = 'No';
@@ -293,6 +306,8 @@ export default class VegeView extends View {
 			// Note: change all boolean values (true => 1 and false => 0)
 			// and 'Yes' => 1 and 'No' => 0 if indicated that way.
 			// Tell user that this might take some time...
+			$('#vege-ok').addClass('disabled');
+			
 			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
 			$('#'+self.FELID).empty().append(html);
 			

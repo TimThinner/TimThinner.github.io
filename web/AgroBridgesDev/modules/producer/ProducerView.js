@@ -58,6 +58,9 @@ export default class ProducerView extends View {
 					// Report error.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
+					
+					// After 1 second go back to MAIN-page automatically.
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('main'), 1000);
 				}
 			}
 		}
@@ -145,13 +148,18 @@ export default class ProducerView extends View {
 		});
 		
 		$("#producer-ok").on('click', function() {
+			
+			// Tell user that this might take some time...
+			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			$('#'+self.FELID).empty().append(html);
+			
 			// Save all
 			const data = [
 				{propName:'Likert_welcome_farm', value:self.USER_MODEL.profile.Likert_welcome_farm},
 				{propName:'Likert_consumer_con', value:self.USER_MODEL.profile.Likert_consumer_con}
 			];
 			console.log(['About to save data=',data]);
-			self.USER_MODEL.updateUserProfile(data);
+			self.USER_MODEL.updateUserProfile(data, "prod_nl_1");
 		});
 		this.rendered = true;
 	}

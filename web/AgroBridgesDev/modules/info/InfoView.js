@@ -57,6 +57,9 @@ export default class InfoView extends View {
 					// Report error.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
+					
+					// After 1 second go back to MAIN-page automatically.
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 1000);
 				}
 			}
 		}
@@ -248,17 +251,51 @@ export default class InfoView extends View {
 		});
 		
 		$("#info-ok").on('click', function() {
+			
+			// Tell user that this might take some time...
+			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			$('#'+self.FELID).empty().append(html);
+			
 			const data = [
 				{propName:'Hectare_farm', value:self.USER_MODEL.profile.Hectare_farm},
-				{propName:'Delivery_month_total', value:self.USER_MODEL.profile.Delivery_month_total},
-				{propName:'Dummy_organic', value:self.USER_MODEL.profile.Dummy_organic},
-				{propName:'Cert_Min', value:self.USER_MODEL.profile.Cert_Min},
-				{propName:'Cert_High', value:self.USER_MODEL.profile.Cert_High},
-				{propName:'Cert_uncertified', value:self.USER_MODEL.profile.Cert_uncertified},
-				{propName:'Harv_farmers_org', value:self.USER_MODEL.profile.Harv_farmers_org},
-				{propName:'Harv_Clean_Sort_Ref', value:self.USER_MODEL.profile.Harv_Clean_Sort_Ref}
+				{propName:'Delivery_month_total', value:self.USER_MODEL.profile.Delivery_month_total}
 			];
-			self.USER_MODEL.updateUserProfile(data);
+			
+			if (self.USER_MODEL.profile.Dummy_organic === true) {
+				data.push({propName:'Dummy_organic', value:1});
+			} else {
+				data.push({propName:'Dummy_organic', value:0});
+			}
+			
+			if (self.USER_MODEL.profile.Cert_Min === true) {
+				data.push({propName:'Cert_Min', value:1});
+			} else {
+				data.push({propName:'Cert_Min', value:0});
+			}
+			
+			if (self.USER_MODEL.profile.Cert_High === true) {
+				data.push({propName:'Cert_High', value:1});
+			} else {
+				data.push({propName:'Cert_High', value:0});
+			}
+			
+			if (self.USER_MODEL.profile.Cert_uncertified === true) {
+				data.push({propName:'Cert_uncertified', value:1});
+			} else {
+				data.push({propName:'Cert_uncertified', value:0});
+			}
+			if (self.USER_MODEL.profile.Harv_farmers_org === true) {
+				data.push({propName:'Harv_farmers_org', value:1});
+			} else {
+				data.push({propName:'Harv_farmers_org', value:0});
+			}
+			if (self.USER_MODEL.profile.Harv_Clean_Sort_Ref === true) {
+				data.push({propName:'Harv_Clean_Sort_Ref', value:1});
+			} else {
+				data.push({propName:'Harv_Clean_Sort_Ref', value:0});
+			}
+			
+			self.USER_MODEL.updateUserProfile(data, "prod_nl_1");
 		});
 		
 		this.rendered = true;

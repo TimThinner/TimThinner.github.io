@@ -208,6 +208,7 @@ export default class LocationView extends View {
 		const ll_region_query = LM['translation'][sel]['region_query'];
 		const ll_distance_small_query = LM['translation'][sel]['distance_drive_small_query'];
 		const ll_distance_major_query = LM['translation'][sel]['distance_drive_major_query'];
+		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
@@ -314,7 +315,7 @@ export default class LocationView extends View {
 		$("#location-ok").on('click', function() {
 			
 			// Tell user that this might take some time...
-			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 			$('#'+self.FELID).empty().append(html);
 			
 			// Save all

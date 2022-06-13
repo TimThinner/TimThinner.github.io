@@ -87,6 +87,8 @@ export default class InfoView extends View {
 		const ll_harvest_only = LM['translation'][sel]['Harv_farmers_org'];
 		const ll_harvest_plus = LM['translation'][sel]['Harv_Clean_Sort_Ref'];
 		
+		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
+		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
@@ -253,7 +255,7 @@ export default class InfoView extends View {
 		$("#info-ok").on('click', function() {
 			
 			// Tell user that this might take some time...
-			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 			$('#'+self.FELID).empty().append(html);
 			
 			const data = [

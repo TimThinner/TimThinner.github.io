@@ -100,6 +100,7 @@ export default class AnimalsView extends View {
 		const ll_offering_query = LM['translation'][sel]['products_offering_query'];
 		const ll_animals_query = LM['translation'][sel]['animals_query'];
 		const ll_dairy_query = LM['translation'][sel]['dairy_products_query'];
+		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const anim_a_Options = [
 			{prop:'Number_cows',id:'cows',label:''},
@@ -269,7 +270,7 @@ export default class AnimalsView extends View {
 			// Note: change all boolean values (true => 1 and false => 0)
 			// and 'Yes' => 1 and 'No' => 0 if indicated that way.
 			// Tell user that this might take some time...
-			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 			$('#'+self.FELID).empty().append(html);
 			
 			const data = [];

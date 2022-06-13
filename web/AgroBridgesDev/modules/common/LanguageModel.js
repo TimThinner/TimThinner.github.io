@@ -228,7 +228,8 @@ export default class LanguageModel extends Model {
 				'region_low':'low',
 				'region_medium':'medium',
 				'region_high':'high',
-				'PROFILE_SAVE_OK':'Profile saved OK'
+				'PROFILE_SAVE_OK':'Profile saved OK',
+				'no_database_message':'<b>WAIT for few seconds...</b> if the backend is not running in your machine, we continue after timeout error.'
 			}
 		}
 	}

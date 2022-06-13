@@ -74,6 +74,7 @@ export default class ActivitiesView extends View {
 		const sel = LM.selected;
 		const ll_marketing_channel_query =  LM['translation'][sel]['marketting_channel_query'];
 		const ll_offering_query =  LM['translation'][sel]['offering_query'];
+		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const a_Options = [
 			{prop:'Dummy_wholesale',id:'wholesale',label:''},
@@ -190,7 +191,7 @@ export default class ActivitiesView extends View {
 		$("#activities-ok").on('click', function() {
 			
 			// Tell user that this might take some time...
-			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 			$('#'+self.FELID).empty().append(html);
 			
 			// Save all

@@ -93,6 +93,7 @@ export default class FruitsView extends View {
 		const ll_fruits_query = LM['translation'][sel]['fruits_query'];
 		const ll_how_many_query = LM['translation'][sel]['fruits_how_many_query'];
 		const ll_hectares_query = LM['translation'][sel]['fruit_hectare_query'];
+		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const fruitOptions = [
 			{prop:'Dummy_Stonefruits',id:'stonefruits',label:''},
@@ -286,7 +287,7 @@ export default class FruitsView extends View {
 			// and 'Yes' => 1 and 'No' => 0 if indicated that way.
 			
 			// Tell user that this might take some time...
-			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 			$('#'+self.FELID).empty().append(html);
 			
 			const data = [];

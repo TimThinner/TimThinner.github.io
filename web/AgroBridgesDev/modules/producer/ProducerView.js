@@ -87,6 +87,8 @@ export default class ProducerView extends View {
 		const ll_likert_value_4 = LM['translation'][sel]['Self_desc_likert_value_4'];
 		const ll_likert_value_5 = LM['translation'][sel]['Self_desc_likert_value_5'];
 		
+		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
+		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
@@ -182,7 +184,7 @@ export default class ProducerView extends View {
 			$('#producer-ok').addClass('disabled');
 			
 			// Tell user that this might take some time...
-			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 			$('#'+self.FELID).empty().append(html);
 			
 			// Save all

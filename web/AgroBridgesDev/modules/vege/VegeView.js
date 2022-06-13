@@ -98,6 +98,7 @@ export default class VegeView extends View {
 		const ll_vege_query = LM['translation'][sel]['vegetables_query'];
 		const ll_how_many_query = LM['translation'][sel]['vegetables_how_many_query'];
 		const ll_hectares_query = LM['translation'][sel]['vege_hectare_query'];
+		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const vegeOptions = [
 			{prop:'Dummy_lettuce',id:'lettuce',label:''},
@@ -274,7 +275,6 @@ export default class VegeView extends View {
 				if ($("#required-B").hasClass("required")) { $('#required-B').removeClass('required'); }
 				if ($("#required-C").hasClass("required")) { $('#required-C').removeClass('required'); }
 				
-				
 			} else if (this.value == 'yes') {
 				console.log('Dummy_veggie_farm Yes');
 				self.USER_MODEL.profile.Dummy_veggie_farm = 'Yes';
@@ -308,7 +308,7 @@ export default class VegeView extends View {
 			// Tell user that this might take some time...
 			$('#vege-ok').addClass('disabled');
 			
-			const html = '<div class="highlighted-message"><p><b>WAIT...</b> if the backend is not running in your machine, this takes approximately 20 seconds and after error message continues without saving anything to database.</p></div>';
+			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 			$('#'+self.FELID).empty().append(html);
 			
 			const data = [];

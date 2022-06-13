@@ -502,17 +502,19 @@ export default class UserModel extends Model {
 			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
 			
 			const myHeaders = new Headers();
-			const authorizationToken = 'Bearer '+this.token;
-			myHeaders.append("Authorization", authorizationToken);
+			if (typeof this.token !== 'undefined') {
+				const authorizationToken = 'Bearer '+this.token;
+				myHeaders.append("Authorization", authorizationToken);
+			}
 			myHeaders.append("Content-Type", "application/json");
 			
-			const myPut = {
+			const myPost = {
 				method: 'POST',
 				headers: myHeaders,
 				body: JSON.stringify(validData)
 			};
 			//const myRequest = new Request(this.backend + '/users/'+this.id, myPut);
-			const myRequest = new Request(this.backend + '/update_user_data', myPut);
+			const myRequest = new Request(this.backend + '/update_user_data', myPost);
 			fetch(myRequest)
 				.then(function(response){
 					status = response.status;

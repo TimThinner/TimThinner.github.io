@@ -1,0 +1,55 @@
+/*
+	Dropdowns open in hover.
+	But not for mobile device screen size.
+
+@media only screen and (min-width: 768px) {
+	.dropdown:hover .dropdown-menu {
+		display: block;
+	}
+}
+*/
+.jumbotron {
+	background-image: linear-gradient(rgba(200, 230, 255, 0.9), rgba(200, 230, 255, 0.5)), url("./assets/images/jumbocogs.jpg");
+	background-size: cover;
+	background-position: center center;
+	position: relative;
+}
+/*
+.navbar li.nav-item a.nav-link {
+	color: #fff;
+}
+.navbar .dropdown-item {
+	color: #fff;
+}
+.navbar .dropdown-menu {
+	background-color: #eee;
+}
+*/
+.dropdown-menu li a {
+	display: block;
+	padding: 3px 16px;
+}
+.search-container ul li a {
+	cursor: pointer;
+	width: 100%;
+}
+.search-container ul li a:hover {
+	background-color: rgba(90,166,85,0.5);
+}
+.search-container button.btn-secondary--search {
+	color:#5aa655;
+	width:80px;
+	background-color:#fff;
+}
+@media only screen and (min-width: 768px) {
+	.search-container button.btn-secondary--search {
+		width:100px;
+	}
+}
+button.btn-search-context {
+	background-color:#5aa655; /* 5a=90   a6=166  55=85*/
+	width:120px;
+}
+.search-container button.btn-secondary--search:hover {
+	background-color:#efe;
+}

@@ -253,11 +253,11 @@ export default class InfoView extends View {
 		});
 		
 		$("#info-ok").on('click', function() {
-			
-			// Tell user that this might take some time...
-			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
-			$('#'+self.FELID).empty().append(html);
-			
+			if (self.USER_MODEL.MOCKUP === false) {
+				// Tell user that this might take some time...
+				const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
+				$('#'+self.FELID).empty().append(html);
+			}
 			const data = [
 				{propName:'Hectare_farm', value:self.USER_MODEL.profile.Hectare_farm},
 				{propName:'Delivery_month_total', value:self.USER_MODEL.profile.Delivery_month_total}

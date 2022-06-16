@@ -189,14 +189,13 @@ export default class ActivitiesView extends View {
 		});
 		
 		$("#activities-ok").on('click', function() {
-			
-			// Tell user that this might take some time...
-			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
-			$('#'+self.FELID).empty().append(html);
-			
+			if (self.USER_MODEL.MOCKUP === false) {
+				// Tell user that this might take some time...
+				const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
+				$('#'+self.FELID).empty().append(html);
+			}
 			// Save all
 			const data = [];
-			
 			a_Options.forEach(o=>{
 				if (self.USER_MODEL.profile[o.prop]) {
 					data.push({propName:o.prop, value:1});

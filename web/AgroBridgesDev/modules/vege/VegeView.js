@@ -305,12 +305,14 @@ export default class VegeView extends View {
 			// Save all
 			// Note: change all boolean values (true => 1 and false => 0)
 			// and 'Yes' => 1 and 'No' => 0 if indicated that way.
-			// Tell user that this might take some time...
+			
 			$('#vege-ok').addClass('disabled');
 			
-			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
-			$('#'+self.FELID).empty().append(html);
-			
+			if (self.USER_MODEL.MOCKUP === false) {
+				// Tell user that this might take some time...
+				const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
+				$('#'+self.FELID).empty().append(html);
+			}
 			const data = [];
 			if (self.USER_MODEL.profile.Dummy_veggie_farm === 'Yes') {
 				data.push({propName:'Dummy_veggie_farm', value:1});

@@ -180,13 +180,13 @@ export default class ProducerView extends View {
 		
 		$("#producer-ok").on('click', function() {
 			
-			console.log('producer-ok CLICKED!');
 			$('#producer-ok').addClass('disabled');
 			
-			// Tell user that this might take some time...
-			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
-			$('#'+self.FELID).empty().append(html);
-			
+			if (self.USER_MODEL.MOCKUP === false) {
+				// Tell user that this might take some time...
+				const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
+				$('#'+self.FELID).empty().append(html);
+			}
 			// Save all
 			const data = [
 				{propName:'Likert_welcome_farm', value:self.USER_MODEL.profile.Likert_welcome_farm},

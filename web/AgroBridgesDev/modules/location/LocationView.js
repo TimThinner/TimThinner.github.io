@@ -327,11 +327,11 @@ export default class LocationView extends View {
 		});
 		
 		$("#location-ok").on('click', function() {
-			
-			// Tell user that this might take some time...
-			const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
-			$('#'+self.FELID).empty().append(html);
-			
+			if (self.USER_MODEL.MOCKUP === false) {
+				// Tell user that this might take some time...
+				const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
+				$('#'+self.FELID).empty().append(html);
+			}
 			// Save all
 			const data = [
 				{propName:'Country', value:self.USER_MODEL.profile['Country']},
@@ -340,7 +340,6 @@ export default class LocationView extends View {
 				{propName:'Distance_Drive_major', value:self.USER_MODEL.profile.Distance_Drive_major}
 			];
 			console.log(['About to save data=',data]);
-			
 			self.USER_MODEL.updateUserProfile(data, "prod_nl_1");
 		});
 		this.rendered = true;

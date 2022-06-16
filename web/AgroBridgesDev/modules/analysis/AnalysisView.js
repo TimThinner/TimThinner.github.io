@@ -548,7 +548,7 @@ export default class AnalysisView extends View {
 					'</div>'+
 					
 					'<div class="col s12 m10 offset-m1">'+
-						'<h5 style="text-align:center">Definitions of business models for Short food Supply chain</h5>'+
+						'<h5 style="text-align:center">Definitions of business models for Short Food Supply Chain</h5>'+
 					'</div>'+
 					
 					'<div class="col s12 m10 offset-m1">'+
@@ -582,7 +582,9 @@ export default class AnalysisView extends View {
 						'<div id="business-models-more-info-wrapper"></div>'+
 					'</div>'+
 					
-					
+					'<div class="col s12 m10 offset-m1">'+
+						'<h5 style="text-align:center">Recommendations for Short Food Supply Chain</h5>'+
+					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-1-wrapper"></div>'+
 					'</div>'+

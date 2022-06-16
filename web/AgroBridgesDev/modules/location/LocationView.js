@@ -1,5 +1,19 @@
 import View from '../common/View.js';
 
+/*
+<31       (Distance_Drive_major_kat1)
+31-60   (Distance_Drive_major_kat2)
+61-90   (Distance_Drive_major_kat3)
+91-120  (Distance_Drive_major_kat4)
+>120  (Distance_Drive_major_kat5)
+
+<31       (Distance_Drive_minor_kat1)
+31-60   (Distance_Drive_minor_kat2)
+61-90   (Distance_Drive_minor_kat3)
+91-120  (Distance_Drive_minor_kat4)
+>120  (Distance_Drive_minor_kat5)
+*/
+
 export default class LocationView extends View {
 	
 	constructor(controller) {

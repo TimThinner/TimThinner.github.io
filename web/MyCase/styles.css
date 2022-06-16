@@ -8,6 +8,16 @@
 	}
 }
 */
+/*
+Bootstrap 						Screen Sizes
+											
+Container Class		Extra Small		Small		Medium			Large		Extra Large
+					<576px 			≥576px		≥768px 			≥992px 		≥1200px
+.container			100% 			540px		720px		 	960px 		1140px
+
+1140 / 14 = 81
+
+*/
 .jumbotron {
 	background-image: linear-gradient(rgba(200, 230, 255, 0.9), rgba(200, 230, 255, 0.5)), url("./assets/images/jumbocogs.jpg");
 	background-size: cover;
@@ -52,4 +62,58 @@ button.btn-search-context {
 }
 .search-container button.btn-secondary--search:hover {
 	background-color:#efe;
+}
+
+
+/* categories section */
+.categories {
+	padding-top: 0;
+	display: flex;
+	flex-flow: row wrap;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+.category__wrapper {
+	padding-right: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+	width: 80px;
+	/*border: 1px solid #5aa655;*/
+}
+.category--box {
+	background-color: transparent;
+	color: #5aa655;
+	margin-left: 0;
+	padding: 20px 10px;
+	height: 100%;
+	transition: all .2s ease-in-out;
+}
+a.category__link {
+	color: #5aa655;
+	display: block;
+	height: 100%;
+	text-align: center;
+	font-size: 12px;
+}
+.category__name {
+	margin: 5px auto;
+	display: block;
+	color: #5aa655;
+	/*text-transform: uppercase;*/
+	word-break; normal;
+}
+.category__icon {
+	color: #5aa655;
+	text-align: center;
+}
+.category__icon img {
+	height: 40px;
+}
+.category__count {
+	color: #5aa655;
+}
+/* Dark Blue color #3379a9 */
+.heading--featured {
+	font-weight: bold;
+	color: #3379a9;
 }

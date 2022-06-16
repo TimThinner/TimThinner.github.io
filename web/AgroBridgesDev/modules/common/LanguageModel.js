@@ -119,6 +119,16 @@ export default class LanguageModel extends Model {
 				'region_medium':'medium',
 				'region_high':'high',
 				'PROFILE_SAVE_OK':'Profile saved OK',
+				'minor_kat1':' < 31 mins',
+				'minor_kat2':' 31-60 mins',
+				'minor_kat3':' 61-90 mins',
+				'minor_kat4':' 91-120 mins',
+				'minor_kat5':' > 120 mins',
+				'major_kat1':' < 31 mins',
+				'major_kat2':' 31-60 mins',
+				'major_kat3':' 61-90 mins',
+				'major_kat4':' 91-120 mins',
+				'major_kat5':' > 120 mins',
 				'no_database_message':'<b>WAIT for few seconds...</b> if the backend is not running in your machine, we continue after timeout error.'
 			},
 			'fi':{
@@ -234,6 +244,16 @@ export default class LanguageModel extends Model {
 				'region_medium':'medium',
 				'region_high':'high',
 				'PROFILE_SAVE_OK':'Profile saved OK',
+				'minor_kat1':' < 31 mins',
+				'minor_kat2':' 31-60 mins',
+				'minor_kat3':' 61-90 mins',
+				'minor_kat4':' 91-120 mins',
+				'minor_kat5':' > 120 mins',
+				'major_kat1':' < 31 mins',
+				'major_kat2':' 31-60 mins',
+				'major_kat3':' 61-90 mins',
+				'major_kat4':' 91-120 mins',
+				'major_kat5':' > 120 mins',
 				'no_database_message':'<b>Odota muutama sekunti...</b> jos backend ei ole käynnissä, ohjelma jatkuu virheilmoituksen jälkeen.'
 			}
 		}

@@ -1,19 +1,19 @@
 import View from '../common/View.js';
-
 /*
-<31       (Distance_Drive_major_kat1)
-31-60   (Distance_Drive_major_kat2)
-61-90   (Distance_Drive_major_kat3)
-91-120  (Distance_Drive_major_kat4)
->120  (Distance_Drive_major_kat5)
 
 <31       (Distance_Drive_minor_kat1)
 31-60   (Distance_Drive_minor_kat2)
 61-90   (Distance_Drive_minor_kat3)
 91-120  (Distance_Drive_minor_kat4)
 >120  (Distance_Drive_minor_kat5)
-*/
 
+<31       (Distance_Drive_major_kat1)
+31-60   (Distance_Drive_major_kat2)
+61-90   (Distance_Drive_major_kat3)
+91-120  (Distance_Drive_major_kat4)
+>120  (Distance_Drive_major_kat5)
+
+*/
 export default class LocationView extends View {
 	
 	constructor(controller) {
@@ -150,9 +150,6 @@ export default class LocationView extends View {
 					// Report error.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
-					
-					
-					
 				}
 				
 			} else if (options.model==='RegionsModel' && options.method==='fetched') {
@@ -170,11 +167,6 @@ export default class LocationView extends View {
 					// Report error.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
 					$('#'+this.FELID).empty().append(html);
-					
-					
-					
-					
-					
 				}
 				
 			} else if (options.model==='UserModel' && options.method==='updateUserProfile') {
@@ -224,6 +216,18 @@ export default class LocationView extends View {
 		const ll_distance_major_query = LM['translation'][sel]['distance_drive_major_query'];
 		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
+		const ll_minor_kat1 = LM['translation'][sel]['minor_kat1'];
+		const ll_minor_kat2 = LM['translation'][sel]['minor_kat2'];
+		const ll_minor_kat3 = LM['translation'][sel]['minor_kat3'];
+		const ll_minor_kat4 = LM['translation'][sel]['minor_kat4'];
+		const ll_minor_kat5 = LM['translation'][sel]['minor_kat5'];
+		
+		const ll_major_kat1 = LM['translation'][sel]['major_kat1'];
+		const ll_major_kat2 = LM['translation'][sel]['major_kat2'];
+		const ll_major_kat3 = LM['translation'][sel]['major_kat3'];
+		const ll_major_kat4 = LM['translation'][sel]['major_kat4'];
+		const ll_major_kat5 = LM['translation'][sel]['major_kat5'];
+		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
@@ -244,6 +248,23 @@ export default class LocationView extends View {
 						'<h6 class="required">'+ll_region_query+'</h6>'+
 						'<div id="regions-wrapper"></div>'+
 					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h6>'+ll_distance_small_query+'</h6>'+
+						'<p><label><input class="with-gap" name="minorDistance" id="minor-kat1" type="radio" value="minorkat1" /><span>'+ll_minor_kat1+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="minorDistance" id="minor-kat2" type="radio" value="minorkat2" /><span>'+ll_minor_kat2+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="minorDistance" id="minor-kat3" type="radio" value="minorkat3" /><span>'+ll_minor_kat3+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="minorDistance" id="minor-kat4" type="radio" value="minorkat4" /><span>'+ll_minor_kat4+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="minorDistance" id="minor-kat5" type="radio" value="minorkat5" /><span>'+ll_minor_kat5+'</span></label></p>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h6>'+ll_distance_major_query+'</h6>'+
+						'<p><label><input class="with-gap" name="majorDistance" id="major-kat1" type="radio" value="majorkat1" /><span>'+ll_major_kat1+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="majorDistance" id="major-kat2" type="radio" value="majorkat2" /><span>'+ll_major_kat2+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="majorDistance" id="major-kat3" type="radio" value="majorkat3" /><span>'+ll_major_kat3+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="majorDistance" id="major-kat4" type="radio" value="majorkat4" /><span>'+ll_major_kat4+'</span></label></p>'+
+						'<p><label><input class="with-gap" name="majorDistance" id="major-kat5" type="radio" value="majorkat5" /><span>'+ll_major_kat5+'</span></label></p>'+
+					'</div>'+
+					/*
 					'<div class="input-field col s12 m10 offset-m1">'+
 						'<h6 class="required">'+ll_distance_small_query+'</h6>'+
 						'<p>&nbsp;</p>'+
@@ -254,6 +275,7 @@ export default class LocationView extends View {
 						'<p>&nbsp;</p>'+
 						'<div id="distance-major-city-slider"></div>'+
 					'</div>'+
+					*/
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -279,6 +301,7 @@ export default class LocationView extends View {
 		}
 		
 		// Restore current selection:
+		/*
 		const distance_to_town = this.USER_MODEL.profile.Distance_Drive_small;
 		const distance_to_city = this.USER_MODEL.profile.Distance_Drive_major;
 		
@@ -325,6 +348,100 @@ export default class LocationView extends View {
 				self.USER_MODEL.profile.Distance_Drive_major = Math.round(values[0]);
 			}
 		});
+		*/
+		
+		// Only one of these can be true at any one time (radio buttons).
+		if (this.USER_MODEL.profile.Distance_Drive_minor_kat1 === true) {
+			$("#minor-kat1").prop("checked", true);
+		} else if (this.USER_MODEL.profile.Distance_Drive_minor_kat2 === true) {
+			$("#minor-kat2").prop("checked", true);
+		} else if (this.USER_MODEL.profile.Distance_Drive_minor_kat3 === true) {
+			$("#minor-kat3").prop("checked", true);
+		} else if (this.USER_MODEL.profile.Distance_Drive_minor_kat4 === true) {
+			$("#minor-kat4").prop("checked", true);
+		} else {
+			$("#minor-kat5").prop("checked", true);
+		}
+		
+		if (this.USER_MODEL.profile.Distance_Drive_major_kat1 === true) {
+			$("#major-kat1").prop("checked", true);
+		} else if (this.USER_MODEL.profile.Distance_Drive_major_kat2 === true) {
+			$("#major-kat2").prop("checked", true);
+		} else if (this.USER_MODEL.profile.Distance_Drive_major_kat3 === true) {
+			$("#major-kat3").prop("checked", true);
+		} else if (this.USER_MODEL.profile.Distance_Drive_major_kat4 === true) {
+			$("#major-kat4").prop("checked", true);
+		} else {
+			$("#major-kat5").prop("checked", true);
+		}
+		
+		$('input[type=radio][name=minorDistance]').change(function() {
+			if (this.value === 'minorkat1') {
+				self.USER_MODEL.profile.Distance_Drive_minor_kat1 = true;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat2 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat3 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat4 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat5 = false;
+			} else if (this.value === 'minorkat2') {
+				self.USER_MODEL.profile.Distance_Drive_minor_kat1 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat2 = true;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat3 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat4 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat5 = false;
+			} else if (this.value === 'minorkat3') {
+				self.USER_MODEL.profile.Distance_Drive_minor_kat1 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat2 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat3 = true;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat4 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat5 = false;
+			} else if (this.value === 'minorkat4') {
+				self.USER_MODEL.profile.Distance_Drive_minor_kat1 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat2 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat3 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat4 = true;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat5 = false;
+			} else {
+				self.USER_MODEL.profile.Distance_Drive_minor_kat1 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat2 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat3 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat4 = false;
+				self.USER_MODEL.profile.Distance_Drive_minor_kat5 = true;
+			}
+		});
+		
+		$('input[type=radio][name=majorDistance]').change(function() {
+			if (this.value === 'majorkat1') {
+				self.USER_MODEL.profile.Distance_Drive_major_kat1 = true;
+				self.USER_MODEL.profile.Distance_Drive_major_kat2 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat3 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat4 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat5 = false;
+			} else if (this.value === 'majorkat2') {
+				self.USER_MODEL.profile.Distance_Drive_major_kat1 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat2 = true;
+				self.USER_MODEL.profile.Distance_Drive_major_kat3 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat4 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat5 = false;
+			} else if (this.value === 'majorkat3') {
+				self.USER_MODEL.profile.Distance_Drive_major_kat1 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat2 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat3 = true;
+				self.USER_MODEL.profile.Distance_Drive_major_kat4 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat5 = false;
+			} else if (this.value === 'majorkat4') {
+				self.USER_MODEL.profile.Distance_Drive_major_kat1 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat2 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat3 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat4 = true;
+				self.USER_MODEL.profile.Distance_Drive_major_kat5 = false;
+			} else {
+				self.USER_MODEL.profile.Distance_Drive_major_kat1 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat2 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat3 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat4 = false;
+				self.USER_MODEL.profile.Distance_Drive_major_kat5 = true;
+			}
+		});
 		
 		$("#location-ok").on('click', function() {
 			if (self.USER_MODEL.MOCKUP === false) {
@@ -335,10 +452,63 @@ export default class LocationView extends View {
 			// Save all
 			const data = [
 				{propName:'Country', value:self.USER_MODEL.profile['Country']},
-				{propName:'NUTS3', value:self.USER_MODEL.profile['NUTS3']},
-				{propName:'Distance_Drive_small', value:self.USER_MODEL.profile.Distance_Drive_small},
-				{propName:'Distance_Drive_major', value:self.USER_MODEL.profile.Distance_Drive_major}
+				{propName:'NUTS3', value:self.USER_MODEL.profile['NUTS3']}
+				//{propName:'Distance_Drive_small', value:self.USER_MODEL.profile.Distance_Drive_small},
+				//{propName:'Distance_Drive_major', value:self.USER_MODEL.profile.Distance_Drive_major}
 			];
+			
+			if (self.USER_MODEL.profile.Distance_Drive_minor_kat1 === true) {
+				data.push({propName:'Distance_Drive_minor_kat1', value:1});
+			} else {
+				data.push({propName:'Distance_Drive_minor_kat1', value:0});
+			}
+			if (self.USER_MODEL.profile.Distance_Drive_minor_kat2 === true) {
+				data.push({propName:'Distance_Drive_minor_kat2', value:1});
+			} else {
+				data.push({propName:'Distance_Drive_minor_kat2', value:0});
+			}
+			if (self.USER_MODEL.profile.Distance_Drive_minor_kat3 === true) {
+				data.push({propName:'Distance_Drive_minor_kat3', value:1});
+			} else {
+				data.push({propName:'Distance_Drive_minor_kat3', value:0});
+			}
+			if (self.USER_MODEL.profile.Distance_Drive_minor_kat4 === true) {
+				data.push({propName:'Distance_Drive_minor_kat4', value:1});
+			} else {
+				data.push({propName:'Distance_Drive_minor_kat4', value:0});
+			}
+			if (self.USER_MODEL.profile.Distance_Drive_minor_kat5 === true) {
+				data.push({propName:'Distance_Drive_minor_kat5', value:1});
+			} else {
+				data.push({propName:'Distance_Drive_minor_kat5', value:0});
+			}
+			
+			if (self.USER_MODEL.profile.Distance_Drive_major_kat1 === true) {
+				data.push({propName:'Distance_Drive_major_kat1', value:1});
+			} else {
+				data.push({propName:'Distance_Drive_major_kat1', value:0});
+			}
+			if (self.USER_MODEL.profile.Distance_Drive_major_kat2 === true) {
+				data.push({propName:'Distance_Drive_major_kat2', value:1});
+			} else {
+				data.push({propName:'Distance_Drive_major_kat2', value:0});
+			}
+			if (self.USER_MODEL.profile.Distance_Drive_major_kat3 === true) {
+				data.push({propName:'Distance_Drive_major_kat3', value:1});
+			} else {
+				data.push({propName:'Distance_Drive_major_kat3', value:0});
+			}
+			if (self.USER_MODEL.profile.Distance_Drive_major_kat4 === true) {
+				data.push({propName:'Distance_Drive_major_kat4', value:1});
+			} else {
+				data.push({propName:'Distance_Drive_major_kat4', value:0});
+			}
+			if (self.USER_MODEL.profile.Distance_Drive_major_kat5 === true) {
+				data.push({propName:'Distance_Drive_major_kat5', value:1});
+			} else {
+				data.push({propName:'Distance_Drive_major_kat5', value:0});
+			}
+			
 			console.log(['About to save data=',data]);
 			self.USER_MODEL.updateUserProfile(data, "prod_nl_1");
 		});

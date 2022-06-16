@@ -165,7 +165,12 @@ export default class FruitsView extends View {
 		const fruits_total = this.USER_MODEL.profile.fruits_total;
 		const Hectare_fruits = this.USER_MODEL.profile.Hectare_fruits;
 		
-		if (this.USER_MODEL.profile.Dummy_fruit_farm === 'No') {
+		
+		if (typeof this.USER_MODEL.profile.Dummy_fruit_farm === 'undefined') {
+			
+			$('#fruits-ok').addClass('disabled');
+			
+		} else if (this.USER_MODEL.profile.Dummy_fruit_farm === 'No') {
 			$("#fruits-no").prop("checked", true);
 			$("#fruits-query-1").hide();
 			$("#fruits-query-2").hide();
@@ -236,6 +241,12 @@ export default class FruitsView extends View {
 		});
 		
 		$('input[type=radio][name=fruitsStatus]').change(function() {
+			
+			// Enable the OK-button.
+			if ($('#fruits-ok').hasClass('disabled')) {
+				$('#fruits-ok').removeClass('disabled');
+			}
+			
 			if (this.value == 'no') {
 				console.log('Dummy_fruit_farm No'); // Dummy_fruit_farm NO
 				self.USER_MODEL.profile.Dummy_fruit_farm = 'No';

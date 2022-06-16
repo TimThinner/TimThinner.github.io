@@ -187,7 +187,11 @@ export default class AnimalsView extends View {
 		});
 		
 		// Restore current selection:
-		if (this.USER_MODEL.profile.Dummy_livestock === 'No') {
+		if (typeof this.USER_MODEL.profile.Dummy_livestock === 'undefined') {
+			
+			$('#animals-ok').addClass('disabled');
+			
+		} else if (this.USER_MODEL.profile.Dummy_livestock === 'No') {
 			$("#animals-no").prop("checked", true);
 			$("#animals-query-1").hide();
 			$("#animals-query-2").hide();
@@ -219,6 +223,12 @@ export default class AnimalsView extends View {
 		// hide() adds style="display:none;" to div element.
 		// show() changes style="display:block;" to div element.
 		$('input[type=radio][name=animalsStatus]').change(function() {
+			
+			// Enable the OK-button.
+			if ($('#animals-ok').hasClass('disabled')) {
+				$('#animals-ok').removeClass('disabled');
+			}
+			
 			if (this.value == 'no') {
 				console.log('Dummy_livestock No');
 				self.USER_MODEL.profile.Dummy_livestock = 'No';

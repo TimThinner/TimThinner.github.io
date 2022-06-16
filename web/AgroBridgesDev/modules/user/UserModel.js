@@ -23,6 +23,18 @@ export default class UserModel extends Model {
 			Distance_Drive_small: 0,
 			Distance_Drive_major: 0,
 			
+			Distance_Drive_minor_kat1: true,  // < 31 mins
+			Distance_Drive_minor_kat2: false, // 31-60
+			Distance_Drive_minor_kat3: false, // 61-90
+			Distance_Drive_minor_kat4: false, // 91-120
+			Distance_Drive_minor_kat5: false, // > 120 
+			
+			Distance_Drive_major_kat1: true,  // < 31 mins
+			Distance_Drive_major_kat2: false, // 31-60
+			Distance_Drive_major_kat3: false, // 61-90
+			Distance_Drive_major_kat4: false, // 91-120
+			Distance_Drive_major_kat5: false, // > 120 
+			
 			// FARM INFO:
 			Hectare_farm: 0,
 			Delivery_month_total: 0,
@@ -122,17 +134,20 @@ export default class UserModel extends Model {
 		if (typeof this.profile.NUTS3 !== 'undefined') {
 			retval.filled++;
 		}
+		/*
 		if (this.profile.Distance_Drive_small > 0) {
 			retval.filled++;
 		}
 		if (this.profile.Distance_Drive_major > 0) {
 			retval.filled++;
-		}
+		}*/
+		// NOTE: if we have default selections for radiobuttons => they are always ready.
+		retval.filled+=2;
 		
 		if (typeof this.profile.Country !== 'undefined' && 
-			typeof this.profile.NUTS3 !== 'undefined' &&
-			this.profile.Distance_Drive_small > 0 &&
-			this.profile.Distance_Drive_major > 0) {
+			typeof this.profile.NUTS3 !== 'undefined') {
+			//this.profile.Distance_Drive_small > 0 &&
+			//this.profile.Distance_Drive_major > 0) {
 			
 			retval.ready = true;
 		}

@@ -174,7 +174,6 @@ export default class VegeView extends View {
 		const vegetables_total  = this.USER_MODEL.profile.vegetables_total;
 		const Hectare_veggies = this.USER_MODEL.profile.Hectare_veggies;
 		
-		
 		if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
 			
 			$('#vege-ok').addClass('disabled');

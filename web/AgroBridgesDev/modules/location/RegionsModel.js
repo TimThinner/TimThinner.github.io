@@ -740,7 +740,7 @@ export default class RegionsModel extends Model {
 			this.fillSimulated(code);
 			this.fetching = false;
 			this.ready = true;
-			this.notifyAll({model:this.name, method:'fetched', status:200, message:'OK'});
+			setTimeout(() => this.notifyAll({model:this.name, method:'fetched', status:200, message:'OK'}), 500);
 			
 		} else {
 			

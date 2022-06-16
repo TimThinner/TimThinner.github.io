@@ -260,6 +260,8 @@ export default class FruitsView extends View {
 					self.USER_MODEL.profile[o.prop] = false;
 					$("#"+o.id).prop("checked", false);
 				});
+				self.USER_MODEL.profile.fruits_total = 0;
+				self.USER_MODEL.profile.Hectare_fruits = 0;
 				
 				// Remove class="required" from all 3 other questions:
 				if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }

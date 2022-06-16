@@ -737,6 +737,7 @@ export default class RegionsModel extends Model {
 		
 		if (this.MOCKUP) {
 			
+			console.log(['MOCKUP => fillSimulated code=',code]);
 			this.fillSimulated(code);
 			this.fetching = false;
 			this.ready = true;

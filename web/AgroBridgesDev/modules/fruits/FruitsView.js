@@ -92,7 +92,7 @@ export default class FruitsView extends View {
 		const ll_no = LM['translation'][sel]['dummy_no'];
 		const ll_fruits_query = LM['translation'][sel]['fruits_query'];
 		const ll_how_many_query = LM['translation'][sel]['fruits_how_many_query'];
-		const ll_hectares_query = LM['translation'][sel]['fruit_hectare_query'];
+		//const ll_hectares_query = LM['translation'][sel]['fruit_hectare_query'];
 		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const fruitOptions = [
@@ -133,11 +133,13 @@ export default class FruitsView extends View {
 						'<p>&nbsp;</p>'+
 						'<div id="fruits-total-slider"></div>'+
 					'</div>'+
+					/*
 					'<div id="fruits-query-3" class="input-field col s12 m10 offset-m1">'+
 						'<h6 id="required-C">'+ll_hectares_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="Hectare-fruits-slider"></div>'+
 					'</div>'+
+					*/
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -173,14 +175,14 @@ export default class FruitsView extends View {
 			$("#fruits-no").prop("checked", true);
 			$("#fruits-query-1").hide();
 			$("#fruits-query-2").hide();
-			$("#fruits-query-3").hide();
+			//$("#fruits-query-3").hide();
 			
 		} else if (this.USER_MODEL.profile.Dummy_fruit_farm === 'Yes') {
 			$("#fruits-yes").prop("checked", true);
 			
-			$("#fruits-query-1").show();
-			$("#fruits-query-2").show();
-			$("#fruits-query-3").show();
+			//$("#fruits-query-1").show();
+			//$("#fruits-query-2").show();
+			//$("#fruits-query-3").show();
 			
 			// Add class="required" to all 3 other questions:
 			$('#required-A').addClass('required');
@@ -252,7 +254,7 @@ export default class FruitsView extends View {
 				
 				$("#fruits-query-1").hide();
 				$("#fruits-query-2").hide();
-				$("#fruits-query-3").hide();
+				//$("#fruits-query-3").hide();
 				
 				// Must reset all properties;
 				fruitOptions.forEach(o=>{
@@ -273,7 +275,7 @@ export default class FruitsView extends View {
 				
 				$("#fruits-query-1").show();
 				$("#fruits-query-2").show();
-				$("#fruits-query-3").show();
+				//$("#fruits-query-3").show();
 				
 				// Add class="required" to all 3 other questions:
 				if (!$("#required-A").hasClass("required")) { $('#required-A').addClass('required'); }

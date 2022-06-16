@@ -97,7 +97,7 @@ export default class VegeView extends View {
 		const ll_offering_query = LM['translation'][sel]['products_offering_query'];
 		const ll_vege_query = LM['translation'][sel]['vegetables_query'];
 		const ll_how_many_query = LM['translation'][sel]['vegetables_how_many_query'];
-		const ll_hectares_query = LM['translation'][sel]['vege_hectare_query'];
+		//const ll_hectares_query = LM['translation'][sel]['vege_hectare_query'];
 		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const vegeOptions = [
@@ -142,11 +142,13 @@ export default class VegeView extends View {
 						'<p>&nbsp;</p>'+
 						'<div id="vegetables-total-slider"></div>'+
 					'</div>'+
+					/*
 					'<div id="vege-query-3" class="input-field col s12 m10 offset-m1">'+
 						'<h6 id="required-C">'+ll_hectares_query+'</h6>'+
 						'<p>&nbsp;</p>'+
 						'<div id="Hectare-veggies-slider"></div>'+
 					'</div>'+
+					*/
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -182,7 +184,7 @@ export default class VegeView extends View {
 			$("#vege-no").prop("checked", true);
 			$("#vege-query-1").hide();
 			$("#vege-query-2").hide();
-			$("#vege-query-3").hide();
+			//$("#vege-query-3").hide();
 			
 		} else if (this.USER_MODEL.profile.Dummy_veggie_farm === 'Yes') {
 			$("#vege-yes").prop("checked", true);
@@ -261,7 +263,7 @@ export default class VegeView extends View {
 				
 				$("#vege-query-1").hide();
 				$("#vege-query-2").hide();
-				$("#vege-query-3").hide();
+				//$("#vege-query-3").hide();
 				
 				// Must reset all properties;
 				vegeOptions.forEach(o=>{
@@ -282,7 +284,7 @@ export default class VegeView extends View {
 				
 				$("#vege-query-1").show();
 				$("#vege-query-2").show();
-				$("#vege-query-3").show();
+				//$("#vege-query-3").show();
 				
 				// Add class="required" to all 3 other questions:
 				if (!$("#required-A").hasClass("required")) { $('#required-A').addClass('required'); }

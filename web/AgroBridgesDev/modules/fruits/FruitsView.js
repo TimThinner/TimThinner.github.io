@@ -163,8 +163,7 @@ export default class FruitsView extends View {
 		
 		// Restore current selection:
 		const fruits_total = this.USER_MODEL.profile.fruits_total;
-		const Hectare_fruits = this.USER_MODEL.profile.Hectare_fruits;
-		
+		//const Hectare_fruits = this.USER_MODEL.profile.Hectare_fruits;
 		
 		if (typeof this.USER_MODEL.profile.Dummy_fruit_farm === 'undefined') {
 			
@@ -208,7 +207,7 @@ export default class FruitsView extends View {
 			keyboardMultiplier: 5,      // Default 1
 			range: {
 				'min': [0],
-				'max': [20]
+				'max': [40]
 			}
 		});
 		fruitsTotalSlider.noUiSlider.on('change', function (values) {
@@ -217,7 +216,7 @@ export default class FruitsView extends View {
 				self.USER_MODEL.profile.fruits_total = Math.round(values[0]);
 			}
 		});
-		
+		/*
 		const hectareSlider = document.getElementById('Hectare-fruits-slider');
 		noUiSlider.create(hectareSlider, {
 			start: [Hectare_fruits],
@@ -238,7 +237,7 @@ export default class FruitsView extends View {
 			if (Array.isArray(values) && values.length > 0) {
 				self.USER_MODEL.profile.Hectare_fruits = Math.round(values[0]);
 			}
-		});
+		});*/
 		
 		$('input[type=radio][name=fruitsStatus]').change(function() {
 			
@@ -261,7 +260,7 @@ export default class FruitsView extends View {
 					$("#"+o.id).prop("checked", false);
 				});
 				self.USER_MODEL.profile.fruits_total = 0;
-				self.USER_MODEL.profile.Hectare_fruits = 0;
+				//self.USER_MODEL.profile.Hectare_fruits = 0;
 				
 				// Remove class="required" from all 3 other questions:
 				if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
@@ -310,7 +309,7 @@ export default class FruitsView extends View {
 				data.push({propName:'Dummy_fruit_farm', value:0});
 			}
 			data.push({propName:'fruits_total', value:self.USER_MODEL.profile.fruits_total});
-			data.push({propName:'Hectare_fruits', value:self.USER_MODEL.profile.Hectare_fruits});
+			//data.push({propName:'Hectare_fruits', value:self.USER_MODEL.profile.Hectare_fruits});
 			
 			fruitOptions.forEach(o=>{
 				if (self.USER_MODEL.profile[o.prop]) {

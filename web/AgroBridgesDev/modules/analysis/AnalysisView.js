@@ -272,7 +272,6 @@ export default class AnalysisView extends View {
 		const ll_r1_only_1_suitable = LM['translation'][sel]['Results1_only_one_channel'];
 		const ll_r1_more_than_2_suitable = LM['translation'][sel]['Result_Farms_more_than_2_suitable'];
 		
-		
 		const numberOfResults = this.USER_MODEL.analysisResult.recommendations.length;
 		
 		let html;
@@ -547,38 +546,11 @@ export default class AnalysisView extends View {
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">ANALYSIS</h3>'+
 					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<h5 style="text-align:center">Recommendations for Short Food Supply Chain</h5>'+
-					'</div>'+
-					
 					
 					'<div class="col s12 m10 offset-m1">'+
-						'<div id="recommendations-text-part-1-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<div class="row">'+
-							'<div class="col s12 m5" id="recommendations-list-wrapper">'+
-							'</div>'+
-							'<div class="col s12 m7" id="recommendations-spider-wrapper">'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<div id="recommendations-text-part-2-wrapper"></div>'+
+						'<h5 style="text-align:center">Definitions of business models for Short food Supply chain</h5>'+
 					'</div>'+
 					
-					
-					
-					'<div class="col s12 m10 offset-m1">'+
-						'<div id="additional-description-text-part-1-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 center">'+
-						'<h5>Wholesale</h5>'+
-						'<div id="spider-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<div id="analysis-region-attractiveness-wrapper"></div>'+
-					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="business-models-intro-wrapper"></div>'+
 					'</div>'+
@@ -609,6 +581,33 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="business-models-more-info-wrapper"></div>'+
 					'</div>'+
+					
+					
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="recommendations-text-part-1-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div class="row">'+
+							'<div class="col s12 m5" id="recommendations-list-wrapper">'+
+							'</div>'+
+							'<div class="col s12 m7" id="recommendations-spider-wrapper">'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="recommendations-text-part-2-wrapper"></div>'+
+					'</div>'+
+					
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="additional-description-text-part-1-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 center">'+
+						'<h5>Wholesale</h5>'+
+						'<div id="spider-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="analysis-region-attractiveness-wrapper"></div>'+
+					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="additional-description-text-part-2-wrapper"></div>'+
 					'</div>'+
@@ -633,7 +632,6 @@ export default class AnalysisView extends View {
 		
 		if (this.USER_MODEL.analysisReady) {
 			
-			//this.setRecommendations();
 			this.renderRecommendationsPart1Text();
 			this.renderRecommendationsList();
 			this.renderRecommendationsSpider();

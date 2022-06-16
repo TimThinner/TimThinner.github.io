@@ -172,7 +172,7 @@ export default class VegeView extends View {
 		
 		// Restore current selection:
 		const vegetables_total  = this.USER_MODEL.profile.vegetables_total;
-		const Hectare_veggies = this.USER_MODEL.profile.Hectare_veggies;
+		//const Hectare_veggies = this.USER_MODEL.profile.Hectare_veggies;
 		
 		if (typeof this.USER_MODEL.profile.Dummy_veggie_farm === 'undefined') {
 			
@@ -216,7 +216,7 @@ export default class VegeView extends View {
 			keyboardMultiplier: 5,      // Default 1
 			range: {
 				'min': [0],
-				'max': [20]
+				'max': [40]
 			}
 		});
 		vegeTotalSlider.noUiSlider.on('change', function (values) {
@@ -225,7 +225,7 @@ export default class VegeView extends View {
 				self.USER_MODEL.profile.vegetables_total = Math.round(values[0]);
 			}
 		});
-		
+		/*
 		const hectareSlider = document.getElementById('Hectare-veggies-slider');
 		noUiSlider.create(hectareSlider, {
 			start: [Hectare_veggies],
@@ -247,7 +247,7 @@ export default class VegeView extends View {
 				self.USER_MODEL.profile.Hectare_veggies = Math.round(values[0]);
 			}
 		});
-		
+		*/
 		$('input[type=radio][name=vegeStatus]').change(function() {
 			
 			// Enable the OK-button.
@@ -269,7 +269,7 @@ export default class VegeView extends View {
 					$("#"+o.id).prop("checked", false);
 				});
 				self.USER_MODEL.profile.vegetables_total = 0;
-				self.USER_MODEL.profile.Hectare_veggies = 0;
+				//self.USER_MODEL.profile.Hectare_veggies = 0;
 				
 				// Remove class="required" from all 3 other questions:
 				if ($("#required-A").hasClass("required")) { $('#required-A').removeClass('required'); }
@@ -321,7 +321,7 @@ export default class VegeView extends View {
 				data.push({propName:'Dummy_veggie_farm', value:0});
 			}
 			data.push({propName:'vegetables_total', value:self.USER_MODEL.profile.vegetables_total});
-			data.push({propName:'Hectare_veggies', value:self.USER_MODEL.profile.Hectare_veggies});
+			//data.push({propName:'Hectare_veggies', value:self.USER_MODEL.profile.Hectare_veggies});
 			
 			vegeOptions.forEach(o=>{
 				if (self.USER_MODEL.profile[o.prop]) {

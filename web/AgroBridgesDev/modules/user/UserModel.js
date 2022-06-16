@@ -59,11 +59,24 @@ export default class UserModel extends Model {
 			Dummy_Special: false,
 			
 			vegetables_total: 0,
-			Hectare_veggies: 0,
+			//Hectare_veggies: 0,
 			
 			// FARM ANIMALS:
 			Dummy_livestock: undefined, // 'No', // 'Yes'
 			
+			Dummy_Cows: false,
+			Dummy_Layer_Hens: false,
+			Dummy_Fish: false,
+			Other_animals: false,
+		
+			Dummy_raw_milk_only: false,
+			Dummy_Milk: false,
+			Dummy_Dairy_Products: false,
+			Dummy_Beef: false,
+			Dummy_animal_welfare: false,
+			Dummy_spec_beef: false,
+			Dummy_cheese_reg_special: false,
+			/*
 			Number_cows: false,
 			Number_goats: false,
 			Number_beef: false,
@@ -82,6 +95,7 @@ export default class UserModel extends Model {
 			Dummy_Beef: false,
 			Dummy_special_Beef: false,
 			Dummy_raw_milk_only: false,
+			*/
 			
 			// FARM FRUITS:
 			Dummy_fruit_farm: undefined, //'No', // 'Yes'
@@ -93,7 +107,7 @@ export default class UserModel extends Model {
 			Dummy_exotic_fruits: false,
 			
 			fruits_total: 0,
-			Hectare_fruits: 0,
+			//Hectare_fruits: 0,
 			
 			// ACTIVITIES:
 			Dummy_wholesale: false,
@@ -203,7 +217,7 @@ export default class UserModel extends Model {
 			if (this.profile.Dummy_veggie_farm === 'No') {
 				retval.ready = true;
 			} else { // 'Yes' => ready is true ONLY if something is checked AND amounts are given!
-				if (fillOne && this.profile.vegetables_total > 0 && this.profile.Hectare_veggies > 0) {
+				if (fillOne && this.profile.vegetables_total > 0) { // && this.profile.Hectare_veggies > 0) {
 					retval.ready = true;
 				}
 			}
@@ -214,9 +228,9 @@ export default class UserModel extends Model {
 		if (this.profile.vegetables_total > 0) {
 			retval.filled++;
 		}
-		if (this.profile.Hectare_veggies > 0) {
-			retval.filled++;
-		}
+		//if (this.profile.Hectare_veggies > 0) {
+		//	retval.filled++;
+		//}
 		return retval;
 	}
 	
@@ -229,6 +243,12 @@ export default class UserModel extends Model {
 		let retval = {'total':3,'filled':0,'ready':false};
 		let fillOne = false;
 		let fillTwo = false;
+		
+		if (this.profile.Dummy_Cows || 
+			this.profile.Dummy_Layer_Hens ||
+			this.profile.Dummy_Fish ||
+			this.profile.Other_animals) {
+		/*
 		if (this.profile.Number_cows || 
 			this.profile.Number_goats || 
 			this.profile.Number_beef || 
@@ -238,17 +258,26 @@ export default class UserModel extends Model {
 			this.profile.Dummy_spec_hog || 
 			this.profile.Number_fish || 
 			this.profile.Dummy_animal_welfare || 
-			this.profile.Dummy_Beef_2) {
+			this.profile.Dummy_Beef_2) {*/
 			
 			fillOne = true;
 		}
+		
+		if (this.profile.Dummy_raw_milk_only ||
+			this.profile.Dummy_Milk ||
+			this.profile.Dummy_Dairy_Products ||
+			this.profile.Dummy_Beef ||
+			this.profile.Dummy_animal_welfare ||
+			this.profile.Dummy_spec_beef ||
+			this.profile.Dummy_cheese_reg_special) {
+		/*
 		if (this.profile.Dummy_Milk || 
 			this.profile.Dummy_cheese_normal || 
 			this.profile.Dummy_cheese_reg_special || 
 			this.profile.Dummy_Dairy_Products || 
 			this.profile.Dummy_Beef || 
 			this.profile.Dummy_special_Beef || 
-			this.profile.Dummy_raw_milk_only) {
+			this.profile.Dummy_raw_milk_only) {*/
 			
 			fillTwo = true;
 		}
@@ -298,7 +327,7 @@ export default class UserModel extends Model {
 			if (this.profile.Dummy_fruit_farm === 'No') {
 				retval.ready = true;
 			} else { // 'Yes' => ready is true ONLY if something is checked AND amounts are given!
-				if (fillOne && this.profile.fruits_total > 0 && this.profile.Hectare_fruits > 0) {
+				if (fillOne && this.profile.fruits_total > 0) { // && this.profile.Hectare_fruits > 0) {
 					retval.ready = true;
 				}
 			}
@@ -309,9 +338,9 @@ export default class UserModel extends Model {
 		if (this.profile.fruits_total > 0) {
 			retval.filled++;
 		}
-		if (this.profile.Hectare_fruits > 0) {
-			retval.filled++;
-		}
+		//if (this.profile.Hectare_fruits > 0) {
+			//retval.filled++;
+		//}
 		return retval;
 	}
 	

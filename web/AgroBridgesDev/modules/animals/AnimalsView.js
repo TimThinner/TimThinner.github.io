@@ -4,6 +4,22 @@ import View from '../common/View.js';
 		this.profile = {
 			Dummy_livestock: undefined, // 'No', // 'Yes'
 			
+			NEW properties are:
+				"Dummy_Cows":"Dairy Cows",
+				"Dummy_Layer_Hens":"Layer Hens",
+				"Dummy_Fish":"Fish",
+				"Other_animals": "Others (pigs, poultry, sheep, and goats)",
+				
+				
+				"Dummy_raw_milk_only":"Only Raw Milk",
+				"Dummy_Milk":"Homogenized and pasteurized milk",
+				"Dummy_Dairy_Products":"Milk products (cheese and yogurt...)",
+				"Dummy_Beef":"Beef",
+				"Dummy_animal_welfare":"Beef from an animal kept under higher animal welfare standards",
+				"Dummy_spec_beef":"Beef from animal rarer varieties (Wagyu, Angus...)",
+				"Dummy_cheese_reg_special":"Other animal products considered regional specialties (Prosciutto di Parma or Bleu d’Auvergne)",
+			
+			
 			Number_cows: false,
 			Number_goats: false,
 			Number_beef: false,
@@ -103,6 +119,11 @@ export default class AnimalsView extends View {
 		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const anim_a_Options = [
+			{prop:'Dummy_Cows',id:'cows',label:''},
+			{prop:'Dummy_Layer_Hens',id:'hens',label:''},
+			{prop:'Dummy_Fish',id:'fish',label:''},
+			{prop:'Other_animals',id:'other',label:''}
+			/*
 			{prop:'Number_cows',id:'cows',label:''},
 			{prop:'Number_goats',id:'goats',label:''},
 			{prop:'Number_beef',id:'beef',label:''},
@@ -113,9 +134,18 @@ export default class AnimalsView extends View {
 			{prop:'Number_fish',id:'fish',label:''},
 			{prop:'Dummy_animal_welfare',id:'welfare',label:''},
 			{prop:'Dummy_Beef_2',id:'beef-2',label:''}
+			*/
 		];
 		
 		const anim_b_Options = [
+			{prop:'Dummy_raw_milk_only',id:'milk-only',label:''},
+			{prop:'Dummy_Milk',id:'milk',label:''},
+			{prop:'Dummy_Dairy_Products',id:'diary-prod',label:''},
+			{prop:'Dummy_Beef',id:'steaks',label:''},
+			{prop:'Dummy_animal_welfare',id:'welfare',label:''},
+			{prop:'Dummy_spec_beef',id:'special-beef',label:''},
+			{prop:'Dummy_cheese_reg_special',id:'cheese-special',label:''}
+			/*
 			{prop:'Dummy_Milk',id:'milk',label:''},
 			{prop:'Dummy_cheese_normal',id:'cheese',label:''},
 			{prop:'Dummy_cheese_reg_special',id:'cheese-special',label:''},
@@ -123,6 +153,7 @@ export default class AnimalsView extends View {
 			{prop:'Dummy_Beef',id:'steaks',label:''},
 			{prop:'Dummy_special_Beef',id:'high-quality-meat',label:''},
 			{prop:'Dummy_raw_milk_only',id:'milk-only',label:''}
+			*/
 		];
 		
 		// Fill in the labels:

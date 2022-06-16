@@ -216,17 +216,17 @@ export default class LocationView extends View {
 		const ll_distance_major_query = LM['translation'][sel]['distance_drive_major_query'];
 		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
-		const ll_minor_kat1 = LM['translation'][sel]['minor_kat1'];
-		const ll_minor_kat2 = LM['translation'][sel]['minor_kat2'];
-		const ll_minor_kat3 = LM['translation'][sel]['minor_kat3'];
-		const ll_minor_kat4 = LM['translation'][sel]['minor_kat4'];
-		const ll_minor_kat5 = LM['translation'][sel]['minor_kat5'];
+		const ll_minor_kat1 = LM['translation'][sel]['Distance_Drive_minor_kat1'];
+		const ll_minor_kat2 = LM['translation'][sel]['Distance_Drive_minor_kat2'];
+		const ll_minor_kat3 = LM['translation'][sel]['Distance_Drive_minor_kat3'];
+		const ll_minor_kat4 = LM['translation'][sel]['Distance_Drive_minor_kat4'];
+		const ll_minor_kat5 = LM['translation'][sel]['Distance_Drive_minor_kat5'];
 		
-		const ll_major_kat1 = LM['translation'][sel]['major_kat1'];
-		const ll_major_kat2 = LM['translation'][sel]['major_kat2'];
-		const ll_major_kat3 = LM['translation'][sel]['major_kat3'];
-		const ll_major_kat4 = LM['translation'][sel]['major_kat4'];
-		const ll_major_kat5 = LM['translation'][sel]['major_kat5'];
+		const ll_major_kat1 = LM['translation'][sel]['Distance_Drive_major_kat1'];
+		const ll_major_kat2 = LM['translation'][sel]['Distance_Drive_major_kat2'];
+		const ll_major_kat3 = LM['translation'][sel]['Distance_Drive_major_kat3'];
+		const ll_major_kat4 = LM['translation'][sel]['Distance_Drive_major_kat4'];
+		const ll_major_kat5 = LM['translation'][sel]['Distance_Drive_major_kat5'];
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 

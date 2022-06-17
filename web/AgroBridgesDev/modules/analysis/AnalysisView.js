@@ -267,6 +267,19 @@ export default class AnalysisView extends View {
 		}
 	}
 	
+	renderWholesaleSpider() {
+		$('#wholesale-spider-wrapper').empty();
+		
+		let w = this.REO.width;
+		if (w > 1600) { w = 1600; }
+		
+		const width = w*0.9;				// 90% of width
+		const height = this.REO.height*0.5;	// 50% of height
+		
+		const html = '<svg id="spider" width="'+width+'" height="'+height+'"></svg>';
+		$(html).appendTo('#wholesale-spider-wrapper');
+		this.drawSpider('wholesale','spider', width, height);
+	}
 	
 	notify(options) {
 		if (this.controller.visible) {
@@ -456,6 +469,15 @@ export default class AnalysisView extends View {
 		$("#additional-description-text-part-1-wrapper").empty().append(html);
 	}
 	
+	renderAdditionalDescriptionPart2() {
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const ll_dse = LM['translation'][sel]['Description_Spiderweb_example'];
+		const html = '<p>'+ll_dse+'</p>';
+		$("#wholesale-description-wrapper").empty().append(html);
+	}
+	
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -471,6 +493,7 @@ export default class AnalysisView extends View {
 		
 		const ll_recommendations_title = 'Recommendations for Short Food Supply Chain';
 		const ll_improved_logistics_title = 'Improved logistics as an option for all farmers';
+		const ll_comparison_to_wholesale_title = "Comparison to Wholesale";
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
@@ -546,6 +569,19 @@ export default class AnalysisView extends View {
 						'<div id="additional-description-text-part-1-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
+				
+				'<div class="col s12" style="background-color:'+this.colors.LIGHT_GREEN_3+';">'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h5 style="text-align:center">'+ll_comparison_to_wholesale_title+'</h5>'+
+						'<div class="row">'+
+							'<div class="col s12 m5" id="wholesale-description-wrapper">'+
+							'</div>'+
+							'<div class="col s12 m7" id="wholesale-spider-wrapper">'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+				'</div>'+
+				
 				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<p>&nbsp;</p>'+
@@ -608,9 +644,8 @@ export default class AnalysisView extends View {
 			//this.showSpinner('#analysis-region-attractiveness-wrapper');
 		}
 		
-		
-		//this.renderWholesaleSpider();
-		
+		this.renderAdditionalDescriptionPart2();
+		this.renderWholesaleSpider();
 		
 		this.renderBusinessModels();
 		$('.collapsible').collapsible({

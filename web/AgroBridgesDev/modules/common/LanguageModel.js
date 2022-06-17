@@ -144,6 +144,9 @@ export default class LanguageModel extends Model {
 				"Consumer_Contact":"Consumer Contact",
 				"Consumer_Contact_Definition":"",
 				
+				"Description_Spiderweb_example":"You can see in example that SFSC enable you to reach higher prices (price premium), but they are labor-intensive (lower labor to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale.",
+				
+				
 				'How_calculated':'How were the results calculated? The ranking is based on a set of sustainability criteria. The sales channel that reaches the economic, environmental and social criteria best is considered to be the most suitable option and ranked first. The graphics show to which extent the SFSC sales channels meet the different criteria.',
 				'Definition_Criteria':'Would you like to know how the criteria are defined? Please follow this Link.',
 				'Intro_not_all_sales_channels_con':'Not all sales channels were considered. Why? Some business models were excluded, because they were considered to be less suitable for your farm or in your region. Reasons for this are farms or regional characteristics (e.g. how attractive your region is for sales).',

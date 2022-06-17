@@ -470,9 +470,7 @@ export default class AnalysisView extends View {
 		const ll_improved_logistics = LM['translation'][sel]['Improved_Logistics'];
 		
 		const ll_recommendations_title = 'Recommendations for Short Food Supply Chain';
-		
-		
-		
+		const ll_improved_logistics_title = 'Improved logistics as an option for all farmers';
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
@@ -481,7 +479,8 @@ export default class AnalysisView extends View {
 					'<div class="col s12 center">'+
 						'<h3 style="color:'+color+'">ANALYSIS</h3>'+
 					'</div>'+
-					
+				'</div>'+
+				'<div class="col s12">'+
 					// This FIRST "CHAPTER" is filled in 
 					//		this.renderBusinessModels()
 					//			fills the #business-models-intro-wrapper and 5 collapsible definitions and #business-models-more-info-wrapper
@@ -519,9 +518,8 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="business-models-more-info-wrapper"></div>'+
 					'</div>'+
-					
-					
-					
+				'</div>'+
+				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_recommendations_title+'</h5>'+
 					'</div>'+
@@ -539,18 +537,21 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-2-wrapper"></div>'+
 					'</div>'+
-					
-					'<div class="col s12 m10 offset-m1" style="background-color:'+this.colors.LIGHT_GREEN_2+';">'+
+				'</div>'+
+				'<div class="col s12" style="background-color:'+this.colors.LIGHT_GREEN_2+';">'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h5 style="text-align:center">'+ll_improved_logistics_title+'</h5>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1" >'+
 						'<div id="additional-description-text-part-1-wrapper"></div>'+
 					'</div>'+
-					
-					
+				'</div>'+
+				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<p>&nbsp;</p>'+
 						'<h5 style="text-align:center">UNDER CONSTRUCTION!!!</h5>'+
 						'<p>&nbsp;</p>'+
 					'</div>'+
-					
 					/*
 					'<div class="col s12 center">'+
 						'<h5>Wholesale</h5>'+

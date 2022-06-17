@@ -306,7 +306,7 @@ export default class AnalysisView extends View {
 					
 					
 					//this.renderRecommendationsPart2Text();
-					//this.renderAnalysisRegionAttractiveness();
+					this.appendAttractiveness();
 					
 				} else {
 					// Report error.
@@ -483,6 +483,12 @@ export default class AnalysisView extends View {
 		$("#wholesale-description-wrapper").empty().append(html);
 	}
 	
+	appendAttractiveness() {
+		// To do: take result from recommendation response.
+		const result = this.USER_MODEL.analysisResult.attractiveness;
+		$("#attractiveness-wrapper").empty().append(result);
+	}
+	
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -519,7 +525,14 @@ export default class AnalysisView extends View {
 		const ll_consumer_contact = LM['translation'][sel]['Consumer_Contact'];
 		const ll_consumer_contact_def = LM['translation'][sel]['Consumer_Contact_Definition'];
 		
+		const ll_farm_and_regional_chars_title = LM['translation'][sel]['Suitability_farm_Characteristics_title'];
+		const ll_farm_and_regional_chars_intro = LM['translation'][sel]['Intro_not_all_sales_channels_con'];
+		const ll_relative_attractiveness = LM['translation'][sel]['Relative_Attractiveness']; // concat the value!
+		const ll_farm_and_regional_chars_text = LM['translation'][sel]['Suitability_farm_Characterstics'];
+		const ll_farm_and_regional_chars_more = LM['translation'][sel]['Suitability_farm_Characteristics_info'];
+		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
+		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
@@ -651,6 +664,17 @@ export default class AnalysisView extends View {
 				
 				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1">'+
+						'<h5 style="text-align:center">'+ll_farm_and_regional_chars_title+'</h5>'+
+						'<p>'+ll_farm_and_regional_chars_intro+'</p>'+
+						'<p>'+ll_relative_attractiveness+' <span id="attractiveness-wrapper" style="color:'+color+'"></span></p>'+
+						'<p>'+ll_farm_and_regional_chars_text+'</p>'+
+						'<p>'+ll_farm_and_regional_chars_more+'</p>'+
+					'</div>'+
+				'</div>'+
+				
+				
+				'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1">'+
 						'<p>&nbsp;</p>'+
 						'<h5 style="text-align:center">UNDER CONSTRUCTION!!!</h5>'+
 						'<p>&nbsp;</p>'+
@@ -659,9 +683,6 @@ export default class AnalysisView extends View {
 					'<div class="col s12 center">'+
 						'<h5>Wholesale</h5>'+
 						'<div id="spider-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<div id="analysis-region-attractiveness-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="additional-description-text-part-2-wrapper"></div>'+
@@ -704,11 +725,10 @@ export default class AnalysisView extends View {
 			this.renderAdditionalDescriptionPart1();
 			
 			//this.renderRecommendationsPart2Text();
-			//this.renderAnalysisRegionAttractiveness();
+			this.appendAttractiveness();
 			
 		} else {
 			this.showSpinner('#recommendations-text-part-1-wrapper');
-			//this.showSpinner('#analysis-region-attractiveness-wrapper');
 		}
 		
 		this.renderAdditionalDescriptionPart2();

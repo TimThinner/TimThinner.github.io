@@ -12,6 +12,8 @@ export default class View {
 			LIGHT_GREY:'#EEEEEE',
 			GREY:'#CCCCCC',
 			LIGHT_GREEN:'#EEF8EB',
+			LIGHT_GREEN_2:'#E2F0D9',
+			LIGHT_GREEN_3:'#C5E0B4',
 			GREEN:'#AAFFAA',
 			DARK_GREEN:'#0B7938',
 			LIGHT_ORANGE:'#F4D25A',
@@ -21,6 +23,11 @@ export default class View {
 			LIGHT_RED:'#FFAAAA',
 			DARK_BLUE:'#1E4194',
 			LIGHT_BLUE:'#93ADE9'
+			
+			//Three different shades of green:
+			
+			
+			
 		};
 	}
 	

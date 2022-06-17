@@ -8,6 +8,13 @@ import View from '../common/View.js';
 	They are similar to bar charts, except each axis extends out radially from the center of the chart.
 	They can sometimes be an alternative to line charts, and are useful for overlaying and comparing data that have multiple variables.
 	
+	
+	Three different shades of green:
+	
+	this.colors.LIGHT_GREEN // 
+	this.colors.LIGHT_GREEN_2 // darker
+	this.colors.LIGHT_GREEN_3 // more darker
+	
 */
 
 export default class AnalysisView extends View {
@@ -276,6 +283,10 @@ export default class AnalysisView extends View {
 					this.renderRecommendationsPart1Text();
 					this.renderRecommendationsList();
 					this.renderRecommendationsSpider();
+					
+					this.renderAdditionalDescriptionPart1();
+					
+					
 					//this.renderRecommendationsPart2Text();
 					//this.renderAnalysisRegionAttractiveness();
 					
@@ -419,6 +430,31 @@ export default class AnalysisView extends View {
 	}
 	
 	
+	renderAdditionalDescriptionPart1() {
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		//const ll_add_a = LM['translation'][sel]['Describtion_Spiderweb'];
+		//const html = '<p>'+ll_add_a+'</p>';
+		
+		const ll_no_suitable = LM['translation'][sel]['Results2_farm_no_suitable_Channels'];
+		const ll_only_one_suitable = LM['translation'][sel]['Results2_only_one_channel'];
+		const ll_more_than_2_suitable = LM['translation'][sel]['Results2_Farm_more_2_suitable'];
+		
+		const numberOfResults = this.USER_MODEL.analysisResult.recommendations.length;
+		
+		let html;
+		if (numberOfResults === 0) {
+			html = '<p>'+ll_no_suitable+'</p>';
+			
+		} else if(numberOfResults === 1) {
+			html = '<p>'+ll_only_one_suitable+'</p>';
+			
+		} else { // Two or more...
+			html = '<p>'+ll_more_than_2_suitable+'</p>';
+		}
+		$("#additional-description-text-part-1-wrapper").empty().append(html);
+	}
 	
 	render() {
 		const self = this;
@@ -434,6 +470,8 @@ export default class AnalysisView extends View {
 		const ll_improved_logistics = LM['translation'][sel]['Improved_Logistics'];
 		
 		const ll_recommendations_title = 'Recommendations for Short Food Supply Chain';
+		
+		
 		
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
@@ -484,18 +522,12 @@ export default class AnalysisView extends View {
 					
 					
 					
-					
-					
-					
-					
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_recommendations_title+'</h5>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-1-wrapper"></div>'+
 					'</div>'+
-					
-					
 					'<div class="col s12 m10 offset-m1">'+
 						'<div class="row">'+
 							'<div class="col s12 m5" id="recommendations-list-wrapper">'+
@@ -508,6 +540,10 @@ export default class AnalysisView extends View {
 						'<div id="recommendations-text-part-2-wrapper"></div>'+
 					'</div>'+
 					
+					'<div class="col s12 m10 offset-m1" style="background-color:'+this.colors.LIGHT_GREEN_2+';">'+
+						'<div id="additional-description-text-part-1-wrapper"></div>'+
+					'</div>'+
+					
 					
 					'<div class="col s12 m10 offset-m1">'+
 						'<p>&nbsp;</p>'+
@@ -516,9 +552,6 @@ export default class AnalysisView extends View {
 					'</div>'+
 					
 					/*
-					'<div class="col s12 m10 offset-m1">'+
-						'<div id="additional-description-text-part-1-wrapper"></div>'+
-					'</div>'+
 					'<div class="col s12 center">'+
 						'<h5>Wholesale</h5>'+
 						'<div id="spider-wrapper"></div>'+
@@ -563,6 +596,9 @@ export default class AnalysisView extends View {
 			this.renderRecommendationsPart1Text();
 			this.renderRecommendationsList();
 			this.renderRecommendationsSpider();
+			
+			this.renderAdditionalDescriptionPart1();
+			
 			//this.renderRecommendationsPart2Text();
 			//this.renderAnalysisRegionAttractiveness();
 			
@@ -571,7 +607,7 @@ export default class AnalysisView extends View {
 			//this.showSpinner('#analysis-region-attractiveness-wrapper');
 		}
 		
-		//this.renderAdditionalDescriptionPart1();
+		
 		//this.renderWholesaleSpider();
 		
 		

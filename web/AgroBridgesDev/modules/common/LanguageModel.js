@@ -128,6 +128,22 @@ export default class LanguageModel extends Model {
 				'Results1_only_one_channel':'Based on the characteristics of your farm only one of the sales channels is considered to be an option for you and no ranking is possible. This sales channel is:',
 				'Results2_only_one_channel':'However, Improved logistics is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms and could be interesting for you.',
 				*/
+				
+				"Volume":"Volume",
+				"Volume_Definition":"",
+				"Price_Premium":"Price Premium",
+				"Price_Premium_Definition":"Calculated from the difference between the average farmgate price in the chain and the average farm gate price in the region. Price Premium = Price Difference at the farm gate (Euro per kg) / Average farmgate to retail price in the region",
+				"Chain_Added_Value":"Chain Added Value",
+				"Chain_Added_Value_Definition":"The chain value-added is based on the difference to the average farm gate price, but considers distribution costs as well. Chain value added (Euro per kg) = Price Difference at Farm Gate - Distribution Costs . The distribution costs contain costs of transport, packaging, marketing fees, and payments to distributors.",
+				"Carbon_Footprint":"Carbon Footprint",
+				"Carbon_Footprint_Definition":"Measures greenhouse gas emissions (GHG) from the process of transportation. The value is based on food miles. Retail channels that require cooling show an increase in fuel consumption to account for their higher environmental impact.",
+				"Labor_Produce":"Labor Produce",
+				"Labor_Produce_Definition":"Reflects the number of working hours used in the respective chain for the distribution process (transport, loading, and sales by the farmer). Labor to produce ratio= ((working hours for preparing the sale per delivery + working hours for transport + working hours for selling) * Number of deliveries) / sales volume per channel (kg)",
+				"Gender_Equality":"Gender Equality",
+				"Gender_Equality_Definition":"Measures the share of working hours by women in the distribution process.Gender Equality = hours worked by women in the distribution process / total labor input for distribution (h) *100",
+				"Consumer_Contact":"Consumer Contact",
+				"Consumer_Contact_Definition":"",
+				
 				'How_calculated':'How were the results calculated? The ranking is based on a set of sustainability criteria. The sales channel that reaches the economic, environmental and social criteria best is considered to be the most suitable option and ranked first. The graphics show to which extent the SFSC sales channels meet the different criteria.',
 				'Definition_Criteria':'Would you like to know how the criteria are defined? Please follow this Link.',
 				'Intro_not_all_sales_channels_con':'Not all sales channels were considered. Why? Some business models were excluded, because they were considered to be less suitable for your farm or in your region. Reasons for this are farms or regional characteristics (e.g. how attractive your region is for sales).',

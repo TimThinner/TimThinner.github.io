@@ -87,6 +87,180 @@ export default class AnalysisView extends View {
 		});
 	}
 	
+	drawSpider(name, spider_id, width, height) {
+		
+		$('#'+spider_id).empty();
+		
+		const svg = d3.select('#'+spider_id);
+		
+		const horiz_center = width*0.5;
+		const verti_center = height*0.5;
+		
+		const min_dim = Math.min(horiz_center, verti_center);
+		
+		// Make spider a litle bit smaller:
+		//const range = min_dim - 0.15*min_dim;
+		const range = min_dim - 0.25*min_dim;
+		console.log(['range=',range,' width=',width]);
+		
+		let fontsize;
+		if (range <= 120) {
+			fontsize = 8;
+		} else if (range > 120 && range <= 160) {
+			fontsize = 10;
+		} else if (range > 160 && range <= 200) {
+			fontsize = 12;
+		} else {
+			fontsize = 14;
+		}
+		
+		let data = [];
+		let features = [
+			"Volume", 
+			"Consumer Contact", 
+			"Gender Equality", 
+			"Lower Labor Produce Ratio", 
+			"Lower Carbon Footprint", 
+			"Chain Added Value",
+			"Price Premium"]; // 7 features
+		
+		// Wholesale:
+		// Volume;				1
+		// Price_Premium;		0.243019648;
+		// Chain_Added_Value;	0.093587522;
+		// Carbon_Footprint;	0.27142858;
+		// Labor_Produce;		1
+		// Gender_Equality;		0.498997996
+		// Consumer_Contact		0.2
+		
+		if (name === 'wholesale') {
+			data = [{
+				"Volume":1,
+				"Consumer Contact":0.2,
+				"Gender Equality":0.498997996,
+				"Lower Labor Produce Ratio":1,
+				"Lower Carbon Footprint":0.27142858,
+				"Chain Added Value":0.093587522,
+				"Price Premium":0.243019648
+			}];
+		} else {
+			if (this.USER_MODEL.analysisReady) {
+				data = this.USER_MODEL.analysisResult.recommendations;
+			}
+		}
+		
+		//let svg = d3.select("spider").append("svg").attr("width", 600).attr("height", 600);
+		//let radialScale = d3.scaleLinear().domain([0, 10]).range([0, 250]);
+		let radialScale = d3.scaleLinear().domain([0, 1]).range([0, range]);
+		//let ticks = [0.2, 0.4, 0.6, 0.8, 1];
+		let ticks = [1, 0.8, 0.6, 0.4, 0.2];
+		//draw grid lines (circles)
+		ticks.forEach(t =>
+			svg.append("circle")
+				//.attr("cx", 300)
+				//.attr("cy", 300)
+				.attr("cx", horiz_center) // min_dim)
+				.attr("cy", verti_center) // min_dim)
+				.attr("fill", '#fff')//"#e5ecf6") // "none"
+				.attr("stroke", this.colors.GREY)
+				.attr("r", radialScale(t))
+		);
+		// draw tick labels
+		// fontsize = 8,10,12,14
+		ticks.forEach(t =>
+			svg.append("text")
+				//.attr("x", 305)
+				//.attr("y", 300 - radialScale(t))
+				.attr("x", horiz_center+5)
+				.attr("y", verti_center - radialScale(t))
+				.attr("font-size",fontsize+2)
+				.text(t.toString())
+		);
+		//draw axis for each feature
+		function angleToCoordinate(angle, value) {
+			let x = Math.cos(angle) * radialScale(value);
+			let y = Math.sin(angle) * radialScale(value);
+			//return { "x": 300 + x, "y": 300 - y };
+			return { "x": horiz_center + x, "y": verti_center - y };
+		}
+		for (var i = 0; i < features.length; i++) {
+			let ft_name = features[i];
+			let angle = (Math.PI / 2) + (2 * Math.PI * i / features.length);
+			let line_coordinate = angleToCoordinate(angle, 1);//10);
+			let label_coordinate = angleToCoordinate(angle, 1.1); // 10.5);
+			
+			// fontsize = 8,10,12,14
+			if (ft_name === 'Volume') {
+				label_coordinate.x -= fontsize*3; // 6 characters
+			} else if (ft_name === 'Consumer Contact') { // 16 characters
+				label_coordinate.x -= fontsize*7;
+			} else if (ft_name === 'Gender Equality') { // 15 characters
+				label_coordinate.x -= fontsize*3;
+			} else if (ft_name === 'Lower Labor Produce Ratio') { // 25 characters
+				label_coordinate.x -= fontsize*8;
+			} else if (ft_name === 'Lower Carbon Footprint') { // 22 characters
+				label_coordinate.x -= fontsize*4;
+			} else if (ft_name === 'Chain Added Value') { // 17 characters
+				label_coordinate.x -= fontsize*4;
+			} else if (ft_name === 'Price Premium') { // 13 characters
+				label_coordinate.x -= fontsize*3;
+			}
+			svg.append("line")
+				.attr("x1", horiz_center)//min_dim 300)
+				.attr("y1", verti_center)//min_dim 300)
+				.attr("x2", line_coordinate.x)
+				.attr("y2", line_coordinate.y)
+				.attr("stroke", this.colors.GREY);
+			svg.append("text")
+				.attr("x", label_coordinate.x)
+				.attr("y", label_coordinate.y)
+				.attr("font-size",fontsize)
+				.text(ft_name);
+		}
+		//drawing the line for the spider chart
+		let line = d3.line().x(d => d.x).y(d => d.y);
+		//get coordinates for a data point
+		function getPathCoordinates(d) {
+			let coordinates = [];
+			for (var i = 0; i < features.length; i++) {
+				let ft_name = features[i];
+				let angle = (Math.PI / 2) + (2 * Math.PI * i / features.length);
+				coordinates.push(angleToCoordinate(angle, d[ft_name]));
+			}
+			// Add also the last connecting coordinate from last point to the first point.
+			coordinates.push(angleToCoordinate(Math.PI/2, d[features[0]]));
+			return coordinates;
+		}
+		// Draw in reverse order => RANK 3 is in background and RANK 1 in foreground.
+		for (let i=data.length-1; i>=0; i--) {
+			// draw the path element
+			// IF THE SHOW CHECKBOX is checked!!!!
+			// BUT do not block the "wholesale" spider!
+			if (data.length === 1 || this.showRecommendation['R'+i].value === true) {
+				
+				let d = data[i];
+				let color;
+				// Note that when we show "wholesale" spider, we do not have access to 
+				// this.showRecommendation['R'+i] -object.
+				if (name === 'wholesale') {
+					color = this.colors.DARK_GREEN;
+				} else {
+					color = this.showRecommendation['R'+i].color;
+				}
+				let coordinates = getPathCoordinates(d);
+				svg.append("path")
+					.datum(coordinates)
+					.attr("d", line)
+					.attr("stroke-width", 2)
+					.attr("stroke", color)
+					.attr("fill", "none")//color)
+					.attr("stroke-opacity", 1)
+					.attr("opacity", 1) //0.5);
+			}
+		}
+	}
+	
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -100,8 +274,8 @@ export default class AnalysisView extends View {
 					
 					this.setRecommendations();
 					this.renderRecommendationsPart1Text();
-					//this.renderRecommendationsList();
-					//this.renderRecommendationsSpider();
+					this.renderRecommendationsList();
+					this.renderRecommendationsSpider();
 					//this.renderRecommendationsPart2Text();
 					//this.renderAnalysisRegionAttractiveness();
 					
@@ -161,6 +335,89 @@ export default class AnalysisView extends View {
 		}
 		$("#recommendations-text-part-1-wrapper").empty().append(html);
 	}
+	
+	renderRecommendationsSpider() {
+		$('#recommendations-spider-wrapper').empty();
+		
+		let w = this.REO.width;
+		if (w > 1600) { w = 1600; }
+		
+		let width = w*0.5;					// 50% of width
+		let height = this.REO.height*0.5;	// 50% of height
+		
+		if (w < 576) { // s12 => takes "whole width"  should be 601, but because we are "cropping" a little bit...
+			width = w*0.9;					// 90% of width
+			height = this.REO.height*0.5;	// 50% of height
+		}
+		
+		const html = '<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>';
+		$(html).appendTo('#recommendations-spider-wrapper');
+		
+		this.drawSpider('peterparker', 'spider-r', width, height);
+	}
+	
+	renderRecommendationsList() {
+		const self = this;
+		
+		// Generate following HTML dynamically based on analysis recommendations:
+		let html = 
+			'<div class="row" style="margin-bottom:0;">'+
+				'<div class="col s5">'+
+					'<p style="font-weight:bold;">Sales Channel</p>'+
+				'</div>'+
+				'<div class="col s5">'+
+					'<p style="font-weight:bold;">Business Model</p>'+
+				'</div>'+
+				'<div class="col s2">'+
+					'<p style="font-weight:bold;">Show</p>'+
+				'</div>'+
+			'</div>';
+		this.USER_MODEL.analysisResult.recommendations.forEach((r,index) => {
+			/*
+			r["Sales Channel"]
+			r["Business Model"]
+			r["Volume"]
+			r["Consumer Contact"]
+			r["Gender Equality"]
+			r["Lower Labor Produce Ratio"]
+			r["Lower Carbon Footprint"]
+			r["Chain Added Value"]
+			r["Price Premium"]
+			*/
+			const id = this.showRecommendation["R"+index].id;
+			let checked = '';
+			if (this.showRecommendation["R"+index].value===true) {
+				checked = 'checked="checked" ';
+			}
+			html += '<div class="row" style="margin-bottom:0;">'+
+				'<div class="col s5">'+
+					'<p style="color:'+this.showRecommendation["R"+index].color+'">'+r["Sales Channel"]+'</p>'+
+				'</div>'+
+				'<div class="col s5">'+
+					'<p style="color:'+this.showRecommendation["R"+index].color+'">'+r["Business Model"]+'</p>'+
+				'</div>'+
+				'<div class="input-field col s2" style="padding-top:0">'+
+					'<p><label><input type="checkbox" class="filled-in" id="'+id+'" '+checked+'/><span></span></label></p>'+
+				'</div>'+
+			'</div>';
+		});
+		$("#recommendations-list-wrapper").empty().append(html);
+		
+		this.USER_MODEL.analysisResult.recommendations.forEach((r,index) => {
+			
+			const id = this.showRecommendation["R"+index].id;
+			
+			$('#'+id).on('click', function(){
+				if (self.showRecommendation["R"+index].value === true) {
+					self.showRecommendation["R"+index].value = false;
+				} else {
+					self.showRecommendation["R"+index].value = true;
+				}
+				self.renderRecommendationsSpider();
+			});
+		});
+	}
+	
 	
 	
 	render() {
@@ -238,7 +495,7 @@ export default class AnalysisView extends View {
 						'<div id="recommendations-text-part-1-wrapper"></div>'+
 					'</div>'+
 					
-					/*
+					
 					'<div class="col s12 m10 offset-m1">'+
 						'<div class="row">'+
 							'<div class="col s12 m5" id="recommendations-list-wrapper">'+
@@ -250,7 +507,7 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-2-wrapper"></div>'+
 					'</div>'+
-					*/
+					
 					
 					'<div class="col s12 m10 offset-m1">'+
 						'<p>&nbsp;</p>'+
@@ -304,8 +561,8 @@ export default class AnalysisView extends View {
 			
 			this.setRecommendations();
 			this.renderRecommendationsPart1Text();
-			//this.renderRecommendationsList();
-			//this.renderRecommendationsSpider();
+			this.renderRecommendationsList();
+			this.renderRecommendationsSpider();
 			//this.renderRecommendationsPart2Text();
 			//this.renderAnalysisRegionAttractiveness();
 			

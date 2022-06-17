@@ -111,14 +111,11 @@ export default class AnalysisView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const ll_intro_business_models_title = LM['translation'][sel]['Intro_Definition_Business_Models_title'];
-		
-		
 		const ll_csa = LM['translation'][sel]['CSA'];
 		const ll_f2f = LM['translation'][sel]['Face-to-Face'];
 		const ll_online_trade = LM['translation'][sel]['Online_Trade'];
 		const ll_retail_trade = LM['translation'][sel]['Retail_Trade'];
-		const ll_retail_trade = LM['translation'][sel]['Improved_Logistics'];
-		
+		const ll_improved_logistics = LM['translation'][sel]['Improved_Logistics'];
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
@@ -141,23 +138,23 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<ul class="collapsible">'+
 							'<li>'+
-								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Consumer Supported Agriculture (CSA)</div>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_csa+'</div>'+
 								'<div class="collapsible-body"><span id="business-models-csa-text"></span></div>'+
 							'</li>'+
 							'<li>'+
-								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Face-to-Face Sales</div>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_f2f+'</div>'+
 								'<div class="collapsible-body"><span id="business-models-f2f-text"></span></div>'+
 							'</li>'+
 							'<li>'+
-								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Online Trade</div>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_online_trade+'</div>'+
 								'<div class="collapsible-body"><span id="business-models-online-text"></span></div>'+
 							'</li>'+
 							'<li>'+
-								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Retail Trade</div>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_retail_trade+'</div>'+
 								'<div class="collapsible-body"><span id="business-models-retail-text"></span></div>'+
 							'</li>'+
 							'<li>'+
-								'<div class="collapsible-header"><i class="material-icons">info_outline</i>Improved Logistics</div>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_improved_logistics+'</div>'+
 								'<div class="collapsible-body"><span id="business-models-logistics-text"></span></div>'+
 							'</li>'+
 						'</ul>'+

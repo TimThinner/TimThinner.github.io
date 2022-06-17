@@ -54,6 +54,39 @@ export default class AnalysisView extends View {
 		$(this.el).empty();
 	}
 	
+	setRecommendations() {
+		this.showRecommendation = {};
+		
+		const colors = [
+			this.colors.DARK_GREEN, // First recommendation.
+			this.colors.DARK_ORANGE, // Second recommendation.
+			this.colors.DARK_BLUE, // Third recommendation.
+			this.colors.DARK_RED
+		];
+		// "R0":{id:'show-r-0',value:true, color:this.colors.DARK_GREEN}
+		// "R1":{id:'show-r-1',value:true, color:this.colors.DARK_ORANGE}
+		// "R2":{id:'show-r-2',value:true, color:this.colors.DARK_BLUE}
+		
+		this.USER_MODEL.analysisResult.recommendations.forEach((r,index) => {
+			/*
+			r["Sales Channel"]
+			r["Business Model"]
+			r["Volume"]
+			r["Consumer Contact"]
+			r["Gender Equality"]
+			r["Lower Labor Produce Ratio"]
+			r["Lower Carbon Footprint"]
+			r["Chain Added Value"]
+			r["Price Premium"]
+			*/
+			let color = '#000000';
+			if (index < 4) {
+				color = colors[index];
+			}
+			this.showRecommendation["R"+index] = {id:'show-r-'+index, value:true, color:color};
+		});
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -65,8 +98,8 @@ export default class AnalysisView extends View {
 					
 					$('#'+this.FELID).empty();
 					
-					//this.setRecommendations();
-					//this.renderRecommendationsPart1Text();
+					this.setRecommendations();
+					this.renderRecommendationsPart1Text();
 					//this.renderRecommendationsList();
 					//this.renderRecommendationsSpider();
 					//this.renderRecommendationsPart2Text();
@@ -104,6 +137,32 @@ export default class AnalysisView extends View {
 		$("#business-models-more-info-wrapper").empty().append(ll_def_more_info);
 	}
 	
+	renderRecommendationsPart1Text() {
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		
+		const ll_intro = LM['translation'][sel]['Result1_Models_Considered'];
+		const ll_r1_no_suitable = LM['translation'][sel]['Results1_farms_no_suitable_channels'];
+		const ll_r1_only_1_suitable = LM['translation'][sel]['Results1_only_one_channel'];
+		const ll_r1_more_than_2_suitable = LM['translation'][sel]['Result_Farms_more_than_2_suitable'];
+		
+		const numberOfResults = this.USER_MODEL.analysisResult.recommendations.length;
+		
+		let html;
+		
+		if (numberOfResults === 0) {
+			html = '<p>'+ll_intro+' '+ll_r1_no_suitable+'</p>';
+			
+		} else if(numberOfResults === 1) {
+			html = '<p>'+ll_intro+' '+ll_r1_only_1_suitable+'</p>';
+			
+		} else { // Two or more...
+			html = '<p>'+ll_intro+' '+ll_r1_more_than_2_suitable+'</p>';
+		}
+		$("#recommendations-text-part-1-wrapper").empty().append(html);
+	}
+	
+	
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -116,6 +175,9 @@ export default class AnalysisView extends View {
 		const ll_online_trade = LM['translation'][sel]['Online_Trade'];
 		const ll_retail_trade = LM['translation'][sel]['Retail_Trade'];
 		const ll_improved_logistics = LM['translation'][sel]['Improved_Logistics'];
+		
+		const ll_recommendations_title = 'Recommendations for Short Food Supply Chain';
+		
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
@@ -166,20 +228,17 @@ export default class AnalysisView extends View {
 					
 					
 					
-					'<div class="col s12 m10 offset-m1">'+
-						'<p>&nbsp;</p>'+
-						'<h5 style="text-align:center">UNDER CONSTRUCTION!!!</h5>'+
-						'<p>&nbsp;</p>'+
-					'</div>'+
 					
 					
-					/*
+					
 					'<div class="col s12 m10 offset-m1">'+
-						'<h5 style="text-align:center">Recommendations for Short Food Supply Chain</h5>'+
+						'<h5 style="text-align:center">'+ll_recommendations_title+'</h5>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-1-wrapper"></div>'+
 					'</div>'+
+					
+					/*
 					'<div class="col s12 m10 offset-m1">'+
 						'<div class="row">'+
 							'<div class="col s12 m5" id="recommendations-list-wrapper">'+
@@ -191,7 +250,15 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-part-2-wrapper"></div>'+
 					'</div>'+
+					*/
 					
+					'<div class="col s12 m10 offset-m1">'+
+						'<p>&nbsp;</p>'+
+						'<h5 style="text-align:center">UNDER CONSTRUCTION!!!</h5>'+
+						'<p>&nbsp;</p>'+
+					'</div>'+
+					
+					/*
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="additional-description-text-part-1-wrapper"></div>'+
 					'</div>'+
@@ -232,25 +299,24 @@ export default class AnalysisView extends View {
 			self.controller.models['MenuModel'].setSelected('main');
 		});
 		
-		/*
+		
 		if (this.USER_MODEL.analysisReady) {
 			
+			this.setRecommendations();
 			this.renderRecommendationsPart1Text();
-			this.renderRecommendationsList();
-			this.renderRecommendationsSpider();
-			this.renderRecommendationsPart2Text();
-			
-			this.renderAnalysisRegionAttractiveness();
-			
+			//this.renderRecommendationsList();
+			//this.renderRecommendationsSpider();
+			//this.renderRecommendationsPart2Text();
+			//this.renderAnalysisRegionAttractiveness();
 			
 		} else {
 			this.showSpinner('#recommendations-text-part-1-wrapper');
-			this.showSpinner('#analysis-region-attractiveness-wrapper');
+			//this.showSpinner('#analysis-region-attractiveness-wrapper');
 		}
 		
-		this.renderAdditionalDescriptionPart1();
-		this.renderWholesaleSpider();
-		*/
+		//this.renderAdditionalDescriptionPart1();
+		//this.renderWholesaleSpider();
+		
 		
 		this.renderBusinessModels();
 		$('.collapsible').collapsible({

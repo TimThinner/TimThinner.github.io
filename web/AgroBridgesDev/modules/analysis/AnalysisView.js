@@ -273,8 +273,13 @@ export default class AnalysisView extends View {
 		let w = this.REO.width;
 		if (w > 1600) { w = 1600; }
 		
-		const width = w*0.9;				// 90% of width
-		const height = this.REO.height*0.5;	// 50% of height
+		let width = w*0.5;					// 50% of width
+		let height = this.REO.height*0.5;	// 50% of height
+		
+		if (w < 576) { // s12 => takes "whole width"  should be 601, but because we are "cropping" a little bit...
+			width = w*0.9;					// 90% of width
+			height = this.REO.height*0.5;	// 50% of height
+		}
 		
 		const html = '<svg id="spider" width="'+width+'" height="'+height+'"></svg>';
 		$(html).appendTo('#wholesale-spider-wrapper');

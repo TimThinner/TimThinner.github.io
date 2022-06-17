@@ -489,6 +489,15 @@ export default class AnalysisView extends View {
 		$("#attractiveness-wrapper").empty().append(result);
 	}
 	
+	renderDisclaimer() {
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const ll_d_title = LM['translation'][sel]['Disclaimer_Header'];
+		const ll_d_text = LM['translation'][sel]['Disclaimer'];
+		const html = '<h6>'+ll_d_title+'</h6><p>'+ll_d_text+'</p>';
+		$("#disclaimer-text-wrapper").empty().append(html);
+	}
+	
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -531,13 +540,14 @@ export default class AnalysisView extends View {
 		const ll_farm_and_regional_chars_text = LM['translation'][sel]['Suitability_farm_Characterstics'];
 		const ll_farm_and_regional_chars_more = LM['translation'][sel]['Suitability_farm_Characteristics_info'];
 		
-		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
+		const ll_how_calculated_title = LM['translation'][sel]['How_calculated_title'];
+		const ll_how_calculated_text = LM['translation'][sel]['How_calculated'];
 		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+color+'">ANALYSIS</h3>'+
+						'<h3 style="color:'+this.colors.DARK_GREEN+'">ANALYSIS</h3>'+
 					'</div>'+
 				'</div>'+
 				
@@ -666,34 +676,26 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_farm_and_regional_chars_title+'</h5>'+
 						'<p>'+ll_farm_and_regional_chars_intro+'</p>'+
-						'<p>'+ll_relative_attractiveness+' <span id="attractiveness-wrapper" style="color:'+color+'"></span></p>'+
+						'<p style="color:'+this.colors.DARK_GREEN+'; font-weight:bold;">'+ll_relative_attractiveness+' <span id="attractiveness-wrapper" style="color:'+this.colors.DARK_ORANGE+'"></span></p>'+
 						'<p>'+ll_farm_and_regional_chars_text+'</p>'+
 						'<p>'+ll_farm_and_regional_chars_more+'</p>'+
 					'</div>'+
 				'</div>'+
 				
+				'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h5 style="text-align:center">'+ll_how_calculated_title+'</h5>'+
+						'<p>'+ll_how_calculated_text+'</p>'+
+					'</div>'+
+				'</div>'+
 				
 				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<p>&nbsp;</p>'+
-						'<h5 style="text-align:center">UNDER CONSTRUCTION!!!</h5>'+
-						'<p>&nbsp;</p>'+
-					'</div>'+
-					/*
-					'<div class="col s12 center">'+
-						'<h5>Wholesale</h5>'+
-						'<div id="spider-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<div id="additional-description-text-part-2-wrapper"></div>'+
-					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
 						'<div id="disclaimer-text-wrapper" style="font-size:75%; color:#888; border:1px solid #888; margin-top:16px; padding:16px;"></div>'+
 					'</div>'+
-					*/
-					
 				'</div>'+
 			'</div>'+
+			
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1" id="'+this.FELID+'">'+
@@ -714,7 +716,6 @@ export default class AnalysisView extends View {
 			self.controller.models['MenuModel'].setSelected('main');
 		});
 		
-		
 		if (this.USER_MODEL.analysisReady) {
 			
 			this.setRecommendations();
@@ -723,8 +724,6 @@ export default class AnalysisView extends View {
 			this.renderRecommendationsSpider();
 			
 			this.renderAdditionalDescriptionPart1();
-			
-			//this.renderRecommendationsPart2Text();
 			this.appendAttractiveness();
 			
 		} else {
@@ -740,17 +739,7 @@ export default class AnalysisView extends View {
 			onOpenEnd: function(el) { console.log(['open el=',el]); /*self.previewOpen=true;*/ },
 			onCloseEnd: function(el) { console.log(['close el=',el]); /*self.previewOpen=false;*/ }
 		});
-		
-		
-		
-		
-		
-		/*
-		this.renderAdditionalDescriptionPart2();
 		this.renderDisclaimer();
-		*/
-		
-		
 		this.rendered = true;
 	}
 }

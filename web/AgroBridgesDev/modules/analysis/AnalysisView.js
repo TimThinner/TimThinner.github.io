@@ -500,6 +500,25 @@ export default class AnalysisView extends View {
 		const ll_improved_logistics_title = 'Improved logistics as an option for all farmers';
 		const ll_comparison_to_wholesale_title = "Comparison to Wholesale";
 		
+		const ll_how_to_read_spiders_title = LM['translation'][sel]['Description_Spiderweb_title'];
+		const ll_how_to_read_spiders_text = LM['translation'][sel]['Describtion_Spiderweb'];
+		const ll_definition_criteria = LM['translation'][sel]['Definition_Criteria'];
+		
+		const ll_volume = LM['translation'][sel]['Volume'];
+		const ll_volume_def = LM['translation'][sel]['Volume_Definition'];
+		const ll_price_premium = LM['translation'][sel]['Price_Premium'];
+		const ll_price_premium_def = LM['translation'][sel]['Price_Premium_Definition'];
+		const ll_chain_added_value = LM['translation'][sel]['Chain_Added_Value'];
+		const ll_chain_added_value_def = LM['translation'][sel]['Chain_Added_Value_Definition'];
+		const ll_carbon_footprint = LM['translation'][sel]['Carbon_Footprint'];
+		const ll_carbon_footprint_def = LM['translation'][sel]['Carbon_Footprint_Definition'];
+		const ll_labor_produce = LM['translation'][sel]['Labor_Produce'];
+		const ll_labor_produce_def = LM['translation'][sel]['Labor_Produce_Definition'];
+		const ll_gender_equality = LM['translation'][sel]['Gender_Equality'];
+		const ll_gender_equality_def = LM['translation'][sel]['Gender_Equality_Definition'];
+		const ll_consumer_contact = LM['translation'][sel]['Consumer_Contact'];
+		const ll_consumer_contact_def = LM['translation'][sel]['Consumer_Contact_Definition'];
+		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
@@ -508,6 +527,7 @@ export default class AnalysisView extends View {
 						'<h3 style="color:'+color+'">ANALYSIS</h3>'+
 					'</div>'+
 				'</div>'+
+				
 				'<div class="col s12">'+
 					// This FIRST "CHAPTER" is filled in 
 					//		this.renderBusinessModels()
@@ -547,6 +567,7 @@ export default class AnalysisView extends View {
 						'<div id="business-models-more-info-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
+				
 				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_recommendations_title+'</h5>'+
@@ -566,6 +587,7 @@ export default class AnalysisView extends View {
 						'<div id="recommendations-text-part-2-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
+				
 				'<div class="col s12" style="background-color:'+this.colors.LIGHT_GREEN_2+';">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_improved_logistics_title+'</h5>'+
@@ -584,6 +606,46 @@ export default class AnalysisView extends View {
 							'<div class="col s12 m7" id="wholesale-spider-wrapper">'+
 							'</div>'+
 						'</div>'+
+					'</div>'+
+				'</div>'+
+				
+				'<div class="col s12">'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h5 style="text-align:center">'+ll_how_to_read_spiders_title+'</h5>'+
+						'<p>'+ll_how_to_read_spiders_text+'</p>'+
+						'<p>'+ll_definition_criteria+'</p>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<ul class="collapsible">'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_volume+'</div>'+
+								'<div class="collapsible-body">'+ll_volume_def+'</div>'+
+							'</li>'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_price_premium+'</div>'+
+								'<div class="collapsible-body">'+ll_price_premium_def+'</div>'+
+							'</li>'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_chain_added_value+'</div>'+
+								'<div class="collapsible-body">'+ll_chain_added_value_def+'</div>'+
+							'</li>'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_carbon_footprint+'</div>'+
+								'<div class="collapsible-body">'+ll_carbon_footprint_def+'</div>'+
+							'</li>'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_labor_produce+'</div>'+
+								'<div class="collapsible-body">'+ll_labor_produce_def+'</div>'+
+							'</li>'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_gender_equality+'</div>'+
+								'<div class="collapsible-body">'+ll_gender_equality_def+'</div>'+
+							'</li>'+
+							'<li>'+
+								'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_consumer_contact+'</div>'+
+								'<div class="collapsible-body">'+ll_consumer_contact_def+'</div>'+
+							'</li>'+
+						'</ul>'+
 					'</div>'+
 				'</div>'+
 				

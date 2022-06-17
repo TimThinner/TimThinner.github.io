@@ -145,16 +145,16 @@ export default class LanguageModel extends Model {
 				"Consumer_Contact_Definition":"",
 				
 				"Description_Spiderweb_example":"You can see in example that SFSC enable you to reach higher prices (price premium), but they are labor-intensive (lower labor to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale.",
-				
+				"Description_Spiderweb_title":"How to read the diagrams?",
+				"Describtion_Spiderweb": "In a spider chart, each criterion gets its spoke, and the spokes are evenly distributed around the wheel. The farther toward the outside of the chart, the better a business model fulfills the criteria. A spoke close to the center means that the business model can only fulfill the criteria to a limited extends.",
+				"Definition_Criteria": "Would you like to know how the criteria are defined? Please follow this Link.",
 				
 				'How_calculated':'How were the results calculated? The ranking is based on a set of sustainability criteria. The sales channel that reaches the economic, environmental and social criteria best is considered to be the most suitable option and ranked first. The graphics show to which extent the SFSC sales channels meet the different criteria.',
-				'Definition_Criteria':'Would you like to know how the criteria are defined? Please follow this Link.',
 				'Intro_not_all_sales_channels_con':'Not all sales channels were considered. Why? Some business models were excluded, because they were considered to be less suitable for your farm or in your region. Reasons for this are farms or regional characteristics (e.g. how attractive your region is for sales).',
 				'Suitability_farm_Characterstics':'This relative attractiveness in the model depends on the population density and the income of the inhabitants. If you would like to learn more about farms or regional characteristics, and how these affect the suitability of the business models, please follow this Link.',
 				'Disclaimer_Header':'Disclaimer',
 				'Disclaimer':'The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g. the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remain with you.',
 				'Additional_Info_PickU':'The harvesting labor saved by Pick Your Own is not reflected in the Labor to Produce Ratio. The Labor to Produce Ratio only considered Labor Requirements for Sales. ',
-				'Describtion_Spiderweb':'As you can see the SFSC enable you to reach higher prices (price premium), but they are labor-intensive (labor to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale.',
 				'region_low':'low',
 				'region_medium':'medium',
 				'region_high':'high',

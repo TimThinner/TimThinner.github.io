@@ -65,5 +65,5 @@ li.agro-item:not(:last-child) {
 /* override label color from Materialize.css */
 label {
 	font-size: 0.8rem;
-	color: #0B7938; /* #9e9e9e; */
+	color: #4db6ac; /*#0B7938; #9e9e9e; */
 }

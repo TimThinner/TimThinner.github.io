@@ -593,7 +593,7 @@ export default class AnalysisView extends View {
 				
 				// SECOND "CHAPTER"
 				
-				'<div class="col s12" style="margin-top:16px; background-color:'+this.colors.LIGHT_GREEN_3+';">'+
+				'<div class="col s12" style="border-top: 1px solid #555; border-bottom: 1px solid #555; margin-top:16px; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_recommendations_title+'</h5>'+
 					'</div>'+
@@ -612,7 +612,7 @@ export default class AnalysisView extends View {
 						'<div id="recommendations-text-part-2-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
-				'<div class="col s12" style="background-color:'+this.colors.LIGHT_GREEN_3+';">'+
+				'<div class="col s12" style="border-bottom: 1px solid #555; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_improved_logistics_title+'</h5>'+
 					'</div>'+
@@ -620,7 +620,7 @@ export default class AnalysisView extends View {
 						'<div id="additional-description-text-part-1-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
-				'<div class="col s12" style="background-color:'+this.colors.LIGHT_GREEN_3+';">'+
+				'<div class="col s12" style="border-bottom: 1px solid #555; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_comparison_to_wholesale_title+'</h5>'+
 						'<div class="row">'+

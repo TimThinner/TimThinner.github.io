@@ -592,45 +592,40 @@ export default class AnalysisView extends View {
 				'</div>'+
 				
 				// SECOND "CHAPTER"
-				
-				//'<div class="col s12" style="border-top: 1px solid #555; border-bottom: 1px solid #555; margin-top:16px; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
-				'<div class="col s12" style="margin-top:16px;">'+
-					
-					'<div class="col s12 m10 offset-m1" style="border: 1px solid #888; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
-						'<div class="col s12 m10 offset-m1">'+
-							'<h5 style="text-align:center">'+ll_recommendations_title+'</h5>'+
-						'</div>'+
-						'<div class="col s12 m10 offset-m1">'+
-							'<div id="recommendations-text-part-1-wrapper"></div>'+
-						'</div>'+
-						'<div class="col s12 m10 offset-m1">'+
-							'<div class="row">'+
-								'<div class="col s12 m5" id="recommendations-list-wrapper">'+
-								'</div>'+
-								'<div class="col s12 m7" id="recommendations-spider-wrapper">'+
-								'</div>'+
+				'<div class="col s12" style="border-top: 1px solid #888; border-bottom: 1px solid #555; margin-top:16px; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h5 style="text-align:center">'+ll_recommendations_title+'</h5>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="recommendations-text-part-1-wrapper"></div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div class="row">'+
+							'<div class="col s12 m5" id="recommendations-list-wrapper">'+
+							'</div>'+
+							'<div class="col s12 m7" id="recommendations-spider-wrapper">'+
 							'</div>'+
 						'</div>'+
-						'<div class="col s12 m10 offset-m1">'+
-							'<div id="recommendations-text-part-2-wrapper"></div>'+
-						'</div>'+
 					'</div>'+
-					'<div class="col s12 m10 offset-m1" style="border: 1px solid #888; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
-						'<div class="col s12 m10 offset-m1">'+
-							'<h5 style="text-align:center">'+ll_improved_logistics_title+'</h5>'+
-						'</div>'+
-						'<div class="col s12 m10 offset-m1" >'+
-							'<div id="additional-description-text-part-1-wrapper"></div>'+
-						'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="recommendations-text-part-2-wrapper"></div>'+
 					'</div>'+
-					'<div class="col s12 m10 offset-m1" style="border: 1px solid #888; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
-						'<div class="col s12 m10 offset-m1">'+
-							'<h5 style="text-align:center">'+ll_comparison_to_wholesale_title+'</h5>'+
-							'<div class="row">'+
-								'<div class="col s12 m5" id="wholesale-description-wrapper">'+
-								'</div>'+
-								'<div class="col s12 m7" id="wholesale-spider-wrapper">'+
-								'</div>'+
+				'</div>'+
+				'<div class="col s12" style="border-bottom: 1px solid #888; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h5 style="text-align:center">'+ll_improved_logistics_title+'</h5>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1" >'+
+						'<div id="additional-description-text-part-1-wrapper"></div>'+
+					'</div>'+
+				'</div>'+
+				'<div class="col s12" style="border-bottom: 1px solid #888; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<h5 style="text-align:center">'+ll_comparison_to_wholesale_title+'</h5>'+
+						'<div class="row">'+
+							'<div class="col s12 m5" id="wholesale-description-wrapper">'+
+							'</div>'+
+							'<div class="col s12 m7" id="wholesale-spider-wrapper">'+
 							'</div>'+
 						'</div>'+
 					'</div>'+

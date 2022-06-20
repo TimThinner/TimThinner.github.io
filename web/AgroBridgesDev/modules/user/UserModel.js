@@ -598,17 +598,6 @@ export default class UserModel extends Model {
 					attractiveness:"medium",
 					recommendations:[
 						{
-						"Sales Channel":"On-Farm Shop (extensively managed, unstaffed)",
-						"Business Model":"Face-to-Face",
-						"Volume":0.2,
-						"Consumer Contact":0.4,
-						"Gender Equality":0.645290581,
-						"Lower Labor Produce Ratio":0.3125,
-						"Lower Carbon Footprint":0.074509829,
-						"Chain Added Value":0.694974003,
-						"Price Premium":0.729058945
-						},
-						{
 						"Sales Channel":"Post delivery (sales on demand)",
 						"Business Model":"Online Trade",
 						"Volume":0.2,
@@ -629,6 +618,17 @@ export default class UserModel extends Model {
 						"Lower Carbon Footprint":0.504424796,
 						"Chain Added Value":0.402079723,
 						"Price Premium":0.640124095
+						},
+						{
+						"Sales Channel":"On-Farm Shop (extensively managed, unstaffed)",
+						"Business Model":"Face-to-Face",
+						"Volume":0.2,
+						"Consumer Contact":0.4,
+						"Gender Equality":0.645290581,
+						"Lower Labor Produce Ratio":0.3125,
+						"Lower Carbon Footprint":0.074509829,
+						"Chain Added Value":0.694974003,
+						"Price Premium":0.729058945
 						}
 					]
 				};

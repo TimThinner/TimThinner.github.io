@@ -48,7 +48,7 @@ export default class InfoView extends View {
 					M.toast({
 						displayLength:500, 
 						html: save_ok,
-						classes: 'green darken-1'
+						classes: 'teal darken-1'
 					});
 					// After 1 second go back to FARM-page automatically.
 					setTimeout(() => this.controller.models['MenuModel'].setSelected('farm'), 1000);

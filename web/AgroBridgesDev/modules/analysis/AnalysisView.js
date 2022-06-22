@@ -141,6 +141,14 @@ export default class AnalysisView extends View {
 		// Consumer_Contact		0.2
 		
 		if (name === 'wholesale') {
+			const obj = {};
+			Object.keys(this.USER_MODEL.analysisResult.comparison).forEach(key => {
+				if (key==='Volume' || key==='Price_Premium' || key==='Chain_Added_Value' || key==='Carbon_Footprint' || key==='Labor_Produce' || key==='Gender_Equality' ||	key==='Consumer_Contact') {
+					obj[key] = this.USER_MODEL.analysisResult.comparison[key];
+				}
+			});
+			data = [obj];
+			/*
 			data = [{
 				"Volume":1,
 				"Consumer Contact":0.2,
@@ -149,7 +157,7 @@ export default class AnalysisView extends View {
 				"Lower Carbon Footprint":0.27142858,
 				"Chain Added Value":0.093587522,
 				"Price Premium":0.243019648
-			}];
+			}];*/
 		} else {
 			if (this.USER_MODEL.analysisReady) {
 				data = this.USER_MODEL.analysisResult.recommendation;

@@ -240,13 +240,13 @@ export default class UserModel extends Model {
 			"comparison": {
 				"Business_Model": "Wholesale_Trade",
 				"Sales Channel": "Wholesale_Market",
-				"Volume ": 1,
+				"Volume": 1,
 				"Price_Premium": 0.24,
 				"Chain_Added_Value": 0.09,
-				"Carbon_Footprint ": 0.27,
-				"Labor_Produce ": 1,
-				"Gender_Equality ": 0.5,
-				"Consumer_Contact ": 0.2,
+				"Carbon_Footprint": 0.27,
+				"Labor_Produce": 1,
+				"Gender_Equality": 0.5,
+				"Consumer_Contact": 0.2,
 				"business_model_title": "Wholesale",
 				"sales_channel_title": "Wholesale "
 			},
@@ -725,6 +725,18 @@ export default class UserModel extends Model {
 					attractiveness:"medium",
 					recommendations:[
 						{
+					"Business_Model": "Online_Trade",
+					"Sales_Channel": "Online_Sales_Post",
+					"Ranking": 1,
+					"Volume": 0.2,
+					"Price_Premium": 0.73,
+					"Chain_Added_Value": 0.62,
+					"Carbon_Footprint": 1.0,
+					"Labor_Produce": 0.02,
+					"Gender_Equality": 0.5,
+					"Consumer_Contact": 0.2,
+					"business_model_title": "Online Trade",
+					"sales_channel_title": "Post delivery (sales on demand)"
 						"Sales Channel":"Post delivery (sales on demand)",
 						"Business Model":"Online Trade",
 						"Volume":0.2,

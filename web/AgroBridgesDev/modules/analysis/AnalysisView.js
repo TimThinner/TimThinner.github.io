@@ -331,6 +331,7 @@ export default class AnalysisView extends View {
 					
 					this.renderAdditionalDescriptionPart1();
 					
+					this.renderWholesaleSpider();
 					
 					//this.renderRecommendationsPart2Text();
 					this.appendAttractiveness();
@@ -754,6 +755,8 @@ export default class AnalysisView extends View {
 			this.renderRecommendationsList();
 			this.renderRecommendationsSpider();
 			
+			this.renderWholesaleSpider();
+			
 			this.renderAdditionalDescriptionPart1();
 			this.appendAttractiveness();
 			
@@ -762,7 +765,7 @@ export default class AnalysisView extends View {
 		}
 		
 		this.renderAdditionalDescriptionPart2();
-		this.renderWholesaleSpider();
+		
 		
 		this.renderBusinessModels();
 		$('.collapsible').collapsible({

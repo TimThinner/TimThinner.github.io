@@ -38,6 +38,7 @@ export default class AnalysisView extends View {
 			"R2":{id:'show-r-2', value:true, color:this.colors.DARK_BLUE},
 			"R3":{id:'show-r-3', value:true, color:this.colors.DARK_RED}
 		};
+		this.mappedRecommendations = [];
 		this.rendered = false;
 		this.FELID = 'analysis-message';
 	}
@@ -61,8 +62,22 @@ export default class AnalysisView extends View {
 		$(this.el).empty();
 	}
 	
+	mapRecommendation(r) {
+		const obj = {
+			'Volume': r['Volume'],
+			'Consumer Contact': r['Consumer_Contact'],
+			'Gender Equality': r['Gender_Equality'],
+			'Lower Labor Produce Ratio']: r['Labor_Produce'],
+			'Lower Carbon Footprint']: r['Carbon_Footprint'],
+			'Chain Added Value']: r['Chain_Added_Value'],
+			'Price Premium': r['Price_Premium']
+		};
+		return obj;
+	}
+	
 	setRecommendations() {
 		this.showRecommendation = {};
+		this.mappedRecommendations = [];
 		
 		const colors = [
 			this.colors.DARK_GREEN, // First recommendation.
@@ -74,6 +89,22 @@ export default class AnalysisView extends View {
 		// "R1":{id:'show-r-1',value:true, color:this.colors.DARK_ORANGE}
 		// "R2":{id:'show-r-2',value:true, color:this.colors.DARK_BLUE}
 		
+		/*
+				{
+					"Business_Model": "Online_Trade",
+					"Sales_Channel": "Online_Sales_Post",
+					"Ranking": 1,
+					"Volume": 0.2,
+					"Price_Premium": 0.73,
+					"Chain_Added_Value": 0.62,
+					"Carbon_Footprint": 1.0,
+					"Labor_Produce": 0.02,
+					"Gender_Equality": 0.5,
+					"Consumer_Contact": 0.2,
+					"business_model_title": "Online Trade",
+					"sales_channel_title": "Post delivery (sales on demand)"
+				},
+		*/
 		this.USER_MODEL.analysisResult.recommendation.forEach((r,index) => {
 			/*
 			r["Sales Channel"]
@@ -86,6 +117,7 @@ export default class AnalysisView extends View {
 			r["Chain Added Value"]
 			r["Price Premium"]
 			*/
+			this.mappedRecommendations.push(this.mapRecommendation(r));
 			let color = '#000000';
 			if (index < 4) {
 				color = colors[index];
@@ -141,32 +173,8 @@ export default class AnalysisView extends View {
 		// Consumer_Contact		0.2
 		
 		if (name === 'wholesale') {
-			const obj = {};
-			Object.keys(this.USER_MODEL.analysisResult.comparison).forEach(key => {
-				
-				if (key==='Volume') {
-					obj['Volume'] = this.USER_MODEL.analysisResult.comparison[key];
-					
-				} else if (key==='Consumer_Contact') {
-					obj['Consumer Contact'] = this.USER_MODEL.analysisResult.comparison[key];
-					
-				} else if (key==='Gender_Equality') {
-					obj['Gender Equality'] = this.USER_MODEL.analysisResult.comparison[key];
-					
-				} else if (key==='Labor_Produce') {
-					obj['Lower Labor Produce Ratio'] = this.USER_MODEL.analysisResult.comparison[key];
-					
-				} else if (key==='Carbon_Footprint') {
-					obj['Lower Carbon Footprint'] = this.USER_MODEL.analysisResult.comparison[key];
-					
-				} else if (key==='Chain_Added_Value') {
-					obj['Chain Added Value'] = this.USER_MODEL.analysisResult.comparison[key];
-					
-				} else if (key==='Price_Premium') {
-					obj['Price Premium'] = this.USER_MODEL.analysisResult.comparison[key];
-				}
-			});
-			data = [obj];
+			
+			data.push(this.mapRecommendation(this.USER_MODEL.analysisResult.comparison));
 			/*
 			data = [{
 				"Volume":1,
@@ -179,7 +187,27 @@ export default class AnalysisView extends View {
 			}];*/
 		} else {
 			if (this.USER_MODEL.analysisReady) {
-				data = this.USER_MODEL.analysisResult.recommendation;
+				// this.USER_MODEL.analysisResult.recommendation
+				// is an array with zero or more items:
+				/*
+				{
+					"Business_Model": "Online_Trade",
+					"Sales_Channel": "Online_Sales_Post",
+					"Ranking": 1,
+					"Volume": 0.2,
+					"Price_Premium": 0.73,
+					"Chain_Added_Value": 0.62,
+					"Carbon_Footprint": 1.0,
+					"Labor_Produce": 0.02,
+					"Gender_Equality": 0.5,
+					"Consumer_Contact": 0.2,
+					"business_model_title": "Online Trade",
+					"sales_channel_title": "Post delivery (sales on demand)"
+				}
+				*/
+				this.USER_MODEL.analysisResult.recommendation.forEach((r,index) => {
+					data.push(this.mapRecommendation(r));
+				});
 			}
 		}
 		
@@ -429,7 +457,9 @@ export default class AnalysisView extends View {
 					'<p style="font-weight:bold;">Show</p>'+
 				'</div>'+
 			'</div>';
-		this.USER_MODEL.analysisResult.recommendation.forEach((r,index) => {
+		
+		
+		this.mappedRecommendations.forEach((r,index) => {
 			/*
 			r["Sales Channel"]
 			r["Business Model"]

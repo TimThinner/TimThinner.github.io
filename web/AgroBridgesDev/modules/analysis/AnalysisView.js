@@ -152,7 +152,7 @@ export default class AnalysisView extends View {
 			}];
 		} else {
 			if (this.USER_MODEL.analysisReady) {
-				data = this.USER_MODEL.analysisResult.recommendations;
+				data = this.USER_MODEL.analysisResult.recommendation;
 			}
 		}
 		

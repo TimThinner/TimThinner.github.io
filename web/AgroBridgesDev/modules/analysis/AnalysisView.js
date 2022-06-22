@@ -67,9 +67,9 @@ export default class AnalysisView extends View {
 			'Volume': r['Volume'],
 			'Consumer Contact': r['Consumer_Contact'],
 			'Gender Equality': r['Gender_Equality'],
-			'Lower Labor Produce Ratio']: r['Labor_Produce'],
-			'Lower Carbon Footprint']: r['Carbon_Footprint'],
-			'Chain Added Value']: r['Chain_Added_Value'],
+			'Lower Labor Produce Ratio': r['Labor_Produce'],
+			'Lower Carbon Footprint': r['Carbon_Footprint'],
+			'Chain Added Value': r['Chain_Added_Value'],
 			'Price Premium': r['Price_Premium']
 		};
 		return obj;

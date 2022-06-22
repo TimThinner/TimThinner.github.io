@@ -70,7 +70,10 @@ export default class AnalysisView extends View {
 			'Lower Labor Produce Ratio': r['Labor_Produce'],
 			'Lower Carbon Footprint': r['Carbon_Footprint'],
 			'Chain Added Value': r['Chain_Added_Value'],
-			'Price Premium': r['Price_Premium']
+			'Price Premium': r['Price_Premium'],
+			// Few extras for the titles:
+			'Business Model': r['business_model_title'],
+			'Sales Channel': r['sales_channel_title']
 		};
 		return obj;
 	}

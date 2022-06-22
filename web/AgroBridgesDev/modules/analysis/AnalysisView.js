@@ -143,8 +143,27 @@ export default class AnalysisView extends View {
 		if (name === 'wholesale') {
 			const obj = {};
 			Object.keys(this.USER_MODEL.analysisResult.comparison).forEach(key => {
-				if (key==='Volume' || key==='Price_Premium' || key==='Chain_Added_Value' || key==='Carbon_Footprint' || key==='Labor_Produce' || key==='Gender_Equality' ||	key==='Consumer_Contact') {
-					obj[key] = this.USER_MODEL.analysisResult.comparison[key];
+				
+				if (key==='Volume') {
+					obj['Volume'] = this.USER_MODEL.analysisResult.comparison[key];
+					
+				} else if (key==='Consumer_Contact') {
+					obj['Consumer Contact'] = this.USER_MODEL.analysisResult.comparison[key];
+					
+				} else if (key==='Gender_Equality') {
+					obj['Gender Equality'] = this.USER_MODEL.analysisResult.comparison[key];
+					
+				} else if (key==='Labor_Produce') {
+					obj['Lower Labor Produce Ratio'] = this.USER_MODEL.analysisResult.comparison[key];
+					
+				} else if (key==='Carbon_Footprint') {
+					obj['Lower Carbon Footprint'] = this.USER_MODEL.analysisResult.comparison[key];
+					
+				} else if (key==='Chain_Added_Value') {
+					obj['Chain Added Value'] = this.USER_MODEL.analysisResult.comparison[key];
+					
+				} else if (key==='Price_Premium') {
+					obj['Price Premium'] = this.USER_MODEL.analysisResult.comparison[key];
 				}
 			});
 			data = [obj];

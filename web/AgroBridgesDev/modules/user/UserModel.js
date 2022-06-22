@@ -5,6 +5,11 @@ import Model from '../common/Model.js';
 		email
 		token
 		
+		
+		
+		TODO:
+		
+		
 */
 export default class UserModel extends Model {
 	
@@ -130,6 +135,126 @@ export default class UserModel extends Model {
 		}
 		
 		this.analysisResult = {};
+		this.analysis_simulation_backup = {
+			"result_text": {
+				"Intro_Definition_Business_Models": "Five business models can be differentiated for the Short Food Supply Chain. These are Consumer Supported Agriculture (CSA), Face-to-Face Sales, Retail Trade, Online Trade, and Improved Logistics. They can be defined as follows:",
+				"Definition_CSA": "Definition CSA: Producers and consumers have a pre-existing agreement where consumers pay an agreed membership fee or offer labour services (or both), in exchange for produce. Two sales channels of the business model are considered in the analysis: A) CSA -\u00a0 Trading working hours for a share of the harvest, B) CSA - Subscription - payment of an annual fee for a share of the harvest",
+				"Definition_Face_2_Face": "Definition Face-to-Face Trade: Consumer purchases a product directly from the producer/processor on a face-to-face basis.\u00a0Three sales channels of the business model are considered in the analysis: A) Farm shops, B) Farmers markets, C) Pick your own",
+				"Definition_Online_Trade": "Definition Online Trade: Products are traded online using websites of farmers or shared marketing websites.\u00a0We consider two different sales channels: A) Online Food Trade - Post box delivery, B) Online Food Trade - Box scheme subscription & Direct Delivery",
+				"Definition_Retail_Trade": "Definition Retail Trade: Products are produced and retailed in the specific region of production, and consumers are made aware of the \u2018local\u2019 nature of the product at the point of sale.\u00a0The sales channels considered in the analysis is: Retail Store -\u00a0 the origin is highlighted",
+				"Definition_Improved_Logistics": "Definition Improved Logistics: Selling products to producers organisations, food hubs or other distributors, enables farmers to benefit from improved logistics by sharing costs and pooling resources for distribution. This way larger quantities can be sold to channels like supermarket chains. This business model is always considered to be an option and not part of the ranking procedure.",
+				"More_Info_Business_Models": "More information about the five business models e.g. practice cases can be found here: Link",
+				"Result1_Models_Considered": "The following business models and sales channels were considered in your analysis:",
+				"How_calculated": "How where the results calculated? The ranking is based on a set of sustainability criteria. The sales channel that reaches the economic, environmental and social criteria best is considered to be the most suitable option and ranked first. The graphics show to which extent the SFSC sales channels meet the different criteria.",
+				"Describtion_Spiderweb": "As you can see the SFSC enable you to reach higher prices (price premium), but they are labor-intensive (labor to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale.",
+				"Intro_not_all_sales_channels_con": "Not all sales channels were considered. Why? Some business models were excluded, because they were considered to be less suitable for your farm or in your region. Reasons for this are farms or regional characteristics (e.g. how attractive your region is for sales).",
+				"Relative_Attractiveness": "The relative attractiveness of your region was considered to be:",
+				"Suitability_farm_Characterstics": "This relative attractiveness in the model depends on the population density and the income of the inhabitants. If you would like to learn more about farms or regional characteristics, and how these affect the suitability of the business models, please follow this Link.",
+				"Disclaimer_Header": "Disclaimer",
+				"Disclaimer": "The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g. the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remain with you.",
+				"rank_intro1_id": "Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first:",
+				"rank_intro2_id": "Improved logistics is also an option for you. It is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms."
+			},
+			"recommendation": [
+				{
+					"Business_Model": "Online_Trade",
+					"Sales_Channel": "Online_Sales_Post",
+					"Ranking": 1,
+					"Volume": 0.2,
+					"Price_Premium": 0.73,
+					"Chain_Added_Value": 0.62,
+					"Carbon_Footprint": 1.0,
+					"Labor_Produce": 0.02,
+					"Gender_Equality": 0.5,
+					"Consumer_Contact": 0.2,
+					"business_model_title": "Online Trade",
+					"sales_channel_title": "Post delivery (sales on demand)"
+				},
+				{
+					"Business_Model": "Retail_Trade",
+					"Sales_Channel": "Retail_Store",
+					"Ranking": 2,
+					"Volume": 0.4,
+					"Price_Premium": 0.64,
+					"Chain_Added_Value": 0.4,
+					"Carbon_Footprint": 0.5,
+					"Labor_Produce": 0.31,
+					"Gender_Equality": 0.51,
+					"Consumer_Contact": 0.4,
+					"business_model_title": "Retail Trade",
+					"sales_channel_title": "Retail Store"
+				},
+				{
+					"Business_Model": "Face-to-Face",
+					"Sales_Channel": "On_Farm_Shop_extensive",
+					"Ranking": 3,
+					"Volume": 0.2,
+					"Price_Premium": 0.73,
+					"Chain_Added_Value": 0.69,
+					"Carbon_Footprint": 0.07,
+					"Labor_Produce": 0.31,
+					"Gender_Equality": 0.65,
+					"Consumer_Contact": 0.4,
+					"business_model_title": "Face-to-Face",
+					"sales_channel_title": "On-Farm Shop (extensively managed, unstaffed)"
+				}
+			],
+			"rec_additional_text": {},
+			"diagram_dimension_labels": [
+				{
+					"var_name": "Volume",
+					"title": "Volume ",
+					"definition": null
+				},
+				{
+					"var_name": "Price_Premium",
+					"title": "Price Premium",
+					"definition": "Calculated from the difference between the average farmgate price in the chain and the average farm gate price in the region. Price Premium = Price Difference at the farm gate (Euro per kg) / Average farmgate to retail price in the region"
+				},
+				{
+					"var_name": "Chain_Added_Value",
+					"title": "Chain Added Value",
+					"definition": "The chain value-added is based on the difference to the average farm gate price, but considers distribution costs as well. Chain value added (Euro per kg) = Price Difference at Farm Gate - Distribution Costs . The distribution costs contain costs of transport, packaging, marketing fees, and payments to distributors."
+				},
+				{
+					"var_name": "Carbon_Footprint",
+					"title": "Carbon Footprint",
+					"definition": "Measures greenhouse gas emissions (GHG) from the process of transportation. The value is based on food miles. Retail channels that require cooling show an increase in fuel consumption to account for their higher environmental impact."
+				},
+				{
+					"var_name": "Labor_Produce",
+					"title": "Labor Produce",
+					"definition": "Reflects the number of working hours used in the respective chain for the distribution process (transport, loading, and sales by the farmer). Labor to produce ratio= ((working hours for preparing the sale per delivery + working hours for transport + working hours for selling) * Number of deliveries) / sales volume per channel (kg)"
+				},
+				{
+					"var_name": "Gender_Equality",
+					"title": "Gender Equality",
+					"definition": "Measures the share of working hours by women in the distribution process.Gender Equality = hours worked by women in the distribution process / total labor input for distribution (h) *100"
+				},
+				{
+					"var_name": "Consumer_Contact",
+					"title": "Consumer Contact",
+					"definition": null
+				}
+			],
+			"comparison": {
+				"Business_Model": "Wholesale_Trade",
+				"Sales Channel": "Wholesale_Market",
+				"Volume ": 1,
+				"Price_Premium": 0.24,
+				"Chain_Added_Value": 0.09,
+				"Carbon_Footprint ": 0.27,
+				"Labor_Produce ": 1,
+				"Gender_Equality ": 0.5,
+				"Consumer_Contact ": 0.2,
+				"business_model_title": "Wholesale",
+				"sales_channel_title": "Wholesale "
+			},
+			"Region_Attractiveness": {
+				"Relative_Attractiveness": "The relative attractiveness of your region was considered to be:",
+				"value": "medium"
+			}
+		};
 		this.analysisReady = false;
 	}
 	
@@ -594,6 +719,8 @@ export default class UserModel extends Model {
 		if (this.MOCKUP || typeof uid === 'undefined') {
 			setTimeout(() => {
 				// After 2 seconds of delay (to simulate analysis delay) fill in the results data.
+				this.analysisResult = this.analysis_simulation_backup;
+				/*
 				this.analysisResult = {
 					attractiveness:"medium",
 					recommendations:[
@@ -631,7 +758,7 @@ export default class UserModel extends Model {
 						"Price Premium":0.729058945
 						}
 					]
-				};
+				};*/
 				this.analysisReady = true;
 				this.notifyAll({model:self.name, method:'runAnalysis', status:200, message:'OK'});
 				

@@ -74,7 +74,7 @@ export default class AnalysisView extends View {
 		// "R1":{id:'show-r-1',value:true, color:this.colors.DARK_ORANGE}
 		// "R2":{id:'show-r-2',value:true, color:this.colors.DARK_BLUE}
 		
-		this.USER_MODEL.analysisResult.recommendations.forEach((r,index) => {
+		this.USER_MODEL.analysisResult.recommendation.forEach((r,index) => {
 			/*
 			r["Sales Channel"]
 			r["Business Model"]
@@ -349,7 +349,7 @@ export default class AnalysisView extends View {
 		const ll_r1_only_1_suitable = LM['translation'][sel]['Results1_only_one_channel'];
 		const ll_r1_more_than_2_suitable = LM['translation'][sel]['Result_Farms_more_than_2_suitable'];
 		
-		const numberOfResults = this.USER_MODEL.analysisResult.recommendations.length;
+		const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
 		
 		let html;
 		
@@ -401,7 +401,7 @@ export default class AnalysisView extends View {
 					'<p style="font-weight:bold;">Show</p>'+
 				'</div>'+
 			'</div>';
-		this.USER_MODEL.analysisResult.recommendations.forEach((r,index) => {
+		this.USER_MODEL.analysisResult.recommendation.forEach((r,index) => {
 			/*
 			r["Sales Channel"]
 			r["Business Model"]
@@ -432,7 +432,7 @@ export default class AnalysisView extends View {
 		});
 		$("#recommendations-list-wrapper").empty().append(html);
 		
-		this.USER_MODEL.analysisResult.recommendations.forEach((r,index) => {
+		this.USER_MODEL.analysisResult.recommendation.forEach((r,index) => {
 			
 			const id = this.showRecommendation["R"+index].id;
 			
@@ -459,7 +459,7 @@ export default class AnalysisView extends View {
 		const ll_only_one_suitable = LM['translation'][sel]['Results2_only_one_channel'];
 		const ll_more_than_2_suitable = LM['translation'][sel]['Results2_Farm_more_2_suitable'];
 		
-		const numberOfResults = this.USER_MODEL.analysisResult.recommendations.length;
+		const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
 		
 		let html;
 		if (numberOfResults === 0) {
@@ -485,8 +485,11 @@ export default class AnalysisView extends View {
 	
 	appendAttractiveness() {
 		// To do: take result from recommendation response.
-		const result = this.USER_MODEL.analysisResult.attractiveness;
-		$("#attractiveness-wrapper").empty().append(result);
+		//const result = this.USER_MODEL.analysisResult.attractiveness;
+		const relative_attractiveness_text = this.USER_MODEL.analysisResult.Region_Attractiveness.Relative_Attractiveness; // "The relative attractiveness of your region was considered to be:"
+		const value = this.USER_MODEL.analysisResult.Region_Attractiveness.value; // "medium"
+		const html = relative_attractiveness_text+' <span style="color:'+this.colors.DARK_ORANGE+'">'+value+'</span>';
+		$("#attractiveness-wrapper").empty().append(html);
 	}
 	
 	renderDisclaimer() {
@@ -536,7 +539,7 @@ export default class AnalysisView extends View {
 		
 		const ll_farm_and_regional_chars_title = LM['translation'][sel]['Suitability_farm_Characteristics_title'];
 		const ll_farm_and_regional_chars_intro = LM['translation'][sel]['Intro_not_all_sales_channels_con'];
-		const ll_relative_attractiveness = LM['translation'][sel]['Relative_Attractiveness']; // concat the value!
+		//const ll_relative_attractiveness = LM['translation'][sel]['Relative_Attractiveness']; // concat the value!
 		const ll_farm_and_regional_chars_text = LM['translation'][sel]['Suitability_farm_Characterstics'];
 		const ll_farm_and_regional_chars_more = LM['translation'][sel]['Suitability_farm_Characteristics_info'];
 		
@@ -677,7 +680,7 @@ export default class AnalysisView extends View {
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_farm_and_regional_chars_title+'</h5>'+
 						'<p>'+ll_farm_and_regional_chars_intro+'</p>'+
-						'<p style="color:'+this.colors.DARK_GREEN+'; font-weight:bold;">'+ll_relative_attractiveness+' <span id="attractiveness-wrapper" style="color:'+this.colors.DARK_ORANGE+'"></span></p>'+
+						'<p id="attractiveness-wrapper" style="color:'+this.colors.DARK_GREEN+'; font-weight:bold;"></p>'+
 						'<p>'+ll_farm_and_regional_chars_text+'</p>'+
 						'<p>'+ll_farm_and_regional_chars_more+'</p>'+
 					'</div>'+

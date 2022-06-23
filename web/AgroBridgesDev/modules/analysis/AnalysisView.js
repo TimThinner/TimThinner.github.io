@@ -126,6 +126,7 @@ export default class AnalysisView extends View {
 					recom[key] = r[key];
 				}
 			});
+			// + extras
 			recom['business_model_title'] = r['business_model_title'];
 			recom['sales_channel_title'] = r['sales_channel_title'];
 			
@@ -450,19 +451,9 @@ export default class AnalysisView extends View {
 				'</div>'+
 			'</div>';
 		
-		
-		this.mappedRecommendations.forEach((r,index) => {
-			/*
-			r["Sales Channel"]
-			r["Business Model"]
-			r["Volume"]
-			r["Consumer Contact"]
-			r["Gender Equality"]
-			r["Lower Labor Produce Ratio"]
-			r["Lower Carbon Footprint"]
-			r["Chain Added Value"]
-			r["Price Premium"]
-			*/
+		this.recommendationz.forEach((r,index) => {
+			//r['business_model_title']
+			//r['sales_channel_title']
 			const id = this.showRecommendation["R"+index].id;
 			let checked = '';
 			if (this.showRecommendation["R"+index].value===true) {
@@ -470,10 +461,10 @@ export default class AnalysisView extends View {
 			}
 			html += '<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s5">'+
-					'<p style="color:'+this.showRecommendation["R"+index].color+'">'+r["Sales Channel"]+'</p>'+
+					'<p style="color:'+this.showRecommendation["R"+index].color+'">'+r["sales_channel_title"]+'</p>'+
 				'</div>'+
 				'<div class="col s5">'+
-					'<p style="color:'+this.showRecommendation["R"+index].color+'">'+r["Business Model"]+'</p>'+
+					'<p style="color:'+this.showRecommendation["R"+index].color+'">'+r["business_model_title"]+'</p>'+
 				'</div>'+
 				'<div class="input-field col s2" style="padding-top:0">'+
 					'<p><label><input type="checkbox" class="filled-in" id="'+id+'" '+checked+'/><span></span></label></p>'+

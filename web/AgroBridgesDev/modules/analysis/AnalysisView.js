@@ -243,6 +243,11 @@ export default class AnalysisView extends View {
 			let label_coordinate = angleToCoordinate(angle, 1.1); // 10.5);
 			
 			// fontsize = 8,10,12,14
+			
+			// Label is always mapped to this.labelz[ft_name]
+			const cc = this.labelz[ft_name].length;
+			label_coordinate.x -= fontsize*cc/2;
+			/*
 			if (ft_name === 'Volume') {
 				label_coordinate.x -= fontsize*3; // 6 characters
 			} else if (ft_name === 'Consumer_Contact') { // 16 characters
@@ -258,6 +263,7 @@ export default class AnalysisView extends View {
 			} else if (ft_name === 'Price_Premium') { // 13 characters
 				label_coordinate.x -= fontsize*3;
 			}
+			*/
 			svg.append("line")
 				.attr("x1", horiz_center)//min_dim 300)
 				.attr("y1", verti_center)//min_dim 300)

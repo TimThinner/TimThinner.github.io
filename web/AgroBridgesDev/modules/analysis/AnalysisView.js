@@ -38,7 +38,23 @@ export default class AnalysisView extends View {
 			"R2":{id:'show-r-2', value:true, color:this.colors.DARK_BLUE},
 			"R3":{id:'show-r-3', value:true, color:this.colors.DARK_RED}
 		};
-		this.mappedRecommendations = [];
+		
+		// All 7 features in counter clockwise order.
+		// This is the order they are processed, so that spider-dimensions are always in the same order.
+		// NOTE: var_name is used here.
+		this.featurez = [
+			"Volume",
+			"Consumer_Contact",
+			"Gender_Equality",
+			"Labor_Produce",
+			"Carbon_Footprint",
+			"Chain_Added_Value",
+			"Price_Premium"
+		];
+		this.labelz = {}; // var_name => localized name pairs
+		this.recommendationz = [];
+		this.comparisonz = {};
+		
 		this.rendered = false;
 		this.FELID = 'analysis-message';
 	}
@@ -62,67 +78,60 @@ export default class AnalysisView extends View {
 		$(this.el).empty();
 	}
 	
-	mapRecommendation(r) {
-		const obj = {
-			'Volume': r['Volume'],
-			'Consumer Contact': r['Consumer_Contact'],
-			'Gender Equality': r['Gender_Equality'],
-			'Lower Labor Produce Ratio': r['Labor_Produce'],
-			'Lower Carbon Footprint': r['Carbon_Footprint'],
-			'Chain Added Value': r['Chain_Added_Value'],
-			'Price Premium': r['Price_Premium'],
-			// Few extras for the titles:
-			'Business Model': r['business_model_title'],
-			'Sales Channel': r['sales_channel_title']
-		};
-		return obj;
+	setLabels() {
+		this.labelz = {};
+		this.USER_MODEL.analysisResult.diagram_dimension_labels.forEach(e=>{
+			/* Each e has:
+				{
+					"var_name": "Volume",
+					"title": "Volume ",
+					"definition": null
+				}
+			*/
+			this.labelz[e.var_name] = e.title;
+		});
+	}
+	
+	setComparison() {
+		this.comparisonz = {};
+		const comp = this.USER_MODEL.analysisResult.comparison; // is a JavaScript object
+		Object.keys(comp).forEach(key => {
+			if (typeof this.labelz[key] !== 'undefined') {
+				// This is one of the features (dimensions).
+				this.comparisonz[key] = comp[key];
+			}
+		});
+		// + extras
+		this.comparisonz['business_model_title'] = comp['business_model_title'];
+		this.comparisonz['sales_channel_title'] = comp['sales_channel_title'];
 	}
 	
 	setRecommendations() {
+		this.recommendationz = [];
 		this.showRecommendation = {};
-		this.mappedRecommendations = [];
 		
 		const colors = [
 			this.colors.DARK_GREEN, // First recommendation.
 			this.colors.DARK_ORANGE, // Second recommendation.
-			this.colors.DARK_BLUE, // Third recommendation.
-			this.colors.DARK_RED
+			this.colors.DARK_BLUE // Third recommendation.
 		];
 		// "R0":{id:'show-r-0',value:true, color:this.colors.DARK_GREEN}
 		// "R1":{id:'show-r-1',value:true, color:this.colors.DARK_ORANGE}
 		// "R2":{id:'show-r-2',value:true, color:this.colors.DARK_BLUE}
-		
-		/*
-				{
-					"Business_Model": "Online_Trade",
-					"Sales_Channel": "Online_Sales_Post",
-					"Ranking": 1,
-					"Volume": 0.2,
-					"Price_Premium": 0.73,
-					"Chain_Added_Value": 0.62,
-					"Carbon_Footprint": 1.0,
-					"Labor_Produce": 0.02,
-					"Gender_Equality": 0.5,
-					"Consumer_Contact": 0.2,
-					"business_model_title": "Online Trade",
-					"sales_channel_title": "Post delivery (sales on demand)"
-				},
-		*/
 		this.USER_MODEL.analysisResult.recommendation.forEach((r,index) => {
-			/*
-			r["Sales Channel"]
-			r["Business Model"]
-			r["Volume"]
-			r["Consumer Contact"]
-			r["Gender Equality"]
-			r["Lower Labor Produce Ratio"]
-			r["Lower Carbon Footprint"]
-			r["Chain Added Value"]
-			r["Price Premium"]
-			*/
-			this.mappedRecommendations.push(this.mapRecommendation(r));
+			const recom = {};
+			Object.keys(r).forEach(key => {
+				if (typeof this.labelz[key] !== 'undefined') {
+					// This is one of the features (dimensions).
+					recom[key] = r[key];
+				}
+			});
+			recom['business_model_title'] = r['business_model_title'];
+			recom['sales_channel_title'] = r['sales_channel_title'];
+			
+			this.recommendationz.push(recom);
 			let color = '#000000';
-			if (index < 4) {
+			if (index < 3) {
 				color = colors[index];
 			}
 			this.showRecommendation["R"+index] = {id:'show-r-'+index, value:true, color:color};
@@ -130,6 +139,7 @@ export default class AnalysisView extends View {
 	}
 	
 	drawSpider(name, spider_id, width, height) {
+		const self = this;
 		
 		$('#'+spider_id).empty();
 		
@@ -157,63 +167,40 @@ export default class AnalysisView extends View {
 		}
 		
 		let data = [];
-		let features = [
-			"Volume", 
-			"Consumer Contact", 
-			"Gender Equality", 
-			"Lower Labor Produce Ratio", 
-			"Lower Carbon Footprint", 
-			"Chain Added Value",
-			"Price Premium"]; // 7 features
-		
-		// Wholesale:
-		// Volume;				1
-		// Price_Premium;		0.243019648;
-		// Chain_Added_Value;	0.093587522;
-		// Carbon_Footprint;	0.27142858;
-		// Labor_Produce;		1
-		// Gender_Equality;		0.498997996
-		// Consumer_Contact		0.2
-		
-		if (name === 'wholesale') {
-			
-			data.push(this.mapRecommendation(this.USER_MODEL.analysisResult.comparison));
-			/*
-			data = [{
-				"Volume":1,
-				"Consumer Contact":0.2,
-				"Gender Equality":0.498997996,
-				"Lower Labor Produce Ratio":1,
-				"Lower Carbon Footprint":0.27142858,
-				"Chain Added Value":0.093587522,
-				"Price Premium":0.243019648
-			}];*/
-		} else {
-			if (this.USER_MODEL.analysisReady) {
-				// this.USER_MODEL.analysisResult.recommendation
-				// is an array with zero or more items:
-				/*
-				{
-					"Business_Model": "Online_Trade",
-					"Sales_Channel": "Online_Sales_Post",
-					"Ranking": 1,
+		/*
+		Seven Features. Volume is at 12 o'clock, others spread evenly counter clockwise.
+		But in the result they are listed in clockwise:
 					"Volume": 0.2,
 					"Price_Premium": 0.73,
-					"Chain_Added_Value": 0.62,
-					"Carbon_Footprint": 1.0,
-					"Labor_Produce": 0.02,
-					"Gender_Equality": 0.5,
-					"Consumer_Contact": 0.2,
-					"business_model_title": "Online Trade",
-					"sales_channel_title": "Post delivery (sales on demand)"
-				}
-				*/
-				this.USER_MODEL.analysisResult.recommendation.forEach((r,index) => {
-					data.push(this.mapRecommendation(r));
-				});
-			}
+					"Chain_Added_Value": 0.69,
+					"Carbon_Footprint": 0.07,
+					"Labor_Produce": 0.31,
+					"Gender_Equality": 0.65,
+					"Consumer_Contact": 0.4,
+					
+					
+					"Business_Model": "Face-to-Face",
+					"Sales_Channel": "On_Farm_Shop_extensive",
+					"Ranking": 3,
+				"Volume": 0.2,
+				"Price_Premium": 0.73,
+				"Chain_Added_Value": 0.69,
+				"Carbon_Footprint": 0.07,
+				"Labor_Produce": 0.31,
+				"Gender_Equality": 0.65,
+				"Consumer_Contact": 0.4,
+					"business_model_title": "Face-to-Face",
+					"sales_channel_title": "On-Farm Shop (extensively managed, unstaffed)"
+		*/
+		if (name === 'wholesale') {
+			
+			data.push(this.comparisonz);
+			
+		} else {
+			this.recommendationz.forEach(r=>{
+				data.push(r);
+			});
 		}
-		
 		//let svg = d3.select("spider").append("svg").attr("width", 600).attr("height", 600);
 		//let radialScale = d3.scaleLinear().domain([0, 10]).range([0, 250]);
 		let radialScale = d3.scaleLinear().domain([0, 1]).range([0, range]);
@@ -248,26 +235,26 @@ export default class AnalysisView extends View {
 			//return { "x": 300 + x, "y": 300 - y };
 			return { "x": horiz_center + x, "y": verti_center - y };
 		}
-		for (var i = 0; i < features.length; i++) {
-			let ft_name = features[i];
-			let angle = (Math.PI / 2) + (2 * Math.PI * i / features.length);
+		for (var i = 0; i < this.featurez.length; i++) {
+			let ft_name = this.featurez[i];
+			let angle = (Math.PI / 2) + (2 * Math.PI * i / this.featurez.length);
 			let line_coordinate = angleToCoordinate(angle, 1);//10);
 			let label_coordinate = angleToCoordinate(angle, 1.1); // 10.5);
 			
 			// fontsize = 8,10,12,14
 			if (ft_name === 'Volume') {
 				label_coordinate.x -= fontsize*3; // 6 characters
-			} else if (ft_name === 'Consumer Contact') { // 16 characters
+			} else if (ft_name === 'Consumer_Contact') { // 16 characters
 				label_coordinate.x -= fontsize*7;
-			} else if (ft_name === 'Gender Equality') { // 15 characters
+			} else if (ft_name === 'Gender_Equality') { // 15 characters
 				label_coordinate.x -= fontsize*3;
-			} else if (ft_name === 'Lower Labor Produce Ratio') { // 25 characters
+			} else if (ft_name === 'Labor_Produce') { // 25 characters
 				label_coordinate.x -= fontsize*8;
-			} else if (ft_name === 'Lower Carbon Footprint') { // 22 characters
+			} else if (ft_name === 'Carbon_Footprint') { // 22 characters
 				label_coordinate.x -= fontsize*4;
-			} else if (ft_name === 'Chain Added Value') { // 17 characters
+			} else if (ft_name === 'Chain_Added_Value') { // 17 characters
 				label_coordinate.x -= fontsize*4;
-			} else if (ft_name === 'Price Premium') { // 13 characters
+			} else if (ft_name === 'Price_Premium') { // 13 characters
 				label_coordinate.x -= fontsize*3;
 			}
 			svg.append("line")
@@ -280,20 +267,19 @@ export default class AnalysisView extends View {
 				.attr("x", label_coordinate.x)
 				.attr("y", label_coordinate.y)
 				.attr("font-size",fontsize)
-				.text(ft_name);
+				.text(this.labelz[ft_name]); // this.labelz = {}; // var_name => localized name pairs
 		}
 		//drawing the line for the spider chart
 		let line = d3.line().x(d => d.x).y(d => d.y);
 		//get coordinates for a data point
 		function getPathCoordinates(d) {
 			let coordinates = [];
-			for (var i = 0; i < features.length; i++) {
-				let ft_name = features[i];
-				let angle = (Math.PI / 2) + (2 * Math.PI * i / features.length);
-				coordinates.push(angleToCoordinate(angle, d[ft_name]));
+			for (var i = 0; i < self.featurez.length; i++) {
+				let angle = (Math.PI / 2) + (2 * Math.PI * i / self.featurez.length);
+				coordinates.push(angleToCoordinate(angle, d[self.featurez[i]]));
 			}
 			// Add also the last connecting coordinate from last point to the first point.
-			coordinates.push(angleToCoordinate(Math.PI/2, d[features[0]]));
+			coordinates.push(angleToCoordinate(Math.PI/2, d[self.featurez[0]]));
 			return coordinates;
 		}
 		// Draw in reverse order => RANK 3 is in background and RANK 1 in foreground.
@@ -355,7 +341,10 @@ export default class AnalysisView extends View {
 					
 					$('#'+this.FELID).empty();
 					
+					this.setLabels();
+					this.setComparison();
 					this.setRecommendations();
+					
 					this.renderRecommendationsPart1Text();
 					this.renderRecommendationsList();
 					this.renderRecommendationsSpider();
@@ -783,7 +772,10 @@ export default class AnalysisView extends View {
 		
 		if (this.USER_MODEL.analysisReady) {
 			
+			this.setLabels();
+			this.setComparison();
 			this.setRecommendations();
+			
 			this.renderRecommendationsPart1Text();
 			this.renderRecommendationsList();
 			this.renderRecommendationsSpider();

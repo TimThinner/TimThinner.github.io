@@ -246,7 +246,7 @@ export default class AnalysisView extends View {
 			
 			// Label is always mapped to this.labelz[ft_name]
 			const cc = this.labelz[ft_name].length;
-			label_coordinate.x -= fontsize*cc/2;
+			label_coordinate.x -= fontsize*cc/4;
 			/*
 			if (ft_name === 'Volume') {
 				label_coordinate.x -= fontsize*3; // 6 characters

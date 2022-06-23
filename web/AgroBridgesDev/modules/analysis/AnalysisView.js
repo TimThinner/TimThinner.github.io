@@ -108,7 +108,7 @@ export default class AnalysisView extends View {
 	
 	setRecommendations() {
 		this.recommendationz = [];
-		this.showRecommendation = {};
+		//this.showRecommendation = {};
 		
 		const colors = [
 			this.colors.DARK_GREEN, // First recommendation.
@@ -135,7 +135,10 @@ export default class AnalysisView extends View {
 			if (index < 3) {
 				color = colors[index];
 			}
-			this.showRecommendation["R"+index] = {id:'show-r-'+index, value:true, color:color};
+			// NOTE: set only new ones => we want to keep old "checked" values when "resize-render" is called.
+			if (typeof this.showRecommendation["R"+index] === 'undefined') {
+				this.showRecommendation["R"+index] = {id:'show-r-'+index, value:true, color:color};
+			}
 		});
 	}
 	

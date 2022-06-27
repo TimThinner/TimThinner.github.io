@@ -179,11 +179,11 @@ export default class UserPageView extends View {
 			let first = '---';
 			let second = '---';
 			const total = this.resuArray[0].total;
-			if (typeof total !== 'undefined' && total > 0) {
+			if (typeof total !== 'undefined' && total >= 0) {
 				first = total.toFixed(1)+'kWh';
 			}
 			const power = this.resuArray[0].power;
-			if (typeof power !== 'undefined' && power > 0) {
+			if (typeof power !== 'undefined' && power >= 0) {
 				second = power.toFixed(0)+'W';
 			}
 			this.updateValueNow('electricity', first, second);

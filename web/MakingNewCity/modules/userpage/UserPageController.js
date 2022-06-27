@@ -20,26 +20,25 @@ export default class UserPageController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		this.numOfDays = 2;
+		//this.numOfDays = 2;
 	}
 	
 	remove() {
 		super.remove();
 		// We must remove all models that were created here at the init():
 		Object.keys(this.models).forEach(key => {
-			if (key==='UserHeatingNowModel') {
+			if (key==='UserHeatingNowModel' || key==='UserElectricityNowModel') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
 		});
 		
 		// We must remove all models that were created here at the init-method.
-		for (let i=0; i<this.numOfDays; i++) {
+		/*for (let i=0; i<this.numOfDays; i++) {
 			const key = 'UserElectricityNow'+i+'Model';
 			console.log(['remove ',key,' from the REPO']);
 			this.master.modelRepo.remove(key);
-		}
-		
+		}*/
 		this.models = {};
 	}
 	
@@ -68,23 +67,23 @@ export default class UserPageController extends Controller {
 		*/
 		
 		// NOTE: Range is created dynamically at each fetching cycle.
-		const model_data = [];
-		for (let i=0; i<this.numOfDays; i++) {
-			model_data.push({name:'UserElectricityNow'+i+'Model',index:i});
-		}
-		model_data.forEach(md => {
-			const m = new UserElectricityModel({
-				name: md.name,
-				src: 'data/sivakka/house_energy_data/last.json',
-				//src: 'data/sivakka/apartments/feeds.json',
-				//type: 'energy',
-				limit: 1,
-				index: md.index
-			});
-			m.subscribe(this);
-			this.master.modelRepo.add(md.name, m);
-			this.models[md.name] = m;
+		//const model_data = [];
+		//for (let i=0; i<this.numOfDays; i++) {
+			//model_data.push({name:'UserElectricityNow'+i+'Model',index:i});
+		//}
+		//model_data.forEach(md => {
+		const m2 = new UserElectricityModel({
+			name: 'UserElectricityNowModel',
+			src: 'data/sivakka/house_energy_data/last.json',
+			//src: 'data/sivakka/apartments/feeds.json',
+			//type: 'energy',
+			limit: 1,
+			index: 0
 		});
+		m2.subscribe(this);
+		this.master.modelRepo.add('UserElectricityNowModel', m2);
+		this.models['UserElectricityNowModel'] = m2;
+		//});
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

@@ -375,8 +375,13 @@ export default class NewUserElectricityModel extends Model {
 		this.errorMessage = '';
 		this.fetching = true;
 		
-		const start_date = this.period.start;
-		const end_date = this.period.end;
+		let start_date = undefined;
+		let end_date = undefined;
+		// this.src ends with 'feeds.json' or 'last.json'
+		if (this.src.endsWith('feeds.json')) {
+			start_date = this.period.start;
+			end_date = this.period.end;
+		}
 		
 		if (typeof token !== 'undefined') {
 			var myHeaders = new Headers();

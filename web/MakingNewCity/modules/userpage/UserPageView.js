@@ -97,8 +97,8 @@ export default class UserPageView extends View {
 ​​​		totalEnergy: 18797.376
 	*/
 	convertResults() {
-		const ele_now = undefined;
-		const ele_zero = undefined;
+		let ele_now = undefined;
+		let ele_zero = undefined;
 		
 		this.resuArray = [];
 		Object.keys(this.models).forEach(key => {

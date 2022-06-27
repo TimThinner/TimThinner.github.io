@@ -1,11 +1,6 @@
 import Controller from '../common/Controller.js';
-/*
 import UserElectricityModel from './UserElectricityModel.js';
 import UserElectricityView from './UserElectricityView.js';
-*/
-import NewUserElectricityModel from './NewUserElectricityModel.js';
-import NewUserElectricityView from './NewUserElectricityView.js';
-
 
 export default class UserElectricityController extends Controller {
 	
@@ -50,11 +45,10 @@ export default class UserElectricityController extends Controller {
 			model_data.push({name:'UserElectricity'+i+'Model',index:i});
 		}
 		model_data.forEach(md => {
-			//const m = new UserElectricityModel({
-			const m = new NewUserElectricityModel({
+			const m = new UserElectricityModel({
 				name: md.name,
-				src: 'data/sivakka/apartments/feeds.json',
-				type: 'energy',
+				//src: 'data/sivakka/apartments/feeds.json',
+				src: 'data/sivakka/house_energy_data/feeds.json',
 				limit: 0,
 				index: md.index
 			});
@@ -67,6 +61,7 @@ export default class UserElectricityController extends Controller {
 		this.models['MenuModel'].subscribe(this);
 		
 		//this.view = new UserElectricityView(this);
-		this.view = new NewUserElectricityView(this);
+		//this.view = new NewUserElectricityView(this);
+		this.view = new UserElectricityView(this);
 	}
 }

@@ -106,8 +106,8 @@ export default class UserPageView extends View {
 				const meas = this.models[key].values; // is in normal situation an array.
 				
 				if (Array.isArray(meas) && meas.length > 0) {
-					const total = meas[0].totalEnergy;
-					const power = meas[0].averagePower;
+					const total = meas[0].TotalEnergy;
+					const power = meas[0].AveragePower;
 					const d = new Date(meas[0].created_at);
 					temp_a.push({date:d, total:total, power:power});
 				}

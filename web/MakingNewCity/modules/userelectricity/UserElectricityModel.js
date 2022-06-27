@@ -1,6 +1,5 @@
 import Model from '../common/Model.js';
-import CalculatedEnergy from '../common/CalculatedEnergy.js';
-export default class UserElectricityModel extends Model {
+export default class NewUserElectricityModel extends Model {
 	
 	/* Model:
 		this.name = options.name;
@@ -13,120 +12,270 @@ export default class UserElectricityModel extends Model {
 	
 	/*
 	
-	Todo: 
-	When we process response with more than one measurement, we must form result per hour (YYYYMMDDHH) => approx. 60 measurements 
-	are summed into object with timestamp as a key (like in FeedModel).
-	this.energy[YYYYMMDDHH] = {};
+	NEW:
+	Use URL:
+		https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&start=2022-04-07T00:00&end=2022-04-08T00:00
 	
-	IN FeedModel we have:
-		[
-		
-		{"created_at":"2020-10-26T00:00:45","meterId":116,"averagePower":0,"totalEnergy":50932.2,"energyDiff":0},
-		{"created_at":"2020-10-26T00:01:42","meterId":116,"averagePower":0,"totalEnergy":50932.2,"energyDiff":0},
-		{"created_at":"2020-10-26T00:02:43","meterId":116,"averagePower":0,"totalEnergy":50932.2,"energyDiff":0},
-		...
-		
-	IN ApartmentModel:
-	{"created_at": "2020-10-20T03:21:38","apartmentId":101,"averagePower":2040,"impulseLastCtr": 34,"​​​​​impulseTotalCtr": 585464,"​​​​​meterId": 1001,"​​​​​residentId": 1,"​​​​​totalEnergy": 585.464}
+	Fetch one day at a time. It contains 1 minute interval => 1440 values per day.
+	Current day has only values so far.
 	
-	
-	
-	Another case is when we need DAILY consumption data. This applies to electricity and water, where we need to fetch 
-	total consumptions at the beginning and at the end of each day.
-	This also is different to those which go back 24 hours (or one week, or one month) from current time.
-	But we have the limit=1 here also, which makes this easier. And we should keep already fetched daily values in memory. They don't change.
-	This is a new "category", data is not needed to fetch periodically. Fetch ONCE case.
-	
-	about:config
-	devtools.netmonitor.responseBodyLimit is equal to 0.
-	
-	
+	If today is 8.4.2022
+	when index = 0 => start=2022-04-07T00:00&end=2022-04-08T00:00
+	when index = 1 => start=2022-04-06T00:00&end=2022-04-07T00:00
+	...
+	Response is like this:
+	...
+	[
+	{"created_at":"2022-04-07T00:26:35","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":720,"totalEnergy":20871.153,"impulseLastCtr":12,"impulseTotalCtr":20871153},
+	{"created_at":"2022-04-07T00:27:35","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":660,"totalEnergy":20871.164,"impulseLastCtr":11,"impulseTotalCtr":20871164},
+	{"created_at":"2022-04-07T00:28:35","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":720,"totalEnergy":20871.176,"impulseLastCtr":12,"impulseTotalCtr":20871176},
+	{"created_at":"2022-04-07T00:29:35","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":660,"totalEnergy":20871.187,"impulseLastCtr":11,"impulseTotalCtr":20871187},
+	...
+	]
+	Extract:
+		created_at
+		averagePower
+		totalEnergy
 	*/
 	constructor(options) {
 		
 		super(options);
 		
-		this.type = options.type;
 		this.limit = options.limit;
 		this.index = options.index;
+		// this.period is calculated dynamically before fetching (see setTimePeriod())
+		// but this model has quite static data values for one day. Except current day, which will be appended with new values once a minute.
+		// So we can minimize traffic and netload by using this information:
+		// 
+		// if this.period.start starts with same 'YYYY-MM-DD' => we have already fetched this data.
 		
-		this.measurement = [];
 		this.period = {start: undefined, end: undefined};
-		this.energyValues = [];
-		this.energyTotal = 0;
+		this.dateYYYYMMDD = moment().subtract(this.index, 'days').format('YYYY-MM-DD');
+		this.values = [];
+		// These hashes contain DAILY and HOURLY averages in keys like YYYYMMDDHH and YYYYMMDD.
+		// ALL values are 
+		this.power = {};
+		this.energy_day = {}; //   { date: ..., value: ... }
+		this.energy_hours = []; // { date: ..., value: ... }
+		this.energy_minutes = [];
+	}
+	
+	/*
+		NOTE: Each day has its own model.
+		There is 'UserElectricity0Model', 'UserElectricity1Model', 'UserElectricity2Model', ...
+		where index is the same number as in models name.
+		index	fetch
+		0		start=2022-04-08T00:00&end=2022-04-08T12:34
+		1		start=2022-04-07T00:00&end=2022-04-08T00:00
+		2		start=2022-04-06T00:00&end=2022-04-07T00:00
+		...
+	*/
+	
+	setTimePeriod() {
+		const i = this.index;
+		if (i === 0) {
+			// if current day, fetch always from start of current day, for example:
+			// start=2022-04-08T00:00&end=2022-04-08T12:34
+			const e_m = moment();
+			const s_m = moment();
+			s_m.hours(0);
+			s_m.minutes(0);
+			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
+			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
+			
+		} else {
+			// if not the current day, fetch always full day, for example:
+			// start=2022-04-07T00:00&end=2022-04-08T00:00
+			const ei = i-1;
+			const si = i;
+			const e_m = moment().subtract(ei, 'days');
+			// Make dates start at midnight and end at midnight.
+			e_m.hours(0);
+			e_m.minutes(0);
+			const s_m = moment(e_m).subtract(1, 'days');
+			this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
+			this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
+		}
 	}
 	/*
-		Note: IT TAKES time to fetch electricity values (totalEnergy), even if we are fetching 
-		only one value from short period of time.
+		Three cases where fetching is needed:
+		1. this.index === 0
+		2. this.values.length === 0
+		3. if this.dateYYYYMMDD !== moment().subtract(this.index, 'days').format('YYYY-MM-DD')
 		
-		2022-02-25:
-		
-		https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&limit=1&start=2022-02-23T23:50&end=2022-02-24T00:00
-		...
-		https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&limit=1&start=2022-01-25T23:50&end=2022-01-26T00:00
+		Third is to check that the initial date for this model is still valid.
 	*/
-	setTimePeriod() {
-		const d = this.index;
-		const e_m = moment().subtract(d,'days');
-		// Snap end to this current full hour.
-		e_m.hours(0);
-		e_m.minutes(0);
-		e_m.seconds(0);
-		const s_m = moment(e_m).subtract(10, 'minutes'); // get latest value between end-10m ... end
-		this.period.start = s_m.format('YYYY-MM-DDTHH:mm');
-		this.period.end = e_m.format('YYYY-MM-DDTHH:mm');
+	needToFetch() {
+		let retval = false;
+		if (this.index === 0 || this.values.length === 0) {
+			retval = true;
+		}
+		// Third check is done separately because it should be done anyway to reset initial value, if needed.
+		const nowYYYYMMDD = moment().subtract(this.index, 'days').format('YYYY-MM-DD');
+		if (this.dateYYYYMMDD !== nowYYYYMMDD) {
+			retval = true;
+			this.dateYYYYMMDD = nowYYYYMMDD;
+		}
+		return retval;
+	}
+	
+	getEnergyMinutes(hh) {
+		const temp_a = [];
+		const energy_minutes = [];
 		
-	}
-	
-	removePowerDuplicates(json) {
-		// Check if there are timestamp duplicates?
-		// And remove those with averagePower=0 at the same time.
-		const test = {};
-		const newJson = [];
-		json.forEach(item => {
-			const datetime = item.created_at;
-			if (test.hasOwnProperty(datetime)) {
-				//console.log(['DUPLICATE!!!!!! datetime=',datetime,' averagePower=',item.averagePower]);
-				if (test[datetime].averagePower === 0 && item.averagePower > 0) {
-					// Replacing duplicate ONLY if old value was zero and new value is NOT zero!
-					console.log('REPLACE DUPLICATE (OLD WAS ZERO VALUE)!!!');
-					test[datetime] = item;
-				}
-			} else {
-				test[datetime] = item;
-				newJson.push(item);
-			}
-		});
-		return newJson;
-	}
-	
-	process(myJson) {
-		const self = this;
-		if (this.type === 'energy') {
-			
-			self.energyValues = [];
-			
-			const newson = this.removePowerDuplicates(myJson);
-			
-			const myce = new CalculatedEnergy();
-			myce.resetEnergyHours(this.timerange*24);
-			//console.log(['myce.energy=',myce.energy]);
-			$.each(newson, function(i,v){
-				// set cumulative energy for each hour.
-				myce.addEnergy(v);
+		const vals = this.values;
+		if (Array.isArray(vals) && vals.length > 0) {
+			vals.forEach(v=>{
+				const d = new Date(v.created_at);
+				const ap = v.AveragePower;
+				const tot = v.TotalEnergy;
+				temp_a.push({date:d, power:ap, energy:tot});
 			});
-			myce.calculateAverage(); 
-			myce.copyTo(self.energyValues);
-			// Then sort array based according to time, oldest entry first.
-			self.energyValues.sort(function(a,b){
-				var bb = moment(b.time);
-				var aa = moment(a.time);
+		}
+		const len = temp_a.length;
+		if (len > 1) {
+			// Then sort array based according to date, oldest entry first.
+			temp_a.sort(function(a,b){
+				var bb = moment(b.date);
+				var aa = moment(a.date);
 				return aa - bb;
 			});
-			self.energyValues.forEach(val => {
-				val.energy = val.energy/1000;
+			
+			for (let i=1; i<len-1; i++) {
+				const d = temp_a[i].date;
+				//const p = temp_a[i].power;
+				//const e = temp_a[i].energy;
+				const dHHmm = moment(d).format('HH:mm');
+				if (hh === dHHmm.slice(0,2)) {
+					const dd = moment(this.dateYYYYMMDD+'T'+dHHmm).toDate();
+					energy_minutes.push({date:dd, value:temp_a[i].energy - temp_a[i-1].energy});
+				}
+			}
+			/*
+			for (let i=0; i<60; i++) { // from '0' to '59'
+				let mm = (i<10) ? '0'+i : ''+i;
+				const dd = moment(this.dateYYYYMMDD+'T'+hh+':'+mm).toDate();
+				energy_minutes.push({date:dd, value:i});
+			}
+			*/
+		}
+		return energy_minutes;
+	}
+	
+	resetChart() {
+		setTimeout(() => {
+			this.notifyAll({model:this.name, method:'reset'});
+		}, 250);
+	}
+	
+	processValues() {
+		const temp_a = [];
+		
+		const vals = this.values;
+		if (Array.isArray(vals) && vals.length > 0) {
+			vals.forEach(v=>{
+				const d = new Date(v.created_at);
+				const ap = v.AveragePower;
+				const tot = v.TotalEnergy;
+				temp_a.push({date:d, power:ap, energy:tot});
 			});
-			self.energyTotal = myce.getTotal();
+		}
+		const len = temp_a.length;
+		if (len > 1) {
+			// Then sort array based according to date, oldest entry first.
+			temp_a.sort(function(a,b){
+				var bb = moment(b.date);
+				var aa = moment(a.date);
+				return aa - bb;
+			});
+			
+			//this.power = {};
+			// total energy for different timeranges.
+			this.energy_hours = []; // {date: nnnn, value: xxx}
+			
+			const modelDate = moment(this.dateYYYYMMDD+'T12:00').toDate();
+			this.energy_day = { date: modelDate, value: temp_a[len-1].energy - temp_a[0].energy };
+			// Energy 30 days (30 day values), 7 days (168 hour values), current day (up to 1440 values)
+			// Power 30 days (30 day values), 7 days (168 hour values), current day (up to 1440 values)
+			
+			
+			/*
+			What calculated values we should have available for each day?
+			
+			1. Energy used in day.
+			2. Energy used in each hour of the day.
+			2. Energy used in each minute of each hour.
+			
+			this.energy_day - energy consumed in day
+			this.energy_hours - energy consumed in each hour of the day
+			
+			this.power - averages (minute data day: 1440), 1 hour (60),  hourly averages (24)
+			*/
+			
+			/*
+			// initialize power HOURLY averages:
+			// this.power[YYYYMMDDHH] = {sum:0, count:0, average:0};
+			// Initialize energy HOURLY averages:
+			// this.energy[YYYYMMDD]['hour'][HH] = undefined;
+			*/
+			let energy_hh = {};
+			
+			for (let i=0; i<24; i++) { // from '0' to '23'
+				let HH = (i<10) ? '0'+i : ''+i;
+				const dd = moment(this.dateYYYYMMDD+'T'+HH).toDate();
+				//this.power[HH] = {sum:0, count:0, average:0};
+				energy_hh[HH] = {date:dd, value:undefined};
+			}
+			
+			let temp_first = 0;
+			let temp_last = 0;
+			
+			for (let i=0; i<len-1; i++) {
+				const d = temp_a[i].date;
+				//const p = temp_a[i].power;
+				const e = temp_a[i].energy;
+				
+				// Add to hourly hash:
+				const HH = moment(d).format('HH');
+				if (typeof energy_hh[HH].value === 'undefined') {
+					// This is the first value for this HH
+					temp_first = e;
+					temp_last = e;
+					energy_hh[HH].value = 0;
+				} else {
+					temp_last = e;
+					energy_hh[HH].value = temp_last - temp_first;
+				}
+				//this.power[HH]['count']++;
+				//this.power[HH]['sum'] += p;
+			}
+			for (let i=0; i<24; i++) { // from '00' to '23'
+				let HH = (i<10) ? '0'+i : ''+i;
+				// If value was not defined => set it to zero.
+				if (typeof energy_hh[HH].value === 'undefined') {
+					energy_hh[HH].value = 0;
+				}
+				this.energy_hours.push(energy_hh[HH]);
+			}
+			// Calculate averages:
+			// For daily and for hourly:
+			/*Object.keys(this.power).forEach(key => {
+				if (this.power[key]['sum'] > 0) {
+					this.power[key]['average'] = this.power[key]['sum'] / this.power[key]['count'];
+				}
+			});
+			*/
+			
+			
+			// Print out the hashes:
+			/*
+			Object.keys(this.power).forEach(key => {
+				console.log(['POWER key=',key,' value=',this.power[key]]);
+			});
+			Object.keys(this.energy).forEach(key => {
+				console.log(['ENERGY key=',key,' value=',this.energy[key]]);
+			});
+			*/
 		}
 	}
 	
@@ -142,42 +291,47 @@ export default class UserElectricityModel extends Model {
 				let message = 'OK';
 				const resu = JSON.parse(myJson);
 				if (Array.isArray(resu)) {
-					if (resu.length === 1) {
-						self.measurement = resu;
-						console.log(['self.measurement=',resu]);
-					} else {
-						console.log(['Before process() resu=',resu]);
-						//self.process(resu);
+					
+					self.values = resu;
+					console.log(['self.values=',self.values]);
+					
+					// No need to process, if we fetch only limited set (1 value).
+					if (self.limit === 0) {
+						console.log('PROCESS VALUES');
+						self.processValues();
 					}
+					
+					
 				} else {
+					// If the response is NOT array => something went wrong. 
+					console.log(['myJson=',myJson]);
+					console.log(['resu=',resu]);
+					
 					if (myJson === 'No data!') {
 						self.status = 404;
 						message = self.name+': '+myJson;
 						self.errorMessage = message;
-						self.measurement = [];
+						self.values = [];
 						
 					} else if (myJson === 'Err:PROTOCOL_SEQUENCE_TIMEOUT') {
-						
 						console.log('Err:PROTOCOL_SEQUENCE_TIMEOUT  !!!!!!!!!!!!!!!!!!?');
-						
 						self.status = 404;
 						message = self.name+': '+myJson;
 						self.errorMessage = message;
-						self.measurement = [];
+						self.values = [];
 						
-					} else if (typeof self.measurement.message !== 'undefined') {
-						message = self.measurement.message;
+					} else if (typeof self.values.message !== 'undefined') {
+						message = self.values.message;
 						self.errorMessage = message;
-						self.measurement = [];
+						self.values = [];
+						
 					} else {
-						self.measurement = [];
+						self.values = [];
 					}
 				}
-				//console.log(['self.measurement=',self.measurement]);
-				//console.log([self.name+' fetch status=',self.status]);
 				self.fetching = false;
 				self.ready = true;
-				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
+				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message, index:self.index});
 			})
 			.catch(error => {
 				console.log([self.name+' fetch error=',error]);
@@ -185,18 +339,33 @@ export default class UserElectricityModel extends Model {
 				self.ready = true;
 				const message = self.name+': '+error;
 				self.errorMessage = message;
-				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message});
+				self.notifyAll({model:self.name, method:'fetched', status:self.status, message:message, index:self.index});
 			});
 	}
 	
-	fetch(token, readkey) {
+	fetch(token, readkey, pid) {
+		//
+		// TODO: Add pid into body_url when REST API is available.
+		//
+		// See UserHeatingModel for example usage:
+		// let body_url = this.backend + '/' + this.src + '?pointId='+pid;
+		//
+		// If already fetching, no need to start again.
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
 			return;
 		}
-		
+		// Check if we already have valid values for this model.
+		if (this.needToFetch()===false) {
+			console.log('MODEL '+this.name+' NO NEED TO FETCH NOW!');
+			// NOTE: We must return 'fetched' notification for sequential fetcher to proceed to next model.
+			// Also set status 204 (No Content), so that we don't have to do unnecessary processing.
+			this.notifyAll({model:this.name, method:'fetched', status:204, message:'', index:this.index});
+			return;
+		}
 		// Always start with setting the TIME PERIOD!
 		this.setTimePeriod();
+		
 		this.status = 500; // error: 500
 		this.errorMessage = '';
 		this.fetching = true;
@@ -217,13 +386,13 @@ export default class UserElectricityModel extends Model {
 				const url = this.mongoBackend + '/proxes/apafeeds';
 				const body_url = this.backend + '/' + this.src;
 				const data = {
-					url:body_url,
-					readkey:readkey,
-					type: this.type,
-					limit:this.limit,
+					url: body_url,
+					readkey: readkey,
+					meterid: pid,
+					limit: this.limit,
 					start: start_date,
 					end: end_date,
-					expiration_in_seconds: 3600
+					expiration_in_seconds: 180 // 3 minutes.
 				};
 				const myPost = {
 					method: 'POST',
@@ -240,7 +409,7 @@ export default class UserElectricityModel extends Model {
 				this.ready = true;
 				const message = this.name+': Forbidden';
 				this.errorMessage = message;
-				this.notifyAll({model:this.name, method:'fetched', status:this.status, message:message});
+				this.notifyAll({model:this.name, method:'fetched', status:this.status, message:message, index:this.index});
 			}
 			
 		} else {
@@ -250,7 +419,7 @@ export default class UserElectricityModel extends Model {
 			this.ready = true;
 			const message = this.name+': Auth failed';
 			this.errorMessage = message;
-			this.notifyAll({model:this.name, method:'fetched', status:this.status, message:message});
+			this.notifyAll({model:this.name, method:'fetched', status:this.status, message:message, index:this.index});
 		}
 	}
 }

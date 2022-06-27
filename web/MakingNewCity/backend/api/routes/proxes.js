@@ -580,10 +580,10 @@ router.post('/apartments', checkAuth, (req,res,next)=>{
 INPUT:
 	req.body.readkey
 	req.body.url
-	req.body.type
-	req.body.limit
-	req.body.start
-	req.body.end
+	req.body.meterid
+	req.body.limit    not when url ends last.json
+	req.body.start    not when url ends last.json
+	req.body.end      not when url ends last.json
 	req.body.expiration_in_seconds
 */
 router.post('/apafeeds', checkAuth, (req,res,next)=>{
@@ -599,14 +599,14 @@ router.post('/apafeeds', checkAuth, (req,res,next)=>{
 				const eTS  = new Date(doc.enddate);
 				if (ts > sTS.getTime() && ts < eTS.getTime()) {
 					// OK.
-					// Use FAKE key now: '12E6F2B1236A'
-					const fakeKey = '12E6F2B1236A';
-					let url = req.body.url + '?apiKey='+fakeKey+'&type='+req.body.type;
+					//?meterId=1001&apiKey=7aKFMXMxze3B3LCwL0uW85qZJJlvG2Jv1Xme8BCT&limit=10&start=2022-06-22&end=2022-06-22
+					let url = req.body.url + '?meterId='+req.body.meterid+'&apiKey=7aKFMXMxze3B3LCwL0uW85qZJJlvG2Jv1Xme8BCT';
 					if (req.body.limit > 0) {
 						url += '&limit='+req.body.limit;
 					}
-					url += '&start='+req.body.start+'&end='+req.body.end;
-					
+					if (typeof req.body.start !== 'undefined' && typeof req.body.end !== 'undefined') {
+						url += '&start='+req.body.start+'&end='+req.body.end;
+					}
 					const auth = req.headers.authorization;
 					const options = {
 						headers: {

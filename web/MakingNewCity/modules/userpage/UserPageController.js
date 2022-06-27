@@ -4,7 +4,7 @@ import UserHeatingModel from '../userheating/UserHeatingModel.js';
 // NOTE: To simulate apartment heating measurements, we use UserApartmentModel. 
 //import UserApartmentModel from './UserApartmentModel.js';
 
-import NewUserElectricityModel from '../userelectricity/NewUserElectricityModel.js';
+import UserElectricityModel from '../userelectricity/UserElectricityModel.js';
 import UserPageView from './UserPageView.js';
 /*
 
@@ -73,10 +73,11 @@ export default class UserPageController extends Controller {
 			model_data.push({name:'UserElectricityNow'+i+'Model',index:i});
 		}
 		model_data.forEach(md => {
-			const m = new NewUserElectricityModel({
+			const m = new UserElectricityModel({
 				name: md.name,
-				src: 'data/sivakka/apartments/feeds.json',
-				type: 'energy',
+				src: 'data/sivakka/house_energy_data/last.json',
+				//src: 'data/sivakka/apartments/feeds.json',
+				//type: 'energy',
 				limit: 1,
 				index: md.index
 			});

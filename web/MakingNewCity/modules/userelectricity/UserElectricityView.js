@@ -2,6 +2,47 @@
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]);
+
+New:
+The "raw" data is:
+	...
+	[
+	{"created_at":"2022-04-07T00:26:35","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":720,"totalEnergy":20871.153,"impulseLastCtr":12,"impulseTotalCtr":20871153},
+	{"created_at":"2022-04-07T00:27:35","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":660,"totalEnergy":20871.164,"impulseLastCtr":11,"impulseTotalCtr":20871164},
+	{"created_at":"2022-04-07T00:28:35","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":720,"totalEnergy":20871.176,"impulseLastCtr":12,"impulseTotalCtr":20871176},
+	{"created_at":"2022-04-07T00:29:35","residentId":1,"apartmentId":101,"meterId":1001,"averagePower":660,"totalEnergy":20871.187,"impulseLastCtr":11,"impulseTotalCtr":20871187},
+	...
+	]
+	Extract:
+		created_at
+		averagePower
+		totalEnergy
+
+We can show "averagePower" as one minute precision for for example 7 days.
+7 x 1440 values = 10 080 values (4 weeks equals 40 320 values)
+We can calculate also averages of any timeperiod... for example 1 hour, 1 day.
+
+this.power[YYYYMMDDHH] = {};
+this.power[YYYYMMDD] = {};
+
+or extract hourly energy using "totalEnergy" and subtract (from end of hour and start of hour).
+
+this.energy[YYYYMMDDHH] = {};
+this.energy[YYYYMMDD] = {};
+
+
+	this.power[YYYYMMDD] = {sum:0, count:0, average:0, values:[]}
+	this.power[YYYYMMDDHH] = {sum:0, count:0, average:0}
+	this.energy[YYYYMMDD] = { day:0, hour:{}};
+	
+	power:
+		daily average
+		hourly average
+		minutely values (1440) in values array
+	
+	energy:
+		daily totals
+		hourly totals
 */
 import View from '../common/View.js';
 import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js';
@@ -15,26 +56,17 @@ export default class UserElectricityView extends View {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
 		});
-		this.PTO = new PeriodicTimeoutObserver({interval:180000}); // interval 3 minutes.
+		this.PTO = new PeriodicTimeoutObserver({interval:60000}); // interval 1 minute.
 		this.PTO.subscribe(this);
-		
-		/*
-			Note: IT TAKES time to fecth electricity values (totalEnergy), even if we are fetching 
-			only one value from short period of time.
-			
-			2022-02-25:
-			
-			https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&limit=1&start=2022-02-23T23:50&end=2022-02-24T00:00
-			...
-			https://makingcity.vtt.fi/data/sivakka/apartments/feeds.json?apiKey=12E6F2B1236A&type=energy&limit=1&start=2022-01-25T23:50&end=2022-01-26T00:00
-		*/
 		
 		this.fetchQueue = [];
 		this.rendered = false;
 		this.FELID = 'user-electricity-view-failure';
 		this.chart = undefined; // We have a chart!
 		
-		this.resuArray = [];
+		this.resuArray = [];// { date: , value: }
+		
+		this.viewMode = {range:'MONTH', target:undefined}; // // 'MONTH', 'DAY' or 'HOUR'
 		// Range is from 0 to 1.
 		this.chartRangeStart = 0;
 		this.chartRangeEnd = 1;
@@ -67,6 +99,14 @@ export default class UserElectricityView extends View {
 		});
 		this.rendered = false;
 		$(this.el).empty();
+	}
+	
+	resetChart() {
+		
+		// Use the first Electricity Model to generate "reset" notification.
+		if (typeof this.models['UserElectricity0Model'] !== 'undefined') {
+			this.models['UserElectricity0Model'].resetChart();
+		}
 	}
 	
 	/*
@@ -117,10 +157,28 @@ export default class UserElectricityView extends View {
 			// Use moment because it has nice formatting functions.
 			const s_date = moment(selection[0].date); // Date of first value.
 			const e_date = moment(selection[slen-1].date); // Date of last value.
-			const timerange_days = slen;
+			let timerange_number;
+			let timerange_units;
+			let timerange_days;
+			
+			if (this.viewMode.range === 'MONTH') {
+				timerange_number = slen;
+				timerange_units = 'days';
+				timerange_days = slen;
+				
+			} else if (this.viewMode.range === 'DAY') {
+				timerange_number = 24;
+				timerange_units = 'hours';
+				timerange_days = 1;
+				
+			} else {
+				timerange_number = 60;
+				timerange_units = 'minutes';
+				timerange_days = 1/24;
+			}
 			
 			selection.forEach(v=>{
-				sum += v.total;
+				sum += v.value;
 			});
 			
 			// UM.price_energy_monthly		euros/month
@@ -136,21 +194,13 @@ export default class UserElectricityView extends View {
 				localized_string_price+
 				': <span style="color:#0f0">'+price.toFixed(2)+'&euro;</span><br/>'+
 				'<span style="color:#ccc">'+range_title + s_date.format('DD.MM.YYYY HH:mm')+' - '+e_date.format('DD.MM.YYYY HH:mm')+'</span><br/>'+
-				'<span style="color:#aaa">('+timerange_days+' days)</span>'+
+				'<span style="color:#aaa">('+timerange_number+' '+timerange_units+')</span>'+
 				'</p>';
 			$('#user-electricity-chart-total').empty().append(html);
 		} else {
 			const html = '<p>'+localized_string_total+': <span style="color:#0f0">- kWh</span></p>';
 			$('#user-electricity-chart-total').empty().append(html);
 		}
-		/*
-		let total = 0;
-		this.resuArray.forEach(e=>{
-			total += e.total;
-		});
-		const html = '<p>TOTAL: <span style="color:#0f0">'+total.toFixed(1)+' kWh</span></p>';
-		$('#user-electricity-chart-total').empty().append(html);
-		*/
 	}
 	
 	/*
@@ -162,40 +212,71 @@ export default class UserElectricityView extends View {
 ​​​		meterId: 1001
 ​​​		residentId: 1
 ​​​		totalEnergy: 18797.376
+		
+		The UserElectricityController has this.numOfDays and each model is named like this:
+			'UserElectricity'+i+'Model', where i = 0,...,numOfDays-1
 	*/
 	
-	convertResults() {
-		const temp_a = [];
+	mergeValues() {
 		
+		// Reproduce this.resuArray
 		this.resuArray = [];
 		
-		Object.keys(this.models).forEach(key => {
-			if (key.indexOf('UserElectricity') === 0) {
-				const meas = this.models[key].measurement; // is in normal situation an array.
-				if (Array.isArray(meas) && meas.length > 0) {
-					const total = meas[0].totalEnergy;
-					const d = new Date(meas[0].created_at);
-					temp_a.push({date:d, total:total});
+		if (this.viewMode.range === 'MONTH') {
+			//this.viewMode.target is undefined;
+			// Go through all models and get one value per day 
+			// NOTE: Start from the oldest 
+			const last_index = this.controller.numOfDays-1;
+			for (let i=last_index; i>=0; i--) {
+				const key = 'UserElectricity'+i+'Model';
+				if (typeof this.models[key].energy_day.date !== 'undefined') {
+					this.resuArray.push(this.models[key].energy_day);
 				}
 			}
-		});
-		const len = temp_a.length;
-		if (len > 1) {
-			// Then sort array based according to date, oldest entry first.
-			temp_a.sort(function(a,b){
-				var bb = moment(b.date);
-				var aa = moment(a.date);
-				return aa - bb;
-			});
-			//console.log(['SORTED temp_a=',temp_a]);
-			for (let i=0; i<len-1; i++) {
-				const d = temp_a[i+1].date;
-				const tot = temp_a[i+1].total - temp_a[i].total;
-				this.resuArray.push({date:d, total:tot});
+		} else if (this.viewMode.range === 'DAY') {
+			//this.viewMode.target // is the date
+			const selected_date = moment(this.viewMode.target).format('YYYY-MM-DD');
+			const last_index = this.controller.numOfDays-1;
+			for (let i=0; i<last_index; i++) {
+				const key = 'UserElectricity'+i+'Model';
+				if (this.models[key].dateYYYYMMDD === selected_date) {
+					if (this.models[key].energy_hours.length > 0) {
+						this.resuArray = this.models[key].energy_hours;
+					}
+				}
 			}
-			//console.log(['resuArray=',this.resuArray]);
+		} else {
+			//this.viewMode.target // contains the hour
+			const selected_date = moment(this.viewMode.target).format('YYYY-MM-DD');
+			const selected_hour = moment(this.viewMode.target).format('HH');
+			const last_index = this.controller.numOfDays-1;
+			for (let i=0; i<last_index; i++) {
+				const key = 'UserElectricity'+i+'Model';
+				if (this.models[key].dateYYYYMMDD === selected_date) {
+					this.resuArray = this.models[key].getEnergyMinutes(selected_hour);
+				}
+			}
 		}
 	}
+	
+	/*
+	NOTE:
+	
+	Fetch one-day-at-a-time.
+	
+	this.power[YYYYMMDD] = {sum:0, count:0, average:0, values:[]}
+	this.energy[YYYYMMDD] = { day:0, hour:{}}; hour has key HH for example: '00', '01', ... '23'
+	
+	power:
+		daily average
+		hourly average
+		minutely values (1440) in values array
+	
+	energy:
+		daily totals
+		hourly totals
+		
+	*/
 	
 	renderChart() {
 		const self = this;
@@ -204,7 +285,7 @@ export default class UserElectricityView extends View {
 		const sel = LM.selected;
 		const localized_string_energy = LM['translation'][sel]['USER_ELECTRICITY_CHART_TITLE'];
 		
-		this.convertResults();
+		this.mergeValues();
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -219,8 +300,16 @@ export default class UserElectricityView extends View {
 			self.chart = am4core.create("user-electricity-chart", am4charts.XYChart);
 			self.chart.padding(30, 15, 30, 15);
 			//self.chart.colors.step = 3;
+			//self.chart.numberFormatter.numberFormat = "#.#";
 			
-			self.chart.numberFormatter.numberFormat = "#.#";
+			if (self.viewMode.range === 'MONTH') {
+				self.chart.numberFormatter.numberFormat = "#.#";
+			} else if (self.viewMode.range === 'DAY') {
+				self.chart.numberFormatter.numberFormat = "#.##";
+			} else {
+				self.chart.numberFormatter.numberFormat = "#.###";
+			}
+			
 			//self.chart.data = [];
 			
 			// [{"value":207.483000,"start_time":"2021-05-17T08:00:00+0000","end_time":"2021-05-17T09:00:00+0000"},...]
@@ -258,7 +347,14 @@ export default class UserElectricityView extends View {
 			
 			//dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
 			dateAxis.keepSelection = true;
-			dateAxis.tooltipDateFormat = "dd.MM.yyyy";
+			
+			if (self.viewMode.range === 'MONTH') {
+				dateAxis.tooltipDateFormat = "dd.MM.yyyy";
+			} else if (self.viewMode.range === 'DAY') {
+				dateAxis.tooltipDateFormat = "HH:mm";
+			} else {
+				dateAxis.tooltipDateFormat = "HH:mm";
+			}
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.renderer.fontSize = "0.75em";
@@ -284,8 +380,8 @@ export default class UserElectricityView extends View {
 			series1.tooltip.background.strokeWidth = 1;
 			series1.tooltip.label.fill = series1.stroke;
 			series1.data = self.resuArray;
-			series1.dataFields.dateX = "date"; //"time";
-			series1.dataFields.valueY = "total"; //"temperature";
+			series1.dataFields.dateX = "date";
+			series1.dataFields.valueY = "value";
 			series1.name = "ENERGY";
 			series1.yAxis = valueAxis;
 			
@@ -321,9 +417,49 @@ export default class UserElectricityView extends View {
 				self.chartRangeStart = 0;
 				self.chartRangeEnd = 1;
 				self.updateTotal();
-			})
+			});
+			
+			series1.columns.template.events.on("hit", function(ev) {
+				//console.log(["clicked on ",ev.target,"date=",ev.target._dataItem._dataContext.date]);
+				
+				console.log(['date=',ev.target.dataItem.dataContext.date]);
+				// Rotate 'MONTH' => 'DAY' => 'HOUR' => 'MONTH'
+				
+				if (self.viewMode.range === 'MONTH') {
+					// Date object can be used to switch to "DAY" view ... 24 hours
+					self.viewMode.range = 'DAY';
+					self.viewMode.target = ev.target.dataItem.dataContext.date;
+					
+					// Reset the chart. But DON'T do it directly within this eventhandler!
+					// To prevent "Uncaught Error: EventDispatcher is disposed", we must 
+					// work with MODEL and delayed "reset" notification.
+					
+					self.resetChart();
+					
+				} else if (self.viewMode.range === 'DAY') {
+					// Date object can be used to switch to "HOUR" view ... 60 minutes
+					self.viewMode.range = 'HOUR';
+					self.viewMode.target = ev.target.dataItem.dataContext.date;
+					
+					// Reset the chart. But DON'T do it directly within this eventhandler!
+					// To prevent "Uncaught Error: EventDispatcher is disposed", we must 
+					// work with MODEL and delayed "reset" notification.
+					
+					self.resetChart();
+					
+				} else { // From HOUR view we go back to MONTH view.
+					self.viewMode.target = undefined;
+					self.viewMode.range = 'MONTH';
+					
+					// Reset the chart. But DON'T do it directly within this eventhandler!
+					// To prevent "Uncaught Error: EventDispatcher is disposed", we must 
+					// work with MODEL and delayed "reset" notification.
+					
+					self.resetChart();
+				}
+			}, this);
+			
 		}); // end am4core.ready()
-		
 		this.updateTotal();
 	}
 	
@@ -334,24 +470,20 @@ export default class UserElectricityView extends View {
 				//.. and start the fetching process with NEXT model:
 				const f = this.fetchQueue.shift();
 				if (typeof f !== 'undefined') {
-					this.models[f.key].fetch(f.token, f.readkey);
+					this.models[f.key].fetch(f.token, f.readkey, f.pid);
 				}
 				
 				if (this.rendered) {
 					$('#'+this.FELID).empty();
 					this.handleErrorMessages(this.FELID); // If errors in ANY of Models => Print to UI.
 					if (options.status === 200) {
-						
 						$('#'+this.FELID).empty();
+						this.mergeValues();
 						if (typeof this.chart !== 'undefined') {
-							
-							this.convertResults();
-							//console.log(['resuArray.length = ',resuArray.length, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!']);
 							am4core.iter.each(this.chart.series.iterator(), function (s) {
 								s.data = self.resuArray;
 							});
 							this.updateTotal();
-							
 						} else {
 							this.renderChart();
 						}
@@ -366,15 +498,21 @@ export default class UserElectricityView extends View {
 				const UM = this.controller.master.modelRepo.get('UserModel');
 				if (UM) {
 					Object.keys(this.models).forEach(key => {
-						this.fetchQueue.push({'key':key,'token':UM.token,'readkey':UM.readkey});
+						this.fetchQueue.push({'key':key,'token':UM.token,'readkey':UM.readkey,'pid':UM.point_id_b});
 						//this.models[key].fetch(UM.token, UM.readkey);
 					});
 					//.. and start the fetching process with FIRST model:
 					const f = this.fetchQueue.shift();
 					if (typeof f !== 'undefined') {
-						this.models[f.key].fetch(f.token, f.readkey);
+						this.models[f.key].fetch(f.token, f.readkey, f.pid);
 					}
 				}
+				
+			} else if (options.model==='UserElectricity0Model' && options.method==='reset') {
+				// Remove old chart and add a new one with different parameters.
+				// Uncaught Error: EventDispatcher is disposed   core.js  
+				this.hide();
+				this.show();
 			}
 		}
 	}
@@ -388,6 +526,7 @@ export default class UserElectricityView extends View {
 		const localized_string_da_back = LM['translation'][sel]['DA_BACK'];
 		const localized_string_title = LM['translation'][sel]['USER_ELECTRICITY_TITLE'];
 		const localized_string_description = LM['translation'][sel]['USER_ELECTRICITY_DESCRIPTION'];
+		const localized_string_zooming_tip = LM['translation'][sel]['USER_ELECTRICITY_ZOOMING_TIP'];
 		
 		const html =
 			'<div class="row">'+
@@ -395,6 +534,11 @@ export default class UserElectricityView extends View {
 					'<h4 style="text-align:center;">'+localized_string_title+'</h4>'+
 					'<p style="text-align:center;"><img src="./svg/electricity.svg" height="80"/></p>'+
 					'<p style="text-align:center;">'+localized_string_description+'</p>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<p style="text-align:center; padding:16px; border:1px solid #8f8; background-color:#efe;">'+localized_string_zooming_tip+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -423,7 +567,6 @@ export default class UserElectricityView extends View {
 		if (this.areModelsReady()) {
 			this.handleErrorMessages(this.FELID);
 			this.renderChart();
-			this.updateTotal();
 		}
 	}
 }

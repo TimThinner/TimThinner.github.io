@@ -120,7 +120,7 @@ export default class UserPageView extends View {
 				}
 			}
 		});
-		if (typeof ele_now !== 'undefined' && ele_zero !== 'undefined') {
+		if (typeof ele_now !== 'undefined' && typeof ele_zero !== 'undefined') {
 			const date = ele_now.date;
 			const power = ele_now.power;
 			const total = ele_now.total - ele_zero.total;
@@ -227,7 +227,7 @@ export default class UserPageView extends View {
 					console.log(['ERROR when fetching '+options.model+': options.status=',options.status]);
 				}
 				
-			} else if (options.model.indexOf('UserElectricityNow') === 0 && options.method==='fetched') {
+			} else if (options.model.indexOf('UserElectricity') === 0 && options.method==='fetched') {
 				if (options.status === 200) {
 					
 					this.updateElectricityNow();

@@ -20,7 +20,6 @@ export default class UserPageController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		//this.numOfDays = 2;
 	}
 	
 	remove() {
@@ -32,13 +31,6 @@ export default class UserPageController extends Controller {
 				this.master.modelRepo.remove(key);
 			}
 		});
-		
-		// We must remove all models that were created here at the init-method.
-		/*for (let i=0; i<this.numOfDays; i++) {
-			const key = 'UserElectricityNow'+i+'Model';
-			console.log(['remove ',key,' from the REPO']);
-			this.master.modelRepo.remove(key);
-		}*/
 		this.models = {};
 	}
 	
@@ -48,7 +40,6 @@ export default class UserPageController extends Controller {
 	}
 	
 	init() {
-		
 		const m = new UserHeatingModel({
 			name: 'UserHeatingNowModel',
 			src: 'data/sivakka/wlsensordata/last.json'
@@ -57,26 +48,9 @@ export default class UserPageController extends Controller {
 		this.master.modelRepo.add('UserHeatingNowModel',m);
 		this.models['UserHeatingNowModel'] = m;
 		
-		/*
-		// To simulate use this model:
-		const nowTR = {ends:{value:10,unit:'seconds'},starts:{value:2,unit:'minutes'}};
-		const m = new UserApartmentModel({name:'UserHeatingNowModel',src:'data/sivakka/apartments/feeds.json',type:'sensor',limit:1,range:nowTR});
-		m.subscribe(this);
-		this.master.modelRepo.add('UserHeatingNowModel',m);
-		this.models['UserHeatingNowModel'] = m;
-		*/
-		
-		// NOTE: Range is created dynamically at each fetching cycle.
-		//const model_data = [];
-		//for (let i=0; i<this.numOfDays; i++) {
-			//model_data.push({name:'UserElectricityNow'+i+'Model',index:i});
-		//}
-		//model_data.forEach(md => {
 		const m2 = new UserElectricityModel({
 			name: 'UserElectricityNowModel',
 			src: 'data/sivakka/house_energy_data/last.json',
-			//src: 'data/sivakka/apartments/feeds.json',
-			//type: 'energy',
 			limit: 1,
 			index: 0
 		});

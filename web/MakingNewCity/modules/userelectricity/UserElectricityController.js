@@ -65,8 +65,6 @@ export default class UserElectricityController extends Controller {
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
 		
-		//this.view = new UserElectricityView(this);
-		//this.view = new NewUserElectricityView(this);
 		this.view = new UserElectricityView(this);
 	}
 }

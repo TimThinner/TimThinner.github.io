@@ -174,6 +174,11 @@ export default class NewUserElectricityModel extends Model {
 		const vals = this.values;
 		if (Array.isArray(vals) && vals.length > 0) {
 			vals.forEach(v=>{
+				// NOTE: v.created_at is in UTC, but it has no timezone "signature" (Z),
+				// so we have to add it here ("2022-06-23T20:07:03" => "2022-06-23T20:07:03Z")
+				if (v.created_at.endsWith('Z')===false) {
+					v.created_at += 'Z';
+				}
 				const d = new Date(v.created_at);
 				const ap = v.AveragePower;
 				const tot = v.TotalEnergy;

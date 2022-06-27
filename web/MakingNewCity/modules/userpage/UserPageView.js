@@ -97,9 +97,39 @@ export default class UserPageView extends View {
 ​​​		totalEnergy: 18797.376
 	*/
 	convertResults() {
+		const ele_now = undefined;
+		const ele_zero = undefined;
+		
 		this.resuArray = [];
 		Object.keys(this.models).forEach(key => {
-			if (key.indexOf('UserElectricityNow') === 0) {
+			if (key === 'UserElectricityNowModel') {
+				const meas = this.models[key].values; // is in normal situation an array.
+				if (Array.isArray(meas) && meas.length > 0) {
+					const power = meas[0].AveragePower;
+					const total = meas[0].TotalEnergy;
+					const d = new Date(meas[0].created_at);
+					ele_now = {date:d, power:power, total:total};
+				}
+			} else if (key === 'UserElectricity0Model') {
+				const meas = this.models[key].values; // is in normal situation an array.
+				if (Array.isArray(meas) && meas.length > 0) {
+					const power = meas[0].AveragePower;
+					const total = meas[0].TotalEnergy;
+					const d = new Date(meas[0].created_at);
+					ele_zero = {date:d, power:power, total:total};
+				}
+			}
+		});
+		if (typeof ele_now !== 'undefined' && ele_zero !== 'undefined') {
+			const date = ele_now.date;
+			const power = ele_now.power;
+			const total = ele_now.total - ele_zero.total;
+			this.resuArray.push({date:date, power:power, total:total});
+		}
+		/*
+		this.resuArray = [];
+		Object.keys(this.models).forEach(key => {
+			if (key.indexOf('UserElectricity') === 0) {
 				const meas = this.models[key].values; // is in normal situation an array.
 				if (Array.isArray(meas) && meas.length > 0) {
 					const total = meas[0].TotalEnergy;
@@ -110,6 +140,7 @@ export default class UserPageView extends View {
 				}
 			}
 		});
+		*/
 	}
 	
 	updateHeatingNow() {

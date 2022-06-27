@@ -24,7 +24,8 @@ export default class UserElectricityController extends Controller {
 		*/
 		super.remove();
 		// We must remove all models that were created here at the init-method.
-		for (let i=0; i<this.numOfDays; i++) {
+		// NOTE: UserElectricity0Model (todays electricity) is created at UserPageController.
+		for (let i=1; i<this.numOfDays; i++) {
 			const key = 'UserElectricity'+i+'Model';
 			console.log(['remove ',key,' from the REPO']);
 			this.master.modelRepo.remove(key);
@@ -40,8 +41,12 @@ export default class UserElectricityController extends Controller {
 	
 	init() {
 		// NOTE: Range is created dynamically at each fetching cycle.
+		// NOTE: 'UserElectricity0Model' is already created at UserPageController
+		this.models['UserElectricity0Model'] = this.master.modelRepo.get('UserElectricity0Model');
+		this.models['UserElectricity0Model'].subscribe(this);
+		
 		const model_data = [];
-		for (let i=0; i<this.numOfDays; i++) {
+		for (let i=1; i<this.numOfDays; i++) {
 			model_data.push({name:'UserElectricity'+i+'Model',index:i});
 		}
 		model_data.forEach(md => {

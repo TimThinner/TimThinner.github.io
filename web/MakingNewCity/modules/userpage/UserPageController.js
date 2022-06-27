@@ -27,7 +27,7 @@ export default class UserPageController extends Controller {
 		super.remove();
 		// We must remove all models that were created here at the init():
 		Object.keys(this.models).forEach(key => {
-			if (key==='UserHeatingNowModel' || key==='UserElectricityNowModel') {
+			if (key==='UserHeatingNowModel' || key==='UserElectricityNowModel' || key==='UserElectricity0Model') {
 				console.log(['remove ',key,' from the REPO']);
 				this.master.modelRepo.remove(key);
 			}
@@ -83,7 +83,16 @@ export default class UserPageController extends Controller {
 		m2.subscribe(this);
 		this.master.modelRepo.add('UserElectricityNowModel', m2);
 		this.models['UserElectricityNowModel'] = m2;
-		//});
+		
+		const m3 = new UserElectricityModel({
+			name: 'UserElectricity0Model',
+			src: 'data/sivakka/house_energy_data/feeds.json',
+			limit: 0,
+			index: 0
+		});
+		m3.subscribe(this);
+		this.master.modelRepo.add('UserElectricity0Model', m3);
+		this.models['UserElectricity0Model'] = m3;
 		
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);

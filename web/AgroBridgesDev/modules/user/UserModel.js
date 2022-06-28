@@ -632,7 +632,7 @@ export default class UserModel extends Model {
 	
 	logout() {
 		this.reset();
-		this.store(); // Clears the localStorage
+		//this.store(); // Clears the localStorage
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'logout',status:200,message:'Logout OK'}), 100);
 	}
 	

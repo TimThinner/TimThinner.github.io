@@ -584,7 +584,7 @@ export default class UserModel extends Model {
 	}
 	
 	reset() {
-		this.id = undefined;
+		this.id = 'prod_nl_1'; //undefined;
 		this.email = undefined;
 		this.token = undefined;
 	}

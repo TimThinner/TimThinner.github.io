@@ -353,9 +353,6 @@ export default class AnalysisView extends View {
 					
 					$('#'+this.FELID).empty();
 					
-					
-					
-					// TODO: NOT TESTED YET!!!!!!!!
 					this.renderBusinessModels();
 					
 					this.setLabels();
@@ -371,6 +368,7 @@ export default class AnalysisView extends View {
 					this.renderWholesaleSpider();
 					this.appendAttractiveness();
 					
+					this.renderDimensionsCollapsible();
 					this.renderDisclaimer();
 					
 					$('.collapsible').collapsible({
@@ -378,8 +376,6 @@ export default class AnalysisView extends View {
 						onOpenEnd: function(el) { console.log(['open el=',el]); /*self.previewOpen=true;*/ },
 						onCloseEnd: function(el) { console.log(['close el=',el]); /*self.previewOpen=false;*/ }
 					});
-					
-					
 					
 					
 				} else {
@@ -390,6 +386,27 @@ export default class AnalysisView extends View {
 			}
 		}
 	}
+	/*
+			"result_text": {
+				"Intro_Definition_Business_Models": "Five business models can be differentiated for the Short Food Supply Chain. These are Consumer Supported Agriculture (CSA), Face-to-Face Sales, Retail Trade, Online Trade, and Improved Logistics. They can be defined as follows:",
+				"Definition_CSA": "Definition CSA: Producers and consumers have a pre-existing agreement where consumers pay an agreed membership fee or offer labour services (or both), in exchange for produce. Two sales channels of the business model are considered in the analysis: A) CSA -\u00a0 Trading working hours for a share of the harvest, B) CSA - Subscription - payment of an annual fee for a share of the harvest",
+				"Definition_Face_2_Face": "Definition Face-to-Face Trade: Consumer purchases a product directly from the producer/processor on a face-to-face basis.\u00a0Three sales channels of the business model are considered in the analysis: A) Farm shops, B) Farmers markets, C) Pick your own",
+				"Definition_Online_Trade": "Definition Online Trade: Products are traded online using websites of farmers or shared marketing websites.\u00a0We consider two different sales channels: A) Online Food Trade - Post box delivery, B) Online Food Trade - Box scheme subscription & Direct Delivery",
+				"Definition_Retail_Trade": "Definition Retail Trade: Products are produced and retailed in the specific region of production, and consumers are made aware of the \u2018local\u2019 nature of the product at the point of sale.\u00a0The sales channels considered in the analysis is: Retail Store -\u00a0 the origin is highlighted",
+				"Definition_Improved_Logistics": "Definition Improved Logistics: Selling products to producers organisations, food hubs or other distributors, enables farmers to benefit from improved logistics by sharing costs and pooling resources for distribution. This way larger quantities can be sold to channels like supermarket chains. This business model is always considered to be an option and not part of the ranking procedure.",
+				"More_Info_Business_Models": "More information about the five business models e.g. practice cases can be found here: Link",
+				"Result1_Models_Considered": "The following business models and sales channels were considered in your analysis:",
+				"How_calculated": "How where the results calculated? The ranking is based on a set of sustainability criteria. The sales channel that reaches the economic, environmental and social criteria best is considered to be the most suitable option and ranked first. The graphics show to which extent the SFSC sales channels meet the different criteria.",
+				"Describtion_Spiderweb": "As you can see the SFSC enable you to reach higher prices (price premium), but they are labor-intensive (labor to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale.",
+				"Intro_not_all_sales_channels_con": "Not all sales channels were considered. Why? Some business models were excluded, because they were considered to be less suitable for your farm or in your region. Reasons for this are farms or regional characteristics (e.g. how attractive your region is for sales).",
+				"Relative_Attractiveness": "The relative attractiveness of your region was considered to be:",
+				"Suitability_farm_Characterstics": "This relative attractiveness in the model depends on the population density and the income of the inhabitants. If you would like to learn more about farms or regional characteristics, and how these affect the suitability of the business models, please follow this Link.",
+				"Disclaimer_Header": "Disclaimer",
+				"Disclaimer": "The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g. the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remain with you.",
+				"rank_intro1_id": "Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first:",
+				"rank_intro2_id": "Improved logistics is also an option for you. It is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms."
+			},
+	*/
 	
 	
 	/*
@@ -413,7 +430,7 @@ export default class AnalysisView extends View {
 		const ll_title_e = LM['translation'][sel]['Improved_Logistics'];
 		
 		if (this.USER_MODEL.analysisResult.result_text) {
-			//const ll_intro = this.USER_MODEL.analysisResult.result_text.Intro_Definition_Business_Models;
+			const ll_intro = this.USER_MODEL.analysisResult.result_text.Intro_Definition_Business_Models;
 			const ll_def_csa = this.USER_MODEL.analysisResult.result_text.Definition_CSA;
 			const ll_def_f2f = this.USER_MODEL.analysisResult.result_text.Definition_Face_2_Face;
 			const ll_def_online_trade = this.USER_MODEL.analysisResult.result_text.Definition_Online_Trade;
@@ -442,6 +459,8 @@ export default class AnalysisView extends View {
 					'<div class="collapsible-body">'+ll_def_improved_logistics+'</span></div>'+
 				'</li>'+
 			'</ul>';
+			
+			$('#business-models-intro-wrapper').empty().append(ll_intro);
 			$('#business-models-collapsible-wrapper').empty().append(html);
 			$("#business-models-more-info-wrapper").empty().append(ll_def_more_info);
 		}
@@ -607,29 +626,6 @@ export default class AnalysisView extends View {
 		$("#attractiveness-wrapper").empty().append(html);
 	}
 	
-	/*
-	
-		if (this.USER_MODEL.analysisResult.result_text) {
-			const ll_dh = this.USER_MODEL.analysisResult.result_text.Disclaimer_Header
-			const ll_d = this.USER_MODEL.analysisResult.result_text.Disclaimer
-				"Disclaimer_Header": "Disclaimer",
-				"Disclaimer": "The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g. the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remain with you.",
-	*/
-	renderDisclaimer() {
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		//const ll_d_title = LM['translation'][sel]['Disclaimer_Header'];
-		//const ll_d_text = LM['translation'][sel]['Disclaimer'];
-		
-		if (this.USER_MODEL.analysisResult.result_text) {
-			const ll_d_title = this.USER_MODEL.analysisResult.result_text.Disclaimer_Header;
-			const ll_d_text = this.USER_MODEL.analysisResult.result_text.Disclaimer;
-			
-			const html = '<h6>'+ll_d_title+'</h6><p>'+ll_d_text+'</p>';
-			$("#disclaimer-text-wrapper").empty().append(html);
-		}
-	}
-	
 	renderDimensionsCollapsible() {
 		// TODO: Also move the second collapsible to function where value are filled from the this.USER_MODEL.analysisResult.diagram_dimension_labels
 		if (this.USER_MODEL.analysisResult.diagram_dimension_labels) {
@@ -657,6 +653,26 @@ export default class AnalysisView extends View {
 		}
 	}
 	
+	/*
+		if (this.USER_MODEL.analysisResult.result_text) {
+			const ll_dh = this.USER_MODEL.analysisResult.result_text.Disclaimer_Header
+			const ll_d = this.USER_MODEL.analysisResult.result_text.Disclaimer
+				"Disclaimer_Header": "Disclaimer",
+				"Disclaimer": "The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g. the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remain with you.",
+	*/
+	renderDisclaimer() {
+		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		//const sel = LM.selected;
+		//const ll_d_title = LM['translation'][sel]['Disclaimer_Header'];
+		//const ll_d_text = LM['translation'][sel]['Disclaimer'];
+		if (this.USER_MODEL.analysisResult.result_text) {
+			const ll_d_title = this.USER_MODEL.analysisResult.result_text.Disclaimer_Header;
+			const ll_d_text = this.USER_MODEL.analysisResult.result_text.Disclaimer;
+			const html = '<h6>'+ll_d_title+'</h6><p>'+ll_d_text+'</p>';
+			$("#disclaimer-text-wrapper").empty().append(html);
+		}
+	}
+	
 	render() {
 		const self = this;
 		$(this.el).empty();
@@ -664,6 +680,7 @@ export default class AnalysisView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const ll_intro_business_models_title = LM['translation'][sel]['Intro_Definition_Business_Models_title'];
+		const ll_intro_business_models = LM['translation'][sel]['Intro_Definition_Business_Models'];
 		
 		const ll_recommendations_title = 'Recommendations for Short Food Supply Chain';
 		const ll_improved_logistics_title = 'Improved logistics as an option for all farmers';
@@ -672,7 +689,6 @@ export default class AnalysisView extends View {
 		const ll_how_to_read_spiders_title = LM['translation'][sel]['Description_Spiderweb_title'];
 		const ll_how_to_read_spiders_text = LM['translation'][sel]['Describtion_Spiderweb'];
 		const ll_definition_criteria = LM['translation'][sel]['Definition_Criteria'];
-		
 		
 		const ll_farm_and_regional_chars_title = LM['translation'][sel]['Suitability_farm_Characteristics_title'];
 		const ll_farm_and_regional_chars_intro = LM['translation'][sel]['Intro_not_all_sales_channels_con'];
@@ -690,11 +706,8 @@ export default class AnalysisView extends View {
 					'</div>'+
 				'</div>'+
 				
+				// FIRST "CHAPTER"
 				'<div class="col s12">'+
-					// This FIRST "CHAPTER" is filled in 
-					//		this.renderBusinessModels()
-					//			fills the #business-models-intro-wrapper and 5 collapsible definitions and #business-models-more-info-wrapper
-					//
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_intro_business_models_title+'</h5>'+
 					'</div>'+
@@ -756,7 +769,7 @@ export default class AnalysisView extends View {
 						'<p>'+ll_how_to_read_spiders_text+'</p>'+
 						'<p>'+ll_definition_criteria+'</p>'+
 					'</div>'+
-					'<div id="dimension-collapsible-wrapper" class="col s12 m10 offset-m1">'+
+					'<div id="dimension-collapsible-wrapper" class="col s12 m10 offset-m1">'+ // filled in this.renderDimensionsCollapsible();
 					'</div>'+
 				'</div>'+
 				
@@ -821,6 +834,7 @@ export default class AnalysisView extends View {
 			this.renderWholesaleSpider();
 			this.appendAttractiveness();
 			
+			this.renderDimensionsCollapsible();
 			this.renderDisclaimer();
 			
 			$('.collapsible').collapsible({

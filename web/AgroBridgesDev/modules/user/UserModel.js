@@ -15,12 +15,11 @@ export default class UserModel extends Model {
 	
 	constructor(options) {
 		super(options);
-		this.id = undefined;
+		this.id = 'prod_nl_1'; //undefined;
 		this.email = undefined;
 		this.token = undefined;
 		
-		this.localStorageLabel = 'AgroBridgesUserModel';
-		
+		//this.localStorageLabel = 'AgroBridgesUserModel';
 		this.profile = {
 			// FARM LOCATION:
 			Country: undefined,
@@ -589,7 +588,7 @@ export default class UserModel extends Model {
 		this.email = undefined;
 		this.token = undefined;
 	}
-	
+	/*
 	store() {
 		const status = localStorage.getItem(this.localStorageLabel);
 		const new_status = {
@@ -629,7 +628,7 @@ export default class UserModel extends Model {
 			this.store();
 		}
 	}
-	
+	*/
 	
 	logout() {
 		this.reset();
@@ -645,7 +644,7 @@ export default class UserModel extends Model {
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:200,message:'OK'}), 100);
 	}
 	
-	updateUserProfile(data, uid) {
+	updateUserProfile(data) {
 		const self = this;
 		/*const data = [
 			{propName:'Hectare_farm', value:20},
@@ -657,13 +656,11 @@ export default class UserModel extends Model {
 				validData[d.propName] = d.value;
 			}
 		});
+		validData['user_id'] = this.id;
 		
-		if (typeof uid !== 'undefined') {
-			validData['user_id'] = uid; //"prod_nl_1";
-		}
 		console.log(['updateUserProfile validData=',validData]);
 		
-		if (this.MOCKUP || typeof uid === 'undefined') {
+		if (this.MOCKUP) {
 			
 			setTimeout(() => this.notifyAll({model:self.name, method:'updateUserProfile', status:200, message:'OK'}), 500);
 			
@@ -690,7 +687,12 @@ export default class UserModel extends Model {
 					return response.json();
 				})
 				.then(function(myJson){
-					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:myJson.message});
+					let msg = "OK";
+					console.log(['myJson=',myJson]);
+					if (typeof myJson.message !== 'undefined') {
+						msg = myJson.message;
+					}
+					self.notifyAll({model:self.name, method:'updateUserProfile', status:status, message:msg});
 				})
 				.catch(function(error){
 					let msg = "Error: ";
@@ -704,19 +706,12 @@ export default class UserModel extends Model {
 		}
 	}
 	
-	runAnalysis(data, uid) {
+	runAnalysis(data) {
 		const self = this;
 		this.analysisReady = false;
 		this.analysisResult = {};
 		
-		if (typeof uid !== 'undefined') {
-			// do something with user id.
-			// "http://localhost:6969/analysis?user_id=prod_nl_1&lang=en"
-			
-			//const myRequest = new Request(this.backend + '/analysis?user_id=' + uid + '&lang=en', myPut);
-		}
-		
-		if (this.MOCKUP || typeof uid === 'undefined') {
+		if (this.MOCKUP) {
 			setTimeout(() => {
 				// After 2 seconds of delay (to simulate analysis delay) fill in the results data.
 				this.analysisResult = this.analysis_simulation_backup;
@@ -790,13 +785,20 @@ export default class UserModel extends Model {
 				headers: myHeaders,
 				body: JSON.stringify(data)
 			};
-			const myRequest = new Request(this.backend + '/analysis/'+this.id, myPost);
+			//const myRequest = new Request(this.backend + '/analysis/'+this.id, myPost);
+			const myRequest = new Request(this.backend + '/analysis', myPost);
 			fetch(myRequest)
 				.then(function(response){
 					status = response.status;
 					return response.json();
 				})
 				.then(function(myJson){
+					let msg = "OK";
+					console.log(['myJson=',myJson]);
+					if (typeof myJson.message !== 'undefined') {
+						msg = myJson.message;
+					}
+					self.analysisResult = JSON.parse(myJson);
 					self.notifyAll({model:self.name, method:'runAnalysis', status:status, message:myJson.message});
 				})
 				.catch(function(error){

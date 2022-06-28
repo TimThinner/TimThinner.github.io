@@ -120,7 +120,18 @@ export default class MenuView extends View {
 					'</div>'+
 					'<div class="col s12 center">'+
 						//'<p style="color:#ccc;">W='+w+'px H='+h+'px</p>'+
-						'<p style="color:#ccc;">Version 22.06.28-Alfa</p>'+
+						'<p style="color:#ccc;">Version 22.06.28-Bravo</p>'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
+					'<div class="input-field col s6">'+
+						'<p><label><input type="checkbox" class="filled-in" id="isMockup" /><span>MOCKUP</span></label></p>'+
+					'</div>'+
+					'<div class="input-field col s6">'+
+						'<input value="" id="user_id" type="text" class="validate">'+
+						'<label class="active" for="user_id">User id:</label>'+
 					'</div>'+
 				'</div>'+
 			'</div>';
@@ -130,9 +141,35 @@ export default class MenuView extends View {
 		Alfa, Bravo, Charlie, Delta, Echo, Foxtrot, Golf, Hotel, India, Juliett, Kilo, Lima, Mike, November, 
 		Oscar, Papa, Quebec, Romeo, Sierra, Tango, Uniform, Victor, Whiskey, X-ray, Yankee, Zulu.
 		*/
+		
+		const UM = this.controller.master.modelRepo.get('UserModel');
+		$("#user_id").val(UM.id);
+		
+		if (UM.MOCKUP) {
+			$("#isMockup").prop("checked", true);
+		} else {
+			$("#isMockup").prop("checked", false);
+		}
+		
 		$("#login").on('click', function() {
+			const uid = $("#user_id").val();
+			UM.id = uid;
+			
+			const CM = self.controller.master.modelRepo.get('CountriesModel');
+			const RM = self.controller.master.modelRepo.get('RegionsModel');
+			
+			if($("#isMockup").is(':checked')) {
+				UM.MOCKUP = true;
+				CM.MOCKUP = true;
+				RM.MOCKUP = true;
+			} else {
+				UM.MOCKUP = false;
+				CM.MOCKUP = false;
+				RM.MOCKUP = false;
+			}
 			self.controller.models['MenuModel'].setSelected('main');
 		});
+		
 		this.rendered = true;
 	}
 }

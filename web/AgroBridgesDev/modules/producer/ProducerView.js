@@ -193,7 +193,7 @@ export default class ProducerView extends View {
 				{propName:'Likert_consumer_con', value:self.USER_MODEL.profile.Likert_consumer_con}
 			];
 			console.log(['About to save data=',data]);
-			self.USER_MODEL.updateUserProfile(data, "prod_nl_1");
+			self.USER_MODEL.updateUserProfile(data);
 		});
 		this.rendered = true;
 	}

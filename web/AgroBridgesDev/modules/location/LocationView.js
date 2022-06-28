@@ -510,7 +510,7 @@ export default class LocationView extends View {
 			}
 			
 			console.log(['About to save data=',data]);
-			self.USER_MODEL.updateUserProfile(data, "prod_nl_1");
+			self.USER_MODEL.updateUserProfile(data);
 		});
 		this.rendered = true;
 	}

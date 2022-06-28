@@ -110,7 +110,6 @@ export default class AnalysisView extends View {
 	
 	setRecommendations() {
 		this.recommendationz = [];
-		//this.showRecommendation = {};
 		
 		const colors = [
 			this.colors.DARK_GREEN, // First recommendation.
@@ -502,6 +501,8 @@ export default class AnalysisView extends View {
 		} else { // Two or more...
 			html = '<p>'+ll_intro+' '+ll_r1_more_than_2_suitable+'</p>';
 		}
+		
+		
 		$("#recommendations-text-part-1-wrapper").empty().append(html);
 	}
 	

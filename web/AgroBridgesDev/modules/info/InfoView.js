@@ -297,7 +297,7 @@ export default class InfoView extends View {
 				data.push({propName:'Harv_Clean_Sort_Ref', value:0});
 			}
 			
-			self.USER_MODEL.updateUserProfile(data, "prod_nl_1");
+			self.USER_MODEL.updateUserProfile(data);
 		});
 		
 		this.rendered = true;

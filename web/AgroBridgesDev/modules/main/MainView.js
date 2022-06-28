@@ -462,7 +462,8 @@ export default class MainView extends View {
 			if (mainState.ready === true) {
 				
 				// Start the analysis and open AnalysisView.
-				self.USER_MODEL.runAnalysis({optional:'data'});
+				const data = {placeholder:'whatever'};
+				self.USER_MODEL.runAnalysis(data);
 				self.models['MenuModel'].setSelected('analysis');
 			} else {
 				console.log('ANALYSIS!');

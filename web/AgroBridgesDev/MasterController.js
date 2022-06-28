@@ -71,7 +71,7 @@ class MasterController {
 		const UM = new UserModel({name:'UserModel'});
 		UM.subscribe(this); // Now we will receive notifications from the UserModel.
 		this.modelRepo.add('UserModel',UM);
-		UM.restore(); // Try to restore previous "session" stored into LocalStorage.
+		//UM.restore(); // Try to restore previous "session" stored into LocalStorage.
 		
 		// Start tracking resize events => will also notify initial "resize" (with small delay) 
 		// for MenuView (View which is visible after delay timeout).

@@ -823,7 +823,7 @@ export default class UserModel extends Model {
 		}
 	}
 	
-	runAnalysis(data) {
+	runAnalysis() {
 		const self = this;
 		this.analysisReady = false;
 		this.analysisResult = {};
@@ -897,13 +897,13 @@ export default class UserModel extends Model {
 			myHeaders.append("Authorization", authorizationToken);
 			myHeaders.append("Content-Type", "application/json");
 			
-			const myPost = {
+			const myGet = {
 				method: 'POST',
-				headers: myHeaders,
-				body: JSON.stringify(data)
+				headers: myHeaders
+				//body: JSON.stringify(data)
 			};
 			//const myRequest = new Request(this.backend + '/analysis/'+this.id, myPost);
-			const myRequest = new Request(this.backend + '/analysis', myPost);
+			const myRequest = new Request(this.backend + '/analysis', myGet);
 			fetch(myRequest)
 				.then(function(response){
 					status = response.status;
@@ -920,7 +920,6 @@ export default class UserModel extends Model {
 					self.notifyAll({model:self.name, method:'runAnalysis', status:status, message:myJson.message});
 				})
 				.catch(function(error){
-					self.analysisReady = true;
 					let msg = "Error: ";
 					if (typeof error.message !== 'undefined') {
 						msg += error.message;
@@ -938,7 +937,8 @@ export default class UserModel extends Model {
 		this.translationReady = false;
 		this.translation = {};
 		
-		if (this.MOCKUP) {
+		if (this.MOCKUP === true) {
+			
 			setTimeout(() => {
 				// After 2 seconds of delay (to simulate delay) fill in the results data.
 				this.translation = this.translation_simulated;
@@ -956,12 +956,12 @@ export default class UserModel extends Model {
 			myHeaders.append("Authorization", authorizationToken);
 			myHeaders.append("Content-Type", "application/json");
 			
-			const myPost = {
-				method: 'POST',
+			const myGet = {
+				method: 'GET',
 				headers: myHeaders
 				//body: JSON.stringify(data)
 			};
-			const myRequest = new Request(this.backend + '/UI_text?lang='+lang, myPost);
+			const myRequest = new Request(this.backend + '/UI_text?lang='+lang, myGet);
 			fetch(myRequest)
 				.then(function(response){
 					status = response.status;
@@ -976,6 +976,7 @@ export default class UserModel extends Model {
 						msg = resu.message;
 					}
 					self.translation = resu;
+					self.translationReady = true;
 					self.notifyAll({model:self.name, method:'loadTranslation', status:status, message:msg});
 				})
 				.catch(function(error){

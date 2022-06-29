@@ -120,7 +120,7 @@ export default class MenuView extends View {
 					'</div>'+
 					'<div class="col s12 center">'+
 						//'<p style="color:#ccc;">W='+w+'px H='+h+'px</p>'+
-						'<p style="color:#ccc;">Version 22.06.29-Echo</p>'+
+						'<p style="color:#ccc;">Version 22.06.29-Foxtrot</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -155,9 +155,11 @@ export default class MenuView extends View {
 		$("#isMockup").change(function() {
 			if(this.checked) {
 				// NO DB.
+				UM.MOCKUP = true;
 				UM.loadTranslation('en');
 			} else {
 				// Try to use DB.
+				UM.MOCKUP = false;
 				UM.loadTranslation('en');
 			}
 		});

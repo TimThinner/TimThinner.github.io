@@ -120,7 +120,7 @@ export default class MenuView extends View {
 					'</div>'+
 					'<div class="col s12 center">'+
 						//'<p style="color:#ccc;">W='+w+'px H='+h+'px</p>'+
-						'<p style="color:#ccc;">Version 22.06.29-Delta</p>'+
+						'<p style="color:#ccc;">Version 22.06.29-Echo</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -150,6 +150,17 @@ export default class MenuView extends View {
 		} else {
 			$("#isMockup").prop("checked", false);
 		}
+		
+		// Test language change.
+		$("#isMockup").change(function() {
+			if(this.checked) {
+				// NO DB.
+				UM.loadTranslation('en');
+			} else {
+				// Try to use DB.
+				UM.loadTranslation('en');
+			}
+		});
 		
 		$("#login").on('click', function() {
 			const uid = $("#user_id").val();

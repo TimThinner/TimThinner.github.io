@@ -607,14 +607,14 @@ export default class AnalysisView extends View {
 	renderFarmCharacteristics() {
 		if (this.USER_MODEL.analysisResult.result_text) {
 			
-			const title = this.USER_MODEL.analysisResult.result_text.Farm_and_regional_characteristics_title;
+			//const title = this.USER_MODEL.analysisResult.result_text.Farm_and_regional_characteristics_title;
 			const intro = this.USER_MODEL.analysisResult.result_text.Intro_not_all_sales_channels_con;
 			const relative_attractiveness_text = this.USER_MODEL.analysisResult.Region_Attractiveness.Relative_Attractiveness; // "The relative attractiveness of your region was considered to be:"
 			const value = this.USER_MODEL.analysisResult.Region_Attractiveness.value; // "medium"
 			const descr = this.USER_MODEL.analysisResult.result_text.Suitability_farm_Characterstics;
 			
-			const html = '<h5 style="text-align:center">'+title+'</h5>'+
-			'<p>'+intro+'</p>'+
+			//const html = '<h5 style="text-align:center">'+title+'</h5>'+
+			const html = '<p>'+intro+'</p>'+
 			'<p style="color:'+this.colors.DARK_GREEN+'; font-weight:bold;">'+relative_attractiveness_text+' <span style="color:'+this.colors.DARK_ORANGE+'">'+value+'</span></p>'+
 			'<p>'+descr+'</p>';
 			
@@ -624,9 +624,10 @@ export default class AnalysisView extends View {
 	
 	renderHowCalculated() {
 		if (this.USER_MODEL.analysisResult.result_text) {
-			const ll_how_calculated_title = this.USER_MODEL.analysisResult.result_text.How_calculated_title;
+			//const ll_how_calculated_title = this.USER_MODEL.analysisResult.result_text.How_calculated_title;
 			const ll_how_calculated_text = this.USER_MODEL.analysisResult.result_text.How_calculated;
-			const html = '<h5 style="text-align:center">'+ll_how_calculated_title+'</h5><p>'+ll_how_calculated_text+'</p>';
+			//const html = '<h5 style="text-align:center">'+ll_how_calculated_title+'</h5><p>'+ll_how_calculated_text+'</p>';
+			const html = '<p>'+ll_how_calculated_text+'</p>';
 			$("#how-calculated-wrapper").empty().append(html);
 		}
 	}

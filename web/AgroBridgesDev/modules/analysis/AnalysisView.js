@@ -15,6 +15,34 @@ import View from '../common/View.js';
 	this.colors.LIGHT_GREEN_2 // darker
 	this.colors.LIGHT_GREEN_3 // more darker
 	
+	
+	
+	result_text:
+			"Intro_Definition_Business_Models":"Five business models can be differentiated for Short Food Supply Chains. These are Community Supported Agriculture (CSA), Face-to-Face Sales, Retail Trade, Online Trade, and Improved Logistics. They can be defined as follows:",
+			"Definition_CSA":"Definition CSA: Producers and consumers have a pre-existing agreement were consumers pay an agreed membership fee or offer labour services (or both), in exchange for produce. Two sales channels of the business model are considered in the analysis: A) CSA - 'Trading working hours for a share of the harvest', B) CSA - 'Subscription - payment of an annual fee for a share of the harvest'. The products are delivered by the farmer.",
+			"Definition_Face_2_Face":"Defintion Face-to-Face: 'Consumer purchases a product directly from the producer/processor on a Face-to-Face basis. Three sales channels of the business model are considered in the analysis: A) Farm shops, B) Farmers markets, C) Pick-Your-Own",
+			"Definition_Online_Trade":"Definition Online-Trade: Products are traded online using the farmer’s websites or shared marketing websites. Two different sales channels are considered: A) Online Food Trade - 'Post box delivery', B) Online Food Trade - 'Box scheme subscription & Direct Delivery’",
+			"Definition_Retail_Trade":"Definition Local Food / Retail Trade: Products are produced and sold in the specific region of production, and consumers are made aware of the ‘local’ nature of the product at the point of sale. The sales channel considered in the analysis is: Retail Store - ‘The origin is highlighted’",
+			"Definition_Improved_Logistics":"Definition Improved Logistics: Selling products to producer organisations, food hubs or other distributors enables farmers to benefit from improved logistics by sharing costs and pooling resources for distribution. In this way, larger quantities can be sold to channels such as supermarket chains. This business model is always considered to be an option and not part of the ranking procedure.",
+			"More_Info_Business_Models":"More information on the five business models can be found here: Link (to the business model canvas)",
+			"Result1_Models_Considered":"The following business models and sales channels were considered in your analysis:",
+			"Result_Farms_more_than_2_suitable":"Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first:",
+			"Results2_Farm_more_2_suitable":"Improved logistics' is also an option for you. It is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g., the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms.",
+			"Results1_farms_no_suitable_channels":"Based on the characteristics of your farm non of the sales channels are considered to be an option for you. Please check the information you entered.",
+			"Results2_farm_no_suitable_Channels":"If the information was correct: 'Improved Logistics' is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by larger farms. 'Improved logistics' is assumed to be suitable for all farmers regardless of their location and their production characteristics.",
+			"Results1_only_one_channel":"Based on the characteristics of your farm only one of the sales channels is considered to be an option for you and no ranking is possible. This sales channel is:",
+			"Results2_only_one_channel":"However, 'Improved logistics' is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g., sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms and could be interesting for you.",
+			"How_calculated":"How were the results calculated?' The ranking is based on a set of sustainability criteria. The sales channel that reaches the economic, environmental and social criteria best is considered to be the most suitable option and ranked first. The graphics show to what extent the SFSC sales channels meet the different criteria. The values for the economic, environmental and social performance are not individually calculated. They are averages from data coming from 208 food producers from seven countries (six within the EU). More details about the data can be found here: Malak-Rawlikowska, A. et al. (2019): Measuring the Economic, Environmental and Social Sustainability of Short Food Supply Chains. Sustainability Vol. 11 (1). 1-23.",
+			"Definition_Criteria":"Would you like to know how the criteria are defined? Please follow this Link.",
+			"Intro_not_all_sales_channels_con":"Not all sales channels were considered. Why?' Some business models were excluded, because they were considered to be less suitable for your farm or region because of certain farm or regional characteristics (e.g., how attractive your region is for sales).",
+			"Relative_Attractiveness":"The attractiveness of your region for sales was considered to be:",
+			"Suitability_farm_Characterstics":"This relative attractiveness depends on the population density and the income of the inhabitants. This was determined on a regional level (NUTS3 areas are defined as small areas for specific diagnoses with 150,000 - 800,000 inhabitants ), we used the population densities and the income of the households to determine whether a region is more or less attractive for sales. Business models such as Community Supported Agriculture strongly depend on high population densities and might be especially suitable for organic farms. Intensively managed on-farm shops run by staff might also only be successful in areas with high income and higher population densities.",
+			"Disclaimer_Header":"A Disclaimer",
+			"Disclaimer":"The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g., the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remains with you.",
+			"Additional_Info_PickU":"The harvesting labour saved by Pick-Your-Own is not reflected in the Labour to Produce Ratio. The Labour to Produce Ratio only considered Labour Requirements for Sales.",
+			"Describtion_Spiderweb":"How to read the diagrams? In a spider chart, each criterion gets its spoke, and the spokes are evenly distributed around the wheel. The farther toward the outside of the chart, the better a business model fulfills the criteria. A spoke close to the center means that the sales channel can only fulfill the criteria to a limited extents. You can see in example that SFSC enable you to reach higher prices (Price Premium), but they are labour-intensive (labour to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale."
+	
+	
 */
 
 export default class AnalysisView extends View {
@@ -85,11 +113,12 @@ export default class AnalysisView extends View {
 				/* Each e has:
 					{
 					"var_name": "Volume",
-					"title": "Volume ",
-					"definition": null
+					"title": "Volume",
+					"chart_title": "",
+					
 					}
 				*/
-				this.labelz[e.var_name] = e.title;
+				this.labelz[e.var_name] = e.chart_title;
 			});
 		}
 	}
@@ -322,39 +351,15 @@ export default class AnalysisView extends View {
 		}
 	}
 	
-	/*
-			"result_text": {
-				"Intro_Definition_Business_Models": "Five business models can be differentiated for the Short Food Supply Chain. These are Consumer Supported Agriculture (CSA), Face-to-Face Sales, Retail Trade, Online Trade, and Improved Logistics. They can be defined as follows:",
-				"Definition_CSA": "Definition CSA: Producers and consumers have a pre-existing agreement where consumers pay an agreed membership fee or offer labour services (or both), in exchange for produce. Two sales channels of the business model are considered in the analysis: A) CSA -\u00a0 Trading working hours for a share of the harvest, B) CSA - Subscription - payment of an annual fee for a share of the harvest",
-				"Definition_Face_2_Face": "Definition Face-to-Face Trade: Consumer purchases a product directly from the producer/processor on a face-to-face basis.\u00a0Three sales channels of the business model are considered in the analysis: A) Farm shops, B) Farmers markets, C) Pick your own",
-				"Definition_Online_Trade": "Definition Online Trade: Products are traded online using websites of farmers or shared marketing websites.\u00a0We consider two different sales channels: A) Online Food Trade - Post box delivery, B) Online Food Trade - Box scheme subscription & Direct Delivery",
-				"Definition_Retail_Trade": "Definition Retail Trade: Products are produced and retailed in the specific region of production, and consumers are made aware of the \u2018local\u2019 nature of the product at the point of sale.\u00a0The sales channels considered in the analysis is: Retail Store -\u00a0 the origin is highlighted",
-				"Definition_Improved_Logistics": "Definition Improved Logistics: Selling products to producers organisations, food hubs or other distributors, enables farmers to benefit from improved logistics by sharing costs and pooling resources for distribution. This way larger quantities can be sold to channels like supermarket chains. This business model is always considered to be an option and not part of the ranking procedure.",
-				"More_Info_Business_Models": "More information about the five business models e.g. practice cases can be found here: Link",
-				"Result1_Models_Considered": "The following business models and sales channels were considered in your analysis:",
-				"How_calculated": "How where the results calculated? The ranking is based on a set of sustainability criteria. The sales channel that reaches the economic, environmental and social criteria best is considered to be the most suitable option and ranked first. The graphics show to which extent the SFSC sales channels meet the different criteria.",
-				"Describtion_Spiderweb": "As you can see the SFSC enable you to reach higher prices (price premium), but they are labor-intensive (labor to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale.",
-				"Intro_not_all_sales_channels_con": "Not all sales channels were considered. Why? Some business models were excluded, because they were considered to be less suitable for your farm or in your region. Reasons for this are farms or regional characteristics (e.g. how attractive your region is for sales).",
-				"Relative_Attractiveness": "The relative attractiveness of your region was considered to be:",
-				"Suitability_farm_Characterstics": "This relative attractiveness in the model depends on the population density and the income of the inhabitants. If you would like to learn more about farms or regional characteristics, and how these affect the suitability of the business models, please follow this Link.",
-				"Disclaimer_Header": "Disclaimer",
-				"Disclaimer": "The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g. the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remain with you.",
-				"rank_intro1_id": "Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first:",
-				"rank_intro2_id": "Improved logistics is also an option for you. It is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms."
-			},
-	*/
-	
 	
 	/*
-			"result_text": {
-				"Intro_Definition_Business_Models": "Five business models can be differentiated for the Short Food Supply Chain. These are Consumer Supported Agriculture (CSA), Face-to-Face Sales, Retail Trade, Online Trade, and Improved Logistics. They can be defined as follows:",
-				"Definition_CSA": "Definition CSA: Producers and consumers have a pre-existing agreement where consumers pay an agreed membership fee or offer labour services (or both), in exchange for produce. Two sales channels of the business model are considered in the analysis: A) CSA -\u00a0 Trading working hours for a share of the harvest, B) CSA - Subscription - payment of an annual fee for a share of the harvest",
-				"Definition_Face_2_Face": "Definition Face-to-Face Trade: Consumer purchases a product directly from the producer/processor on a face-to-face basis.\u00a0Three sales channels of the business model are considered in the analysis: A) Farm shops, B) Farmers markets, C) Pick your own",
-				"Definition_Online_Trade": "Definition Online Trade: Products are traded online using websites of farmers or shared marketing websites.\u00a0We consider two different sales channels: A) Online Food Trade - Post box delivery, B) Online Food Trade - Box scheme subscription & Direct Delivery",
-				"Definition_Retail_Trade": "Definition Retail Trade: Products are produced and retailed in the specific region of production, and consumers are made aware of the \u2018local\u2019 nature of the product at the point of sale.\u00a0The sales channels considered in the analysis is: Retail Store -\u00a0 the origin is highlighted",
-				"Definition_Improved_Logistics": "Definition Improved Logistics: Selling products to producers organisations, food hubs or other distributors, enables farmers to benefit from improved logistics by sharing costs and pooling resources for distribution. This way larger quantities can be sold to channels like supermarket chains. This business model is always considered to be an option and not part of the ranking procedure.",
-				"More_Info_Business_Models": "More information about the five business models e.g. practice cases can be found here: Link",
-			},
+			"Intro_Definition_Business_Models":"Five business models can be differentiated for Short Food Supply Chains. These are Community Supported Agriculture (CSA), Face-to-Face Sales, Retail Trade, Online Trade, and Improved Logistics. They can be defined as follows:",
+			"Definition_CSA":"Definition CSA: Producers and consumers have a pre-existing agreement were consumers pay an agreed membership fee or offer labour services (or both), in exchange for produce. Two sales channels of the business model are considered in the analysis: A) CSA - 'Trading working hours for a share of the harvest', B) CSA - 'Subscription - payment of an annual fee for a share of the harvest'. The products are delivered by the farmer.",
+			"Definition_Face_2_Face":"Defintion Face-to-Face: 'Consumer purchases a product directly from the producer/processor on a Face-to-Face basis. Three sales channels of the business model are considered in the analysis: A) Farm shops, B) Farmers markets, C) Pick-Your-Own",
+			"Definition_Online_Trade":"Definition Online-Trade: Products are traded online using the farmer’s websites or shared marketing websites. Two different sales channels are considered: A) Online Food Trade - 'Post box delivery', B) Online Food Trade - 'Box scheme subscription & Direct Delivery’",
+			"Definition_Retail_Trade":"Definition Local Food / Retail Trade: Products are produced and sold in the specific region of production, and consumers are made aware of the ‘local’ nature of the product at the point of sale. The sales channel considered in the analysis is: Retail Store - ‘The origin is highlighted’",
+			"Definition_Improved_Logistics":"Definition Improved Logistics: Selling products to producer organisations, food hubs or other distributors enables farmers to benefit from improved logistics by sharing costs and pooling resources for distribution. In this way, larger quantities can be sold to channels such as supermarket chains. This business model is always considered to be an option and not part of the ranking procedure.",
+			"More_Info_Business_Models":"More information on the five business models can be found here: Link (to the business model canvas)",
 	*/
 	renderBusinessModels() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
@@ -404,41 +409,35 @@ export default class AnalysisView extends View {
 	
 	
 	/*
-				"Result1_Models_Considered": "The following business models and sales channels were considered in your analysis:",
-				"How_calculated": "How where the results calculated? The ranking is based on a set of sustainability criteria. The sales channel that reaches the economic, environmental and social criteria best is considered to be the most suitable option and ranked first. The graphics show to which extent the SFSC sales channels meet the different criteria.",
-				"Describtion_Spiderweb": "As you can see the SFSC enable you to reach higher prices (price premium), but they are labor-intensive (labor to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale.",
-				"Intro_not_all_sales_channels_con": "Not all sales channels were considered. Why? Some business models were excluded, because they were considered to be less suitable for your farm or in your region. Reasons for this are farms or regional characteristics (e.g. how attractive your region is for sales).",
-				"Relative_Attractiveness": "The relative attractiveness of your region was considered to be:",
-				"Suitability_farm_Characterstics": "This relative attractiveness in the model depends on the population density and the income of the inhabitants. If you would like to learn more about farms or regional characteristics, and how these affect the suitability of the business models, please follow this Link.",
-				"Disclaimer_Header": "Disclaimer",
-				"Disclaimer": "The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g. the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remain with you.",
-				"rank_intro1_id": "Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first:",
-				"rank_intro2_id": "Improved logistics is also an option for you. It is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms."
-	
+		"Result1_Models_Considered":"The following business models and sales channels were considered in your analysis:",
+		"Result_Farms_more_than_2_suitable":"Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first:",
+		"Results1_farms_no_suitable_channels":"Based on the characteristics of your farm non of the sales channels are considered to be an option for you. Please check the information you entered.",
+		"Results1_only_one_channel":"Based on the characteristics of your farm only one of the sales channels is considered to be an option for you and no ranking is possible. This sales channel is:",
 	*/
+	
 	renderRecommendationsText() {
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
 		
-		const ll_intro = LM['translation'][sel]['Result1_Models_Considered'];
-		const ll_r1_no_suitable = LM['translation'][sel]['Results1_farms_no_suitable_channels'];
-		const ll_r1_only_1_suitable = LM['translation'][sel]['Results1_only_one_channel'];
-		const ll_r1_more_than_2_suitable = LM['translation'][sel]['Result_Farms_more_than_2_suitable'];
-		
-		const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
-		
-		let html;
-		
-		if (numberOfResults === 0) {
-			html = '<p>'+ll_intro+' '+ll_r1_no_suitable+'</p>';
+		if (this.USER_MODEL.analysisResult.result_text) {
+			const ll_intro = this.USER_MODEL.analysisResult.result_text.Result1_Models_Considered;
+			const ll_r1_no_suitable = this.USER_MODEL.analysisResult.result_text.Results1_farms_no_suitable_channels;
+			const ll_r1_only_1_suitable = this.USER_MODEL.analysisResult.result_text.Results1_only_one_channel;
+			const ll_r1_more_than_2_suitable = this.USER_MODEL.analysisResult.result_text.Result_Farms_more_than_2_suitable;
 			
-		} else if(numberOfResults === 1) {
-			html = '<p>'+ll_intro+' '+ll_r1_only_1_suitable+'</p>';
+			const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
 			
-		} else { // Two or more...
-			html = '<p>'+ll_intro+' '+ll_r1_more_than_2_suitable+'</p>';
+			let html;
+			
+			if (numberOfResults === 0) {
+				html = '<p>'+ll_intro+' '+ll_r1_no_suitable+'</p>';
+				
+			} else if(numberOfResults === 1) {
+				html = '<p>'+ll_intro+' '+ll_r1_only_1_suitable+'</p>';
+				
+			} else { // Two or more...
+				html = '<p>'+ll_intro+' '+ll_r1_more_than_2_suitable+'</p>';
+			}
+			$("#recommendations-text-wrapper").empty().append(html);
 		}
-		$("#recommendations-text-wrapper").empty().append(html);
 	}
 	
 	renderRecommendationsList() {
@@ -516,21 +515,41 @@ export default class AnalysisView extends View {
 	}
 	
 	// CHAPTER 3: Improved logistics is also an option for all farmers
+	
+	/*
+		"Results2_Farm_more_2_suitable":"Improved logistics' is also an option for you. It is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g., the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms.",
+		"Results2_farm_no_suitable_Channels":"If the information was correct: 'Improved Logistics' is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by larger farms. 'Improved logistics' is assumed to be suitable for all farmers regardless of their location and their production characteristics.",
+		"Results2_only_one_channel":"However, 'Improved logistics' is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g., sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms and could be interesting for you.",
+	*/
+	
+	
 	renderImprovedLogistics() {
+		
 		if (this.USER_MODEL.analysisResult.result_text) {
-			//this.USER_MODEL.analysisResult.result_text.rank_intro1_id // "Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first:",
-			const ll_txt = this.USER_MODEL.analysisResult.result_text.rank_intro2_id; // "Improved logistics is also an option for you. It is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms."
-			const html = '<p>'+ll_txt+'</p>';
+			
+			const ll_r2_no_suitable = this.USER_MODEL.analysisResult.result_text.Results2_farm_no_suitable_Channels;
+			const ll_r2_only_1_suitable = this.USER_MODEL.analysisResult.result_text.Results2_only_one_channel;
+			const ll_r2_more_than_2_suitable = this.USER_MODEL.analysisResult.result_text.Results2_Farm_more_2_suitable;
+			
+			const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
+			
+			let html;
+			
+			if (numberOfResults === 0) {
+				html = '<p>'+ll_r2_no_suitable+'</p>';
+				
+			} else if(numberOfResults === 1) {
+				html = '<p>'+ll_r2_only_1_suitable+'</p>';
+				
+			} else { // Two or more...
+				html = '<p>'+ll_r2_more_than_2_suitable+'</p>';
+			}
 			$("#improved-logistics-wrapper").empty().append(html);
 		}
 	}
 	
 	renderWholesaleDescription() {
-		/*
-			"Description_Spiderweb_example":"You can see in example that SFSC enable you to reach higher prices (price premium), 
-			but they are labor-intensive (lower labor to produce ratio), which reduces profit and usually only enable you to 
-			sell smaller quantities (volume) in comparison to wholesale.",
-		*/
+		
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_dse = this.USER_MODEL.analysisResult.result_text.Describtion_Spiderweb;
 			const html = '<p>'+ll_dse+'</p>';
@@ -611,13 +630,7 @@ export default class AnalysisView extends View {
 			$("#how-calculated-wrapper").empty().append(html);
 		}
 	}
-	/*
-		if (this.USER_MODEL.analysisResult.result_text) {
-			const ll_dh = this.USER_MODEL.analysisResult.result_text.Disclaimer_Header
-			const ll_d = this.USER_MODEL.analysisResult.result_text.Disclaimer
-				"Disclaimer_Header": "Disclaimer",
-				"Disclaimer": "The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g. the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remain with you.",
-	*/
+	
 	renderDisclaimer() {
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_d_title = this.USER_MODEL.analysisResult.result_text.Disclaimer_Header;

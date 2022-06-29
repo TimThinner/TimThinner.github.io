@@ -322,69 +322,6 @@ export default class AnalysisView extends View {
 		}
 	}
 	
-	renderWholesaleSpider() {
-		$('#wholesale-spider-wrapper').empty();
-		
-		let w = this.REO.width;
-		if (w > 1600) { w = 1600; }
-		
-		let width = w*0.5;					// 50% of width
-		let height = this.REO.height*0.5;	// 50% of height
-		
-		if (w < 576) { // s12 => takes "whole width"  should be 601, but because we are "cropping" a little bit...
-			width = w*0.9;					// 90% of width
-			height = this.REO.height*0.5;	// 50% of height
-		}
-		
-		const html = '<svg id="spider" width="'+width+'" height="'+height+'"></svg>';
-		$(html).appendTo('#wholesale-spider-wrapper');
-		this.drawSpider('wholesale','spider', width, height);
-	}
-	
-	notify(options) {
-		if (this.controller.visible) {
-			if (options.model==='ResizeEventObserver' && options.method==='resize') {
-				//console.log('ResizeEventObserver resize => SHOW()!');
-				this.show();
-				
-			} else if (options.model==='UserModel' && options.method==='runAnalysis') {
-				if (options.status === 200) {
-					
-					$('#'+this.FELID).empty();
-					
-					this.renderBusinessModels();
-					
-					this.setLabels();
-					this.setComparison();
-					this.setRecommendations();
-					
-					this.renderRecommendationsPart1Text();
-					this.renderRecommendationsList();
-					this.renderRecommendationsSpider();
-					
-					this.renderAdditionalDescriptionPart1();
-					this.renderAdditionalDescriptionPart2();
-					this.renderWholesaleSpider();
-					this.appendAttractiveness();
-					
-					this.renderDimensionsCollapsible();
-					this.renderDisclaimer();
-					
-					$('.collapsible').collapsible({
-						accordion: true,
-						onOpenEnd: function(el) { console.log(['open el=',el]); /*self.previewOpen=true;*/ },
-						onCloseEnd: function(el) { console.log(['close el=',el]); /*self.previewOpen=false;*/ }
-					});
-					
-					
-				} else {
-					// Report error.
-					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
-					$('#'+this.FELID).empty().append(html);
-				}
-			}
-		}
-	}
 	/*
 			"result_text": {
 				"Intro_Definition_Business_Models": "Five business models can be differentiated for the Short Food Supply Chain. These are Consumer Supported Agriculture (CSA), Face-to-Face Sales, Retail Trade, Online Trade, and Improved Logistics. They can be defined as follows:",
@@ -479,7 +416,7 @@ export default class AnalysisView extends View {
 				"rank_intro2_id": "Improved logistics is also an option for you. It is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms."
 	
 	*/
-	renderRecommendationsPart1Text() {
+	renderRecommendationsText() {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		
@@ -501,29 +438,7 @@ export default class AnalysisView extends View {
 		} else { // Two or more...
 			html = '<p>'+ll_intro+' '+ll_r1_more_than_2_suitable+'</p>';
 		}
-		
-		
-		$("#recommendations-text-part-1-wrapper").empty().append(html);
-	}
-	
-	renderRecommendationsSpider() {
-		$('#recommendations-spider-wrapper').empty();
-		
-		let w = this.REO.width;
-		if (w > 1600) { w = 1600; }
-		
-		let width = w*0.5;					// 50% of width
-		let height = this.REO.height*0.5;	// 50% of height
-		
-		if (w < 576) { // s12 => takes "whole width"  should be 601, but because we are "cropping" a little bit...
-			width = w*0.9;					// 90% of width
-			height = this.REO.height*0.5;	// 50% of height
-		}
-		
-		const html = '<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>';
-		$(html).appendTo('#recommendations-spider-wrapper');
-		
-		this.drawSpider('peterparker', 'spider-r', width, height);
+		$("#recommendations-text-wrapper").empty().append(html);
 	}
 	
 	renderRecommendationsList() {
@@ -580,32 +495,37 @@ export default class AnalysisView extends View {
 		});
 	}
 	
-	
-	renderAdditionalDescriptionPart1() {
+	renderRecommendationsSpider() {
+		$('#recommendations-spider-wrapper').empty();
 		
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
+		let w = this.REO.width;
+		if (w > 1600) { w = 1600; }
 		
-		const ll_no_suitable = LM['translation'][sel]['Results2_farm_no_suitable_Channels'];
-		const ll_only_one_suitable = LM['translation'][sel]['Results2_only_one_channel'];
-		const ll_more_than_2_suitable = LM['translation'][sel]['Results2_Farm_more_2_suitable'];
+		let width = w*0.5;					// 50% of width
+		let height = this.REO.height*0.5;	// 50% of height
 		
-		const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
-		
-		let html;
-		if (numberOfResults === 0) {
-			html = '<p>'+ll_no_suitable+'</p>';
-			
-		} else if(numberOfResults === 1) {
-			html = '<p>'+ll_only_one_suitable+'</p>';
-			
-		} else { // Two or more...
-			html = '<p>'+ll_more_than_2_suitable+'</p>';
+		if (w < 576) { // s12 => takes "whole width"  should be 601, but because we are "cropping" a little bit...
+			width = w*0.9;					// 90% of width
+			height = this.REO.height*0.5;	// 50% of height
 		}
-		$("#additional-description-text-part-1-wrapper").empty().append(html);
+		
+		const html = '<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>';
+		$(html).appendTo('#recommendations-spider-wrapper');
+		
+		this.drawSpider('peterparker', 'spider-r', width, height);
 	}
 	
-	renderAdditionalDescriptionPart2() {
+	// CHAPTER 3: Improved logistics is also an option for all farmers
+	renderImprovedLogistics() {
+		if (this.USER_MODEL.analysisResult.result_text) {
+			//this.USER_MODEL.analysisResult.result_text.rank_intro1_id // "Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first:",
+			const ll_txt = this.USER_MODEL.analysisResult.result_text.rank_intro2_id; // "Improved logistics is also an option for you. It is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms."
+			const html = '<p>'+ll_txt+'</p>';
+			$("#improved-logistics-wrapper").empty().append(html);
+		}
+	}
+	
+	renderWholesaleDescription() {
 		/*
 			"Description_Spiderweb_example":"You can see in example that SFSC enable you to reach higher prices (price premium), 
 			but they are labor-intensive (lower labor to produce ratio), which reduces profit and usually only enable you to 
@@ -618,13 +538,23 @@ export default class AnalysisView extends View {
 		}
 	}
 	
-	appendAttractiveness() {
-		// To do: take result from recommendation response.
-		//const result = this.USER_MODEL.analysisResult.attractiveness;
-		const relative_attractiveness_text = this.USER_MODEL.analysisResult.Region_Attractiveness.Relative_Attractiveness; // "The relative attractiveness of your region was considered to be:"
-		const value = this.USER_MODEL.analysisResult.Region_Attractiveness.value; // "medium"
-		const html = relative_attractiveness_text+' <span style="color:'+this.colors.DARK_ORANGE+'">'+value+'</span>';
-		$("#attractiveness-wrapper").empty().append(html);
+	renderWholesaleSpider() {
+		$('#wholesale-spider-wrapper').empty();
+		
+		let w = this.REO.width;
+		if (w > 1600) { w = 1600; }
+		
+		let width = w*0.5;					// 50% of width
+		let height = this.REO.height*0.5;	// 50% of height
+		
+		if (w < 576) { // s12 => takes "whole width"  should be 601, but because we are "cropping" a little bit...
+			width = w*0.9;					// 90% of width
+			height = this.REO.height*0.5;	// 50% of height
+		}
+		
+		const html = '<svg id="spider" width="'+width+'" height="'+height+'"></svg>';
+		$(html).appendTo('#wholesale-spider-wrapper');
+		this.drawSpider('wholesale','spider', width, height);
 	}
 	
 	renderDimensionsCollapsible() {
@@ -654,6 +584,33 @@ export default class AnalysisView extends View {
 		}
 	}
 	
+	
+	renderFarmCharacteristics() {
+		if (this.USER_MODEL.analysisResult.result_text) {
+			
+			const title = this.USER_MODEL.analysisResult.result_text.Farm_and_regional_characteristics_title;
+			const intro = this.USER_MODEL.analysisResult.result_text.Intro_not_all_sales_channels_con;
+			const relative_attractiveness_text = this.USER_MODEL.analysisResult.Region_Attractiveness.Relative_Attractiveness; // "The relative attractiveness of your region was considered to be:"
+			const value = this.USER_MODEL.analysisResult.Region_Attractiveness.value; // "medium"
+			const descr = this.USER_MODEL.analysisResult.result_text.Suitability_farm_Characterstics;
+			
+			const html = '<h5 style="text-align:center">'+title+'</h5>'+
+			'<p>'+intro+'</p>'+
+			'<p style="color:'+this.colors.DARK_GREEN+'; font-weight:bold;">'+relative_attractiveness_text+' <span style="color:'+this.colors.DARK_ORANGE+'">'+value+'</span></p>'+
+			'<p>'+descr+'</p>';
+			
+			$("#farm-characteristics-wrapper").empty().append(html);
+		}
+	}
+	
+	renderHowCalculated() {
+		if (this.USER_MODEL.analysisResult.result_text) {
+			const ll_how_calculated_title = this.USER_MODEL.analysisResult.result_text.How_calculated_title;
+			const ll_how_calculated_text = this.USER_MODEL.analysisResult.result_text.How_calculated;
+			const html = '<h5 style="text-align:center">'+ll_how_calculated_title+'</h5><p>'+ll_how_calculated_text+'</p>';
+			$("#how-calculated-wrapper").empty().append(html);
+		}
+	}
 	/*
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_dh = this.USER_MODEL.analysisResult.result_text.Disclaimer_Header
@@ -662,15 +619,72 @@ export default class AnalysisView extends View {
 				"Disclaimer": "The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g. the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remain with you.",
 	*/
 	renderDisclaimer() {
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		//const ll_d_title = LM['translation'][sel]['Disclaimer_Header'];
-		//const ll_d_text = LM['translation'][sel]['Disclaimer'];
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_d_title = this.USER_MODEL.analysisResult.result_text.Disclaimer_Header;
 			const ll_d_text = this.USER_MODEL.analysisResult.result_text.Disclaimer;
 			const html = '<h6>'+ll_d_title+'</h6><p>'+ll_d_text+'</p>';
 			$("#disclaimer-text-wrapper").empty().append(html);
+		}
+	}
+	
+	renderAll() {
+		// CHAPTER 1: Business models explained
+		this.renderBusinessModels();
+		
+		this.setLabels();
+		this.setComparison();
+		this.setRecommendations();
+		
+		// CHAPTER 2: Recommendations
+		this.renderRecommendationsText();
+		this.renderRecommendationsList();
+		this.renderRecommendationsSpider();
+		
+		// CHAPTER 3: Improved logistics is also an option for all farmers
+		this.renderImprovedLogistics();
+		
+		// CHAPTER 4: Comparison to Wholesale
+		this.renderWholesaleDescription();
+		this.renderWholesaleSpider();
+		
+		// CHAPTER 5: How to read the diagrams
+		this.renderDimensionsCollapsible();
+		
+		// CHAPTER 6: Farm and regional characteristics
+		this.renderFarmCharacteristics();
+		
+		// CHAPTER 7: How the results were calculated?
+		this.renderHowCalculated();
+		
+		// CHAPTER 8: Disclaimer
+		this.renderDisclaimer();
+		
+		$('.collapsible').collapsible({
+			accordion: true,
+			onOpenEnd: function(el) { console.log(['open el=',el]); /*self.previewOpen=true;*/ },
+			onCloseEnd: function(el) { console.log(['close el=',el]); /*self.previewOpen=false;*/ }
+		});
+	}
+	
+	notify(options) {
+		if (this.controller.visible) {
+			if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				
+				this.show();
+				
+			} else if (options.model==='UserModel' && options.method==='runAnalysis') {
+				if (options.status === 200) {
+					
+					$('#'+this.FELID).empty();
+					
+					this.renderAll();
+					
+				} else {
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
+				}
+			}
 		}
 	}
 	
@@ -681,23 +695,10 @@ export default class AnalysisView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const ll_intro_business_models_title = LM['translation'][sel]['Intro_Definition_Business_Models_title'];
-		const ll_intro_business_models = LM['translation'][sel]['Intro_Definition_Business_Models'];
-		
 		const ll_recommendations_title = 'Recommendations for Short Food Supply Chain';
 		const ll_improved_logistics_title = 'Improved logistics as an option for all farmers';
 		const ll_comparison_to_wholesale_title = "Comparison to Wholesale";
-		
 		const ll_how_to_read_spiders_title = LM['translation'][sel]['Description_Spiderweb_title'];
-		const ll_how_to_read_spiders_text = LM['translation'][sel]['Describtion_Spiderweb'];
-		const ll_definition_criteria = LM['translation'][sel]['Definition_Criteria'];
-		
-		const ll_farm_and_regional_chars_title = LM['translation'][sel]['Suitability_farm_Characteristics_title'];
-		const ll_farm_and_regional_chars_intro = LM['translation'][sel]['Intro_not_all_sales_channels_con'];
-		const ll_farm_and_regional_chars_text = LM['translation'][sel]['Suitability_farm_Characterstics'];
-		const ll_farm_and_regional_chars_more = LM['translation'][sel]['Suitability_farm_Characteristics_info'];
-		
-		const ll_how_calculated_title = LM['translation'][sel]['How_calculated_title'];
-		const ll_how_calculated_text = LM['translation'][sel]['How_calculated'];
 		
 		const html = 
 			'<div class="row">'+
@@ -707,7 +708,7 @@ export default class AnalysisView extends View {
 					'</div>'+
 				'</div>'+
 				
-				// FIRST "CHAPTER"
+				// CHAPTER 1: Business models explained
 				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_intro_business_models_title+'</h5>'+
@@ -722,13 +723,13 @@ export default class AnalysisView extends View {
 					'</div>'+
 				'</div>'+
 				
-				// SECOND "CHAPTER"
+				// CHAPTER 2: Recommendations 
 				'<div class="col s12" style="border-top: 1px solid #888; border-bottom: 1px solid #ccc; margin-top:16px; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_recommendations_title+'</h5>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<div id="recommendations-text-part-1-wrapper"></div>'+
+						'<div id="recommendations-text-wrapper"></div>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div class="row">'+
@@ -738,18 +739,19 @@ export default class AnalysisView extends View {
 							'</div>'+
 						'</div>'+
 					'</div>'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<div id="recommendations-text-part-2-wrapper"></div>'+
-					'</div>'+
 				'</div>'+
+				
+				// CHAPTER 3: Improved logistics is also an option for all farmers
 				'<div class="col s12" style="border-bottom: 1px solid #ccc; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_improved_logistics_title+'</h5>'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1" >'+
-						'<div id="additional-description-text-part-1-wrapper"></div>'+
+						'<div id="improved-logistics-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
+				
+				// CHAPTER 4: Comparison to Wholesale
 				'<div class="col s12" style="border-bottom: 1px solid #888; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_comparison_to_wholesale_title+'</h5>'+
@@ -762,42 +764,37 @@ export default class AnalysisView extends View {
 					'</div>'+
 				'</div>'+
 				
-				// THIRD "CHAPTER"
-				
+				// CHAPTER 5: How to read the diagrams
 				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<h5 style="text-align:center">'+ll_how_to_read_spiders_title+'</h5>'+
-						'<p>'+ll_how_to_read_spiders_text+'</p>'+
-						'<p>'+ll_definition_criteria+'</p>'+
+						//'<p>'+ll_how_to_read_spiders_text+'</p>'+
+						//'<p>'+ll_definition_criteria+'</p>'+
 					'</div>'+
-					'<div id="dimension-collapsible-wrapper" class="col s12 m10 offset-m1">'+ // filled in this.renderDimensionsCollapsible();
+					'<div id="dimension-collapsible-wrapper" class="col s12 m10 offset-m1">'+
 					'</div>'+
 				'</div>'+
 				
+				// CHAPTER 6: Farm and regional characteristics
 				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<h5 style="text-align:center">'+ll_farm_and_regional_chars_title+'</h5>'+
-						'<p>'+ll_farm_and_regional_chars_intro+'</p>'+
-						'<p id="attractiveness-wrapper" style="color:'+this.colors.DARK_GREEN+'; font-weight:bold;"></p>'+
-						'<p>'+ll_farm_and_regional_chars_text+'</p>'+
-						'<p>'+ll_farm_and_regional_chars_more+'</p>'+
+						'<div id="farm-characteristics-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
 				
+				// CHAPTER 7: How the results were calculated?
 				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<h5 style="text-align:center">'+ll_how_calculated_title+'</h5>'+
-						'<p>'+ll_how_calculated_text+'</p>'+
+						'<div id="how-calculated-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
-				
+				// CHAPTER 8: Disclaimer
 				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="disclaimer-text-wrapper" style="font-size:75%; color:#888; border:1px solid #888; margin-top:16px; padding:16px;"></div>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
-			
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 m10 offset-m1" id="'+this.FELID+'">'+
@@ -820,33 +817,10 @@ export default class AnalysisView extends View {
 		
 		if (this.USER_MODEL.analysisReady) {
 			
-			this.renderBusinessModels();
-			
-			this.setLabels();
-			this.setComparison();
-			this.setRecommendations();
-			
-			this.renderRecommendationsPart1Text();
-			this.renderRecommendationsList();
-			this.renderRecommendationsSpider();
-			
-			this.renderAdditionalDescriptionPart1();
-			this.renderAdditionalDescriptionPart2();
-			this.renderWholesaleSpider();
-			this.appendAttractiveness();
-			
-			this.renderDimensionsCollapsible();
-			this.renderDisclaimer();
-			
-			$('.collapsible').collapsible({
-				accordion: true,
-				onOpenEnd: function(el) { console.log(['open el=',el]); /*self.previewOpen=true;*/ },
-				onCloseEnd: function(el) { console.log(['close el=',el]); /*self.previewOpen=false;*/ }
-			});
-			
+			this.renderAll();
 			
 		} else {
-			this.showSpinner('#recommendations-text-part-1-wrapper');
+			this.showSpinner('#recommendations-text-wrapper');
 		}
 		
 		this.rendered = true;

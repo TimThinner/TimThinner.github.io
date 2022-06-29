@@ -180,6 +180,6 @@ export default class LanguageModel extends Model {
 				'no_database_message':'<b>WAIT for few seconds...</b> if the backend is not running in your machine, we continue after timeout error.',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!'
 			}
-		}
+		};
 	}
 }

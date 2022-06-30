@@ -66,11 +66,18 @@ export default class LanguageModel extends Model {
 				'Cert_uncertified':'I am uncertified',
 				'Harv_farmers_org':'I harvest only, all post-harvest handling steps (e.g. sorting, cleaning and storing) are performed by a farmers organisation or other parties',
 				'Harv_Clean_Sort_Ref':'I harvest the products and do the necessary post-harvest handling at farm (e.g. cleaning, sorting, refrigerating)',
-				'Self_desc_likert_value_1':'I fully agree',
-				'Self_desc_likert_value_2':'I agree',
-				'Self_desc_likert_value_3':'I do not know',
-				'Self_desc_likert_value_4':'I slightly disagree',
-				'Self_desc_likert_value_5':'I fully disagree',
+				
+				"fully_agree": "I fully agree",
+				"agree": "I agree",
+				"do_not_know": "I do not know ",
+				"slightly_disagree": "I slightly disagree",
+				"fully_disagree": "I fully disagree",
+				
+				//'Self_desc_likert_value_1':'I fully agree',
+				//'Self_desc_likert_value_2':'I agree',
+				//'Self_desc_likert_value_3':'I do not know',
+				//'Self_desc_likert_value_4':'I slightly disagree',
+				//'Self_desc_likert_value_5':'I fully disagree',
 				'Dummy_wholesale':'the wholesale market (or distributors or producers organisations)',
 				'Dummy_supermarket_regional':'to supermarkets (the regional origin is highlighted)',
 				'Dummy_supermarket_noregio':'to supermarkets (the regional origin is not highlighted)',
@@ -308,7 +315,7 @@ export default class LanguageModel extends Model {
 			
 			setTimeout(() => {
 				// After 1 second of delay (to simulate delay) fill in the results data.
-				this.translation = this.translation_backup;
+				this.translation = this.translation_simulated;
 				this.translationReady = true;
 				this.fetching = false;
 				this.notifyAll({model:self.name, method:'loadTranslation', status:200, message:'OK'});

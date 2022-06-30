@@ -43,6 +43,38 @@ import View from '../common/View.js';
 			"Describtion_Spiderweb":"How to read the diagrams? In a spider chart, each criterion gets its spoke, and the spokes are evenly distributed around the wheel. The farther toward the outside of the chart, the better a business model fulfills the criteria. A spoke close to the center means that the sales channel can only fulfill the criteria to a limited extents. You can see in example that SFSC enable you to reach higher prices (Price Premium), but they are labour-intensive (labour to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale."
 	
 	
+    "bm_definition_texts": [
+        {
+            "definition": "Producers and consumers have a pre-existing agreement were consumers pay an agreed membership fee or offer labour services (or both), in exchange for produce. Two sales channels of the business model are considered in the analysis: A) CSA - 'Trading working hours for a share of the harvest', B) CSA - 'Subscription - payment of an annual fee for a share of the harvest'. The products are delivered by the farmer.",
+            "title": "Community Supported Agriculture",
+            "var_name": "CSA"
+        },
+        {
+            "definition": "Consumer purchases a product directly from the producer/processor on a Face-to-Face basis. Three sales channels of the business model are considered in the analysis: A) Farm shops, B) Farmers markets, C) Pick-Your-Own",
+            "title": "Face-to-Face",
+            "var_name": "Face-to-Face"
+        },
+        {
+            "definition": "Products are traded online using the farmer’s websites or shared marketing websites. Two different sales channels are considered: A) Online Food Trade - 'Post box delivery', B) Online Food Trade - 'Box scheme subscription & Direct Delivery’",
+            "title": "Online Trade",
+            "var_name": "Online_Trade"
+        },
+        {
+            "definition": "Products are produced and sold in the specific region of production, and consumers are made aware of the ‘local’ nature of the product at the point of sale. The sales channel considered in the analysis is: Retail Store - ‘The origin is highlighted’",
+            "title": "Retail Trade",
+            "var_name": "Retail_Trade"
+        },
+        {
+            "definition": "Selling products to producer organisations, food hubs or other distributors enables farmers to benefit from improved logistics by sharing costs and pooling resources for distribution. In this way, larger quantities can be sold to channels such as supermarket chains. This business model is always considered to be an option and not part of the ranking procedure.",
+            "title": "Improved Logistics",
+            "var_name": "Improved_Logistics"
+        }
+    ],
+	
+	
+	Volume .....
+	
+	"Definition_Criteria": "Would you like to know how the criteria are defined? Please follow this",
 */
 
 export default class AnalysisView extends View {
@@ -79,6 +111,7 @@ export default class AnalysisView extends View {
 			"Chain_Added_Value",
 			"Price_Premium"
 		];
+		this.bm_titlez = {};
 		this.labelz = {}; // var_name => localized name pairs
 		this.recommendationz = [];
 		this.comparisonz = {};
@@ -104,6 +137,22 @@ export default class AnalysisView extends View {
 		this.USER_MODEL.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
+	}
+	
+	setBMTitles() {
+		this.bm_titlez = {};
+		if (this.USER_MODEL.analysisResult.bm_definition_texts) {
+			this.USER_MODEL.analysisResult.bm_definition_texts.forEach(e=>{
+				/* Each e has:
+					{
+            "definition": "Products are pr.... s highlighted’",
+            "title": "Retail Trade",
+            "var_name": "Retail_Trade"
+					}
+				*/
+				this.bm_titlez[e.var_name] = {title:e.title, definition:e.definition};
+			});
+		}
 	}
 	
 	setLabels() {
@@ -362,45 +411,70 @@ export default class AnalysisView extends View {
 			"More_Info_Business_Models":"More information on the five business models can be found here: Link (to the business model canvas)",
 	*/
 	renderBusinessModels() {
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		const ll_title_a = LM['translation'][sel]['CSA'];
-		const ll_title_b = LM['translation'][sel]['Face-to-Face'];
-		const ll_title_c = LM['translation'][sel]['Online_Trade'];
-		const ll_title_d = LM['translation'][sel]['Retail_Trade'];
-		const ll_title_e = LM['translation'][sel]['Improved_Logistics'];
+		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		//const sel = LM.selected;
+		/*
+            "var_name": "CSA"
+            "var_name": "Face-to-Face"
+            "var_name": "Online_Trade"
+            "var_name": "Retail_Trade"
+            "var_name": "Improved_Logistics"
+			this.bm_titlez[e.var_name] = {title:e.title, definition:e.definition};
+		*/
+		//const ll_title_a = LM['translation'][sel]['CSA'];
+		//const ll_title_b = LM['translation'][sel]['Face-to-Face'];
+		//const ll_title_c = LM['translation'][sel]['Online_Trade'];
+		//const ll_title_d = LM['translation'][sel]['Retail_Trade'];
+		//const ll_title_e = LM['translation'][sel]['Improved_Logistics'];
+		
+		
+		const ll_title_a = this.bm_titlez['CSA']['title'];
+		const ll_title_b = this.bm_titlez['Face-to-Face']['title'];
+		const ll_title_c = this.bm_titlez['Online_Trade']['title'];
+		const ll_title_d = this.bm_titlez['Retail_Trade']['title'];
+		const ll_title_e = this.bm_titlez['Improved_Logistics']['title'];
+		
+		const ll_def_a = this.bm_titlez['CSA']['definition'];
+		const ll_def_b = this.bm_titlez['Face-to-Face']['definition'];
+		const ll_def_c = this.bm_titlez['Online_Trade']['definition'];
+		const ll_def_d = this.bm_titlez['Retail_Trade']['definition'];
+		const ll_def_e = this.bm_titlez['Improved_Logistics']['definition'];
 		
 		if (this.USER_MODEL.analysisResult.result_text) {
+			
 			const ll_intro = this.USER_MODEL.analysisResult.result_text.Intro_Definition_Business_Models;
-			const ll_def_csa = this.USER_MODEL.analysisResult.result_text.Definition_CSA;
-			const ll_def_f2f = this.USER_MODEL.analysisResult.result_text.Definition_Face_2_Face;
-			const ll_def_online_trade = this.USER_MODEL.analysisResult.result_text.Definition_Online_Trade;
-			const ll_def_retail_trade = this.USER_MODEL.analysisResult.result_text.Definition_Retail_Trade;
-			const ll_def_improved_logistics = this.USER_MODEL.analysisResult.result_text.Definition_Improved_Logistics;
+			//const ll_def_csa = this.USER_MODEL.analysisResult.result_text.Definition_CSA;
+			//const ll_def_f2f = this.USER_MODEL.analysisResult.result_text.Definition_Face_2_Face;
+			//const ll_def_online_trade = this.USER_MODEL.analysisResult.result_text.Definition_Online_Trade;
+			//const ll_def_retail_trade = this.USER_MODEL.analysisResult.result_text.Definition_Retail_Trade;
+			//const ll_def_improved_logistics = this.USER_MODEL.analysisResult.result_text.Definition_Improved_Logistics;
 			const ll_def_more_info = this.USER_MODEL.analysisResult.result_text.More_Info_Business_Models;
+			
+			const ll_title = this.USER_MODEL.analysisResult.result_text.Intro_Definition_Business_Models_title;
+			
 			const html = '<ul class="collapsible">'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_a+'</div>'+
-					'<div class="collapsible-body">'+ll_def_csa+'</div>'+
+					'<div class="collapsible-body">'+ll_def_a+'</div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_b+'</div>'+
-					'<div class="collapsible-body">'+ll_def_f2f+'</div>'+
+					'<div class="collapsible-body">'+ll_def_b+'</div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_c+'</div>'+
-					'<div class="collapsible-body">'+ll_def_online_trade+'</div>'+
+					'<div class="collapsible-body">'+ll_def_c+'</div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_d+'</div>'+
-					'<div class="collapsible-body">'+ll_def_retail_trade+'</span></div>'+
+					'<div class="collapsible-body">'+ll_def_d+'</span></div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_e+'</div>'+
-					'<div class="collapsible-body">'+ll_def_improved_logistics+'</span></div>'+
+					'<div class="collapsible-body">'+ll_def_e+'</span></div>'+
 				'</li>'+
 			'</ul>';
-			
+			$('#business-models-intro-title').empty().append('<h5 style="text-align:center">'+ll_title+'</h5>');
 			$('#business-models-intro-wrapper').empty().append(ll_intro);
 			$('#business-models-collapsible-wrapper').empty().append(html);
 			$("#business-models-more-info-wrapper").empty().append(ll_def_more_info);
@@ -419,13 +493,16 @@ export default class AnalysisView extends View {
 		
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_intro = this.USER_MODEL.analysisResult.result_text.Result1_Models_Considered;
-			const ll_r1_no_suitable = this.USER_MODEL.analysisResult.result_text.Results1_farms_no_suitable_channels;
-			const ll_r1_only_1_suitable = this.USER_MODEL.analysisResult.result_text.Results1_only_one_channel;
-			const ll_r1_more_than_2_suitable = this.USER_MODEL.analysisResult.result_text.Result_Farms_more_than_2_suitable;
 			
-			const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
+			//const ll_r1_no_suitable = this.USER_MODEL.analysisResult.result_text.Results1_farms_no_suitable_channels;
+			//const ll_r1_only_1_suitable = this.USER_MODEL.analysisResult.result_text.Results1_only_one_channel;
+			//const ll_r1_more_than_2_suitable = this.USER_MODEL.analysisResult.result_text.Result_Farms_more_than_2_suitable;
 			
-			let html;
+			//const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
+			
+			const ll_resu = this.USER_MODEL.analysisResult.result_text.rank_intro1_id;
+			const html = '<p>'+ll_intro+' '+ll_resu+'</p>';
+			/*let html;
 			
 			if (numberOfResults === 0) {
 				html = '<p>'+ll_intro+' '+ll_r1_no_suitable+'</p>';
@@ -436,6 +513,7 @@ export default class AnalysisView extends View {
 			} else { // Two or more...
 				html = '<p>'+ll_intro+' '+ll_r1_more_than_2_suitable+'</p>';
 			}
+			*/
 			$("#recommendations-text-wrapper").empty().append(html);
 		}
 	}
@@ -527,12 +605,15 @@ export default class AnalysisView extends View {
 		
 		if (this.USER_MODEL.analysisResult.result_text) {
 			
-			const ll_r2_no_suitable = this.USER_MODEL.analysisResult.result_text.Results2_farm_no_suitable_Channels;
-			const ll_r2_only_1_suitable = this.USER_MODEL.analysisResult.result_text.Results2_only_one_channel;
-			const ll_r2_more_than_2_suitable = this.USER_MODEL.analysisResult.result_text.Results2_Farm_more_2_suitable;
+			//const ll_r2_no_suitable = this.USER_MODEL.analysisResult.result_text.Results2_farm_no_suitable_Channels;
+			//const ll_r2_only_1_suitable = this.USER_MODEL.analysisResult.result_text.Results2_only_one_channel;
+			//const ll_r2_more_than_2_suitable = this.USER_MODEL.analysisResult.result_text.Results2_Farm_more_2_suitable;
 			
-			const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
+			const title = this.USER_MODEL.analysisResult.result_text.Improved_Logistics_title;
+			const resu = this.USER_MODEL.analysisResult.result_text.rank_intro2_id;
 			
+			//const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
+			/*
 			let html;
 			
 			if (numberOfResults === 0) {
@@ -543,7 +624,8 @@ export default class AnalysisView extends View {
 				
 			} else { // Two or more...
 				html = '<p>'+ll_r2_more_than_2_suitable+'</p>';
-			}
+			}*/
+			const html = '<h5 style="text-align:center">'+title+'</h5><p>'+resu+'</p>';
 			$("#improved-logistics-wrapper").empty().append(html);
 		}
 	}
@@ -552,8 +634,10 @@ export default class AnalysisView extends View {
 		
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_dse = this.USER_MODEL.analysisResult.result_text.Describtion_Spiderweb;
-			const html = '<p>'+ll_dse+'</p>';
-			$("#wholesale-description-wrapper").empty().append(html);
+			const ll_title = this.USER_MODEL.analysisResult.result_text.Wholesale_Comparison_title;
+			
+			$("#comparison-to-wholesale-title").empty().append(ll_title);
+			$("#wholesale-description-wrapper").empty().append('<p>'+ll_dse+'</p>');
 		}
 	}
 	
@@ -574,6 +658,21 @@ export default class AnalysisView extends View {
 		const html = '<svg id="spider" width="'+width+'" height="'+height+'"></svg>';
 		$(html).appendTo('#wholesale-spider-wrapper');
 		this.drawSpider('wholesale','spider', width, height);
+	}
+	
+	renderHowToSpiders() {
+		if (this.USER_MODEL.analysisResult.result_text) {
+			const ll_title = this.USER_MODEL.analysisResult.result_text.Description_Spiderweb_title;
+			const ll_how_to_read = this.USER_MODEL.analysisResult.result_text.Describtion_Spiderweb;
+			const ll_def_crite = this.USER_MODEL.analysisResult.result_text.Definition_Criteria;
+			const ll_def_crite_link = this.USER_MODEL.analysisResult.result_text.Definition_Criteria_link;
+		
+			const html = '<h5 style="text-align:center">'+ll_title+'</h5>'+
+				'<p>'+ll_how_to_read+'</p>'+
+				'<p>'+ll_def_crite+' '+ll_def_crite_link+'</p>';
+				
+			$("#how-to-read-spiders").empty().append(html);
+		}
 	}
 	
 	renderDimensionsCollapsible() {
@@ -603,18 +702,17 @@ export default class AnalysisView extends View {
 		}
 	}
 	
-	
 	renderFarmCharacteristics() {
 		if (this.USER_MODEL.analysisResult.result_text) {
 			
-			//const title = this.USER_MODEL.analysisResult.result_text.Farm_and_regional_characteristics_title;
+			const title = this.USER_MODEL.analysisResult.result_text.Suitability_farm_Characteristics_title;
 			const intro = this.USER_MODEL.analysisResult.result_text.Intro_not_all_sales_channels_con;
 			const relative_attractiveness_text = this.USER_MODEL.analysisResult.Region_Attractiveness.Relative_Attractiveness; // "The relative attractiveness of your region was considered to be:"
 			const value = this.USER_MODEL.analysisResult.Region_Attractiveness.value; // "medium"
 			const descr = this.USER_MODEL.analysisResult.result_text.Suitability_farm_Characterstics;
 			
-			//const html = '<h5 style="text-align:center">'+title+'</h5>'+
-			const html = '<p>'+intro+'</p>'+
+			const html = '<h5 style="text-align:center">'+title+'</h5>'+
+			'<p>'+intro+'</p>'+
 			'<p style="color:'+this.colors.DARK_GREEN+'; font-weight:bold;">'+relative_attractiveness_text+' <span style="color:'+this.colors.DARK_ORANGE+'">'+value+'</span></p>'+
 			'<p>'+descr+'</p>';
 			
@@ -624,10 +722,9 @@ export default class AnalysisView extends View {
 	
 	renderHowCalculated() {
 		if (this.USER_MODEL.analysisResult.result_text) {
-			//const ll_how_calculated_title = this.USER_MODEL.analysisResult.result_text.How_calculated_title;
+			const ll_how_calculated_title = this.USER_MODEL.analysisResult.result_text.How_calculated_title;
 			const ll_how_calculated_text = this.USER_MODEL.analysisResult.result_text.How_calculated;
-			//const html = '<h5 style="text-align:center">'+ll_how_calculated_title+'</h5><p>'+ll_how_calculated_text+'</p>';
-			const html = '<p>'+ll_how_calculated_text+'</p>';
+			const html = '<h5 style="text-align:center">'+ll_how_calculated_title+'</h5><p>'+ll_how_calculated_text+'</p>';
 			$("#how-calculated-wrapper").empty().append(html);
 		}
 	}
@@ -643,6 +740,8 @@ export default class AnalysisView extends View {
 	
 	renderAll() {
 		// CHAPTER 1: Business models explained
+		
+		this.setBMTitles();
 		this.renderBusinessModels();
 		
 		this.setLabels();
@@ -662,6 +761,7 @@ export default class AnalysisView extends View {
 		this.renderWholesaleSpider();
 		
 		// CHAPTER 5: How to read the diagrams
+		this.renderHowToSpiders();
 		this.renderDimensionsCollapsible();
 		
 		// CHAPTER 6: Farm and regional characteristics
@@ -706,14 +806,7 @@ export default class AnalysisView extends View {
 		const self = this;
 		$(this.el).empty();
 		
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected;
-		const ll_intro_business_models_title = LM['translation'][sel]['Intro_Definition_Business_Models_title'];
 		const ll_recommendations_title = 'Recommendations for Short Food Supply Chain';
-		const ll_improved_logistics_title = 'Improved logistics as an option for all farmers';
-		const ll_comparison_to_wholesale_title = "Comparison to Wholesale";
-		const ll_how_to_read_spiders_title = LM['translation'][sel]['Description_Spiderweb_title'];
-		
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
@@ -724,8 +817,7 @@ export default class AnalysisView extends View {
 				
 				// CHAPTER 1: Business models explained
 				'<div class="col s12">'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<h5 style="text-align:center">'+ll_intro_business_models_title+'</h5>'+
+					'<div id="business-models-intro-title" class="col s12 m10 offset-m1">'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="business-models-intro-wrapper"></div>'+
@@ -757,9 +849,6 @@ export default class AnalysisView extends View {
 				
 				// CHAPTER 3: Improved logistics is also an option for all farmers
 				'<div class="col s12" style="border-bottom: 1px solid #ccc; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<h5 style="text-align:center">'+ll_improved_logistics_title+'</h5>'+
-					'</div>'+
 					'<div class="col s12 m10 offset-m1" >'+
 						'<div id="improved-logistics-wrapper"></div>'+
 					'</div>'+
@@ -768,7 +857,7 @@ export default class AnalysisView extends View {
 				// CHAPTER 4: Comparison to Wholesale
 				'<div class="col s12" style="border-bottom: 1px solid #888; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
 					'<div class="col s12 m10 offset-m1">'+
-						'<h5 style="text-align:center">'+ll_comparison_to_wholesale_title+'</h5>'+
+						'<h5 id="comparison-to-wholesale-title" style="text-align:center"></h5>'+
 						'<div class="row">'+
 							'<div class="col s12 m5" id="wholesale-description-wrapper">'+
 							'</div>'+
@@ -780,8 +869,8 @@ export default class AnalysisView extends View {
 				
 				// CHAPTER 5: How to read the diagrams
 				'<div class="col s12">'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<h5 style="text-align:center">'+ll_how_to_read_spiders_title+'</h5>'+
+					'<div id="how-to-read-spiders" class="col s12 m10 offset-m1">'+
+						//'<h5 style="text-align:center">'+ll_how_to_read_spiders_title+'</h5>'+
 						//'<p>'+ll_how_to_read_spiders_text+'</p>'+
 						//'<p>'+ll_definition_criteria+'</p>'+
 					'</div>'+

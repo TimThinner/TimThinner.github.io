@@ -73,7 +73,7 @@ export default class ActivitiesView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const ll_marketing_channel_query =  LM['translation'][sel]['marketting_channel_query'];
+		const ll_marketing_channel_query =  LM['translation'][sel]['marketing_channel_query'];
 		const ll_offering_query =  LM['translation'][sel]['offering_query'];
 		//const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		

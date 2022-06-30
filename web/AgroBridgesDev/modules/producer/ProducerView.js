@@ -82,11 +82,21 @@ export default class ProducerView extends View {
 		const ll_likert_welcome = LM['translation'][sel]['Likert_welcome_farm'];
 		const ll_likert_consumer = LM['translation'][sel]['Likert_consumer_con'];
 		
-		const ll_likert_value_1 = LM['translation'][sel]['Self_desc_likert_value_1'];
-		const ll_likert_value_2 = LM['translation'][sel]['Self_desc_likert_value_2'];
-		const ll_likert_value_3 = LM['translation'][sel]['Self_desc_likert_value_3'];
-		const ll_likert_value_4 = LM['translation'][sel]['Self_desc_likert_value_4'];
-		const ll_likert_value_5 = LM['translation'][sel]['Self_desc_likert_value_5'];
+		// "fully_agree": "I fully agree",
+		// "agree": "I agree",
+		// "do_not_know": "I do not know ",
+		// "slightly_disagree": "I slightly disagree",
+		// "fully_disagree": "I fully disagree",
+		//const ll_likert_value_1 = LM['translation'][sel]['Self_desc_likert_value_1'];
+		//const ll_likert_value_2 = LM['translation'][sel]['Self_desc_likert_value_2'];
+		//const ll_likert_value_3 = LM['translation'][sel]['Self_desc_likert_value_3'];
+		//const ll_likert_value_4 = LM['translation'][sel]['Self_desc_likert_value_4'];
+		//const ll_likert_value_5 = LM['translation'][sel]['Self_desc_likert_value_5'];
+		const ll_likert_value_1 = LM['translation'][sel]['fully_agree'];
+		const ll_likert_value_2 = LM['translation'][sel]['agree'];
+		const ll_likert_value_3 = LM['translation'][sel]['do_not_know'];
+		const ll_likert_value_4 = LM['translation'][sel]['slightly_disagree'];
+		const ll_likert_value_5 = LM['translation'][sel]['fully_disagree'];
 		
 		//const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		

@@ -47,8 +47,9 @@ export default class MenuView extends View {
 			} else if (options.model==='LanguageModel' && options.method==='loadTranslation') {
 				if (options.status === 200) {
 					// OK.
-					const html = '<div class="success-message"><p>OK</p></div>';
+					const html = '<div class="success-message"><p>Translation loaded OK.</p></div>';
 					$('#'+this.FELID).empty().append(html);
+					$('#login').removeClass('disabled');
 					
 					// After 2 seconds remove the OK message automatically.
 					setTimeout(() => $('#'+this.FELID).empty(), 2000);
@@ -147,7 +148,7 @@ export default class MenuView extends View {
 					'</div>'+
 					'<div class="col s12 center">'+
 						//'<p style="color:#ccc;">W='+w+'px H='+h+'px</p>'+
-						'<p style="color:#ccc;">Version 22.06.30-Bravo</p>'+
+						'<p style="color:#ccc;">Version 22.06.30-Charlie</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -169,7 +170,6 @@ export default class MenuView extends View {
 		Oscar, Papa, Quebec, Romeo, Sierra, Tango, Uniform, Victor, Whiskey, X-ray, Yankee, Zulu.
 		*/
 		
-		
 		const UM = this.controller.master.modelRepo.get('UserModel');
 		const CM = this.controller.master.modelRepo.get('CountriesModel');
 		const RM = this.controller.master.modelRepo.get('RegionsModel');
@@ -181,6 +181,8 @@ export default class MenuView extends View {
 		} else {
 			$("#isMockup").prop("checked", false);
 		}
+		
+		$('#login').addClass('disabled');
 		
 		this.LM.loadTranslation('en');
 		

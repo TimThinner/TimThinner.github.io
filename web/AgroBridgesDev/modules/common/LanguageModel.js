@@ -271,15 +271,22 @@ export default class LanguageModel extends Model {
 	loadTranslation(lang) {
 		const self = this;
 		
+		if (this.fetching) {
+			console.log(this.name+' FETCHING ALREADY IN PROCESS!');
+			return;
+		}
+		
+		this.fetching = true;
 		this.translationReady = false;
 		this.translation = {};
 		
 		if (this.MOCKUP === true) {
 			
 			setTimeout(() => {
-				// After 2 seconds of delay (to simulate delay) fill in the results data.
+				// After 1 second of delay (to simulate delay) fill in the results data.
 				this.translation = this.translation_backup;
 				this.translationReady = true;
+				this.fetching = false;
 				this.notifyAll({model:self.name, method:'loadTranslation', status:200, message:'OK'});
 				
 			}, 1000);
@@ -314,6 +321,7 @@ export default class LanguageModel extends Model {
 					}
 					self.translation = resu;
 					self.translationReady = true;
+					self.fetching = false;
 					self.notifyAll({model:self.name, method:'loadTranslation', status:status, message:msg});
 				})
 				.catch(function(error){
@@ -323,6 +331,7 @@ export default class LanguageModel extends Model {
 					} else {
 						msg += 'NOT SPECIFIED in error.message.';
 					}
+					self.fetching = false;
 					self.notifyAll({model:self.name, method:'loadTranslation', status:status, message:msg});
 				});
 		}

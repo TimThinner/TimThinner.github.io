@@ -176,7 +176,8 @@ export default class LocationView extends View {
 					// Show Toast: Saved OK!
 					const LM = this.controller.master.modelRepo.get('LanguageModel');
 					const sel = LM.selected;
-					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					//const save_ok = 'Profile saved OK.';//LM['translation'][sel]['PROFILE_SAVE_OK'];
+					const save_ok = LM['translation'][sel]['status_profiled_save'];
 					M.toast({
 						displayLength:500, 
 						html: save_ok,
@@ -214,7 +215,7 @@ export default class LocationView extends View {
 		const ll_region_query = LM['translation'][sel]['region_query'];
 		const ll_distance_small_query = LM['translation'][sel]['distance_drive_small_query'];
 		const ll_distance_major_query = LM['translation'][sel]['distance_drive_major_query'];
-		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
+		//const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const ll_minor_kat1 = LM['translation'][sel]['Distance_Drive_minor_kat1'];
 		const ll_minor_kat2 = LM['translation'][sel]['Distance_Drive_minor_kat2'];
@@ -444,11 +445,13 @@ export default class LocationView extends View {
 		});
 		
 		$("#location-ok").on('click', function() {
+			/*
 			if (self.USER_MODEL.MOCKUP === false) {
 				// Tell user that this might take some time...
 				const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 				$('#'+self.FELID).empty().append(html);
 			}
+			*/
 			// Save all
 			const data = [
 				{propName:'Country', value:self.USER_MODEL.profile['Country']},

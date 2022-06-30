@@ -59,7 +59,8 @@ export default class FruitsView extends View {
 					// Show Toast: Saved OK!
 					const LM = this.controller.master.modelRepo.get('LanguageModel');
 					const sel = LM.selected;
-					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					//const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					const save_ok = LM['translation'][sel]['status_profiled_save'];
 					M.toast({
 						displayLength:500, 
 						html: save_ok,
@@ -93,7 +94,7 @@ export default class FruitsView extends View {
 		const ll_fruits_query = LM['translation'][sel]['fruits_query'];
 		const ll_how_many_query = LM['translation'][sel]['fruits_how_many_query'];
 		//const ll_hectares_query = LM['translation'][sel]['fruit_hectare_query'];
-		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
+		//const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const fruitOptions = [
 			{prop:'Dummy_Stonefruits',id:'stonefruits',label:''},
@@ -299,11 +300,13 @@ export default class FruitsView extends View {
 			// Save all
 			// Note: change all boolean values (true => 1 and false => 0)
 			// and 'Yes' => 1 and 'No' => 0 if indicated that way.
+			/*
 			if (self.USER_MODEL.MOCKUP === false) {
 				// Tell user that this might take some time...
 				const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 				$('#'+self.FELID).empty().append(html);
 			}
+			*/
 			const data = [];
 			if (self.USER_MODEL.profile.Dummy_fruit_farm === 'Yes') {
 				data.push({propName:'Dummy_fruit_farm', value:1});

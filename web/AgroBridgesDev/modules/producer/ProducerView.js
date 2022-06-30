@@ -44,7 +44,8 @@ export default class ProducerView extends View {
 					// Show Toast: Saved OK!
 					const LM = this.controller.master.modelRepo.get('LanguageModel');
 					const sel = LM.selected;
-					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					//const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					const save_ok = LM['translation'][sel]['status_profiled_save'];
 					M.toast({
 						displayLength:500, 
 						html: save_ok,
@@ -87,7 +88,7 @@ export default class ProducerView extends View {
 		const ll_likert_value_4 = LM['translation'][sel]['Self_desc_likert_value_4'];
 		const ll_likert_value_5 = LM['translation'][sel]['Self_desc_likert_value_5'];
 		
-		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
+		//const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
@@ -181,12 +182,13 @@ export default class ProducerView extends View {
 		$("#producer-ok").on('click', function() {
 			
 			$('#producer-ok').addClass('disabled');
-			
+			/*
 			if (self.USER_MODEL.MOCKUP === false) {
 				// Tell user that this might take some time...
 				const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 				$('#'+self.FELID).empty().append(html);
 			}
+			*/
 			// Save all
 			const data = [
 				{propName:'Likert_welcome_farm', value:self.USER_MODEL.profile.Likert_welcome_farm},

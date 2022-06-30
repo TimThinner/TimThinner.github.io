@@ -44,7 +44,8 @@ export default class InfoView extends View {
 					// Show Toast: Saved OK!
 					const LM = this.controller.master.modelRepo.get('LanguageModel');
 					const sel = LM.selected;
-					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					//const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					const save_ok = LM['translation'][sel]['status_profiled_save'];
 					M.toast({
 						displayLength:500, 
 						html: save_ok,
@@ -87,7 +88,7 @@ export default class InfoView extends View {
 		const ll_harvest_only = LM['translation'][sel]['Harv_farmers_org'];
 		const ll_harvest_plus = LM['translation'][sel]['Harv_Clean_Sort_Ref'];
 		
-		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
+		//const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
@@ -253,11 +254,13 @@ export default class InfoView extends View {
 		});
 		
 		$("#info-ok").on('click', function() {
+			/*
 			if (self.USER_MODEL.MOCKUP === false) {
 				// Tell user that this might take some time...
 				const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 				$('#'+self.FELID).empty().append(html);
 			}
+			*/
 			const data = [
 				{propName:'Hectare_farm', value:self.USER_MODEL.profile.Hectare_farm},
 				{propName:'Delivery_month_total', value:self.USER_MODEL.profile.Delivery_month_total}

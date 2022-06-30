@@ -44,7 +44,8 @@ export default class ActivitiesView extends View {
 					// Show Toast: Saved OK!
 					const LM = this.controller.master.modelRepo.get('LanguageModel');
 					const sel = LM.selected;
-					const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					//const save_ok = LM['translation'][sel]['PROFILE_SAVE_OK'];
+					const save_ok = LM['translation'][sel]['status_profiled_save'];
 					M.toast({
 						displayLength:500, 
 						html: save_ok,
@@ -74,7 +75,7 @@ export default class ActivitiesView extends View {
 		const sel = LM.selected;
 		const ll_marketing_channel_query =  LM['translation'][sel]['marketting_channel_query'];
 		const ll_offering_query =  LM['translation'][sel]['offering_query'];
-		const ll_no_database_message = LM['translation'][sel]['no_database_message'];
+		//const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const a_Options = [
 			{prop:'Dummy_wholesale',id:'wholesale',label:''},
@@ -189,11 +190,14 @@ export default class ActivitiesView extends View {
 		});
 		
 		$("#activities-ok").on('click', function() {
+			/*
 			if (self.USER_MODEL.MOCKUP === false) {
 				// Tell user that this might take some time...
 				const html = '<div class="highlighted-message"><p>'+ll_no_database_message+'</p></div>';
 				$('#'+self.FELID).empty().append(html);
 			}
+			*/
+			
 			// Save all
 			const data = [];
 			a_Options.forEach(o=>{

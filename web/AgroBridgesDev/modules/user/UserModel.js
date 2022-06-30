@@ -812,7 +812,7 @@ export default class UserModel extends Model {
 			myHeaders.append("Content-Type", "application/json");
 			
 			const myGet = {
-				method: 'POST',
+				method: 'GET',
 				headers: myHeaders
 				//body: JSON.stringify(data)
 			};
@@ -829,7 +829,7 @@ export default class UserModel extends Model {
 					if (typeof myJson.message !== 'undefined') {
 						msg = myJson.message;
 					}
-					self.analysisResult = JSON.parse(myJson);
+					self.analysisResult = myJson; //JSON.parse(myJson);
 					self.analysisReady = true;
 					self.notifyAll({model:self.name, method:'runAnalysis', status:status, message:myJson.message});
 				})

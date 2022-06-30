@@ -12,6 +12,10 @@ export default class MenuView extends View {
 		this.REO = this.controller.master.modelRepo.get('ResizeEventObserver');
 		this.REO.subscribe(this);
 		
+		this.LM = this.controller.master.modelRepo.get('LanguageModel');
+		this.LM.subscribe(this);
+		
+		this.FELID = 'menu-message';
 		this.rendered = false;
 	}
 	
@@ -29,6 +33,7 @@ export default class MenuView extends View {
 			this.models[key].unsubscribe(this);
 		});
 		this.REO.unsubscribe(this);
+		this.LM.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -36,7 +41,23 @@ export default class MenuView extends View {
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
+				
 				this.show();
+				
+			} else if (options.model==='LanguageModel' && options.method==='loadTranslation') {
+				if (options.status === 200) {
+					// OK.
+					const html = '<div class="success-message"><p>OK</p></div>';
+					$('#'+this.FELID).empty().append(html);
+					
+					// After 2 seconds remove the OK message automatically.
+					setTimeout(() => $('#'+this.FELID).empty(), 2000);
+					
+				} else {
+					// Report error.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
+				}
 			}
 		}
 	}
@@ -97,6 +118,12 @@ export default class MenuView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
+					'<div class="col s12 center" id="'+this.FELID+'">'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12">'+
 					'<div class="col s12 center">'+
 						'<button class="btn waves-effect waves-light" id="login">Login</button>'+
 					'</div>'+
@@ -120,7 +147,7 @@ export default class MenuView extends View {
 					'</div>'+
 					'<div class="col s12 center">'+
 						//'<p style="color:#ccc;">W='+w+'px H='+h+'px</p>'+
-						'<p style="color:#ccc;">Version 22.06.29-Hotel</p>'+
+						'<p style="color:#ccc;">Version 22.06.30-Alfa</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -142,7 +169,11 @@ export default class MenuView extends View {
 		Oscar, Papa, Quebec, Romeo, Sierra, Tango, Uniform, Victor, Whiskey, X-ray, Yankee, Zulu.
 		*/
 		
+		
 		const UM = this.controller.master.modelRepo.get('UserModel');
+		const CM = this.controller.master.modelRepo.get('CountriesModel');
+		const RM = this.controller.master.modelRepo.get('RegionsModel');
+		
 		$("#user_id").val(UM.id);
 		
 		if (UM.MOCKUP) {
@@ -151,31 +182,37 @@ export default class MenuView extends View {
 			$("#isMockup").prop("checked", false);
 		}
 		
+		this.LM.loadTranslation('en');
+		
 		// Test language change.
 		$("#isMockup").change(function() {
 			if(this.checked) {
 				// NO DB.
+				self.LM.MOCKUP = true;
 				UM.MOCKUP = true;
-				UM.loadTranslation('en');
+				CM.MOCKUP = true;
+				RM.MOCKUP = true;
+				self.LM.loadTranslation('en');
 			} else {
 				// Try to use DB.
+				self.LM.MOCKUP = false;
 				UM.MOCKUP = false;
-				UM.loadTranslation('en');
+				CM.MOCKUP = false;
+				RM.MOCKUP = false;
+				self.LM.loadTranslation('en');
 			}
 		});
 		
 		$("#login").on('click', function() {
 			const uid = $("#user_id").val();
 			UM.id = uid;
-			
-			const CM = self.controller.master.modelRepo.get('CountriesModel');
-			const RM = self.controller.master.modelRepo.get('RegionsModel');
-			
 			if($("#isMockup").is(':checked')) {
+				self.LM.MOCKUP = true;
 				UM.MOCKUP = true;
 				CM.MOCKUP = true;
 				RM.MOCKUP = true;
 			} else {
+				self.LM.MOCKUP = false;
 				UM.MOCKUP = false;
 				CM.MOCKUP = false;
 				RM.MOCKUP = false;

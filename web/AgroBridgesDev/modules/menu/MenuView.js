@@ -148,7 +148,7 @@ export default class MenuView extends View {
 					'</div>'+
 					'<div class="col s12 center">'+
 						//'<p style="color:#ccc;">W='+w+'px H='+h+'px</p>'+
-						'<p style="color:#ccc;">Version 22.06.30-Charlie</p>'+
+						'<p style="color:#ccc;">Version 22.06.30-Delta</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -183,19 +183,20 @@ export default class MenuView extends View {
 		}
 		
 		$('#login').addClass('disabled');
-		
 		this.LM.loadTranslation('en');
 		
 		// Test language change.
 		$("#isMockup").change(function() {
 			if(this.checked) {
 				// NO DB.
+				$('#login').addClass('disabled');
 				self.LM.MOCKUP = true;
 				UM.MOCKUP = true;
 				CM.MOCKUP = true;
 				RM.MOCKUP = true;
 				self.LM.loadTranslation('en');
 			} else {
+				$('#login').addClass('disabled');
 				// Try to use DB.
 				self.LM.MOCKUP = false;
 				UM.MOCKUP = false;

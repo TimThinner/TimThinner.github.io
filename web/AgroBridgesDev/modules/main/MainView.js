@@ -1,5 +1,28 @@
 import View from '../common/View.js';
 
+/*
+
+Experiment with curved text
+
+https://developer.mozilla.org/en-US/docs/Web/SVG/Element/textPath
+
+
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+
+<!-- to hide the path, it is usually wrapped in a <defs> element -->
+<!-- <defs> -->
+<path id="MyPath" fill="none" stroke="red"
+      d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
+<!-- </defs> -->
+
+<text>
+  <textPath href="#MyPath">
+    Quick brown fox jumps over the lazy dog.
+  </textPath>
+</text>
+</svg>
+*/
+
 export default class MainView extends View {
 	
 	constructor(controller) {
@@ -543,8 +566,48 @@ export default class MainView extends View {
 		rect.setAttribute('width',w);
 		rect.setAttribute('height',h);
 		rect.setAttribute('fill', this.colors.SPACE_FILL);
+/*
+<defs>
+<path id="MyPath" fill="none" stroke="red"
+      d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
+</defs>
+		*/
+		const defs = document.createElementNS(svgNS, 'defs');
+		const path = document.createElementNS(svgNS, "path");
 		
+		const text_x = w*0.25;
+		const d = 'M-'+text_x+',0 A '+text_x+' '+text_x+' 0 0 1 '+text_x+' 0';
+		
+		path.setAttributeNS(null, 'd', d);
+		path.id = 'MyPath';
+		path.style.stroke = DARK_BLUE;
+		path.style.strokeWidth = 1;
+		path.style.opacity = 0.5;
+		path.style.fill = 'none';
+		
+		defs.appendChild(path);
+		
+		svg.appendChild(defs);
 		svg.appendChild(rect);
+		// TEST:
+		/*
+<text>
+  <textPath href="#MyPath">
+    Quick brown fox jumps over the lazy dog.
+  </textPath>
+</text>
+		*/
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.style.fontSize = '16px';
+		const txtPath = document.createElementNS(svgNS, 'textPath');
+		txtPath.setAttributeNS(null, 'href', '#MyPath');
+		const text_node = document.createTextNode('Decision Support Tool');
+		txtPath.appendChild(text_node);
+		txt.appendChild(txtPath);
+		
+		svg.appendChild(txt);
+		
 		$(this.el).append(svg);
 	}
 	

@@ -580,7 +580,7 @@ export default class MainView extends View {
 		
 		path.setAttributeNS(null, 'd', d);
 		path.id = 'MyPath';
-		path.style.stroke = DARK_BLUE;
+		path.style.stroke = this.colors.DARK_BLUE;
 		path.style.strokeWidth = 1;
 		path.style.opacity = 0.5;
 		path.style.fill = 'none';

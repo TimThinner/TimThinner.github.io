@@ -544,6 +544,59 @@ export default class MainView extends View {
 		$('#space').append(group);
 	}
 	
+	appendTitle() {
+		
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius();
+		
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+/*
+<defs>
+<path id="MyPath" fill="none" stroke="red"
+      d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
+</defs>
+		*/
+		const defs = document.createElementNS(svgNS, 'defs');
+		const path = document.createElementNS(svgNS, "path");
+		
+		
+		const d = 'M-'+r+',0 A '+r+' '+r+' 0 0 1 '+r+' 0';
+		
+		path.setAttributeNS(null, 'd', d);
+		path.id = 'MyPath';
+		path.style.stroke = this.colors.DARK_BLUE;
+		path.style.strokeWidth = 1;
+		path.style.opacity = 0.5;
+		path.style.fill = 'none';
+		
+		defs.appendChild(path);
+		
+		group.appendChild(defs);
+		
+		
+		/*
+<text>
+  <textPath href="#MyPath">
+    Quick brown fox jumps over the lazy dog.
+  </textPath>
+</text>
+		*/
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.style.fontSize = '24px';
+		const txtPath = document.createElementNS(svgNS, 'textPath');
+		txtPath.setAttributeNS(null, 'href', '#MyPath');
+		const text_node = document.createTextNode('Decision Support Tool');
+		txtPath.appendChild(text_node);
+		txt.appendChild(txtPath);
+		
+		group.appendChild(txt);
+		
+		$('#space').append(group);
+	}
+	
 	createSpace() {
 		const w = this.REO.width;
 		const h = this.REO.height;
@@ -566,47 +619,8 @@ export default class MainView extends View {
 		rect.setAttribute('width',w);
 		rect.setAttribute('height',h);
 		rect.setAttribute('fill', this.colors.SPACE_FILL);
-/*
-<defs>
-<path id="MyPath" fill="none" stroke="red"
-      d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
-</defs>
-		*/
-		const defs = document.createElementNS(svgNS, 'defs');
-		const path = document.createElementNS(svgNS, "path");
 		
-		const text_x = w*0.25;
-		const d = 'M-'+text_x+',0 A '+text_x+' '+text_x+' 0 0 1 '+text_x+' 0';
-		
-		path.setAttributeNS(null, 'd', d);
-		path.id = 'MyPath';
-		path.style.stroke = this.colors.DARK_BLUE;
-		path.style.strokeWidth = 1;
-		path.style.opacity = 0.5;
-		path.style.fill = 'none';
-		
-		defs.appendChild(path);
-		
-		svg.appendChild(defs);
 		svg.appendChild(rect);
-		// TEST:
-		/*
-<text>
-  <textPath href="#MyPath">
-    Quick brown fox jumps over the lazy dog.
-  </textPath>
-</text>
-		*/
-		
-		const txt = document.createElementNS(svgNS, 'text');
-		txt.style.fontSize = '16px';
-		const txtPath = document.createElementNS(svgNS, 'textPath');
-		txtPath.setAttributeNS(null, 'href', '#MyPath');
-		const text_node = document.createTextNode('Decision Support Tool');
-		txtPath.appendChild(text_node);
-		txt.appendChild(txtPath);
-		
-		svg.appendChild(txt);
 		
 		$(this.el).append(svg);
 	}
@@ -616,6 +630,8 @@ export default class MainView extends View {
 		
 		this.createSpace();
 		this.appendProgress();
+		
+		this.appendTitle();
 		
 		this.appendSun('FARM');
 		this.appendSun('ACTIVITIES');

@@ -85,10 +85,10 @@ export default class MainView extends View {
 			r = 40;
 		}
 		// All SVG images are 400 x 300 => w=1.8*r, h=w*0.75
-		const image_w = 2*r;
+		const image_w = 1.5*r;//2*r;
 		const image_h = image_w*0.75;
 		const image_x = this.REO.width*0.5 - image_w;
-		const image_y = -this.REO.height*0.5 + image_h*0.5;
+		const image_y = -this.REO.height*0.5 + image_h*2;
 		
 		const img = document.createElementNS(svgNS, "image");
 		img.setAttribute('x', image_x);
@@ -366,6 +366,11 @@ export default class MainView extends View {
 		}, false);
 		
 		group.appendChild(surface);
+		
+		// NOTE: Transform all elements 100 pixels down!
+		ty += 100;
+		
+		
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#space').append(group);
 	}
@@ -378,6 +383,8 @@ export default class MainView extends View {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius(); // Radius 12,5%
+		
+		const cy = 100;
 		
 		let fontsize;
 		if (r <= 75) {
@@ -415,7 +422,7 @@ export default class MainView extends View {
 		
 		const border = document.createElementNS(svgNS, "circle");
 		border.setAttributeNS(null, 'cx', 0);
-		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'cy', cy);
 		border.setAttributeNS(null, 'r', r);
 		if (mainState.ready === true) {
 			border.style.fill = this.colors.LIGHT_ORANGE;
@@ -430,7 +437,7 @@ export default class MainView extends View {
 		
 		const ca = document.createElementNS(svgNS, "circle");
 		ca.setAttributeNS(null, 'cx', 0);
-		ca.setAttributeNS(null, 'cy', 0);
+		ca.setAttributeNS(null, 'cy', cy);
 		ca.setAttributeNS(null, 'r', r2);
 		if (mainState.ready === true) {
 			ca.style.fill = this.colors.LIGHT_ORANGE;
@@ -445,7 +452,7 @@ export default class MainView extends View {
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-image_w*0.5);
-		svg.setAttribute('y',-titleSVGHeight*0.5);
+		svg.setAttribute('y',-titleSVGHeight*0.5+cy);
 		svg.setAttributeNS(null,'width',image_w);
 		svg.setAttributeNS(null,'height',titleSVGHeight);
 		
@@ -468,7 +475,7 @@ export default class MainView extends View {
 		
 		const surface = document.createElementNS(svgNS, "circle");
 		surface.setAttributeNS(null, 'cx', 0);
-		surface.setAttributeNS(null, 'cy', 0);
+		surface.setAttributeNS(null, 'cy', cy);
 		surface.setAttributeNS(null, 'r', r);
 		if (mainState.ready === true) {
 			surface.style.stroke = this.colors.DARK_ORANGE;
@@ -519,48 +526,61 @@ export default class MainView extends View {
 		let r = this.sunRadius()*2.5; // r = 31,25% => d = 62,5%
 		let ro = r+r*0.1;
 		let ri = r-r*0.1;
+		
+		const cy=100; 
+		
 		const group = document.createElementNS(svgNS, "g");
 		
 		const outer = document.createElementNS(svgNS, "circle");
 		outer.setAttributeNS(null, 'cx', 0);
-		outer.setAttributeNS(null, 'cy', 0);
+		outer.setAttributeNS(null, 'cy', cy);
 		outer.setAttributeNS(null, 'r', ro);
 		outer.style.fill = 'none';
 		outer.style.fillOpacity = 0;
 		outer.style.stroke = this.colors.DARK_GREEN;
+		outer.style.opacity = 0.25;
 		outer.style.strokeWidth = 3;
 		group.appendChild(outer);
 		
 		const inner = document.createElementNS(svgNS, "circle");
 		inner.setAttributeNS(null, 'cx', 0);
-		inner.setAttributeNS(null, 'cy', 0);
+		inner.setAttributeNS(null, 'cy', cy);
 		inner.setAttributeNS(null, 'r', ri);
 		inner.style.fill = 'none';
 		inner.style.fillOpacity = 0;
 		inner.style.stroke = this.colors.DARK_GREEN;
+		inner.style.opacity = 0.25;
 		inner.style.strokeWidth = 3;
 		group.appendChild(inner);
 		
 		$('#space').append(group);
 	}
-	
-	appendTitle() {
-		
-		const svgNS = 'http://www.w3.org/2000/svg';
-		let r = this.sunRadius();
-		
-		
-		const group = document.createElementNS(svgNS, "g");
-		
 /*
 <defs>
 <path id="MyPath" fill="none" stroke="red"
       d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
 </defs>
-		*/
+
+<text>
+  <textPath href="#MyPath">
+    Quick brown fox jumps over the lazy dog.
+  </textPath>
+</text>
+*/
+/*
+	appendTitle() {
+		
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius()*3.5;
+		
+		//console.log(['r=',r]);
+		let fontSize = Math.round(r/6);
+		
+		
+		const group = document.createElementNS(svgNS, "g");
+		
 		const defs = document.createElementNS(svgNS, 'defs');
 		const path = document.createElementNS(svgNS, "path");
-		
 		
 		const d = 'M-'+r+',0 A '+r+' '+r+' 0 0 1 '+r+' 0';
 		
@@ -572,28 +592,105 @@ export default class MainView extends View {
 		path.style.fill = 'none';
 		
 		defs.appendChild(path);
-		
 		group.appendChild(defs);
+		//group.appendChild(path);
 		
-		
-		/*
-<text>
-  <textPath href="#MyPath">
-    Quick brown fox jumps over the lazy dog.
-  </textPath>
-</text>
-		*/
 		
 		const txt = document.createElementNS(svgNS, 'text');
-		txt.style.fontSize = '24px';
+		txt.style.fontSize = fontSize+'px';
+		txt.style.fill = this.colors.DARK_ORANGE;
+		txt.style.opacity = 0.5;
+		
 		const txtPath = document.createElementNS(svgNS, 'textPath');
 		txtPath.setAttributeNS(null, 'href', '#MyPath');
-		const text_node = document.createTextNode('Decision Support Tool');
+		const text_node = document.createTextNode('Decision support tool for farmers'); // for farmers
 		txtPath.appendChild(text_node);
 		txt.appendChild(txtPath);
 		
 		group.appendChild(txt);
 		
+		$('#space').append(group);
+	}
+	*/
+	
+	/*
+	<svg x="1020" y="390" width="160px" height="40px">
+		<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text id="heating-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	*/
+	/*
+	appendTitle() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		const w = this.REO.width;
+		const h = this.REO.height;
+		
+		const fontsize = Math.round(r/3);
+		
+		const labelWidth = 0.9*w;//7*r;
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',-labelWidth*0.5);
+		svg.setAttribute('y',-4*r+25);
+		svg.setAttributeNS(null,'width',labelWidth);
+		svg.setAttributeNS(null,'height',fontsize);
+		
+		const rect = document.createElementNS(svgNS, 'rect');
+		// Setup the <rect> element.
+		rect.setAttribute('x',0);
+		rect.setAttribute('y',0);
+		rect.setAttribute('width',labelWidth);
+		rect.setAttribute('height',fontsize);
+		rect.style.fill = 'none';//this.colors.LIGHT_ORANGE;
+		rect.style.fillOpacity = 0;
+		rect.style.stroke = '#ccc';//this.colors.DARK_ORANGE;
+		rect.style.strokeWidth = 1;
+		svg.appendChild(rect);
+		
+		const title = document.createElementNS(svgNS, 'text');
+		title.setAttribute('x','50%');
+		title.setAttribute('y','50%');
+		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		title.setAttribute('font-size',fontsize);
+		title.setAttribute('dominant-baseline','middle');
+		title.setAttribute('text-anchor','middle');
+		title.setAttribute('fill',this.colors.DARK_ORANGE);
+		title.style.opacity = 1;
+		title.appendChild(document.createTextNode('Decision support tool for farmers'));
+		svg.appendChild(title);
+		//group.appendChild(svg);
+		
+		$('#space').append(svg);
+	}
+	*/
+	
+	
+	appendTitle() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		const w = this.REO.width;
+		const h = this.REO.height;
+		
+		// Logo original dimensions are 1920 x 1080 pixels.
+		// Set a maximum width for logo: NO MORE THAN 160 px ever.
+		let logo_w = w*0.2;
+		if (logo_w > 160) {
+			logo_w = 160;
+		}
+		const logo_h = Math.floor(logo_w*108/192);
+		
+		const txt = 'Decision support tool for farmers';
+		let fontsize = Math.floor(logo_h*0.5);
+		const group = document.createElementNS(svgNS, "g");
+		
+		group.appendChild(this.createFooterSVG(
+			-w*0.5+logo_w,
+			-h*0.5+fontsize*0.5,
+			w-logo_w,
+			fontsize,
+			txt, fontsize)
+		);
 		$('#space').append(group);
 	}
 	
@@ -602,6 +699,7 @@ export default class MainView extends View {
 		const h = this.REO.height;
 		const wp2 = w*0.5;
 		const hp2 = h*0.5;
+		
 		const vb = '-'+wp2+' -'+hp2+' '+w+' '+h;
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -625,6 +723,157 @@ export default class MainView extends View {
 		$(this.el).append(svg);
 	}
 	
+	
+	
+	createFooterSVG(x, y, w, h, txt, fontsize) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',x);
+		svg.setAttribute('y',y);
+		svg.setAttributeNS(null,'width',w);
+		svg.setAttributeNS(null,'height',h);
+		
+		const rect = document.createElementNS(svgNS, 'rect');
+		rect.setAttribute('x',0);
+		rect.setAttribute('y',0);
+		rect.setAttribute('width',w);
+		rect.setAttribute('height',h);
+		rect.style.stroke = '#ccc';
+		rect.style.strokeWidth = 0;
+		//rect.style.fill = '#ffc';
+		rect.style.fill = this.colors.SPACE_FILL;
+		svg.appendChild(rect);
+		
+		const foot_a = document.createElementNS(svgNS, 'text');
+		foot_a.setAttribute('x','50%');
+		foot_a.setAttribute('y','50%');
+		foot_a.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		foot_a.setAttribute('font-size',fontsize);
+		foot_a.setAttribute('dominant-baseline','middle');
+		foot_a.setAttribute('text-anchor','middle');
+		foot_a.setAttribute('fill',this.colors.DARK_GREEN);
+		foot_a.style.opacity = 1;
+		foot_a.appendChild(document.createTextNode(txt));
+		svg.appendChild(foot_a);
+		
+		return svg;
+	}
+	
+	appendLogo() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		const w = this.REO.width;
+		const h = this.REO.height;
+		
+		console.log(['w=',w]);
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		// Logo original dimensions are 1920 x 1080 pixels.
+		
+		// Set a maximum width for logo: NO MORE THAN 160 px ever.
+		let logo_w = w*0.2;
+		if (logo_w > 160) {
+			logo_w = 160;
+		}
+		const logo_h = Math.floor(logo_w*108/192);
+		//const x_margin = 8;
+		//const y_margin = 8;
+		
+		const logo_x_pos = -w*0.5;//+x_margin;
+		const logo_y_pos = -h*0.5;//+y_margin;
+		const logo = document.createElementNS(svgNS, "image");
+		logo.setAttribute('x', logo_x_pos);
+		logo.setAttribute('y', logo_y_pos);
+		logo.setAttribute('width', logo_w);
+		logo.setAttribute('height', logo_h);
+		logo.setAttribute('href', './img/logo.png');
+		group.appendChild(logo);
+		
+		$('#space').append(group);
+	}
+	/*
+	640px-Flag_of_Europe.svg.png: 640 x 427
+	MC.png: 330 x 330 
+<rect x="478" y="278" width="104" height="104" style="stroke:#1fac78;stroke-width:2px;fill:none;" />
+<image id="project" class="active-district" x="480" y="280" width="100" height="100" xlink:href="MC.png" />
+<image x="610" y="280" width="149.88" height="100" xlink:href="640px-Flag_of_Europe.svg.png" />
+	*/
+	appendEUFlag() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		const w = this.REO.width;
+		const h = this.REO.height;
+		
+		console.log(['w=',w]);
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		// Flag original dimensions are 640 x 427 pixels.
+		const flag_w = 64;
+		const flag_h = 43;
+		const x_margin = 12;
+		
+		const flag_x_pos = -w*0.5+x_margin;
+		const flag_y_pos = h*0.5-46;
+		const flag = document.createElementNS(svgNS, "image");
+		flag.setAttribute('x', flag_x_pos);
+		flag.setAttribute('y', flag_y_pos);
+		flag.setAttribute('width', flag_w);
+		flag.setAttribute('height', flag_h);
+		flag.setAttribute('href', './img/640px-Flag_of_Europe.svg.png');
+		group.appendChild(flag);
+		
+		//const footer_text_a_b = "THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020 RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N° 101000788";
+		const footer_text_a = "THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020";
+		const footer_text_b = "RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N° 101000788";
+		
+		let fontsize = 12;
+		// If there is room to put all text to one line => do it.
+		if (w > 1200) {
+			
+			const footer = footer_text_a + ' ' + footer_text_b;
+			// 141 characters in total.
+			//console.log(['footer.length=',footer.length]);
+			
+			// Create ONE SVG and put a rect and text under it.
+			group.appendChild(this.createFooterSVG(
+				flag_x_pos + flag_w + x_margin,
+				h*0.5-32,
+				w - 3*x_margin - flag_w,
+				32,
+				footer, fontsize));
+			
+		} else {
+			// If really small ...
+			if (w < 540) {
+				fontsize = 8;
+			} else if (w >= 540 && w < 700) {
+				fontsize = 10;
+			} else {
+				fontsize = 12;
+			}
+			
+			// Create TWO SVGs and put a rect and text under it.
+			group.appendChild(this.createFooterSVG(
+				flag_x_pos + flag_w + x_margin,
+				h*0.5-48,
+				w - 3*x_margin - flag_w,
+				24,
+				footer_text_a, fontsize)
+			);
+			group.appendChild(this.createFooterSVG(
+				flag_x_pos + flag_w + x_margin,
+				h*0.5-24,
+				w - 3*x_margin - flag_w,
+				24,
+				footer_text_b, fontsize)
+			);
+		}
+		$('#space').append(group);
+	}
+	
 	renderALL() {
 		$(this.el).empty();
 		
@@ -640,6 +889,9 @@ export default class MainView extends View {
 		this.appendAnalysisButton();
 		
 		this.appendLogoutButton();
+		
+		this.appendEUFlag();
+		this.appendLogo();
 		
 		console.log('renderALL() END!');
 	}

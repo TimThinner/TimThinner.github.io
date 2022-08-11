@@ -21,6 +21,20 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Element/textPath
   </textPath>
 </text>
 </svg>
+
+
+Flag_of_the_United_Kingdom.svg.png		255 x 128
+Flag_of_Denmark.svg.png					255 x 193
+Flag_of_Greece.svg.png					255 x 170
+Bandera_de_España.svg.png				255 x 170
+Flag_of_France.svg.png					255 x 170
+Flag_of_Italy.svg.png					255 x 170
+Flag_of_Latvia.svg.png					255 x 128
+Flag_of_Lithuania.svg.png				255 x 153
+Flag_of_the_Netherlands.svg.png			255 x 170
+Flag_of_Poland.svg.png					255 x 159
+Flag_of_Finland.svg.png					255 x 156
+Flag_of_Turkey.svg.png					255 x 170
 */
 
 export default class MainView extends View {
@@ -555,115 +569,6 @@ export default class MainView extends View {
 		
 		$('#space').append(group);
 	}
-/*
-<defs>
-<path id="MyPath" fill="none" stroke="red"
-      d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
-</defs>
-
-<text>
-  <textPath href="#MyPath">
-    Quick brown fox jumps over the lazy dog.
-  </textPath>
-</text>
-*/
-/*
-	appendTitle() {
-		
-		const svgNS = 'http://www.w3.org/2000/svg';
-		let r = this.sunRadius()*3.5;
-		
-		//console.log(['r=',r]);
-		let fontSize = Math.round(r/6);
-		
-		
-		const group = document.createElementNS(svgNS, "g");
-		
-		const defs = document.createElementNS(svgNS, 'defs');
-		const path = document.createElementNS(svgNS, "path");
-		
-		const d = 'M-'+r+',0 A '+r+' '+r+' 0 0 1 '+r+' 0';
-		
-		path.setAttributeNS(null, 'd', d);
-		path.id = 'MyPath';
-		path.style.stroke = this.colors.DARK_BLUE;
-		path.style.strokeWidth = 1;
-		path.style.opacity = 0.5;
-		path.style.fill = 'none';
-		
-		defs.appendChild(path);
-		group.appendChild(defs);
-		//group.appendChild(path);
-		
-		
-		const txt = document.createElementNS(svgNS, 'text');
-		txt.style.fontSize = fontSize+'px';
-		txt.style.fill = this.colors.DARK_ORANGE;
-		txt.style.opacity = 0.5;
-		
-		const txtPath = document.createElementNS(svgNS, 'textPath');
-		txtPath.setAttributeNS(null, 'href', '#MyPath');
-		const text_node = document.createTextNode('Decision support tool for farmers'); // for farmers
-		txtPath.appendChild(text_node);
-		txt.appendChild(txtPath);
-		
-		group.appendChild(txt);
-		
-		$('#space').append(group);
-	}
-	*/
-	
-	/*
-	<svg x="1020" y="390" width="160px" height="40px">
-		<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
-		<text id="heating-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
-	</svg>
-	*/
-	/*
-	appendTitle() {
-		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.sunRadius();
-		
-		const w = this.REO.width;
-		const h = this.REO.height;
-		
-		const fontsize = Math.round(r/3);
-		
-		const labelWidth = 0.9*w;//7*r;
-		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttribute('x',-labelWidth*0.5);
-		svg.setAttribute('y',-4*r+25);
-		svg.setAttributeNS(null,'width',labelWidth);
-		svg.setAttributeNS(null,'height',fontsize);
-		
-		const rect = document.createElementNS(svgNS, 'rect');
-		// Setup the <rect> element.
-		rect.setAttribute('x',0);
-		rect.setAttribute('y',0);
-		rect.setAttribute('width',labelWidth);
-		rect.setAttribute('height',fontsize);
-		rect.style.fill = 'none';//this.colors.LIGHT_ORANGE;
-		rect.style.fillOpacity = 0;
-		rect.style.stroke = '#ccc';//this.colors.DARK_ORANGE;
-		rect.style.strokeWidth = 1;
-		svg.appendChild(rect);
-		
-		const title = document.createElementNS(svgNS, 'text');
-		title.setAttribute('x','50%');
-		title.setAttribute('y','50%');
-		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		title.setAttribute('font-size',fontsize);
-		title.setAttribute('dominant-baseline','middle');
-		title.setAttribute('text-anchor','middle');
-		title.setAttribute('fill',this.colors.DARK_ORANGE);
-		title.style.opacity = 1;
-		title.appendChild(document.createTextNode('Decision support tool for farmers'));
-		svg.appendChild(title);
-		//group.appendChild(svg);
-		
-		$('#space').append(svg);
-	}
-	*/
 	
 	
 	appendTitle() {
@@ -725,8 +630,13 @@ export default class MainView extends View {
 	
 	
 	
-	createFooterSVG(x, y, w, h, txt, fontsize) {
+	createFooterSVG(x, y, w, h, txt, fontsize, fill) {
 		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		let fille = this.colors.SPACE_FILL;
+		if (typeof fill !== 'undefined') {
+			fille = fill;
+		}
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',x);
@@ -741,8 +651,7 @@ export default class MainView extends View {
 		rect.setAttribute('height',h);
 		rect.style.stroke = '#ccc';
 		rect.style.strokeWidth = 0;
-		//rect.style.fill = '#ffc';
-		rect.style.fill = this.colors.SPACE_FILL;
+		rect.style.fill = fille;
 		svg.appendChild(rect);
 		
 		const foot_a = document.createElementNS(svgNS, 'text');
@@ -758,6 +667,182 @@ export default class MainView extends View {
 		svg.appendChild(foot_a);
 		
 		return svg;
+	}
+	
+	
+	
+	
+	
+	appendHeader() {
+		
+		const self = this;
+		
+		//appendLogo
+		//appendTitle
+		//appendLogoutButton
+		const svgNS = 'http://www.w3.org/2000/svg';
+		
+		const w = this.REO.width;
+		const h = this.REO.height;
+		
+		console.log(['w=',w]);
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		// Logo original dimensions are 1920 x 1080 pixels.
+		
+		// Set a maximum width for logo: NO MORE THAN 160 px ever.
+		let logo_w = w*0.2;
+		if (logo_w > 160) {
+			logo_w = 160;
+		}
+		const logo_h = Math.floor(logo_w*108/192);
+		//const x_margin = 8;
+		//const y_margin = 8;
+		
+		const logo_x_pos = -w*0.5;//+x_margin;
+		const logo_y_pos = -h*0.5;//+y_margin;
+		const logo = document.createElementNS(svgNS, "image");
+		logo.setAttribute('x', logo_x_pos);
+		logo.setAttribute('y', logo_y_pos);
+		logo.setAttribute('width', logo_w);
+		logo.setAttribute('height', logo_h);
+		logo.setAttribute('href', './img/logo.png');
+		group.appendChild(logo);
+		
+		if (w > 1000) {
+			/*
+			const rx = -w*0.5+logo_w;
+			const ry = -h*0.5;
+			const rw = w-logo_w*2; // Symmetric!
+			const rh = logo_h;
+			const rect = document.createElementNS(svgNS, 'rect');
+			// Setup the <rect> element.
+			rect.setAttribute('x',rx);
+			rect.setAttribute('y',ry);
+			rect.setAttribute('width',rw);
+			rect.setAttribute('height',rh);
+			rect.style.fill = this.colors.LIGHT_ORANGE;
+			rect.style.fillOpacity = 0.5;
+			rect.style.stroke = this.colors.DARK_ORANGE;
+			rect.style.strokeWidth = 1;
+			group.appendChild(rect);
+			*/
+			const txt = 'Decision support tool for farmers';
+			let fontsize = Math.floor(logo_h*0.5);
+			group.appendChild(this.createFooterSVG(
+				-w*0.5+logo_w,
+				-h*0.5,
+				w-logo_w*2, // Symmetric!
+				logo_h,
+				txt, fontsize, 'none')
+			);
+			
+		} else {
+			/*
+			const rx = -w*0.5;
+			const ry = -h*0.5+logo_h;
+			const rw = w;
+			const rh = logo_h;
+			const rect = document.createElementNS(svgNS, 'rect');
+			// Setup the <rect> element.
+			rect.setAttribute('x',rx);
+			rect.setAttribute('y',ry);
+			rect.setAttribute('width',rw);
+			rect.setAttribute('height',rh);
+			rect.style.fill = this.colors.LIGHT_ORANGE;
+			rect.style.fillOpacity = 0.5;
+			rect.style.stroke = this.colors.DARK_ORANGE;
+			rect.style.strokeWidth = 1;
+			group.appendChild(rect);
+			*/
+			const txt = 'Decision support tool for farmers';
+			let fontsize = Math.floor(logo_h*0.5);
+			group.appendChild(this.createFooterSVG(
+				-w*0.5,
+				-h*0.5+logo_h,
+				w,
+				logo_h,
+				txt, fontsize, 'none')
+			);
+		}
+		
+		// All SVG images are 400 x 300 => w=1.8*r, h=w*0.75
+		const image_w = 60;
+		const image_h = image_w*0.75;
+		const image_x = w*0.5 - image_w;
+		const image_y = -h*0.5 + image_h*0.25;
+		
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', image_x);
+		img.setAttribute('y', image_y);
+		img.setAttribute('width', image_w);
+		img.setAttribute('height', image_h);
+		img.setAttribute('href', './svg/logout.svg');
+		img.style.cursor = 'pointer';
+		img.addEventListener("click", function(){
+			self.controller.master.forceLogout();
+		}, false);
+		group.appendChild(img);
+		
+		
+		const help_w = 60;
+		const help_h = help_w*0.75;
+		const help_x = w*0.5 - help_w*2;
+		const help_y = -h*0.5 + help_h*0.25;
+		
+		const help = document.createElementNS(svgNS, "image");
+		help.setAttribute('x', help_x);
+		help.setAttribute('y', help_y);
+		help.setAttribute('width', help_w);
+		help.setAttribute('height', help_h);
+		help.setAttribute('href', './img/help.png');
+		help.style.cursor = 'pointer';
+		help.addEventListener("click", function(){
+			
+			self.models['MenuModel'].setSelected('help');
+			
+		}, false);
+		group.appendChild(help);
+		
+/*														ISO 3166-1 alpha-2
+Flag_of_the_United_Kingdom.svg.png		255 x 128		GB
+Flag_of_Denmark.svg.png					255 x 193		DK
+Flag_of_Greece.svg.png					255 x 170		GR
+Bandera_de_España.svg.png				255 x 170		ES
+Flag_of_France.svg.png					255 x 170		FR
+Flag_of_Italy.svg.png					255 x 170		IT
+Flag_of_Latvia.svg.png					255 x 128		LV
+Flag_of_Lithuania.svg.png				255 x 153		LT
+Flag_of_the_Netherlands.svg.png			255 x 170		NL
+Flag_of_Poland.svg.png					255 x 159		PL
+Flag_of_Finland.svg.png					255 x 156		FI
+Flag_of_Turkey.svg.png					255 x 170		TR
+*/
+		const flag_w = 60;
+		const flag_h = flag_w*0.75;
+		const flag_x = w*0.5 - flag_w*3;
+		const flag_y = -h*0.5 + flag_h*0.25;
+		
+		const flag = document.createElementNS(svgNS, "image");
+		flag.setAttribute('x', flag_x);
+		flag.setAttribute('y', flag_y);
+		flag.setAttribute('width', flag_w);
+		flag.setAttribute('height', flag_h);
+		flag.setAttribute('href', './img/GB.png');
+		flag.style.cursor = 'pointer';
+		flag.addEventListener("click", function(){
+			
+			self.models['MenuModel'].setSelected('language');
+			
+		}, false);
+		group.appendChild(flag);
+		
+		
+		
+		
+		
+		$('#space').append(group);
 	}
 	
 	appendLogo() {
@@ -880,18 +965,14 @@ export default class MainView extends View {
 		this.createSpace();
 		this.appendProgress();
 		
-		this.appendTitle();
-		
 		this.appendSun('FARM');
 		this.appendSun('ACTIVITIES');
 		this.appendSun('PRODUCER');
 		
 		this.appendAnalysisButton();
 		
-		this.appendLogoutButton();
-		
-		this.appendEUFlag();
-		this.appendLogo();
+		this.appendHeader(); // Logo, Title and buttons.
+		this.appendEUFlag(); // Footer
 		
 		console.log('renderALL() END!');
 	}
@@ -910,3 +991,114 @@ export default class MainView extends View {
 		this.rendered = true;
 	}
 }
+
+
+/*
+<defs>
+<path id="MyPath" fill="none" stroke="red"
+      d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
+</defs>
+
+<text>
+  <textPath href="#MyPath">
+    Quick brown fox jumps over the lazy dog.
+  </textPath>
+</text>
+*/
+/*
+	appendTitle() {
+		
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius()*3.5;
+		
+		//console.log(['r=',r]);
+		let fontSize = Math.round(r/6);
+		
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const defs = document.createElementNS(svgNS, 'defs');
+		const path = document.createElementNS(svgNS, "path");
+		
+		const d = 'M-'+r+',0 A '+r+' '+r+' 0 0 1 '+r+' 0';
+		
+		path.setAttributeNS(null, 'd', d);
+		path.id = 'MyPath';
+		path.style.stroke = this.colors.DARK_BLUE;
+		path.style.strokeWidth = 1;
+		path.style.opacity = 0.5;
+		path.style.fill = 'none';
+		
+		defs.appendChild(path);
+		group.appendChild(defs);
+		//group.appendChild(path);
+		
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.style.fontSize = fontSize+'px';
+		txt.style.fill = this.colors.DARK_ORANGE;
+		txt.style.opacity = 0.5;
+		
+		const txtPath = document.createElementNS(svgNS, 'textPath');
+		txtPath.setAttributeNS(null, 'href', '#MyPath');
+		const text_node = document.createTextNode('Decision support tool for farmers'); // for farmers
+		txtPath.appendChild(text_node);
+		txt.appendChild(txtPath);
+		
+		group.appendChild(txt);
+		
+		$('#space').append(group);
+	}
+	*/
+	
+	/*
+	<svg x="1020" y="390" width="160px" height="40px">
+		<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
+		<text id="heating-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
+	</svg>
+	*/
+	/*
+	appendTitle() {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const r = this.sunRadius();
+		
+		const w = this.REO.width;
+		const h = this.REO.height;
+		
+		const fontsize = Math.round(r/3);
+		
+		const labelWidth = 0.9*w;//7*r;
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',-labelWidth*0.5);
+		svg.setAttribute('y',-4*r+25);
+		svg.setAttributeNS(null,'width',labelWidth);
+		svg.setAttributeNS(null,'height',fontsize);
+		
+		const rect = document.createElementNS(svgNS, 'rect');
+		// Setup the <rect> element.
+		rect.setAttribute('x',0);
+		rect.setAttribute('y',0);
+		rect.setAttribute('width',labelWidth);
+		rect.setAttribute('height',fontsize);
+		rect.style.fill = 'none';//this.colors.LIGHT_ORANGE;
+		rect.style.fillOpacity = 0;
+		rect.style.stroke = '#ccc';//this.colors.DARK_ORANGE;
+		rect.style.strokeWidth = 1;
+		svg.appendChild(rect);
+		
+		const title = document.createElementNS(svgNS, 'text');
+		title.setAttribute('x','50%');
+		title.setAttribute('y','50%');
+		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		title.setAttribute('font-size',fontsize);
+		title.setAttribute('dominant-baseline','middle');
+		title.setAttribute('text-anchor','middle');
+		title.setAttribute('fill',this.colors.DARK_ORANGE);
+		title.style.opacity = 1;
+		title.appendChild(document.createTextNode('Decision support tool for farmers'));
+		svg.appendChild(title);
+		//group.appendChild(svg);
+		
+		$('#space').append(svg);
+	}
+	*/

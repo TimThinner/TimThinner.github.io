@@ -16,6 +16,10 @@ import ActivitiesController from './modules/activities/ActivitiesController.js';
 import ProducerController from './modules/producer/ProducerController.js';
 
 import AnalysisController from './modules/analysis/AnalysisController.js';
+
+import HelpController from './modules/help/HelpController.js';
+import LanguageController from './modules/language/LanguageController.js';
+
 /*
 EventObserver	Model					MenuModel
 				ResizeEventObserver		
@@ -115,6 +119,13 @@ class MasterController {
 		
 		this.controllers['analysis'] = new AnalysisController({name:'analysis', master:this, el:'#content', visible:false});
 		this.controllers['analysis'].init();
+		
+		
+		this.controllers['help'] = new HelpController({name:'help', master:this, el:'#content', visible:false});
+		this.controllers['help'].init();
+		
+		this.controllers['language'] = new LanguageController({name:'language', master:this, el:'#content', visible:false});
+		this.controllers['language'].init();
 	}
 	
 	forceLogout() {

@@ -80,8 +80,8 @@ export default class MainView extends View {
 	sunRadius() {
 		const w = this.REO.width; // We don't want scroll bars to the right or bottom of view.
 		const h = this.REO.height;
-		const wp2 = w*0.125;
-		const hp2 = h*0.125;
+		const wp2 = w*0.12; // w*0.125;
+		const hp2 = h*0.12; // h*0.125;
 		const r = Math.min(wp2, hp2); // r = 0,125 x W or H, whichever is smallest (d=0,25 x W or H)
 		return r;
 	}
@@ -382,7 +382,7 @@ export default class MainView extends View {
 		group.appendChild(surface);
 		
 		// NOTE: Transform all elements 100 pixels down!
-		ty += 100;
+		ty += 80;
 		
 		
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
@@ -398,7 +398,7 @@ export default class MainView extends View {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius(); // Radius 12,5%
 		
-		const cy = 100;
+		const cy = 80;
 		
 		let fontsize;
 		if (r <= 75) {
@@ -541,7 +541,7 @@ export default class MainView extends View {
 		let ro = r+r*0.1;
 		let ri = r-r*0.1;
 		
-		const cy=100; 
+		const cy=80; 
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -691,10 +691,10 @@ export default class MainView extends View {
 		
 		// Logo original dimensions are 1920 x 1080 pixels.
 		
-		// Set a maximum width for logo: NO MORE THAN 160 px ever.
+		// Set a maximum width for logo: NO MORE THAN 140 px ever.
 		let logo_w = w*0.2;
-		if (logo_w > 160) {
-			logo_w = 160;
+		if (logo_w > 140) {
+			logo_w = 140;
 		}
 		const logo_h = Math.floor(logo_w*108/192);
 		//const x_margin = 8;
@@ -756,11 +756,15 @@ export default class MainView extends View {
 			rect.style.strokeWidth = 1;
 			group.appendChild(rect);
 			*/
+			//console.log(['w=',w]);
+			
+			let hh = -30 + (1000-w)*0.12;
+			
 			const txt = 'Decision support tool for farmers';
 			let fontsize = Math.floor(logo_h*0.5);
 			group.appendChild(this.createFooterSVG(
 				-w*0.5,
-				-h*0.5+logo_h,
+				-h*0.5+logo_h+hh,
 				w,
 				logo_h,
 				txt, fontsize, 'none')
@@ -768,7 +772,7 @@ export default class MainView extends View {
 		}
 		
 		// All SVG images are 400 x 300 => w=1.8*r, h=w*0.75
-		const image_w = 60;
+		const image_w = 50;
 		const image_h = image_w*0.75;
 		const image_x = w*0.5 - image_w;
 		const image_y = -h*0.5 + image_h*0.25;
@@ -786,7 +790,7 @@ export default class MainView extends View {
 		group.appendChild(img);
 		
 		
-		const help_w = 60;
+		const help_w = 50;
 		const help_h = help_w*0.75;
 		const help_x = w*0.5 - help_w*2;
 		const help_y = -h*0.5 + help_h*0.25;
@@ -819,9 +823,9 @@ Flag_of_Poland.svg.png					255 x 159		PL
 Flag_of_Finland.svg.png					255 x 156		FI
 Flag_of_Turkey.svg.png					255 x 170		TR
 */
-		const flag_w = 60;
+		const flag_w = 50;
 		const flag_h = flag_w*0.75;
-		const flag_x = w*0.5 - flag_w*3;
+		const flag_x = w*0.5 - flag_w*3.2;
 		const flag_y = -h*0.5 + flag_h*0.25;
 		
 		const flag = document.createElementNS(svgNS, "image");
@@ -925,34 +929,35 @@ Flag_of_Turkey.svg.png					255 x 170		TR
 			// Create ONE SVG and put a rect and text under it.
 			group.appendChild(this.createFooterSVG(
 				flag_x_pos + flag_w + x_margin,
-				h*0.5-32,
+				h*0.5-14,
 				w - 3*x_margin - flag_w,
-				32,
+				14,
 				footer, fontsize));
 			
 		} else {
 			// If really small ...
-			if (w < 540) {
+			if (w < 500) {
+				fontsize = 6;
+			} else if (w >= 500 && w < 700) {
 				fontsize = 8;
-			} else if (w >= 540 && w < 700) {
-				fontsize = 10;
 			} else {
-				fontsize = 12;
+				fontsize = 10;
 			}
 			
 			// Create TWO SVGs and put a rect and text under it.
 			group.appendChild(this.createFooterSVG(
 				flag_x_pos + flag_w + x_margin,
-				h*0.5-48,
+				h*0.5-fontsize*2,
 				w - 3*x_margin - flag_w,
-				24,
+				fontsize,
 				footer_text_a, fontsize)
 			);
+			// Create TWO SVGs and put a rect and text under it.
 			group.appendChild(this.createFooterSVG(
 				flag_x_pos + flag_w + x_margin,
-				h*0.5-24,
+				h*0.5-fontsize,
 				w - 3*x_margin - flag_w,
-				24,
+				fontsize,
 				footer_text_b, fontsize)
 			);
 		}

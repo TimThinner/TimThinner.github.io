@@ -101,6 +101,24 @@ export default class LanguageView extends View {
 			'</div>';
 		$(this.el).append(html);
 		
+		/*
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		
+		LanguageModel
+		this.languages = ['en'];
+		this.selected = 'en';
+		*/
+		
+		// Only one of these can be true at any one time (radio buttons).
+		/*
+		if (this.USER_MODEL.profile.Language === true) {
+			$("#lang-A").prop("checked", true);
+		} ...
+		
+		*/
+		
 		
 		
 		$('input[type=radio][name=selectedLanguage]').change(function() {

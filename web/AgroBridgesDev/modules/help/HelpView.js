@@ -47,7 +47,7 @@ export default class HelpView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+color+'">HELP</h3>'+
+						'<h3 style="color:'+color+'">INSTRUCTIONS</h3>'+
 						'<p><img src="./img/help.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+

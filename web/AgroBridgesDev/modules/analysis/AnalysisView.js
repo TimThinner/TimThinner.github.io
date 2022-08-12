@@ -208,6 +208,7 @@ export default class AnalysisView extends View {
 			// + extras
 			recom['business_model_title'] = r['business_model_title'];
 			recom['sales_channel_title'] = r['sales_channel_title'];
+			recom['Sales_Channel'] = r['Sales_Channel']; // "Sales_Channel": "Pick_Your_Own",
 			
 			this.recommendationz.push(recom);
 			let color = '#000000';
@@ -371,6 +372,7 @@ export default class AnalysisView extends View {
 			coordinates.push(angleToCoordinate(Math.PI/2, d[self.featurez[0]]));
 			return coordinates;
 		}
+		
 		// Draw in reverse order => RANK 3 is in background and RANK 1 in foreground.
 		for (let i=data.length-1; i>=0; i--) {
 			// draw the path element
@@ -487,12 +489,21 @@ export default class AnalysisView extends View {
 		"Result_Farms_more_than_2_suitable":"Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first:",
 		"Results1_farms_no_suitable_channels":"Based on the characteristics of your farm non of the sales channels are considered to be an option for you. Please check the information you entered.",
 		"Results1_only_one_channel":"Based on the characteristics of your farm only one of the sales channels is considered to be an option for you and no ranking is possible. This sales channel is:",
+		
+		
+		
+		
+		The following business models and sales channels were considered in your analysis. 
+		Our analysis shows that the sales channels can be ranked as follows. 
+		The most suitable channel is ranked first.
 	*/
 	
 	renderRecommendationsText() {
 		
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_intro = this.USER_MODEL.analysisResult.result_text.Result1_Models_Considered;
+			const ll_resu = this.USER_MODEL.analysisResult.result_text.rank_intro1_id; // "Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first.",
+			const ll_add_info = this.USER_MODEL.analysisResult.result_text.Result1_add_info; // - The graphics show to which extent the SFSC sales channels meet the different criteria.
 			
 			//const ll_r1_no_suitable = this.USER_MODEL.analysisResult.result_text.Results1_farms_no_suitable_channels;
 			//const ll_r1_only_1_suitable = this.USER_MODEL.analysisResult.result_text.Results1_only_one_channel;
@@ -500,8 +511,7 @@ export default class AnalysisView extends View {
 			
 			//const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
 			
-			const ll_resu = this.USER_MODEL.analysisResult.result_text.rank_intro1_id;
-			const html = '<p>'+ll_intro+' '+ll_resu+'</p>';
+			const html = '<p>'+ll_intro+' '+ll_resu+' '+ll_add_info+'</p>';
 			/*let html;
 			
 			if (numberOfResults === 0) {
@@ -570,6 +580,32 @@ export default class AnalysisView extends View {
 				self.renderRecommendationsSpider();
 			});
 		});
+		
+		
+		this.recommendationz.forEach((r,index) => {
+			// Check if "Pick_Your_Own" is recommended?
+			if (r["Sales_Channel"] === 'Pick_Your_Own') {
+				console.log('Pick_Your_Own FOUND!!!!!');
+				/*
+				"rec_additional_text": {
+					"result_text_id": "Additional_Info_PickU",
+					"sales_channel_id": "Pick_Your_Own",
+					"text": "The harvesting labour saved by Pick-Your-Own is not reflected in the Labour to Produce Ratio. The Labour to Produce Ratio only considered Labour Requirements for Sales."
+				},
+				*/
+				if (this.USER_MODEL.analysisResult.rec_additional_text) {
+					
+					const ll_txt_id = this.USER_MODEL.analysisResult.rec_additional_text['result_text_id']; //": "Additional_Info_PickU",
+					const ll_sc_id = this.USER_MODEL.analysisResult.rec_additional_text['sales_channel_id']; // ": "Pick_Your_Own",
+					const ll_txt = this.USER_MODEL.analysisResult.rec_additional_text['text'];//": "The harvesting labour saved by Pick-Your-Own is not reflected in the Labour to Produce Ratio. The Labour to Produce Ratio only considered Labour Requirements for Sales."
+					
+					const html = '<p>'+ll_txt+'</p>';
+					
+					$('#pick-your-own-wrapper').empty();
+					$(html).appendTo('#pick-your-own-wrapper');
+				}
+			}
+		})
 	}
 	
 	renderRecommendationsSpider() {
@@ -630,12 +666,40 @@ export default class AnalysisView extends View {
 		}
 	}
 	
+	/*
+		NOTE: when "Pick-Your-Own" sales channel is recommended => 
+        {
+            "Business_Model": "Face-to-Face",
+            "Carbon_Footprint": 0.05,
+            "Chain_Added_Value": 0.95,
+            "Consumer_Contact": 1.0,
+            "Gender_Equality": 0.0,
+            "Labor_Produce": 0.01,
+            "Price_Premium": 1.0,
+            "Ranking": 2,
+            "Sales_Channel": "Pick_Your_Own",
+            "Volume": 0.2,
+            "business_model_title": "Face-to-Face",
+            "sales_channel_title": "Pick-Your-Own"
+        }
+		
+		MUST read additional text and display:
+		    
+			"rec_additional_text": {
+				"result_text_id": "Additional_Info_PickU",
+				"sales_channel_id": "Pick_Your_Own",
+				"text": "The harvesting labour saved by Pick-Your-Own is not reflected in the Labour to Produce Ratio. The Labour to Produce Ratio only considered Labour Requirements for Sales."
+			},
+		
+		
+		
+		
+	*/
 	renderWholesaleDescription() {
 		
 		if (this.USER_MODEL.analysisResult.result_text) {
-			const ll_dse = this.USER_MODEL.analysisResult.result_text.Describtion_Spiderweb;
+			const ll_dse = this.USER_MODEL.analysisResult.result_text.Description_Spiderweb_example; //Describtion_Spiderweb;
 			const ll_title = this.USER_MODEL.analysisResult.result_text.Wholesale_Comparison_title;
-			
 			$("#comparison-to-wholesale-title").empty().append(ll_title);
 			$("#wholesale-description-wrapper").empty().append('<p>'+ll_dse+'</p>');
 		}
@@ -710,6 +774,35 @@ export default class AnalysisView extends View {
 			const relative_attractiveness_text = this.USER_MODEL.analysisResult.Region_Attractiveness.Relative_Attractiveness; // "The relative attractiveness of your region was considered to be:"
 			const value = this.USER_MODEL.analysisResult.Region_Attractiveness.value; // "medium"
 			const descr = this.USER_MODEL.analysisResult.result_text.Suitability_farm_Characterstics;
+			
+			
+			/*
+			TODO
+			
+			Add link to the end of this chapter!
+			
+			
+    "links": [
+        {
+            "link_title": "Link",
+            "url": "https://agrobridges-toolbox.eu/",
+            "var_name": "More_Info_Business_Models_link"
+        },
+        {
+            "link_title": "Link",
+            "url": "https://agrobridges-toolbox.eu/",
+            "var_name": "Suitability_farm_Characteristics_info_link"
+        },
+        {
+            "link_title": "Link",
+            "url": "https://www.mdpi.com/2071-1050/11/15/4004/htm",
+            "var_name": "How_calculated_link"
+        }
+    ],*/
+			//"Suitability_farm_Characteristics_info": "If you would like to learn more about farms or regional characteristics, and how these affect the suitability of the business models, please follow this",
+			//"Suitability_farm_Characteristics_info_link": "Link",
+			//Suitability_farm_Characteristics_info
+			
 			
 			const html = '<h5 style="text-align:center">'+title+'</h5>'+
 			'<p>'+intro+'</p>'+
@@ -844,6 +937,9 @@ export default class AnalysisView extends View {
 							'<div class="col s12 m7" id="recommendations-spider-wrapper">'+
 							'</div>'+
 						'</div>'+
+					'</div>'+
+					'<div class="col s12 m10 offset-m1">'+
+						'<div id="pick-your-own-wrapper"></div>'+
 					'</div>'+
 				'</div>'+
 				

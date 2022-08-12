@@ -729,7 +729,7 @@ export default class MainView extends View {
 			group.appendChild(rect);
 			*/
 			const txt = 'Decision support tool for farmers';
-			let fontsize = Math.floor(logo_h*0.5);
+			let fontsize = Math.floor(logo_h*0.4);
 			group.appendChild(this.createFooterSVG(
 				-w*0.5+logo_w,
 				-h*0.5,
@@ -758,10 +758,10 @@ export default class MainView extends View {
 			*/
 			//console.log(['w=',w]);
 			
-			let hh = -30 + (1000-w)*0.12;
+			let hh = -30 + (1000-w)*0.1;
 			
 			const txt = 'Decision support tool for farmers';
-			let fontsize = Math.floor(logo_h*0.5);
+			let fontsize = Math.floor(logo_h*0.4);
 			group.appendChild(this.createFooterSVG(
 				-w*0.5,
 				-h*0.5+logo_h+hh,

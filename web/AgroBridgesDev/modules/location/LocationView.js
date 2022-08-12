@@ -87,6 +87,11 @@ export default class LocationView extends View {
 			const value = $(this).val();
 			console.log(["select2:select value=", value]);
 			self.USER_MODEL.profile['Country'] = value;
+			
+			// NOTE: Always when COUNTRY is selected => reset REGION.
+			console.log('RESET THE REGION');
+			self.USER_MODEL.profile['NUTS3'] = undefined;
+			
 			self.models['RegionsModel'].fetch(value);
 		});
 		// Finally initialize also the REGIONS with old selection or FIRST COUNTRY'S regions.
@@ -98,6 +103,8 @@ export default class LocationView extends View {
 		$('#regions-wrapper').empty(); // Clear old select, if any.
 		
 		let selected_region_id = this.USER_MODEL.profile['NUTS3'];
+		
+		//console.log(['selected_region_id=',selected_region_id]);
 		
 		let html = '<select class="select-region" style="width:75%">';
 		const regions = this.models['RegionsModel'].regions;

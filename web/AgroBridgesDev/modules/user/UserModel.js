@@ -245,9 +245,14 @@ export default class UserModel extends Model {
             "var_name": "How_calculated_link"
         }
     ],
-    "rec_additional_text": {},
+    "rec_additional_text": {
+        "result_text_id": "Additional_Info_PickU",
+        "sales_channel_id": "Pick_Your_Own",
+        "text": "The harvesting labour saved by Pick-Your-Own is not reflected in the Labour to Produce Ratio. The Labour to Produce Ratio only considered Labour Requirements for Sales."
+    },
     "recommendation": [
-        {
+        /*
+		{
             "Business_Model": "Online_Trade",
             "Carbon_Footprint": 1.0,
             "Chain_Added_Value": 0.62,
@@ -288,6 +293,20 @@ export default class UserModel extends Model {
             "Volume": 0.2,
             "business_model_title": "Face-to-Face",
             "sales_channel_title": "On-Farm Shop (extensively managed, unstaffed)"
+        }*/
+        {
+            "Business_Model": "Face-to-Face",
+            "Carbon_Footprint": 0.05,
+            "Chain_Added_Value": 0.95,
+            "Consumer_Contact": 1.0,
+            "Gender_Equality": 0.0,
+            "Labor_Produce": 0.01,
+            "Price_Premium": 1.0,
+            "Ranking": 2,
+            "Sales_Channel": "Pick_Your_Own",
+            "Volume": 0.2,
+            "business_model_title": "Face-to-Face",
+            "sales_channel_title": "Pick-Your-Own"
         }
     ],
     "result_text": {

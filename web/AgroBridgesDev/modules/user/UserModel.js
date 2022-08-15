@@ -182,7 +182,7 @@ export default class UserModel extends Model {
     "diagram_dimension_labels": [
         {
             "chart_title": "Volume",
-            "definition": null,
+            "definition": "In general, the highest sales volumes are expected for sales over wholesale markets. For all SFSC sales channels, lower sales volumes are expected. Comparing them farmers are expected to sell higher volumes in case they offer regular delivery over the whole season (e.g. ‘CSA – Annual Subscription & Direct Delivery’ or ‘Online Sales – Subscription & Direct Delivery’). Higher sales volumes are also expected for intensively managed ‘On-Farm shops’ and ‘Local Food Trade’. Farmers’ are assumed to deliver to these SFSC channels for multiple months. In comparison, farmers delivering to SFSC sales channels that might be suitable for shorter periods are expected to sell lower quantities in total (e.g. ‘Pick-Your-Own’, ‘Farmers’ markets’).",
             "title": "Volume",
             "var_name": "Volume"
         },
@@ -218,7 +218,7 @@ export default class UserModel extends Model {
         },
         {
             "chart_title": "Consumer Contact",
-            "definition": null,
+            "definition": "The social impact is determined, among others, by the closeness of the contact between producer and consumer. The sales channels are rated on a scale ranging from 1-5. ‘Face-to-Face’ sales (e.g., ‘On-Farm shops’, ‘Farmers’ markets’, ‘Pick-Your-Own’, ‘CSA - Trade of working hours for products’) are assumed to lead to the closest contact because there is interaction between consumers and producers. Sales in proximity mean that products are produced and sold close to where they are produced. These sales lead to medium contact. ‘CSA Annual Subscription - Trade of Money for Products’ and other direct delivery concepts could be considered as sales in proximity. Spatial proximity means that only information about the place of production and the farmers are transferred, but there is even lower direct interaction. This might lead to the lowest contact. Examples of sales in spatial proximity are ‘Local Food Trade' or ‘Online Sales - Post Delivery’.",
             "title": "Consumer Contact",
             "var_name": "Consumer_Contact"
         }
@@ -231,12 +231,7 @@ export default class UserModel extends Model {
         },
         {
             "link_title": "Link",
-            "url": "https://www.mdpi.com/2071-1050/11/15/4004/htm",
-            "var_name": "Definition_Criteria_link"
-        },
-        {
-            "link_title": "Link",
-            "url": "https://novascotia.ca/thinkfarm/documents/guide-to-marketing-channel.pdf",
+            "url": "https://agrobridges-toolbox.eu/",
             "var_name": "Suitability_farm_Characteristics_info_link"
         },
         {

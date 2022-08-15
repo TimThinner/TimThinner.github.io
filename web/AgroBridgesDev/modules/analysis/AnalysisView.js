@@ -378,6 +378,38 @@ export default class AnalysisView extends View {
 			// draw the path element
 			// IF THE SHOW CHECKBOX is checked!!!!
 			// BUT do not block the "wholesale" spider!
+			
+			if (name === 'wholesale') {
+				
+				let d = data[i];
+				// Note that when we show "wholesale" spider, we do not have access to 
+				// this.showRecommendation['R'+i] -object.
+				const color = this.colors.DARK_GREEN;
+				let coordinates = getPathCoordinates(d);
+				svg.append("path")
+					.datum(coordinates)
+					.attr("d", line)
+					.attr("stroke-width", 2)
+					.attr("stroke", color)
+					.attr("fill", "none")//color)
+					.attr("stroke-opacity", 1)
+					.attr("opacity", 1) //0.5);
+				
+				
+			} else if (this.showRecommendation['R'+i].value === true) {
+				let d = data[i];
+				const color = this.showRecommendation['R'+i].color;
+				let coordinates = getPathCoordinates(d);
+				svg.append("path")
+					.datum(coordinates)
+					.attr("d", line)
+					.attr("stroke-width", 2)
+					.attr("stroke", color)
+					.attr("fill", "none")//color)
+					.attr("stroke-opacity", 1)
+					.attr("opacity", 1) //0.5);
+			}
+			/*
 			if (data.length === 1 || this.showRecommendation['R'+i].value === true) {
 				
 				let d = data[i];
@@ -398,7 +430,7 @@ export default class AnalysisView extends View {
 					.attr("fill", "none")//color)
 					.attr("stroke-opacity", 1)
 					.attr("opacity", 1) //0.5);
-			}
+			}*/
 		}
 	}
 	
@@ -450,7 +482,6 @@ export default class AnalysisView extends View {
 			//const ll_def_online_trade = this.USER_MODEL.analysisResult.result_text.Definition_Online_Trade;
 			//const ll_def_retail_trade = this.USER_MODEL.analysisResult.result_text.Definition_Retail_Trade;
 			//const ll_def_improved_logistics = this.USER_MODEL.analysisResult.result_text.Definition_Improved_Logistics;
-			const ll_def_more_info = this.USER_MODEL.analysisResult.result_text.More_Info_Business_Models;
 			
 			const ll_title = this.USER_MODEL.analysisResult.result_text.Intro_Definition_Business_Models_title;
 			
@@ -479,7 +510,34 @@ export default class AnalysisView extends View {
 			$('#business-models-intro-title').empty().append('<h5 style="text-align:center">'+ll_title+'</h5>');
 			$('#business-models-intro-wrapper').empty().append(ll_intro);
 			$('#business-models-collapsible-wrapper').empty().append(html);
-			$("#business-models-more-info-wrapper").empty().append(ll_def_more_info);
+			
+			
+			/*
+			TODO
+			Add link to the end of this chapter!
+			"links": [
+			{
+            "link_title": "Link",
+            "url": "https://agrobridges-toolbox.eu/",
+            "var_name": "More_Info_Business_Models_link"
+			}
+			],*/
+			let link_url = undefined;
+			let link_title = undefined;
+			this.USER_MODEL.analysisResult.links.forEach(l=>{
+				if (l.var_name === 'More_Info_Business_Models_link') {
+					link_url = l.url;
+					link_title = l.link_title;
+				}
+			});
+			let ll_more_info = '<p>'+this.USER_MODEL.analysisResult.result_text.More_Info_Business_Models;
+			// NOTE: If link is defined => Opens new "tab" for the linked page.
+			if (typeof link_url !== 'undefined' && typeof link_title !== 'undefined') {
+				ll_more_info += ' <a href="'+link_url+'" target="_blank">'+link_title+'</a></p>';
+			} else {
+				ll_more_info += '</p>';
+			}
+			$("#business-models-more-info-wrapper").empty().append(ll_more_info);
 		}
 	}
 	
@@ -728,12 +786,11 @@ export default class AnalysisView extends View {
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_title = this.USER_MODEL.analysisResult.result_text.Description_Spiderweb_title;
 			const ll_how_to_read = this.USER_MODEL.analysisResult.result_text.Describtion_Spiderweb;
-			const ll_def_crite = this.USER_MODEL.analysisResult.result_text.Definition_Criteria;
-			const ll_def_crite_link = this.USER_MODEL.analysisResult.result_text.Definition_Criteria_link;
+			//const ll_def_crite = this.USER_MODEL.analysisResult.result_text.Definition_Criteria;
+			//const ll_def_crite_link = this.USER_MODEL.analysisResult.result_text.Definition_Criteria_link;
 		
-			const html = '<h5 style="text-align:center">'+ll_title+'</h5>'+
-				'<p>'+ll_how_to_read+'</p>'+
-				'<p>'+ll_def_crite+' '+ll_def_crite_link+'</p>';
+			const html = '<h5 style="text-align:center">'+ll_title+'</h5>'+'<p>'+ll_how_to_read+'</p>';
+				//'<p>'+ll_def_crite+' '+ll_def_crite_link+'</p>';
 				
 			$("#how-to-read-spiders").empty().append(html);
 		}
@@ -771,44 +828,44 @@ export default class AnalysisView extends View {
 			
 			const title = this.USER_MODEL.analysisResult.result_text.Suitability_farm_Characteristics_title;
 			const intro = this.USER_MODEL.analysisResult.result_text.Intro_not_all_sales_channels_con;
-			const relative_attractiveness_text = this.USER_MODEL.analysisResult.Region_Attractiveness.Relative_Attractiveness; // "The relative attractiveness of your region was considered to be:"
-			const value = this.USER_MODEL.analysisResult.Region_Attractiveness.value; // "medium"
 			const descr = this.USER_MODEL.analysisResult.result_text.Suitability_farm_Characterstics;
 			
+			const relative_attractiveness_text = this.USER_MODEL.analysisResult.Region_Attractiveness.Relative_Attractiveness; // "The relative attractiveness of your region was considered to be:"
+			const value = this.USER_MODEL.analysisResult.Region_Attractiveness.value; // "medium"
 			
 			/*
 			TODO
-			
 			Add link to the end of this chapter!
-			
-			
-    "links": [
-        {
-            "link_title": "Link",
-            "url": "https://agrobridges-toolbox.eu/",
-            "var_name": "More_Info_Business_Models_link"
-        },
-        {
+			"links": [
+			{
             "link_title": "Link",
             "url": "https://agrobridges-toolbox.eu/",
             "var_name": "Suitability_farm_Characteristics_info_link"
-        },
-        {
-            "link_title": "Link",
-            "url": "https://www.mdpi.com/2071-1050/11/15/4004/htm",
-            "var_name": "How_calculated_link"
-        }
-    ],*/
+			}
+			],*/
 			//"Suitability_farm_Characteristics_info": "If you would like to learn more about farms or regional characteristics, and how these affect the suitability of the business models, please follow this",
 			//"Suitability_farm_Characteristics_info_link": "Link",
 			//Suitability_farm_Characteristics_info
 			
+			let link_url = undefined;
+			let link_title = undefined;
+			const link_text = this.USER_MODEL.analysisResult.result_text.Suitability_farm_Characteristics_info;
 			
-			const html = '<h5 style="text-align:center">'+title+'</h5>'+
+			this.USER_MODEL.analysisResult.links.forEach(l=>{
+				if (l.var_name === 'Suitability_farm_Characteristics_info_link') {
+					link_url = l.url;
+					link_title = l.link_title;
+				}
+			});
+			
+			let html = '<h5 style="text-align:center">'+title+'</h5>'+
 			'<p>'+intro+'</p>'+
 			'<p style="color:'+this.colors.DARK_GREEN+'; font-weight:bold;">'+relative_attractiveness_text+' <span style="color:'+this.colors.DARK_ORANGE+'">'+value+'</span></p>'+
 			'<p>'+descr+'</p>';
-			
+			// NOTE: If link is defined => Opens new "tab" for the linked page.
+			if (typeof link_url !== 'undefined' && typeof link_title !== 'undefined') {
+				html += '<p>'+link_text+' <a href="'+link_url+'" target="_blank">'+link_title+'</a></p>';
+			}
 			$("#farm-characteristics-wrapper").empty().append(html);
 		}
 	}
@@ -817,7 +874,19 @@ export default class AnalysisView extends View {
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_how_calculated_title = this.USER_MODEL.analysisResult.result_text.How_calculated_title;
 			const ll_how_calculated_text = this.USER_MODEL.analysisResult.result_text.How_calculated;
-			const html = '<h5 style="text-align:center">'+ll_how_calculated_title+'</h5><p>'+ll_how_calculated_text+'</p>';
+			let html = '<h5 style="text-align:center">'+ll_how_calculated_title+'</h5><p>'+ll_how_calculated_text+'</p>';
+			
+			let link_url = undefined;
+			let link_title = undefined;
+			this.USER_MODEL.analysisResult.links.forEach(l=>{
+				if (l.var_name === 'How_calculated_link') {
+					link_url = l.url;
+					link_title = l.link_title;
+				}
+			});
+			if (typeof link_url !== 'undefined' && typeof link_title !== 'undefined') {
+				html += '<p> <a href="'+link_url+'" target="_blank">'+link_title+'</a></p>';
+			}
 			$("#how-calculated-wrapper").empty().append(html);
 		}
 	}

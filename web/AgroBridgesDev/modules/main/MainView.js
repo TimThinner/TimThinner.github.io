@@ -687,6 +687,11 @@ export default class MainView extends View {
 		
 		console.log(['w=',w]);
 		
+		
+		
+		
+		
+		
 		const group = document.createElementNS(svgNS, "g");
 		
 		// Logo original dimensions are 1920 x 1080 pixels.
@@ -822,7 +827,25 @@ Flag_of_the_Netherlands.svg.png			255 x 170		NL
 Flag_of_Poland.svg.png					255 x 159		PL
 Flag_of_Finland.svg.png					255 x 156		FI
 Flag_of_Turkey.svg.png					255 x 170		TR
+
+List of ISO 639-1 codes
+
+English			en
+Danish			da
+Greek			el
+Spanish			es
+French			fr
+Italian			it
+Latvian			lv
+Lithuanian		lt
+Dutch			nl
+Polish			pl
+Finnish			fi
+Turkish			tr
 */
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected; // This is 'en', or 'fi', or
+		const sel_flag_href = './img/'+sel+'.png';
 		const flag_w = 50;
 		const flag_h = flag_w*0.75;
 		const flag_x = w*0.5 - flag_w*3.2;
@@ -833,7 +856,7 @@ Flag_of_Turkey.svg.png					255 x 170		TR
 		flag.setAttribute('y', flag_y);
 		flag.setAttribute('width', flag_w);
 		flag.setAttribute('height', flag_h);
-		flag.setAttribute('href', './img/GB.png');
+		flag.setAttribute('href', sel_flag_href);
 		flag.style.cursor = 'pointer';
 		flag.addEventListener("click", function(){
 			
@@ -841,10 +864,6 @@ Flag_of_Turkey.svg.png					255 x 170		TR
 			
 		}, false);
 		group.appendChild(flag);
-		
-		
-		
-		
 		
 		$('#space').append(group);
 	}

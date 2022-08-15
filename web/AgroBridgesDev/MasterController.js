@@ -57,8 +57,8 @@ class MasterController {
 			
 			console.log('MasterController LOGIN !!!!');
 			
-		} else if (options.model==='UserModel' && options.method==='loadTranslation') {
-			console.log(['MasterController UserModel loadTranslation status=',options.status,' message=',options.message]);
+		} else if (options.model==='LanguageModel' && options.method==='loadTranslation') {
+			console.log(['MasterController LanguageModel loadTranslation status=',options.status,' message=',options.message]);
 		}
 	}
 	

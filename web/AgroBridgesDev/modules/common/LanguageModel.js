@@ -1,9 +1,25 @@
 import Model from '../common/Model.js';
-
+/*
+English			en
+Danish			da
+Greek			el
+Spanish			es
+French			fr
+Italian			it
+Latvian			lv
+Lithuanian		lt
+Dutch			nl
+Polish			pl
+Finnish			fi
+Turkish			tr
+*/
 export default class LanguageModel extends Model {
 	constructor(options) {
 		super(options);
-		this.languages = ['en'];
+		this.languages = ['en', 'da', 'el',
+			'es', 'fr', 'it', 
+			'lv', 'lt', 'nl',
+			'pl', 'fi', 'tr'];
 		this.selected = 'en';
 		this.translation = {};
 		this.translation_backup = {
@@ -138,7 +154,7 @@ export default class LanguageModel extends Model {
 				*/
 				
 				"Volume":"Volume",
-				"Volume_Definition":"",
+				"Volume_Definition":"In general, the highest sales volumes are expected for sales over wholesale markets. For all SFSC sales channels, lower sales volumes are expected. Comparing them farmers are expected to sell higher volumes in case they offer regular delivery over the whole season (e.g. ‘CSA – Annual Subscription & Direct Delivery’ or ‘Online Sales – Subscription & Direct Delivery’). Higher sales volumes are also expected for intensively managed ‘On-Farm shops’ and ‘Local Food Trade’. Farmers’ are assumed to deliver to these SFSC channels for multiple months. In comparison, farmers delivering to SFSC sales channels that might be suitable for shorter periods are expected to sell lower quantities in total (e.g. ‘Pick-Your-Own’, ‘Farmers’ markets’).",
 				"Price_Premium":"Price Premium",
 				"Price_Premium_Definition":"Calculated from the difference between the average farmgate price in the chain and the average farm gate price in the region. Price Premium = Price Difference at the farm gate (Euro per kg) / Average farmgate to retail price in the region",
 				"Chain_Added_Value":"Chain Added Value",
@@ -150,14 +166,11 @@ export default class LanguageModel extends Model {
 				"Gender_Equality":"Gender Equality",
 				"Gender_Equality_Definition":"Measures the share of working hours by women in the distribution process.Gender Equality = hours worked by women in the distribution process / total labor input for distribution (h) *100",
 				"Consumer_Contact":"Consumer Contact",
-				"Consumer_Contact_Definition":"",
-				
+				"Consumer_Contact_Definition":"The social impact is determined, among others, by the closeness of the contact between producer and consumer. The sales channels are rated on a scale ranging from 1-5. ‘Face-to-Face’ sales (e.g., ‘On-Farm shops’, ‘Farmers’ markets’, ‘Pick-Your-Own’, ‘CSA - Trade of working hours for products’) are assumed to lead to the closest contact because there is interaction between consumers and producers. Sales in proximity mean that products are produced and sold close to where they are produced. These sales lead to medium contact. ‘CSA Annual Subscription - Trade of Money for Products’ and other direct delivery concepts could be considered as sales in proximity. Spatial proximity means that only information about the place of production and the farmers are transferred, but there is even lower direct interaction. This might lead to the lowest contact. Examples of sales in spatial proximity are ‘Local Food Trade' or ‘Online Sales - Post Delivery’.",
 				"Suitability_farm_Characteristics_title":"Farm and regional characteristics",
 				"Intro_not_all_sales_channels_con": "Not all sales channels were considered. Why? Some business models were excluded, because they were considered to be less suitable for your farm or in your region. Reasons for this are farms or regional characteristics (e.g. how attractive your region is for sales).",
 				"Suitability_farm_Characterstics": "This relative attractiveness in the model depends on the population density and the income of the inhabitants. This was determined on a regional level (NUTS3 areas are defined as small areas for specific diagnoses with 150,000 - 800,000 inhabitants ), we used the population densities and the income of the households to determine whether a region is more or less attractive for sales. Business models such as Consumer Supported Agriculture strongly depend on high population densities and might be especially suitable for organic farms. Intensively managed on-farm shops run by staff might also only be successful in areas with high income and higher population densities.",
 				"Suitability_farm_Characteristics_info":"If you would like to learn more about farms or regional characteristics, and how these affect the suitability of the business models, please follow this Link.",
-				
-				
 				
 				"Description_Spiderweb_example":"You can see in example that SFSC enable you to reach higher prices (price premium), but they are labor-intensive (lower labor to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale.",
 				"Description_Spiderweb_title":"How to read the diagrams?",
@@ -187,7 +200,11 @@ export default class LanguageModel extends Model {
 				"Distance_Drive_minor_kat5":">120 minutes",
 				'no_database_message':'<b>WAIT for few seconds...</b> if the backend is not running in your machine, we continue after timeout error.',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!'
-			}
+			},
+			'da': {}, 'el':{},
+			'es': {}, 'fr': {}, 'it': {},
+			'lv': {}, 'lt': {}, 'nl': {},
+			'pl': {}, 'fi': {}, 'tr': {}
 		};
 		this.translation_simulated = {
 			"en": {
@@ -294,7 +311,11 @@ export default class LanguageModel extends Model {
         "status_profiled_save": "Profile Saved OK",
         "vegetables_how_many_query": "How many different types of vegetables do you approximately grow?",
         "vegetables_query": "Which of these vegetables do you grow?"
-			}
+			},
+			'da': {}, 'el':{},
+			'es': {}, 'fr': {}, 'it': {},
+			'lv': {}, 'lt': {}, 'nl': {},
+			'pl': {}, 'fi': {}, 'tr': {}
 		};
 		this.translationReady = false;
 	}

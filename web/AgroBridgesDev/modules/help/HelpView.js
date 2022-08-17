@@ -79,7 +79,7 @@ export default class HelpView extends View {
 		$(this.el).append(html);
 		
 		$("#help-ok").on('click', function() {
-			self.models['MenuModel'].setSelected('main');
+			self.models['MenuModel'].setSelected('menu');
 		});
 		
 		this.rendered = true;

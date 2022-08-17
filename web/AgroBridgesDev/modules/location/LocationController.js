@@ -7,46 +7,6 @@ export default class LocationController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		/*
-		this.cids = [
-			"BE",
-			"BG",
-			"CZ",
-			"DK",
-			"DE",
-			"EE",
-			"IE",
-			"EL",
-			"ES",
-			"FR",
-			"HR",
-			"IT",
-			"CY",
-			"LV",
-			"LT",
-			"LU",
-			"HU",
-			"MT",
-			"NL",
-			"AT",
-			"PL",
-			"PT",
-			"RO",
-			"SI",
-			"SK",
-			"FI",
-			"SE",
-			"UK",
-			"IS",
-			"LI",
-			"NO",
-			"CH",
-			"ME",
-			"MK",
-			"AL",
-			"RS",
-			"TR"
-		];*/
 	}
 	
 	init() {
@@ -63,12 +23,15 @@ export default class LocationController extends Controller {
 		this.models['RegionsModel'] = rm;
 		*/
 		const cm = new CountriesModel({name:'CountriesModel',src:''});
+		cm.MOCKUP = this.master.MOCKUP;
 		cm.subscribe(this);
+		
 		this.master.modelRepo.add('CountriesModel',cm);
 		this.models['CountriesModel'] = cm;
 		this.models['CountriesModel'].fetch(); // This "configuration" does not change, so we can fetch this at Controller init() -time.
 		
 		const rm = new RegionsModel({name:'RegionsModel',src:''});
+		rm.MOCKUP = this.master.MOCKUP;
 		rm.subscribe(this);
 		this.master.modelRepo.add('RegionsModel',rm);
 		this.models['RegionsModel'] = rm;

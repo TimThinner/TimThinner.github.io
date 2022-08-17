@@ -53,7 +53,7 @@ export default class LanguageView extends View {
 						$('#'+this.FELID).empty();
 						//$('#lang-ok').removeClass('disabled');
 						// GO BACK TO MAIN VIEW!
-						this.models['MenuModel'].setSelected('main');
+						this.models['MenuModel'].setSelected('menu');
 					},1000);
 					
 				} else {
@@ -197,7 +197,7 @@ Turkish			tr
 			// Confirm the change.
 			$('#lang-ok').addClass('disabled');
 			self.LM.selected = self.selected_language;
-			self.LM.loadTranslation(self.selected_language);
+			self.LM.loadTranslation();
 		});
 		
 		this.rendered = true;

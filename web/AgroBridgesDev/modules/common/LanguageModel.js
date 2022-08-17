@@ -320,8 +320,10 @@ export default class LanguageModel extends Model {
 		this.translationReady = false;
 	}
 	
-	loadTranslation(lang) {
+	loadTranslation() {
 		const self = this;
+		
+		const lang = this.selected;
 		
 		if (this.fetching) {
 			console.log(this.name+' FETCHING ALREADY IN PROCESS!');

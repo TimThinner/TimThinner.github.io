@@ -888,6 +888,190 @@ export default class UserModel extends Model {
 		setTimeout(() => this.notifyAll({model:'UserModel',method:'signup',status:200,message:'OK'}), 100);
 	}
 	
+	insertUser() {
+		const self = this;
+		const data = {user_id:this.id};
+		
+		if (this.MOCKUP) {
+			
+			setTimeout(() => this.notifyAll({model:self.name, method:'insertUser', status:201, message:'OK'}), 500);
+			
+		} else {
+			
+			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+			
+			const myHeaders = new Headers();
+			if (typeof this.token !== 'undefined') {
+				const authorizationToken = 'Bearer '+this.token;
+				myHeaders.append("Authorization", authorizationToken);
+			}
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myPost = {
+				method: 'POST',
+				headers: myHeaders,
+				body: JSON.stringify(data)
+			};
+			//const myRequest = new Request(this.backend + '/users/'+this.id, myPut);
+			const myRequest = new Request(this.backend + '/user_insert', myPost);
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					let msg = "OK";
+					console.log(['myJson=',myJson]);
+					if (typeof myJson.message !== 'undefined') {
+						msg = myJson.message;
+					}
+					self.notifyAll({model:self.name, method:'insertUser', status:status, message:msg});
+				})
+				.catch(function(error){
+					let msg = "Error: ";
+					if (typeof error.message !== 'undefined') {
+						msg += error.message;
+					} else {
+						msg += 'NOT SPECIFIED in error.message.';
+					}
+					self.notifyAll({model:self.name, method:'insertUser', status:status, message:msg});
+				});
+		}
+	}
+	
+	
+	restoreUserProfile() {
+		const self = this;
+		
+		if (this.MOCKUP) {
+			
+			setTimeout(() => this.notifyAll({model:self.name, method:'restoreUserProfile', status:200, message:'OK'}), 500);
+			
+		} else {
+			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+			
+			const myHeaders = new Headers();
+			const authorizationToken = 'Bearer '+this.token;
+			myHeaders.append("Authorization", authorizationToken);
+			myHeaders.append("Content-Type", "application/json");
+			
+			const myGet = {
+				method: 'GET',
+				headers: myHeaders
+				//body: JSON.stringify(data)
+			};
+			//const myRequest = new Request(this.backend + '/analysis/'+this.id, myPost);
+			// this.id 
+			// "name": "http://localhost:6969/analysis?user_id=prod_nl_1&lang=en",
+			const url =  this.backend + '/user?user_id=' + this.id;
+			const myRequest = new Request(url, myGet);
+			fetch(myRequest)
+				.then(function(response){
+					status = response.status;
+					return response.json();
+				})
+				.then(function(myJson){
+					let msg = "OK";
+					console.log('HUUUUU HAAAAAA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+					console.log(['myJson=',myJson]);
+					
+					
+					if (typeof myJson.message !== 'undefined') {
+						msg = myJson.message;
+					}
+					//JSON.parse(myJson);
+					// FARM LOCATION:
+					if (typeof myJson.Country !== 'undefined') {
+						self.profile.Country = myJson.Country;
+					}
+					if (typeof myJson.NUTS3 !== 'undefined') {
+						self.profile.NUTS3 = myJson.NUTS3;
+					}
+					if (typeof myJson.Distance_Drive_minor_kat1 !== 'undefined') {
+						if (myJson.Distance_Drive_minor_kat1) { // 1
+							self.profile.Distance_Drive_minor_kat1 = true;
+						} else {
+							self.profile.Distance_Drive_minor_kat1 = false;
+						}
+					}
+					if (typeof myJson.Distance_Drive_minor_kat2 !== 'undefined') {
+						if (myJson.Distance_Drive_minor_kat2) { // 1
+							self.profile.Distance_Drive_minor_kat2 = true;
+						} else {
+							self.profile.Distance_Drive_minor_kat2 = false;
+						}
+					}
+					if (typeof myJson.Distance_Drive_minor_kat3 !== 'undefined') {
+						if (myJson.Distance_Drive_minor_kat3) { // 1
+							self.profile.Distance_Drive_minor_kat3 = true;
+						} else {
+							self.profile.Distance_Drive_minor_kat3 = false;
+						}
+					}
+					if (typeof myJson.Distance_Drive_minor_kat4 !== 'undefined') {
+						if (myJson.Distance_Drive_minor_kat4) { // 1
+							self.profile.Distance_Drive_minor_kat4 = true;
+						} else {
+							self.profile.Distance_Drive_minor_kat4 = false;
+						}
+					}
+					if (typeof myJson.Distance_Drive_minor_kat5 !== 'undefined') {
+						if (myJson.Distance_Drive_minor_kat5) { // 1
+							self.profile.Distance_Drive_minor_kat5 = true;
+						} else {
+							self.profile.Distance_Drive_minor_kat5 = false;
+						}
+					}
+					if (typeof myJson.Distance_Drive_major_kat1 !== 'undefined') {
+						if (myJson.Distance_Drive_major_kat1) { // 1
+							self.profile.Distance_Drive_major_kat1 = true;
+						} else {
+							self.profile.Distance_Drive_major_kat1 = false;
+						}
+					}
+					if (typeof myJson.Distance_Drive_major_kat2 !== 'undefined') {
+						if (myJson.Distance_Drive_major_kat2) { // 1
+							self.profile.Distance_Drive_major_kat2 = true;
+						} else {
+							self.profile.Distance_Drive_major_kat2 = false;
+						}
+					}
+					if (typeof myJson.Distance_Drive_major_kat3 !== 'undefined') {
+						if (myJson.Distance_Drive_major_kat3) { // 1
+							self.profile.Distance_Drive_major_kat3 = true;
+						} else {
+							self.profile.Distance_Drive_major_kat3 = false;
+						}
+					}
+					if (typeof myJson.Distance_Drive_major_kat4 !== 'undefined') {
+						if (myJson.Distance_Drive_major_kat4) { // 1
+							self.profile.Distance_Drive_major_kat4 = true;
+						} else {
+							self.profile.Distance_Drive_major_kat4 = false;
+						}
+					}
+					if (typeof myJson.Distance_Drive_major_kat5 !== 'undefined') {
+						if (myJson.Distance_Drive_major_kat5) { // 1
+							self.profile.Distance_Drive_major_kat5 = true;
+						} else {
+							self.profile.Distance_Drive_major_kat5 = false;
+						}
+					}
+					self.notifyAll({model:self.name, method:'restoreUserProfile', status:status, message:myJson.message});
+				})
+				.catch(function(error){
+					let msg = "Error: ";
+					if (typeof error.message !== 'undefined') {
+						msg += error.message;
+					} else {
+						msg += 'NOT SPECIFIED in error.message.';
+					}
+					self.notifyAll({model:self.name, method:'restoreUserProfile', status:status, message:msg});
+				});
+		}
+	}
+	
+	
 	updateUserProfile(data) {
 		const self = this;
 		/*const data = [
@@ -909,6 +1093,7 @@ export default class UserModel extends Model {
 			setTimeout(() => this.notifyAll({model:self.name, method:'updateUserProfile', status:200, message:'OK'}), 500);
 			
 		} else {
+			
 			let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
 			
 			const myHeaders = new Headers();

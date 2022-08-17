@@ -1080,7 +1080,7 @@ export default class AnalysisView extends View {
 		$(this.el).append(html);
 		
 		$("#analysis-ok").on('click', function() {
-			self.controller.models['MenuModel'].setSelected('main');
+			self.controller.models['MenuModel'].setSelected('menu');
 		});
 		
 		if (this.USER_MODEL.analysisReady) {

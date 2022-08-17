@@ -53,7 +53,7 @@ export default class ProducerView extends View {
 					});
 					
 					// After 1 second go back to MAIN-page automatically.
-					setTimeout(() => this.controller.models['MenuModel'].setSelected('main'), 1000);
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('menu'), 1000);
 					
 				} else {
 					// Report error.
@@ -65,7 +65,7 @@ export default class ProducerView extends View {
 					// $('#producer-ok').removeClass('disabled');
 					
 					// After 1 second go back to MAIN-page automatically.
-					setTimeout(() => this.controller.models['MenuModel'].setSelected('main'), 1000);
+					setTimeout(() => this.controller.models['MenuModel'].setSelected('menu'), 1000);
 				}
 			}
 		}

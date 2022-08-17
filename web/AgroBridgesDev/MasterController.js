@@ -4,7 +4,7 @@ import LanguageModel from './modules/common/LanguageModel.js';
 import UserModel from './modules/user/UserModel.js';
 
 import MenuController from './modules/menu/MenuController.js';
-import MainController from './modules/main/MainController.js';
+//import MainController from './modules/main/MainController.js';
 import FarmController from './modules/farm/FarmController.js';
 import LocationController from './modules/location/LocationController.js';
 import InfoController from './modules/info/InfoController.js';
@@ -27,77 +27,27 @@ EventObserver	Model					MenuModel
 ModelRepo		
 Controller		MenuController
 View			MenuView
+
+
+
+NEW: Read in the parameters from URL Query String
+
+https://..../index.html?userid=323949890&country=IE&language=en
+
+
 */
 class MasterController {
 	
 	constructor() {
 		this.controllers = {};
 		this.modelRepo = new ModelRepo();
+		this.MOCKUP = true;
 	}
 	
-	notify(options) {
-		console.log(['MasterController notify options=',options]);
-		
-		if (options.model==='UserModel' && options.method==='logout') {
-			
-			console.log('MasterController USER LOGOUT!');
-			const mm = this.modelRepo.get('MenuModel');
-			if (mm) {
-				mm.setSelected('menu');
-			}
-			/*
-				cleaning removes all user specific data from app. 
-				Default implementation does nothing.
-			*/
-			Object.keys(this.controllers).forEach(key => {
-				this.controllers[key].clean();
-			});
-			
-		} else if (options.model==='UserModel' && options.method==='login') {
-			
-			console.log('MasterController LOGIN !!!!');
-			
-		} else if (options.model==='LanguageModel' && options.method==='loadTranslation') {
-			console.log(['MasterController LanguageModel loadTranslation status=',options.status,' message=',options.message]);
-		}
-	}
+	createControllers() {
 	
-	init() {
-		console.log('MasterController init!');
-		
-		console.log('Create ResizeEventObserver!');
-		const REO = new ResizeEventObserver();
-		this.modelRepo.add('ResizeEventObserver',REO);
-		
-		const LM = new LanguageModel({name:'LanguageModel',src:''});
-		LM.subscribe(this); // Now we will receive notifications from the LanguageModel.
-		this.modelRepo.add('LanguageModel',LM);
-		
-		console.log('Create UserModel!');
-		const UM = new UserModel({name:'UserModel'});
-		UM.subscribe(this); // Now we will receive notifications from the UserModel.
-		this.modelRepo.add('UserModel',UM);
-		//UM.restore(); // Try to restore previous "session" stored into LocalStorage.
-		
-		// Start tracking resize events => will also notify initial "resize" (with small delay) 
-		// for MenuView (View which is visible after delay timeout).
-		REO.start();
-		
-		console.log('Create Controllers...');
-		// - MENU
-		// - MAIN
-		//   - Farm
-		//     - Location
-		//     - Info
-		//     - Vegetables
-		//     - Animals
-		//     - Fruits
-		//   - Activities
-		//   - Producer
 		this.controllers['menu'] = new MenuController({name:'menu', master:this, el:'#content', visible:true});
 		this.controllers['menu'].init();
-		this.controllers['main'] = new MainController({name:'main', master:this, el:'#content', visible:false});
-		this.controllers['main'].init();
 		
 		this.controllers['farm'] = new FarmController({name:'farm', master:this, el:'#content', visible:false});
 		this.controllers['farm'].init();
@@ -126,6 +76,163 @@ class MasterController {
 		
 		this.controllers['language'] = new LanguageController({name:'language', master:this, el:'#content', visible:false});
 		this.controllers['language'].init();
+	}
+	
+	notify(options) {
+		console.log(['MasterController notify options=',options]);
+		
+		if (options.model==='UserModel' && options.method==='logout') {
+			
+			console.log('MasterController USER LOGOUT!');
+			
+			
+			/*
+			const mm = this.modelRepo.get('MenuModel');
+			if (mm) {
+				mm.setSelected('menu');
+			}
+			
+			*/
+			
+			/*
+				cleaning removes all user specific data from app. 
+				Default implementation does nothing.
+			*/
+			Object.keys(this.controllers).forEach(key => {
+				this.controllers[key].clean();
+			});
+			
+			// Test if this closes the current TAB.
+			// NOTE: This method can only be called on windows that were opened by a script using the Window.open() method. 
+			// If the window was not opened by a script, an error similar to this one appears in the console: 
+			// Scripts may not close windows that were not opened by script.
+			window.close();
+			
+			
+		} else if (options.model==='UserModel' && options.method==='login') {
+			
+			console.log('MasterController LOGIN !!!!');
+			
+			
+		} else if (options.model==='UserModel' && options.method==='insertUser') {
+			
+			if (options.status===201) {
+				// 201 OK User is inserted (new one).
+				// 404 409 if exist => 
+				// 201 OK
+				console.log('NEW USER, NO NEED to RESTORE values!');
+				
+				
+				
+			} else {
+				console.log('USER EXIST in the databasew => RESTORE values!');
+				const UM = this.modelRepo.get('UserModel');
+				UM.restoreUserProfile(); // Try to restore previous profile data stored into database.
+			}
+			
+		} else if (options.model==='UserModel' && options.method==='restoreUserProfile') {
+			
+			console.log(['ReSTORED USER profile !!!!!! options.status=',options.status]);
+			
+			
+			
+		} else if (options.model==='LanguageModel' && options.method==='loadTranslation') {
+			
+			console.log(['MasterController LanguageModel loadTranslation status=',options.status,' message=',options.message]);
+			
+		}
+	}
+	
+	init() {
+		console.log('MasterController init!');
+		
+		// Parse URL Query String.
+		// const query_string = '?userid='+uid+'&country=IE&language=en&MOCKUP='+mockup;
+		//
+		// If URL QUERY STRING does NOT have values, what are the defaults?
+		// 
+		// class UserModel this.id = 'prod_nl_1';
+		// UM.profile['Country'] = 'IE';
+		// class Model this.MOCKUP = true; NOTE: effects UM, LM
+		// MasterController this.MOCKUP = true; NOTE: effects CM, RM (Location)
+		// LM.selected = 'en';
+		
+		const url_params = {};
+		const params = new URLSearchParams(window.location.search);
+		// Display the key/value pairs
+		for (const [key, value] of params.entries()) {
+			url_params[key] = value;
+		}
+		console.log(['url_params=',url_params]);
+		//	const query_string = '?userid='+uid+'&country=IE&language=en&MOCKUP='+mockup;
+		
+		console.log('Create ResizeEventObserver!');
+		const REO = new ResizeEventObserver();
+		this.modelRepo.add('ResizeEventObserver',REO);
+		
+		const LM = new LanguageModel({name:'LanguageModel',src:''});
+		LM.subscribe(this); // Now we will receive notifications from the LanguageModel.
+		this.modelRepo.add('LanguageModel',LM);
+		
+		console.log('Create UserModel!');
+		const UM = new UserModel({name:'UserModel'});
+		UM.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.modelRepo.add('UserModel',UM);
+		//UM.restore(); // Try to restore previous "session" stored into LocalStorage.
+		
+		
+		
+		
+		// Start tracking resize events => will also notify initial "resize" (with small delay) 
+		// for MenuView (View which is visible after delay timeout).
+		REO.start();
+		
+		console.log('Create Controllers...');
+		// - MENU
+		// - MAIN
+		//   - Farm
+		//     - Location
+		//     - Info
+		//     - Vegetables
+		//     - Animals
+		//     - Fruits
+		//   - Activities
+		//   - Producer
+		
+		if (typeof url_params['userid'] !== 'undefined') {
+			UM.id = url_params['userid'];
+		}
+		if (typeof url_params['country'] !== 'undefined') {
+			UM.profile['Country'] = url_params['country'];
+		} else {
+			UM.profile['Country'] = 'IE';
+		}
+		if (typeof url_params['MOCKUP'] !== 'undefined') {
+			if (url_params['MOCKUP'] === 'true') {
+				this.MOCKUP = true;
+			} else {
+				this.MOCKUP = false;
+			}
+			UM.MOCKUP = this.MOCKUP;
+			LM.MOCKUP = this.MOCKUP;
+		}
+		
+		
+		console.log('Now load the language Translation!');
+		if (typeof url_params['language'] !== 'undefined') {
+			LM.selected = url_params['language'];
+		} else {
+			LM.selected = 'en';
+		}
+		LM.loadTranslation();
+		
+		
+		UM.insertUser(); // This checks if User already exists in database.
+		//UM.restoreUserProfile(); // Try to restore previous profile data stored into database.
+		
+		
+		this.createControllers();
+		
 	}
 	
 	forceLogout() {

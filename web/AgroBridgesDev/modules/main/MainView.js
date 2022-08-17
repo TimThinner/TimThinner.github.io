@@ -23,18 +23,20 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Element/textPath
 </svg>
 
 
-Flag_of_the_United_Kingdom.svg.png		255 x 128
-Flag_of_Denmark.svg.png					255 x 193
-Flag_of_Greece.svg.png					255 x 170
-Bandera_de_España.svg.png				255 x 170
-Flag_of_France.svg.png					255 x 170
-Flag_of_Italy.svg.png					255 x 170
-Flag_of_Latvia.svg.png					255 x 128
-Flag_of_Lithuania.svg.png				255 x 153
-Flag_of_the_Netherlands.svg.png			255 x 170
-Flag_of_Poland.svg.png					255 x 159
-Flag_of_Finland.svg.png					255 x 156
-Flag_of_Turkey.svg.png					255 x 170
+eu.png	255 x 128
+da.png	255 x 193
+el.png	255 x 170
+es.png	255 x 170
+fr.png	255 x 170
+it.png	255 x 170
+lt.png	255 x 153
+lv.png	255 x 128
+nl.png	255 x 170
+pl.png	255 x 159
+fi.png	255 x 156
+tr.png	255 x 170
+
+
 */
 
 export default class MainView extends View {
@@ -50,6 +52,9 @@ export default class MainView extends View {
 		
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		this.USER_MODEL.subscribe(this);
+		
+		this.LM = this.controller.master.modelRepo.get('LanguageModel');
+		this.LM.subscribe(this);
 		
 		this.rendered = false;
 	}
@@ -69,6 +74,8 @@ export default class MainView extends View {
 		});
 		this.REO.unsubscribe(this);
 		this.USER_MODEL.unsubscribe(this);
+		this.LM.unsubscribe(this);
+		
 		this.rendered = false;
 		$(this.el).empty();
 	}
@@ -843,8 +850,8 @@ Polish			pl
 Finnish			fi
 Turkish			tr
 */
-		const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = LM.selected; // This is 'en', or 'fi', or
+		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = this.LM.selected; // This is 'en', or 'fi', or
 		const sel_flag_href = './img/'+sel+'.png';
 		const flag_w = 50;
 		const flag_h = flag_w*0.75;
@@ -984,6 +991,11 @@ Turkish			tr
 	}
 	
 	renderALL() {
+		
+		console.log('renderALL() BEGIN');
+		console.log(['this.USER_MODEL.id',this.USER_MODEL.id]);
+		console.log(['this.USER_MODEL.profile=',this.USER_MODEL.profile]);
+		
 		$(this.el).empty();
 		
 		this.createSpace();
@@ -1005,6 +1017,9 @@ Turkish			tr
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				console.log('ResizeEventObserver resize => SHOW()!');
+				this.show();
+			} else if (options.model==='LanguageModel' && options.method==='loadTranslation') {
+				console.log('Language MODEL is now READY!!!!!!');
 				this.show();
 			}
 		}

@@ -80,26 +80,6 @@ export default class UserModel extends Model {
 			Dummy_animal_welfare: false,
 			Dummy_spec_beef: false,
 			Dummy_cheese_reg_special: false,
-			/*
-			Number_cows: false,
-			Number_goats: false,
-			Number_beef: false,
-			Number_other_poultry: false,
-			Number_layer_Hens: false,
-			Number_hogs: false,
-			Dummy_spec_hog: false,
-			Number_fish: false,
-			Dummy_animal_welfare: false,
-			Dummy_Beef_2: false,
-			
-			Dummy_Milk: false,
-			Dummy_cheese_normal: false,
-			Dummy_cheese_reg_special: false,
-			Dummy_Dairy_Products: false,
-			Dummy_Beef: false,
-			Dummy_special_Beef: false,
-			Dummy_raw_milk_only: false,
-			*/
 			
 			// FARM FRUITS:
 			Dummy_fruit_farm: undefined, //'No', // 'Yes'
@@ -343,162 +323,6 @@ export default class UserModel extends Model {
         "rec_table_sc_title": "Sales Channel"
     }
 		};
-		/*
-		this.analysis_simulation_backup = {
-			"result_text": {
-				
-				"Intro_Definition_Business_Models": "Five business models can be differentiated for the Short Food Supply Chain. These are Consumer Supported Agriculture (CSA), Face-to-Face Sales, Retail Trade, Online Trade, and Improved Logistics. They can be defined as follows:",
-				"Definition_CSA": "Definition CSA: Producers and consumers have a pre-existing agreement where consumers pay an agreed membership fee or offer labour services (or both), in exchange for produce. Two sales channels of the business model are considered in the analysis: A) CSA -\u00a0 Trading working hours for a share of the harvest, B) CSA - Subscription - payment of an annual fee for a share of the harvest",
-				"Definition_Face_2_Face": "Definition Face-to-Face Trade: Consumer purchases a product directly from the producer/processor on a face-to-face basis.\u00a0Three sales channels of the business model are considered in the analysis: A) Farm shops, B) Farmers markets, C) Pick your own",
-				"Definition_Online_Trade": "Definition Online Trade: Products are traded online using websites of farmers or shared marketing websites.\u00a0We consider two different sales channels: A) Online Food Trade - Post box delivery, B) Online Food Trade - Box scheme subscription & Direct Delivery",
-				"Definition_Retail_Trade": "Definition Retail Trade: Products are produced and retailed in the specific region of production, and consumers are made aware of the \u2018local\u2019 nature of the product at the point of sale.\u00a0The sales channels considered in the analysis is: Retail Store -\u00a0 the origin is highlighted",
-				"Definition_Improved_Logistics": "Definition Improved Logistics: Selling products to producers organisations, food hubs or other distributors, enables farmers to benefit from improved logistics by sharing costs and pooling resources for distribution. This way larger quantities can be sold to channels like supermarket chains. This business model is always considered to be an option and not part of the ranking procedure.",
-				"More_Info_Business_Models": "More information about the five business models e.g. practice cases can be found here: Link",
-				"Result1_Models_Considered": "The following business models and sales channels were considered in your analysis:",
-				"How_calculated": "How where the results calculated? The ranking is based on a set of sustainability criteria. The sales channel that reaches the economic, environmental and social criteria best is considered to be the most suitable option and ranked first. The graphics show to which extent the SFSC sales channels meet the different criteria.",
-				"Describtion_Spiderweb": "As you can see the SFSC enable you to reach higher prices (price premium), but they are labor-intensive (labor to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale.",
-				"Intro_not_all_sales_channels_con": "Not all sales channels were considered. Why? Some business models were excluded, because they were considered to be less suitable for your farm or in your region. Reasons for this are farms or regional characteristics (e.g. how attractive your region is for sales).",
-				"Relative_Attractiveness": "The relative attractiveness of your region was considered to be:",
-				"Suitability_farm_Characterstics": "This relative attractiveness in the model depends on the population density and the income of the inhabitants. If you would like to learn more about farms or regional characteristics, and how these affect the suitability of the business models, please follow this Link.",
-				"Disclaimer_Header": "Disclaimer",
-				"Disclaimer": "The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g. the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remain with you.",
-				"rank_intro1_id": "Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first:",
-				"rank_intro2_id": "Improved logistics is also an option for you. It is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms."
-				
-				
-			"Intro_Definition_Business_Models":"Five business models can be differentiated for Short Food Supply Chains. These are Community Supported Agriculture (CSA), Face-to-Face Sales, Retail Trade, Online Trade, and Improved Logistics. They can be defined as follows:",
-			"Definition_CSA":"Definition CSA: Producers and consumers have a pre-existing agreement were consumers pay an agreed membership fee or offer labour services (or both), in exchange for produce. Two sales channels of the business model are considered in the analysis: A) CSA - 'Trading working hours for a share of the harvest', B) CSA - 'Subscription - payment of an annual fee for a share of the harvest'. The products are delivered by the farmer.",
-			"Definition_Face_2_Face":"Defintion Face-to-Face: 'Consumer purchases a product directly from the producer/processor on a Face-to-Face basis. Three sales channels of the business model are considered in the analysis: A) Farm shops, B) Farmers markets, C) Pick-Your-Own",
-			"Definition_Online_Trade":"Definition Online-Trade: Products are traded online using the farmer’s websites or shared marketing websites. Two different sales channels are considered: A) Online Food Trade - 'Post box delivery', B) Online Food Trade - 'Box scheme subscription & Direct Delivery’",
-			"Definition_Retail_Trade":"Definition Local Food / Retail Trade: Products are produced and sold in the specific region of production, and consumers are made aware of the ‘local’ nature of the product at the point of sale. The sales channel considered in the analysis is: Retail Store - ‘The origin is highlighted’",
-			"Definition_Improved_Logistics":"Definition Improved Logistics: Selling products to producer organisations, food hubs or other distributors enables farmers to benefit from improved logistics by sharing costs and pooling resources for distribution. In this way, larger quantities can be sold to channels such as supermarket chains. This business model is always considered to be an option and not part of the ranking procedure.",
-			"More_Info_Business_Models":"More information on the five business models can be found here: Link (to the business model canvas)",
-			"Result1_Models_Considered":"The following business models and sales channels were considered in your analysis:",
-			"Result_Farms_more_than_2_suitable":"Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first:",
-			"Results2_Farm_more_2_suitable":"Improved logistics' is also an option for you. It is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g., the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms.",
-			"Results1_farms_no_suitable_channels":"Based on the characteristics of your farm non of the sales channels are considered to be an option for you. Please check the information you entered.",
-			"Results2_farm_no_suitable_Channels":"If the information was correct: 'Improved Logistics' is a business model strongly based on cooperation e.g. the sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by larger farms. 'Improved logistics' is assumed to be suitable for all farmers regardless of their location and their production characteristics.",
-			"Results1_only_one_channel":"Based on the characteristics of your farm only one of the sales channels is considered to be an option for you and no ranking is possible. This sales channel is:",
-			"Results2_only_one_channel":"However, 'Improved logistics' is assumed to be suitable for all farmers and was not included in your ranking. It is a business model strongly based on cooperation e.g., sharing of costs for packaging and transport. This allows smaller farms to deliver to sales channels that are usually served by very large farms and could be interesting for you.",
-			"How_calculated":"How were the results calculated? The ranking is based on a set of sustainability criteria. The sales channel that reaches the economic, environmental and social criteria best is considered to be the most suitable option and ranked first. The graphics show to what extent the SFSC sales channels meet the different criteria. The values for the economic, environmental and social performance are not individually calculated. They are averages from data coming from 208 food producers from seven countries (six within the EU). More details about the data can be found here: Malak-Rawlikowska, A. et al. (2019): Measuring the Economic, Environmental and Social Sustainability of Short Food Supply Chains. Sustainability Vol. 11 (1). 1-23.",
-			"Definition_Criteria":"Would you like to know how the criteria are defined? Please follow this Link.",
-			"Intro_not_all_sales_channels_con":"Not all sales channels were considered. Why?' Some business models were excluded, because they were considered to be less suitable for your farm or region because of certain farm or regional characteristics (e.g., how attractive your region is for sales).",
-			"Relative_Attractiveness":"The attractiveness of your region for sales was considered to be:",
-			"Suitability_farm_Characterstics":"This relative attractiveness depends on the population density and the income of the inhabitants. This was determined on a regional level (NUTS3 areas are defined as small areas for specific diagnoses with 150,000 - 800,000 inhabitants ), we used the population densities and the income of the households to determine whether a region is more or less attractive for sales. Business models such as Community Supported Agriculture strongly depend on high population densities and might be especially suitable for organic farms. Intensively managed on-farm shops run by staff might also only be successful in areas with high income and higher population densities.",
-			"Disclaimer_Header":"A Disclaimer",
-			"Disclaimer":"The success of the different business models and their associated sales channels depends on multiple factors and some of them are not considered in the model e.g., the effect of marketing or negotiation skills. Additionally, the expected sales volumes and profits are based on average values. In reality, these might vary across regions and for different products. You are, therefore, advised to make careful investment calculations, before engaging in any of the business models. The responsibility for the decision and its consequences remains with you.",
-			"Additional_Info_PickU":"The harvesting labour saved by Pick-Your-Own is not reflected in the Labour to Produce Ratio. The Labour to Produce Ratio only considered Labour Requirements for Sales.",
-			"Describtion_Spiderweb":"How to read the diagrams? In a spider chart, each criterion gets its spoke, and the spokes are evenly distributed around the wheel. The farther toward the outside of the chart, the better a business model fulfills the criteria. A spoke close to the center means that the sales channel can only fulfill the criteria to a limited extents. You can see in example that SFSC enable you to reach higher prices (Price Premium), but they are labour-intensive (labour to produce ratio), which reduces profit and usually only enable you to sell smaller quantities (volume) in comparison to wholesale."
-			},
-			"recommendation": [
-				{
-					"Business_Model": "Online_Trade",
-					"Sales_Channel": "Online_Sales_Post",
-					"Ranking": 1,
-					"Volume": 0.2,
-					"Price_Premium": 0.73,
-					"Chain_Added_Value": 0.62,
-					"Carbon_Footprint": 1.0,
-					"Labor_Produce": 0.02,
-					"Gender_Equality": 0.5,
-					"Consumer_Contact": 0.2,
-					"business_model_title": "Online Trade",
-					"sales_channel_title": "Post delivery (sales on demand)"
-				},
-				{
-					"Business_Model": "Retail_Trade",
-					"Sales_Channel": "Retail_Store",
-					"Ranking": 2,
-					"Volume": 0.4,
-					"Price_Premium": 0.64,
-					"Chain_Added_Value": 0.4,
-					"Carbon_Footprint": 0.5,
-					"Labor_Produce": 0.31,
-					"Gender_Equality": 0.51,
-					"Consumer_Contact": 0.4,
-					"business_model_title": "Retail Trade",
-					"sales_channel_title": "Retail Store"
-				},
-				{
-					"Business_Model": "Face-to-Face",
-					"Sales_Channel": "On_Farm_Shop_extensive",
-					"Ranking": 3,
-					"Volume": 0.2,
-					"Price_Premium": 0.73,
-					"Chain_Added_Value": 0.69,
-					"Carbon_Footprint": 0.07,
-					"Labor_Produce": 0.31,
-					"Gender_Equality": 0.65,
-					"Consumer_Contact": 0.4,
-					"business_model_title": "Face-to-Face",
-					"sales_channel_title": "On-Farm Shop (extensively managed, unstaffed)"
-				}
-			],
-			"rec_additional_text": {},
-			"diagram_dimension_labels": [
-				{
-					"var_name": "Volume",
-					"title": "Volume",
-					"chart_title": "Volume",
-					"definition": null
-				},
-				{
-					"var_name": "Price_Premium",
-					"title": "Price Premium",
-					"chart_title": "Price Premium",
-					"definition": "Calculated from the difference between the average farmgate price in the chain and the average farm gate price in the region. Price Premium = Price Difference at the farm gate (Euro per kg) / Average farmgate to retail price in the region"
-				},
-				{
-					"var_name": "Chain_Added_Value",
-					"title": "Chain Added Value",
-					"chart_title": "Chain Added Value",
-					"definition": "The chain value-added is based on the difference to the average farm gate price, but considers distribution costs as well. Chain value added (Euro per kg) = Price Difference at Farm Gate - Distribution Costs . The distribution costs contain costs of transport, packaging, marketing fees, and payments to distributors."
-				},
-				{
-					"var_name": "Carbon_Footprint",
-					"title": "Carbon Footprint",
-					"chart_title": "Lower Carbon Footprint",
-					"definition": "Measures greenhouse gas emissions (GHG) from the process of transportation. The value is based on food miles. Retail channels that require cooling show an increase in fuel consumption to account for their higher environmental impact."
-				},
-				{
-					"var_name": "Labor_Produce",
-					"title": "Labor Produce",
-					"chart_title": "Lower Labor Produce",
-					"definition": "Reflects the number of working hours used in the respective chain for the distribution process (transport, loading, and sales by the farmer). Labor to produce ratio= ((working hours for preparing the sale per delivery + working hours for transport + working hours for selling) * Number of deliveries) / sales volume per channel (kg)"
-				},
-				{
-					"var_name": "Gender_Equality",
-					"title": "Gender Equality",
-					"chart_title": "Gender Equality",
-					"definition": "Measures the share of working hours by women in the distribution process.Gender Equality = hours worked by women in the distribution process / total labor input for distribution (h) *100"
-				},
-				{
-					"var_name": "Consumer_Contact",
-					"title": "Consumer Contact",
-					"chart_title": "Consumer Contact",
-					"definition": null
-				}
-			],
-			"comparison": {
-				"Business_Model": "Wholesale_Trade",
-				"Sales Channel": "Wholesale_Market",
-				"Volume": 1,
-				"Price_Premium": 0.24,
-				"Chain_Added_Value": 0.09,
-				"Carbon_Footprint": 0.27,
-				"Labor_Produce": 1,
-				"Gender_Equality": 0.5,
-				"Consumer_Contact": 0.2,
-				"business_model_title": "Wholesale",
-				"sales_channel_title": "Wholesale "
-			},
-			"Region_Attractiveness": {
-				"Relative_Attractiveness": "The relative attractiveness of your region was considered to be:",
-				"value": "medium"
-			}
-		};
-		*/
-		
 		this.analysisReady = false;
 	}
 	
@@ -939,6 +763,350 @@ export default class UserModel extends Model {
 		}
 	}
 	
+	fillLocation(myJson) {
+		if (myJson.Country) {
+			this.profile.Country = myJson.Country;
+		}
+		if (myJson.NUTS3) {
+			this.profile.NUTS3 = myJson.NUTS3;
+		}
+		
+		if (myJson.Distance_Drive_minor_kat1) { // 1
+			this.profile.Distance_Drive_minor_kat1 = true;
+		} else {
+			this.profile.Distance_Drive_minor_kat1 = false;
+		}
+		if (myJson.Distance_Drive_minor_kat2) { // 1
+			this.profile.Distance_Drive_minor_kat2 = true;
+		} else {
+			this.profile.Distance_Drive_minor_kat2 = false;
+		}
+		if (myJson.Distance_Drive_minor_kat3) { // 1
+			this.profile.Distance_Drive_minor_kat3 = true;
+		} else {
+			this.profile.Distance_Drive_minor_kat3 = false;
+		}
+		if (myJson.Distance_Drive_minor_kat4) { // 1
+			this.profile.Distance_Drive_minor_kat4 = true;
+		} else {
+			this.profile.Distance_Drive_minor_kat4 = false;
+		}
+		if (myJson.Distance_Drive_minor_kat5) { // 1
+			this.profile.Distance_Drive_minor_kat5 = true;
+		} else {
+			this.profile.Distance_Drive_minor_kat5 = false;
+		}
+		
+		if (myJson.Distance_Drive_major_kat1) { // 1
+			this.profile.Distance_Drive_major_kat1 = true;
+		} else {
+			this.profile.Distance_Drive_major_kat1 = false;
+		}
+		if (myJson.Distance_Drive_major_kat2) { // 1
+			this.profile.Distance_Drive_major_kat2 = true;
+		} else {
+			this.profile.Distance_Drive_major_kat2 = false;
+		}
+		if (myJson.Distance_Drive_major_kat3) { // 1
+			this.profile.Distance_Drive_major_kat3 = true;
+		} else {
+			this.profile.Distance_Drive_major_kat3 = false;
+		}
+		if (myJson.Distance_Drive_major_kat4) { // 1
+			this.profile.Distance_Drive_major_kat4 = true;
+		} else {
+			this.profile.Distance_Drive_major_kat4 = false;
+		}
+		if (myJson.Distance_Drive_major_kat5) { // 1
+			this.profile.Distance_Drive_major_kat5 = true;
+		} else {
+			this.profile.Distance_Drive_major_kat5 = false;
+		}
+	}
+	
+	fillFarmInfo(myJson) {
+		if (myJson.Hectare_farm) { // not null or 0
+			this.profile.Hectare_farm = myJson.Hectare_farm;
+		} else {
+			this.profile.Hectare_farm = 0;
+		}
+		if (myJson.Delivery_month_total) { // not null or 0
+			this.profile.Delivery_month_total = myJson.Delivery_month_total;
+		} else {
+			this.profile.Delivery_month_total = 0;
+		}
+		
+		if (myJson.Dummy_organic) { // 1
+			this.profile.Dummy_organic = 'Yes';
+		} else {
+			this.profile.Dummy_organic = 'No';
+		}
+		if (myJson.Cert_Min) { // 1
+			this.profile.Cert_Min = true;
+		} else {
+			this.profile.Cert_Min = false;
+		}
+		if (myJson.Cert_High) { // 1
+			this.profile.Cert_High = true;
+		} else {
+			this.profile.Cert_High = false;
+		}
+		if (myJson.Cert_uncertified) { // 1
+			this.profile.Cert_uncertified = true;
+		} else {
+			this.profile.Cert_uncertified = false;
+		}
+		
+		if (myJson.Harv_farmers_org) { // 1
+			this.profile.Harv_farmers_org = true;
+		} else {
+			this.profile.Harv_farmers_org = false;
+		}
+		if (myJson.Harv_Clean_Sort_Ref) { // 1
+			this.profile.Harv_Clean_Sort_Ref = true;
+		} else {
+			this.profile.Harv_Clean_Sort_Ref = false;
+		}
+	}
+	
+	fillVegetables(myJson) {
+		
+		if (myJson.Dummy_veggie_farm) { // 1
+			this.profile.Dummy_veggie_farm = 'Yes';
+		} else {
+			this.profile.Dummy_veggie_farm = 'No';
+		}
+		
+		if (myJson.Dummy_lettuce) { // 1
+			this.profile.Dummy_lettuce = true;
+		} else {
+			this.profile.Dummy_lettuce = false;
+		}
+		if (myJson.Dummy_fruit_vegetables) { // 1
+			this.profile.Dummy_fruit_vegetables = true;
+		} else {
+			this.profile.Dummy_fruit_vegetables = false;
+		}
+		if (myJson.Dummy_pumpkin) { // 1
+			this.profile.Dummy_pumpkin = true;
+		} else {
+			this.profile.Dummy_pumpkin = false;
+		}
+		if (myJson.Dummy_bulb) { // 1
+			this.profile.Dummy_bulb = true;
+		} else {
+			this.profile.Dummy_bulb = false;
+		}
+		if (myJson.Dummy_Root) { // 1
+			this.profile.Dummy_Root = true;
+		} else {
+			this.profile.Dummy_Root = false;
+		}
+		if (myJson.Dummy_Cabbage) { // 1
+			this.profile.Dummy_Cabbage = true;
+		} else {
+			this.profile.Dummy_Cabbage = false;
+		}
+		if (myJson.Dummy_Special) { // 1
+			this.profile.Dummy_Special = true;
+		} else {
+			this.profile.Dummy_Special = false;
+		}
+		
+		if (myJson.vegetables_total) { // not null or 0
+			this.profile.vegetables_total = myJson.vegetables_total;
+		} else {
+			this.profile.vegetables_total = 0;
+		}
+	}
+	
+	fillAnimals(myJson) {
+		if (myJson.Dummy_livestock) {
+			this.profile.Dummy_livestock = 'Yes';
+		} else {
+			this.profile.Dummy_livestock = 'No';
+		}
+		
+		if (myJson.Dummy_Cows) {
+			this.profile.Dummy_Cows = true;
+		} else {
+			this.profile.Dummy_Cows = false;
+		}
+		if (myJson.Dummy_Layer_Hens) {
+			this.profile.Dummy_Layer_Hens = true;
+		} else {
+			this.profile.Dummy_Layer_Hens = false;
+		}
+		if (myJson.Dummy_Fish) {
+			this.profile.Dummy_Fish = true;
+		} else {
+			this.profile.Dummy_Fish = false;
+		}
+		if (myJson.Other_animals) {
+			this.profile.Other_animals = true;
+		} else {
+			this.profile.Other_animals = false;
+		}
+		if (myJson.Dummy_raw_milk_only) {
+			this.profile.Dummy_raw_milk_only = true;
+		} else {
+			this.profile.Dummy_raw_milk_only = false;
+		}
+		if (myJson.Dummy_Milk) {
+			this.profile.Dummy_Milk = true;
+		} else {
+			this.profile.Dummy_Milk = false;
+		}
+		if (myJson.Dummy_Dairy_Products) {
+			this.profile.Dummy_Dairy_Products = true;
+		} else {
+			this.profile.Dummy_Dairy_Products = false;
+		}
+		if (myJson.Dummy_Beef) {
+			this.profile.Dummy_Beef = true;
+		} else {
+			this.profile.Dummy_Beef = false;
+		}
+		if (myJson.Dummy_animal_welfare) {
+			this.profile.Dummy_animal_welfare = true;
+		} else {
+			this.profile.Dummy_animal_welfare = false;
+		}
+		if (myJson.Dummy_spec_beef) {
+			this.profile.Dummy_spec_beef = true;
+		} else {
+			this.profile.Dummy_spec_beef = false;
+		}
+		if (myJson.Dummy_cheese_reg_special) {
+			this.profile.Dummy_cheese_reg_special = true;
+		} else {
+			this.profile.Dummy_cheese_reg_special = false;
+		}
+	}
+	
+	fillFruits(myJson) {
+		if (myJson.Dummy_fruit_farm) {
+			this.profile.Dummy_fruit_farm = 'Yes';
+		} else {
+			this.profile.Dummy_fruit_farm = 'No';
+		}
+		
+		if (myJson.Dummy_Stonefruits) {
+			this.profile.Dummy_Stonefruits = true;
+		} else {
+			this.profile.Dummy_Stonefruits = false;
+		}
+		if (myJson.Dummy_Pomefruits) {
+			this.profile.Dummy_Pomefruits = true;
+		} else {
+			this.profile.Dummy_Pomefruits = false;
+		}
+		if (myJson.Dummy_Berries) {
+			this.profile.Dummy_Berries = true;
+		} else {
+			this.profile.Dummy_Berries = false;
+		}
+		if (myJson.Dummy_Citrus) {
+			this.profile.Dummy_Citrus = true;
+		} else {
+			this.profile.Dummy_Citrus = false;
+		}
+		if (myJson.Dummy_exotic_fruits) {
+			this.profile.Dummy_exotic_fruits = true;
+		} else {
+			this.profile.Dummy_exotic_fruits = false;
+		}
+		
+		if (myJson.fruits_total) { // not null or 0
+			this.profile.fruits_total = myJson.fruits_total;
+		} else {
+			this.profile.fruits_total = 0;
+		}
+	}
+	
+	fillActivities(myJson) {
+		if (myJson.Dummy_wholesale) {
+			this.profile.Dummy_wholesale = true;
+		} else {
+			this.profile.Dummy_wholesale = false;
+		}
+		if (myJson.Dummy_supermarket_regional) {
+			this.profile.Dummy_supermarket_regional = true;
+		} else {
+			this.profile.Dummy_supermarket_regional = false;
+		}
+		if (myJson.Dummy_supermarket_noregio) {
+			this.profile.Dummy_supermarket_noregio = true;
+		} else {
+			this.profile.Dummy_supermarket_noregio = false;
+		}
+		if (myJson.Dummy_farmer_market) {
+			this.profile.Dummy_farmer_market = true;
+		} else {
+			this.profile.Dummy_farmer_market = false;
+		}
+		if (myJson.Dummy_farmer_shop) {
+			this.profile.Dummy_farmer_shop = true;
+		} else {
+			this.profile.Dummy_farmer_shop = false;
+		}
+		if (myJson.Dummy_food_assemblies) {
+			this.profile.Dummy_food_assemblies = true;
+		} else {
+			this.profile.Dummy_food_assemblies = false;
+		}
+		if (myJson.Dummy_food_box_delivery) {
+			this.profile.Dummy_food_box_delivery = true;
+		} else {
+			this.profile.Dummy_food_box_delivery = false;
+		}
+		if (myJson.Dummy_restaurant) {
+			this.profile.Dummy_restaurant = true;
+		} else {
+			this.profile.Dummy_restaurant = false;
+		}
+		if (myJson.Dummy_public_canteens) {
+			this.profile.Dummy_public_canteens = true;
+		} else {
+			this.profile.Dummy_public_canteens = false;
+		}
+		if (myJson.Dummy_no_SFSC) {
+			this.profile.Dummy_no_SFSC = true;
+		} else {
+			this.profile.Dummy_no_SFSC = false;
+		}
+		
+		if (myJson.Dummy_commu_supp_agri) {
+			this.profile.Dummy_commu_supp_agri = true;
+		} else {
+			this.profile.Dummy_commu_supp_agri = false;
+		}
+		if (myJson.Dummy_Pickyourown) {
+			this.profile.Dummy_Pickyourown = true;
+		} else {
+			this.profile.Dummy_Pickyourown = false;
+		}
+	}
+	
+	/*
+		// PRODUCER:
+		Likert_welcome_farm: undefined, // 5 scale from "I agree" to "I disagree"
+		Likert_consumer_con: undefined  // 5 scale from "I agree" to "I disagree"
+		"Likert_welcome_farm": 2,
+		"Likert_consumer_con": 2,
+	*/
+	fillProducer(myJson) {
+		if (myJson.Likert_welcome_farm) {
+			this.profile.Likert_welcome_farm = myJson.Likert_welcome_farm;
+		} else {
+			this.profile.Likert_welcome_farm = undefined;
+		}
+		if (myJson.Likert_consumer_con) {
+			this.profile.Likert_consumer_con = myJson.Likert_consumer_con;
+		} else {
+			this.profile.Likert_consumer_con = undefined;
+		}
+	}
 	
 	restoreUserProfile() {
 		const self = this;
@@ -972,91 +1140,21 @@ export default class UserModel extends Model {
 				})
 				.then(function(myJson){
 					let msg = "OK";
-					console.log('HUUUUU HAAAAAA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 					console.log(['myJson=',myJson]);
-					
-					
 					if (typeof myJson.message !== 'undefined') {
 						msg = myJson.message;
 					}
 					//JSON.parse(myJson);
-					// FARM LOCATION:
-					if (typeof myJson.Country !== 'undefined') {
-						self.profile.Country = myJson.Country;
-					}
-					if (typeof myJson.NUTS3 !== 'undefined') {
-						self.profile.NUTS3 = myJson.NUTS3;
-					}
-					if (typeof myJson.Distance_Drive_minor_kat1 !== 'undefined') {
-						if (myJson.Distance_Drive_minor_kat1) { // 1
-							self.profile.Distance_Drive_minor_kat1 = true;
-						} else {
-							self.profile.Distance_Drive_minor_kat1 = false;
-						}
-					}
-					if (typeof myJson.Distance_Drive_minor_kat2 !== 'undefined') {
-						if (myJson.Distance_Drive_minor_kat2) { // 1
-							self.profile.Distance_Drive_minor_kat2 = true;
-						} else {
-							self.profile.Distance_Drive_minor_kat2 = false;
-						}
-					}
-					if (typeof myJson.Distance_Drive_minor_kat3 !== 'undefined') {
-						if (myJson.Distance_Drive_minor_kat3) { // 1
-							self.profile.Distance_Drive_minor_kat3 = true;
-						} else {
-							self.profile.Distance_Drive_minor_kat3 = false;
-						}
-					}
-					if (typeof myJson.Distance_Drive_minor_kat4 !== 'undefined') {
-						if (myJson.Distance_Drive_minor_kat4) { // 1
-							self.profile.Distance_Drive_minor_kat4 = true;
-						} else {
-							self.profile.Distance_Drive_minor_kat4 = false;
-						}
-					}
-					if (typeof myJson.Distance_Drive_minor_kat5 !== 'undefined') {
-						if (myJson.Distance_Drive_minor_kat5) { // 1
-							self.profile.Distance_Drive_minor_kat5 = true;
-						} else {
-							self.profile.Distance_Drive_minor_kat5 = false;
-						}
-					}
-					if (typeof myJson.Distance_Drive_major_kat1 !== 'undefined') {
-						if (myJson.Distance_Drive_major_kat1) { // 1
-							self.profile.Distance_Drive_major_kat1 = true;
-						} else {
-							self.profile.Distance_Drive_major_kat1 = false;
-						}
-					}
-					if (typeof myJson.Distance_Drive_major_kat2 !== 'undefined') {
-						if (myJson.Distance_Drive_major_kat2) { // 1
-							self.profile.Distance_Drive_major_kat2 = true;
-						} else {
-							self.profile.Distance_Drive_major_kat2 = false;
-						}
-					}
-					if (typeof myJson.Distance_Drive_major_kat3 !== 'undefined') {
-						if (myJson.Distance_Drive_major_kat3) { // 1
-							self.profile.Distance_Drive_major_kat3 = true;
-						} else {
-							self.profile.Distance_Drive_major_kat3 = false;
-						}
-					}
-					if (typeof myJson.Distance_Drive_major_kat4 !== 'undefined') {
-						if (myJson.Distance_Drive_major_kat4) { // 1
-							self.profile.Distance_Drive_major_kat4 = true;
-						} else {
-							self.profile.Distance_Drive_major_kat4 = false;
-						}
-					}
-					if (typeof myJson.Distance_Drive_major_kat5 !== 'undefined') {
-						if (myJson.Distance_Drive_major_kat5) { // 1
-							self.profile.Distance_Drive_major_kat5 = true;
-						} else {
-							self.profile.Distance_Drive_major_kat5 = false;
-						}
-					}
+					self.fillFarmLocation(myJson);
+					self.fillFarmInfo(myJson);
+					
+					self.fillVegetables(myJson);
+					self.fillAnimals(myJson);
+					self.fillFruits(myJson);
+					
+					self.fillActivities(myJson);
+					self.fillProducer(myJson);
+					
 					self.notifyAll({model:self.name, method:'restoreUserProfile', status:status, message:myJson.message});
 				})
 				.catch(function(error){

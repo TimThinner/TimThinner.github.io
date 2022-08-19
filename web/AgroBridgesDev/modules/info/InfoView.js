@@ -266,7 +266,7 @@ export default class InfoView extends View {
 				{propName:'Delivery_month_total', value:self.USER_MODEL.profile.Delivery_month_total}
 			];
 			
-			if (self.USER_MODEL.profile.Dummy_organic === true) {
+			if (self.USER_MODEL.profile.Dummy_organic === 'Yes') {
 				data.push({propName:'Dummy_organic', value:1});
 			} else {
 				data.push({propName:'Dummy_organic', value:0});

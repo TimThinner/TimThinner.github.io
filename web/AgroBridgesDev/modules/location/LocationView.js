@@ -218,6 +218,7 @@ export default class LocationView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		
+		const ll_location_title = LM['translation'][sel]['farm_location_title'];
 		const ll_location_query = LM['translation'][sel]['location_query'];
 		const ll_region_query = LM['translation'][sel]['region_query'];
 		const ll_distance_small_query = LM['translation'][sel]['distance_drive_small_query'];
@@ -241,7 +242,7 @@ export default class LocationView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+color+'">FARM LOCATION</h3>'+
+						'<h3 style="color:'+color+'">'+ll_location_title+'</h3>'+
 						'<p><img src="./img/photo-location.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+

@@ -90,12 +90,16 @@ export default class LanguageView extends View {
 		const ll_lang_fi = '<img src="./img/fi.png" width="60"/> Suomi';
 		const ll_lang_tr = '<img src="./img/tr.png" width="60"/> Türkçe';
 		
+		
+		const sel = this.LM.selected;
+		const ll_select_language = this.LM['translation'][sel]['language_title'];
+		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+color+'">SELECT LANGUAGE</h3>'+
+						'<h3 style="color:'+color+'">'+ll_select_language+'</h3>'+
 						//'<p><img src="./img/help.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+

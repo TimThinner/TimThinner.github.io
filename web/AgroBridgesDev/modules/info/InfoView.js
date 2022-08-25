@@ -73,6 +73,7 @@ export default class InfoView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		
+		const ll_farm_info_title = LM['translation'][sel]['farm_info_title'];
 		const ll_farm_size_query = LM['translation'][sel]['farm_hectare_query'];
 		const ll_deliver_months_query = LM['translation'][sel]['delivery_month_total_query'];
 		const ll_organic_query = LM['translation'][sel]['organic_query'];
@@ -95,7 +96,7 @@ export default class InfoView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+color+'">FARM INFO</h3>'+
+						'<h3 style="color:'+color+'">'+ll_farm_info_title+'</h3>'+
 						'<p><img src="./img/photo-info.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+

@@ -73,8 +73,9 @@ export default class ActivitiesView extends View {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const ll_marketing_channel_query =  LM['translation'][sel]['marketing_channel_query'];
-		const ll_offering_query =  LM['translation'][sel]['offering_query'];
+		const ll_marketing_channel_query = LM['translation'][sel]['marketing_channel_query'];
+		const ll_offering_query = LM['translation'][sel]['offering_query'];
+		const ll_activities_title = LM['translation'][sel]['activities_title'];
 		//const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const a_Options = [
@@ -107,7 +108,7 @@ export default class ActivitiesView extends View {
 		const html = '<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+color+'">ACTIVITIES</h3>'+
+						'<h3 style="color:'+color+'">'+ll_activities_title+'</h3>'+
 						'<p><img src="./img/photo-activities.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+

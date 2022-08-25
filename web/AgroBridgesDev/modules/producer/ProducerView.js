@@ -78,6 +78,7 @@ export default class ProducerView extends View {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		
+		const ll_title = LM['translation'][sel]['producer_title'];
 		const ll_self_desc_query = LM['translation'][sel]['self_desc_query'];
 		const ll_likert_welcome = LM['translation'][sel]['Likert_welcome_farm'];
 		const ll_likert_consumer = LM['translation'][sel]['Likert_consumer_con'];
@@ -105,7 +106,7 @@ export default class ProducerView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+color+'">PRODUCER</h3>'+
+						'<h3 style="color:'+color+'">'+ll_title+'</h3>'+
 						'<p><img src="./img/photo-farmer.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+

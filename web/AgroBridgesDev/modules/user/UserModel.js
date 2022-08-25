@@ -763,7 +763,7 @@ export default class UserModel extends Model {
 		}
 	}
 	
-	fillLocation(myJson) {
+	fillFarmLocation(myJson) {
 		if (myJson.Country) {
 			this.profile.Country = myJson.Country;
 		}
@@ -1140,7 +1140,7 @@ export default class UserModel extends Model {
 				})
 				.then(function(myJson){
 					let msg = "OK";
-					console.log(['myJson=',myJson]);
+					console.log(['RESTORE USER PROFILE myJson=',myJson]);
 					if (typeof myJson.message !== 'undefined') {
 						msg = myJson.message;
 					}
@@ -1233,7 +1233,7 @@ export default class UserModel extends Model {
 		}
 	}
 	
-	runAnalysis() {
+	runAnalysis(lang) {
 		const self = this;
 		this.analysisReady = false;
 		this.analysisResult = {};
@@ -1315,7 +1315,7 @@ export default class UserModel extends Model {
 			//const myRequest = new Request(this.backend + '/analysis/'+this.id, myPost);
 			// this.id 
 			// "name": "http://localhost:6969/analysis?user_id=prod_nl_1&lang=en",
-			const url =  this.backend + '/analysis?user_id=' + this.id + '&lang=en';
+			const url =  this.backend + '/analysis?user_id=' + this.id + '&lang='+lang;
 			const myRequest = new Request(url, myGet);
 			fetch(myRequest)
 				.then(function(response){
@@ -1324,7 +1324,7 @@ export default class UserModel extends Model {
 				})
 				.then(function(myJson){
 					let msg = "OK";
-					console.log(['myJson=',myJson]);
+					console.log(['analysisResult myJson=',myJson]);
 					if (typeof myJson.message !== 'undefined') {
 						msg = myJson.message;
 					}

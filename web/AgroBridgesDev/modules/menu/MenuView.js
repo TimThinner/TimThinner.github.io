@@ -92,7 +92,7 @@ export default class MenuView extends View {
 		const r = Math.min(wp2, hp2); // r = 0,125 x W or H, whichever is smallest (d=0,25 x W or H)
 		return r;
 	}
-	
+	/*
 	appendLogoutButton() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -123,8 +123,7 @@ export default class MenuView extends View {
 		}, false);
 		$('#space').append(img);
 	}
-	
-	
+	*/
 	appendLabel(group, type, r) {
 		
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -137,6 +136,24 @@ export default class MenuView extends View {
 			fontsize = 16;
 		} else {
 			fontsize = 18;
+		}
+		
+		let type_text = '';
+		const sel = this.LM.selected; // This is 'en', or 'fi', or
+		console.log(['MenuView appendLabel sel=',sel]);
+		if (typeof this.LM['translation'][sel] !== 'undefined') {
+			
+			console.log('MenuView LanguageModel OK!');
+			
+			if (type === 'FARM') {
+				type_text = this.LM['translation'][sel]['icon_farm'];
+			} else if (type === 'ACTIVITIES') {
+				type_text = this.LM['translation'][sel]['icon_activities'];
+			} else if (type === 'PRODUCER') {
+				type_text = this.LM['translation'][sel]['icon_producer'];
+			}
+		} else {
+			console.log('MenuView LanguageModel NOT READY.');
 		}
 		
 		const labelWidth = r + r*0.75;
@@ -167,7 +184,7 @@ export default class MenuView extends View {
 		title.setAttribute('text-anchor','middle');
 		title.setAttribute('fill',this.colors.DARK_GREEN);
 		title.style.opacity = 1;
-		title.appendChild(document.createTextNode(type));
+		title.appendChild(document.createTextNode(type_text));
 		svg.appendChild(title);
 		group.appendChild(svg);
 	}
@@ -424,6 +441,12 @@ export default class MenuView extends View {
 		}
 		const titleSVGHeight = fontsize;
 		
+		//const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = this.LM.selected; // This is 'en', or 'fi', or
+		let title_text = '';
+		if (typeof this.LM['translation'][sel] !== 'undefined') {
+			title_text = this.LM['translation'][sel]['icon_analysis'];
+		}
 		/*
 		let icon_w = 2*r;
 		let icon_x = -icon_w*0.5;
@@ -490,7 +513,7 @@ export default class MenuView extends View {
 			title.setAttribute('fill',this.colors.GREY);
 		}
 		title.style.opacity = 1;
-		title.appendChild(document.createTextNode('ANALYSIS'));
+		title.appendChild(document.createTextNode(title_text));
 		svg.appendChild(title);
 		group.appendChild(svg);
 		
@@ -513,8 +536,8 @@ export default class MenuView extends View {
 			if (mainState.ready === true) {
 				
 				// Start the analysis and open AnalysisView.
-				const data = {placeholder:'whatever'};
-				self.USER_MODEL.runAnalysis(data);
+				//const data = {placeholder:'whatever'};
+				self.USER_MODEL.runAnalysis(self.LM.selected);
 				self.models['MenuModel'].setSelected('analysis');
 			} else {
 				console.log('ANALYSIS!');
@@ -577,35 +600,6 @@ export default class MenuView extends View {
 		$('#space').append(group);
 	}
 	
-	
-	appendTitle() {
-		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.sunRadius();
-		const w = this.REO.width;
-		const h = this.REO.height;
-		
-		// Logo original dimensions are 1920 x 1080 pixels.
-		// Set a maximum width for logo: NO MORE THAN 160 px ever.
-		let logo_w = w*0.2;
-		if (logo_w > 160) {
-			logo_w = 160;
-		}
-		const logo_h = Math.floor(logo_w*108/192);
-		
-		const txt = 'Decision support tool for farmers';
-		let fontsize = Math.floor(logo_h*0.5);
-		const group = document.createElementNS(svgNS, "g");
-		
-		group.appendChild(this.createFooterSVG(
-			-w*0.5+logo_w,
-			-h*0.5+fontsize*0.5,
-			w-logo_w,
-			fontsize,
-			txt, fontsize)
-		);
-		$('#space').append(group);
-	}
-	
 	createSpace() {
 		const w = this.REO.width;
 		const h = this.REO.height;
@@ -634,8 +628,6 @@ export default class MenuView extends View {
 		
 		$(this.el).append(svg);
 	}
-	
-	
 	
 	createFooterSVG(x, y, w, h, txt, fontsize, fill) {
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -741,6 +733,10 @@ export default class MenuView extends View {
 		logo.setAttribute('href', './img/logo.png');
 		group.appendChild(logo);
 		
+		//const txt = 'Decision support tool for farmers';
+		const sel = this.LM.selected; // This is 'en', or 'fi', or
+		const title_text = this.LM['translation'][sel]['main_title'];
+		
 		if (w > 1000) {
 			/*
 			const rx = -w*0.5+logo_w;
@@ -759,14 +755,13 @@ export default class MenuView extends View {
 			rect.style.strokeWidth = 1;
 			group.appendChild(rect);
 			*/
-			const txt = 'Decision support tool for farmers';
 			let fontsize = Math.floor(logo_h*0.4);
 			group.appendChild(this.createFooterSVG(
 				-w*0.5+logo_w,
 				-h*0.5,
 				w-logo_w*2, // Symmetric!
 				logo_h,
-				txt, fontsize, 'none')
+				title_text, fontsize, 'none')
 			);
 			
 		} else {
@@ -790,15 +785,13 @@ export default class MenuView extends View {
 			//console.log(['w=',w]);
 			
 			let hh = -30 + (1000-w)*0.1;
-			
-			const txt = 'Decision support tool for farmers';
 			let fontsize = Math.floor(logo_h*0.4);
 			group.appendChild(this.createFooterSVG(
 				-w*0.5,
 				-h*0.5+logo_h+hh,
 				w,
 				logo_h,
-				txt, fontsize, 'none')
+				title_text, fontsize, 'none')
 			);
 		}
 		
@@ -870,7 +863,7 @@ Finnish			fi
 Turkish			tr
 */
 		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = this.LM.selected; // This is 'en', or 'fi', or
+		//const sel = this.LM.selected; // This is 'en', or 'fi', or
 		const sel_flag_href = './img/'+sel+'.png';
 		const flag_w = 50;
 		const flag_h = flag_w*0.75;
@@ -893,7 +886,7 @@ Turkish			tr
 		
 		$('#space').append(group);
 	}
-	
+	/*
 	appendLogo() {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		
@@ -926,7 +919,7 @@ Turkish			tr
 		group.appendChild(logo);
 		
 		$('#space').append(group);
-	}
+	}*/
 	/*
 	640px-Flag_of_Europe.svg.png: 640 x 427
 	MC.png: 330 x 330 
@@ -941,6 +934,16 @@ Turkish			tr
 		const h = this.REO.height;
 		
 		console.log(['w=',w]);
+		
+		const sel = this.LM.selected; // This is 'en', or 'fi', or
+		const footer_text = this.LM['translation'][sel]['Eu_funding'];
+		//const footer_text = "TÄMÄ HANKE ON SAANUT RAHOITUSTA EUROOPAN UNIONIN HORIZON 2020 TUTKIMUS- JA INNOVAATIOOHJELMASTA AVUSTUSSOPIMUKSEN NRO 101000788 MUKAISESTI.";
+		// Split footer-text to two parts (find 2020 and use that as a split-marker):
+		const footer_texts = footer_text.split('2020');
+		const footer_text_a = footer_texts[0] + '2020';
+		const footer_text_b = footer_texts[1];
+		
+		//console.log(['footer_texts=',footer_texts]);
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -959,9 +962,10 @@ Turkish			tr
 		flag.setAttribute('href', './img/640px-Flag_of_Europe.svg.png');
 		group.appendChild(flag);
 		
+		//"Eu_funding": "TÄMÄ HANKE ON SAANUT RAHOITUSTA EUROOPAN UNIONIN HORIZON 2020 TUTKIMUS- JA INNOVAATIOOHJELMASTA AVUSTUSSOPIMUKSEN NRO 101000788 MUKAISESTI.",
 		//const footer_text_a_b = "THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020 RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N° 101000788";
-		const footer_text_a = "THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020";
-		const footer_text_b = "RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N° 101000788";
+		//const footer_text_a = "THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020";
+		//const footer_text_b = "RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N° 101000788";
 		
 		let fontsize = 12;
 		// If there is room to put all text to one line => do it.
@@ -1064,6 +1068,7 @@ Turkish			tr
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				console.log('ResizeEventObserver resize => SHOW()!');
 				this.show();
+				
 			} else if (options.model==='LanguageModel' && options.method==='loadTranslation') {
 				console.log('Language MODEL is now READY!!!!!!');
 				this.show();
@@ -1080,114 +1085,3 @@ Turkish			tr
 		this.rendered = true;
 	}
 }
-
-
-/*
-<defs>
-<path id="MyPath" fill="none" stroke="red"
-      d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
-</defs>
-
-<text>
-  <textPath href="#MyPath">
-    Quick brown fox jumps over the lazy dog.
-  </textPath>
-</text>
-*/
-/*
-	appendTitle() {
-		
-		const svgNS = 'http://www.w3.org/2000/svg';
-		let r = this.sunRadius()*3.5;
-		
-		//console.log(['r=',r]);
-		let fontSize = Math.round(r/6);
-		
-		
-		const group = document.createElementNS(svgNS, "g");
-		
-		const defs = document.createElementNS(svgNS, 'defs');
-		const path = document.createElementNS(svgNS, "path");
-		
-		const d = 'M-'+r+',0 A '+r+' '+r+' 0 0 1 '+r+' 0';
-		
-		path.setAttributeNS(null, 'd', d);
-		path.id = 'MyPath';
-		path.style.stroke = this.colors.DARK_BLUE;
-		path.style.strokeWidth = 1;
-		path.style.opacity = 0.5;
-		path.style.fill = 'none';
-		
-		defs.appendChild(path);
-		group.appendChild(defs);
-		//group.appendChild(path);
-		
-		
-		const txt = document.createElementNS(svgNS, 'text');
-		txt.style.fontSize = fontSize+'px';
-		txt.style.fill = this.colors.DARK_ORANGE;
-		txt.style.opacity = 0.5;
-		
-		const txtPath = document.createElementNS(svgNS, 'textPath');
-		txtPath.setAttributeNS(null, 'href', '#MyPath');
-		const text_node = document.createTextNode('Decision support tool for farmers'); // for farmers
-		txtPath.appendChild(text_node);
-		txt.appendChild(txtPath);
-		
-		group.appendChild(txt);
-		
-		$('#space').append(group);
-	}
-	*/
-	
-	/*
-	<svg x="1020" y="390" width="160px" height="40px">
-		<rect x="1" y="1" width="158" height="38" stroke="#fff" stroke-width="1" opacity="0.2" fill="#009688" />
-		<text id="heating-power" font-family="Arial, Helvetica, sans-serif" font-size="32px" fill="#00a" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"></text>
-	</svg>
-	*/
-	/*
-	appendTitle() {
-		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.sunRadius();
-		
-		const w = this.REO.width;
-		const h = this.REO.height;
-		
-		const fontsize = Math.round(r/3);
-		
-		const labelWidth = 0.9*w;//7*r;
-		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttribute('x',-labelWidth*0.5);
-		svg.setAttribute('y',-4*r+25);
-		svg.setAttributeNS(null,'width',labelWidth);
-		svg.setAttributeNS(null,'height',fontsize);
-		
-		const rect = document.createElementNS(svgNS, 'rect');
-		// Setup the <rect> element.
-		rect.setAttribute('x',0);
-		rect.setAttribute('y',0);
-		rect.setAttribute('width',labelWidth);
-		rect.setAttribute('height',fontsize);
-		rect.style.fill = 'none';//this.colors.LIGHT_ORANGE;
-		rect.style.fillOpacity = 0;
-		rect.style.stroke = '#ccc';//this.colors.DARK_ORANGE;
-		rect.style.strokeWidth = 1;
-		svg.appendChild(rect);
-		
-		const title = document.createElementNS(svgNS, 'text');
-		title.setAttribute('x','50%');
-		title.setAttribute('y','50%');
-		title.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		title.setAttribute('font-size',fontsize);
-		title.setAttribute('dominant-baseline','middle');
-		title.setAttribute('text-anchor','middle');
-		title.setAttribute('fill',this.colors.DARK_ORANGE);
-		title.style.opacity = 1;
-		title.appendChild(document.createTextNode('Decision support tool for farmers'));
-		svg.appendChild(title);
-		//group.appendChild(svg);
-		
-		$('#space').append(svg);
-	}
-	*/

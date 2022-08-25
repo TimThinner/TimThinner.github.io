@@ -434,6 +434,13 @@ export default class AnalysisView extends View {
 		}
 	}
 	
+	renderTitle() {
+		if (this.USER_MODEL.analysisResult.result_text) {
+			const ll_title = this.USER_MODEL.analysisResult.result_text.analysis_title;
+			const html = '<h3 style="color:'+this.colors.DARK_GREEN+'">'+ll_title+'</h3>';
+			$("#analysis-title-wrapper").empty().append(html);
+		}
+	}
 	
 	/*
 			"Intro_Definition_Business_Models":"Five business models can be differentiated for Short Food Supply Chains. These are Community Supported Agriculture (CSA), Face-to-Face Sales, Retail Trade, Online Trade, and Improved Logistics. They can be defined as follows:",
@@ -555,6 +562,13 @@ export default class AnalysisView extends View {
 		Our analysis shows that the sales channels can be ranked as follows. 
 		The most suitable channel is ranked first.
 	*/
+	renderRecommendationsTitle() {
+		if (this.USER_MODEL.analysisResult.result_text) {
+			const title = this.USER_MODEL.analysisResult.result_text.recommendation_title;
+			const html ='<h5 style="text-align:center">'+title+'</h5>';
+			$("#recommendations-title-wrapper").empty().append(html);
+		}
+	}
 	
 	renderRecommendationsText() {
 		
@@ -590,16 +604,24 @@ export default class AnalysisView extends View {
 		const self = this;
 		
 		// Generate following HTML dynamically based on analysis recommendations:
+		let ll_sales_channel_title = 'Sales Channel';
+		let ll_business_model_title = 'Business Model';
+		let ll_show_title = 'Show';
+		if (this.USER_MODEL.analysisResult.result_text) {
+			ll_sales_channel_title = this.USER_MODEL.analysisResult.result_text.rec_table_sc_title
+			ll_business_model_title = this.USER_MODEL.analysisResult.result_text.rec_table_bm_title;
+			ll_show_title = this.USER_MODEL.analysisResult.result_text.rec_table_checkbox_title;
+		}
 		let html = 
 			'<div class="row" style="margin-bottom:0;">'+
 				'<div class="col s5">'+
-					'<p style="font-weight:bold;">Sales Channel</p>'+
+					'<p style="font-weight:bold;">'+ll_sales_channel_title+'</p>'+
 				'</div>'+
 				'<div class="col s5">'+
-					'<p style="font-weight:bold;">Business Model</p>'+
+					'<p style="font-weight:bold;">'+ll_business_model_title+'</p>'+
 				'</div>'+
 				'<div class="col s2">'+
-					'<p style="font-weight:bold;">Show</p>'+
+					'<p style="font-weight:bold;">'+ll_show_title+'</p>'+
 				'</div>'+
 			'</div>';
 		
@@ -638,7 +660,6 @@ export default class AnalysisView extends View {
 				self.renderRecommendationsSpider();
 			});
 		});
-		
 		
 		this.recommendationz.forEach((r,index) => {
 			// Check if "Pick_Your_Own" is recommended?
@@ -874,7 +895,6 @@ export default class AnalysisView extends View {
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_how_calculated_title = this.USER_MODEL.analysisResult.result_text.How_calculated_title;
 			const ll_how_calculated_text = this.USER_MODEL.analysisResult.result_text.How_calculated;
-			let html = '<h5 style="text-align:center">'+ll_how_calculated_title+'</h5><p>'+ll_how_calculated_text+'</p>';
 			
 			let link_url = undefined;
 			let link_title = undefined;
@@ -884,9 +904,12 @@ export default class AnalysisView extends View {
 					link_title = l.link_title;
 				}
 			});
+			
+			let how_calculated_link = '';
 			if (typeof link_url !== 'undefined' && typeof link_title !== 'undefined') {
-				html += '<p> <a href="'+link_url+'" target="_blank">'+link_title+'</a></p>';
+				how_calculated_link = '<a href="'+link_url+'" target="_blank">'+link_title+'</a>';
 			}
+			const html = '<h5 style="text-align:center">'+ll_how_calculated_title+'</h5><p>'+ll_how_calculated_text+' '+how_calculated_link+'</p>';
 			$("#how-calculated-wrapper").empty().append(html);
 		}
 	}
@@ -901,8 +924,8 @@ export default class AnalysisView extends View {
 	}
 	
 	renderAll() {
+		this.renderTitle();
 		// CHAPTER 1: Business models explained
-		
 		this.setBMTitles();
 		this.renderBusinessModels();
 		
@@ -911,6 +934,7 @@ export default class AnalysisView extends View {
 		this.setRecommendations();
 		
 		// CHAPTER 2: Recommendations
+		this.renderRecommendationsTitle();
 		this.renderRecommendationsText();
 		this.renderRecommendationsList();
 		this.renderRecommendationsSpider();
@@ -967,13 +991,10 @@ export default class AnalysisView extends View {
 	render() {
 		const self = this;
 		$(this.el).empty();
-		
-		const ll_recommendations_title = 'Recommendations for Short Food Supply Chain';
 		const html = 
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<div class="col s12 center">'+
-						'<h3 style="color:'+this.colors.DARK_GREEN+'">ANALYSIS</h3>'+
+					'<div class="col s12 center" id="analysis-title-wrapper">'+
 					'</div>'+
 				'</div>'+
 				
@@ -993,8 +1014,7 @@ export default class AnalysisView extends View {
 				
 				// CHAPTER 2: Recommendations 
 				'<div class="col s12" style="border-top: 1px solid #888; border-bottom: 1px solid #ccc; margin-top:16px; background-color:'+this.colors.LIGHT_GREEN_2+';">'+
-					'<div class="col s12 m10 offset-m1">'+
-						'<h5 style="text-align:center">'+ll_recommendations_title+'</h5>'+
+					'<div class="col s12 m10 offset-m1" id="recommendations-title-wrapper">'+
 					'</div>'+
 					'<div class="col s12 m10 offset-m1">'+
 						'<div id="recommendations-text-wrapper"></div>'+

@@ -117,6 +117,8 @@ export default class AnimalsView extends View {
 		const ll_offering_query = LM['translation'][sel]['products_offering_query'];
 		const ll_animals_query = LM['translation'][sel]['animals_query'];
 		const ll_dairy_query = LM['translation'][sel]['dairy_products_query'];
+		const ll_farm_animals_title = LM['translation'][sel]['farm_animals_title'];
+		
 		//const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
 		const anim_a_Options = [
@@ -170,7 +172,7 @@ export default class AnimalsView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+color+'">FARM ANIMALS</h3>'+
+						'<h3 style="color:'+color+'">'+ll_farm_animals_title+'</h3>'+
 						'<p><img src="./img/photo-animals.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+

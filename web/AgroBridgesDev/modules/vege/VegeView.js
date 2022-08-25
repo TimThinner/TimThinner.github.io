@@ -98,6 +98,8 @@ export default class VegeView extends View {
 		const ll_offering_query = LM['translation'][sel]['products_offering_query'];
 		const ll_vege_query = LM['translation'][sel]['vegetables_query'];
 		const ll_how_many_query = LM['translation'][sel]['vegetables_how_many_query'];
+		const ll_farm_vegetables_title = LM['translation'][sel]['farm_vegetables_title'];
+		
 		//const ll_hectares_query = LM['translation'][sel]['vege_hectare_query'];
 		//const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
@@ -120,7 +122,7 @@ export default class VegeView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+color+'">FARM VEGETABLES</h3>'+
+						'<h3 style="color:'+color+'">'+ll_farm_vegetables_title+'</h3>'+
 						'<p><img src="./img/photo-veges.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+

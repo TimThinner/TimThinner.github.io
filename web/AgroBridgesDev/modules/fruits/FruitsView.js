@@ -93,6 +93,8 @@ export default class FruitsView extends View {
 		const ll_no = LM['translation'][sel]['dummy_no'];
 		const ll_fruits_query = LM['translation'][sel]['fruits_query'];
 		const ll_how_many_query = LM['translation'][sel]['fruits_how_many_query'];
+		const ll_farm_fruits_title = LM['translation'][sel]['farm_fruits_title'];
+		
 		//const ll_hectares_query = LM['translation'][sel]['fruit_hectare_query'];
 		//const ll_no_database_message = LM['translation'][sel]['no_database_message'];
 		
@@ -113,7 +115,7 @@ export default class FruitsView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center">'+
-						'<h3 style="color:'+color+'">FARM FRUITS</h3>'+
+						'<h3 style="color:'+color+'">'+ll_farm_fruits_title+'</h3>'+
 						'<p><img src="./img/photo-fruits.png" height="150"/></p>'+
 					'</div>'+
 				'</div>'+

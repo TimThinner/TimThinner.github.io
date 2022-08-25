@@ -64,6 +64,21 @@ export default class FarmView extends View {
 			fontsize = 18;
 		}
 		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected; // This is 'en', or 'fi', or
+		let type_text = '';
+		if (type === 'LOCATION') {
+			type_text = LM['translation'][sel]['icon_location'];
+		} else if (type === 'INFO') {
+			type_text = LM['translation'][sel]['icon_info'];
+		} else if (type === 'VEGETABLES') {
+			type_text = LM['translation'][sel]['icon_vegetables'];
+		} else if (type === 'ANIMALS') {
+			type_text = LM['translation'][sel]['icon_animals'];
+		} else if (type === 'FRUITS') {
+			type_text = LM['translation'][sel]['icon_fruits'];
+		}
+		
 		const labelWidth = r + r*0.75;
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-labelWidth*0.5);
@@ -92,7 +107,7 @@ export default class FarmView extends View {
 		title.setAttribute('text-anchor','middle');
 		title.setAttribute('fill',this.colors.DARK_GREEN);
 		title.style.opacity = 1;
-		title.appendChild(document.createTextNode(type));
+		title.appendChild(document.createTextNode(type_text));
 		svg.appendChild(title);
 		group.appendChild(svg);
 	}
@@ -380,6 +395,10 @@ export default class FarmView extends View {
 			fontsize = 100;
 		}
 		*/
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const farm_title = LM['translation'][sel]['farm_title'];
+		
 		const group = document.createElementNS(svgNS, "g");
 		
 		let coeff = -3.5;
@@ -412,7 +431,7 @@ export default class FarmView extends View {
 		title.setAttribute('text-anchor','middle');
 		title.setAttribute('fill',this.colors.DARK_GREEN);
 		title.style.opacity = 1;
-		title.appendChild(document.createTextNode('FARM'));
+		title.appendChild(document.createTextNode(farm_title));
 		svg.appendChild(title);
 		group.appendChild(svg);
 		$('#space').append(group);

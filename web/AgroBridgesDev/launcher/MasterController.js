@@ -161,7 +161,8 @@ class MasterController {
 				mockup = true;
 			}
 			const query_string = '?userid='+uid+'&country='+self.selected_country+'&language='+self.selected_language+'&MOCKUP='+mockup;
-			window.open("http://mars1.collab-cloud.eu/agrobridges/index.html"+query_string, "_blank");
+			//window.open("http://mars1.collab-cloud.eu/agrobridges/index.html"+query_string, "_blank");
+			window.open("http://agrobridges.vtt.fi/index.html"+query_string, "_blank");
 		});
 	}
 }

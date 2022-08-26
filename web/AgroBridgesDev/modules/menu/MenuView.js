@@ -142,9 +142,6 @@ export default class MenuView extends View {
 		const sel = this.LM.selected; // This is 'en', or 'fi', or
 		console.log(['MenuView appendLabel sel=',sel]);
 		if (typeof this.LM['translation'][sel] !== 'undefined') {
-			
-			console.log('MenuView LanguageModel OK!');
-			
 			if (type === 'FARM') {
 				type_text = this.LM['translation'][sel]['icon_farm'];
 			} else if (type === 'ACTIVITIES') {
@@ -441,9 +438,8 @@ export default class MenuView extends View {
 		}
 		const titleSVGHeight = fontsize;
 		
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		const sel = this.LM.selected; // This is 'en', or 'fi', or
 		let title_text = '';
+		const sel = this.LM.selected; // This is 'en', or 'fi', or
 		if (typeof this.LM['translation'][sel] !== 'undefined') {
 			title_text = this.LM['translation'][sel]['icon_analysis'];
 		}
@@ -734,9 +730,11 @@ export default class MenuView extends View {
 		group.appendChild(logo);
 		
 		//const txt = 'Decision support tool for farmers';
+		let title_text = '';
 		const sel = this.LM.selected; // This is 'en', or 'fi', or
-		const title_text = this.LM['translation'][sel]['main_title'];
-		
+		if (typeof this.LM['translation'][sel] !== 'undefined') {
+			title_text = this.LM['translation'][sel]['main_title'];
+		}
 		if (w > 1000) {
 			/*
 			const rx = -w*0.5+logo_w;
@@ -933,17 +931,29 @@ Turkish			tr
 		const w = this.REO.width;
 		const h = this.REO.height;
 		
-		console.log(['w=',w]);
+		//console.log(['w=',w]);
 		
+		let footer_text = '';
 		const sel = this.LM.selected; // This is 'en', or 'fi', or
-		const footer_text = this.LM['translation'][sel]['Eu_funding'];
+		if (typeof this.LM['translation'][sel] !== 'undefined') {
+			footer_text = this.LM['translation'][sel]['Eu_funding'];
+		}
+		
 		//const footer_text = "TÄMÄ HANKE ON SAANUT RAHOITUSTA EUROOPAN UNIONIN HORIZON 2020 TUTKIMUS- JA INNOVAATIOOHJELMASTA AVUSTUSSOPIMUKSEN NRO 101000788 MUKAISESTI.";
 		// Split footer-text to two parts (find 2020 and use that as a split-marker):
 		const footer_texts = footer_text.split('2020');
-		const footer_text_a = footer_texts[0] + '2020';
-		const footer_text_b = footer_texts[1];
 		
-		//console.log(['footer_texts=',footer_texts]);
+		let footer_text_a = '';
+		let footer_text_b = '';
+		if (Array.isArray(footer_texts) && footer_texts.length === 2) {
+			// Text contains one "2020".
+			footer_text_a = footer_texts[0] + '2020';
+			footer_text_b = footer_texts[1].trim();
+		}
+		
+		console.log(['FOOTER footer_texts=',footer_texts]);
+		console.log(['FOOTER footer_text_a=',footer_text_a]);
+		console.log(['FOOTER footer_text_b=',footer_text_b]);
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -961,54 +971,45 @@ Turkish			tr
 		flag.setAttribute('height', flag_h);
 		flag.setAttribute('href', './img/640px-Flag_of_Europe.svg.png');
 		group.appendChild(flag);
-		
-		//"Eu_funding": "TÄMÄ HANKE ON SAANUT RAHOITUSTA EUROOPAN UNIONIN HORIZON 2020 TUTKIMUS- JA INNOVAATIOOHJELMASTA AVUSTUSSOPIMUKSEN NRO 101000788 MUKAISESTI.",
-		//const footer_text_a_b = "THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020 RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N° 101000788";
-		//const footer_text_a = "THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020";
-		//const footer_text_b = "RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N° 101000788";
-		
-		let fontsize = 12;
-		// If there is room to put all text to one line => do it.
-		if (w > 1200) {
-			
-			const footer = footer_text_a + ' ' + footer_text_b;
-			// 141 characters in total.
-			//console.log(['footer.length=',footer.length]);
-			
-			// Create ONE SVG and put a rect and text under it.
-			group.appendChild(this.createFooterSVG(
-				flag_x_pos + flag_w + x_margin,
-				h*0.5-24,
-				w - 3*x_margin - flag_w,
-				14,
-				footer, fontsize));
-			
-		} else {
-			// If really small ...
-			if (w < 500) {
-				fontsize = 6;
-			} else if (w >= 500 && w < 700) {
-				fontsize = 8;
+		// "TÄMÄ HANKE ON SAANUT RAHOITUSTA EUROOPAN UNIONIN HORIZON 2020 TUTKIMUS- JA INNOVAATIOOHJELMASTA AVUSTUSSOPIMUKSEN NRO 101000788 MUKAISESTI.",
+		// "THIS PROJECT HAS RECEIVED FUNDING FROM THE EUROPEAN UNION'S HORIZON 2020 RESEARCH AND INNOVATION PROGRAMME UNDER GRANT AGREEMENT N° 101000788";
+		if (footer_text_a.length > 0 && footer_text_b.length > 0) {
+			let fontsize = 12;
+			// If there is room to put all text to one line => do it.
+			if (w > 1200) {
+				const footer = footer_text_a + ' ' + footer_text_b;
+				// Create ONE SVG and put a rect and text under it.
+				group.appendChild(this.createFooterSVG(
+					flag_x_pos + flag_w + x_margin,
+					h*0.5-24,
+					w - 3*x_margin - flag_w,
+					14,
+					footer, fontsize));
+				
 			} else {
-				fontsize = 10;
+				// If really small ...
+				if (w < 500) {
+					fontsize = 6;
+				} else if (w >= 500 && w < 700) {
+					fontsize = 8;
+				} else {
+					fontsize = 10;
+				}
+				// Create TWO SVGs and put a rect and text under it.
+				group.appendChild(this.createFooterSVG(
+					flag_x_pos + flag_w + x_margin,
+					h*0.5-fontsize*4,
+					w - 3*x_margin - flag_w,
+					fontsize,
+					footer_text_a, fontsize));
+				
+				group.appendChild(this.createFooterSVG(
+					flag_x_pos + flag_w + x_margin,
+					h*0.5-fontsize*3,
+					w - 3*x_margin - flag_w,
+					fontsize,
+					footer_text_b, fontsize));
 			}
-			
-			// Create TWO SVGs and put a rect and text under it.
-			group.appendChild(this.createFooterSVG(
-				flag_x_pos + flag_w + x_margin,
-				h*0.5-fontsize*4,
-				w - 3*x_margin - flag_w,
-				fontsize,
-				footer_text_a, fontsize)
-			);
-			// Create TWO SVGs and put a rect and text under it.
-			group.appendChild(this.createFooterSVG(
-				flag_x_pos + flag_w + x_margin,
-				h*0.5-fontsize*3,
-				w - 3*x_margin - flag_w,
-				fontsize,
-				footer_text_b, fontsize)
-			);
 		}
 		$('#space').append(group);
 	}
@@ -1040,6 +1041,7 @@ Turkish			tr
 		
 		$('#space').append(group);
 	}
+	
 	renderALL() {
 		
 		console.log('renderALL() BEGIN');

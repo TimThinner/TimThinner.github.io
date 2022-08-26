@@ -202,8 +202,10 @@ class MasterController {
 		if (typeof url_params['userid'] !== 'undefined') {
 			UM.id = url_params['userid'];
 		}
+		
 		if (typeof url_params['country'] !== 'undefined') {
 			UM.profile['Country'] = url_params['country'];
+			
 		} else {
 			UM.profile['Country'] = 'IE';
 		}
@@ -215,8 +217,11 @@ class MasterController {
 			}
 			UM.MOCKUP = this.MOCKUP;
 			LM.MOCKUP = this.MOCKUP;
+		} else {
+			this.MOCKUP = true;
+			UM.MOCKUP = this.MOCKUP;
+			LM.MOCKUP = this.MOCKUP;
 		}
-		
 		
 		console.log('Now load the language Translation!');
 		if (typeof url_params['language'] !== 'undefined') {
@@ -224,15 +229,16 @@ class MasterController {
 		} else {
 			LM.selected = 'en';
 		}
-		LM.loadTranslation();
 		
+		// Clear all search strings ('?foo=bar') and hash anchors ('#mood') from URL WITHOUT RELOADING THE PAGE!
+		window.history.pushState({}, "", "index.html");
+		
+		LM.loadTranslation();
 		
 		UM.insertUser(); // This checks if User already exists in database.
 		//UM.restoreUserProfile(); // Try to restore previous profile data stored into database.
 		
-		
 		this.createControllers();
-		
 	}
 	
 	forceLogout() {

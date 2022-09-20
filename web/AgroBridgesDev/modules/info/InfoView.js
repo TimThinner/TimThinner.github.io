@@ -148,7 +148,19 @@ export default class InfoView extends View {
 		$(this.el).append(html);
 		
 		// Restore current selection:
-		const farm_size = this.USER_MODEL.profile.Hectare_farm;
+		let farm_size = this.USER_MODEL.profile.Hectare_farm;
+		// NOTE if country is GREECE and language is GREEK we must multiply by 10 to show "Stremma" value.
+		
+		// In Greece we use different units of measurement for farm sizes, called "Stremma" which is
+		// the equivalent of 0.1 hectares. As it is not intuitive to ask something else from farmers,
+		// would it be possible to ask the value in our local unit and convert to hectares automatically
+		// for the purpose of the tool calculations? (i.e. multiply the input value by 0.1 on the back end).
+		
+		//if (this.USER_MODEL.profile.Country === 'EL' && sel === 'el') {
+		if (sel === 'el') {
+			farm_size = farm_size*10; // show hectare as "Stremma". NOTE: min and max is 500.
+		}
+		
 		const delivery_month_total = this.USER_MODEL.profile.Delivery_month_total;
 		
 		if (this.USER_MODEL.profile.Dummy_organic === 'No') {
@@ -179,7 +191,8 @@ export default class InfoView extends View {
 		noUiSlider.create(farmSizeSlider, {
 			start: [farm_size],
 			connect: 'lower',
-			tooltips: [wNumb({decimals:0,suffix:' ha'})],
+			//tooltips: [wNumb({decimals:0,suffix:' ha'})],
+			tooltips: [wNumb({decimals:0})],
 			step: 1,
 			keyboardSupport: true,      // Default true
 			keyboardDefaultStep: 5,     // Default 10
@@ -262,8 +275,15 @@ export default class InfoView extends View {
 				$('#'+self.FELID).empty().append(html);
 			}
 			*/
+			
+			let hectare_or_stremma = self.USER_MODEL.profile.Hectare_farm;
+			//if (self.USER_MODEL.profile.Country === 'EL' && sel === 'el') {
+			if (sel === 'el') {
+				hectare_or_stremma = hectare_or_stremma*0.1; // Save Stremma as hectare.
+			}
+			
 			const data = [
-				{propName:'Hectare_farm', value:self.USER_MODEL.profile.Hectare_farm},
+				{propName:'Hectare_farm', value:hectare_or_stremma},
 				{propName:'Delivery_month_total', value:self.USER_MODEL.profile.Delivery_month_total}
 			];
 			

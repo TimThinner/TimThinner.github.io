@@ -96,7 +96,12 @@ export default class AnalysisView extends View {
 			"R0":{id:'show-r-0', value:true, color:this.colors.DARK_GREEN},
 			"R1":{id:'show-r-1', value:true, color:this.colors.DARK_ORANGE},
 			"R2":{id:'show-r-2', value:true, color:this.colors.DARK_BLUE},
-			"R3":{id:'show-r-3', value:true, color:this.colors.DARK_RED}
+			"R3":{id:'show-r-3', value:true, color:this.colors.DARK_RED},
+			"R4":{id:'show-r-4', value:true, color:'#cddc39'}, // lime (color codes from https://materializecss.com/color.html)
+			"R5":{id:'show-r-5', value:true, color:'#795548'}, // brown
+			"R6":{id:'show-r-6', value:true, color:'#009688'}, // teal
+			"R7":{id:'show-r-7', value:true, color:'#673ab7'}, // deep-purple
+			"R8":{id:'show-r-8', value:true, color:'#757575'} // grey darken-1
 		};
 		
 		// All 7 features in counter clockwise order.
@@ -192,11 +197,14 @@ export default class AnalysisView extends View {
 		const colors = [
 			this.colors.DARK_GREEN, // First recommendation.
 			this.colors.DARK_ORANGE, // Second recommendation.
-			this.colors.DARK_BLUE // Third recommendation.
+			this.colors.DARK_BLUE, // Third recommendation.
+			this.colors.DARK_RED,
+			'#cddc39', // lime (color codes from https://materializecss.com/color.html)
+			'#795548', // brown
+			'#009688', // teal
+			'#673ab7', // deep-purple
+			'#757575' // grey darken-1
 		];
-		// "R0":{id:'show-r-0',value:true, color:this.colors.DARK_GREEN}
-		// "R1":{id:'show-r-1',value:true, color:this.colors.DARK_ORANGE}
-		// "R2":{id:'show-r-2',value:true, color:this.colors.DARK_BLUE}
 		this.USER_MODEL.analysisResult.recommendation.forEach((r,index) => {
 			const recom = {};
 			Object.keys(r).forEach(key => {
@@ -212,7 +220,9 @@ export default class AnalysisView extends View {
 			
 			this.recommendationz.push(recom);
 			let color = '#000000';
-			if (index < 3) {
+			
+			// this.showRecommendation is already defined for indexes 0 to 8.
+			if (index < 9) {
 				color = colors[index];
 			}
 			// NOTE: set only new ones => we want to keep old "checked" values when "resize-render" is called.

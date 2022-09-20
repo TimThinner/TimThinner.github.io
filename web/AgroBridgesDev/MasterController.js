@@ -41,7 +41,7 @@ class MasterController {
 	constructor() {
 		this.controllers = {};
 		this.modelRepo = new ModelRepo();
-		this.MOCKUP = true;
+		this.MOCKUP = false;
 	}
 	
 	createControllers() {
@@ -218,7 +218,7 @@ class MasterController {
 			UM.MOCKUP = this.MOCKUP;
 			LM.MOCKUP = this.MOCKUP;
 		} else {
-			this.MOCKUP = true;
+			this.MOCKUP = false;
 			UM.MOCKUP = this.MOCKUP;
 			LM.MOCKUP = this.MOCKUP;
 		}

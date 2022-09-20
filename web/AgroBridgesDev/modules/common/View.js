@@ -23,11 +23,6 @@ export default class View {
 			LIGHT_RED:'#FFAAAA',
 			DARK_BLUE:'#1E4194',
 			LIGHT_BLUE:'#93ADE9'
-			
-			//Three different shades of green:
-			
-			
-			
 		};
 	}
 	

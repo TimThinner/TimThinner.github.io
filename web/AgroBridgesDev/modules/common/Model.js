@@ -11,9 +11,10 @@ export default class Model extends EventObserver {
 		this.status = 500;
 		this.fetching = false;
 		
-		this.MOCKUP = true;
+		this.MOCKUP = false;
 		//this.backend = 'http://localhost:3000';
-		this.backend = 'http://localhost:6969';
+		//this.backend = 'http://localhost:6969';
+		this.backend = 'https://agrobridges.vtt.fi';
 	}
 	
 	/* Dummy reset. */

@@ -85,6 +85,7 @@ export default class HelpView extends View {
 					'<div class="col s12 center">'+
 						'<button class="btn waves-effect waves-light" id="help-ok" style="width:120px">OK</button>'+
 						'<p>&nbsp;</p>'+
+						'<p style="font-size:14px;color:#bbb">v 22.10.11</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>';

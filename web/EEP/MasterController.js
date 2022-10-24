@@ -24,13 +24,11 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init! Version 22.03.03');
+		console.log('MasterController init! Version 22.10.14');
 		
 		console.log('Create ResizeEventObserver!');
 		const REO = new ResizeEventObserver();
 		this.modelRepo.add('ResizeEventObserver',REO);
-		
-		
 		
 		// Start tracking resize events => will also notify initial "resize" (with small delay) 
 		// for MenuView (View which is visible after delay timeout).

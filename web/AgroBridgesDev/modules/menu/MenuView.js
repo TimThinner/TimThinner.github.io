@@ -1061,7 +1061,7 @@ Turkish			tr
 		
 		this.appendHeader(); // Logo, Title and buttons.
 		this.appendEUFlag(); // Footer
-		this.appendDEBUGInfo();
+		//this.appendDEBUGInfo();
 		console.log('renderALL() END!');
 	}
 	

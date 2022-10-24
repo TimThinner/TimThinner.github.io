@@ -158,87 +158,87 @@ class MasterController {
 		// LM.selected = 'en';
 		
 		const url_params = {};
+		//	const query_string = '?userid='+uid+'&country=IE&language=en&MOCKUP='+mockup;
 		const params = new URLSearchParams(window.location.search);
-		// Display the key/value pairs
+		// get the key/value pairs
 		for (const [key, value] of params.entries()) {
 			url_params[key] = value;
 		}
 		console.log(['url_params=',url_params]);
-		//	const query_string = '?userid='+uid+'&country=IE&language=en&MOCKUP='+mockup;
-		
-		console.log('Create ResizeEventObserver!');
-		const REO = new ResizeEventObserver();
-		this.modelRepo.add('ResizeEventObserver',REO);
-		
-		const LM = new LanguageModel({name:'LanguageModel',src:''});
-		LM.subscribe(this); // Now we will receive notifications from the LanguageModel.
-		this.modelRepo.add('LanguageModel',LM);
-		
-		console.log('Create UserModel!');
-		const UM = new UserModel({name:'UserModel'});
-		UM.subscribe(this); // Now we will receive notifications from the UserModel.
-		this.modelRepo.add('UserModel',UM);
-		//UM.restore(); // Try to restore previous "session" stored into LocalStorage.
-		
-		
-		
-		
-		// Start tracking resize events => will also notify initial "resize" (with small delay) 
-		// for MenuView (View which is visible after delay timeout).
-		REO.start();
-		
-		console.log('Create Controllers...');
-		// - MENU
-		// - MAIN
-		//   - Farm
-		//     - Location
-		//     - Info
-		//     - Vegetables
-		//     - Animals
-		//     - Fruits
-		//   - Activities
-		//   - Producer
-		
-		if (typeof url_params['userid'] !== 'undefined') {
-			UM.id = url_params['userid'];
-		}
-		
-		if (typeof url_params['country'] !== 'undefined') {
-			UM.profile['Country'] = url_params['country'];
+		// New code here October 11th 2022
+		// If any of these URL params ('userid' or 'country' or 'language') is missing, 
+		// we just skip rest of init and open the landing page of the project.
+		if (typeof url_params['userid'] === 'undefined' || typeof url_params['country'] === 'undefined' || typeof url_params['language'] === 'undefined') {
+			
+			window.location.replace("https://agrobridges-toolbox.eu/decisionsupporttool/");
 			
 		} else {
-			UM.profile['Country'] = 'IE';
-		}
-		if (typeof url_params['MOCKUP'] !== 'undefined') {
-			if (url_params['MOCKUP'] === 'true') {
-				this.MOCKUP = true;
+			console.log('Create ResizeEventObserver!');
+			const REO = new ResizeEventObserver();
+			this.modelRepo.add('ResizeEventObserver',REO);
+			
+			const LM = new LanguageModel({name:'LanguageModel',src:''});
+			LM.subscribe(this); // Now we will receive notifications from the LanguageModel.
+			this.modelRepo.add('LanguageModel',LM);
+			
+			console.log('Create UserModel!');
+			const UM = new UserModel({name:'UserModel'});
+			UM.subscribe(this); // Now we will receive notifications from the UserModel.
+			this.modelRepo.add('UserModel',UM);
+			//UM.restore(); // Try to restore previous "session" stored into LocalStorage.
+			
+			// Start tracking resize events => will also notify initial "resize" (with small delay) 
+			// for MenuView (View which is visible after delay timeout).
+			REO.start();
+			
+			console.log('Create Controllers...');
+			// - MENU
+			// - MAIN
+			//   - Farm
+			// 	   - Location
+			//     - Info
+			//     - Vegetables
+			//     - Animals
+			//     - Fruits
+			//   - Activities
+			//   - Producer
+			
+			if (typeof url_params['userid'] !== 'undefined') {
+				UM.id = url_params['userid'];
+			}
+			
+			if (typeof url_params['country'] !== 'undefined') {
+				UM.profile['Country'] = url_params['country'];
+				
+			} else {
+				UM.profile['Country'] = 'IE';
+			}
+			if (typeof url_params['MOCKUP'] !== 'undefined') {
+				if (url_params['MOCKUP'] === 'true') {
+					this.MOCKUP = true;
+				} else {
+					this.MOCKUP = false;
+				}
+				UM.MOCKUP = this.MOCKUP;
+				LM.MOCKUP = this.MOCKUP;
 			} else {
 				this.MOCKUP = false;
+				UM.MOCKUP = this.MOCKUP;
+				LM.MOCKUP = this.MOCKUP;
 			}
-			UM.MOCKUP = this.MOCKUP;
-			LM.MOCKUP = this.MOCKUP;
-		} else {
-			this.MOCKUP = false;
-			UM.MOCKUP = this.MOCKUP;
-			LM.MOCKUP = this.MOCKUP;
+			
+			console.log('Now load the language Translation!');
+			if (typeof url_params['language'] !== 'undefined') {
+				LM.selected = url_params['language'];
+			} else {
+				LM.selected = 'en';
+			}
+			// Clear all search strings ('?foo=bar') and hash anchors ('#mood') from URL WITHOUT RELOADING THE PAGE!
+			window.history.pushState({}, "", "index.html");
+			LM.loadTranslation();
+			UM.insertUser(); // This checks if User already exists in database.
+			this.createControllers();
 		}
-		
-		console.log('Now load the language Translation!');
-		if (typeof url_params['language'] !== 'undefined') {
-			LM.selected = url_params['language'];
-		} else {
-			LM.selected = 'en';
-		}
-		
-		// Clear all search strings ('?foo=bar') and hash anchors ('#mood') from URL WITHOUT RELOADING THE PAGE!
-		window.history.pushState({}, "", "index.html");
-		
-		LM.loadTranslation();
-		
-		UM.insertUser(); // This checks if User already exists in database.
-		//UM.restoreUserProfile(); // Try to restore previous profile data stored into database.
-		
-		this.createControllers();
 	}
 	
 	forceLogout() {

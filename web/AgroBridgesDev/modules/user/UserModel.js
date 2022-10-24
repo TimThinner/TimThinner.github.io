@@ -764,63 +764,33 @@ export default class UserModel extends Model {
 	}
 	
 	fillFarmLocation(myJson) {
+		
 		if (myJson.Country) {
 			this.profile.Country = myJson.Country;
 		}
+		
 		if (myJson.NUTS3) {
 			this.profile.NUTS3 = myJson.NUTS3;
 		}
 		
-		if (myJson.Distance_Drive_minor_kat1) { // 1
-			this.profile.Distance_Drive_minor_kat1 = true;
+		if (myJson.Distance_Drive_minor_kat1 === null) {
+			// If one of these is null => they all are! => No need to fill.
 		} else {
-			this.profile.Distance_Drive_minor_kat1 = false;
-		}
-		if (myJson.Distance_Drive_minor_kat2) { // 1
-			this.profile.Distance_Drive_minor_kat2 = true;
-		} else {
-			this.profile.Distance_Drive_minor_kat2 = false;
-		}
-		if (myJson.Distance_Drive_minor_kat3) { // 1
-			this.profile.Distance_Drive_minor_kat3 = true;
-		} else {
-			this.profile.Distance_Drive_minor_kat3 = false;
-		}
-		if (myJson.Distance_Drive_minor_kat4) { // 1
-			this.profile.Distance_Drive_minor_kat4 = true;
-		} else {
-			this.profile.Distance_Drive_minor_kat4 = false;
-		}
-		if (myJson.Distance_Drive_minor_kat5) { // 1
-			this.profile.Distance_Drive_minor_kat5 = true;
-		} else {
-			this.profile.Distance_Drive_minor_kat5 = false;
+			if (myJson.Distance_Drive_minor_kat1) { this.profile.Distance_Drive_minor_kat1 = true; } else { this.profile.Distance_Drive_minor_kat1 = false; }
+			if (myJson.Distance_Drive_minor_kat2) { this.profile.Distance_Drive_minor_kat2 = true; } else { this.profile.Distance_Drive_minor_kat2 = false; }
+			if (myJson.Distance_Drive_minor_kat3) { this.profile.Distance_Drive_minor_kat3 = true; } else { this.profile.Distance_Drive_minor_kat3 = false; }
+			if (myJson.Distance_Drive_minor_kat4) { this.profile.Distance_Drive_minor_kat4 = true; } else { this.profile.Distance_Drive_minor_kat4 = false; }
+			if (myJson.Distance_Drive_minor_kat5) { this.profile.Distance_Drive_minor_kat5 = true; } else { this.profile.Distance_Drive_minor_kat5 = false; }
 		}
 		
-		if (myJson.Distance_Drive_major_kat1) { // 1
-			this.profile.Distance_Drive_major_kat1 = true;
+		if (myJson.Distance_Drive_major_kat1 === null) {
+			// If one of these is null => they all are! => No need to fill.
 		} else {
-			this.profile.Distance_Drive_major_kat1 = false;
-		}
-		if (myJson.Distance_Drive_major_kat2) { // 1
-			this.profile.Distance_Drive_major_kat2 = true;
-		} else {
-			this.profile.Distance_Drive_major_kat2 = false;
-		}
-		if (myJson.Distance_Drive_major_kat3) { // 1
-			this.profile.Distance_Drive_major_kat3 = true;
-		} else {
-			this.profile.Distance_Drive_major_kat3 = false;
-		}
-		if (myJson.Distance_Drive_major_kat4) { // 1
-			this.profile.Distance_Drive_major_kat4 = true;
-		} else {
-			this.profile.Distance_Drive_major_kat4 = false;
-		}
-		if (myJson.Distance_Drive_major_kat5) { // 1
-			this.profile.Distance_Drive_major_kat5 = true;
-		} else {
-			this.profile.Distance_Drive_major_kat5 = false;
+			if (myJson.Distance_Drive_major_kat1) { this.profile.Distance_Drive_major_kat1 = true; } else { this.profile.Distance_Drive_major_kat1 = false; }
+			if (myJson.Distance_Drive_major_kat2) { this.profile.Distance_Drive_major_kat2 = true; } else { this.profile.Distance_Drive_major_kat2 = false; }
+			if (myJson.Distance_Drive_major_kat3) { this.profile.Distance_Drive_major_kat3 = true; } else { this.profile.Distance_Drive_major_kat3 = false; }
+			if (myJson.Distance_Drive_major_kat4) { this.profile.Distance_Drive_major_kat4 = true; } else { this.profile.Distance_Drive_major_kat4 = false; }
+			if (myJson.Distance_Drive_major_kat5) { this.profile.Distance_Drive_major_kat5 = true; } else { this.profile.Distance_Drive_major_kat5 = false; }
 		}
 	}
 	
@@ -835,82 +805,115 @@ export default class UserModel extends Model {
 		} else {
 			this.profile.Delivery_month_total = 0;
 		}
-		
-		if (myJson.Dummy_organic) { // 1
-			this.profile.Dummy_organic = 'Yes';
-		} else {
-			this.profile.Dummy_organic = 'No';
+		// Fill ONLY if value is NOT null.
+		if (myJson.Dummy_organic !== null) {
+			if (myJson.Dummy_organic) { // 1
+				this.profile.Dummy_organic = 'Yes';
+			} else {
+				this.profile.Dummy_organic = 'No';
+			}
 		}
-		if (myJson.Cert_Min) { // 1
-			this.profile.Cert_Min = true;
-		} else {
-			this.profile.Cert_Min = false;
+		if (myJson.Cert_Min !== null) {
+			if (myJson.Cert_Min) { // 1
+				this.profile.Cert_Min = true;
+			} else {
+				this.profile.Cert_Min = false;
+			}
 		}
-		if (myJson.Cert_High) { // 1
-			this.profile.Cert_High = true;
-		} else {
-			this.profile.Cert_High = false;
+		if (myJson.Cert_High !== null) {
+			if (myJson.Cert_High) { // 1
+				this.profile.Cert_High = true;
+			} else {
+				this.profile.Cert_High = false;
+			}
 		}
-		if (myJson.Cert_uncertified) { // 1
-			this.profile.Cert_uncertified = true;
-		} else {
-			this.profile.Cert_uncertified = false;
+		if (myJson.Cert_uncertified !== null) {
+			if (myJson.Cert_uncertified) { // 1
+				this.profile.Cert_uncertified = true;
+			} else {
+				this.profile.Cert_uncertified = false;
+			}
 		}
-		
-		if (myJson.Harv_farmers_org) { // 1
-			this.profile.Harv_farmers_org = true;
-		} else {
-			this.profile.Harv_farmers_org = false;
+		if (myJson.Harv_farmers_org !== null) {
+			if (myJson.Harv_farmers_org) { // 1
+				this.profile.Harv_farmers_org = true;
+			} else {
+				this.profile.Harv_farmers_org = false;
+			}
 		}
-		if (myJson.Harv_Clean_Sort_Ref) { // 1
-			this.profile.Harv_Clean_Sort_Ref = true;
-		} else {
-			this.profile.Harv_Clean_Sort_Ref = false;
+		if (myJson.Harv_Clean_Sort_Ref !== null) {
+			if (myJson.Harv_Clean_Sort_Ref) { // 1
+				this.profile.Harv_Clean_Sort_Ref = true;
+			} else {
+				this.profile.Harv_Clean_Sort_Ref = false;
+			}
 		}
 	}
 	
 	fillVegetables(myJson) {
 		
-		if (myJson.Dummy_veggie_farm) { // 1
-			this.profile.Dummy_veggie_farm = 'Yes';
-		} else {
-			this.profile.Dummy_veggie_farm = 'No';
+		if (myJson.Dummy_veggie_farm !== null) {
+			if (myJson.Dummy_veggie_farm) { // 1
+				this.profile.Dummy_veggie_farm = 'Yes';
+			} else {
+				this.profile.Dummy_veggie_farm = 'No';
+			}
 		}
 		
-		if (myJson.Dummy_lettuce) { // 1
-			this.profile.Dummy_lettuce = true;
-		} else {
-			this.profile.Dummy_lettuce = false;
+		if (myJson.Dummy_lettuce !== null) {
+			if (myJson.Dummy_lettuce) { // 1
+				this.profile.Dummy_lettuce = true;
+			} else {
+				this.profile.Dummy_lettuce = false;
+			}
 		}
-		if (myJson.Dummy_fruit_vegetables) { // 1
-			this.profile.Dummy_fruit_vegetables = true;
-		} else {
-			this.profile.Dummy_fruit_vegetables = false;
+		
+		if (myJson.Dummy_fruit_vegetables !== null) {
+			if (myJson.Dummy_fruit_vegetables) { // 1
+				this.profile.Dummy_fruit_vegetables = true;
+			} else {
+				this.profile.Dummy_fruit_vegetables = false;
+			}
 		}
-		if (myJson.Dummy_pumpkin) { // 1
-			this.profile.Dummy_pumpkin = true;
-		} else {
-			this.profile.Dummy_pumpkin = false;
+		
+		if (myJson.Dummy_pumpkin !== null) {
+			if (myJson.Dummy_pumpkin) { // 1
+				this.profile.Dummy_pumpkin = true;
+			} else {
+				this.profile.Dummy_pumpkin = false;
+			}
 		}
-		if (myJson.Dummy_bulb) { // 1
-			this.profile.Dummy_bulb = true;
-		} else {
-			this.profile.Dummy_bulb = false;
+		
+		if (myJson.Dummy_bulb !== null) {
+			if (myJson.Dummy_bulb) { // 1
+				this.profile.Dummy_bulb = true;
+			} else {
+				this.profile.Dummy_bulb = false;
+			}
 		}
-		if (myJson.Dummy_Root) { // 1
-			this.profile.Dummy_Root = true;
-		} else {
-			this.profile.Dummy_Root = false;
+		
+		if (myJson.Dummy_Root !== null) {
+			if (myJson.Dummy_Root) { // 1
+				this.profile.Dummy_Root = true;
+			} else {
+				this.profile.Dummy_Root = false;
+			}
 		}
-		if (myJson.Dummy_Cabbage) { // 1
-			this.profile.Dummy_Cabbage = true;
-		} else {
-			this.profile.Dummy_Cabbage = false;
+		
+		if (myJson.Dummy_Cabbage !== null) {
+			if (myJson.Dummy_Cabbage) { // 1
+				this.profile.Dummy_Cabbage = true;
+			} else {
+				this.profile.Dummy_Cabbage = false;
+			}
 		}
-		if (myJson.Dummy_Special) { // 1
-			this.profile.Dummy_Special = true;
-		} else {
-			this.profile.Dummy_Special = false;
+		
+		if (myJson.Dummy_Special !== null) {
+			if (myJson.Dummy_Special) { // 1
+				this.profile.Dummy_Special = true;
+			} else {
+				this.profile.Dummy_Special = false;
+			}
 		}
 		
 		if (myJson.vegetables_total) { // not null or 0
@@ -921,100 +924,150 @@ export default class UserModel extends Model {
 	}
 	
 	fillAnimals(myJson) {
-		if (myJson.Dummy_livestock) {
-			this.profile.Dummy_livestock = 'Yes';
-		} else {
-			this.profile.Dummy_livestock = 'No';
+		if (myJson.Dummy_livestock !== null) {
+			if (myJson.Dummy_livestock) {
+				this.profile.Dummy_livestock = 'Yes';
+			} else {
+				this.profile.Dummy_livestock = 'No';
+			}
 		}
 		
-		if (myJson.Dummy_Cows) {
-			this.profile.Dummy_Cows = true;
-		} else {
-			this.profile.Dummy_Cows = false;
+		if (myJson.Dummy_Cows !== null) {
+			if (myJson.Dummy_Cows) {
+				this.profile.Dummy_Cows = true;
+			} else {
+				this.profile.Dummy_Cows = false;
+			}
 		}
-		if (myJson.Dummy_Layer_Hens) {
-			this.profile.Dummy_Layer_Hens = true;
-		} else {
-			this.profile.Dummy_Layer_Hens = false;
+		
+		if (myJson.Dummy_Layer_Hens !== null) {
+			if (myJson.Dummy_Layer_Hens) {
+				this.profile.Dummy_Layer_Hens = true;
+			} else {
+				this.profile.Dummy_Layer_Hens = false;
+			}
 		}
-		if (myJson.Dummy_Fish) {
-			this.profile.Dummy_Fish = true;
-		} else {
-			this.profile.Dummy_Fish = false;
+		
+		if (myJson.Dummy_Fish !== null) {
+			if (myJson.Dummy_Fish) {
+				this.profile.Dummy_Fish = true;
+			} else {
+				this.profile.Dummy_Fish = false;
+			}
 		}
-		if (myJson.Other_animals) {
-			this.profile.Other_animals = true;
-		} else {
-			this.profile.Other_animals = false;
+		
+		if (myJson.Other_animals !== null) {
+			if (myJson.Other_animals) {
+				this.profile.Other_animals = true;
+			} else {
+				this.profile.Other_animals = false;
+			}
 		}
-		if (myJson.Dummy_raw_milk_only) {
-			this.profile.Dummy_raw_milk_only = true;
-		} else {
-			this.profile.Dummy_raw_milk_only = false;
+		
+		if (myJson.Dummy_raw_milk_only !== null) {
+			if (myJson.Dummy_raw_milk_only) {
+				this.profile.Dummy_raw_milk_only = true;
+			} else {
+				this.profile.Dummy_raw_milk_only = false;
+			}
 		}
-		if (myJson.Dummy_Milk) {
-			this.profile.Dummy_Milk = true;
-		} else {
-			this.profile.Dummy_Milk = false;
+		
+		if (myJson.Dummy_Milk !== null) {
+			if (myJson.Dummy_Milk) {
+				this.profile.Dummy_Milk = true;
+			} else {
+				this.profile.Dummy_Milk = false;
+			}
 		}
-		if (myJson.Dummy_Dairy_Products) {
-			this.profile.Dummy_Dairy_Products = true;
-		} else {
-			this.profile.Dummy_Dairy_Products = false;
+		
+		if (myJson.Dummy_Dairy_Products !== null) {
+			if (myJson.Dummy_Dairy_Products) {
+				this.profile.Dummy_Dairy_Products = true;
+			} else {
+				this.profile.Dummy_Dairy_Products = false;
+			}
 		}
-		if (myJson.Dummy_Beef) {
-			this.profile.Dummy_Beef = true;
-		} else {
-			this.profile.Dummy_Beef = false;
+		
+		if (myJson.Dummy_Beef !== null) {
+			if (myJson.Dummy_Beef) {
+				this.profile.Dummy_Beef = true;
+			} else {
+				this.profile.Dummy_Beef = false;
+			}
 		}
-		if (myJson.Dummy_animal_welfare) {
-			this.profile.Dummy_animal_welfare = true;
-		} else {
-			this.profile.Dummy_animal_welfare = false;
+		
+		if (myJson.Dummy_animal_welfare !== null) {
+			if (myJson.Dummy_animal_welfare) {
+				this.profile.Dummy_animal_welfare = true;
+			} else {
+				this.profile.Dummy_animal_welfare = false;
+			}
 		}
-		if (myJson.Dummy_spec_beef) {
-			this.profile.Dummy_spec_beef = true;
-		} else {
-			this.profile.Dummy_spec_beef = false;
+		
+		if (myJson.Dummy_spec_beef !== null) {
+			if (myJson.Dummy_spec_beef) {
+				this.profile.Dummy_spec_beef = true;
+			} else {
+				this.profile.Dummy_spec_beef = false;
+			}
 		}
-		if (myJson.Dummy_cheese_reg_special) {
-			this.profile.Dummy_cheese_reg_special = true;
-		} else {
-			this.profile.Dummy_cheese_reg_special = false;
+		
+		if (myJson.Dummy_cheese_reg_special !== null) {
+			if (myJson.Dummy_cheese_reg_special) {
+				this.profile.Dummy_cheese_reg_special = true;
+			} else {
+				this.profile.Dummy_cheese_reg_special = false;
+			}
 		}
 	}
 	
 	fillFruits(myJson) {
-		if (myJson.Dummy_fruit_farm) {
-			this.profile.Dummy_fruit_farm = 'Yes';
-		} else {
-			this.profile.Dummy_fruit_farm = 'No';
+		if (myJson.Dummy_fruit_farm !== null) {
+			if (myJson.Dummy_fruit_farm) {
+				this.profile.Dummy_fruit_farm = 'Yes';
+			} else {
+				this.profile.Dummy_fruit_farm = 'No';
+			}
 		}
 		
-		if (myJson.Dummy_Stonefruits) {
-			this.profile.Dummy_Stonefruits = true;
-		} else {
-			this.profile.Dummy_Stonefruits = false;
+		if (myJson.Dummy_Stonefruits !== null) {
+			if (myJson.Dummy_Stonefruits) {
+				this.profile.Dummy_Stonefruits = true;
+			} else {
+				this.profile.Dummy_Stonefruits = false;
+			}
 		}
-		if (myJson.Dummy_Pomefruits) {
-			this.profile.Dummy_Pomefruits = true;
-		} else {
-			this.profile.Dummy_Pomefruits = false;
+		
+		if (myJson.Dummy_Pomefruits !== null) {
+			if (myJson.Dummy_Pomefruits) {
+				this.profile.Dummy_Pomefruits = true;
+			} else {
+				this.profile.Dummy_Pomefruits = false;
+			}
 		}
-		if (myJson.Dummy_Berries) {
-			this.profile.Dummy_Berries = true;
-		} else {
-			this.profile.Dummy_Berries = false;
+		
+		if (myJson.Dummy_Berries !== null) {
+			if (myJson.Dummy_Berries) {
+				this.profile.Dummy_Berries = true;
+			} else {
+				this.profile.Dummy_Berries = false;
+			}
 		}
-		if (myJson.Dummy_Citrus) {
-			this.profile.Dummy_Citrus = true;
-		} else {
-			this.profile.Dummy_Citrus = false;
+		
+		if (myJson.Dummy_Citrus !== null) {
+			if (myJson.Dummy_Citrus) {
+				this.profile.Dummy_Citrus = true;
+			} else {
+				this.profile.Dummy_Citrus = false;
+			}
 		}
-		if (myJson.Dummy_exotic_fruits) {
-			this.profile.Dummy_exotic_fruits = true;
-		} else {
-			this.profile.Dummy_exotic_fruits = false;
+		
+		if (myJson.Dummy_exotic_fruits !== null) {
+			if (myJson.Dummy_exotic_fruits) {
+				this.profile.Dummy_exotic_fruits = true;
+			} else {
+				this.profile.Dummy_exotic_fruits = false;
+			}
 		}
 		
 		if (myJson.fruits_total) { // not null or 0
@@ -1025,66 +1078,101 @@ export default class UserModel extends Model {
 	}
 	
 	fillActivities(myJson) {
-		if (myJson.Dummy_wholesale) {
-			this.profile.Dummy_wholesale = true;
-		} else {
-			this.profile.Dummy_wholesale = false;
-		}
-		if (myJson.Dummy_supermarket_regional) {
-			this.profile.Dummy_supermarket_regional = true;
-		} else {
-			this.profile.Dummy_supermarket_regional = false;
-		}
-		if (myJson.Dummy_supermarket_noregio) {
-			this.profile.Dummy_supermarket_noregio = true;
-		} else {
-			this.profile.Dummy_supermarket_noregio = false;
-		}
-		if (myJson.Dummy_farmer_market) {
-			this.profile.Dummy_farmer_market = true;
-		} else {
-			this.profile.Dummy_farmer_market = false;
-		}
-		if (myJson.Dummy_farmer_shop) {
-			this.profile.Dummy_farmer_shop = true;
-		} else {
-			this.profile.Dummy_farmer_shop = false;
-		}
-		if (myJson.Dummy_food_assemblies) {
-			this.profile.Dummy_food_assemblies = true;
-		} else {
-			this.profile.Dummy_food_assemblies = false;
-		}
-		if (myJson.Dummy_food_box_delivery) {
-			this.profile.Dummy_food_box_delivery = true;
-		} else {
-			this.profile.Dummy_food_box_delivery = false;
-		}
-		if (myJson.Dummy_restaurant) {
-			this.profile.Dummy_restaurant = true;
-		} else {
-			this.profile.Dummy_restaurant = false;
-		}
-		if (myJson.Dummy_public_canteens) {
-			this.profile.Dummy_public_canteens = true;
-		} else {
-			this.profile.Dummy_public_canteens = false;
-		}
-		if (myJson.Dummy_no_SFSC) {
-			this.profile.Dummy_no_SFSC = true;
-		} else {
-			this.profile.Dummy_no_SFSC = false;
+		
+		if (myJson.Dummy_wholesale !== null) {
+			if (myJson.Dummy_wholesale) {
+				this.profile.Dummy_wholesale = true;
+			} else {
+				this.profile.Dummy_wholesale = false;
+			}
 		}
 		
-		if (myJson.Dummy_commu_supp_agri) {
-			this.profile.Dummy_commu_supp_agri = true;
-		} else {
-			this.profile.Dummy_commu_supp_agri = false;
+		if (myJson.Dummy_supermarket_regional !== null) {
+			if (myJson.Dummy_supermarket_regional) {
+				this.profile.Dummy_supermarket_regional = true;
+			} else {
+				this.profile.Dummy_supermarket_regional = false;
+			}
 		}
-		if (myJson.Dummy_Pickyourown) {
-			this.profile.Dummy_Pickyourown = true;
-		} else {
-			this.profile.Dummy_Pickyourown = false;
+		
+		if (myJson.Dummy_supermarket_noregio !== null) {
+			if (myJson.Dummy_supermarket_noregio) {
+				this.profile.Dummy_supermarket_noregio = true;
+			} else {
+				this.profile.Dummy_supermarket_noregio = false;
+			}
+		}
+		
+		if (myJson.Dummy_farmer_market !== null) {
+			if (myJson.Dummy_farmer_market) {
+				this.profile.Dummy_farmer_market = true;
+			} else {
+				this.profile.Dummy_farmer_market = false;
+			}
+		}
+		
+		if (myJson.Dummy_farmer_shop !== null) {
+			if (myJson.Dummy_farmer_shop) {
+				this.profile.Dummy_farmer_shop = true;
+			} else {
+				this.profile.Dummy_farmer_shop = false;
+			}
+		}
+		
+		if (myJson.Dummy_food_assemblies !== null) {
+			if (myJson.Dummy_food_assemblies) {
+				this.profile.Dummy_food_assemblies = true;
+			} else {
+				this.profile.Dummy_food_assemblies = false;
+			}
+		}
+		
+		if (myJson.Dummy_food_box_delivery !== null) {
+			if (myJson.Dummy_food_box_delivery) {
+				this.profile.Dummy_food_box_delivery = true;
+			} else {
+				this.profile.Dummy_food_box_delivery = false;
+			}
+		}
+		
+		if (myJson.Dummy_restaurant !== null) {
+			if (myJson.Dummy_restaurant) {
+				this.profile.Dummy_restaurant = true;
+			} else {
+				this.profile.Dummy_restaurant = false;
+			}
+		}
+		
+		if (myJson.Dummy_public_canteens !== null) {
+			if (myJson.Dummy_public_canteens) {
+				this.profile.Dummy_public_canteens = true;
+			} else {
+				this.profile.Dummy_public_canteens = false;
+			}
+		}
+		
+		if (myJson.Dummy_no_SFSC !== null) {
+			if (myJson.Dummy_no_SFSC) {
+				this.profile.Dummy_no_SFSC = true;
+			} else {
+				this.profile.Dummy_no_SFSC = false;
+			}
+		}
+		
+		if (myJson.Dummy_commu_supp_agri !== null) {
+			if (myJson.Dummy_commu_supp_agri) {
+				this.profile.Dummy_commu_supp_agri = true;
+			} else {
+				this.profile.Dummy_commu_supp_agri = false;
+			}
+		}
+		
+		if (myJson.Dummy_Pickyourown !== null) {
+			if (myJson.Dummy_Pickyourown) {
+				this.profile.Dummy_Pickyourown = true;
+			} else {
+				this.profile.Dummy_Pickyourown = false;
+			}
 		}
 	}
 	
@@ -1096,15 +1184,19 @@ export default class UserModel extends Model {
 		"Likert_consumer_con": 2,
 	*/
 	fillProducer(myJson) {
-		if (myJson.Likert_welcome_farm) {
-			this.profile.Likert_welcome_farm = myJson.Likert_welcome_farm;
-		} else {
-			this.profile.Likert_welcome_farm = undefined;
+		if (myJson.Likert_welcome_farm !== null) {
+			if (myJson.Likert_welcome_farm) {
+				this.profile.Likert_welcome_farm = myJson.Likert_welcome_farm;
+			} else {
+				this.profile.Likert_welcome_farm = undefined;
+			}
 		}
-		if (myJson.Likert_consumer_con) {
-			this.profile.Likert_consumer_con = myJson.Likert_consumer_con;
-		} else {
-			this.profile.Likert_consumer_con = undefined;
+		if (myJson.Likert_consumer_con !== null) {
+			if (myJson.Likert_consumer_con) {
+				this.profile.Likert_consumer_con = myJson.Likert_consumer_con;
+			} else {
+				this.profile.Likert_consumer_con = undefined;
+			}
 		}
 	}
 	
@@ -1145,6 +1237,8 @@ export default class UserModel extends Model {
 						msg = myJson.message;
 					}
 					//JSON.parse(myJson);
+					// Take into account that we can have null as a value
+					// for all database fields that are not initialized.
 					self.fillFarmLocation(myJson);
 					self.fillFarmInfo(myJson);
 					

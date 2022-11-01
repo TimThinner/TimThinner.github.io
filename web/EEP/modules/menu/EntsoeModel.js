@@ -246,7 +246,7 @@ export default class EntsoeModel extends Model {
 					if (typeof ts.MktPSRType !== 'undefined' && Array.isArray(ts.MktPSRType)) {
 						ts.MktPSRType.forEach(t=>{
 							if (typeof t.psrType !== 'undefined') {
-								//console.log(['t.psrType=',t.psrType[0]]);
+								console.log(['t.psrType=',t.psrType[0]]);
 							}
 						});
 					}
@@ -256,12 +256,12 @@ export default class EntsoeModel extends Model {
 							let myp = {};
 							
 							if (typeof p.resolution !== 'undefined' && Array.isArray(p.resolution)) {
-								//console.log(['resolution=',p.resolution[0]]);
+								console.log(['resolution=',p.resolution[0]]);
 								myp['resolution'] = p.resolution[0];
 							}
 							if (typeof p.timeInterval !== 'undefined' && Array.isArray(p.timeInterval)) {
 								p.timeInterval.forEach(ti=> {
-									//console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
+									console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
 									myp['timeInterval'] = {'start':ti.start[0],'end':ti.end[0]};
 								});
 							}
@@ -280,7 +280,7 @@ export default class EntsoeModel extends Model {
 									}
 									
 									myp['Point'].push({'position':position,'quantity':quantity});
-									//console.log(['position=',position,' quantity=',quantity]);
+									console.log(['position=',position,' quantity=',quantity]);
 								});
 							}
 							this.timeseries.push(myp);
@@ -312,12 +312,12 @@ export default class EntsoeModel extends Model {
 							*/
 							let myp = {};
 							if (typeof p.resolution !== 'undefined' && Array.isArray(p.resolution)) {
-								//console.log(['resolution=',p.resolution[0]]);
+								console.log(['resolution=',p.resolution[0]]);
 								myp['resolution'] = p.resolution[0];
 							}
 							if (typeof p.timeInterval !== 'undefined' && Array.isArray(p.timeInterval)) {
 								p.timeInterval.forEach(ti=> {
-									//console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
+									console.log(['timeInterval start=',ti.start[0],' end=',ti.end[0]]);
 									myp['timeInterval'] = {'start':ti.start[0],'end':ti.end[0]};
 								});
 							}
@@ -328,17 +328,17 @@ export default class EntsoeModel extends Model {
 									let pa;
 									if (typeof po.position !== 'undefined' && Array.isArray(po.position)) {
 										position = po.position[0];
-										
 									}
 									if (typeof po['price.amount'] !== 'undefined' && Array.isArray(po['price.amount'])) {
 										pa = po['price.amount'][0];
 									}
 									myp['Point'].push({'position':position,'price':pa});
-									//console.log(['position=',position,'price=',pa]);
+									console.log(['position=',position,'price=',pa]);
 								});
 							}
 							this.timeseries.push(myp);
 						});
+						console.log(['this.timeseries=',this.timeseries]);
 					}
 				});
 			}
@@ -366,10 +366,10 @@ export default class EntsoeModel extends Model {
 		// NOTE: Times are given always in UTC time!!!
 		//const body_period_start = moment.utc().subtract(1, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
 		//const body_period_end = moment.utc().add(23,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
-		
 		const body_period_start = moment.utc().subtract(120, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
 		const body_period_end = moment.utc().add(36,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
-		console.log(['body_period_start=',body_period_start,' body_period_end=',body_period_end]);
+		
+		console.log(['ENTSOE body_period_start=',body_period_start,' body_period_end=',body_period_end]);
 		
 		//periodStart = dateshift(datetime(curtime - hours(11), 'Format','yyyyMMddHHmm'), 'start', 'hour') ;
 		//periodEnd   = dateshift(datetime(curtime + hours(36), 'Format','yyyyMMddHHmm'), 'start', 'hour') ;
@@ -437,6 +437,12 @@ export default class EntsoeModel extends Model {
 		
 		// Remember ALWAYS start with empty array!
 		this.timeseries = [];
+		
+		
+		// Simulate:
+		//
+		//this.notifyAll({model:this.name, method:'fetched', status:200, message:'OK'});
+		
 		
 		fetch(myRequest)
 			.then(function(response) {

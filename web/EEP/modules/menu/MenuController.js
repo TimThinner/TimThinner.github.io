@@ -16,7 +16,6 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('MenuModel',model);
 		this.models['MenuModel'] = model;
 		
-		
 		const entsoe_model = new EntsoeModel({name:'EntsoeEnergyPriceModel',src:'https://transparency.entsoe.eu/api', document_type:'A44', area_name:'Finland'});
 		entsoe_model.subscribe(this);
 		this.master.modelRepo.add('EntsoeEnergyPriceModel',entsoe_model);
@@ -25,7 +24,7 @@ export default class MenuController extends Controller {
 		const mFiveDays = new EmpoModel({
 			name: 'EmpoEmissionsFiveDays',
 			src: 'emissions/findByDate?country=FI&EmDB=EcoInvent',
-			timerange_start_subtract_hours: 131, // 120 + 11 hours 
+			timerange_start_subtract_hours: 132, // 120 + 11 hours 
 			timerange_end_subtract_hours: 0 // should be 131 x 20 = 2620 values
 		});
 		mFiveDays.subscribe(this);

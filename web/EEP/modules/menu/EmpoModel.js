@@ -54,6 +54,41 @@ GET/api/v1/resources/emissions/findByDate
 Power
 GET/api/v1/resources/power/findByDate
 GET/api/v1/resources/power/latest
+
+
+
+http://128.214.253.150/api/v1/resources/emissions/findByDate?startdate=2021-11-15%2015%3A00%3A00&enddate=2021-11-16%2015%3A00%3A00&EmDB=EcoInvent&country=FI
+
+
+http://128.214.253.150/api/v1/resources/emissions/findByDate?startdate=2022-10-31%2008%3A00%3A00&enddate=2022-11-01%2008%3A00%3A00&EmDB=EcoInvent&country=FI
+
+
+
+179.1292, "emdb": "EcoInvent", "id": 6392885 }, 
+
+{ "country": "FI", "date_time": "2022-11-01 06:57:56", "em_cons": 60.5332, "em_prod": 180.1791, "emdb": "EcoInvent", "id": 6392945 },
+{ "country": "FI", "date_time": "2022-11-01 06:52:13", "em_cons": 60.1373, "em_prod": 179.2593, "emdb": "EcoInvent", "id": 6392801 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:08:38", "em_cons": 80.6742, "em_prod": 183.2567, "emdb": "EcoInvent", "id": 6393142 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:01:25", "em_cons": 63.5253, "em_prod": 179.9349, "emdb": "EcoInvent", "id": 6393023 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:05:01", "em_cons": 81.2973, "em_prod": 181.3496, "emdb": "EcoInvent", "id": 6393077 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:11:26", "em_cons": 111.4928, "em_prod": 183.2567, "emdb": "EcoInvent", "id": 6393205 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:14:40", "em_cons": 86.1194, "em_prod": 181.4829, "emdb": "EcoInvent", "id": 6393269 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:23:28", "em_cons": 110.9607, "em_prod": 181.7304, "emdb": "EcoInvent", "id": 6393462 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:17:45", "em_cons": 92.6784, "em_prod": 181.6438, "emdb": "EcoInvent", "id": 6393333 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:20:33", "em_cons": 91.1085, "em_prod": 181.6438, "emdb": "EcoInvent", "id": 6393397 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:26:22", "em_cons": 97.8776, "em_prod": 182.0591, "emdb": "EcoInvent", "id": 6393525 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:29:58", "em_cons": 130.9697, "em_prod": 180.7455, "emdb": "EcoInvent", "id": 6393610 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:39:24", "em_cons": 167.2586, "em_prod": 182.5731, "emdb": "EcoInvent", "id": 6393781 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:33:37", "em_cons": 126.7898, "em_prod": 180.9003, "emdb": "EcoInvent", "id": 6393653 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:36:32", "em_cons": 130.8755, "em_prod": 181.3248, "emdb": "EcoInvent", "id": 6393753 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:42:26", "em_cons": 99.9607, "em_prod": 183.1428, "emdb": "EcoInvent", "id": 6393845 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:45:20", "em_cons": 121.7064, "em_prod": 183.2195, "emdb": "EcoInvent", "id": 6393911 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:48:15", "em_cons": 97.5617, "em_prod": 182.2528, "emdb": "EcoInvent", "id": 6393973 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:51:21", "em_cons": 103.3297, "em_prod": 183.0886, "emdb": "EcoInvent", "id": 6394054 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:54:11", "em_cons": 102.513, "em_prod": 183.8301, "emdb": "EcoInvent", "id": 6394101 }, 
+{ "country": "FI", "date_time": "2022-11-01 07:57:12", "em_cons": 103.671, "em_prod": 184.1979, "emdb": "EcoInvent", "id": 6394197 } ] }
+
+
 */
 export default class EmpoModel extends Model {
 	

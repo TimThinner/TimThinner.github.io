@@ -53,8 +53,8 @@ export default class MenuView extends View {
 			SECTOR_DATENUMBER_FILL_ACTIVE: '#8f8',
 			SECTOR_MONTH_FILL_INACTIVE: '#eee',
 			SECTOR_MONTH_FILL_ACTIVE: '#ff8',
-			SECTOR_TXT_STROKE: '#888',
-			SECTOR_TXT_FILL: '#888',
+			SECTOR_EMISS_TXT_COLOR: '#484',
+			SECTOR_PRICE_TXT_COLOR: '#844',
 			FRAME_STROKE: '#000', // outer thick frame color
 			// And also these from MakingCity code:
 			SECTOR_FILL_GREEN: '#8f8',
@@ -89,9 +89,7 @@ export default class MenuView extends View {
 			'H20': {fiveDayAve: 20, oneHourAve: 3 },
 			'H21': {fiveDayAve: 20, oneHourAve: 21 },
 			'H22': {fiveDayAve: 20, oneHourAve: 3 },
-			'H23': {fiveDayAve: 20, oneHourAve: 33 },
-			'H0': {fiveDayAve: 20, oneHourAve: 3 }
-			...
+			'H23': {fiveDayAve: 20, oneHourAve: 33 }
 			*/
 		};
 		this.priceAverages = {
@@ -119,12 +117,11 @@ export default class MenuView extends View {
 			'H20': {fiveDayAve: 20, oneHourAve: 3 },
 			'H21': {fiveDayAve: 20, oneHourAve: 21 },
 			'H22': {fiveDayAve: 20, oneHourAve: 3 },
-			'H23': {fiveDayAve: 20, oneHourAve: 33 },
-			'H0': {fiveDayAve: 20, oneHourAve: 3 }
-			...
+			'H23': {fiveDayAve: 20, oneHourAve: 33 }
 			*/
 		};
 		
+		this.showValues = false;
 		this.rendered = false;
 	}
 	
@@ -196,19 +193,61 @@ export default class MenuView extends View {
 		
 		const newdata = [];
 		ts.forEach(t=>{
-			
 			//console.log(['t.resolution=',t.resolution]);
+			// Daylight savings adjustment:
+			// If there are 25 points (time moved back one hour) remove the third in the list!
+			// If there are 23 points (time moved forward one hour) duplicate the third in the list!
 			
-			let timestamp = moment(t.timeInterval.start);
-			const reso = moment.duration(t.resolution);
-			t.Point.forEach(p=>{
-				const price = p.price*factor;
-				//console.log(['PUSH price=',price]);
-				newdata.push({date: timestamp.toDate(), price: price});
-				// Do we need to handle the +p.position when stepping from start to end?
-				timestamp.add(reso);
-			});
+			//console.log(['TIMEINTERVAL START=',t.timeInterval.start]);
+			
+			if (t.Point.length === 24) { // Normal case!
+				//console.log(['t.Point=',t.Point]);
+				let timestamp = moment(t.timeInterval.start);
+				const reso = moment.duration(t.resolution);
+				t.Point.forEach(p => {
+					const price = p.price*factor;
+					newdata.push({date: timestamp.toDate(), price: price});
+					// Do we need to handle the +p.position when stepping from start to end?
+					timestamp.add(reso);
+				});
+			} else if (t.Point.length === 25) {
+				console.log('25 POINTS => REMOVE THE THIRD ONE.');
+				let timestamp = moment(t.timeInterval.start);
+				const reso = moment.duration(t.resolution);
+				t.Point.forEach((p,i) => {
+					if (i===2) {
+						// Skip the third point
+						timestamp.add(reso);
+					} else {
+						const price = p.price*factor;
+						newdata.push({date: timestamp.toDate(), price: price});
+						// Do we need to handle the +p.position when stepping from start to end?
+						timestamp.add(reso);
+					}
+				});
+			} else if (t.Point.length === 23) {
+				console.log('23 POINTS => DUPLICATE THE THIRD ONE.');
+				let timestamp = moment(t.timeInterval.start);
+				const reso = moment.duration(t.resolution);
+				t.Point.forEach((p,i) => {
+					if (i===2) {
+						const price = p.price*factor;
+						newdata.push({date: timestamp.toDate(), price: price});
+						timestamp.add(reso);
+						// Duplicate THIRD point.
+						newdata.push({date: timestamp.toDate(), price: price});
+						timestamp.add(reso);
+					} else {
+						const price = p.price*factor;
+						newdata.push({date: timestamp.toDate(), price: price});
+						timestamp.add(reso);
+					}
+				});
+			} else {
+				console.log('Not a full day to process!');
+			}
 		});
+		console.log(['newdata=',newdata]);
 		return newdata;
 	}
 	
@@ -220,7 +259,7 @@ export default class MenuView extends View {
 		// Fetched from ENTSOE data we get result in 
 		// timeInterval object with two arrays, for example: start "2021-12-01T23:00Z" and end "2021-12-02T23:00Z"
 		// From now-120 hours to now+36 hours
-		let startMom = moment().subtract(119, 'hours');
+		let startMom = moment().subtract(120, 'hours'); // 119
 		let endMom = moment().add(1, 'hours');
 		
 		let startTwoA = moment().add(1, 'hours');
@@ -260,7 +299,7 @@ export default class MenuView extends View {
 					ave = sum / count;
 				}
 				this.priceAverages[key] = {fiveDayAve:ave, oneHourAve:val};
-				console.log(['POPULATE key=',key,' sum=',sum,' count=',count,' ave=',ave,' val=',val]);
+				console.log(['PRICE POPULATE key=',key,' sum=',sum,' count=',count,' ave=',ave,' val=',val]);
 				startMom.add(1, 'hours');
 				
 				startTwoA.add(1, 'hours');
@@ -493,9 +532,8 @@ export default class MenuView extends View {
 	appendArrow(params) {
 		
 		const group = params.group;
-		//const ri = params.innerRadius;
-		//const ro = params.outerRadius;
-		const ra = (params.outerRadius+params.innerRadius)/2;
+		const ra = (params.outerRadius + params.innerRadius)*0.53; // center;
+		
 		const ab = params.startAngle;
 		const ae = params.endAngle;
 		const span = params.span;
@@ -524,8 +562,8 @@ export default class MenuView extends View {
 		marker.setAttributeNS(null, 'orient', 'auto');
 		const polygon = document.createElementNS(svgNS, "polygon");
 		polygon.setAttributeNS(null, 'points', '0 0, 10 3.5, 0 7, 0 0');
-		polygon.setAttributeNS(null, 'stroke', '#000');
-		polygon.setAttributeNS(null, 'fill', '#000');
+		polygon.setAttributeNS(null, 'stroke', '#777');
+		polygon.setAttributeNS(null, 'fill', '#777');
 		
 		marker.appendChild(polygon);
 		
@@ -541,7 +579,7 @@ export default class MenuView extends View {
 		}
 		const p = document.createElementNS(svgNS, "path");
 		p.setAttributeNS(null, 'd', d);
-		p.style.stroke = '#000';
+		p.style.stroke = '#777';
 		p.style.strokeWidth = 1.5;
 		p.style.fill = 'none';
 		p.setAttributeNS(null,'marker-end','url(#arrowhead)');
@@ -565,6 +603,7 @@ export default class MenuView extends View {
 		const span = params.span;
 		const label = params.label;
 		const fill = params.fill;
+		const txtcolor = params.txtcolor;
 		
 		const centerAngle = ab-span/2;
 		const centerRadius = (ri+ro)/2;
@@ -597,31 +636,36 @@ export default class MenuView extends View {
 		group.appendChild(p);
 		
 		// Text (label) is wrapped inside SVG-element.
-		/*
+		
 		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttributeNS(null, 'x', xTxt-16);
+		svg.setAttributeNS(null, 'x', xTxt-32);
 		svg.setAttributeNS(null, 'y', yTxt-10);
-		svg.setAttributeNS(null, 'width', 32);
-		svg.setAttributeNS(null, 'height', 20);
+		svg.setAttributeNS(null, 'width', 64);
+		svg.setAttributeNS(null, 'height', 16);
 		
-		const txt = document.createElementNS(svgNS, 'text');
-		txt.setAttribute('x','50%');
-		txt.setAttribute('y','50%');
-		//txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		txt.style.fontFamily = "'Open Sans', sans-serif";
-		txt.style.fontSize = '16px';
-		//txt.setAttribute('font-weight','bold');
-		txt.setAttribute('dominant-baseline','middle');
-		txt.setAttribute('text-anchor','middle');
-		txt.style.fill = this.colors.SECTOR_TXT_FILL;
-		txt.style.stroke = this.colors.SECTOR_TXT_STROKE;
-		txt.style.strokeWidth = 1;
-		const text_node = document.createTextNode(label);
-		txt.appendChild(text_node);
-		svg.appendChild(txt);
-		
+		if (this.showValues) {
+			let fontSize = '8px';
+			if (this.REO.width > 600) {
+				fontSize = '12px';
+			}
+			
+			const txt = document.createElementNS(svgNS, 'text');
+			txt.setAttribute('x','50%');
+			txt.setAttribute('y','50%');
+			//txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+			txt.style.fontFamily = "'Open Sans', sans-serif";
+			txt.style.fontSize = fontSize; //'12px';
+			//txt.setAttribute('font-weight','bold');
+			txt.setAttribute('dominant-baseline','middle');
+			txt.setAttribute('text-anchor','middle');
+			txt.style.fill = txtcolor;
+			txt.style.stroke = txtcolor;
+			txt.style.strokeWidth = 0.25;
+			const text_node = document.createTextNode(label);
+			txt.appendChild(text_node);
+			svg.appendChild(txt);
+		}
 		group.appendChild(svg);
-		*/
 	}
 	
 	updateEmissions() {
@@ -647,7 +691,7 @@ export default class MenuView extends View {
 			// key = HN  where N = 0 ... 23
 			//
 			
-			console.log(['index=',index]);
+			//console.log(['index=',index]);
 			
 			let kk = parseInt(key.slice(1));
 			// map kk to 0...11
@@ -658,11 +702,14 @@ export default class MenuView extends View {
 			
 			const span = mAngle; // The "length" of sector.
 			let fill = this.colors.SECTOR_FILL_DARK_GREY;
+			let label = "0/0";
 			
 			const val = this.emissionAverages[key];
 			if (typeof val !== 'undefined' &&  
 				typeof val.fiveDayAve !== 'undefined' &&  val.fiveDayAve > 0 &&
 				typeof val.oneHourAve !== 'undefined' &&  val.oneHourAve > 0) {
+				
+				label = val.oneHourAve.toFixed(1)+'/'+val.fiveDayAve.toFixed(1);
 				
 				const upper_limit = val.fiveDayAve + val.fiveDayAve*0.05; // upper
 				const lower_limit = val.fiveDayAve - val.fiveDayAve*0.05; // lower
@@ -690,8 +737,9 @@ export default class MenuView extends View {
 				startAngle: sa,
 				endAngle: ea,
 				span: span,
-				//label: label[i],
-				fill: fill
+				label: label, //label[i],
+				fill: fill,
+				txtcolor: this.colors.SECTOR_EMISS_TXT_COLOR
 			});
 			if (index === last_sample_index) {
 				this.appendArrow({
@@ -710,159 +758,100 @@ export default class MenuView extends View {
 		document.getElementById('space').appendChild(group);
 	}
 	
-	updateEmissionsText() {
-		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.sunRadius();
-		
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		//const localized_string_clock_emissions = LM['translation'][sel]['GRID_CLOCK_EMISSIONS_TEXT']; // 'emissions from the past 11 hours'
-		
-		const localized_string_clock_emissions = 'emissions from the past 11 hours';
-		
-		// Emissions sectors are positioned:
-		//
-		//		innerRadius: r,
-		//		outerRadius: r + r*0.3,
-		// => text path has ARC with r + r*0.15
-		const radius = r+r*0.15;
-		
-		const b_x = -Math.sin(88*Math.PI/180) * radius;
-		const b_y = -Math.cos(88*Math.PI/180) * radius;
-		
-		//const b_x = -radius;
-		//const b_y = 0;
-		const r_x = radius;
-		const r_y = radius;
-		const e_x = radius;
-		const e_y = 0;
+	updateText(p) {
+		/*
+			gid = 'price-text' or 'emissions-text'
+			txt = 'price for the next 11 hours' or 'emissions from the past 11 hours'
+			factor = 0.43 or 0.12 (radius = r+r*factor;)
+			pid = 'PricePath' or 'EmissionsPath'
+			color = SECTOR_PRICE_TXT_COLOR or this.colors.SECTOR_EMISS_TXT_COLOR
+		*/
+		const gid = p.gid;
+		const txt = p.txt;
+		const factor = p.factor;
+		const pid = p.pid;
+		const color = p.color;
 		
 		// Start by removing old element.
-		let wrap = document.getElementById('emissions-text');
+		let wrap = document.getElementById(gid);
 		if (wrap) {
 			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
 			wrap.remove(); // Finally remove group.
 		}
 		
-		const group = document.createElementNS(svgNS, "g");
-		group.id = 'emissions-text';
-		const defs = document.createElementNS(svgNS, 'defs');
-		/*
-		<defs>
-		<path id="MyPath" fill="none" stroke="red" d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
-		</defs>*/
-		// A rx ry x-axis-rotation large-arc-flag sweep-flag x y
-		
-		//<path d="M-140,140 A140,140 0 0,1 140,140 Z" style="stroke:#aaa;stroke-width:12;fill:#ccc;opacity:1;" />
-		const d='M '+b_x+','+b_y+' A '+r_x+','+r_y+' 0,0,1 '+e_x+','+e_y;
-		const path = document.createElementNS(svgNS, "path");
-		path.id = 'EmissionsPath';
-		path.setAttributeNS(null, 'd', d);
-		path.style.stroke = '#000';
-		path.style.strokeWidth = 1;
-		defs.appendChild(path);
-		group.appendChild(defs);
-		/*
-		<text>
-			<textPath href="#MyPath">
-				Quick brown fox jumps over the lazy dog.
-			</textPath>
-		</text>
-		*/
-		const txt = document.createElementNS(svgNS, 'text');
-		if (this.REO.width > 600) {
-			txt.style.fontSize = '20px';
+		if (this.showValues) {
+			// values are shown => don't show the Texts.
 		} else {
-			txt.style.fontSize = '18px';
+			const svgNS = 'http://www.w3.org/2000/svg';
+			const r = this.sunRadius();
+			
+			//const LM = this.controller.master.modelRepo.get('LanguageModel');
+			//const sel = LM.selected;
+			//const localized_string_clock_price = LM['translation'][sel]['GRID_CLOCK_PRICE_TEXT']; // 'price prediction for the next 11 hours'
+			//const localized_string_clock_price = txt;
+			
+			// Price sectors are positioned:
+			// 		innerRadius: r + r*0.3,
+			//		outerRadius: r + r*0.6,
+			// => text path has ARC with r + r*0.45
+			const radius = r+r*factor;
+			
+			const b_x = -Math.sin(88*Math.PI/180) * radius;
+			const b_y = -Math.cos(88*Math.PI/180) * radius;
+			//const b_x = -radius;
+			//const b_y = 0;
+			const r_x = radius;
+			const r_y = radius;
+			const e_x = radius;
+			const e_y = 0;
+			
+			
+			const group = document.createElementNS(svgNS, "g");
+			group.id = gid;
+			const defs = document.createElementNS(svgNS, 'defs');
+			/*
+			<defs>
+			<path id="MyPath" fill="none" stroke="red" d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
+			</defs>*/
+			// A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+			
+			//<path d="M-140,140 A140,140 0 0,1 140,140 Z" style="stroke:#aaa;stroke-width:12;fill:#ccc;opacity:1;" />
+			const d='M '+b_x+','+b_y+' A '+r_x+','+r_y+' 0,0,1 '+e_x+','+e_y;
+			const path = document.createElementNS(svgNS, "path");
+			path.id = pid;
+			path.setAttributeNS(null, 'd', d);
+			path.style.stroke = '#000';
+			path.style.strokeWidth = 1;
+			defs.appendChild(path);
+			group.appendChild(defs);
+			/*
+			<text>
+				<textPath href="#MyPath">
+					Quick brown fox jumps over the lazy dog.
+				</textPath>
+			</text>
+			*/
+			const svg_txt = document.createElementNS(svgNS, 'text');
+			if (this.REO.width > 600) {
+				svg_txt.style.fontSize = '18px';
+			} else {
+				svg_txt.style.fontSize = '14px';
+			}
+			svg_txt.style.strokeWidth = 0.25;
+			svg_txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+			svg_txt.setAttribute('fill','#844');
+			svg_txt.setAttribute('stroke','#844');
+			
+			const txtPath = document.createElementNS(svgNS, 'textPath');
+			txtPath.setAttributeNS(null, 'href', '#'+pid);
+			const text_node = document.createTextNode(txt);//localized_string_clock_price);
+			txtPath.appendChild(text_node);
+			svg_txt.appendChild(txtPath);
+			
+			group.appendChild(svg_txt);
+			
+			document.getElementById('space').appendChild(group);
 		}
-		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		txt.setAttribute('fill','#555');
-		
-		const txtPath = document.createElementNS(svgNS, 'textPath');
-		txtPath.setAttributeNS(null, 'href', '#EmissionsPath');
-		const text_node = document.createTextNode(localized_string_clock_emissions);
-		txtPath.appendChild(text_node);
-		txt.appendChild(txtPath);
-		
-		group.appendChild(txt);
-		
-		document.getElementById('space').appendChild(group);
-	}
-	
-	updatePriceText() {
-		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.sunRadius();
-		
-		//const LM = this.controller.master.modelRepo.get('LanguageModel');
-		//const sel = LM.selected;
-		//const localized_string_clock_price = LM['translation'][sel]['GRID_CLOCK_PRICE_TEXT']; // 'price prediction for the next 11 hours'
-		const localized_string_clock_price = 'price for the next 11 hours';
-		
-		// Price sectors are positioned:
-		// 		innerRadius: r + r*0.3,
-		//		outerRadius: r + r*0.6,
-		// => text path has ARC with r + r*0.45
-		const radius = r+r*0.45;
-		
-		const b_x = -Math.sin(88*Math.PI/180) * radius;
-		const b_y = -Math.cos(88*Math.PI/180) * radius;
-		//const b_x = -radius;
-		//const b_y = 0;
-		const r_x = radius; 
-		const r_y = radius;
-		const e_x = radius;
-		const e_y = 0;
-		
-		// Start by removing old element.
-		let wrap = document.getElementById('price-text');
-		if (wrap) {
-			while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
-			wrap.remove(); // Finally remove group.
-		}
-		
-		const group = document.createElementNS(svgNS, "g");
-		group.id = 'price-text';
-		const defs = document.createElementNS(svgNS, 'defs');
-		/*
-		<defs>
-		<path id="MyPath" fill="none" stroke="red" d="M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50" />
-		</defs>*/
-		// A rx ry x-axis-rotation large-arc-flag sweep-flag x y
-		
-		//<path d="M-140,140 A140,140 0 0,1 140,140 Z" style="stroke:#aaa;stroke-width:12;fill:#ccc;opacity:1;" />
-		const d='M '+b_x+','+b_y+' A '+r_x+','+r_y+' 0,0,1 '+e_x+','+e_y;
-		const path = document.createElementNS(svgNS, "path");
-		path.id = 'PricePath';
-		path.setAttributeNS(null, 'd', d);
-		path.style.stroke = '#000';
-		path.style.strokeWidth = 1;
-		defs.appendChild(path);
-		group.appendChild(defs);
-		/*
-		<text>
-			<textPath href="#MyPath">
-				Quick brown fox jumps over the lazy dog.
-			</textPath>
-		</text>
-		*/
-		const txt = document.createElementNS(svgNS, 'text');
-		if (this.REO.width > 600) {
-			txt.style.fontSize = '20px';
-		} else {
-			txt.style.fontSize = '18px';
-		}
-		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
-		txt.setAttribute('fill','#555');
-		
-		const txtPath = document.createElementNS(svgNS, 'textPath');
-		txtPath.setAttributeNS(null, 'href', '#PricePath');
-		const text_node = document.createTextNode(localized_string_clock_price);
-		txtPath.appendChild(text_node);
-		txt.appendChild(txtPath);
-		
-		group.appendChild(txt);
-		
-		document.getElementById('space').appendChild(group);
 	}
 	
 	
@@ -917,9 +906,13 @@ export default class MenuView extends View {
 			let fill = this.colors.SECTOR_FILL_DARK_GREY;
 			const val = this.priceAverages[key];
 			
+			let label = '0/0';
+			
 			if (typeof val !== 'undefined' &&  
 				typeof val.fiveDayAve !== 'undefined' &&  val.fiveDayAve > 0 &&
 				typeof val.oneHourAve !== 'undefined' &&  val.oneHourAve > 0) {
+				
+				label = val.oneHourAve.toFixed(1)+'/'+val.fiveDayAve.toFixed(1);
 				
 				const upper_limit = val.fiveDayAve + val.fiveDayAve*0.05; // upper
 				const lower_limit = val.fiveDayAve - val.fiveDayAve*0.05; // lower
@@ -947,8 +940,9 @@ export default class MenuView extends View {
 				startAngle: sa,
 				endAngle: ea,
 				span: span,
-				//label: label[i],
-				fill: fill
+				label: label, //label[i],
+				fill: fill,
+				txtcolor: this.colors.SECTOR_PRICE_TXT_COLOR
 			});
 			if (index === 0) {
 				this.appendArrow({
@@ -1032,6 +1026,7 @@ export default class MenuView extends View {
 		const group = document.createElementNS(svgNS, "g");
 		
 		const c = document.createElementNS(svgNS, "circle");
+		c.id = 'svg-clock-face';
 		c.setAttributeNS(null, 'cx', 0);
 		c.setAttributeNS(null, 'cy', 0);
 		c.setAttributeNS(null, 'r', r);
@@ -1039,6 +1034,7 @@ export default class MenuView extends View {
 		c.style.strokeWidth = 3;
 		c.style.fill = this.colors.CLOCK_FACE_CIRCLE_FILL;
 		group.appendChild(c);
+		
 		
 		const cc = document.createElementNS(svgNS, "circle");
 		cc.setAttributeNS(null, 'cx', 0);
@@ -1284,8 +1280,32 @@ export default class MenuView extends View {
 		this.appendText(r, 4, fontsize, '* compared to 5 day average.');
 	}
 	
+	updatePriceData() {
+		
+		this.updatePriceForecast();
+		this.updateText({
+			gid: 'price-text',
+			txt: 'price for the next 11 hours',
+			factor: 0.43,
+			pid: 'PricePath',
+			color: this.colors.SECTOR_PRICE_TXT_COLOR
+		});
+	}
+	
+	updateEmissionsData() {
+		
+		this.updateEmissions();
+		this.updateText({
+			gid: 'emissions-text',
+			txt: 'emissions from the past 11 hours',
+			factor: 0.12,
+			pid: 'EmissionsPath',
+			color: this.colors.SECTOR_EMISS_TXT_COLOR
+		});
+	}
 	
 	renderALL() {
+		const self = this;
 		//console.log('renderALL() START v6!');
 		let wrap = document.getElementById(this.el.slice(1));
 		if (wrap) {
@@ -1321,9 +1341,16 @@ export default class MenuView extends View {
 		this.appendInfo();
 		this.appendColorCoding();
 		
-		
-		//console.log('renderALL() END!');
-		this.updateEmissionsText();
+		const face = document.getElementById('svg-clock-face');
+		face.addEventListener("click", function(){
+			if (self.showValues) {
+				self.showValues = false;
+			} else {
+				self.showValues = true;
+			}
+			self.updateEmissionsData();
+			self.updatePriceData();
+		}, false);
 	}
 	
 	notify(options) {
@@ -1341,9 +1368,7 @@ export default class MenuView extends View {
 						
 						const newdata = this.convertPriceData();
 						this.populatePriceValues(newdata);
-						this.updatePriceForecast();
-						this.updatePriceText();
-						
+						this.updatePriceData();
 					} else {
 						this.render();
 					}
@@ -1366,8 +1391,7 @@ export default class MenuView extends View {
 					//const res = this.models[options.model].results;
 					//console.log(['FIVE DAYS PLUS ELEVEN HOURS results=',res]);
 					this.populateEmissionValues();
-					this.updateEmissions();
-					this.updateEmissionsText();
+					this.updateEmissionsData();
 					
 				} else {
 					console.log(['EmpoEmissionsFiveDays fetched status=',options.status]);
@@ -1383,18 +1407,14 @@ export default class MenuView extends View {
 					//console.log('PeriodicTimeoutObserver one minute has elapsed!');
 					// Do something with each TICK!
 					Object.keys(this.models).forEach(key => {
-						console.log(['FETCH MODEL key=',key]);
+						//console.log(['FETCH MODEL key=',key]);
 						this.models[key].fetch();
 					});
 					if (this.rendered) {
 						// NOTE: Here we don't show datenumber and month in sectors,
 						// but instead show data.
-						
-						this.updateEmissions();
-						this.updateEmissionsText();
-						
-						this.updatePriceForecast();
-						this.updatePriceText();
+						this.updateEmissionsData();
+						this.updatePriceData();
 					}
 				}
 			}

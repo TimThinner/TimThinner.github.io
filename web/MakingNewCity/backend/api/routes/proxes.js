@@ -190,7 +190,7 @@ const Proxe_HTTP_GET = (po, res) => {
 				}
 			} catch(e) {
 				console.log(['error message=',e.message]);
-				//console.log(['rawData=',rawData]);
+				console.log(['rawData=',rawData]);
 				res.status(500).json({error: e});
 			}
 		});

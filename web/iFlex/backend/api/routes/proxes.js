@@ -288,7 +288,9 @@ router.post('/obix', (req,res,next)=>{
 	// base64.encode() is in Browser btoa()
 	const base64string = base64.encode(process.env.OBIX_USER+':'+process.env.OBIX_PASS);
 	const auth = 'Basic '+ base64string;
-	
+	//console.log(['OBIX ROUTE auth = ',auth]);
+	//console.log(['OBIX ROUTE url = ',url]);
+	//console.log(['OBIX ROUTE xml = ',xml]);
 	// First check if readkey is defined
 	if (typeof readkey !== 'undefined') {
 		// Check the validity of Readkey:

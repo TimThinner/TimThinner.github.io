@@ -259,7 +259,7 @@ export default class MenuView extends View {
 		// Fetched from ENTSOE data we get result in 
 		// timeInterval object with two arrays, for example: start "2021-12-01T23:00Z" and end "2021-12-02T23:00Z"
 		// From now-120 hours to now+36 hours
-		let startMom = moment().subtract(120, 'hours'); // 119
+		let startMom = moment().subtract(119, 'hours'); // 119
 		let endMom = moment().add(1, 'hours');
 		
 		let startTwoA = moment().add(1, 'hours');

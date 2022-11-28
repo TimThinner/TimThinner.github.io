@@ -1,5 +1,5 @@
 import View from '../common/View.js';
-import PeriodicTimeoutObserver from './PeriodicTimeoutObserver.js'
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js'
 /*
 iFLEX Dark blue   #1a488b ( 26,  72, 139)
 iFLEX Dark green  #008245 (  0, 130,  69)

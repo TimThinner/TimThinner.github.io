@@ -1,4 +1,5 @@
 import View from '../common/View.js';
+import PeriodicTimeoutObserver from './PeriodicTimeoutObserver.js'
 /*
 iFLEX Dark blue   #1a488b ( 26,  72, 139)
 iFLEX Dark green  #008245 (  0, 130,  69)
@@ -8,6 +9,7 @@ export default class MenuView extends View {
 	
 	constructor(controller) {
 		super(controller);
+		
 		Object.keys(this.controller.models).forEach(key => {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
@@ -16,11 +18,15 @@ export default class MenuView extends View {
 		this.REO.subscribe(this);
 		this.LANGUAGE_MODEL = this.controller.master.modelRepo.get('LanguageModel');
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
-		this.rendered = false;
+		
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
+		this.PTO.subscribe(this);
 	}
 	
 	show() {
 		console.log('MenuView show()');
+		this.PTO.restart();
 		this.render();
 		if (typeof this.models['ProxesCleanerModel'] !== 'undefined') {
 			this.models['ProxesCleanerModel'].clean();
@@ -29,12 +35,16 @@ export default class MenuView extends View {
 	
 	hide() {
 		console.log('MenuView hide()');
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
 		console.log('MenuView remove()');
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
+		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -658,9 +668,20 @@ export default class MenuView extends View {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				this.show();
 			} else if (options.model==='ProxesCleanerModel' && options.method==='clean') {
+				
 				if (options.status === 200) {
 					console.log('PROXES CLEAN OK!');
 				}
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Do something with each TICK!
+				console.log('PeriodicTimeoutObserver timeout!');
+				Object.keys(this.models).forEach(key => {
+					if (key === 'EntsoeEnergyPriceModel') {
+						console.log(['FETCH MODEL key=',key]);
+						this.models[key].fetch();
+					}
+				});
 			}
 		}
 	}

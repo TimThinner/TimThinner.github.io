@@ -340,7 +340,7 @@ export default class UserModel extends Model {
 			headers: myHeaders
 			//body: JSON.stringify(data)
 		};
-		const myRequest = new Request(this.mongoBackend + '/users/readkeys', myPost);
+		const myRequest = new Request(this.mongoBackend + '/users/readkey', myPost);
 		let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
 		
 		fetch(myRequest)

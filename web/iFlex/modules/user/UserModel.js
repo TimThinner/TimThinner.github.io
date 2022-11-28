@@ -321,6 +321,47 @@ export default class UserModel extends Model {
 		
 	}
 	
+	
+	/*
+		A way to refresh User READKEY attributes.
+			self.readkey = myJson.readkey;
+			self.readkey_startdate = myJson.readkey_startdate;
+			self.readkey_enddate = myJson.readkey_enddate;
+	*/
+	refreshReadkey() {
+		const self = this;
+		const myHeaders = new Headers();
+		const authorizationToken = 'Bearer '+this.token;
+		myHeaders.append("Authorization", authorizationToken);
+		myHeaders.append("Content-Type", "application/json");
+		//const data = [{a:1},{b:2}]; // Put something here!?
+		const myPost = {
+			method: 'POST',
+			headers: myHeaders
+			//body: JSON.stringify(data)
+		};
+		const myRequest = new Request(this.mongoBackend + '/users/readkeys', myPost);
+		let status = 500; // RESPONSE (OK: 200, Auth Failed: 401, error: 500)
+		
+		fetch(myRequest)
+			.then(function(response){
+				status = response.status;
+				return response.json();
+			})
+			.then(function(myJson){
+				if (status === 200) {
+					//self.readkey = myJson.readkey; The id never changes.
+					self.readkey_startdate = myJson.readkey_startdate;
+					self.readkey_enddate = myJson.readkey_enddate;
+					console.log(['self.readkey_startdate=',self.readkey_startdate,' self.readkey_enddate=',self.readkey_enddate]);
+				}
+				self.notifyAll({model:self.name, method:'refreshReadkey', status:status, message:myJson.message});
+			})
+			.catch(function(error){
+				self.notifyAll({model:self.name, method:'refreshReadkey', status:status, message:error});
+			});
+	}
+	
 	refreshObixCodes() {
 		const self = this;
 		const myHeaders = new Headers();
@@ -355,4 +396,5 @@ export default class UserModel extends Model {
 				self.notifyAll({model:self.name, method:'refreshObixCodes', status:status, message:error});
 			});
 	}
+	
 }

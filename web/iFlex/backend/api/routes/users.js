@@ -343,6 +343,32 @@ router.post('/obixcodes', checkAuth, (req,res,next)=>{
 			res.status(500).json({error:err});
 		});
 });
+/*
+	Get Readkey attributes for current user.
+*/
+router.post('/readkey', checkAuth, (req,res,next)=>{
+	User.find({_id:req.userData['userId']}) // Current User
+		.select('readkey')
+		.populate('readkey')
+		.exec()
+		.then(user=>{
+			if (user.length < 1) {
+				return res.status(404).json({message: 'Not Found'});
+			}
+			const rkey = user[0].readkey ? user[0].readkey._id : undefined;
+			const rkey_startdate = user[0].readkey ? user[0].readkey.startdate : undefined;
+			const rkey_enddate = user[0].readkey ? user[0].readkey.enddate : undefined;
+			res.status(200).json({
+				message:'OK',
+				readkey: rkey,
+				readkey_startdate: rkey_startdate,
+				readkey_enddate: rkey_enddate
+			});
+		})
+		.catch(err => {
+			res.status(500).json({error:err});
+		});
+});
 
 /*
 router.get("/verify", (req,res,next)=>{

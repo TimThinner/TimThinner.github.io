@@ -18,8 +18,9 @@ export default class UserPageView extends View {
 	}
 	
 	show() {
-		// Call 'UserModel' => 'refreshObixCodes'
+		// Call 'UserModel' => 'refreshObixCodes' and 'refreshReadkey'
 		this.USER_MODEL.refreshObixCodes();
+		this.USER_MODEL.refreshReadkey();
 		this.render();
 	}
 	
@@ -467,6 +468,12 @@ export default class UserPageView extends View {
 					console.log('Obix codes are now refreshed!');
 				} else {
 					console.log(['Obix codes are NOT refreshed!',options.status]);
+				}
+			} else if (options.model==='UserModel' && options.method==='refreshReadkey') {
+				if (options.status === 200) {
+					console.log('Readkey is now refreshed!');
+				} else {
+					console.log(['Readkey is NOT refreshed!',options.status]);
 				}
 			}
 		}

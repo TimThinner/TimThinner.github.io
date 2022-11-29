@@ -664,6 +664,81 @@ export default class MenuView extends View {
 		this.appendLanguageSelections();
 	}
 	
+	calculateSum() {
+		
+		// CALL THIS FOR EVERY MODEL, BUT NOTE THAT SUM IS CALCULATED ONLY WHEN ALL 3 MODELS ARE READY AND FILLED WITH VALUES!
+		
+		if (this.models['MenuBuildingElectricityPL1Model'].values.length > 0 && 
+			this.models['MenuBuildingElectricityPL2Model'].values.length > 0 &&
+			this.models['MenuBuildingElectricityPL3Model'].values.length > 0) {
+			
+			// Calculate the sum of models like before.
+			// and assign that to self.values array {timestamp => value}
+			const sumbucket = {};
+			this.values = [];
+			
+			this.models['MenuBuildingElectricityPL1Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				let val = +v.value; // Converts string to number.
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['PL1'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['PL1'] = val; // update
+				}
+			});
+			
+			this.models['MenuBuildingElectricityPL2Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				let val = +v.value; // Converts string to number.
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['PL2'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['PL2'] = val; // update
+				}
+			});
+			
+			this.models['MenuBuildingElectricityPL3Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				let val = +v.value; // Converts string to number.
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['PL3'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['PL3'] = val; // update
+				}
+			});
+			
+			Object.keys(sumbucket).forEach(key => {
+				let sum = 0;
+				Object.keys(sumbucket[key]).forEach(m => {
+					sum += sumbucket[key][m];
+				});
+				this.values.push({timestamp: moment(key).toDate(), value:sum});
+			});
+			// NEW: Sort values by the timestamp Date: oldest first.
+			// sort by string (created is a string, for example: "2021-04-21T07:40:50.965Z")
+			this.values.sort(function(a, b) {
+				if (a.timestamp < b.timestamp) {
+					return -1;
+				}
+				if (a.timestamp > b.timestamp) {
+					return 1;
+				}
+				return 0; // dates must be equal
+			});
+			console.log(['this.values=',this.values]);
+			// sort by timestamp (Date)
+			//this.values.sort(function(a,b){
+				//return b.timestamp - a.timestamp;
+			//});
+		} else {
+			// 
+			console.log('NOT ALL ELECTRICITY MODELS ARE READY... WAIT!');
+		}
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -682,7 +757,8 @@ export default class MenuView extends View {
 					if (key === 'EntsoeEnergyPriceModel') {
 						console.log(['FETCH MODEL key=',key]);
 						this.models[key].fetch();
-					} else if (key === 'MenuBuildingElectricityPL1Model' || key === 'MenuBuildingElectricityPL2Model' || key === 'MenuBuildingElectricityPL3Model') {
+					} else if (key.indexOf('MenuBuildingElectricityPL') === 0) {
+						//key === 'MenuBuildingElectricityPL1Model' || key === 'MenuBuildingElectricityPL2Model' || key === 'MenuBuildingElectricityPL3Model') {
 						// See if these params are enough?
 						this.models[key].interval = 'PT60M';
 						this.models[key].timerange = {begin:{value:5,unit:'days'},end:{value:0,unit:'days'}};
@@ -696,9 +772,13 @@ export default class MenuView extends View {
 				console.log(['options.status=',options.status]);
 				if (options.status === 200 || options.status === '200') {
 					if (this.models[options.model].values.length > 0) {
+						
 						console.log(['values=',this.models[options.model].values]);
+						this.calculateSum();
+						
+						
 					} else {
-						console.log('NO values array!!! WTF?');
+						console.log('NO values array!!!');
 					}
 					
 				} else { // Error in fetching.

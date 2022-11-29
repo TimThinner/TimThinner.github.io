@@ -144,7 +144,7 @@ export default class AView extends TimeRangeView {
 				}
 				this.render();
 				
-			} else if (options.model.indexOf('BuildingElectricityPL' === 0) && options.method==='fetched') {
+			} else if (options.model.indexOf('BuildingElectricityPL') === 0 && options.method==='fetched') {
 				console.log('NOTIFY '+options.model+' fetched!');
 				console.log(['options.status=',options.status]);
 				if (this.rendered) {

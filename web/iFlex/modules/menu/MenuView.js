@@ -691,7 +691,7 @@ export default class MenuView extends View {
 					}
 				});
 				
-			} else if (options.model.indexOf('BuildingElectricityPL' === 0) && options.method==='fetched') {
+			} else if (options.model.indexOf('MenuBuildingElectricityPL') === 0 && options.method==='fetched') {
 				console.log('NOTIFY '+options.model+' fetched!');
 				console.log(['options.status=',options.status]);
 				if (options.status === 200 || options.status === '200') {

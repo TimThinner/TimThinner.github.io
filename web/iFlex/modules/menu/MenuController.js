@@ -2,6 +2,7 @@ import Controller from '../common/Controller.js';
 import MenuModel from  './MenuModel.js';
 import ObixModel from '../common/ObixModel.js';
 import EntsoeModel from '../common/EntsoeModel.js';
+import { BuildingElectricityPL1Model, BuildingElectricityPL2Model, BuildingElectricityPL3Model } from  '../a/BuildingElectricityModels.js';
 import MenuView from './MenuView.js';
 
 export default class MenuController extends Controller {

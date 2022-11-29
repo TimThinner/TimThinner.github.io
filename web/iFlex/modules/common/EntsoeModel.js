@@ -371,17 +371,6 @@ export default class EntsoeModel extends Model {
 		
 		console.log(['ENTSOE body_period_start=',body_period_start,' body_period_end=',body_period_end]);
 		
-		//periodStart = dateshift(datetime(curtime - hours(11), 'Format','yyyyMMddHHmm'), 'start', 'hour') ;
-		//periodEnd   = dateshift(datetime(curtime + hours(36), 'Format','yyyyMMddHHmm'), 'start', 'hour') ;
-			// IN BACKEND:
-			//url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm
-			//url += '&periodEnd=' + req.body.period_end;       // yyyyMMddHHmm
-		
-		
-		
-		
-		//EntsoeA65NorwayNO4Model: SyntaxError: JSON.parse: unexpected character at line 1 column 2 of the JSON data
-		
 		/*
 		<Acknowledgement_MarketDocument>
 			<mRID>14812aa9-2a1b-4</mRID>

@@ -19,7 +19,6 @@ export default class MenuView extends View {
 		this.LANGUAGE_MODEL = this.controller.master.modelRepo.get('LanguageModel');
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
 		
-		
 		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
 		this.PTO.subscribe(this);
 	}

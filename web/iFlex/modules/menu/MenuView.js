@@ -763,7 +763,12 @@ export default class MenuView extends View {
 						this.models[key].interval = 'PT60M';
 						this.models[key].timerange = {begin:{value:5,unit:'days'},end:{value:0,unit:'days'}};
 						// Add empty object as dummy parameter.
-						this.models[key].fetch({});
+						
+						// See: adjustSyncMinute() and adjustSyncHour() at TimeRangeView.js
+						const sync_minute = 0;
+						const sync_hour = moment().hour();
+						console.log(['FETCH key=',key,' sync_minute=',sync_minute,' sync_hour=',sync_hour]);
+						this.models[key].fetch({}, sync_minute, sync_hour);
 					}
 				});
 				

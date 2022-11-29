@@ -42,7 +42,7 @@ export default class MenuController extends Controller {
 		
 		
 		// These three models will get Electricity consumption for building (with fixed interval and timerange).
-		/*
+		
 		const m4 = new BuildingElectricityPL1Model({
 			name:'MenuBuildingElectricityPL1Model',
 			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L1/', // Power of L1
@@ -70,10 +70,10 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('MenuBuildingElectricityPL3Model',m6);
 		this.models['MenuBuildingElectricityPL3Model'] = m6;
 		
-		These must be set somewhere:
-		interval: 'PT60M',
-		timerange: {begin:{value:5,unit:'days'},end:{value:0,unit:'days'}}
-		*/
+		//These must be set somewhere (before calling fetch on these models):
+		//interval: 'PT60M',
+		//timerange: {begin:{value:5,unit:'days'},end:{value:0,unit:'days'}}
+		
 		
 		this.view = new MenuView(this);
 		// NOTE: If View does NOT have ResizeEventObserver, we try to show it.

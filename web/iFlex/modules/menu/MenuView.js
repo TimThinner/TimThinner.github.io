@@ -679,6 +679,12 @@ export default class MenuView extends View {
 					if (key === 'EntsoeEnergyPriceModel') {
 						console.log(['FETCH MODEL key=',key]);
 						this.models[key].fetch();
+					} else if (key === 'MenuBuildingElectricityPL1Model' || key === 'MenuBuildingElectricityPL2Model' || key === 'MenuBuildingElectricityPL3Model') {
+						// See if these params are enough?
+						this.models[key].interval = 'PT60M';
+						this.models[key].timerange = {begin:{value:5,unit:'days'},end:{value:0,unit:'days'}};
+						// Add empty object as dummy parameter.
+						this.models[key].fetch({});
 					}
 				});
 			}

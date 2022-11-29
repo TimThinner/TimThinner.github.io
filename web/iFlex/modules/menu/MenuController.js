@@ -41,7 +41,7 @@ export default class MenuController extends Controller {
 		this.models['EntsoeEnergyPriceModel'] = m3;
 		
 		
-		// These three models will get Electricity consumption for building (with fixed interval: 'PT60M')
+		// These three models will get Electricity consumption for building (with fixed interval and timerange).
 		/*
 		const m4 = new BuildingElectricityPL1Model({
 			name:'MenuBuildingElectricityPL1Model',
@@ -69,6 +69,10 @@ export default class MenuController extends Controller {
 		m6.subscribe(this);
 		this.master.modelRepo.add('MenuBuildingElectricityPL3Model',m6);
 		this.models['MenuBuildingElectricityPL3Model'] = m6;
+		
+		These must be set somewhere:
+		interval: 'PT60M',
+		timerange: {begin:{value:5,unit:'days'},end:{value:0,unit:'days'}}
 		*/
 		
 		this.view = new MenuView(this);

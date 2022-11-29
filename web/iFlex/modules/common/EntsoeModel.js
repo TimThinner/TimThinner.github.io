@@ -333,7 +333,7 @@ export default class EntsoeModel extends Model {
 										pa = po['price.amount'][0];
 									}
 									myp['Point'].push({'position':position,'price':pa});
-									console.log(['position=',position,'price=',pa]);
+									//console.log(['position=',position,'price=',pa]);
 								});
 							}
 							this.timeseries.push(myp);

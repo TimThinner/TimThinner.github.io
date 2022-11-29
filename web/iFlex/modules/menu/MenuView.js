@@ -21,6 +21,8 @@ export default class MenuView extends View {
 		
 		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
 		this.PTO.subscribe(this);
+		
+		this.values = [];
 	}
 	
 	show() {
@@ -666,6 +668,7 @@ export default class MenuView extends View {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				this.show();
+				
 			} else if (options.model==='ProxesCleanerModel' && options.method==='clean') {
 				
 				if (options.status === 200) {
@@ -687,7 +690,21 @@ export default class MenuView extends View {
 						this.models[key].fetch({});
 					}
 				});
-			}
+				
+			} else if (options.model.indexOf('BuildingElectricityPL' === 0) && options.method==='fetched') {
+				console.log('NOTIFY '+options.model+' fetched!');
+				console.log(['options.status=',options.status]);
+				if (options.status === 200 || options.status === '200') {
+					if (this.models[options.model].values.length > 0) {
+						console.log(['values=',this.models[options.model].values]);
+					} else {
+						console.log('NO values array!!! WTF?');
+					}
+					
+				} else { // Error in fetching.
+					console.log('ERROR in fetching Electricity model.');
+				}
+			} 
 		}
 	}
 	

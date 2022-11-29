@@ -338,9 +338,9 @@ export default class EntsoeModel extends Model {
 							}
 							this.timeseries.push(myp);
 						});
-						console.log(['this.timeseries=',this.timeseries]);
 					}
 				});
+				console.log(['this.timeseries=',this.timeseries]);
 			}
 		}
 	}

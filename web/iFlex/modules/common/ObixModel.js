@@ -111,7 +111,7 @@ export default class ObixModel extends Model {
 				this.timerange = d.timeranges[0].timerange;
 			}
 		});
-		console.log(['ObixModel constructed this.interval=',this.interval,' this.timerange=',this.timerange]);
+		console.log(['ObixModel ',this.name,' constructed this.interval=',this.interval,' this.timerange=',this.timerange]);
 	}
 	
 	setConfigurationDefaults(model_name, tr_name) {

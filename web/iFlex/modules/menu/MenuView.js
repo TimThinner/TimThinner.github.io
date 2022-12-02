@@ -217,6 +217,9 @@ export default class MenuView extends View {
 			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="version" class="version-info"></text>
 		</svg>
 		*/
+		
+		
+		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',bx);
 		svg.setAttribute('y',by);
@@ -722,9 +725,32 @@ export default class MenuView extends View {
 			//});
 			
 			const r = this.sunRadius();
+			let bw, bh, s_fontsize, m_fontsize;
+			if (w <= 600) {
+				console.log('Mobile Device.');
+				s_fontsize = 12
+				bw = 82;
+				bh = 24;
+			} else if (w > 600 && w <= 992) {
+				console.log('Tablet Device.');
+				s_fontsize = 14;
+				bw = 88;
+				bh = 26;
+			} else if (w > 992 && w <= 1200) {
+				console.log('Desktop Device.');
+				s_fontsize = 16;
+				bw = 94;
+				bh = 28;
+			} else {
+				console.log('Large Desktop Device.');
+				s_fontsize = 18;
+				bw = 100;
+				bh = 30;
+			}
+			m_fontsize = s_fontsize+2;
 			// bx,by,bw,bh,fontsize,color,str 
-			this.appendText(-60,-2*r,120,30,'18px','#ccc','2.12.2022');
-			this.appendText(-60,-2*r+22,120,30,'22px','#000','112.00€');
+			this.appendText(-160,-1.5*r,bw,bh,s_fontsize,'#ccc','2.12.2022');
+			this.appendText(-160,-1.5*r+22,bw,bh,m_fontsize,'#000','112.00€');
 			
 		} else {
 			console.log('======== NOT READY TO MERGE YET! =========');

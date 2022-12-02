@@ -210,6 +210,33 @@ export default class MenuView extends View {
 		$('#space').append(c);
 	}
 	
+	appendText(bx,by,bw,bh,fontsize,color,str) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		/*
+		<svg x="-100" y="410" width="200px" height="32px">
+			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="version" class="version-info"></text>
+		</svg>
+		*/
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',bx);
+		svg.setAttribute('y',by);
+		svg.setAttributeNS(null,'width',bw);
+		svg.setAttributeNS(null,'height',bh);
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','50%');
+		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.setAttribute('font-size',fontsize);
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.setAttribute('fill',color);
+		const text_node = document.createTextNode(str);
+		txt.appendChild(text_node);
+		svg.appendChild(txt);
+		$('#space').append(svg);
+	}
+	
 	appendWindow(d, tx, ty) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const path = document.createElementNS(svgNS, "path");
@@ -693,6 +720,11 @@ export default class MenuView extends View {
 			console.log(['AFTER MERGE bucket=',bucket,' length=',len]);
 			//Object.keys(bucket).forEach(key => {
 			//});
+			
+			const r = this.sunRadius();
+			// bx,by,bw,bh,fontsize,color,str 
+			this.appendText(-60,-2*r,120,30,'18px','#ccc','2.12.2022');
+			this.appendText(-60,-2*r+22,120,30,'22px','#000','112.00€');
 			
 		} else {
 			console.log('======== NOT READY TO MERGE YET! =========');

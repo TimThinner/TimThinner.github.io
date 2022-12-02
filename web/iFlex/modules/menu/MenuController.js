@@ -9,7 +9,9 @@ export default class MenuController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		this.fetching_interval_in_seconds = 60; // This is for the ENTSOE Electricity day-ahead price.
+		// Interval for fetching ENTSOE Electricity day-ahead price and 
+		// fetching building electricity consumption with "PT60M".
+		this.fetching_interval_in_seconds = 1800; // 30 x 60 Twice per hour 
 	}
 	/*
 	NOTE: Menumodel is NEVER removed!

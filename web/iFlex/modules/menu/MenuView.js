@@ -680,7 +680,7 @@ export default class MenuView extends View {
 				bucket[ds]['elecons'] = e.value;
 			});
 			this.prices.forEach(p=>{
-				const ds = moment(p.timestamp).format(); // timestamp is a Date object => convert to string.
+				const ds = moment(p.date).format(); // timestamp is a Date object => convert to string.
 				if (bucket.hasOwnProperty(ds)) {
 					bucket[ds]['price'] = p.value;
 				} else {

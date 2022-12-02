@@ -723,12 +723,12 @@ export default class MenuView extends View {
 			console.log(['AFTER MERGE bucket=',bucket,' length=',len]);
 			//Object.keys(bucket).forEach(key => {
 			//});
-			
+			const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
 			const r = this.sunRadius();
 			let bw, bh, s_fontsize, m_fontsize;
 			if (w <= 600) {
 				console.log('Mobile Device.');
-				s_fontsize = 12
+				s_fontsize = 12;
 				bw = 82;
 				bh = 24;
 			} else if (w > 600 && w <= 992) {

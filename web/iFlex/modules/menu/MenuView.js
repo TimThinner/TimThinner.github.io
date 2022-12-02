@@ -739,6 +739,49 @@ export default class MenuView extends View {
 		}
 	}
 	
+	/*
+		p.timeInterval object with two arrays: start "2021-12-01T23:00Z" and end "2021-12-02T23:00Z"
+		p.resolution array with one item "PT60M"
+		
+		p.Point array with 24 items
+		position "1"
+		price "99.12"
+	*/
+	convertPriceData() {
+		// array of {date:..., price: ... } objects.
+		const ts = this.models['EntsoeEnergyPriceModel'].timeseries;
+		
+		// At ENTSOE price_unit is 'MWH' and currency is 'EUR', we want to convert this to snt/kWh (c/kWh)
+		// 'EUR' => 'snt' and 'MWH' => 'kWh' multiply with 100 and divide by 1000 => MULTIPLY BY 0.1!
+		let currency = 'EUR';
+		if (this.models['EntsoeEnergyPriceModel'].currency !== 'undefined') {
+			currency = this.models['EntsoeEnergyPriceModel'].currency;
+		}
+		let price_unit = 'MWH';
+		if (this.models['EntsoeEnergyPriceModel'].price_unit !== 'undefined') {
+			price_unit = this.models['EntsoeEnergyPriceModel'].price_unit;
+		}
+		let factor = 1;
+		if (price_unit === 'MWH') {
+			factor = 0.1; // 300 EUR/MWH => 30 snt/kWh
+		}
+		
+		console.log(['currency=',currency,' price_unit=',price_unit,' factor=',factor]);
+		
+		const newdata = [];
+		ts.forEach(t=>{
+			let timestamp = moment(t.timeInterval.start);
+			const reso = moment.duration(t.resolution);
+			t.Point.forEach(p=>{
+				const price = p.price*factor;
+				newdata.push({date: timestamp.toDate(), price: price});
+				// Do we need to handle the +p.position when stepping from start to end?
+				timestamp.add(reso);
+			});
+		});
+		return newdata;
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -771,6 +814,22 @@ export default class MenuView extends View {
 						this.models[key].fetch({}, sync_minute, sync_hour);
 					}
 				});
+			} else if (options.model==='EntsoeEnergyPriceModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					const newdata = this.convertPriceData();
+					
+					console.log('==================================');
+					console.log(['newdata=',newdata]);
+					console.log('==================================');
+					
+					//this.populatePriceValues(newdata);
+					//this.updatePriceForecast();
+					//this.updatePriceText();
+						
+				} else { // Error in fetching.
+					
+					console.log('ERROR in fetching '+options.model+'.');
+				}
 				
 			} else if (options.model.indexOf('MenuBuildingElectricityPL') === 0 && options.method==='fetched') {
 				console.log('NOTIFY '+options.model+' fetched!');
@@ -787,7 +846,7 @@ export default class MenuView extends View {
 					}
 					
 				} else { // Error in fetching.
-					console.log('ERROR in fetching Electricity model.');
+					console.log('ERROR in fetching '+options.model+'.');
 				}
 			} 
 		}

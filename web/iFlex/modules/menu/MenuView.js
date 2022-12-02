@@ -22,7 +22,8 @@ export default class MenuView extends View {
 		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
 		this.PTO.subscribe(this);
 		
-		this.values = [];
+		this.elecons = []; // array of {timestamp, value} pairs. Value contains electricity consumption sum from PL1,PL2,PL3.
+		this.prices = []; // array of {timestamp, value} pairs. 
 	}
 	
 	show() {
@@ -664,9 +665,40 @@ export default class MenuView extends View {
 		this.appendLanguageSelections();
 	}
 	
+	
+	merge() {
+		const bucket = {};
+		if (this.elecons.length > 0 && this.prices.length > 0) {
+			console.log('======== MERGE! =========');
+			// For all consumption timestamps, check if price exist.
+			this.elecons.forEach(e=>{
+				const ds = moment(e.timestamp).format(); // timestamp is a Date object => convert to string.
+				if (bucket.hasOwnProperty(ds)) {
+					bucket[ds]['elecons'] = e.value;
+				} else {
+					bucket[ds] = {};
+					bucket[ds]['elecons'] = e.value;
+				}
+			});
+			this.prices.forEach(p=>{
+				const ds = moment(p.timestamp).format(); // timestamp is a Date object => convert to string.
+				if (bucket.hasOwnProperty(ds)) {
+					bucket[ds]['price'] = p.value;
+				} else {
+					// DISCARD THIS!
+					console.log(['DISCARD PRICE ds=',ds]);
+				}
+			});
+		} else {
+			console.log('======== NOT READY TO MERGE YET! =========');
+		}
+		console.log(['AFTER MERGE bucket=',bucket]);
+	}
+	
 	calculateSum() {
 		
 		// CALL THIS FOR EVERY MODEL, BUT NOTE THAT SUM IS CALCULATED ONLY WHEN ALL 3 MODELS ARE READY AND FILLED WITH VALUES!
+		const val_array = [];
 		
 		if (this.models['MenuBuildingElectricityPL1Model'].values.length > 0 && 
 			this.models['MenuBuildingElectricityPL2Model'].values.length > 0 &&
@@ -675,7 +707,6 @@ export default class MenuView extends View {
 			// Calculate the sum of models like before.
 			// and assign that to self.values array {timestamp => value}
 			const sumbucket = {};
-			this.values = [];
 			
 			this.models['MenuBuildingElectricityPL1Model'].values.forEach(v=>{
 				const ds = moment(v.timestamp).format();
@@ -715,11 +746,11 @@ export default class MenuView extends View {
 				Object.keys(sumbucket[key]).forEach(m => {
 					sum += sumbucket[key][m];
 				});
-				this.values.push({timestamp: moment(key).toDate(), value:sum});
+				val_array.push({timestamp: moment(key).toDate(), value:sum});
 			});
 			// NEW: Sort values by the timestamp Date: oldest first.
 			// sort by string (created is a string, for example: "2021-04-21T07:40:50.965Z")
-			this.values.sort(function(a, b) {
+			val_array.sort(function(a, b) {
 				if (a.timestamp < b.timestamp) {
 					return -1;
 				}
@@ -728,15 +759,11 @@ export default class MenuView extends View {
 				}
 				return 0; // dates must be equal
 			});
-			console.log(['this.values=',this.values]);
-			// sort by timestamp (Date)
-			//this.values.sort(function(a,b){
-				//return b.timestamp - a.timestamp;
-			//});
 		} else {
-			// 
 			console.log('NOT ALL ELECTRICITY MODELS ARE READY... WAIT!');
 		}
+		console.log(['val_array=',val_array]);
+		return val_array;
 	}
 	
 	/*
@@ -763,11 +790,10 @@ export default class MenuView extends View {
 		}
 		let factor = 1;
 		if (price_unit === 'MWH') {
-			factor = 0.1; // 300 EUR/MWH => 30 snt/kWh
+			// Convert values to EUR/kWh, we have to divide by 1000 (multiply by 1/1000).
+			factor = 0.001; // 300 EUR/MWH => 30 EUR/kWh
 		}
-		
 		console.log(['currency=',currency,' price_unit=',price_unit,' factor=',factor]);
-		
 		const newdata = [];
 		ts.forEach(t=>{
 			let timestamp = moment(t.timeInterval.start);
@@ -795,6 +821,11 @@ export default class MenuView extends View {
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Do something with each TICK!
+				
+				// Reset data arrays.
+				this.elecons = [];
+				this.prices = [];
+				
 				console.log('PeriodicTimeoutObserver timeout!');
 				Object.keys(this.models).forEach(key => {
 					if (key === 'EntsoeEnergyPriceModel') {
@@ -816,11 +847,14 @@ export default class MenuView extends View {
 				});
 			} else if (options.model==='EntsoeEnergyPriceModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					const newdata = this.convertPriceData();
+					
+					this.prices = this.convertPriceData();
 					
 					console.log('==================================');
-					console.log(['newdata=',newdata]);
+					console.log(['this.prices=',this.prices]);
 					console.log('==================================');
+					
+					this.merge(); // If both datasets are fetched and ready, merge.
 					
 					//this.populatePriceValues(newdata);
 					//this.updatePriceForecast();
@@ -838,11 +872,13 @@ export default class MenuView extends View {
 					if (this.models[options.model].values.length > 0) {
 						
 						console.log(['values=',this.models[options.model].values]);
-						this.calculateSum();
-						
+						this.elecons = this.calculateSum();
+						if (this.elecons.length > 0) {
+							this.merge(); // If both datasets are fetched and ready, merge.
+						}
 						
 					} else {
-						console.log('NO values array!!!');
+						console.log('NO values!!!');
 					}
 					
 				} else { // Error in fetching.

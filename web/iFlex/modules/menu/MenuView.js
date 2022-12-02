@@ -667,18 +667,17 @@ export default class MenuView extends View {
 	
 	
 	merge() {
-		const bucket = {};
 		if (this.elecons.length > 0 && this.prices.length > 0) {
+			
 			console.log('======== MERGE! =========');
+			const bucket = {};
 			// For all consumption timestamps, check if price exist.
 			this.elecons.forEach(e=>{
 				const ds = moment(e.timestamp).format(); // timestamp is a Date object => convert to string.
-				if (bucket.hasOwnProperty(ds)) {
-					bucket[ds]['elecons'] = e.value;
-				} else {
-					bucket[ds] = {};
-					bucket[ds]['elecons'] = e.value;
-				}
+				console.log(['ELECONS ds=',ds]);
+				
+				bucket[ds] = {};
+				bucket[ds]['elecons'] = e.value;
 			});
 			this.prices.forEach(p=>{
 				const ds = moment(p.timestamp).format(); // timestamp is a Date object => convert to string.
@@ -689,10 +688,11 @@ export default class MenuView extends View {
 					console.log(['DISCARD PRICE ds=',ds]);
 				}
 			});
+			console.log(['AFTER MERGE bucket=',bucket]);
+			
 		} else {
 			console.log('======== NOT READY TO MERGE YET! =========');
 		}
-		console.log(['AFTER MERGE bucket=',bucket]);
 	}
 	
 	calculateSum() {

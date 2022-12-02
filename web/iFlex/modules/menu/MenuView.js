@@ -688,7 +688,11 @@ export default class MenuView extends View {
 					console.log(['DISCARD PRICE ds=',ds]);
 				}
 			});
-			console.log(['AFTER MERGE bucket=',bucket]);
+			// How many entries?
+			const len = Object.keys(bucket).length;
+			console.log(['AFTER MERGE bucket=',bucket,' length=',len]);
+			//Object.keys(bucket).forEach(key => {
+			//});
 			
 		} else {
 			console.log('======== NOT READY TO MERGE YET! =========');

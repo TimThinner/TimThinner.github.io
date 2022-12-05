@@ -210,21 +210,24 @@ export default class MenuView extends View {
 		$('#space').append(c);
 	}
 	
-	appendText(bx,by,bw,bh,fontsize,color,str) {
+	appendText(wunit,tx,ty,fontsize,color,str) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		/*
 		<svg x="-100" y="410" width="200px" height="32px">
 			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="version" class="version-info"></text>
 		</svg>
 		*/
-		
-		
+		const x = -wunit;
+		const y = -wunit;
+		const w = 2*wunit;
+		const h = wunit;
 		
 		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttribute('x',bx);
-		svg.setAttribute('y',by);
-		svg.setAttributeNS(null,'width',bw);
-		svg.setAttributeNS(null,'height',bh);
+		svg.setAttribute('x',x);
+		svg.setAttribute('y',y);
+		svg.setAttributeNS(null,'width',w);
+		svg.setAttributeNS(null,'height',h);
+		svg.setAttribute('transform', 'translate('+tx+','+ty+')');
 		
 		const txt = document.createElementNS(svgNS, 'text');
 		txt.setAttribute('x','50%');
@@ -240,16 +243,72 @@ export default class MenuView extends View {
 		$('#space').append(svg);
 	}
 	
-	appendWindow(d, tx, ty) {
+	/*
+	NOTE: 
+	Window-SURFACE will be added AFTER flexibility values are fetched and displayed 
+	
+	#85bc25 = rgb(133,188,37)
+	*/
+	
+	appendWindow(wunit, tx, ty, isSurface) {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const path = document.createElementNS(svgNS, "path");
-		path.setAttributeNS(null, 'd', d);
-		path.style.stroke = '#1a488b';
-		path.style.strokeWidth = 5;
-		path.style.opacity = 0.5;
-		path.style.fill = '#fff';
-		path.setAttribute('transform', 'translate('+tx+','+ty+')');
-		$('#space').append(path);
+		if (isSurface) {
+			const i_rect = document.createElementNS(svgNS, 'rect');
+			i_rect.setAttribute('x',-wunit);
+			i_rect.setAttribute('y',-wunit);
+			i_rect.setAttribute('width',wunit*2);
+			i_rect.setAttribute('height',wunit*2);
+			i_rect.style.cursor = 'pointer';
+			i_rect.style.fill = '#ff0';
+			i_rect.style.fillOpacity = 0.1;
+			i_rect.style.strokeOpacity = 1;
+			i_rect.style.stroke = '#1a488b';
+			i_rect.style.strokeWidth = 1;
+			i_rect.setAttribute('transform', 'translate('+tx+','+ty+')');
+			
+			const border = document.createElementNS(svgNS, 'rect');
+			border.setAttribute('x',-wunit-3);
+			border.setAttribute('y',-wunit-3);
+			border.setAttribute('width',wunit*2+6);
+			border.setAttribute('height',wunit*2+6);
+			border.style.fill = '#000'; // not visible, but must be something other than "none"!
+			border.style.fillOpacity = 0;
+			border.style.strokeOpacity = 0;
+			border.style.strokeWidth = 6;
+			border.style.stroke = '#0f0';
+			border.setAttribute('transform', 'translate('+tx+','+ty+')');
+			
+			i_rect.addEventListener("click", function(){
+				
+				console.log('WINDOW CLICKED!');
+				
+			}, false);
+			
+			i_rect.addEventListener("mouseover", function(event){
+				border.style.strokeOpacity = 1;
+			}, false);
+			
+			i_rect.addEventListener("mouseout", function(event){
+				border.style.strokeOpacity = 0;
+			}, false);
+			
+			$('#space').append(border);
+			$('#space').append(i_rect);
+			
+		} else {
+			const o_rect = document.createElementNS(svgNS, 'rect');
+			o_rect.setAttribute('x',-wunit-6);
+			o_rect.setAttribute('y',-wunit-6);
+			o_rect.setAttribute('width',wunit*2+12);
+			o_rect.setAttribute('height',wunit*2+12);
+			o_rect.style.fill = '#fff';
+			o_rect.style.fillOpacity = 1;
+			o_rect.style.strokeOpacity = 1;
+			o_rect.style.stroke = '#1a488b';
+			o_rect.style.strokeWidth = 2;
+			o_rect.setAttribute('transform', 'translate('+tx+','+ty+')');
+			$('#space').append(o_rect);
+		}
 	}
 	/*
 	The radius of circle is 12,5% of H or W (smaller dimension).
@@ -281,18 +340,18 @@ export default class MenuView extends View {
 		
 		// Windows:
 		const wunit = 14*r/60;
-		const wd = 'M-'+wunit+','+wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+wunit+' Z';
+		//const wd = 'M-'+wunit+','+wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+wunit+' Z';
 		// Upper row:
-		this.appendWindow(wd, -4*wunit, -4*wunit);
-		this.appendWindow(wd, 0, -4*wunit);
-		this.appendWindow(wd, 4*wunit, -4*wunit);
+		this.appendWindow(wunit, -4*wunit, -4*wunit, false);
+		this.appendWindow(wunit, 0, -4*wunit, false);
+		this.appendWindow(wunit, 4*wunit, -4*wunit, false);
 		// Center row:
-		this.appendWindow(wd, -4*wunit, 0);
-		this.appendWindow(wd, 0, 0);
-		this.appendWindow(wd, 4*wunit, 0);
+		this.appendWindow(wunit, -4*wunit, 0, false);
+		//this.appendWindow(wunit, 0, 0, false);
+		this.appendWindow(wunit, 4*wunit, 0, false);
 		// Bottom row:
-		this.appendWindow(wd, -4*wunit, 4*wunit);
-		this.appendWindow(wd, 4*wunit, 4*wunit);
+		this.appendWindow(wunit, -4*wunit, 4*wunit, false);
+		this.appendWindow(wunit, 4*wunit, 4*wunit, false);
 		
 		// DOOR:
 		const dd = 'M-'+wunit+','+2*wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+2*wunit+' Z';
@@ -325,21 +384,31 @@ export default class MenuView extends View {
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.sunRadius();
+		let r = this.sunRadius();
 		
 		const WHITE = '#fff';
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
-		const r2 = r-r*0.1;
-		const r3 = r-r*0.3;
-		const w = r;
-		const wper2 = w*0.5;
-		const h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
-		const hper2 = h*0.5;
+		let r2 = r-r*0.1;
+		let r3 = r-r*0.3;
+		let w = r;
+		let wper2 = w*0.5;
+		let h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		let hper2 = h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
-		if (type === 'ELECTRICITY') {
+		// Make CENTER CIRCLE (USER) smaller than others.
+		if (type === 'USER') {
+			r = r*0.6;
+			r2 = r-r*0.1;
+			r3 = r-r*0.3;
+			w = r;
+			wper2 = w*0.5;
+			h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+			hper2 = h*0.5;
+			
+		} else if (type === 'ELECTRICITY') {
 			tx = ty = -12*r/5;
 		} else if (type === 'HEATING') {
 			tx = 12*r/5;
@@ -723,34 +792,109 @@ export default class MenuView extends View {
 			console.log(['AFTER MERGE bucket=',bucket,' length=',len]);
 			//Object.keys(bucket).forEach(key => {
 			//});
+			
+			// Calculate sums starting from today-7 days to today-1 day (7 days data)
+			const ave_bucket = {};
+			for (let i=7; i>0; i--) {
+				const m_date = moment().subtract(i,'days').format('YYYY-MM-DD');
+				console.log(['initializing ave_bucket m_date=',m_date]);
+				ave_bucket[m_date] = {count:0, sum:0, average:0};
+			}
+			Object.keys(bucket).forEach(key=>{
+				const yyyymmdd = key.slice(0,10);
+				if (ave_bucket.hasOwnProperty(yyyymmdd)) {
+					ave_bucket[yyyymmdd].count += 1;
+					ave_bucket[yyyymmdd].sum += bucket[key].elecons*bucket[key].price;
+				}
+			});
+			Object.keys(ave_bucket).forEach(key=>{
+				if (ave_bucket[key].count > 0) {
+					ave_bucket[key].average = ave_bucket[key].sum/ave_bucket[key].count;
+				}
+			});
+			console.log(['ave_bucket=',ave_bucket]);
+			
+/*
+{​​"2022-11-27T16:00:00+02:00": Object { elecons: 28.68166658480962, price: 0.32207 }
+​​"2022-11-27T17:00:00+02:00": Object { elecons: 26.666388857364655, price: 0.29510000000000003 }
+​​"2022-11-27T18:00:00+02:00": Object { elecons: 26.037222250302634, price: 0.31982 }
+}
+*/			
+			
 			const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-			const r = this.sunRadius();
-			let bw, bh, s_fontsize, m_fontsize;
+			let fontsize;
 			if (w <= 600) {
 				console.log('Mobile Device.');
-				s_fontsize = 12;
-				bw = 82;
-				bh = 24;
+				fontsize = 10;
 			} else if (w > 600 && w <= 992) {
 				console.log('Tablet Device.');
-				s_fontsize = 14;
-				bw = 88;
-				bh = 26;
+				fontsize = 12;
 			} else if (w > 992 && w <= 1200) {
 				console.log('Desktop Device.');
-				s_fontsize = 16;
-				bw = 94;
-				bh = 28;
+				fontsize = 14;
 			} else {
 				console.log('Large Desktop Device.');
-				s_fontsize = 18;
-				bw = 100;
-				bh = 30;
+				fontsize = 16;
 			}
-			m_fontsize = s_fontsize+2;
 			// bx,by,bw,bh,fontsize,color,str 
-			this.appendText(-160,-1.5*r,bw,bh,s_fontsize,'#ccc','2.12.2022');
-			this.appendText(-160,-1.5*r+22,bw,bh,m_fontsize,'#000','112.00€');
+			//this.appendText(-150,-1.4*r,bw,bh,s_fontsize,'#ccc','2.12.');
+			//this.appendText(-150,-1.4*r+22,bw,bh,m_fontsize,'#000','112€');
+			
+			const r = this.sunRadius();
+			const wunit = 14*r/60;
+			console.log(['wunit=',wunit]);
+			
+			const gutter = fontsize+fontsize/4;
+			/*
+"2022-11-29": Object { count: 24, sum: 164.38372445626135, average: 6.8493218523442225 }
+"​2022-11-30": Object { count: 24, sum: 178.4006533528305, average: 7.433360556367937 }
+​​"2022-12-01": Object { count: 24, sum: 174.1537224240401, average: 7.256405101001671 }
+​​"2022-12-02": Object { count: 24, sum: 153.8313554063603, average: 6.409639808598346 }
+​​"2022-12-03": Object { count: 24, sum: 139.78479442959392, average: 5.8243664345664135 }
+​​"2022-12-04": Object { count: 24, sum: 128.5594257419376, average: 5.356642739247399 }
+*/
+
+
+			Object.keys(ave_bucket).forEach(key=>{
+				console.log(['ave_bucket date=',key,' sum=',ave_bucket[key].sum]);
+				// date= "2022-12-03"  sum= 119.34543343
+			});
+			// TODO:
+			// Fix the date to DD.MM.  format
+			// Fix the sum to integer value
+			
+			
+			
+// Upper row:
+			this.appendText(wunit, -4*wunit, -4*wunit, fontsize, '#aaa', '1.12.');
+			this.appendText(wunit, -4*wunit, -4*wunit+gutter, fontsize+2, '#000', '112€');
+			this.appendWindow(wunit, -4*wunit, -4*wunit, true);
+			
+			this.appendText(wunit, 0, -4*wunit, fontsize, '#aaa', '2.12.');
+			this.appendText(wunit, 0, -4*wunit+gutter, fontsize+2, '#000', '212€');
+			this.appendWindow(wunit, 0, -4*wunit, true);
+			
+			this.appendText(wunit, 4*wunit, -4*wunit, fontsize, '#aaa', '3.12.');
+			this.appendText(wunit, 4*wunit, -4*wunit+gutter, fontsize+2, '#000', '312€');
+			this.appendWindow(wunit, 4*wunit, -4*wunit, true);
+			
+			// Center row:
+			this.appendText(wunit, -4*wunit, 0, fontsize, '#aaa', '4.12.');
+			this.appendText(wunit, -4*wunit, gutter, fontsize+2, '#000', '412€');
+			this.appendWindow(wunit, -4*wunit, 0, true);
+			
+			this.appendText(wunit, 4*wunit, 0, fontsize, '#aaa', '5.12.');
+			this.appendText(wunit, 4*wunit, gutter, fontsize+2, '#000', '512€');
+			this.appendWindow(wunit, 4*wunit, 0, true);
+			
+			// Bottom row:
+			this.appendText(wunit, -4*wunit, 4*wunit, fontsize, '#aaa', '6.12.');
+			this.appendText(wunit, -4*wunit, 4*wunit+gutter, fontsize+2, '#000', '612€');
+			this.appendWindow(wunit, -4*wunit, 4*wunit, true);
+			
+			this.appendText(wunit, 4*wunit, 4*wunit, fontsize, '#aaa', '7.12.');
+			this.appendText(wunit, 4*wunit, 4*wunit+gutter, fontsize+2, '#000', '712€');
+			this.appendWindow(wunit, 4*wunit, 4*wunit, true);
 			
 		} else {
 			console.log('======== NOT READY TO MERGE YET! =========');

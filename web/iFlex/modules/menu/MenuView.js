@@ -251,6 +251,7 @@ export default class MenuView extends View {
 	*/
 	
 	appendWindow(wunit, tx, ty, isSurface) {
+		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		if (isSurface) {
 			const i_rect = document.createElementNS(svgNS, 'rect');
@@ -279,9 +280,7 @@ export default class MenuView extends View {
 			border.setAttribute('transform', 'translate('+tx+','+ty+')');
 			
 			i_rect.addEventListener("click", function(){
-				
-				console.log('WINDOW CLICKED!');
-				
+				self.models['MenuModel'].setSelected('FLEX');
 			}, false);
 			
 			i_rect.addEventListener("mouseover", function(event){
@@ -764,17 +763,74 @@ export default class MenuView extends View {
 		this.appendLanguageSelections();
 	}
 	
+	renderCalendarWindows(sum_bucket) {
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		let fontsize;
+		if (w <= 600) {
+			console.log('Mobile Device.');
+			fontsize = 10;
+		} else if (w > 600 && w <= 992) {
+			console.log('Tablet Device.');
+			fontsize = 12;
+		} else if (w > 992 && w <= 1200) {
+			console.log('Desktop Device.');
+			fontsize = 14;
+		} else {
+			console.log('Large Desktop Device.');
+			fontsize = 16;
+		}
+		// bx,by,bw,bh,fontsize,color,str 
+		//this.appendText(-150,-1.4*r,bw,bh,s_fontsize,'#ccc','2.12.');
+		//this.appendText(-150,-1.4*r+22,bw,bh,m_fontsize,'#000','112€');
+		
+		const r = this.sunRadius();
+		const wunit = 14*r/60;
+		console.log(['wunit=',wunit]);
+		
+		const gutter = fontsize+fontsize/4;
+		const calendar = [];
+		Object.keys(sum_bucket).forEach(key=>{
+			const dd = key.slice(-2);
+			const mm = key.slice(5,7);
+			const sum = sum_bucket[key].sum;
+			calendar.push({ddmm:dd+'.'+mm+'.', sum:sum});
+			// date= "2022-12-03"  sum= 119.34543343
+		});
+		/* NOTE: co_effis has reversed order of these coefficients also.
+			-4,-4	0,-4	4,-4
+			-4,0			4,0
+			-4,4			4,4
+		*/
+		const co_effis = [{x:4,y:4}, {x:-4,y:4},
+			{x:4,y:0}, {x:-4,y:0},
+			{x:4,y:-4}, {x:0,y:-4}, {x:-4,y:-4}];
+		calendar.reverse();
+		// We start to fill view with latest date first (=lower-right corner).
+		calendar.every((e,i) => {
+			if (i > 6) {
+				return false;
+			}
+			const x = co_effis[i].x;
+			const y = co_effis[i].y;
+			const ddmm = e.ddmm;
+			const sum = e.sum.toFixed(0);
+			this.appendText(wunit, x*wunit, y*wunit, fontsize, '#aaa', ddmm);
+			this.appendText(wunit, x*wunit, y*wunit+gutter, fontsize+2, '#444', sum+'€');
+			this.appendWindow(wunit, x*wunit, y*wunit, true);
+			// Make sure you return true. If you don't return a value, `every()` will stop.
+			return true;
+		});
+	}
 	
 	merge() {
+		const sum_bucket = {};
 		if (this.elecons.length > 0 && this.prices.length > 0) {
-			
 			console.log('======== MERGE! =========');
 			const bucket = {};
 			// For all consumption timestamps, check if price exist.
 			this.elecons.forEach(e=>{
 				const ds = moment(e.timestamp).format(); // timestamp is a Date object => convert to string.
 				console.log(['ELECONS ds=',ds]);
-				
 				bucket[ds] = {};
 				bucket[ds]['elecons'] = e.value;
 			});
@@ -790,122 +846,28 @@ export default class MenuView extends View {
 			// How many entries?
 			const len = Object.keys(bucket).length;
 			console.log(['AFTER MERGE bucket=',bucket,' length=',len]);
-			//Object.keys(bucket).forEach(key => {
-			//});
-			
 			// Calculate sums starting from today-7 days to today-1 day (7 days data)
-			const ave_bucket = {};
 			for (let i=7; i>0; i--) {
 				const m_date = moment().subtract(i,'days').format('YYYY-MM-DD');
-				console.log(['initializing ave_bucket m_date=',m_date]);
-				ave_bucket[m_date] = {count:0, sum:0, average:0};
+				console.log(['initializing sum_bucket m_date=',m_date]);
+				sum_bucket[m_date] = {sum:0};
 			}
 			Object.keys(bucket).forEach(key=>{
 				const yyyymmdd = key.slice(0,10);
-				if (ave_bucket.hasOwnProperty(yyyymmdd)) {
-					ave_bucket[yyyymmdd].count += 1;
-					ave_bucket[yyyymmdd].sum += bucket[key].elecons*bucket[key].price;
+				if (sum_bucket.hasOwnProperty(yyyymmdd)) {
+					sum_bucket[yyyymmdd].sum += bucket[key].elecons*bucket[key].price;
 				}
 			});
-			Object.keys(ave_bucket).forEach(key=>{
-				if (ave_bucket[key].count > 0) {
-					ave_bucket[key].average = ave_bucket[key].sum/ave_bucket[key].count;
-				}
-			});
-			console.log(['ave_bucket=',ave_bucket]);
-			
-/*
-{​​"2022-11-27T16:00:00+02:00": Object { elecons: 28.68166658480962, price: 0.32207 }
-​​"2022-11-27T17:00:00+02:00": Object { elecons: 26.666388857364655, price: 0.29510000000000003 }
-​​"2022-11-27T18:00:00+02:00": Object { elecons: 26.037222250302634, price: 0.31982 }
-}
-*/			
-			
-			const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-			let fontsize;
-			if (w <= 600) {
-				console.log('Mobile Device.');
-				fontsize = 10;
-			} else if (w > 600 && w <= 992) {
-				console.log('Tablet Device.');
-				fontsize = 12;
-			} else if (w > 992 && w <= 1200) {
-				console.log('Desktop Device.');
-				fontsize = 14;
-			} else {
-				console.log('Large Desktop Device.');
-				fontsize = 16;
-			}
-			// bx,by,bw,bh,fontsize,color,str 
-			//this.appendText(-150,-1.4*r,bw,bh,s_fontsize,'#ccc','2.12.');
-			//this.appendText(-150,-1.4*r+22,bw,bh,m_fontsize,'#000','112€');
-			
-			const r = this.sunRadius();
-			const wunit = 14*r/60;
-			console.log(['wunit=',wunit]);
-			
-			const gutter = fontsize+fontsize/4;
-			/*
-"2022-11-29": Object { count: 24, sum: 164.38372445626135, average: 6.8493218523442225 }
-"​2022-11-30": Object { count: 24, sum: 178.4006533528305, average: 7.433360556367937 }
-​​"2022-12-01": Object { count: 24, sum: 174.1537224240401, average: 7.256405101001671 }
-​​"2022-12-02": Object { count: 24, sum: 153.8313554063603, average: 6.409639808598346 }
-​​"2022-12-03": Object { count: 24, sum: 139.78479442959392, average: 5.8243664345664135 }
-​​"2022-12-04": Object { count: 24, sum: 128.5594257419376, average: 5.356642739247399 }
-*/
-
-
-			Object.keys(ave_bucket).forEach(key=>{
-				console.log(['ave_bucket date=',key,' sum=',ave_bucket[key].sum]);
-				// date= "2022-12-03"  sum= 119.34543343
-			});
-			// TODO:
-			// Fix the date to DD.MM.  format
-			// Fix the sum to integer value
-			
-			
-			
-// Upper row:
-			this.appendText(wunit, -4*wunit, -4*wunit, fontsize, '#aaa', '1.12.');
-			this.appendText(wunit, -4*wunit, -4*wunit+gutter, fontsize+2, '#000', '112€');
-			this.appendWindow(wunit, -4*wunit, -4*wunit, true);
-			
-			this.appendText(wunit, 0, -4*wunit, fontsize, '#aaa', '2.12.');
-			this.appendText(wunit, 0, -4*wunit+gutter, fontsize+2, '#000', '212€');
-			this.appendWindow(wunit, 0, -4*wunit, true);
-			
-			this.appendText(wunit, 4*wunit, -4*wunit, fontsize, '#aaa', '3.12.');
-			this.appendText(wunit, 4*wunit, -4*wunit+gutter, fontsize+2, '#000', '312€');
-			this.appendWindow(wunit, 4*wunit, -4*wunit, true);
-			
-			// Center row:
-			this.appendText(wunit, -4*wunit, 0, fontsize, '#aaa', '4.12.');
-			this.appendText(wunit, -4*wunit, gutter, fontsize+2, '#000', '412€');
-			this.appendWindow(wunit, -4*wunit, 0, true);
-			
-			this.appendText(wunit, 4*wunit, 0, fontsize, '#aaa', '5.12.');
-			this.appendText(wunit, 4*wunit, gutter, fontsize+2, '#000', '512€');
-			this.appendWindow(wunit, 4*wunit, 0, true);
-			
-			// Bottom row:
-			this.appendText(wunit, -4*wunit, 4*wunit, fontsize, '#aaa', '6.12.');
-			this.appendText(wunit, -4*wunit, 4*wunit+gutter, fontsize+2, '#000', '612€');
-			this.appendWindow(wunit, -4*wunit, 4*wunit, true);
-			
-			this.appendText(wunit, 4*wunit, 4*wunit, fontsize, '#aaa', '7.12.');
-			this.appendText(wunit, 4*wunit, 4*wunit+gutter, fontsize+2, '#000', '712€');
-			this.appendWindow(wunit, 4*wunit, 4*wunit, true);
-			
 		} else {
 			console.log('======== NOT READY TO MERGE YET! =========');
 		}
+		console.log(['sum_bucket=',sum_bucket]);
+		return sum_bucket;
 	}
 	
 	calculateSum() {
-		
 		// CALL THIS FOR EVERY MODEL, BUT NOTE THAT SUM IS CALCULATED ONLY WHEN ALL 3 MODELS ARE READY AND FILLED WITH VALUES!
 		const val_array = [];
-		
 		if (this.models['MenuBuildingElectricityPL1Model'].values.length > 0 && 
 			this.models['MenuBuildingElectricityPL2Model'].values.length > 0 &&
 			this.models['MenuBuildingElectricityPL3Model'].values.length > 0) {
@@ -1059,15 +1021,13 @@ export default class MenuView extends View {
 					console.log('==================================');
 					console.log(['this.prices=',this.prices]);
 					console.log('==================================');
+					// If both datasets are fetched and ready, merge returns an object with data.
+					const resu = this.merge();
+					if (Object.keys(resu).length > 0) {
+						this.renderCalendarWindows(resu);
+					}
 					
-					this.merge(); // If both datasets are fetched and ready, merge.
-					
-					//this.populatePriceValues(newdata);
-					//this.updatePriceForecast();
-					//this.updatePriceText();
-						
 				} else { // Error in fetching.
-					
 					console.log('ERROR in fetching '+options.model+'.');
 				}
 				
@@ -1080,17 +1040,19 @@ export default class MenuView extends View {
 						console.log(['values=',this.models[options.model].values]);
 						this.elecons = this.calculateSum();
 						if (this.elecons.length > 0) {
-							this.merge(); // If both datasets are fetched and ready, merge.
+							// If both datasets are fetched and ready, merge returns an object with data.
+							const resu = this.merge();
+							if (Object.keys(resu).length > 0) {
+								this.renderCalendarWindows(resu);
+							}
 						}
-						
 					} else {
 						console.log('NO values!!!');
 					}
-					
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
 				}
-			} 
+			}
 		}
 	}
 	

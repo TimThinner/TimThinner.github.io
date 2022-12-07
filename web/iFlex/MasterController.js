@@ -23,6 +23,7 @@ import AController from './modules/a/AController.js';
 import BController from './modules/b/BController.js';
 import CController from './modules/c/CController.js';
 import DController from './modules/d/DController.js';
+import FlexController from './modules/Flex/FlexController.js';
 
 // ADMIN stuff:
 import RegCodeController from './modules/admin/regcodes/RegCodeController.js';
@@ -137,16 +138,14 @@ class MasterController {
 		
 		this.controllers['A'] = new AController({name:'A', master:this, el:'#content', visible:false});
 		this.controllers['A'].init();
-		
 		this.controllers['B'] = new BController({name:'B', master:this, el:'#content', visible:false});
 		this.controllers['B'].init();
-		
 		this.controllers['C'] = new CController({name:'C', master:this, el:'#content', visible:false});
 		this.controllers['C'].init();
-		
 		this.controllers['D'] = new DController({name:'D', master:this, el:'#content', visible:false});
 		this.controllers['D'].init();
-		
+		this.controllers['FLEX'] = new FlexController({name:'FLEX', master:this, el:'#content', visible:false});
+		this.controllers['FLEX'].init();
 		
 		// Admin stuff start ------>
 		this.controllers['REGCODES'] = new RegCodeController({name:'REGCODES', master:this, el:'#content', visible:false});

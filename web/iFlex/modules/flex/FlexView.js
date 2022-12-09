@@ -23,6 +23,7 @@ export default class FlexView extends View {//TimeRangeView {
 		this.FELID = 'flex-view-failure';
 		this.CHARTID = 'flex-chart';
 		
+		this.numberOfDays = 31;
 		this.values = [];
 		this.elecons = [];
 		this.prices = [];
@@ -74,17 +75,17 @@ export default class FlexView extends View {//TimeRangeView {
 	*/
 	convertPriceData() {
 		// array of {date:..., price: ... } objects.
-		const ts = this.models['EntsoeEnergyPriceModel'].timeseries;
+		const ts = this.models['FlexEntsoeEnergyPriceModel'].timeseries;
 		
 		// At ENTSOE price_unit is 'MWH' and currency is 'EUR', we want to convert this to snt/kWh (c/kWh)
 		// 'EUR' => 'snt' and 'MWH' => 'kWh' multiply with 100 and divide by 1000 => MULTIPLY BY 0.1!
 		let currency = 'EUR';
-		if (this.models['EntsoeEnergyPriceModel'].currency !== 'undefined') {
-			currency = this.models['EntsoeEnergyPriceModel'].currency;
+		if (this.models['FlexEntsoeEnergyPriceModel'].currency !== 'undefined') {
+			currency = this.models['FlexEntsoeEnergyPriceModel'].currency;
 		}
 		let price_unit = 'MWH';
-		if (this.models['EntsoeEnergyPriceModel'].price_unit !== 'undefined') {
-			price_unit = this.models['EntsoeEnergyPriceModel'].price_unit;
+		if (this.models['FlexEntsoeEnergyPriceModel'].price_unit !== 'undefined') {
+			price_unit = this.models['FlexEntsoeEnergyPriceModel'].price_unit;
 		}
 		let factor = 1;
 		if (price_unit === 'MWH') {
@@ -109,15 +110,15 @@ export default class FlexView extends View {//TimeRangeView {
 	calculateSum() {
 		// CALL THIS FOR EVERY MODEL, BUT NOTE THAT SUM IS CALCULATED ONLY WHEN ALL 3 MODELS ARE READY AND FILLED WITH VALUES!
 		const val_array = [];
-		if (this.models['MenuBuildingElectricityPL1Model'].values.length > 0 && 
-			this.models['MenuBuildingElectricityPL2Model'].values.length > 0 &&
-			this.models['MenuBuildingElectricityPL3Model'].values.length > 0) {
+		if (this.models['FlexBuildingElectricityPL1Model'].values.length > 0 && 
+			this.models['FlexBuildingElectricityPL2Model'].values.length > 0 &&
+			this.models['FlexBuildingElectricityPL3Model'].values.length > 0) {
 			
 			// Calculate the sum of models like before.
 			// and assign that to self.values array {timestamp => value}
 			const sumbucket = {};
 			
-			this.models['MenuBuildingElectricityPL1Model'].values.forEach(v=>{
+			this.models['FlexBuildingElectricityPL1Model'].values.forEach(v=>{
 				const ds = moment(v.timestamp).format();
 				let val = +v.value; // Converts string to number.
 				if (sumbucket.hasOwnProperty(ds)) {
@@ -128,7 +129,7 @@ export default class FlexView extends View {//TimeRangeView {
 				}
 			});
 			
-			this.models['MenuBuildingElectricityPL2Model'].values.forEach(v=>{
+			this.models['FlexBuildingElectricityPL2Model'].values.forEach(v=>{
 				const ds = moment(v.timestamp).format();
 				let val = +v.value; // Converts string to number.
 				if (sumbucket.hasOwnProperty(ds)) {
@@ -139,7 +140,7 @@ export default class FlexView extends View {//TimeRangeView {
 				}
 			});
 			
-			this.models['MenuBuildingElectricityPL3Model'].values.forEach(v=>{
+			this.models['FlexBuildingElectricityPL3Model'].values.forEach(v=>{
 				const ds = moment(v.timestamp).format();
 				let val = +v.value; // Converts string to number.
 				if (sumbucket.hasOwnProperty(ds)) {
@@ -183,7 +184,7 @@ export default class FlexView extends View {//TimeRangeView {
 			// For all consumption timestamps, check if price exist.
 			this.elecons.forEach(e=>{
 				const ds = moment(e.timestamp).format(); // timestamp is a Date object => convert to string.
-				console.log(['ELECONS ds=',ds]);
+				//console.log(['ELECONS ds=',ds]);
 				bucket[ds] = {};
 				bucket[ds]['elecons'] = e.value;
 			});
@@ -191,29 +192,50 @@ export default class FlexView extends View {//TimeRangeView {
 				const ds = moment(p.date).format(); // date is a Date object => convert to string.
 				if (bucket.hasOwnProperty(ds)) {
 					bucket[ds]['price'] = p.price;
-				} else {
+				} 
+				/*
+				else {
 					// DISCARD THIS!
 					console.log(['DISCARD PRICE ds=',ds]);
-				}
+				}*/
 			});
-			// How many entries?
-			const len = Object.keys(bucket).length;
-			console.log(['AFTER MERGE bucket=',bucket,' length=',len]);
-			// Calculate sums starting from today-7 days to today-1 day (7 days data)
-			for (let i=7; i>0; i--) {
+			
+			// We calculate the average from each day (24 values).
+			
+			// Average of electricity consumption and 
+			// Average of electricity price
+			
+			//const len = Object.keys(bucket).length;
+			//console.log(['AFTER MERGE bucket=',bucket,' length=',len]);
+			// Calculate sums starting from today-N days to today-1 day.
+			const daysToShow = this.numberOfDays;
+			for (let i=daysToShow; i>0; i--) {
+				// Here we fill sum_bucket a day at a time with sum and average values.
 				const m_date = moment().subtract(i,'days');
 				m_date.set({'h':12,'m':0,'s':0,'ms':0});
 				
 				const s_date = moment().subtract(i,'days').format('YYYY-MM-DD');
-				console.log(['initializing sum_bucket s_date=',s_date]);
-				sum_bucket[s_date] = {timestamp:m_date.toDate(), value:0};
-			}
-			Object.keys(bucket).forEach(key=>{
-				const yyyymmdd = key.slice(0,10);
-				if (sum_bucket.hasOwnProperty(yyyymmdd)) {
-					sum_bucket[yyyymmdd].value += bucket[key].elecons*bucket[key].price;
+				sum_bucket[s_date] = {timestamp:m_date.toDate(), total:0, elecons:0, price:0};
+				
+				let count = 0;
+				let total = 0;
+				let elecons = 0; // We need to calculate average.
+				let price = 0; // We need to calculate average.
+				Object.keys(bucket).forEach(key=>{
+					const yyyymmdd = key.slice(0,10);
+					if (yyyymmdd === s_date) {
+						count++;
+						elecons += bucket[key].elecons;
+						price += bucket[key].price;
+						total += bucket[key].elecons*bucket[key].price;
+					}
+				});
+				sum_bucket[s_date].total = total;
+				if (count > 0) {
+					sum_bucket[s_date].elecons = elecons/count;
+					sum_bucket[s_date].price = 100*price/count; // euro => cent
 				}
-			});
+			}
 		} else {
 			console.log('======== NOT READY TO MERGE YET! =========');
 		}
@@ -221,12 +243,39 @@ export default class FlexView extends View {//TimeRangeView {
 		return sum_bucket;
 	}
 	
+	updateTheChart() {
+		const self = this;
+		// If both datasets are fetched and ready, merge returns an object with data.
+		const resu = this.merge();
+		if (Object.keys(resu).length > 0) {
+			this.values = [];
+			Object.keys(resu).forEach(key=>{
+				this.values.push({
+					timestamp:resu[key].timestamp,
+					total:resu[key].total,
+					elecons: resu[key].elecons,
+					price: resu[key].price
+				});
+			});
+			console.log(['UPDATE THE CHART! resu=',resu,' this.values=',this.values]);
+				
+			$('#'+this.FELID).empty();
+			if (typeof this.chart !== 'undefined') {
+				console.log('fetched ..... FlexView CHART UPDATED!');
+				am4core.iter.each(this.chart.series.iterator(), function (s) {
+					//if (s.name === 'SUM') {
+					s.data = self.values;
+					//}
+				});
+			} else {
+				this.renderChart();
+			}
+		}
+	}
+	
 	notify(options) {
 		const self = this;
 		if (this.controller.visible) {
-			
-			
-			
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				
 				if (typeof this.chart !== 'undefined') {
@@ -244,14 +293,27 @@ export default class FlexView extends View {//TimeRangeView {
 				
 				console.log('PeriodicTimeoutObserver timeout!');
 				Object.keys(this.models).forEach(key => {
-					if (key === 'EntsoeEnergyPriceModel') {
+					if (key === 'FlexEntsoeEnergyPriceModel') {
 						console.log(['FETCH MODEL key=',key]);
-						this.models[key].fetch();
-					} else if (key.indexOf('MenuBuildingElectricityPL') === 0) {
-						//key === 'MenuBuildingElectricityPL1Model' || key === 'MenuBuildingElectricityPL2Model' || key === 'MenuBuildingElectricityPL3Model') {
+						
+						// EntsoeModel used to have hard-coded start at now-192 hours = 8 days
+						// Like this:
+						// const body_period_start = moment.utc().subtract(192, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
+						// const body_period_end = moment.utc().add(1,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
+						// Now lets have those params from function call:
+						// const body_period_start = moment.utc().subtract(bv, bu).format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
+						// const body_period_end = moment.utc().format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
+						
+						const daysToFetch = this.numberOfDays+1;
+						const timerange = {begin:{value:daysToFetch,unit:'days'}};
+						this.models[key].fetch(timerange);
+						
+					} else if (key.indexOf('FlexBuildingElectricityPL') === 0) {
 						// See if these params are enough?
 						this.models[key].interval = 'PT60M';
-						this.models[key].timerange = {begin:{value:8,unit:'days'},end:{value:0,unit:'days'}};
+						
+						const daysToFetch = this.numberOfDays+1;
+						this.models[key].timerange = {begin:{value:daysToFetch,unit:'days'},end:{value:0,unit:'days'}};
 						// Add empty object as dummy parameter.
 						
 						// See: adjustSyncMinute() and adjustSyncHour() at TimeRangeView.js
@@ -261,82 +323,27 @@ export default class FlexView extends View {//TimeRangeView {
 						this.models[key].fetch({}, sync_minute, sync_hour);
 					}
 				});
-			} else if (options.model==='EntsoeEnergyPriceModel' && options.method==='fetched') {
-				
+			} else if (options.model==='FlexEntsoeEnergyPriceModel' && options.method==='fetched') {
 				console.log('NOTIFY '+options.model+' '+options.status+' fetched!');
-				
 				if (options.status === 200) {
 					this.prices = this.convertPriceData();
-					console.log('==================================');
-					console.log(['this.prices=',this.prices]);
-					console.log('==================================');
-					// If both datasets are fetched and ready, merge returns an object with data.
-					const resu = this.merge();
-					if (Object.keys(resu).length > 0) {
-						this.values = [];
-						Object.keys(resu).forEach(key=>{
-							this.values.push({timestamp:resu[key].timestamp, value:resu[key].value});
-						});
-						console.log(['UPDATE THE CHART! resu=',resu,' this.values=',this.values]);
-						
-						
-						
-						$('#'+this.FELID).empty();
-						if (typeof this.chart !== 'undefined') {
-							console.log('fetched ..... FlexView CHART UPDATED!');
-							am4core.iter.each(this.chart.series.iterator(), function (s) {
-								if (s.name === 'SUM') {
-									s.data = self.values;
-								}
-							});
-						} else {
-							this.renderChart();
-						}
-						
-					}
+					//console.log('==================================');
+					//console.log(['this.prices=',this.prices]);
+					//console.log('==================================');
+					this.updateTheChart();
 					
 				} else { // Error in fetching.
 					
 					console.log('ERROR in fetching '+options.model+'.');
 				}
 				
-			} else if (options.model.indexOf('MenuBuildingElectricityPL') === 0 && options.method==='fetched') {
-				
+			} else if (options.model.indexOf('FlexBuildingElectricityPL') === 0 && options.method==='fetched') {
 				console.log('NOTIFY '+options.model+' '+options.status+' fetched!');
-				
-				if (options.status === 200 || options.status === '200') {
-					if (this.models[options.model].values.length > 0) {
-						
-						console.log(['values=',this.models[options.model].values]);
-						this.elecons = this.calculateSum();
-						if (this.elecons.length > 0) {
-							// If both datasets are fetched and ready, merge returns an object with data.
-							const resu = this.merge();
-							
-							if (Object.keys(resu).length > 0) {
-								this.values = [];
-								Object.keys(resu).forEach(key=>{
-									this.values.push({timestamp:resu[key].timestamp, value:resu[key].value});
-								});
-								console.log(['UPDATE THE CHART! resu=',resu,' this.values=',this.values]);
-								
-								
-								$('#'+this.FELID).empty();
-								if (typeof this.chart !== 'undefined') {
-									console.log('fetched ..... FlexView CHART UPDATED!');
-									am4core.iter.each(this.chart.series.iterator(), function (s) {
-										if (s.name === 'SUM') {
-											s.data = self.values;
-										}
-									});
-								} else {
-									this.renderChart();
-								}
-							}
-						}
-					} else {
-						console.log('NO values!!!');
-					}
+				if (options.status === 200) {
+					
+					this.elecons = this.calculateSum();
+					this.updateTheChart();
+					
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
 				}
@@ -349,9 +356,15 @@ export default class FlexView extends View {//TimeRangeView {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_power = 'Price';//LM['translation'][sel]['BUILDING_POWER'];
-		const localized_string_power_axis = 'Price (€)'; //LM['translation'][sel]['BUILDING_POWER_AXIS_LABEL'];
-		const localized_string_power_legend = 'Daily cost (€)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
+		
+		const localized_string_total = 'Total';//LM['translation'][sel]['BUILDING_POWER'];
+		const localized_string_price = 'Price';//LM['translation'][sel]['BUILDING_POWER'];
+		const localized_string_power = 'Power';//LM['translation'][sel]['BUILDING_POWER'];
+		
+		const localized_string_power_axis = ''; //LM['translation'][sel]['BUILDING_POWER_AXIS_LABEL'];
+		const localized_string_cost_legend = 'Total (€)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
+		const localized_string_ele_legend = 'Price (cent)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
+		const localized_string_power_legend = 'Power (kWh)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
 		
 		am4core.ready(function() {
 			// Themes begin
@@ -362,6 +375,7 @@ export default class FlexView extends View {//TimeRangeView {
 			// Create chart
 			self.chart = am4core.create(self.CHARTID, am4charts.XYChart);
 			self.paddingRight = 20;
+			self.chart.numberFormatter.numberFormat = "#.##";
 			//self.chart.data = generateChartData();
 			
 			// {'timestamp':...,'value':...}
@@ -370,7 +384,8 @@ export default class FlexView extends View {//TimeRangeView {
 			
 			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
 			dateAxis.baseInterval = {"timeUnit": "minute","count": 60};
-			dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
+			//dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
+			dateAxis.tooltipDateFormat = "d MMMM";
 			
 			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
@@ -379,14 +394,40 @@ export default class FlexView extends View {//TimeRangeView {
 			const seri = self.chart.series.push(new am4charts.LineSeries());
 			seri.data = self.values;
 			seri.dataFields.dateX = "timestamp";
-			seri.dataFields.valueY = "value";
-			seri.tooltipText = localized_string_power + ": [bold]{valueY}[/] €";
+			seri.dataFields.valueY = "total";
+			seri.tooltipText = localized_string_total + ": [bold]{valueY}[/] €";
 			seri.fillOpacity = 0.2;
-			seri.name = 'SUM';
-			seri.customname = localized_string_power_legend;
+			seri.name = 'TOTAL';
+			seri.customname = localized_string_cost_legend;
 			seri.stroke = am4core.color("#0ff");
 			seri.fill = "#0ff";
 			seri.legendSettings.labelText = "{customname}";
+			
+			const seri2 = self.chart.series.push(new am4charts.LineSeries());
+			seri2.data = self.values;
+			seri2.dataFields.dateX = "timestamp";
+			seri2.dataFields.valueY = "price";
+			seri2.tooltipText = localized_string_price + ": [bold]{valueY}[/] cent/kWh";
+			seri2.fillOpacity = 0.2;
+			seri2.name = 'PRICE';
+			seri2.customname = localized_string_ele_legend;
+			seri2.stroke = am4core.color("#ff0");
+			seri2.fill = "#ff0";
+			seri2.legendSettings.labelText = "{customname}";
+			
+			const seri3 = self.chart.series.push(new am4charts.LineSeries());
+			seri3.data = self.values;
+			seri3.dataFields.dateX = "timestamp";
+			seri3.dataFields.valueY = "elecons";
+			seri3.tooltipText = localized_string_power + ": [bold]{valueY}[/] kWh";
+			seri3.fillOpacity = 0.2;
+			seri3.name = 'POWER';
+			seri3.customname = localized_string_power_legend;
+			seri3.stroke = am4core.color("#0f0");
+			seri3.fill = "#0f0";
+			seri3.legendSettings.labelText = "{customname}";
+			
+			
 			
 			// Legend:
 			self.chart.legend = new am4charts.Legend();
@@ -415,7 +456,8 @@ export default class FlexView extends View {//TimeRangeView {
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_title = 'Flexibility'; //LM['translation'][sel]['BUILDING_ELECTRICITY_TITLE'];
+		const localized_string_title = LM['translation'][sel]['BUILDING_FLEXIBILITY_TITLE'];
+		const localized_string_descr = LM['translation'][sel]['BUILDING_FLEXIBILITY_DESCRIPTION'];
 		const localized_string_back = LM['translation'][sel]['BACK'];
 		
 		const html =
@@ -423,6 +465,7 @@ export default class FlexView extends View {//TimeRangeView {
 				'<div class="col s12 center">'+
 					'<h4>'+localized_string_title+'</h4>'+
 					'<p style="text-align:center;"><img src="./svg/flex.svg" height="80"/></p>'+
+					'<p style="text-align:center;">'+localized_string_descr+'</p>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -474,11 +517,7 @@ export default class FlexView extends View {//TimeRangeView {
 					this.forceLogout(this.FELID);
 				}
 			} else {
-				//this.calculateSum();
 				this.renderChart();
-				//myModels.forEach(m=>{
-					//this.updateInfoModelValues(m, this.models[m].values.length); // implemented in TimeRangeView
-				//});
 			}
 		} else {
 			console.log('FlexView => render models ARE NOT READY!!!!');

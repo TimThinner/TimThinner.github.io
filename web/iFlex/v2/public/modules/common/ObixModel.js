@@ -357,7 +357,11 @@ export default class ObixModel extends Model {
 				})
 				.then(function(myJson) {
 					if (self.status === 200) {
-						console.log(['model=',self.name,' myJson=',myJson]);
+						
+						
+						//console.log(['model=',self.name,' myJson=',myJson]);
+						
+						
 						const resu = JSON.parse(myJson);
 						//const cleaned = myJson.replace(/\\/g, "");
 						//console.log(['cleaned=',cleaned]);

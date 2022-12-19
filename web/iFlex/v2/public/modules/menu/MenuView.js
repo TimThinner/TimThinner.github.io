@@ -4,6 +4,53 @@ import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js'
 iFLEX Dark blue   #1a488b ( 26,  72, 139)
 iFLEX Dark green  #008245 (  0, 130,  69)
 iFLEX Light green #78c51b (120, 197,  27)
+
+MONTHLY SAVINGS:
+
+(1)
+Energy Cost:
+10 €
+17% decrease
+
+(2)
+Energy Consumption:
+25kWh
+21% decrease
+
+(3)
+CO2 Emissions:
+5 kg
+1% decrease
+
+(1): 
+	- kWh for each hour (power)		this.elecons = [];
+	- price for each hour (price)	this.prices = [];
+	- daily price = sum of 24 power x price multiplications.
+		See: const sum_bucket = {};  {date: Date, total: float}
+	To get the SAVING we must use 
+		this.optimization_hash to divide sum_bucket into "base" and "opti" sums => 
+			difference in euros and in percentages.
+		if base-sum > opti-sum ..
+	
+(2):
+	- kWh for each hour (power)		this.dh_data = [];
+	- price is constant (11,35 c/kWh) 
+	- claculate similar sum_bucket as in (1)...
+	
+	To get the SAVING we must use: see (1)
+	
+	
+(3):
+	- 
+	ELE: this.emission_factor_hash = {};
+			this.elecons = [];
+	
+	DH: this.dh_data = [];
+		Carbon dioxide emissions from heat and power production (gCO2/kWh)
+		factor is constant 182
+	
+	To get the SAVING we must use: see (1)
+	
 */
 export default class MenuView extends View {
 	
@@ -22,8 +69,43 @@ export default class MenuView extends View {
 		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
 		this.PTO.subscribe(this);
 		
+		
+		this.numberOfDays = 31;
 		this.elecons = []; // array of {timestamp, value} pairs. Value contains electricity consumption sum from PL1,PL2,PL3.
-		this.prices = []; // array of {timestamp, value} pairs. 
+		this.prices = []; // array of {timestamp, value} pairs.
+		
+		this.dh_data = []; // array of {timestamp (Date), value (float)} pairs.
+		/*
+"2022-11-21T07:00:00+02:00": "55.219166649712456"
+"2022-11-21T08:00:00+02:00": "64.23244157363739"
+"2022-11-21T09:00:00+02:00": "61.194999843173555"
+"2022-11-21T10:00:00+02:00": "58.71499990887112"
+"2022-11-21T11:00:00+02:00": "59.13055543899536"
+"2022-11-21T12:00:00+02:00": "69.64111110899184"
+"2022-11-21T13:00:00+02:00": "51.1713890393575"
+"2022-11-21T14:00:00+02:00": "56.47805546654595"
+​​*/
+		
+		this.optimization_hash = {};
+		/*
+"2022-12-02T12:00:00+02:00": "2.0"
+"2022-12-03T12:00:00+02:00": "0.0"
+"2022-12-04T12:00:00+02:00": "2.0"
+"2022-12-05T12:00:00+02:00": "0.0"
+"2022-12-06T12:00:00+02:00": "2.0"
+"2022-12-07T12:00:00+02:00": "0.0"
+"2022-12-08T12:00:00+02:00": "3.0"
+"2022-12-09T12:00:00+02:00": "0.0"
+"2022-12-10T12:00:00+02:00": "3.0"
+		*/
+		
+		this.emission_factor_hash = {};
+/*
+"2022-11-17T20:00:00+02:00": "62.56109999999999"
+"2022-11-17T21:00:00+02:00": "62.42625000000002"
+"2022-11-17T22:00:00+02:00": "61.16774999999999"
+"2022-11-17T23:00:00+02:00": "61.641549999999995"
+*/
 	}
 	
 	show() {
@@ -186,10 +268,18 @@ export default class MenuView extends View {
 			d = 'M'+corner+',-'+corner+' L'+endpoint+',-'+endpoint;
 			cx = corner;
 			cy = -corner;
-		} else {
+		} else if (pos === 3) {
 			d = 'M'+corner+','+corner+' L'+endpoint+','+endpoint;
 			cx = corner;
 			cy = corner;
+		} else if (pos === 4) {
+			d = 'M-'+corner+',0 L-'+endpoint+',0';
+			cx = -corner;
+			cy = 0;
+		} else if (pos === 5) {
+			d = 'M'+corner+',0 L'+endpoint+',0';
+			cx = corner;
+			cy = 0;
 		}
 		const path = document.createElementNS(svgNS, "path");
 		path.setAttributeNS(null, 'd', d);
@@ -210,7 +300,7 @@ export default class MenuView extends View {
 		$('#space').append(c);
 	}
 	
-	appendText(wunit,tx,ty,fontsize,color,str) {
+	appendText(wunit,tx,ty,fontsize,color,str,id) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		/*
 		<svg x="-100" y="410" width="200px" height="32px">
@@ -222,12 +312,15 @@ export default class MenuView extends View {
 		const w = 2*wunit;
 		const h = wunit;
 		
+		$('#'+id).remove(); // First remove old text from space.
+		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',x);
 		svg.setAttribute('y',y);
 		svg.setAttributeNS(null,'width',w);
 		svg.setAttributeNS(null,'height',h);
 		svg.setAttribute('transform', 'translate('+tx+','+ty+')');
+		svg.id = id;
 		
 		const txt = document.createElementNS(svgNS, 'text');
 		txt.setAttribute('x','50%');
@@ -250,22 +343,35 @@ export default class MenuView extends View {
 	#85bc25 = rgb(133,188,37)
 	*/
 	
-	appendWindow(wunit, tx, ty, isSurface) {
+	appendWindow(wunit, tx, ty, id, optiz) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		if (isSurface) {
+		
+		if (typeof id !== 'undefined') {
+			const rid = id+'-surface-rect';
+			const bid = id+'-surface-border';
+			
+			$('#'+rid).remove(); // First remove rect from space.
+			$('#'+bid).remove(); // and remove border from space.
+			
 			const i_rect = document.createElementNS(svgNS, 'rect');
 			i_rect.setAttribute('x',-wunit);
 			i_rect.setAttribute('y',-wunit);
 			i_rect.setAttribute('width',wunit*2);
 			i_rect.setAttribute('height',wunit*2);
 			i_rect.style.cursor = 'pointer';
-			i_rect.style.fill = '#ff0';
-			i_rect.style.fillOpacity = 0.1;
+			
+			if (optiz > 0) {
+				i_rect.style.fill = '#f80';
+			} else {
+				i_rect.style.fill = '#ff0';
+			}
+			i_rect.style.fillOpacity = 0.2;
 			i_rect.style.strokeOpacity = 1;
 			i_rect.style.stroke = '#1a488b';
 			i_rect.style.strokeWidth = 1;
 			i_rect.setAttribute('transform', 'translate('+tx+','+ty+')');
+			i_rect.id = rid;
 			
 			const border = document.createElementNS(svgNS, 'rect');
 			border.setAttribute('x',-wunit-3);
@@ -278,6 +384,7 @@ export default class MenuView extends View {
 			border.style.strokeWidth = 6;
 			border.style.stroke = '#0f0';
 			border.setAttribute('transform', 'translate('+tx+','+ty+')');
+			border.id = bid;
 			
 			i_rect.addEventListener("click", function(){
 				self.models['MenuModel'].setSelected('FLEX');
@@ -296,10 +403,10 @@ export default class MenuView extends View {
 			
 		} else {
 			const o_rect = document.createElementNS(svgNS, 'rect');
-			o_rect.setAttribute('x',-wunit-6);
-			o_rect.setAttribute('y',-wunit-6);
-			o_rect.setAttribute('width',wunit*2+12);
-			o_rect.setAttribute('height',wunit*2+12);
+			o_rect.setAttribute('x',-wunit);   // -6
+			o_rect.setAttribute('y',-wunit);   // -6
+			o_rect.setAttribute('width',wunit*2);  // +12
+			o_rect.setAttribute('height',wunit*2); // +12
 			o_rect.style.fill = '#fff';
 			o_rect.style.fillOpacity = 1;
 			o_rect.style.strokeOpacity = 1;
@@ -309,6 +416,51 @@ export default class MenuView extends View {
 			$('#space').append(o_rect);
 		}
 	}
+	
+	
+	appendRings(factor) {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius();
+		
+		const WHITE = '#fff';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const GREEN = '#0f0';
+		
+		r = r * factor;
+		const r2 = r-r*0.05;
+		
+		const tx = 0;
+		const ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
+		const group = document.createElementNS(svgNS, "g");
+		
+		const border = document.createElementNS(svgNS, "circle");
+		border.setAttributeNS(null, 'cx', 0);
+		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'r', r);
+		border.style.fill = WHITE;
+		border.style.fillOpacity = 0;
+		border.style.stroke = DARK_BLUE;
+		border.style.strokeWidth = 1;
+		border.style.strokeOpacity = 0.25;
+		group.appendChild(border);
+		
+		const ca = document.createElementNS(svgNS, "circle");
+		ca.setAttributeNS(null, 'cx', 0);
+		ca.setAttributeNS(null, 'cy', 0);
+		ca.setAttributeNS(null, 'r', r2);
+		ca.style.fill = WHITE;
+		ca.style.fillOpacity = 0;
+		ca.style.stroke = DARK_BLUE;
+		ca.style.strokeWidth = 1;
+		ca.style.strokeOpacity = 0.25;
+		group.appendChild(ca);
+		
+		
+		group.setAttribute('transform', 'translate('+tx+','+ty+')');
+		$('#space').append(group);
+	}
+	
 	/*
 	The radius of circle is 12,5% of H or W (smaller dimension).
 	=> circle diameter is 25% of H or W.
@@ -337,20 +489,22 @@ export default class MenuView extends View {
 		this.appendConnector(corner, endpoint, 2); // Top Right
 		this.appendConnector(corner, endpoint, 3); // Bottom Right
 		
+		this.appendConnector(corner, endpoint, 4); // Center Left
+		this.appendConnector(corner, endpoint, 5); // Center Right
+		
 		// Windows:
 		const wunit = 14*r/60;
 		//const wd = 'M-'+wunit+','+wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+wunit+' Z';
 		// Upper row:
-		this.appendWindow(wunit, -4*wunit, -4*wunit, false);
-		this.appendWindow(wunit, 0, -4*wunit, false);
-		this.appendWindow(wunit, 4*wunit, -4*wunit, false);
+		this.appendWindow(wunit, -4*wunit, -4*wunit);
+		this.appendWindow(wunit, 0, -4*wunit);
+		this.appendWindow(wunit, 4*wunit, -4*wunit);
 		// Center row:
-		this.appendWindow(wunit, -4*wunit, 0, false);
-		//this.appendWindow(wunit, 0, 0, false);
-		this.appendWindow(wunit, 4*wunit, 0, false);
+		this.appendWindow(wunit, -4*wunit, 0);
+		this.appendWindow(wunit, 4*wunit, 0);
 		// Bottom row:
-		this.appendWindow(wunit, -4*wunit, 4*wunit, false);
-		this.appendWindow(wunit, 4*wunit, 4*wunit, false);
+		this.appendWindow(wunit, -4*wunit, 4*wunit);
+		this.appendWindow(wunit, 4*wunit, 4*wunit);
 		
 		// DOOR:
 		const dd = 'M-'+wunit+','+2*wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+2*wunit+' Z';
@@ -389,6 +543,8 @@ export default class MenuView extends View {
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
+		r = r*0.8; // Smaller circle (80% from original)
+		
 		let r2 = r-r*0.1;
 		let r3 = r-r*0.3;
 		let w = r;
@@ -399,7 +555,7 @@ export default class MenuView extends View {
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
 		// Make CENTER CIRCLE (USER) smaller than others.
 		if (type === 'USER') {
-			r = r*0.6;
+			r = r*0.8; // Smaller circle
 			r2 = r-r*0.1;
 			r3 = r-r*0.3;
 			w = r;
@@ -408,15 +564,15 @@ export default class MenuView extends View {
 			hper2 = h*0.5;
 			
 		} else if (type === 'ELECTRICITY') {
-			tx = ty = -12*r/5;
+			tx = ty = -14*r/5;
 		} else if (type === 'HEATING') {
-			tx = 12*r/5;
-			ty = -12*r/5;
+			tx = 14*r/5;
+			ty = -14*r/5;
 		} else if (type === 'ENVIRONMENT') {
-			tx = -12*r/5;
-			ty = 12*r/5;
+			tx = -14*r/5;
+			ty = 14*r/5;
 		} else if (type === 'FEEDBACK') {
-			tx = ty = 12*r/5;
+			tx = ty = 14*r/5;
 		}
 		
 		const group = document.createElementNS(svgNS, "g");
@@ -553,6 +709,93 @@ export default class MenuView extends View {
 		$('#space').append(group);
 	}
 	
+	
+	appendInfoButton() {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius();
+		
+		const WHITE = '#fff';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const GREEN = '#0f0';
+		
+		r = r*0.8; // Smaller circle (75% from original)
+		r = r*0.8; // Smaller circle (80% from original)
+		let r2 = r-r*0.1;
+		let r3 = r-r*0.3;
+		let w = r;
+		let wper2 = w*0.5;
+		let h = w;//r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75, except info is 220 x 220
+		let hper2 = wper2; //h*0.5;
+		
+		const tx = 18*r/5;
+		const ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
+		const group = document.createElementNS(svgNS, "g");
+		
+		const border = document.createElementNS(svgNS, "circle");
+		border.setAttributeNS(null, 'cx', 0);
+		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'r', r);
+		border.style.fill = WHITE;
+		border.style.fillOpacity = 0.5;
+		border.style.stroke = DARK_BLUE;
+		border.style.strokeWidth = 2;
+		group.appendChild(border);
+		
+		const ca = document.createElementNS(svgNS, "circle");
+		ca.setAttributeNS(null, 'cx', 0);
+		ca.setAttributeNS(null, 'cy', 0);
+		ca.setAttributeNS(null, 'r', r2);
+		ca.style.fill = WHITE;
+		ca.style.fillOpacity = 0.5;
+		ca.style.stroke = DARK_BLUE;
+		ca.style.strokeWidth = 1;
+		group.appendChild(ca);
+		
+		const cb = document.createElementNS(svgNS, "circle");
+		cb.setAttribute('cx', 0);
+		cb.setAttribute('cy', 0);
+		cb.setAttribute('r', r3);
+		cb.style.fill = WHITE;
+		cb.style.fillOpacity = 1;
+		cb.style.stroke = DARK_BLUE;
+		cb.style.strokeWidth = 0.5;
+		group.appendChild(cb);
+		
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', -wper2);
+		img.setAttribute('y', -hper2);
+		img.setAttribute('width', w);
+		img.setAttribute('height', h);
+		img.setAttribute('href', './svg/info.svg');
+		group.appendChild(img);
+		
+		const surface = document.createElementNS(svgNS, "circle");
+		surface.setAttributeNS(null, 'cx', 0);
+		surface.setAttributeNS(null, 'cy', 0);
+		surface.setAttributeNS(null, 'r', r);
+		surface.style.stroke = DARK_BLUE;
+		surface.style.strokeWidth = 1;
+		surface.style.fillOpacity = 0;
+		surface.style.cursor = 'pointer';
+		
+		surface.addEventListener("click", function(){
+			self.models['MenuModel'].setSelected('HELP');
+		}, false);
+		
+		surface.addEventListener("mouseover", function(event){ 
+			border.style.fill = GREEN;
+		}, false);
+		surface.addEventListener("mouseout", function(event){ 
+			border.style.fill = WHITE;
+		}, false);
+		
+		group.appendChild(surface);
+		group.setAttribute('transform', 'translate('+tx+','+ty+')');
+		$('#space').append(group);
+	}
+	
+	/*
 	appendInfoButton() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -562,14 +805,14 @@ export default class MenuView extends View {
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
-		const rr = r*0.4;
+		const rr = r*0.5;
 		const r2 = rr-rr*0.2;
 		const w = r2*2;
 		const wper2 = w*0.5;
 		
 		 // 'transform' => 'translate('+tx+','+ty+')'
-		const tx = 0;
-		const ty = 12*r/5;
+		const tx = 12*r/5;
+		const ty = 0;
 		
 		const group = document.createElementNS(svgNS, "g");
 		
@@ -612,6 +855,242 @@ export default class MenuView extends View {
 		group.appendChild(surface);
 		group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#space').append(group);
+	}
+	*/
+	
+	appendFlexButton() {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius();
+		
+		const WHITE = '#fff';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const GREEN = '#0f0';
+		
+		
+		r = r*0.8; // Smaller circle (75% from original)
+		r = r*0.8; // Smaller circle (80% from original)
+		let r2 = r-r*0.1;
+		let r3 = r-r*0.3;
+		let w = r;
+		let wper2 = w*0.5;
+		let h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75, except info is 220 x 220
+		let hper2 = h*0.5;
+		
+		const tx = -18*r/5;
+		const ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
+		const group = document.createElementNS(svgNS, "g");
+		
+		const border = document.createElementNS(svgNS, "circle");
+		border.setAttributeNS(null, 'cx', 0);
+		border.setAttributeNS(null, 'cy', 0);
+		border.setAttributeNS(null, 'r', r);
+		border.style.fill = WHITE;
+		border.style.fillOpacity = 0.5;
+		border.style.stroke = DARK_BLUE;
+		border.style.strokeWidth = 2;
+		group.appendChild(border);
+		
+		const ca = document.createElementNS(svgNS, "circle");
+		ca.setAttributeNS(null, 'cx', 0);
+		ca.setAttributeNS(null, 'cy', 0);
+		ca.setAttributeNS(null, 'r', r2);
+		ca.style.fill = WHITE;
+		ca.style.fillOpacity = 0.5;
+		ca.style.stroke = DARK_BLUE;
+		ca.style.strokeWidth = 1;
+		group.appendChild(ca);
+		
+		const cb = document.createElementNS(svgNS, "circle");
+		cb.setAttribute('cx', 0);
+		cb.setAttribute('cy', 0);
+		cb.setAttribute('r', r3);
+		cb.style.fill = WHITE;
+		cb.style.fillOpacity = 1;
+		cb.style.stroke = DARK_BLUE;
+		cb.style.strokeWidth = 0.5;
+		group.appendChild(cb);
+		
+		const img = document.createElementNS(svgNS, "image");
+		img.setAttribute('x', -wper2);
+		img.setAttribute('y', -hper2);
+		img.setAttribute('width', w);
+		img.setAttribute('height', h);
+		img.setAttribute('href', './svg/flex.svg');
+		group.appendChild(img);
+		
+		const surface = document.createElementNS(svgNS, "circle");
+		surface.setAttributeNS(null, 'cx', 0);
+		surface.setAttributeNS(null, 'cy', 0);
+		surface.setAttributeNS(null, 'r', r);
+		surface.style.stroke = DARK_BLUE;
+		surface.style.strokeWidth = 1;
+		surface.style.fillOpacity = 0;
+		surface.style.cursor = 'pointer';
+		
+		surface.addEventListener("click", function(){
+			self.models['MenuModel'].setSelected('FLEX');
+		}, false);
+		
+		surface.addEventListener("mouseover", function(event){ 
+			border.style.fill = GREEN;
+		}, false);
+		surface.addEventListener("mouseout", function(event){ 
+			border.style.fill = WHITE;
+		}, false);
+		
+		group.appendChild(surface);
+		group.setAttribute('transform', 'translate('+tx+','+ty+')');
+		$('#space').append(group);
+	}
+	
+	
+	updateSavingsTextLine(id,x,y,w,h,fontsize,color,str) {
+		const svgNS = 'http://www.w3.org/2000/svg';
+		$('#'+id).remove(); // First remove old text from space.
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',x);
+		svg.setAttribute('y',y);
+		svg.setAttributeNS(null,'width',w);
+		svg.setAttributeNS(null,'height',h);
+		svg.id = id;
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','50%');
+		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.setAttribute('font-size',fontsize);
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.setAttribute('fill',color);
+		const text_node = document.createTextNode(str);
+		txt.appendChild(text_node);
+		svg.appendChild(txt);
+		
+		$('#savings-box').append(svg);
+	}
+	
+	/*
+	MONTHLY SAVINGS:
+
+	Energy Cost:
+	10 €
+	17% decrease
+
+	Energy Consumption:
+	25kWh
+	21% decrease
+
+	CO2 Emissions:
+	5 kg
+	1% decrease
+	*/
+	
+
+	
+	updateSavingsText() {
+		const sel = this.LANGUAGE_MODEL.selected;
+		const string_title = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_MONTHLY_SAVINGS'];
+		const string_energy_cost = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_ENERGY_COST'];
+		const string_energy_consumption = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_ENERGY_CONSUMPTION'];
+		const string_co2_emissions = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_CO2_EMISSIONS'];
+		const string_decrease = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_OPTIMIZATION_DECREASE'];
+		const string_increase = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_OPTIMIZATION_INCREASE'];
+		//const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		
+		const r = this.sunRadius();
+		const wunit = r+r*0.25;
+		
+		const fontsize = r*0.175;
+		
+		const title_color = '#a5c5f1';
+		const sub_title_color = '#aaa';
+		const text_color = '#fff';
+		
+		this.updateSavingsTextLine('savings-txt-line-1',   0, fontsize,   2*wunit, fontsize, fontsize, title_color, string_title);
+		this.updateSavingsTextLine('savings-txt-line-2',   0, 2.5*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_energy_cost);
+		this.updateSavingsTextLine('savings-txt-line-2-a', 0, 3.5*fontsize, 2*wunit, fontsize, fontsize, text_color, '10 €');
+		this.updateSavingsTextLine('savings-txt-line-2-b', 0, 4.5*fontsize, 2*wunit, fontsize, fontsize, text_color, '17% decrease');
+		
+		this.updateSavingsTextLine('savings-txt-line-3',   0, 6.4*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_energy_consumption);
+		this.updateSavingsTextLine('savings-txt-line-3-a', 0, 7.4*fontsize, 2*wunit, fontsize, fontsize, text_color, '25kWh');
+		this.updateSavingsTextLine('savings-txt-line-3-b', 0, 8.4*fontsize, 2*wunit, fontsize, fontsize, text_color, '21% decrease');
+		
+		this.updateSavingsTextLine('savings-txt-line-4',   0, 10.3*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_co2_emissions);
+		this.updateSavingsTextLine('savings-txt-line-4-a', 0, 11.3*fontsize, 2*wunit, fontsize, fontsize, text_color, '5 kg');
+		this.updateSavingsTextLine('savings-txt-line-4-b', 0, 12.3*fontsize, 2*wunit, fontsize, fontsize, text_color, '1% decrease');
+	}
+	
+	appendSavingsBox() {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		let r = this.sunRadius();
+		
+		const WHITE = '#fff';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const GREEN = '#0f0';
+		
+		/*
+		let w = r;
+		let wper2 = w*0.5;
+		let h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75, except info is 220 x 220
+		let hper2 = h*0.5;
+		*/
+		
+		const wunit = r+r*0.25;
+		const wunit_i = wunit-wunit*0.075; // inner rectange is 10% smaller
+		const rounding = wunit*0.15; // 10% rounded corners.
+		const rounding_i = wunit_i*0.15; // 10% rounded corners.
+		const tx = 0;
+		const ty = r; // 'transform' => 'translate('+tx+','+ty+')'
+		const vb = '0 0 '+wunit*2+' '+wunit*2;
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',-wunit);
+		
+		
+		//svg.setAttribute('y',1.125*wunit);
+		svg.setAttribute('y',wunit*0.75);
+		
+		svg.setAttributeNS(null,'width',wunit*2);
+		svg.setAttributeNS(null,'height',wunit*2);
+		svg.setAttributeNS(null,'viewBox',vb);
+		svg.id = 'savings-box';
+		//svg.setAttribute('transform', 'translate('+tx+','+ty+')');
+		$('#space').append(svg);
+		
+		const group = document.createElementNS(svgNS, "g");
+		
+		const rect = document.createElementNS(svgNS, 'rect');
+		rect.setAttribute('x',1);
+		rect.setAttribute('y',1);
+		rect.setAttribute('width',wunit*2-2);
+		rect.setAttribute('height',wunit*2-2);
+		rect.setAttribute('rx',rounding);
+		rect.style.fill = '#f0f0f0';
+		rect.style.fillOpacity = 0.5;
+		rect.style.strokeOpacity = 1;
+		rect.style.stroke = DARK_BLUE;
+		rect.style.strokeWidth = 1;
+		group.appendChild(rect);
+		
+		const rect_i = document.createElementNS(svgNS, 'rect');
+		rect_i.setAttribute('x',wunit*0.075);
+		rect_i.setAttribute('y',wunit*0.075);
+		rect_i.setAttribute('width',wunit*2-wunit*0.15);
+		rect_i.setAttribute('height',wunit*2-wunit*0.15);
+		rect_i.setAttribute('rx',rounding_i);
+		rect_i.style.fill = '#333';
+		rect_i.style.fillOpacity = 1;//0.75;
+		rect_i.style.strokeOpacity = 1;
+		rect_i.style.stroke = DARK_BLUE;
+		rect_i.style.strokeWidth = 1;
+		group.appendChild(rect_i);
+		
+		//group.setAttribute('transform', 'translate('+tx+','+ty+')');
+		$('#savings-box').append(group);
+		//$('#space').append(group);
 	}
 	
 	setSelectedLanguage(lang) {
@@ -713,22 +1192,22 @@ export default class MenuView extends View {
 			}
 			let bw, bh, fontsize;
 			if (w <= 600) {
-				console.log('Mobile Device.');
+				//console.log('Mobile Device.');
 				fontsize = '14px';
 				bw = 82;
 				bh = 34;
 			} else if (w > 600 && w <= 992) {
-				console.log('Tablet Device.');
+				//console.log('Tablet Device.');
 				fontsize = '14px';
 				bw = 88;
 				bh = 36;
 			} else if (w > 992 && w <= 1200) {
-				console.log('Desktop Device.');
+				//console.log('Desktop Device.');
 				fontsize = '16px';
 				bw = 94;
 				bh = 38;
 			} else {
-				console.log('Large Desktop Device.');
+				//console.log('Large Desktop Device.');
 				fontsize = '18px';
 				bw = 100;
 				bh = 40;
@@ -746,83 +1225,43 @@ export default class MenuView extends View {
 		});
 	}
 	
-	renderALL() {
-		console.log('renderALL()!!!!');
-		$(this.el).empty();
-		this.createSpace();
-		this.appendLogo();
-		this.appendBuilding();
+	extractOptimization(vals) {
+		// Optimization is SAME for whole day! We just extract one value for 
+		// this.optimization_hash['YYYY-MM-DDT12:mm']
+		this.optimization_hash = {};
 		
-		this.appendSun('USER');
-		this.appendSun('ELECTRICITY');
-		this.appendSun('HEATING');
-		this.appendSun('ENVIRONMENT');
-		this.appendSun('FEEDBACK');
-		
-		this.appendInfoButton();
-		this.appendLanguageSelections();
-	}
-	
-	renderCalendarWindows(sum_bucket) {
-		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
-		let fontsize;
-		if (w <= 600) {
-			console.log('Mobile Device.');
-			fontsize = 10;
-		} else if (w > 600 && w <= 992) {
-			console.log('Tablet Device.');
-			fontsize = 12;
-		} else if (w > 992 && w <= 1200) {
-			console.log('Desktop Device.');
-			fontsize = 14;
-		} else {
-			console.log('Large Desktop Device.');
-			fontsize = 16;
-		}
-		// bx,by,bw,bh,fontsize,color,str 
-		//this.appendText(-150,-1.4*r,bw,bh,s_fontsize,'#ccc','2.12.');
-		//this.appendText(-150,-1.4*r+22,bw,bh,m_fontsize,'#000','112€');
-		
-		const r = this.sunRadius();
-		const wunit = 14*r/60;
-		console.log(['wunit=',wunit]);
-		
-		const gutter = fontsize+fontsize/4;
-		const calendar = [];
-		Object.keys(sum_bucket).forEach(key=>{
-			const dd = key.slice(-2);
-			const mm = key.slice(5,7);
-			const sum = sum_bucket[key].sum;
-			calendar.push({ddmm:dd+'.'+mm+'.', sum:sum});
-			// date= "2022-12-03"  sum= 119.34543343
-		});
-		/* NOTE: co_effis has reversed order of these coefficients also.
-			-4,-4	0,-4	4,-4
-			-4,0			4,0
-			-4,4			4,4
-		*/
-		const co_effis = [{x:4,y:4}, {x:-4,y:4},
-			{x:4,y:0}, {x:-4,y:0},
-			{x:4,y:-4}, {x:0,y:-4}, {x:-4,y:-4}];
-		calendar.reverse();
-		// We start to fill view with latest date first (=lower-right corner).
-		calendar.every((e,i) => {
-			if (i > 6) {
-				return false;
+		vals.forEach(v => {
+			const ds = moment(v.timestamp).format(); // timestamp is a Date object => convert to string.
+			//const yyyy_mm_dd = ds.slice(0,10); // "2022-12-13"
+			const hh = ds.slice(11,13); // extract the hour value, for example '09'.
+			if (hh==='12') {
+				this.optimization_hash[ds] = v.value;
 			}
-			const x = co_effis[i].x;
-			const y = co_effis[i].y;
-			const ddmm = e.ddmm;
-			const sum = e.sum.toFixed(0);
-			this.appendText(wunit, x*wunit, y*wunit, fontsize, '#aaa', ddmm);
-			this.appendText(wunit, x*wunit, y*wunit+gutter, fontsize+2, '#444', sum+'€');
-			this.appendWindow(wunit, x*wunit, y*wunit, true);
-			// Make sure you return true. If you don't return a value, `every()` will stop.
-			return true;
 		});
+		return this.optimization_hash;
 	}
 	
-	merge() {
+	extractEmissionFactorForElectricity(vals) {
+		this.emission_factor_hash = {};
+		vals.forEach(v => {
+			// 2022-12-13T12:00
+			const ds = moment(v.timestamp).format(); // timestamp is a Date object => convert to string.
+			this.emission_factor_hash[ds] = v.value;
+		});
+		return this.emission_factor_hash;
+	}
+	
+	extractBuildingHeating(vals) {
+		this.dh_data = {};
+		vals.forEach(v => {
+			// 2022-12-13T12:00
+			const ds = moment(v.timestamp).format(); // timestamp is a Date object => convert to string.
+			this.dh_data[ds] = v.value;
+		});
+		return this.dh_data;
+	}
+	
+	mergeElectricityPrice() {
 		const sum_bucket = {};
 		if (this.elecons.length > 0 && this.prices.length > 0) {
 			console.log('======== MERGE! =========');
@@ -835,33 +1274,39 @@ export default class MenuView extends View {
 				bucket[ds]['elecons'] = e.value;
 			});
 			this.prices.forEach(p=>{
-				const ds = moment(p.date).format(); // timestamp is a Date object => convert to string.
+				const ds = moment(p.date).format(); // timestamp (date) is a Date object => convert to string.
 				if (bucket.hasOwnProperty(ds)) {
 					bucket[ds]['price'] = p.price;
-				} else {
-					// DISCARD THIS!
-					//console.log(['DISCARD PRICE ds=',ds]);
 				}
 			});
-			// How many entries?
-			const len = Object.keys(bucket).length;
-			console.log(['AFTER MERGE bucket=',bucket,' length=',len]);
-			// Calculate sums starting from today-7 days to today-1 day (7 days data)
-			for (let i=7; i>0; i--) {
-				const m_date = moment().subtract(i,'days').format('YYYY-MM-DD');
-				console.log(['initializing sum_bucket m_date=',m_date]);
-				sum_bucket[m_date] = {sum:0};
+			
+			const daysToShow = this.numberOfDays;
+			for (let i=daysToShow; i>0; i--) {
+				// Here we fill sum_bucket a day at a time with sum and average values.
+				const m_date = moment().subtract(i,'days');
+				m_date.set({'h':12,'m':0,'s':0,'ms':0});
+				
+				const s_date = moment().subtract(i,'days').format('YYYY-MM-DD');
+				sum_bucket[s_date] = {timestamp:m_date.toDate(), total:0};
+				
+				let total = 0;
+				Object.keys(bucket).forEach(key=>{
+					const yyyymmdd = key.slice(0,10);
+					if (yyyymmdd === s_date) {
+						total += bucket[key].elecons*bucket[key].price;
+					}
+				});
+				sum_bucket[s_date].total = total;
 			}
-			Object.keys(bucket).forEach(key=>{
-				const yyyymmdd = key.slice(0,10);
-				if (sum_bucket.hasOwnProperty(yyyymmdd)) {
-					sum_bucket[yyyymmdd].sum += bucket[key].elecons*bucket[key].price;
-				}
-			});
 		} else {
 			console.log('======== NOT READY TO MERGE YET! =========');
 		}
 		console.log(['sum_bucket=',sum_bucket]);
+		//	{
+		//		"2022-12-07":{sum:153.34567},
+		//		"2022-12-08":{sum:123.34567},
+		//		...
+		//
 		return sum_bucket;
 	}
 	
@@ -996,35 +1441,129 @@ export default class MenuView extends View {
 				
 				console.log('PeriodicTimeoutObserver timeout!');
 				Object.keys(this.models).forEach(key => {
-					if (key === 'EntsoeEnergyPriceModel') {
-						console.log(['FETCH MODEL key=',key]);
-						this.models[key].fetch();
-					} else if (key.indexOf('MenuBuildingElectricityPL') === 0) {
-						//key === 'MenuBuildingElectricityPL1Model' || key === 'MenuBuildingElectricityPL2Model' || key === 'MenuBuildingElectricityPL3Model') {
-						// See if these params are enough?
-						this.models[key].interval = 'PT60M';
-						this.models[key].timerange = {begin:{value:8,unit:'days'},end:{value:0,unit:'days'}};
-						// Add empty object as dummy parameter.
+					// MenuModel + ProxesCleanerModel + 7 models as listed below:
+					//this.modelnames = [
+					//'MenuBuildingElectricityPL1Model',
+					//'MenuBuildingElectricityPL2Model',
+					//'MenuBuildingElectricityPL3Model',
+					//'MenuEmissionFactorForElectricityConsumedInFinlandModel',
+					//'MenuBuildingHeatingQE01Model',
+					//'EntsoeEnergyPriceModel',
+					//'OptimizationModel'
+					//];
+					if (key === 'MenuModel' || key === 'ProxesCleanerModel') {
+						// do nothing...
 						
+					} else if (key === 'EntsoeEnergyPriceModel') {
+						const daysToFetch = this.numberOfDays+1;
+						const timerange = {begin:{value:daysToFetch,unit:'days'}};
+						this.models[key].fetch(timerange);
+						//this.models[key].fetch(); // The default timerange is 192 hours ( = 8 days)
+						
+					} else {
+						//'MenuBuildingElectricityPL1Model',
+						//'MenuBuildingElectricityPL2Model',
+						//'MenuBuildingElectricityPL3Model',
+						//'MenuEmissionFactorForElectricityConsumedInFinlandModel',
+						//'MenuBuildingHeatingQE01Model',
+						//'OptimizationModel'
+						const daysToFetch = this.numberOfDays+1;
+						this.models[key].interval = 'PT60M';
+						this.models[key].timerange = {begin:{value:daysToFetch,unit:'days'},end:{value:0,unit:'days'}};
 						// See: adjustSyncMinute() and adjustSyncHour() at TimeRangeView.js
 						const sync_minute = 0;
 						const sync_hour = moment().hour();
 						console.log(['FETCH key=',key,' sync_minute=',sync_minute,' sync_hour=',sync_hour]);
+						// Add empty object as dummy parameter.
 						this.models[key].fetch({}, sync_minute, sync_hour);
 					}
 				});
+				
+				
+				
+				
+				
 			} else if (options.model==='EntsoeEnergyPriceModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					
 					this.prices = this.convertPriceData();
-					
 					console.log('==================================');
 					console.log(['this.prices=',this.prices]);
 					console.log('==================================');
 					// If both datasets are fetched and ready, merge returns an object with data.
-					const resu = this.merge();
+					const resu = this.mergeElectricityPrice();
 					if (Object.keys(resu).length > 0) {
-						this.renderCalendarWindows(resu);
+						
+						// Todo: show mean price for electricity.
+						// NOTE: This is merged with 3 separate power arrays in mergeElectricityPrice()
+						
+					}
+					
+				} else { // Error in fetching.
+					console.log('ERROR in fetching '+options.model+'.');
+				}
+				
+			} else if (options.model === 'OptimizationModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					// timestamp:Date, value: "0.0" or "3.0" (or "2.0")
+					const vals = this.models[options.model].values;
+					if (vals.length > 0) {
+						console.log(['OptimizationModel vals=',vals]);
+						const resu = this.extractOptimization(vals);
+						if (Object.keys(resu).length > 0) {
+							const len = Object.keys(resu).length;
+							console.log(['OptimizationModel len=',len,' resu=',resu]);
+							
+							// Todo: Show percentages when "base" days are compared to "optimized" days.
+							
+							
+							
+						}
+					}
+				} else { // Error in fetching.
+					console.log('ERROR in fetching '+options.model+'.');
+				}
+				
+			} else if (options.model === 'MenuEmissionFactorForElectricityConsumedInFinlandModel' && options.method==='fetched') {
+				//console.log('NOTIFY '+options.model+' fetched!');
+				//console.log(['options.status=',options.status]);
+				if (options.status === 200) {
+					const vals = this.models[options.model].values;
+					if (vals.length > 0) {
+						const resu = this.extractEmissionFactorForElectricity(vals);
+						if (Object.keys(resu).length > 0) {
+							const len = Object.keys(resu).length;
+							console.log(['EmissionFactorForElectricity len=',len,' resu=',resu]);
+							
+							
+							// Todo: Show CO2 for ele. Merge with this.elecons
+							
+							
+							
+							
+							
+						}
+					}
+				} else { // Error in fetching.
+					console.log('ERROR in fetching '+options.model+'.');
+				}
+				
+				
+			} else if (options.model === 'MenuBuildingHeatingQE01Model' && options.method==='fetched') {
+				console.log('NOTIFY '+options.model+' fetched!');
+				console.log(['options.status=',options.status]);
+				if (options.status === 200) {
+					const vals = this.models[options.model].values;
+					if (vals.length > 0) {
+						const resu = this.extractBuildingHeating(vals);
+						if (Object.keys(resu).length > 0) {
+							const len = Object.keys(resu).length;
+							console.log(['BuildingHeating len=',len,' resu=',resu]);
+							
+							
+							// Todo: Show HEATING (DH) daily POWER (use constant to scale)
+							
+							
+						}
 					}
 					
 				} else { // Error in fetching.
@@ -1039,12 +1578,13 @@ export default class MenuView extends View {
 						
 						console.log(['values=',this.models[options.model].values]);
 						this.elecons = this.calculateSum();
-						if (this.elecons.length > 0) {
-							// If both datasets are fetched and ready, merge returns an object with data.
-							const resu = this.merge();
-							if (Object.keys(resu).length > 0) {
-								this.renderCalendarWindows(resu);
-							}
+						// If all relevant datasets are fetched and ready, merge returns an object with data.
+						const resu = this.mergeElectricityPrice();
+						if (Object.keys(resu).length > 0) {
+							
+							
+							// Todo: 
+							
 						}
 					} else {
 						console.log('NO values!!!');
@@ -1054,6 +1594,31 @@ export default class MenuView extends View {
 				}
 			}
 		}
+	}
+	
+	renderALL() {
+		console.log('renderALL()!!!!');
+		$(this.el).empty();
+		this.createSpace();
+		
+		this.appendRings(2.4);
+		this.appendRings(3.3);
+		this.appendLogo();
+		this.appendBuilding();
+		
+		this.appendSun('USER');
+		this.appendSun('ELECTRICITY');
+		this.appendSun('HEATING');
+		this.appendSun('ENVIRONMENT');
+		this.appendSun('FEEDBACK');
+		
+		this.appendInfoButton();
+		this.appendFlexButton();
+		
+		this.appendSavingsBox();
+		this.updateSavingsText();
+		
+		this.appendLanguageSelections();
 	}
 	
 	render() {

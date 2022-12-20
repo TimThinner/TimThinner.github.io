@@ -33,7 +33,7 @@ CO2 Emissions:
 		if base-sum > opti-sum ..
 	
 (2):
-	- kWh for each hour (power)		this.dh_data = [];
+	- kWh for each hour (power)		this.dh_hash = {};
 	- price is constant (11,35 c/kWh) 
 	- claculate similar sum_bucket as in (1)...
 	
@@ -45,7 +45,7 @@ CO2 Emissions:
 	ELE: this.emission_factor_hash = {};
 			this.elecons = [];
 	
-	DH: this.dh_data = [];
+	DH: this.dh_hash = {};
 		Carbon dioxide emissions from heat and power production (gCO2/kWh)
 		factor is constant 182
 	
@@ -69,43 +69,33 @@ export default class MenuView extends View {
 		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
 		this.PTO.subscribe(this);
 		
-		
 		this.numberOfDays = 31;
-		this.elecons = []; // array of {timestamp, value} pairs. Value contains electricity consumption sum from PL1,PL2,PL3.
-		this.prices = []; // array of {timestamp, value} pairs.
 		
-		this.dh_data = []; // array of {timestamp (Date), value (float)} pairs.
-		/*
-"2022-11-21T07:00:00+02:00": "55.219166649712456"
-"2022-11-21T08:00:00+02:00": "64.23244157363739"
-"2022-11-21T09:00:00+02:00": "61.194999843173555"
-"2022-11-21T10:00:00+02:00": "58.71499990887112"
-"2022-11-21T11:00:00+02:00": "59.13055543899536"
-"2022-11-21T12:00:00+02:00": "69.64111110899184"
-"2022-11-21T13:00:00+02:00": "51.1713890393575"
-"2022-11-21T14:00:00+02:00": "56.47805546654595"
-​​*/
+		// calculateSum() creates a sum of 3 phases and array contains {timestamp, value} -objects
+		// convertPriceData() creates an array of {date, price} -objects
+		this.ele_cons = []; // array of {timestamp (Date), value} pairs. Value contains electricity consumption sum from PL1,PL2,PL3.
+		this.ele_prices = []; // array of {timestamp (Date), value} pairs.
+		this.ele_emission_factors = [];
+		this.optimizations = [];
+		this.dh_cons = [];
 		
-		this.optimization_hash = {};
-		/*
-"2022-12-02T12:00:00+02:00": "2.0"
-"2022-12-03T12:00:00+02:00": "0.0"
-"2022-12-04T12:00:00+02:00": "2.0"
-"2022-12-05T12:00:00+02:00": "0.0"
-"2022-12-06T12:00:00+02:00": "2.0"
-"2022-12-07T12:00:00+02:00": "0.0"
-"2022-12-08T12:00:00+02:00": "3.0"
-"2022-12-09T12:00:00+02:00": "0.0"
-"2022-12-10T12:00:00+02:00": "3.0"
-		*/
-		
-		this.emission_factor_hash = {};
-/*
-"2022-11-17T20:00:00+02:00": "62.56109999999999"
-"2022-11-17T21:00:00+02:00": "62.42625000000002"
-"2022-11-17T22:00:00+02:00": "61.16774999999999"
-"2022-11-17T23:00:00+02:00": "61.641549999999995"
-*/
+		this.dailyBaskets = {};
+		for (let i=this.numberOfDays; i>0; i--) {
+			// Here we fill  a day at a time with empty placeholders.
+			//const m_date = moment().subtract(i,'days');
+			//m_date.set({'h':12,'m':0,'s':0,'ms':0});
+			const s_date = moment().subtract(i,'days').format('YYYY-MM-DD');
+			this.dailyBaskets[s_date] = {
+				ele_energy_sum: 0,
+				ele_price_sum: 0,
+				ele_co2_emissions_sum: 0,
+				dh_energy_sum: 0,
+				dh_price_sum: 0,
+				dh_co2_emissions_sum: 0,
+				optimization: 0
+			};
+		}
+		console.log(['this.dailyBaskets=',this.dailyBaskets]);
 	}
 	
 	show() {
@@ -1225,41 +1215,27 @@ export default class MenuView extends View {
 		});
 	}
 	
-	extractOptimization(vals) {
-		// Optimization is SAME for whole day! We just extract one value for 
-		// this.optimization_hash['YYYY-MM-DDT12:mm']
-		this.optimization_hash = {};
-		
+	extractObixArray(vals) {
+		const val_array = [];
 		vals.forEach(v => {
-			const ds = moment(v.timestamp).format(); // timestamp is a Date object => convert to string.
-			//const yyyy_mm_dd = ds.slice(0,10); // "2022-12-13"
-			const hh = ds.slice(11,13); // extract the hour value, for example '09'.
-			if (hh==='12') {
-				this.optimization_hash[ds] = v.value;
+			let val = +v.value; // Converts string to number.
+			val_array.push({timestamp: moment(v.timestamp).toDate(), value:val});
+		});
+		// NEW: Sort values by the timestamp: oldest first.
+		// Sort by date (timestamp is a Date).
+		val_array.sort(function(a, b) {
+			if (a.timestamp < b.timestamp) {
+				return -1;
 			}
+			if (a.timestamp > b.timestamp) {
+				return 1;
+			}
+			return 0; // dates must be equal
 		});
-		return this.optimization_hash;
+		return val_array;
 	}
 	
-	extractEmissionFactorForElectricity(vals) {
-		this.emission_factor_hash = {};
-		vals.forEach(v => {
-			// 2022-12-13T12:00
-			const ds = moment(v.timestamp).format(); // timestamp is a Date object => convert to string.
-			this.emission_factor_hash[ds] = v.value;
-		});
-		return this.emission_factor_hash;
-	}
-	
-	extractBuildingHeating(vals) {
-		this.dh_data = {};
-		vals.forEach(v => {
-			// 2022-12-13T12:00
-			const ds = moment(v.timestamp).format(); // timestamp is a Date object => convert to string.
-			this.dh_data[ds] = v.value;
-		});
-		return this.dh_data;
-	}
+	/*
 	
 	mergeElectricityPrice() {
 		const sum_bucket = {};
@@ -1309,10 +1285,12 @@ export default class MenuView extends View {
 		//
 		return sum_bucket;
 	}
+	*/
 	
 	calculateSum() {
 		// CALL THIS FOR EVERY MODEL, BUT NOTE THAT SUM IS CALCULATED ONLY WHEN ALL 3 MODELS ARE READY AND FILLED WITH VALUES!
 		const val_array = [];
+		
 		if (this.models['MenuBuildingElectricityPL1Model'].values.length > 0 && 
 			this.models['MenuBuildingElectricityPL2Model'].values.length > 0 &&
 			this.models['MenuBuildingElectricityPL3Model'].values.length > 0) {
@@ -1361,8 +1339,8 @@ export default class MenuView extends View {
 				});
 				val_array.push({timestamp: moment(key).toDate(), value:sum});
 			});
-			// NEW: Sort values by the timestamp Date: oldest first.
-			// sort by string (created is a string, for example: "2021-04-21T07:40:50.965Z")
+			// NEW: Sort values by the timestamp: oldest first.
+			// Sort by date (timestamp is a Date).
 			val_array.sort(function(a, b) {
 				if (a.timestamp < b.timestamp) {
 					return -1;
@@ -1375,7 +1353,7 @@ export default class MenuView extends View {
 		} else {
 			console.log('NOT ALL ELECTRICITY MODELS ARE READY... WAIT!');
 		}
-		console.log(['val_array=',val_array]);
+		//console.log(['val_array=',val_array]);
 		return val_array;
 	}
 	
@@ -1413,13 +1391,41 @@ export default class MenuView extends View {
 			const reso = moment.duration(t.resolution);
 			t.Point.forEach(p=>{
 				const price = p.price*factor;
-				newdata.push({date: timestamp.toDate(), price: price});
+				newdata.push({timestamp: timestamp.toDate(), value: price});
 				// Do we need to handle the +p.position when stepping from start to end?
 				timestamp.add(reso);
 			});
 		});
 		return newdata;
 	}
+	
+	/*
+	
+	
+		this.ele_cons = []; // array of {timestamp (Date), value} pairs. Value contains electricity consumption sum from PL1,PL2,PL3.
+		this.ele_prices = []; // array of {timestamp (Date), value} pairs.
+		this.ele_emission_factors = [];
+		this.optimizations = [];
+		this.dh_cons = [];
+	
+				ele_energy_sum: 0,
+				ele_price_sum: 0,
+				ele_co2_emissions_sum: 0,
+				dh_energy_sum: 0,
+				dh_price_sum: 0,
+				dh_co2_emissions_sum: 0,
+				optimization: 0
+	*/
+	updateDailyBaskets() {
+		
+		console.log('=====================updateDailyBaskets===================');
+		Object.keys(this.dailyBaskets).forEach(key => {
+			console.log(['key=',key]);
+			
+		});
+		console.log('==========================================================');
+	}
+	
 	
 	notify(options) {
 		if (this.controller.visible) {
@@ -1436,8 +1442,13 @@ export default class MenuView extends View {
 				// Do something with each TICK!
 				
 				// Reset data arrays.
-				this.elecons = [];
-				this.prices = [];
+				this.ele_cons = [];
+				this.dh_cons = [];
+				this.ele_emission_factors = [];
+				// DH constant 
+				this.ele_prices = [];
+				// DH constant 
+				this.optimizations = [];
 				
 				console.log('PeriodicTimeoutObserver timeout!');
 				Object.keys(this.models).forEach(key => {
@@ -1485,18 +1496,20 @@ export default class MenuView extends View {
 				
 			} else if (options.model==='EntsoeEnergyPriceModel' && options.method==='fetched') {
 				if (options.status === 200) {
-					this.prices = this.convertPriceData();
-					console.log('==================================');
-					console.log(['this.prices=',this.prices]);
-					console.log('==================================');
+					
+					this.ele_prices = this.convertPriceData(); // An array of {timestamp(Date), value(price)} -objects.
+					console.log(['this.ele_prices=',this.ele_prices]);
+					
+					// Todo: show mean price for electricity.
+					
+					/*
 					// If both datasets are fetched and ready, merge returns an object with data.
 					const resu = this.mergeElectricityPrice();
 					if (Object.keys(resu).length > 0) {
-						
-						// Todo: show mean price for electricity.
 						// NOTE: This is merged with 3 separate power arrays in mergeElectricityPrice()
 						
 					}
+					*/
 					
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
@@ -1507,17 +1520,11 @@ export default class MenuView extends View {
 					// timestamp:Date, value: "0.0" or "3.0" (or "2.0")
 					const vals = this.models[options.model].values;
 					if (vals.length > 0) {
-						console.log(['OptimizationModel vals=',vals]);
-						const resu = this.extractOptimization(vals);
-						if (Object.keys(resu).length > 0) {
-							const len = Object.keys(resu).length;
-							console.log(['OptimizationModel len=',len,' resu=',resu]);
-							
-							// Todo: Show percentages when "base" days are compared to "optimized" days.
-							
-							
-							
-						}
+						this.optimizations = this.extractObixArray(vals);
+						console.log(['this.optimizations=',this.optimizations]);
+						
+						// Todo: Show percentages when "base" days are compared to "optimized" days.
+						
 					}
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
@@ -1529,19 +1536,11 @@ export default class MenuView extends View {
 				if (options.status === 200) {
 					const vals = this.models[options.model].values;
 					if (vals.length > 0) {
-						const resu = this.extractEmissionFactorForElectricity(vals);
-						if (Object.keys(resu).length > 0) {
-							const len = Object.keys(resu).length;
-							console.log(['EmissionFactorForElectricity len=',len,' resu=',resu]);
-							
-							
-							// Todo: Show CO2 for ele. Merge with this.elecons
-							
-							
-							
-							
-							
-						}
+						this.ele_emission_factors = this.extractObixArray(vals);
+						console.log(['this.ele_emission_factors=',this.ele_emission_factors]);
+						
+						// Todo: Show CO2 for ele. Merge with this.ele_cons
+						
 					}
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
@@ -1549,21 +1548,16 @@ export default class MenuView extends View {
 				
 				
 			} else if (options.model === 'MenuBuildingHeatingQE01Model' && options.method==='fetched') {
-				console.log('NOTIFY '+options.model+' fetched!');
-				console.log(['options.status=',options.status]);
+				//console.log('NOTIFY '+options.model+' fetched!');
+				//console.log(['options.status=',options.status]);
 				if (options.status === 200) {
 					const vals = this.models[options.model].values;
 					if (vals.length > 0) {
-						const resu = this.extractBuildingHeating(vals);
-						if (Object.keys(resu).length > 0) {
-							const len = Object.keys(resu).length;
-							console.log(['BuildingHeating len=',len,' resu=',resu]);
-							
-							
-							// Todo: Show HEATING (DH) daily POWER (use constant to scale)
-							
-							
-						}
+						this.dh_cons = this.extractObixArray(vals);
+						console.log(['this.dh_cons=',this.dh_cons]);
+						
+						// Todo: Show HEATING (DH) daily POWER (use constant to scale)
+						
 					}
 					
 				} else { // Error in fetching.
@@ -1571,24 +1565,27 @@ export default class MenuView extends View {
 				}
 				
 			} else if (options.model.indexOf('MenuBuildingElectricityPL') === 0 && options.method==='fetched') {
-				console.log('NOTIFY '+options.model+' fetched!');
-				console.log(['options.status=',options.status]);
-				if (options.status === 200 || options.status === '200') {
-					if (this.models[options.model].values.length > 0) {
+				//console.log('NOTIFY '+options.model+' fetched!');
+				//console.log(['options.status=',options.status]);
+				if (options.status === 200) {
+					const vals = this.models[options.model].values;
+					if (vals.length > 0) {
 						
-						console.log(['values=',this.models[options.model].values]);
-						this.elecons = this.calculateSum();
+						this.ele_cons = this.calculateSum();
+						console.log(['this.ele_cons=',this.ele_cons]);
+						if (this.ele_cons.length > 0) {
+							this.updateDailyBaskets();
+						}
+						// Todo: Electricity consumption
+						
 						// If all relevant datasets are fetched and ready, merge returns an object with data.
+						/*
 						const resu = this.mergeElectricityPrice();
 						if (Object.keys(resu).length > 0) {
 							
-							
-							// Todo: 
-							
-						}
-					} else {
-						console.log('NO values!!!');
+						}*/
 					}
+					
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
 				}

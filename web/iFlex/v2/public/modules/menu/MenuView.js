@@ -70,32 +70,6 @@ export default class MenuView extends View {
 		this.PTO.subscribe(this);
 		
 		this.numberOfDays = 31;
-		
-		// calculateSum() creates a sum of 3 phases and array contains {timestamp, value} -objects
-		// convertPriceData() creates an array of {date, price} -objects
-		this.ele_cons = []; // array of {timestamp (Date), value} pairs. Value contains electricity consumption sum from PL1,PL2,PL3.
-		this.ele_prices = []; // array of {timestamp (Date), value} pairs.
-		this.ele_emission_factors = [];
-		this.optimizations = [];
-		this.dh_cons = [];
-		
-		this.dailyBaskets = {};
-		for (let i=this.numberOfDays; i>0; i--) {
-			// Here we fill  a day at a time with empty placeholders.
-			//const m_date = moment().subtract(i,'days');
-			//m_date.set({'h':12,'m':0,'s':0,'ms':0});
-			const s_date = moment().subtract(i,'days').format('YYYY-MM-DD');
-			this.dailyBaskets[s_date] = {
-				ele_energy_sum: 0,
-				ele_price_sum: 0,
-				ele_co2_emissions_sum: 0,
-				dh_energy_sum: 0,
-				dh_price_sum: 0,
-				dh_co2_emissions_sum: 0,
-				optimization: 0
-			};
-		}
-		console.log(['this.dailyBaskets=',this.dailyBaskets]);
 	}
 	
 	show() {
@@ -1235,58 +1209,6 @@ export default class MenuView extends View {
 		return val_array;
 	}
 	
-	/*
-	
-	mergeElectricityPrice() {
-		const sum_bucket = {};
-		if (this.elecons.length > 0 && this.prices.length > 0) {
-			console.log('======== MERGE! =========');
-			const bucket = {};
-			// For all consumption timestamps, check if price exist.
-			this.elecons.forEach(e=>{
-				const ds = moment(e.timestamp).format(); // timestamp is a Date object => convert to string.
-				//console.log(['ELECONS ds=',ds]);
-				bucket[ds] = {};
-				bucket[ds]['elecons'] = e.value;
-			});
-			this.prices.forEach(p=>{
-				const ds = moment(p.date).format(); // timestamp (date) is a Date object => convert to string.
-				if (bucket.hasOwnProperty(ds)) {
-					bucket[ds]['price'] = p.price;
-				}
-			});
-			
-			const daysToShow = this.numberOfDays;
-			for (let i=daysToShow; i>0; i--) {
-				// Here we fill sum_bucket a day at a time with sum and average values.
-				const m_date = moment().subtract(i,'days');
-				m_date.set({'h':12,'m':0,'s':0,'ms':0});
-				
-				const s_date = moment().subtract(i,'days').format('YYYY-MM-DD');
-				sum_bucket[s_date] = {timestamp:m_date.toDate(), total:0};
-				
-				let total = 0;
-				Object.keys(bucket).forEach(key=>{
-					const yyyymmdd = key.slice(0,10);
-					if (yyyymmdd === s_date) {
-						total += bucket[key].elecons*bucket[key].price;
-					}
-				});
-				sum_bucket[s_date].total = total;
-			}
-		} else {
-			console.log('======== NOT READY TO MERGE YET! =========');
-		}
-		console.log(['sum_bucket=',sum_bucket]);
-		//	{
-		//		"2022-12-07":{sum:153.34567},
-		//		"2022-12-08":{sum:123.34567},
-		//		...
-		//
-		return sum_bucket;
-	}
-	*/
-	
 	calculateSum() {
 		// CALL THIS FOR EVERY MODEL, BUT NOTE THAT SUM IS CALCULATED ONLY WHEN ALL 3 MODELS ARE READY AND FILLED WITH VALUES!
 		const val_array = [];
@@ -1399,34 +1321,6 @@ export default class MenuView extends View {
 		return newdata;
 	}
 	
-	/*
-	
-	
-		this.ele_cons = []; // array of {timestamp (Date), value} pairs. Value contains electricity consumption sum from PL1,PL2,PL3.
-		this.ele_prices = []; // array of {timestamp (Date), value} pairs.
-		this.ele_emission_factors = [];
-		this.optimizations = [];
-		this.dh_cons = [];
-	
-				ele_energy_sum: 0,
-				ele_price_sum: 0,
-				ele_co2_emissions_sum: 0,
-				dh_energy_sum: 0,
-				dh_price_sum: 0,
-				dh_co2_emissions_sum: 0,
-				optimization: 0
-	*/
-	updateDailyBaskets() {
-		
-		console.log('=====================updateDailyBaskets===================');
-		Object.keys(this.dailyBaskets).forEach(key => {
-			console.log(['key=',key]);
-			
-		});
-		console.log('==========================================================');
-	}
-	
-	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
@@ -1440,15 +1334,8 @@ export default class MenuView extends View {
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				// Do something with each TICK!
-				
-				// Reset data arrays.
-				this.ele_cons = [];
-				this.dh_cons = [];
-				this.ele_emission_factors = [];
-				// DH constant 
-				this.ele_prices = [];
-				// DH constant 
-				this.optimizations = [];
+				// TESTING...
+				this.models['FlexResultModel'].reset();
 				
 				console.log('PeriodicTimeoutObserver timeout!');
 				Object.keys(this.models).forEach(key => {
@@ -1462,7 +1349,7 @@ export default class MenuView extends View {
 					//'EntsoeEnergyPriceModel',
 					//'OptimizationModel'
 					//];
-					if (key === 'MenuModel' || key === 'ProxesCleanerModel') {
+					if (key === 'MenuModel' || key === 'ProxesCleanerModel' || key === 'FlexResultModel') {
 						// do nothing...
 						
 					} else if (key === 'EntsoeEnergyPriceModel') {
@@ -1491,25 +1378,17 @@ export default class MenuView extends View {
 				});
 				
 				
-				
-				
-				
 			} else if (options.model==='EntsoeEnergyPriceModel' && options.method==='fetched') {
 				if (options.status === 200) {
 					
-					this.ele_prices = this.convertPriceData(); // An array of {timestamp(Date), value(price)} -objects.
-					console.log(['this.ele_prices=',this.ele_prices]);
+					const ele_prices = this.convertPriceData(); // An array of {timestamp(Date), value(price)} -objects.
+					console.log(['ele_prices=',ele_prices]);
 					
+					this.models['FlexResultModel'].copy('ele_prices',ele_prices);
+					const priceArray = this.models['FlexResultModel'].merge('ele_cons','ele_prices');
+					// Try to update FlexResultModel.
+					this.models['FlexResultModel'].update('ele_price', priceArray);
 					// Todo: show mean price for electricity.
-					
-					/*
-					// If both datasets are fetched and ready, merge returns an object with data.
-					const resu = this.mergeElectricityPrice();
-					if (Object.keys(resu).length > 0) {
-						// NOTE: This is merged with 3 separate power arrays in mergeElectricityPrice()
-						
-					}
-					*/
 					
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
@@ -1520,9 +1399,10 @@ export default class MenuView extends View {
 					// timestamp:Date, value: "0.0" or "3.0" (or "2.0")
 					const vals = this.models[options.model].values;
 					if (vals.length > 0) {
-						this.optimizations = this.extractObixArray(vals);
-						console.log(['this.optimizations=',this.optimizations]);
+						const optimizations = this.extractObixArray(vals);
 						
+						this.models['FlexResultModel'].copy('optimizations',optimizations);
+						this.models['FlexResultModel'].update('optimization', optimizations);
 						// Todo: Show percentages when "base" days are compared to "optimized" days.
 						
 					}
@@ -1536,11 +1416,15 @@ export default class MenuView extends View {
 				if (options.status === 200) {
 					const vals = this.models[options.model].values;
 					if (vals.length > 0) {
-						this.ele_emission_factors = this.extractObixArray(vals);
-						console.log(['this.ele_emission_factors=',this.ele_emission_factors]);
-						
+						const ele_emission_factors = this.extractObixArray(vals);
+						console.log(['ele_emission_factors=',ele_emission_factors]);
+						if (ele_emission_factors.length > 0) {
+							this.models['FlexResultModel'].copy('ele_emission_factors',ele_emission_factors);
+							const emisArray = this.models['FlexResultModel'].merge('ele_cons','ele_emission_factors');
+							// Try to update FlexResultModel.
+							this.models['FlexResultModel'].update('ele_emissions', emisArray);
+						}
 						// Todo: Show CO2 for ele. Merge with this.ele_cons
-						
 					}
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
@@ -1553,11 +1437,17 @@ export default class MenuView extends View {
 				if (options.status === 200) {
 					const vals = this.models[options.model].values;
 					if (vals.length > 0) {
-						this.dh_cons = this.extractObixArray(vals);
-						console.log(['this.dh_cons=',this.dh_cons]);
-						
+						const dh_cons = this.extractObixArray(vals);
+						console.log(['dh_cons=',dh_cons]);
 						// Todo: Show HEATING (DH) daily POWER (use constant to scale)
-						
+						if (dh_cons.length > 0) {
+							this.models['FlexResultModel'].copy('dh_cons',dh_cons);
+							// Update FlexResultModel.
+							this.models['FlexResultModel'].update('dh_energy', dh_cons);
+							
+							this.models['FlexResultModel'].update('dh_price', dh_cons);
+							this.models['FlexResultModel'].update('dh_emissions', dh_cons);
+						}
 					}
 					
 				} else { // Error in fetching.
@@ -1570,20 +1460,19 @@ export default class MenuView extends View {
 				if (options.status === 200) {
 					const vals = this.models[options.model].values;
 					if (vals.length > 0) {
-						
-						this.ele_cons = this.calculateSum();
-						console.log(['this.ele_cons=',this.ele_cons]);
-						if (this.ele_cons.length > 0) {
-							this.updateDailyBaskets();
-						}
-						// Todo: Electricity consumption
-						
-						// If all relevant datasets are fetched and ready, merge returns an object with data.
-						/*
-						const resu = this.mergeElectricityPrice();
-						if (Object.keys(resu).length > 0) {
+						const ele_cons = this.calculateSum();
+						if (ele_cons.length > 0) {
+							this.models['FlexResultModel'].copy('ele_cons',ele_cons);
+							this.models['FlexResultModel'].update('ele_energy', ele_cons);
 							
-						}*/
+							const priceArray = this.models['FlexResultModel'].merge('ele_cons','ele_prices');
+							// Try to update FlexResultModel.
+							this.models['FlexResultModel'].update('ele_price', priceArray);
+							
+							const emisArray = this.models['FlexResultModel'].merge('ele_cons','ele_emission_factors');
+							// Try to update FlexResultModel.
+							this.models['FlexResultModel'].update('ele_emissions', emisArray);
+						}
 					}
 					
 				} else { // Error in fetching.

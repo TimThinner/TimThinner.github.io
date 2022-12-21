@@ -2,6 +2,7 @@ import Controller from '../common/Controller.js';
 import MenuModel from  './MenuModel.js';
 import ObixModel from '../common/ObixModel.js';
 import EntsoeModel from '../common/EntsoeModel.js';
+import FlexResultModel from '../common/FlexResultModel.js';
 import MenuView from './MenuView.js';
 
 
@@ -97,6 +98,14 @@ export default class MenuController extends Controller {
 		model2.subscribe(this);
 		this.master.modelRepo.add('ProxesCleanerModel',model2);
 		this.models['ProxesCleanerModel'] = model2;
+		
+		
+		const model3 = new FlexResultModel({name:'FlexResultModel',src:''});
+		model3.subscribe(this);
+		this.master.modelRepo.add('FlexResultModel',model3);
+		this.models['FlexResultModel'] = model3;
+		
+		
 		
 		// These three models will get Electricity consumption for building (with fixed interval and timerange).
 		//These must be set somewhere (before calling fetch on these models):

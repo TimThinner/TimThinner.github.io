@@ -23,7 +23,7 @@ import AController from './modules/a/AController.js';
 import BController from './modules/b/BController.js';
 import CController from './modules/c/CController.js';
 import DController from './modules/d/DController.js';
-import FlexController from './modules/Flex/FlexController.js';
+import FlexController from './modules/flex/FlexController.js';
 
 // ADMIN stuff:
 import RegCodeController from './modules/admin/regcodes/RegCodeController.js';

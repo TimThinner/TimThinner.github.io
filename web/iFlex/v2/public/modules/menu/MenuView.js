@@ -69,7 +69,7 @@ export default class MenuView extends View {
 		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
 		this.PTO.subscribe(this);
 		
-		this.numberOfDays = 31;
+		this.numberOfDays = this.controller.numberOfDays;
 	}
 	
 	show() {
@@ -908,7 +908,6 @@ export default class MenuView extends View {
 		$('#space').append(group);
 	}
 	
-	
 	updateSavingsTextLine(id,x,y,w,h,fontsize,color,str) {
 		const svgNS = 'http://www.w3.org/2000/svg';
 		$('#'+id).remove(); // First remove old text from space.
@@ -951,39 +950,60 @@ export default class MenuView extends View {
 	1% decrease
 	*/
 	
-
-	
-	updateSavingsText() {
+	updateSavingsTitle() {
 		const sel = this.LANGUAGE_MODEL.selected;
 		const string_title = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_MONTHLY_SAVINGS'];
+		const r = this.sunRadius();
+		const wunit = r+r*0.25;
+		const fontsize = r*0.175;
+		const title_color = '#a5c5f1';
+		this.updateSavingsTextLine('savings-title', 0, fontsize, 2*wunit, fontsize, fontsize, title_color, string_title);
+	}
+	
+	updateSavingsText(prop, sums) {
+		
+		const sel = this.LANGUAGE_MODEL.selected;
 		const string_energy_cost = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_ENERGY_COST'];
 		const string_energy_consumption = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_ENERGY_CONSUMPTION'];
 		const string_co2_emissions = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_CO2_EMISSIONS'];
 		const string_decrease = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_OPTIMIZATION_DECREASE'];
 		const string_increase = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_OPTIMIZATION_INCREASE'];
-		//const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		
 		const r = this.sunRadius();
 		const wunit = r+r*0.25;
-		
 		const fontsize = r*0.175;
-		
-		const title_color = '#a5c5f1';
 		const sub_title_color = '#aaa';
 		const text_color = '#fff';
 		
-		this.updateSavingsTextLine('savings-txt-line-1',   0, fontsize,   2*wunit, fontsize, fontsize, title_color, string_title);
-		this.updateSavingsTextLine('savings-txt-line-2',   0, 2.5*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_energy_cost);
-		this.updateSavingsTextLine('savings-txt-line-2-a', 0, 3.5*fontsize, 2*wunit, fontsize, fontsize, text_color, '10 €');
-		this.updateSavingsTextLine('savings-txt-line-2-b', 0, 4.5*fontsize, 2*wunit, fontsize, fontsize, text_color, '17% decrease');
+		const opt = sums.opt.toFixed(0);
+		const base = sums.base.toFixed(0);
+		let percentage = 0;
+		let percentage_text = '';
+		if (sums.base > sums.opt) { // decrease
+			const d = sums.base - sums.opt;
+			percentage = d*100/sums.base;
+			percentage_text = percentage.toFixed(0) + '% '+string_decrease;
+			
+		} else {
+			// increase
+			const d = sums.opt - sums.base;
+			percentage = d*100/sums.base;
+			percentage_text = percentage.toFixed(0) + '% '+string_increase;
+		}
 		
-		this.updateSavingsTextLine('savings-txt-line-3',   0, 6.4*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_energy_consumption);
-		this.updateSavingsTextLine('savings-txt-line-3-a', 0, 7.4*fontsize, 2*wunit, fontsize, fontsize, text_color, '25kWh');
-		this.updateSavingsTextLine('savings-txt-line-3-b', 0, 8.4*fontsize, 2*wunit, fontsize, fontsize, text_color, '21% decrease');
-		
-		this.updateSavingsTextLine('savings-txt-line-4',   0, 10.3*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_co2_emissions);
-		this.updateSavingsTextLine('savings-txt-line-4-a', 0, 11.3*fontsize, 2*wunit, fontsize, fontsize, text_color, '5 kg');
-		this.updateSavingsTextLine('savings-txt-line-4-b', 0, 12.3*fontsize, 2*wunit, fontsize, fontsize, text_color, '1% decrease');
+		if (prop === 'energy') {
+			this.updateSavingsTextLine('savings-txt-energy-a',   0, 6.4*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_energy_consumption);
+			this.updateSavingsTextLine('savings-txt-energy-b', 0, 7.4*fontsize, 2*wunit, fontsize, fontsize, text_color, opt+'kWh  ('+base+')');
+			this.updateSavingsTextLine('savings-txt-energy-c', 0, 8.4*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+		} else if (prop === 'price') {
+			this.updateSavingsTextLine('savings-txt-price-a',   0, 2.5*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_energy_cost);
+			this.updateSavingsTextLine('savings-txt-price-b', 0, 3.5*fontsize, 2*wunit, fontsize, fontsize, text_color, opt+'€  ('+base+')');
+			this.updateSavingsTextLine('savings-txt-price-c', 0, 4.5*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+		} else { // 'emissions'
+			this.updateSavingsTextLine('savings-txt-emissions-a',   0, 10.3*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_co2_emissions);
+			this.updateSavingsTextLine('savings-txt-emissions-b', 0, 11.3*fontsize, 2*wunit, fontsize, fontsize, text_color, opt+'kg  ('+base+')');
+			this.updateSavingsTextLine('savings-txt-emissions-c', 0, 12.3*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+		}
 	}
 	
 	appendSavingsBox() {
@@ -1339,7 +1359,7 @@ export default class MenuView extends View {
 				
 				console.log('PeriodicTimeoutObserver timeout!');
 				Object.keys(this.models).forEach(key => {
-					// MenuModel + ProxesCleanerModel + 7 models as listed below:
+					// MenuModel + ProxesCleanerModel + FlexResultModel + 7 models as listed below:
 					//this.modelnames = [
 					//'MenuBuildingElectricityPL1Model',
 					//'MenuBuildingElectricityPL2Model',
@@ -1386,9 +1406,11 @@ export default class MenuView extends View {
 					
 					this.models['FlexResultModel'].copy('ele_prices',ele_prices);
 					const priceArray = this.models['FlexResultModel'].merge('ele_cons','ele_prices');
-					// Try to update FlexResultModel.
 					this.models['FlexResultModel'].update('ele_price', priceArray);
-					// Todo: show mean price for electricity.
+					
+					const sumB = this.models['FlexResultModel'].calculate('price');
+					this.updateSavingsText('price', sumB);
+					
 					
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
@@ -1405,6 +1427,18 @@ export default class MenuView extends View {
 						this.models['FlexResultModel'].update('optimization', optimizations);
 						// Todo: Show percentages when "base" days are compared to "optimized" days.
 						
+						const sumA = this.models['FlexResultModel'].calculate('energy');
+						if (sumA.base > 0 && sumA.opt > 0) {
+							this.updateSavingsText('energy', sumA);
+						}
+						const sumB = this.models['FlexResultModel'].calculate('price');
+						if (sumB.base > 0 && sumB.opt > 0) {
+							this.updateSavingsText('price', sumB);
+						}
+						const sumC = this.models['FlexResultModel'].calculate('emissions');
+						if (sumC.base > 0 && sumC.opt > 0) {
+							this.updateSavingsText('emissions', sumC);
+						}
 					}
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
@@ -1419,17 +1453,21 @@ export default class MenuView extends View {
 						const ele_emission_factors = this.extractObixArray(vals);
 						console.log(['ele_emission_factors=',ele_emission_factors]);
 						if (ele_emission_factors.length > 0) {
+							
 							this.models['FlexResultModel'].copy('ele_emission_factors',ele_emission_factors);
 							const emisArray = this.models['FlexResultModel'].merge('ele_cons','ele_emission_factors');
-							// Try to update FlexResultModel.
 							this.models['FlexResultModel'].update('ele_emissions', emisArray);
+							
+							const sumC = this.models['FlexResultModel'].calculate('emissions');
+							
+							this.updateSavingsText('emissions', sumC);
+							
 						}
 						// Todo: Show CO2 for ele. Merge with this.ele_cons
 					}
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
 				}
-				
 				
 			} else if (options.model === 'MenuBuildingHeatingQE01Model' && options.method==='fetched') {
 				//console.log('NOTIFY '+options.model+' fetched!');
@@ -1442,11 +1480,24 @@ export default class MenuView extends View {
 						// Todo: Show HEATING (DH) daily POWER (use constant to scale)
 						if (dh_cons.length > 0) {
 							this.models['FlexResultModel'].copy('dh_cons',dh_cons);
-							// Update FlexResultModel.
-							this.models['FlexResultModel'].update('dh_energy', dh_cons);
 							
+							// Update FlexResultModel DH indicators.
+							this.models['FlexResultModel'].update('dh_energy', dh_cons);
 							this.models['FlexResultModel'].update('dh_price', dh_cons);
 							this.models['FlexResultModel'].update('dh_emissions', dh_cons);
+							
+							const sumA = this.models['FlexResultModel'].calculate('energy');
+							if (sumA.base > 0 && sumA.opt > 0) {
+								this.updateSavingsText('energy', sumA);
+							}
+							const sumB = this.models['FlexResultModel'].calculate('price');
+							if (sumB.base > 0 && sumB.opt > 0) {
+								this.updateSavingsText('price', sumB);
+							}
+							const sumC = this.models['FlexResultModel'].calculate('emissions');
+							if (sumC.base > 0 && sumC.opt > 0) {
+								this.updateSavingsText('emissions', sumC);
+							}
 						}
 					}
 					
@@ -1463,15 +1514,27 @@ export default class MenuView extends View {
 						const ele_cons = this.calculateSum();
 						if (ele_cons.length > 0) {
 							this.models['FlexResultModel'].copy('ele_cons',ele_cons);
-							this.models['FlexResultModel'].update('ele_energy', ele_cons);
 							
 							const priceArray = this.models['FlexResultModel'].merge('ele_cons','ele_prices');
-							// Try to update FlexResultModel.
-							this.models['FlexResultModel'].update('ele_price', priceArray);
-							
 							const emisArray = this.models['FlexResultModel'].merge('ele_cons','ele_emission_factors');
-							// Try to update FlexResultModel.
+							
+							// Update FlexResultModel ELECTRICITY indicators.
+							this.models['FlexResultModel'].update('ele_energy', ele_cons);
+							this.models['FlexResultModel'].update('ele_price', priceArray);
 							this.models['FlexResultModel'].update('ele_emissions', emisArray);
+							
+							const sumA = this.models['FlexResultModel'].calculate('energy');
+							if (sumA.base > 0 && sumA.opt > 0) {
+								this.updateSavingsText('energy', sumA);
+							}
+							const sumB = this.models['FlexResultModel'].calculate('price');
+							if (sumB.base > 0 && sumB.opt > 0) {
+								this.updateSavingsText('price', sumB);
+							}
+							const sumC = this.models['FlexResultModel'].calculate('emissions');
+							if (sumC.base > 0 && sumC.opt > 0) {
+								this.updateSavingsText('emissions', sumC);
+							}
 						}
 					}
 					
@@ -1502,7 +1565,7 @@ export default class MenuView extends View {
 		this.appendFlexButton();
 		
 		this.appendSavingsBox();
-		this.updateSavingsText();
+		this.updateSavingsTitle();
 		
 		this.appendLanguageSelections();
 	}

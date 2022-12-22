@@ -60,6 +60,7 @@ export default class MenuController extends Controller {
 		// Interval for fetching ENTSOE Electricity day-ahead price and 
 		// fetching building electricity consumption with "PT60M".
 		this.fetching_interval_in_seconds = 1800; // 30 x 60 Twice per hour 
+		this.numberOfDays = 31;
 		
 		// These are the models that are created in this Controller:
 		
@@ -100,7 +101,7 @@ export default class MenuController extends Controller {
 		this.models['ProxesCleanerModel'] = model2;
 		
 		
-		const model3 = new FlexResultModel({name:'FlexResultModel',src:''});
+		const model3 = new FlexResultModel({name:'FlexResultModel',src:'',numberOfDays:this.numberOfDays});
 		model3.subscribe(this);
 		this.master.modelRepo.add('FlexResultModel',model3);
 		this.models['FlexResultModel'] = model3;

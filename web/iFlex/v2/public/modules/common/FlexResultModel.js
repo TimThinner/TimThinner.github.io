@@ -22,7 +22,21 @@ export default class FlexResultModel extends Model {
 		this.ready = true;
 		this.status = 200;
 		
-		this.numberOfDays = 31;
+		if (typeof options.numberOfDays !== 'undefined') {
+			this.numberOfDays = options.numberOfDays;
+		} else {
+			this.numberOfDays = 31;
+		}
+		
+		this.indicatorStatus = {
+			ele_energy: false,
+			ele_price: false,
+			ele_emissions: false,
+			dh_energy: false,
+			dh_price: false,
+			dh_emissions: false,
+			optimization: false
+		};
 		this.dailyBaskets = {};
 		
 		// calculateSum() creates a sum of 3 phases and array contains {timestamp, value} -objects
@@ -94,13 +108,13 @@ export default class FlexResultModel extends Model {
 		
 		for (let i=this.numberOfDays; i>0; i--) {
 			
-			this.dailyBaskets.ele_energy = false;
-			this.dailyBaskets.ele_price = false;
-			this.dailyBaskets.ele_emissions = false;
-			this.dailyBaskets.dh_energy = false;
-			this.dailyBaskets.dh_price = false;
-			this.dailyBaskets.dh_emissions = false;
-			this.dailyBaskets.optimization = false;
+			this.indicatorStatus.ele_energy = false;
+			this.indicatorStatus.ele_price = false;
+			this.indicatorStatus.ele_emissions = false;
+			this.indicatorStatus.dh_energy = false;
+			this.indicatorStatus.dh_price = false;
+			this.indicatorStatus.dh_emissions = false;
+			this.indicatorStatus.optimization = false;
 			
 			const s_date = moment().subtract(i,'days').format('YYYY-MM-DD');
 			this.dailyBaskets[s_date] = {
@@ -128,7 +142,7 @@ export default class FlexResultModel extends Model {
 		optimizations					=>	optimization
 	*/
 	update(flag, array) {
-		if (this.dailyBaskets[flag] === false) {
+		if (this.indicatorStatus[flag] === false) {
 			console.log('FlexResultModel==== Fill in the '+flag+'===============');
 			if (array.length > 0) {
 				array.forEach(e=>{
@@ -159,9 +173,7 @@ export default class FlexResultModel extends Model {
 						}
 					}
 				});
-				this.dailyBaskets[flag]= true; // Done!
-				
-				
+				this.indicatorStatus[flag]= true; // Done!
 				console.log(['DONE!!!! FlexResultModel this.dailyBaskets=',this.dailyBaskets]);
 			} else {
 				console.log('FlexResultModel SOURCE ARRAY NOT READY YET!');
@@ -169,5 +181,80 @@ export default class FlexResultModel extends Model {
 		} else {
 			console.log('FlexResultModel ==== '+flag+' IS ALREADY FILLED! ===============');
 		}
+	}
+	/*	SOURCE								FLAG
+		===============================================
+		ele_cons						=>	ele_energy
+		(ele_prices, ele_cons)			=>	ele_price
+		(ele_emission_factors, ele_cons)=>	ele_emissions
+		
+		dh_cons							=>	dh_energy
+		(dh_cons, CONSTANT)				=>	dh_price
+		(dh_cons, CONSTANT)				=>	dh_emissions
+		
+		optimizations					=>	optimization
+		
+		
+		MONTHLY SAVINGS:
+		
+		Energy Cost:
+		10 €
+		17% decrease
+		
+		Energy Consumption:
+		25kWh
+		21% decrease
+		
+		CO2 Emissions:
+		5 kg
+		1% decrease
+	*/
+	calculate(prop) {
+		const retval = {
+			base: 0,
+			opt: 0
+		};
+		let base_count = 0;
+		let opt_count = 0;
+		if (prop === 'energy') {
+			Object.keys(this.dailyBaskets).forEach(key=>{
+				
+				if (this.dailyBaskets[key].optimization) {
+					retval.opt += (this.dailyBaskets[key].ele_energy + this.dailyBaskets[key].dh_energy);
+					opt_count++;
+				} else {
+					retval.base += (this.dailyBaskets[key].ele_energy + this.dailyBaskets[key].dh_energy);
+					base_count++;
+				}
+			});
+		} else if (prop === 'price') {
+			Object.keys(this.dailyBaskets).forEach(key=>{
+				if (this.dailyBaskets[key].optimization) {
+					retval.opt += (this.dailyBaskets[key].ele_price + this.dailyBaskets[key].dh_price);
+					opt_count++;
+				} else {
+					retval.base += (this.dailyBaskets[key].ele_price + this.dailyBaskets[key].dh_price);
+					base_count++;
+				}
+			});
+		} else { // if (prop === 'emissions') {
+			Object.keys(this.dailyBaskets).forEach(key=>{
+				if (this.dailyBaskets[key].optimization) {
+					retval.opt += (this.dailyBaskets[key].ele_emissions + this.dailyBaskets[key].dh_emissions);
+					opt_count++;
+				} else {
+					retval.base += (this.dailyBaskets[key].ele_emissions + this.dailyBaskets[key].dh_emissions);
+					base_count++;
+				}
+			});
+		}
+		if (base_count > 0) {
+			retval.base = retval.base/base_count;
+		}
+		if (opt_count > 0) {
+			retval.opt = retval.opt/opt_count;
+		}
+		console.log(['SAVINGS ARE prop=',prop,' retval=',retval]);
+		return retval;
 	}
 }

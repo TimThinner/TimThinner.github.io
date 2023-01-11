@@ -273,9 +273,9 @@ export default class ObixModel extends Model {
 				}
 			}
 			
-			console.log('=====================================================');
+			//console.log('=====================================================');
 			console.log(['start=',start,' end=',end]);
-			console.log('=====================================================');
+			//console.log('=====================================================');
 			
 			const now = moment().format('YYYY-MM-DDTHH');
 			const interval = this.interval;

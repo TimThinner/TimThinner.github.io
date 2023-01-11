@@ -955,7 +955,7 @@ export default class MenuView extends View {
 		const string_title = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_MONTHLY_SAVINGS'];
 		const r = this.sunRadius();
 		const wunit = r+r*0.25;
-		const fontsize = r*0.175;
+		const fontsize = r*0.2;
 		const title_color = '#a5c5f1';
 		this.updateSavingsTextLine('savings-title', 0, fontsize, 2*wunit, fontsize, fontsize, title_color, string_title);
 	}
@@ -972,37 +972,44 @@ export default class MenuView extends View {
 		const r = this.sunRadius();
 		const wunit = r+r*0.25;
 		const fontsize = r*0.175;
-		const sub_title_color = '#aaa';
+		const fontsize_m = r*0.15;
+		const fontsize_s = r*0.125;
+		const sub_title_color = '#ccc';
 		const text_color = '#fff';
+		const sub_color = '#888';
 		
 		const opt = sums.opt.toFixed(0);
 		const base = sums.base.toFixed(0);
 		let percentage = 0;
 		let percentage_text = '';
-		if (sums.base > sums.opt) { // decrease
-			const d = sums.base - sums.opt;
-			percentage = d*100/sums.base;
-			percentage_text = percentage.toFixed(0) + '% '+string_decrease;
-			
-		} else {
-			// increase
-			const d = sums.opt - sums.base;
-			percentage = d*100/sums.base;
-			percentage_text = percentage.toFixed(0) + '% '+string_increase;
+		if (sums.base > 0) {
+			if (sums.base > sums.opt) { // decrease
+				const d = sums.base - sums.opt;
+				percentage = d*100/sums.base;
+				percentage_text = percentage.toFixed(0) + '% '+string_decrease;
+				
+			} else {
+				// increase
+				const d = sums.opt - sums.base;
+				percentage = d*100/sums.base;
+				percentage_text = percentage.toFixed(0) + '% '+string_increase;
+			}
 		}
 		
-		if (prop === 'energy') {
-			this.updateSavingsTextLine('savings-txt-energy-a',   0, 6.4*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_energy_consumption);
-			this.updateSavingsTextLine('savings-txt-energy-b', 0, 7.4*fontsize, 2*wunit, fontsize, fontsize, text_color, opt+'kWh  ('+base+')');
-			this.updateSavingsTextLine('savings-txt-energy-c', 0, 8.4*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
-		} else if (prop === 'price') {
-			this.updateSavingsTextLine('savings-txt-price-a',   0, 2.5*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_energy_cost);
-			this.updateSavingsTextLine('savings-txt-price-b', 0, 3.5*fontsize, 2*wunit, fontsize, fontsize, text_color, opt+'€  ('+base+')');
-			this.updateSavingsTextLine('savings-txt-price-c', 0, 4.5*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+		if (prop === 'price') {
+			this.updateSavingsTextLine('savings-txt-price-a', 0, 2.5*fontsize, 2*wunit, fontsize, fontsize_m, sub_title_color, string_energy_cost);
+			this.updateSavingsTextLine('savings-txt-price-c', 0, 3.5*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+			this.updateSavingsTextLine('savings-txt-price-b', 0, 4.5*fontsize, 2*wunit, fontsize, fontsize_s, sub_color, opt+'€  ('+base+'€)');
+			
+		} else if (prop === 'energy') {
+			this.updateSavingsTextLine('savings-txt-energy-a', 0, 6.4*fontsize, 2*wunit, fontsize, fontsize_m, sub_title_color, string_energy_consumption);
+			this.updateSavingsTextLine('savings-txt-energy-c', 0, 7.4*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+			this.updateSavingsTextLine('savings-txt-energy-b', 0, 8.4*fontsize, 2*wunit, fontsize, fontsize_s, sub_color, opt+'kWh  ('+base+'kWh)');
+			
 		} else { // 'emissions'
-			this.updateSavingsTextLine('savings-txt-emissions-a',   0, 10.3*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_co2_emissions);
-			this.updateSavingsTextLine('savings-txt-emissions-b', 0, 11.3*fontsize, 2*wunit, fontsize, fontsize, text_color, opt+'kg  ('+base+')');
-			this.updateSavingsTextLine('savings-txt-emissions-c', 0, 12.3*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+			this.updateSavingsTextLine('savings-txt-emissions-a', 0, 10.3*fontsize, 2*wunit, fontsize, fontsize_m, sub_title_color, string_co2_emissions);
+			this.updateSavingsTextLine('savings-txt-emissions-c', 0, 11.3*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+			this.updateSavingsTextLine('savings-txt-emissions-b', 0, 12.3*fontsize, 2*wunit, fontsize, fontsize_s, sub_color, opt+'kg  ('+base+'kg)');
 		}
 	}
 	

@@ -5,17 +5,18 @@ import EntsoeModel from '../common/EntsoeModel.js';
 import FlexResultModel from '../common/FlexResultModel.js';
 import MenuView from './MenuView.js';
 
-
 /*
 Electricity power consumption of the building
 /obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L1		Power phase L1
 /obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L2		Power phase L2
 /obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L3		Power phase L3
+
 CO2 emissions factor for electricity
 /obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/
 
 District heating Instantaneous power
 /obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01		District heating Instantaneous power
+
 CO2 emissions factor for District heating 
 CONSTANT	182
 
@@ -34,9 +35,12 @@ What models we need to setup for this:
 1. MenuBuildingElectricityPL1Model
 2. MenuBuildingElectricityPL2Model
 3. MenuBuildingElectricityPL3Model
-4. 
+4. MenuEmissionFactorForElectricityConsumedInFinlandModel
+5. MenuBuildingHeatingQE01Model
 5. EntsoeEnergyPriceModel
 6. OptimizationModel
+
+
 
 
 MONTHLY SAVINGS (CALCULATED SEPARATELY FOR DH AND ELE):
@@ -100,13 +104,20 @@ export default class MenuController extends Controller {
 		this.master.modelRepo.add('ProxesCleanerModel',model2);
 		this.models['ProxesCleanerModel'] = model2;
 		
+		// Inject CONSTANTS to model:
+		// DH emissions factor: 
+		// DH price: 
 		
-		const model3 = new FlexResultModel({name:'FlexResultModel',src:'',numberOfDays:this.numberOfDays});
+		const model3 = new FlexResultModel({
+			name:'FlexResultModel',
+			src:'',
+			numberOfDays:this.numberOfDays,
+			dhEmissionsFactor: 182,
+			dhPrice: 0.1135 // in e/kWh
+		});
 		model3.subscribe(this);
 		this.master.modelRepo.add('FlexResultModel',model3);
 		this.models['FlexResultModel'] = model3;
-		
-		
 		
 		// These three models will get Electricity consumption for building (with fixed interval and timerange).
 		//These must be set somewhere (before calling fetch on these models):

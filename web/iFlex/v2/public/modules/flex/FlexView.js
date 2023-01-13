@@ -18,19 +18,28 @@ export default class FlexView extends View {//TimeRangeView {
 		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
 		this.PTO.subscribe(this);
 		
-		this.chart = undefined;
+		//this.chart = undefined;
+		this.chartOne = undefined;
+		this.chartTwo = undefined;
+		
 		this.rendered = false;
 		this.FELID = 'flex-view-failure';
-		this.CHARTID = 'flex-chart';
+		//this.CHARTID = 'flex-chart';
+		this.CHART_ONE_ID = 'flex-chart-one';
+		this.CHART_TWO_ID = 'flex-chart-two';
 		
-		this.numberOfDays = 31;
+		this.numberOfDays = this.models['FlexResultModel'].numberOfDays;
+		this.valuesELE = [];
+		this.valuesDH = [];
 		
-		this.values = [];
-		/*
-		this.values = [];
-		this.elecons = [];
-		this.prices = [];
-		*/
+		this.sums = {
+			ele_ene: 0,
+			ele_pri: 0,
+			ele_emi: 0,
+			dh_ene: 0,
+			dh_pri: 0,
+			dh_emi: 0
+		}
 	}
 	
 	show() {
@@ -44,9 +53,13 @@ export default class FlexView extends View {//TimeRangeView {
 		//super.hide();
 		this.PTO.stop();
 		
-		if (typeof this.chart !== 'undefined') {
-			this.chart.dispose();
-			this.chart = undefined;
+		if (typeof this.chartOne !== 'undefined') {
+			this.chartOne.dispose();
+			this.chartOne = undefined;
+		}
+		if (typeof this.chartTwo !== 'undefined') {
+			this.chartTwo.dispose();
+			this.chartTwo = undefined;
 		}
 		this.rendered = false;
 		$(this.el).empty();
@@ -57,9 +70,13 @@ export default class FlexView extends View {//TimeRangeView {
 		this.PTO.stop();
 		this.PTO.unsubscribe(this);
 		
-		if (typeof this.chart !== 'undefined') {
-			this.chart.dispose();
-			this.chart = undefined;
+		if (typeof this.chartOne !== 'undefined') {
+			this.chartOne.dispose();
+			this.chartOne = undefined;
+		}
+		if (typeof this.chartTwo !== 'undefined') {
+			this.chartTwo.dispose();
+			this.chartTwo = undefined;
 		}
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
@@ -67,6 +84,84 @@ export default class FlexView extends View {//TimeRangeView {
 		this.REO.unsubscribe(this);
 		this.rendered = false;
 		$(this.el).empty();
+	}
+	
+	percentage(propA, propB) {
+		const retval = {
+			'A': 0,
+			'B': 0
+		}
+		const sum = this.sums[propA] + this.sums[propB];
+		if (sum > 0) {
+			retval.A = this.sums[propA]*100/sum;
+			retval.B = this.sums[propB]*100/sum;
+		}
+		return retval;
+	}
+	
+	/*
+	Fill class property 
+		this.sums = {
+			ele_ene: 0,
+			ele_pri: 0,
+			ele_emi: 0,
+			dh_ene: 0,
+			dh_pri: 0,
+			dh_emi: 0
+		}
+	and print out both texts to view.
+	*/
+	fillSums() {
+		let ele_ene_sum = 0;
+		let ele_pri_sum = 0;
+		let ele_emi_sum = 0;
+		
+		let dh_ene_sum = 0;
+		let dh_pri_sum = 0;
+		let dh_emi_sum = 0;
+		
+		Object.keys(this.models['FlexResultModel'].dailyBaskets).forEach(key => {
+			const ele_ene = this.models['FlexResultModel'].dailyBaskets[key].ele_energy;
+			const ele_pri = this.models['FlexResultModel'].dailyBaskets[key].ele_price;
+			const ele_emi = this.models['FlexResultModel'].dailyBaskets[key].ele_emissions;
+			const dh_ene = this.models['FlexResultModel'].dailyBaskets[key].dh_energy;
+			const dh_pri = this.models['FlexResultModel'].dailyBaskets[key].dh_price;
+			const dh_emi = this.models['FlexResultModel'].dailyBaskets[key].dh_emissions;
+			
+			ele_ene_sum += ele_ene;
+			ele_pri_sum += ele_pri;
+			ele_emi_sum += ele_emi;
+			
+			dh_ene_sum += dh_ene;
+			dh_pri_sum += dh_pri;
+			dh_emi_sum += dh_emi;
+		});
+		
+		this.sums.ele_ene = ele_ene_sum;
+		this.sums.ele_pri = ele_pri_sum;
+		this.sums.ele_emi = ele_emi_sum;
+		
+		this.sums.dh_ene = dh_ene_sum;
+		this.sums.dh_pri = dh_pri_sum;
+		this.sums.dh_emi = dh_emi_sum;
+		
+		const e_ene = this.percentage('ele_ene', 'dh_ene');
+		const e_pri = this.percentage('ele_pri', 'dh_pri');
+		const e_emi = this.percentage('ele_emi', 'dh_emi');
+		
+		const d_ene = this.percentage('dh_ene', 'ele_ene');
+		const d_pri = this.percentage('dh_pri', 'ele_pri');
+		const d_emi = this.percentage('dh_emi', 'ele_emi');
+		
+		const e_txt = '<span style="color:#0ff">'+e_ene.A.toFixed(0)+'%</span> <span style="color:#aaa"> ('+ele_ene_sum.toFixed(0)+'kWh)</span> '+
+					'<span style="color:#ff0">'+e_pri.A.toFixed(0)+'%</span> <span style="color:#aaa"> ('+ele_pri_sum.toFixed(0)+'€)</span> '+
+					'<span style="color:#0f0">'+e_emi.A.toFixed(0)+'%</span> <span style="color:#aaa"> ('+ele_emi_sum.toFixed(0)+'kg)</span>';
+		$('#ele-sums').empty().append(e_txt);
+		
+		const d_txt = '<span style="color:#0ff">'+d_ene.A.toFixed(0)+'%</span> <span style="color:#aaa">('+dh_ene_sum.toFixed(0)+'kWh)</span> '+
+					'<span style="color:#ff0">'+d_pri.A.toFixed(0)+'%</span> <span style="color:#aaa"> ('+dh_pri_sum.toFixed(0)+'€)</span> '+
+					'<span style="color:#0f0">'+d_emi.A.toFixed(0)+'%</span> <span style="color:#aaa"> ('+dh_emi_sum.toFixed(0)+'kg)</span>';
+		$('#dh-sums').empty().append(d_txt);
 	}
 	
 	extractObixArray(vals) {
@@ -211,71 +306,84 @@ export default class FlexView extends View {//TimeRangeView {
 			dh_emissions: 0,
 			optimization: 0
 	*/
-	fillValues() {
-		console.log('============ FILL VALUES =================');
-		this.values = [];
-		//const bas = this.models['FlexResultModel'].hourlyBaskets;
-		let ele_ene_sum = 0;
-		let ele_pri_sum = 0;
-		let ele_emi_sum = 0;
-		
-		let dh_ene_sum = 0;
-		let dh_pri_sum = 0;
-		let dh_emi_sum = 0;
+	fillValuesELE() {
+		console.log('============ FILL VALUES ELE =================');
+		this.valuesELE = [];
 		
 		Object.keys(this.models['FlexResultModel'].dailyBaskets).forEach(key => {
 			const ele_ene = this.models['FlexResultModel'].dailyBaskets[key].ele_energy;
 			const ele_pri = this.models['FlexResultModel'].dailyBaskets[key].ele_price;
 			const ele_emi = this.models['FlexResultModel'].dailyBaskets[key].ele_emissions;
-			
-			ele_ene_sum += ele_ene;
-			ele_pri_sum += ele_pri;
-			ele_emi_sum += ele_emi;
-			
+			const opt = this.models['FlexResultModel'].dailyBaskets[key].optimization;
+			this.valuesELE.push({
+				timestamp: moment(key).toDate(),
+				ene: ele_ene,
+				pri: ele_pri,
+				emi: ele_emi,
+				opt: opt*20
+			});
+		});
+	}
+	
+	fillValuesDH() {
+		console.log('============ FILL VALUES DH =================');
+		this.valuesDH = [];
+		
+		Object.keys(this.models['FlexResultModel'].dailyBaskets).forEach(key => {
 			const dh_ene = this.models['FlexResultModel'].dailyBaskets[key].dh_energy;
 			const dh_pri = this.models['FlexResultModel'].dailyBaskets[key].dh_price;
 			const dh_emi = this.models['FlexResultModel'].dailyBaskets[key].dh_emissions;
-			
 			const opt = this.models['FlexResultModel'].dailyBaskets[key].optimization;
-			
-			dh_ene_sum += dh_ene;
-			dh_pri_sum += dh_pri;
-			dh_emi_sum += dh_emi;
-			
-			this.values.push({
+			this.valuesDH.push({
 				timestamp: moment(key).toDate(),
-				ele_ene: dh_ene,
-				ele_pri: dh_pri,
-				ele_emi: dh_emi,
+				ene: dh_ene,
+				pri: dh_pri,
+				emi: dh_emi,
 				opt: opt*100
 			});
 		});
-		console.log(['ele_ene_sum=',ele_ene_sum,' ele_pri_sum=',ele_pri_sum,' ele_emi_sum=',ele_emi_sum]);
-		console.log(['dh_ene_sum=',dh_ene_sum,' dh_pri_sum=',dh_pri_sum,' dh_emi_sum=',dh_emi_sum]);
-		
-		const ene_sum = ele_ene_sum + dh_ene_sum;
-		const pri_sum = ele_pri_sum + dh_pri_sum;
-		const emi_sum = ele_emi_sum + dh_emi_sum;
-		
-		console.log(['ene_sum=',ene_sum,' pri_sum=',pri_sum,' emi_sum=',emi_sum]);
 	}
 	
-	updateTheChart() {
+	
+	updateTheChartOne() {
 		const self = this;
-		
-		this.fillValues();
-		
-		console.log('UPDATE THE CHART!');
+		this.fillValuesELE();
+		console.log('UPDATE THE CHART ONE!');
 		$('#'+this.FELID).empty();
-		if (typeof this.chart !== 'undefined') {
+		if (typeof this.chartOne !== 'undefined') {
 			console.log('fetched ..... FlexView CHART UPDATED!');
-			am4core.iter.each(this.chart.series.iterator(), function (s) {
+			am4core.iter.each(this.chartOne.series.iterator(), function (s) {
 				//if (s.name === 'SUM') {
-				s.data = self.values;
+				s.data = self.valuesELE;
+				self.chartOne.invalidateData();
 				//}
 			});
 		} else {
-			this.renderChart();
+			this.renderChartOne();
+		}
+	}
+	
+	/*
+	You can also manipulate and change data in data array.
+	However, the chart itself won't detect such direct changes.
+	To take in the changes, you will need to call chart's method invalidateData() or invalidateRawData().
+	https://www.amcharts.com/docs/v4/concepts/data/
+	*/
+	updateTheChartTwo() {
+		const self = this;
+		this.fillValuesDH();
+		console.log('UPDATE THE CHART TWO!');
+		$('#'+this.FELID).empty();
+		if (typeof this.chartTwo !== 'undefined') {
+			console.log('fetched ..... FlexView CHART UPDATED!');
+			am4core.iter.each(this.chartTwo.series.iterator(), function (s) {
+				//if (s.name === 'SUM') {
+				s.data = self.valuesDH;
+				self.chartTwo.invalidateData();
+				//}
+			});
+		} else {
+			this.renderChartTwo();
 		}
 	}
 	
@@ -284,20 +392,21 @@ export default class FlexView extends View {//TimeRangeView {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				
-				if (typeof this.chart !== 'undefined') {
-					this.chart.dispose();
-					this.chart = undefined;
+				if (typeof this.chartOne !== 'undefined') {
+					this.chartOne.dispose();
+					this.chartOne = undefined;
+				}
+				if (typeof this.chartTwo !== 'undefined') {
+					this.chartTwo.dispose();
+					this.chartTwo = undefined;
 				}
 				this.render();
+				this.fillSums();
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				
-				//super.notify(options);
 				// Reset data arrays.
-				
 				this.models['FlexResultModel'].reset();
-				//this.elecons = [];
-				//this.prices = [];
 				
 				console.log('PeriodicTimeoutObserver timeout!');
 				Object.keys(this.models).forEach(key => {
@@ -349,9 +458,12 @@ export default class FlexView extends View {//TimeRangeView {
 					const priceArray = this.models['FlexResultModel'].merge('ele_cons','ele_prices');
 					
 					this.models['FlexResultModel'].update('ele_price', priceArray);
-					this.updateTheChart();
+					this.updateTheChartOne();
+					this.fillSums();
 					
 				} else { // Error in fetching.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
 					console.log('ERROR in fetching '+options.model+'.');
 				}
 				
@@ -365,9 +477,13 @@ export default class FlexView extends View {//TimeRangeView {
 						this.models['FlexResultModel'].copy('optimizations',optimizations);
 						this.models['FlexResultModel'].update('optimization', optimizations);
 						
-						this.updateTheChart();
+						this.updateTheChartOne();
+						this.updateTheChartTwo();
+						this.fillSums();
 					}
 				} else { // Error in fetching.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
 					console.log('ERROR in fetching '+options.model+'.');
 				}
 				
@@ -383,10 +499,13 @@ export default class FlexView extends View {//TimeRangeView {
 							const emisArray = this.models['FlexResultModel'].merge('ele_cons','ele_emission_factors');
 							
 							this.models['FlexResultModel'].update('ele_emissions', emisArray);
-							this.updateTheChart();
+							this.updateTheChartOne();
+							this.fillSums();
 						}
 					}
 				} else { // Error in fetching.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
 					console.log('ERROR in fetching '+options.model+'.');
 				}
 				
@@ -406,11 +525,14 @@ export default class FlexView extends View {//TimeRangeView {
 							this.models['FlexResultModel'].update('dh_price', dh_cons);
 							this.models['FlexResultModel'].update('dh_emissions', dh_cons);
 							
-							this.updateTheChart();
+							this.updateTheChartTwo();
+							this.fillSums();
 						}
 					}
 					
 				} else { // Error in fetching.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
 					console.log('ERROR in fetching '+options.model+'.');
 				}
 				
@@ -429,15 +551,61 @@ export default class FlexView extends View {//TimeRangeView {
 							this.models['FlexResultModel'].update('ele_price', priceArray);
 							this.models['FlexResultModel'].update('ele_emissions', emisArray);
 							
-							this.updateTheChart();
+							this.updateTheChartOne();
+							this.fillSums();
 						}
 					}
+				} else { // Error in fetching.
+					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
+					$('#'+this.FELID).empty().append(html);
+					console.log('ERROR in fetching '+options.model+'.');
 				}
 			}
 		}
 	}
 	
-	renderChart() {
+	isDateOptimized(yyyy_mm_dd) {
+		//console.log(['==================== isDateOptimized yyyy_mm_dd=',yyyy_mm_dd]);
+		let retval = false;
+		this.valuesELE.forEach(v=>{
+			//console.log(['v=',v]);
+			const date = v.timestamp;
+			const dd = date.getDate();
+			const mm = date.getMonth()+1;
+			const yyyy = date.getFullYear();
+			let s = yyyy + '-';
+			if (mm < 10) {
+				s += '0' + mm + '-';
+			} else {
+				s += mm + '-';
+			}
+			if (dd < 10) {
+				s += '0' + dd;
+			} else {
+				s += dd;
+			}
+			if (yyyy_mm_dd === s) {
+				if (v.opt === 0) {
+					retval = false;
+				} else {
+					retval = true;
+				}
+			}
+		});
+		/*
+		if (this.models['FlexResultModel'].dailyBaskets.hasOwnProperty(yyyy_mm_dd)) {
+			if (this.models['FlexResultModel'].dailyBaskets[yyyy_mm_dd].optimization === 0) {
+				retval = false;
+			} else {
+				retval = true;
+			}
+		}
+		*/
+		//console.log(['==================== isDateOptimized retval=',retval]);
+		return retval;
+	}
+	
+	renderChartOne() {
 		const self = this;
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
@@ -470,30 +638,100 @@ export default class FlexView extends View {//TimeRangeView {
 			// Themes end
 			
 			// Create chart
-			self.chart = am4core.create(self.CHARTID, am4charts.XYChart);
+			self.chartOne = am4core.create(self.CHART_ONE_ID, am4charts.XYChart);
 			self.paddingRight = 20;
-			self.chart.numberFormatter.numberFormat = "#.##";
+			self.chartOne.numberFormatter.numberFormat = "#.##";
 			//self.chart.data = generateChartData();
 			
 			// {'timestamp':...,'value':...}
 			//self.chart.data = self.models['BuildingElectricityPL1Model'].values;
 			//console.log(['self.chart.data=',self.chart.data]);
 			
-			var dateAxis = self.chart.xAxes.push(new am4charts.DateAxis());
+			var dateAxis = self.chartOne.xAxes.push(new am4charts.DateAxis());
 			//dateAxis.baseInterval = {"timeUnit": "minute","count": 60};
 			dateAxis.baseInterval = {"timeUnit": "hour","count":24};
 			//dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
 			//dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
-			dateAxis.tooltipDateFormat = "d MMMM";
+			//dateAxis.tooltipDateFormat = "d MMMM";
+			dateAxis.tooltipDateFormat = "dd.MM.yyyy";
+			//dateAxis.dateFormatter = new am4core.DateFormatter();
+			//dateAxis.dateFormatter.dateFormat = "dd.MM.yyyy";
 			
-			var valueAxis = self.chart.yAxes.push(new am4charts.ValueAxis());
+			// Show dates with optimization "ON" with different background color.
+			// SEE: https://www.amcharts.com/docs/v4/tutorials/using-axis-ranges-to-highlight-weekends/
+			dateAxis.events.on("datavalidated", function(ev) {
+				var axis = ev.target;
+				var start = axis.positionToDate(0);
+				var end = axis.positionToDate(1);
+				// Get weekends
+				var current = new Date(start);
+				while (current < end) {
+					// Get weekend start and end dates
+					
+					//var weekendStart = getWeekend(current);
+					//var weekendEnd = new Date(weekendStart);
+					//weekendEnd.setDate(weekendEnd.getDate() + 1);
+					if (isWeekend(current)) {
+						// Create a range
+						//console.log('!!!!!!!!!!!!!!!!!!!! ========= CREATE A RANGE =============!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+						var range = axis.axisRanges.create();
+						
+						var begin = new Date(current);
+						range.date = begin;
+						var ende = new Date(current);
+						ende.setDate(begin.getDate() + 1);
+						range.endDate = ende;
+						
+						range.axisFill.fill = am4core.color("#f80");
+						range.axisFill.fillOpacity = 0.25;
+						range.grid.strokeOpacity = 0;
+					}
+					// Iterate
+					current.setDate(current.getDate() + 1);
+				}
+				function isWeekend(date) {
+					const dd = date.getDate();
+					const mm = date.getMonth()+1;
+					const yyyy = date.getFullYear();
+					let s = yyyy + '-';
+					if (mm < 10) {
+						s += '0' + mm + '-';
+					} else {
+						s += mm + '-';
+					}
+					if (dd < 10) {
+						s += '0' + dd;
+					} else {
+						s += dd;
+					}
+					return self.isDateOptimized(s);
+					//var lastday = date.getDate() - (date.getDay() || 7) + 6;
+					//var lastdate = new Date(date);
+					//lastdate.setDate(lastday);
+					//return lastdate;
+				}
+			});
+			
+			
+			
+			// https://www.amcharts.com/docs/v4/concepts/axes/date-axis/#Formatting_date_and_time
+			//dateAxis.dateFormats.setKey("day", "dd");
+			//dateAxis.periodChangeDateFormats.setKey("day", "dd");
+/*
+Type DateFormatter
+Inherited from Sprite
+A DateFormatter instance.
+This is used to format dates, e.g. on a date axes, balloons, etc.
+chart.dateFormatter.dateFormat = "yyyy-MM-dd";
+*/
+			var valueAxis = self.chartOne.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_power_axis;
 			
-			const seri = self.chart.series.push(new am4charts.LineSeries());
-			seri.data = self.values;
+			const seri = self.chartOne.series.push(new am4charts.LineSeries());
+			seri.data = self.valuesELE;
 			seri.dataFields.dateX = "timestamp";
-			seri.dataFields.valueY = "ele_ene";
+			seri.dataFields.valueY = "ene";
 			seri.tooltipText = tooltip_ele_ene + ": [bold]{valueY}[/] kWh";
 			//seri.tooltipText = "el energy: [bold]{valueY}[/] kWh";
 			seri.fillOpacity = 0.2;
@@ -503,10 +741,10 @@ export default class FlexView extends View {//TimeRangeView {
 			seri.fill = "#0ff";
 			seri.legendSettings.labelText = "{customname}";
 			
-			const seri2 = self.chart.series.push(new am4charts.LineSeries());
-			seri2.data = self.values;
+			const seri2 = self.chartOne.series.push(new am4charts.LineSeries());
+			seri2.data = self.valuesELE;
 			seri2.dataFields.dateX = "timestamp";
-			seri2.dataFields.valueY = "ele_pri";
+			seri2.dataFields.valueY = "pri";
 			//seri2.tooltipText = localized_string_price + ": [bold]{valueY}[/] cent/kWh";
 			seri2.tooltipText = tooltip_ele_pri + ": [bold]{valueY}[/] €";
 			seri2.fillOpacity = 0.2;
@@ -516,10 +754,10 @@ export default class FlexView extends View {//TimeRangeView {
 			seri2.fill = "#ff0";
 			seri2.legendSettings.labelText = "{customname}";
 			
-			const seri3 = self.chart.series.push(new am4charts.LineSeries());
-			seri3.data = self.values;
+			const seri3 = self.chartOne.series.push(new am4charts.LineSeries());
+			seri3.data = self.valuesELE;
 			seri3.dataFields.dateX = "timestamp";
-			seri3.dataFields.valueY = "ele_emi";
+			seri3.dataFields.valueY = "emi";
 			seri3.tooltipText = tooltip_ele_emi + ": [bold]{valueY}[/] kg";
 			seri3.fillOpacity = 0.2;
 			seri3.name = 'ELEMISSIONS';
@@ -528,36 +766,161 @@ export default class FlexView extends View {//TimeRangeView {
 			seri3.fill = "#0f0";
 			seri3.legendSettings.labelText = "{customname}";
 			
-			
-			
-			const seri4 = self.chart.series.push(new am4charts.ColumnSeries());
-			seri4.data = self.values;
+			/*
+			const seri4 = self.chartOne.series.push(new am4charts.ColumnSeries());
+			seri4.data = self.valuesELE;
 			//seri4.columns.template.width = am4core.percent(70);
 			//seri4.columns.template.maxWidth = 50;
 			seri4.columns.template.minWidth = 50;
 			seri4.dataFields.dateX = "timestamp";
 			seri4.dataFields.valueY = "opt";
 			seri4.tooltipText = tooltip_ele_opt + ": [bold]{valueY}[/]";
-			seri4.fillOpacity = 0.2;
+			seri4.fillOpacity = 0.5;
 			seri4.name = 'OPTIMIZATION';
 			seri4.customname = legend_ele_opt;
-			seri4.stroke = am4core.color("#ccc");
-			seri4.fill = "#ccc";
+			seri4.stroke = am4core.color("#f80");
+			seri4.fill = "#f80";
 			seri4.legendSettings.labelText = "{customname}";
-			
+			*/
 			// Legend:
-			self.chart.legend = new am4charts.Legend();
-			self.chart.legend.useDefaultMarker = true;
-			var marker = self.chart.legend.markers.template.children.getIndex(0);
+			self.chartOne.legend = new am4charts.Legend();
+			self.chartOne.legend.useDefaultMarker = true;
+			var marker = self.chartOne.legend.markers.template.children.getIndex(0);
 			marker.cornerRadius(12, 12, 12, 12);
 			marker.strokeWidth = 2;
 			marker.strokeOpacity = 1;
 			marker.stroke = am4core.color("#000");
 			
-			self.chart.cursor = new am4charts.XYCursor();
-			self.chart.cursor.lineY.opacity = 0;
-			self.chart.scrollbarX = new am4charts.XYChartScrollbar();
-			self.chart.scrollbarX.series.push(seri);
+			self.chartOne.cursor = new am4charts.XYCursor();
+			self.chartOne.cursor.lineY.opacity = 0;
+			self.chartOne.scrollbarX = new am4charts.XYChartScrollbar();
+			self.chartOne.scrollbarX.series.push(seri);
+			
+			dateAxis.start = 0.0;
+			dateAxis.end = 1.0;
+			dateAxis.keepSelection = true;
+			
+		}); // end am4core.ready()
+	}
+	
+	renderChartTwo() {
+		const self = this;
+		
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		
+		const tooltip_ele_ene = 'Energy';//LM['translation'][sel]['BUILDING_POWER'];
+		const tooltip_ele_pri = 'Price';//LM['translation'][sel]['BUILDING_POWER'];
+		const tooltip_ele_emi = 'Emissions';//LM['translation'][sel]['BUILDING_POWER'];
+		const tooltip_ele_opt = 'Optimization';
+		
+		const localized_string_power_axis = ''; //LM['translation'][sel]['BUILDING_POWER_AXIS_LABEL'];
+		const legend_ele_ene = 'Energy (kWh)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
+		const legend_ele_pri = 'Price (€)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
+		const legend_ele_emi = 'Emissions (kg)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
+		const legend_ele_opt = 'Optimization';
+		/*
+			const ele_ene = this.models['FlexResultModel'].dailyBaskets[key].ele_energy;
+			const ele_pri = this.models['FlexResultModel'].dailyBaskets[key].ele_price;
+			const ele_emi = this.models['FlexResultModel'].dailyBaskets[key].ele_emissions;
+			
+			const dh_ene = this.models['FlexResultModel'].dailyBaskets[key].dh_energy;
+			const dh_pri = this.models['FlexResultModel'].dailyBaskets[key].dh_price;
+			const dh_emi = this.models['FlexResultModel'].dailyBaskets[key].dh_emissions;
+		*/
+		am4core.ready(function() {
+			// Themes begin
+			am4core.useTheme(am4themes_dark);
+			//am4core.useTheme(am4themes_animated);
+			// Themes end
+			
+			// Create chart
+			self.chartTwo = am4core.create(self.CHART_TWO_ID, am4charts.XYChart);
+			self.paddingRight = 20;
+			self.chartTwo.numberFormatter.numberFormat = "#.##";
+			//self.chart.data = generateChartData();
+			
+			// {'timestamp':...,'value':...}
+			//self.chart.data = self.models['BuildingElectricityPL1Model'].values;
+			//console.log(['self.chart.data=',self.chart.data]);
+			
+			var dateAxis = self.chartTwo.xAxes.push(new am4charts.DateAxis());
+			//dateAxis.baseInterval = {"timeUnit": "minute","count": 60};
+			dateAxis.baseInterval = {"timeUnit": "hour","count":24};
+			//dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
+			//dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
+			dateAxis.tooltipDateFormat = "d MMMM";
+			
+			var valueAxis = self.chartTwo.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.tooltip.disabled = true;
+			valueAxis.title.text = localized_string_power_axis;
+			
+			const seri = self.chartTwo.series.push(new am4charts.LineSeries());
+			seri.data = self.valuesDH;
+			seri.dataFields.dateX = "timestamp";
+			seri.dataFields.valueY = "ene";
+			seri.tooltipText = tooltip_ele_ene + ": [bold]{valueY}[/] kWh";
+			//seri.tooltipText = "el energy: [bold]{valueY}[/] kWh";
+			seri.fillOpacity = 0.2;
+			seri.name = 'DHENERGY';
+			seri.customname = legend_ele_ene;
+			seri.stroke = am4core.color("#0ff");
+			seri.fill = "#0ff";
+			seri.legendSettings.labelText = "{customname}";
+			
+			const seri2 = self.chartTwo.series.push(new am4charts.LineSeries());
+			seri2.data = self.valuesDH;
+			seri2.dataFields.dateX = "timestamp";
+			seri2.dataFields.valueY = "pri";
+			//seri2.tooltipText = localized_string_price + ": [bold]{valueY}[/] cent/kWh";
+			seri2.tooltipText = tooltip_ele_pri + ": [bold]{valueY}[/] €";
+			seri2.fillOpacity = 0.2;
+			seri2.name = 'DHPRICE';
+			seri2.customname = legend_ele_pri;
+			seri2.stroke = am4core.color("#ff0");
+			seri2.fill = "#ff0";
+			seri2.legendSettings.labelText = "{customname}";
+			
+			const seri3 = self.chartTwo.series.push(new am4charts.LineSeries());
+			seri3.data = self.valuesDH;
+			seri3.dataFields.dateX = "timestamp";
+			seri3.dataFields.valueY = "emi";
+			seri3.tooltipText = tooltip_ele_emi + ": [bold]{valueY}[/] kg";
+			seri3.fillOpacity = 0.2;
+			seri3.name = 'DHEMISSIONS';
+			seri3.customname = legend_ele_emi;
+			seri3.stroke = am4core.color("#0f0");
+			seri3.fill = "#0f0";
+			seri3.legendSettings.labelText = "{customname}";
+			
+			const seri4 = self.chartTwo.series.push(new am4charts.ColumnSeries());
+			seri4.data = self.valuesDH;
+			//seri4.columns.template.width = am4core.percent(70);
+			//seri4.columns.template.maxWidth = 50;
+			seri4.columns.template.minWidth = 50;
+			seri4.dataFields.dateX = "timestamp";
+			seri4.dataFields.valueY = "opt";
+			seri4.tooltipText = tooltip_ele_opt + ": [bold]{valueY}[/]";
+			seri4.fillOpacity = 0.5;
+			seri4.name = 'OPTIMIZATION';
+			seri4.customname = legend_ele_opt;
+			seri4.stroke = am4core.color("#f80");
+			seri4.fill = "#f80";
+			seri4.legendSettings.labelText = "{customname}";
+			
+			// Legend:
+			self.chartTwo.legend = new am4charts.Legend();
+			self.chartTwo.legend.useDefaultMarker = true;
+			var marker = self.chartTwo.legend.markers.template.children.getIndex(0);
+			marker.cornerRadius(12, 12, 12, 12);
+			marker.strokeWidth = 2;
+			marker.strokeOpacity = 1;
+			marker.stroke = am4core.color("#000");
+			
+			self.chartTwo.cursor = new am4charts.XYCursor();
+			self.chartTwo.cursor.lineY.opacity = 0;
+			self.chartTwo.scrollbarX = new am4charts.XYChartScrollbar();
+			self.chartTwo.scrollbarX.series.push(seri);
 			
 			dateAxis.start = 0.0;
 			dateAxis.end = 1.0;
@@ -573,7 +936,8 @@ export default class FlexView extends View {//TimeRangeView {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		const localized_string_title = LM['translation'][sel]['BUILDING_FLEXIBILITY_TITLE'];
-		const localized_string_descr = LM['translation'][sel]['BUILDING_FLEXIBILITY_DESCRIPTION'];
+		const ele_descr = LM['translation'][sel]['BUILDING_FLEXIBILITY_ELE_DESCRIPTION'];
+		const dh_descr = LM['translation'][sel]['BUILDING_FLEXIBILITY_DH_DESCRIPTION'];
 		const localized_string_back = LM['translation'][sel]['BACK'];
 		
 		const html =
@@ -581,15 +945,23 @@ export default class FlexView extends View {//TimeRangeView {
 				'<div class="col s12 center">'+
 					'<h4>'+localized_string_title+'</h4>'+
 					'<p style="text-align:center;"><img src="./svg/flex.svg" height="80"/></p>'+
-					'<p style="text-align:center;">'+localized_string_descr+'</p>'+
+				'</div>'+
+			'</div>'+
+			//'<div class="row">'+
+			//	'<div class="col s12 center" id="timerange-buttons-wrapper"></div>'+
+			//'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 chart-wrapper dark-theme">'+
+					'<p style="color:#fff;text-align:center;">'+ele_descr+'</p>'+
+					'<p id="ele-sums" style="color:#fff;text-align:center;" ></p>'+
+					'<div id="'+this.CHART_ONE_ID+'" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
-				'<div class="col s12 center" id="timerange-buttons-wrapper"></div>'+
-			'</div>'+
-			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					'<div id="'+this.CHARTID+'" class="large-chart"></div>'+
+					'<p style="color:#fff;text-align:center;">'+dh_descr+'</p>'+
+					'<p id="dh-sums" style="color:#fff;text-align:center;" ></p>'+
+					'<div id="'+this.CHART_TWO_ID+'" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -633,19 +1005,17 @@ export default class FlexView extends View {//TimeRangeView {
 					this.forceLogout(this.FELID);
 				}
 			} else {
-				
-				
 				console.log('================ MODELS ARE READY!!! (FlexView) ==================');
-				
-				//const arra = this.models['FlexResultModel'].raw_ele_energy;
-				//console.log(['raw_ele_energy=',arra]);
-				
-				this.fillValues();
-				this.renderChart();
+				this.fillValuesELE();
+				this.renderChartOne();
+				this.fillValuesDH();
+				this.renderChartTwo();
+				this.fillSums();
 			}
 		} else {
 			console.log('FlexView => render models ARE NOT READY!!!!');
-			this.showSpinner('#'+this.CHARTID);
+			this.showSpinner('#'+this.CHART_ONE_ID);
+			this.showSpinner('#'+this.CHART_TWO_ID);
 		}
 	}
 }

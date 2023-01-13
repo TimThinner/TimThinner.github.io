@@ -64,7 +64,7 @@ export default class MenuController extends Controller {
 		// Interval for fetching ENTSOE Electricity day-ahead price and 
 		// fetching building electricity consumption with "PT60M".
 		this.fetching_interval_in_seconds = 1800; // 30 x 60 Twice per hour 
-		this.numberOfDays = 31;
+		this.numberOfDays = 30;
 		
 		// These are the models that are created in this Controller:
 		

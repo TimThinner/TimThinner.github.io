@@ -25,7 +25,7 @@ export default class FlexResultModel extends Model {
 		if (typeof options.numberOfDays !== 'undefined') {
 			this.numberOfDays = options.numberOfDays;
 		} else {
-			this.numberOfDays = 31;
+			this.numberOfDays = 30;
 		}
 		
 		if (typeof options.dhEmissionsFactor !== 'undefined') {
@@ -81,7 +81,7 @@ export default class FlexResultModel extends Model {
 		const arra = this[propa];
 		const arrb = this[propb];
 		if (arra.length > 0 && arrb.length > 0) {
-			console.log('======== MERGE! =========');
+			//console.log('======== MERGE! =========');
 			const bucket = {};
 			// For all consumption timestamps, check if price exist.
 			arra.forEach(e=>{
@@ -138,7 +138,6 @@ export default class FlexResultModel extends Model {
 		
 		for (let i=this.numberOfDays; i>0; i--) {
 			const s_date = moment().subtract(i,'days').format('YYYY-MM-DD');
-			
 			this.dailyBaskets[s_date] = {
 				ele_energy: 0,
 				ele_price: 0,
@@ -304,7 +303,6 @@ export default class FlexResultModel extends Model {
 		
 		optimizations					=>	optimization
 		
-		
 		MONTHLY SAVINGS:
 		
 		Energy Cost:
@@ -361,27 +359,33 @@ export default class FlexResultModel extends Model {
 		// The pop() method removes the last element from an array and returns that element.
 		const blen = base_arr.length;
 		const olen = opt_arr.length;
-		if (blen > olen) {
+		if (blen === olen) {
+			
+			console.log('================ BASE AND OPTIMIZED DAYS ARE EQUAL SIZE! ================');
+			
+		} else if (blen > olen) {
 			const diff = blen - olen;
 			console.log(['BASE-SET HAS MORE DAYS THAN OPTIMIZED-SET diff=',diff]);
 			for (let i=0; i<diff; i++) {
-				base_arr.pop();
+				base_arr.shift(); // .pop(); NOTE: use shift() to remove elements starting from from oldest
+				//const temp = base_arr.shift(); // .pop(); NOTE: use shift() to remove elements starting from from oldest
+				//console.log(['BASE prop=',prop,' temp=',temp]);
 			}
 		} else if (olen > blen) {
 			const diff = olen - blen;
 			console.log(['OPTIMIZED-SET HAS MORE DAYS THAN BASE-SET diff=',diff]);
 			for (let i=0; i<diff; i++) {
-				opt_arr.pop();
+				opt_arr.shift();
+				//const temp = opt_arr.shift(); // .pop(); NOTE: use shift() to remove elements starting from from oldest
+				//console.log(['OPT prop=',prop,' temp=',temp]);
 			}
 		}
-		console.log(['BEFORE popping baselen=',base_arr.length,' and optlen=',opt_arr.length]);
 		while (base_arr.length > 0) {
 			retval.base += base_arr.pop();
 		}
 		while (opt_arr.length > 0) {
 			retval.opt += opt_arr.pop();
 		}
-		
 		/*
 		if (base_count > 0) {
 			retval.base = retval.base/base_count;

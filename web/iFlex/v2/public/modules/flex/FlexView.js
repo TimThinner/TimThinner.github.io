@@ -2,7 +2,11 @@
 
 import View from '../common//View.js';
 import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js'
+/*
 
+
+
+*/
 export default class FlexView extends View {//TimeRangeView {
 	
 	constructor(controller) {
@@ -18,17 +22,14 @@ export default class FlexView extends View {//TimeRangeView {
 		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
 		this.PTO.subscribe(this);
 		
-		//this.chart = undefined;
 		this.chartOne = undefined;
 		this.chartTwo = undefined;
 		
 		this.rendered = false;
 		this.FELID = 'flex-view-failure';
-		//this.CHARTID = 'flex-chart';
 		this.CHART_ONE_ID = 'flex-chart-one';
 		this.CHART_TWO_ID = 'flex-chart-two';
 		
-		this.numberOfDays = this.models['FlexResultModel'].numberOfDays;
 		this.valuesELE = [];
 		this.valuesDH = [];
 		
@@ -78,6 +79,7 @@ export default class FlexView extends View {//TimeRangeView {
 			this.chartTwo.dispose();
 			this.chartTwo = undefined;
 		}
+		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -99,6 +101,66 @@ export default class FlexView extends View {//TimeRangeView {
 		return retval;
 	}
 	
+	fillTotals(prop, sums) {
+		/*
+		const d_txt = '<span style="color:#0ff">'+d_ene.A.toFixed(0)+'%</span> <span style="color:#aaa">('+dh_ene_sum.toFixed(0)+'kWh)</span> '+
+					'<span style="color:#ff0">'+d_pri.A.toFixed(0)+'%</span> <span style="color:#aaa"> ('+dh_pri_sum.toFixed(0)+'€)</span> '+
+					'<span style="color:#0f0">'+d_emi.A.toFixed(0)+'%</span> <span style="color:#aaa"> ('+dh_emi_sum.toFixed(0)+'kg)</span>';
+		*/
+		
+		const base_ele = sums.base_ele;
+		const base_dh = sums.base_dh;
+		const base_total = base_ele + base_dh;
+		
+		const opt_ele = sums.opt_ele;
+		const opt_dh = sums.opt_dh;
+		const opt_total = opt_ele + opt_dh;
+		
+		const tot_ele = base_ele + opt_ele;
+		const tot_dh = base_dh + opt_dh;
+		const tot_total = base_total + opt_total;
+		
+		let title = '';
+		if (prop === 'energy') {
+			title = '<h5>Energy (kWh)</h5>';
+		} else if (prop === 'price') {
+			title = '<h5>Price (€)</h5>';
+		} else {
+			title = '<h5>Emissions (kg CO2)</h5>';
+		}
+		
+		const markup = title +
+			'<table class="centered"><thead><tr><th>BASE/OPT</th><th>ELE</th><th>DH</th><th>TOTAL</th></tr></thead>'+
+			'<tbody>'+
+				'<tr>'+
+					'<td>BASE</td>'+
+					'<td>'+base_ele.toFixed(0)+'</td>'+
+					'<td>'+base_dh.toFixed(0)+'</td>'+
+					'<td>'+base_total.toFixed(0)+'</td>'+
+				'</tr>'+
+				'<tr>'+
+					'<td>OPT</td>'+
+					'<td>'+opt_ele.toFixed(0)+'</td>'+
+					'<td>'+opt_dh.toFixed(0)+'</td>'+
+					'<td>'+opt_total.toFixed(0)+'</td>'+
+				'</tr>'+
+				'<tr>'+
+					'<td></td>'+
+					'<td><b>'+tot_ele.toFixed(0)+'</b></td>'+
+					'<td><b>'+tot_dh.toFixed(0)+'</b></td>'+
+					'<td>'+tot_total.toFixed(0)+'</td>'+
+				'</tr>'+
+			'</tbody>'+
+		'</table>';
+		
+		if (prop === 'energy') {
+			$('#flex-totals-ene').empty().append(markup);
+		} else if (prop === 'price') {
+			$('#flex-totals-pri').empty().append(markup);
+		} else { // 'emissions'
+			$('#flex-totals-emi').empty().append(markup);
+		}
+	}
 	/*
 	Fill class property 
 		this.sums = {
@@ -309,7 +371,6 @@ export default class FlexView extends View {//TimeRangeView {
 	fillValuesELE() {
 		console.log('============ FILL VALUES ELE =================');
 		this.valuesELE = [];
-		
 		Object.keys(this.models['FlexResultModel'].dailyBaskets).forEach(key => {
 			const ele_ene = this.models['FlexResultModel'].dailyBaskets[key].ele_energy;
 			const ele_pri = this.models['FlexResultModel'].dailyBaskets[key].ele_price;
@@ -320,7 +381,7 @@ export default class FlexView extends View {//TimeRangeView {
 				ene: ele_ene,
 				pri: ele_pri,
 				emi: ele_emi,
-				opt: opt*20
+				opt: opt
 			});
 		});
 	}
@@ -328,7 +389,6 @@ export default class FlexView extends View {//TimeRangeView {
 	fillValuesDH() {
 		console.log('============ FILL VALUES DH =================');
 		this.valuesDH = [];
-		
 		Object.keys(this.models['FlexResultModel'].dailyBaskets).forEach(key => {
 			const dh_ene = this.models['FlexResultModel'].dailyBaskets[key].dh_energy;
 			const dh_pri = this.models['FlexResultModel'].dailyBaskets[key].dh_price;
@@ -339,9 +399,78 @@ export default class FlexView extends View {//TimeRangeView {
 				ene: dh_ene,
 				pri: dh_pri,
 				emi: dh_emi,
-				opt: opt*100
+				opt: opt
 			});
 		});
+	}
+	
+	isDateOptimized(v_array, yyyy_mm_dd) {
+		//console.log(['==================== isDateOptimized yyyy_mm_dd=',yyyy_mm_dd]);
+		let retval = false;
+		/*
+		if (this.models['FlexResultModel'].dailyBaskets.hasOwnProperty(yyyy_mm_dd)) {
+			if (this.models['FlexResultModel'].dailyBaskets[yyyy_mm_dd].optimization === 0) {
+				retval = false;
+			} else {
+				retval = true;
+			}
+		}*/
+		v_array.every(v=>{
+			const date = v.timestamp;
+			const dd = date.getDate();
+			const mm = date.getMonth()+1;
+			const yyyy = date.getFullYear();
+			let s = yyyy + '-';
+			if (mm < 10) {
+				s += '0' + mm + '-';
+			} else {
+				s += mm + '-';
+			}
+			if (dd < 10) {
+				s += '0' + dd;
+			} else {
+				s += dd;
+			}
+			if (yyyy_mm_dd === s) {
+				if (v.opt === 0) {
+					retval = false;
+				} else {
+					retval = true;
+				}
+				return false; // break out from the loop.
+			}
+			// Make sure you return true. If you don't return a value, `every()` will stop.
+			return true;
+		});
+		/*
+		v_array.forEach(v=>{
+			//console.log(['v=',v]);
+			const date = v.timestamp;
+			const dd = date.getDate();
+			const mm = date.getMonth()+1;
+			const yyyy = date.getFullYear();
+			let s = yyyy + '-';
+			if (mm < 10) {
+				s += '0' + mm + '-';
+			} else {
+				s += mm + '-';
+			}
+			if (dd < 10) {
+				s += '0' + dd;
+			} else {
+				s += dd;
+			}
+			if (yyyy_mm_dd === s) {
+				if (v.opt === 0) {
+					retval = false;
+				} else {
+					retval = true;
+				}
+			}
+		});
+		*/
+		//console.log(['==================== isDateOptimized retval=',retval]);
+		return retval;
 	}
 	
 	
@@ -401,7 +530,6 @@ export default class FlexView extends View {//TimeRangeView {
 					this.chartTwo = undefined;
 				}
 				this.render();
-				this.fillSums();
 				
 			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
 				
@@ -421,7 +549,8 @@ export default class FlexView extends View {//TimeRangeView {
 						// const body_period_start = moment.utc().subtract(bv, bu).format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
 						// const body_period_end = moment.utc().format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
 						
-						const daysToFetch = this.numberOfDays+1;
+						const numberOfDays = this.models['FlexResultModel'].numberOfDays;
+						const daysToFetch = numberOfDays+1;
 						const timerange = {begin:{value:daysToFetch,unit:'days'}};
 						this.models[key].fetch(timerange);
 						
@@ -435,7 +564,8 @@ export default class FlexView extends View {//TimeRangeView {
 						//'OptimizationModel'
 						
 						// See if these params are enough?
-						const daysToFetch = this.numberOfDays+1;
+						const numberOfDays = this.models['FlexResultModel'].numberOfDays;
+						const daysToFetch = numberOfDays+1;
 						this.models[key].interval = 'PT60M';
 						this.models[key].timerange = {begin:{value:daysToFetch,unit:'days'},end:{value:0,unit:'days'}};
 						// Add empty object as dummy parameter.
@@ -456,10 +586,14 @@ export default class FlexView extends View {//TimeRangeView {
 					
 					this.models['FlexResultModel'].copy('ele_prices',ele_prices);
 					const priceArray = this.models['FlexResultModel'].merge('ele_cons','ele_prices');
-					
 					this.models['FlexResultModel'].update('ele_price', priceArray);
+					
 					this.updateTheChartOne();
 					this.fillSums();
+					
+					const sumB = this.models['FlexResultModel'].calculate_separate('price');
+					this.fillTotals('price', sumB);
+					
 					
 				} else { // Error in fetching.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
@@ -479,7 +613,16 @@ export default class FlexView extends View {//TimeRangeView {
 						
 						this.updateTheChartOne();
 						this.updateTheChartTwo();
-						this.fillSums();
+						// this.fillSums(); NO NEED FOR RE-CALCULATION, optimization is not used in sums.
+						
+						const sumA = this.models['FlexResultModel'].calculate_separate('energy');
+						this.fillTotals('energy', sumA);
+						
+						const sumB = this.models['FlexResultModel'].calculate_separate('price');
+						this.fillTotals('price', sumB);
+						
+						const sumC = this.models['FlexResultModel'].calculate_separate('emissions');
+						this.fillTotals('emissions', sumC);
 					}
 				} else { // Error in fetching.
 					const html = '<div class="error-message"><p>'+options.message+'</p></div>';
@@ -500,7 +643,10 @@ export default class FlexView extends View {//TimeRangeView {
 							
 							this.models['FlexResultModel'].update('ele_emissions', emisArray);
 							this.updateTheChartOne();
+							
 							this.fillSums();
+							const sumC = this.models['FlexResultModel'].calculate_separate('emissions');
+							this.fillTotals('emissions', sumC);
 						}
 					}
 				} else { // Error in fetching.
@@ -527,6 +673,15 @@ export default class FlexView extends View {//TimeRangeView {
 							
 							this.updateTheChartTwo();
 							this.fillSums();
+							
+							const sumA = this.models['FlexResultModel'].calculate_separate('energy');
+							this.fillTotals('energy', sumA);
+							
+							const sumB = this.models['FlexResultModel'].calculate_separate('price');
+							this.fillTotals('price', sumB);
+							
+							const sumC = this.models['FlexResultModel'].calculate_separate('emissions');
+							this.fillTotals('emissions', sumC);
 						}
 					}
 					
@@ -553,6 +708,15 @@ export default class FlexView extends View {//TimeRangeView {
 							
 							this.updateTheChartOne();
 							this.fillSums();
+							
+							const sumA = this.models['FlexResultModel'].calculate_separate('energy');
+							this.fillTotals('energy', sumA);
+							
+							const sumB = this.models['FlexResultModel'].calculate_separate('price');
+							this.fillTotals('price', sumB);
+							
+							const sumC = this.models['FlexResultModel'].calculate_separate('emissions');
+							this.fillTotals('emissions', sumC);
 						}
 					}
 				} else { // Error in fetching.
@@ -562,47 +726,6 @@ export default class FlexView extends View {//TimeRangeView {
 				}
 			}
 		}
-	}
-	
-	isDateOptimized(yyyy_mm_dd) {
-		//console.log(['==================== isDateOptimized yyyy_mm_dd=',yyyy_mm_dd]);
-		let retval = false;
-		this.valuesELE.forEach(v=>{
-			//console.log(['v=',v]);
-			const date = v.timestamp;
-			const dd = date.getDate();
-			const mm = date.getMonth()+1;
-			const yyyy = date.getFullYear();
-			let s = yyyy + '-';
-			if (mm < 10) {
-				s += '0' + mm + '-';
-			} else {
-				s += mm + '-';
-			}
-			if (dd < 10) {
-				s += '0' + dd;
-			} else {
-				s += dd;
-			}
-			if (yyyy_mm_dd === s) {
-				if (v.opt === 0) {
-					retval = false;
-				} else {
-					retval = true;
-				}
-			}
-		});
-		/*
-		if (this.models['FlexResultModel'].dailyBaskets.hasOwnProperty(yyyy_mm_dd)) {
-			if (this.models['FlexResultModel'].dailyBaskets[yyyy_mm_dd].optimization === 0) {
-				retval = false;
-			} else {
-				retval = true;
-			}
-		}
-		*/
-		//console.log(['==================== isDateOptimized retval=',retval]);
-		return retval;
 	}
 	
 	renderChartOne() {
@@ -647,7 +770,7 @@ export default class FlexView extends View {//TimeRangeView {
 			//self.chart.data = self.models['BuildingElectricityPL1Model'].values;
 			//console.log(['self.chart.data=',self.chart.data]);
 			
-			var dateAxis = self.chartOne.xAxes.push(new am4charts.DateAxis());
+			const dateAxis = self.chartOne.xAxes.push(new am4charts.DateAxis());
 			//dateAxis.baseInterval = {"timeUnit": "minute","count": 60};
 			dateAxis.baseInterval = {"timeUnit": "hour","count":24};
 			//dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
@@ -660,36 +783,35 @@ export default class FlexView extends View {//TimeRangeView {
 			// Show dates with optimization "ON" with different background color.
 			// SEE: https://www.amcharts.com/docs/v4/tutorials/using-axis-ranges-to-highlight-weekends/
 			dateAxis.events.on("datavalidated", function(ev) {
-				var axis = ev.target;
-				var start = axis.positionToDate(0);
-				var end = axis.positionToDate(1);
-				// Get weekends
-				var current = new Date(start);
+				// NOTE: This event is called 3 times!
+				// But we want to add ranges only once. So that optimization data is available!
+				// How do we do it?
+				
+				//console.log(['===============================================']);
+				//console.log(['=============== ONE datavalidated ev.target.axisRanges=',ev.target.axisRanges]);
+				//console.log(['===============================================']);
+				const axis = ev.target;
+				const start = axis.positionToDate(0);
+				const end = axis.positionToDate(1);
+				let current = new Date(start);
 				while (current < end) {
-					// Get weekend start and end dates
-					
-					//var weekendStart = getWeekend(current);
-					//var weekendEnd = new Date(weekendStart);
-					//weekendEnd.setDate(weekendEnd.getDate() + 1);
-					if (isWeekend(current)) {
+					if (isOptimized(current)) {
 						// Create a range
 						//console.log('!!!!!!!!!!!!!!!!!!!! ========= CREATE A RANGE =============!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-						var range = axis.axisRanges.create();
-						
-						var begin = new Date(current);
+						const range = axis.axisRanges.create();
+						const begin = new Date(current);
 						range.date = begin;
-						var ende = new Date(current);
+						const ende = new Date(current);
 						ende.setDate(begin.getDate() + 1);
 						range.endDate = ende;
-						
-						range.axisFill.fill = am4core.color("#f80");
+						range.axisFill.fill = am4core.color("#0f0");
 						range.axisFill.fillOpacity = 0.25;
 						range.grid.strokeOpacity = 0;
 					}
 					// Iterate
 					current.setDate(current.getDate() + 1);
 				}
-				function isWeekend(date) {
+				function isOptimized(date) {
 					const dd = date.getDate();
 					const mm = date.getMonth()+1;
 					const yyyy = date.getFullYear();
@@ -704,16 +826,9 @@ export default class FlexView extends View {//TimeRangeView {
 					} else {
 						s += dd;
 					}
-					return self.isDateOptimized(s);
-					//var lastday = date.getDate() - (date.getDay() || 7) + 6;
-					//var lastdate = new Date(date);
-					//lastdate.setDate(lastday);
-					//return lastdate;
+					return self.isDateOptimized(self.valuesELE, s);
 				}
 			});
-			
-			
-			
 			// https://www.amcharts.com/docs/v4/concepts/axes/date-axis/#Formatting_date_and_time
 			//dateAxis.dateFormats.setKey("day", "dd");
 			//dateAxis.periodChangeDateFormats.setKey("day", "dd");
@@ -724,7 +839,7 @@ A DateFormatter instance.
 This is used to format dates, e.g. on a date axes, balloons, etc.
 chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 */
-			var valueAxis = self.chartOne.yAxes.push(new am4charts.ValueAxis());
+			const valueAxis = self.chartOne.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_power_axis;
 			
@@ -766,26 +881,10 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			seri3.fill = "#0f0";
 			seri3.legendSettings.labelText = "{customname}";
 			
-			/*
-			const seri4 = self.chartOne.series.push(new am4charts.ColumnSeries());
-			seri4.data = self.valuesELE;
-			//seri4.columns.template.width = am4core.percent(70);
-			//seri4.columns.template.maxWidth = 50;
-			seri4.columns.template.minWidth = 50;
-			seri4.dataFields.dateX = "timestamp";
-			seri4.dataFields.valueY = "opt";
-			seri4.tooltipText = tooltip_ele_opt + ": [bold]{valueY}[/]";
-			seri4.fillOpacity = 0.5;
-			seri4.name = 'OPTIMIZATION';
-			seri4.customname = legend_ele_opt;
-			seri4.stroke = am4core.color("#f80");
-			seri4.fill = "#f80";
-			seri4.legendSettings.labelText = "{customname}";
-			*/
 			// Legend:
 			self.chartOne.legend = new am4charts.Legend();
 			self.chartOne.legend.useDefaultMarker = true;
-			var marker = self.chartOne.legend.markers.template.children.getIndex(0);
+			const marker = self.chartOne.legend.markers.template.children.getIndex(0);
 			marker.cornerRadius(12, 12, 12, 12);
 			marker.strokeWidth = 2;
 			marker.strokeOpacity = 1;
@@ -844,14 +943,56 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			//self.chart.data = self.models['BuildingElectricityPL1Model'].values;
 			//console.log(['self.chart.data=',self.chart.data]);
 			
-			var dateAxis = self.chartTwo.xAxes.push(new am4charts.DateAxis());
+			const dateAxis = self.chartTwo.xAxes.push(new am4charts.DateAxis());
 			//dateAxis.baseInterval = {"timeUnit": "minute","count": 60};
 			dateAxis.baseInterval = {"timeUnit": "hour","count":24};
 			//dateAxis.tooltipDateFormat = "HH:mm, d MMMM";
 			//dateAxis.tooltipDateFormat = "HH:mm:ss, d MMMM";
 			dateAxis.tooltipDateFormat = "d MMMM";
 			
-			var valueAxis = self.chartTwo.yAxes.push(new am4charts.ValueAxis());
+			// Show dates with optimization "ON" with different background color.
+			// SEE: https://www.amcharts.com/docs/v4/tutorials/using-axis-ranges-to-highlight-weekends/
+			dateAxis.events.on("datavalidated", function(ev) {
+				const axis = ev.target;
+				const start = axis.positionToDate(0);
+				const end = axis.positionToDate(1);
+				let current = new Date(start);
+				while (current < end) {
+					if (isOptimized(current)) {
+						// Create a range
+						//console.log('!!!!!!!!!!!!!!!!!!!! ========= CREATE A RANGE =============!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+						const range = axis.axisRanges.create();
+						const begin = new Date(current);
+						range.date = begin;
+						const ende = new Date(current);
+						ende.setDate(begin.getDate() + 1);
+						range.endDate = ende;
+						range.axisFill.fill = am4core.color("#0f0");
+						range.axisFill.fillOpacity = 0.25;
+						range.grid.strokeOpacity = 0;
+					}
+					// Iterate
+					current.setDate(current.getDate() + 1);
+				}
+				function isOptimized(date) {
+					const dd = date.getDate();
+					const mm = date.getMonth()+1;
+					const yyyy = date.getFullYear();
+					let s = yyyy + '-';
+					if (mm < 10) {
+						s += '0' + mm + '-';
+					} else {
+						s += mm + '-';
+					}
+					if (dd < 10) {
+						s += '0' + dd;
+					} else {
+						s += dd;
+					}
+					return self.isDateOptimized(self.valuesDH, s);
+				}
+			});
+			const valueAxis = self.chartTwo.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
 			valueAxis.title.text = localized_string_power_axis;
 			
@@ -893,25 +1034,10 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			seri3.fill = "#0f0";
 			seri3.legendSettings.labelText = "{customname}";
 			
-			const seri4 = self.chartTwo.series.push(new am4charts.ColumnSeries());
-			seri4.data = self.valuesDH;
-			//seri4.columns.template.width = am4core.percent(70);
-			//seri4.columns.template.maxWidth = 50;
-			seri4.columns.template.minWidth = 50;
-			seri4.dataFields.dateX = "timestamp";
-			seri4.dataFields.valueY = "opt";
-			seri4.tooltipText = tooltip_ele_opt + ": [bold]{valueY}[/]";
-			seri4.fillOpacity = 0.5;
-			seri4.name = 'OPTIMIZATION';
-			seri4.customname = legend_ele_opt;
-			seri4.stroke = am4core.color("#f80");
-			seri4.fill = "#f80";
-			seri4.legendSettings.labelText = "{customname}";
-			
 			// Legend:
 			self.chartTwo.legend = new am4charts.Legend();
 			self.chartTwo.legend.useDefaultMarker = true;
-			var marker = self.chartTwo.legend.markers.template.children.getIndex(0);
+			const marker = self.chartTwo.legend.markers.template.children.getIndex(0);
 			marker.cornerRadius(12, 12, 12, 12);
 			marker.strokeWidth = 2;
 			marker.strokeOpacity = 1;
@@ -922,8 +1048,8 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			self.chartTwo.scrollbarX = new am4charts.XYChartScrollbar();
 			self.chartTwo.scrollbarX.series.push(seri);
 			
-			dateAxis.start = 0.0;
-			dateAxis.end = 1.0;
+			dateAxis.start = 0;
+			dateAxis.end = 1;
 			dateAxis.keepSelection = true;
 			
 		}); // end am4core.ready()
@@ -935,16 +1061,22 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 		
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
-		const localized_string_title = LM['translation'][sel]['BUILDING_FLEXIBILITY_TITLE'];
+		const title = LM['translation'][sel]['BUILDING_FLEXIBILITY_TITLE'];
+		const descr_1 = LM['translation'][sel]['BUILDING_FLEXIBILITY_DESCRIPTION_1'];
+		const descr_2 = LM['translation'][sel]['BUILDING_FLEXIBILITY_DESCRIPTION_2'];
+		const savings_days = LM['translation'][sel]['BUILDING_SAVINGS_DAYS'];
 		const ele_descr = LM['translation'][sel]['BUILDING_FLEXIBILITY_ELE_DESCRIPTION'];
 		const dh_descr = LM['translation'][sel]['BUILDING_FLEXIBILITY_DH_DESCRIPTION'];
 		const localized_string_back = LM['translation'][sel]['BACK'];
 		
+		
+		const numberOfDays = this.models['FlexResultModel'].numberOfDays;
 		const html =
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<h4>'+localized_string_title+'</h4>'+
+					'<h4>'+title+'</h4>'+
 					'<p style="text-align:center;"><img src="./svg/flex.svg" height="80"/></p>'+
+					'<p style="text-align:center;">'+descr_1+' ('+numberOfDays+' '+savings_days+'). '+descr_2+'</p>'+
 				'</div>'+
 			'</div>'+
 			//'<div class="row">'+
@@ -952,16 +1084,30 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			//'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					'<p style="color:#fff;text-align:center;">'+ele_descr+'</p>'+
+					'<p style="color:#fff;text-align:center;">'+ele_descr+' '+numberOfDays+' '+savings_days+'.</p>'+
 					'<p id="ele-sums" style="color:#fff;text-align:center;" ></p>'+
 					'<div id="'+this.CHART_ONE_ID+'" class="medium-chart"></div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 chart-wrapper dark-theme">'+
-					'<p style="color:#fff;text-align:center;">'+dh_descr+'</p>'+
+					'<p style="color:#fff;text-align:center;">'+dh_descr+' '+numberOfDays+' '+savings_days+'.</p>'+
 					'<p id="dh-sums" style="color:#fff;text-align:center;" ></p>'+
 					'<div id="'+this.CHART_TWO_ID+'" class="medium-chart"></div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="row">'+
+				'<div class="col s12 l4 center">'+
+					'<div id="flex-totals-ene" class="flex-totals-box" style="background-color: #cff;">'+
+					'</div>'+
+				'</div>'+
+				'<div class="col s12 l4 center">'+
+					'<div id="flex-totals-pri" class="flex-totals-box" style="background-color: #ffc;">'+
+					'</div>'+
+				'</div>'+
+				'<div class="col s12 l4 center">'+
+					'<div id="flex-totals-emi" class="flex-totals-box" style="background-color: #cfc;">'+
+					'</div>'+
 				'</div>'+
 			'</div>'+
 			'<div class="row">'+
@@ -1010,7 +1156,17 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 				this.renderChartOne();
 				this.fillValuesDH();
 				this.renderChartTwo();
+				
 				this.fillSums();
+				
+				const sumA = this.models['FlexResultModel'].calculate_separate('energy');
+				this.fillTotals('energy', sumA);
+				
+				const sumB = this.models['FlexResultModel'].calculate_separate('price');
+				this.fillTotals('price', sumB);
+				
+				const sumC = this.models['FlexResultModel'].calculate_separate('emissions');
+				this.fillTotals('emissions', sumC);
 			}
 		} else {
 			console.log('FlexView => render models ARE NOT READY!!!!');

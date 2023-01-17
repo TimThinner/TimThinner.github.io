@@ -303,7 +303,7 @@ export default class FlexResultModel extends Model {
 		
 		optimizations					=>	optimization
 		
-		MONTHLY SAVINGS:
+		SAVINGS:
 		
 		Energy Cost:
 		10 €
@@ -385,6 +385,100 @@ export default class FlexResultModel extends Model {
 		}
 		while (opt_arr.length > 0) {
 			retval.opt += opt_arr.pop();
+		}
+		/*
+		if (base_count > 0) {
+			retval.base = retval.base/base_count;
+		}
+		if (opt_count > 0) {
+			retval.opt = retval.opt/opt_count;
+		}
+		*/
+		console.log(['SAVINGS ARE prop=',prop,' retval=',retval]);
+		return retval;
+	}
+	
+	/*
+		To Do: calculate both components separately: ELE and DH.
+	*/
+	
+	calculate_separate(prop) {
+		const retval = {
+			base_ele: 0,
+			base_dh: 0,
+			opt_ele: 0,
+			opt_dh: 0
+		};
+		
+		const base_arr = [];
+		const opt_arr = [];
+		
+		if (prop === 'energy') {
+			Object.keys(this.dailyBaskets).forEach(key=>{
+				const ele = this.dailyBaskets[key].ele_energy;
+				const dh = this.dailyBaskets[key].dh_energy;
+				if (this.dailyBaskets[key].optimization) {
+					opt_arr.push({ele:ele,dh:dh});
+				} else {
+					base_arr.push({ele:ele,dh:dh});
+				}
+			});
+		} else if (prop === 'price') {
+			Object.keys(this.dailyBaskets).forEach(key=>{
+				const ele = this.dailyBaskets[key].ele_price;
+				const dh = this.dailyBaskets[key].dh_price;
+				if (this.dailyBaskets[key].optimization) {
+					opt_arr.push({ele:ele,dh:dh});
+				} else {
+					base_arr.push({ele:ele,dh:dh});
+				}
+			});
+		} else { // if (prop === 'emissions') {
+			Object.keys(this.dailyBaskets).forEach(key=>{
+				const ele = this.dailyBaskets[key].ele_emissions;
+				const dh = this.dailyBaskets[key].dh_emissions;
+				if (this.dailyBaskets[key].optimization) {
+					opt_arr.push({ele:ele,dh:dh});
+				} else {
+					base_arr.push({ele:ele,dh:dh});
+				}
+			});
+		}
+		// NOTE: We must make sure that both arrays have equal amount of days in them.
+		// The push() method adds one or more elements to the end of an array and returns the new length of the array.
+		// The pop() method removes the last element from an array and returns that element.
+		const blen = base_arr.length;
+		const olen = opt_arr.length;
+		if (blen === olen) {
+			
+			console.log('================ BASE AND OPTIMIZED DAYS ARE EQUAL SIZE! ================');
+			
+		} else if (blen > olen) {
+			const diff = blen - olen;
+			console.log(['BASE-SET HAS MORE DAYS THAN OPTIMIZED-SET diff=',diff]);
+			for (let i=0; i<diff; i++) {
+				base_arr.shift(); // .pop(); NOTE: use shift() to remove elements starting from from oldest
+				//const temp = base_arr.shift(); // .pop(); NOTE: use shift() to remove elements starting from from oldest
+				//console.log(['BASE prop=',prop,' temp=',temp]);
+			}
+		} else if (olen > blen) {
+			const diff = olen - blen;
+			console.log(['OPTIMIZED-SET HAS MORE DAYS THAN BASE-SET diff=',diff]);
+			for (let i=0; i<diff; i++) {
+				opt_arr.shift();
+				//const temp = opt_arr.shift(); // .pop(); NOTE: use shift() to remove elements starting from from oldest
+				//console.log(['OPT prop=',prop,' temp=',temp]);
+			}
+		}
+		while (base_arr.length > 0) {
+			const e = base_arr.pop();
+			retval.base_ele += e.ele;
+			retval.base_dh += e.dh;
+		}
+		while (opt_arr.length > 0) {
+			const e = opt_arr.pop();
+			retval.opt_ele += e.ele;
+			retval.opt_dh += e.dh;
 		}
 		/*
 		if (base_count > 0) {

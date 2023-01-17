@@ -7,7 +7,7 @@ export default class FlexController extends Controller {
 	
 	constructor(options) {
 		super(options);
-		this.fetching_interval_in_seconds = 1800; // 30 x 60 Twice per hour 
+		this.fetching_interval_in_seconds = 1800; // 1800 = 30 x 60 Twice per hour 
 		
 		// These models listed below are created at MenuController.
 		// We can use same models here.

@@ -114,10 +114,13 @@ export default class LanguageModel {
 				'BUILDING_EMISSION_USER_LEGEND':'Resident',
 				'BUILDING_EMISSION_AVERAGE':'Average',
 				'BUILDING_EMISSION_AVERAGE_LEGEND':'Average',
-				'BUILDING_FLEXIBILITY_TITLE':'Building consumption and flexibility',
-				'BUILDING_FLEXIBILITY_ELE_DESCRIPTION':'Electricity share for the last 30 days.',
-				'BUILDING_FLEXIBILITY_DH_DESCRIPTION':'District heating share for the last 30 days.',
-				'BUILDING_MONTHLY_SAVINGS':'Monthly savings',
+				'BUILDING_FLEXIBILITY_TITLE':'Building flexibility',
+				'BUILDING_FLEXIBILITY_DESCRIPTION_1':'Building consumption, emissions and flexibility',
+				'BUILDING_FLEXIBILITY_DESCRIPTION_2':'Days when flexibility control is utilized are marked with green color.',
+				'BUILDING_FLEXIBILITY_ELE_DESCRIPTION':'Electricity share for the last',
+				'BUILDING_FLEXIBILITY_DH_DESCRIPTION':'District heating share for the last',
+				'BUILDING_SAVINGS':'Savings',
+				'BUILDING_SAVINGS_DAYS':'days',
 				'BUILDING_ENERGY_COST':'Energy cost:',
 				'BUILDING_ENERGY_CONSUMPTION':'Energy consumption:',
 				'BUILDING_CO2_EMISSIONS':'CO2 emissions:',
@@ -266,7 +269,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 22.03.28'
+				'MENU_VERSION':'v 23.01.17'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -379,10 +382,13 @@ export default class LanguageModel {
 				'BUILDING_EMISSION_USER_LEGEND':'Asukas',
 				'BUILDING_EMISSION_AVERAGE':'KA',
 				'BUILDING_EMISSION_AVERAGE_LEGEND':'KA',
-				'BUILDING_FLEXIBILITY_TITLE':'Rakennuksen kulutus ja jousto',
-				'BUILDING_FLEXIBILITY_ELE_DESCRIPTION':'Sähkön osuus, viimeiset 30 päivää.',
-				'BUILDING_FLEXIBILITY_DH_DESCRIPTION':'Kaukolämmön osuus, viimeiset 30 päivää.',
-				'BUILDING_MONTHLY_SAVINGS':'Kuukauden säästö',
+				'BUILDING_FLEXIBILITY_TITLE':'Rakennuksen joustot',
+				'BUILDING_FLEXIBILITY_DESCRIPTION_1':'Rakennuksen kulutus, päästöt ja joustot',
+				'BUILDING_FLEXIBILITY_DESCRIPTION_2':'Päivät jolloin jousto on ollut päällä, on merkitty vihreällä.',
+				'BUILDING_FLEXIBILITY_ELE_DESCRIPTION':'Sähkön osuus, viimeiset',
+				'BUILDING_FLEXIBILITY_DH_DESCRIPTION':'Kaukolämmön osuus, viimeiset',
+				'BUILDING_SAVINGS':'Säästöt',
+				'BUILDING_SAVINGS_DAYS':'päivää',
 				'BUILDING_ENERGY_COST':'Energian hinta:',
 				'BUILDING_ENERGY_CONSUMPTION':'Energian kulutus:',
 				'BUILDING_CO2_EMISSIONS':'CO2 päästöt:',
@@ -531,7 +537,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 22.03.28'
+				'MENU_VERSION':'v 23.01.17'
 			}
 		}
 	}

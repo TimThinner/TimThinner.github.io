@@ -43,7 +43,7 @@ What models we need to setup for this:
 
 
 
-MONTHLY SAVINGS (CALCULATED SEPARATELY FOR DH AND ELE):
+SAVINGS (CALCULATED SEPARATELY FOR DH AND ELE):
 
 Energy Cost (DH + Ele):
 10 €
@@ -63,7 +63,8 @@ export default class MenuController extends Controller {
 		super(options);
 		// Interval for fetching ENTSOE Electricity day-ahead price and 
 		// fetching building electricity consumption with "PT60M".
-		this.fetching_interval_in_seconds = 1800; // 30 x 60 Twice per hour 
+		this.fetching_interval_in_seconds = 1800; // 1800   (30 x 60) Twice per hour 
+		// This is the only place where numberOfDays is originally defined and stored.
 		this.numberOfDays = 30;
 		
 		// These are the models that are created in this Controller:

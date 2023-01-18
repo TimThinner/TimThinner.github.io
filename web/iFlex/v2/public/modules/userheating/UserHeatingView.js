@@ -507,7 +507,7 @@ export default class UserHeatingView extends TimeRangeView {
 			
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
+					'<button class="btn waves-effect waves-light iflex-button" id="back">'+localized_string_back+
 						'<i class="material-icons left">arrow_back</i>'+
 					'</button>'+
 				'</div>'+

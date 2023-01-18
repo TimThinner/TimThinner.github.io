@@ -13,18 +13,14 @@ export default class FlexOptionsController extends Controller {
 		this.models = {};
 	}
 	
-	
-	setNewTimerange(days) {
-		const m = this.master.modelRepo.get('FlexResultModel');
-		m.numberOfDays = days;
-		// and set the one in MenuController also!
-		this.master.setNumberOfDays(days);
-	}
-	
 	init() {
 		// These two lines MUST BE in every Controller.
 		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
 		this.models['MenuModel'].subscribe(this);
+		
+		this.models['FlexResultModel'] = this.master.modelRepo.get('FlexResultModel');
+		this.models['FlexResultModel'].subscribe(this);
+		
 		// Create a view for Apartment feedback.
 		this.view = new FlexOptionsView(this);
 	}

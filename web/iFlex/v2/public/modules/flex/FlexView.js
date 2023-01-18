@@ -107,6 +107,11 @@ export default class FlexView extends View {//TimeRangeView {
 					'<span style="color:#ff0">'+d_pri.A.toFixed(0)+'%</span> <span style="color:#aaa"> ('+dh_pri_sum.toFixed(0)+'€)</span> '+
 					'<span style="color:#0f0">'+d_emi.A.toFixed(0)+'%</span> <span style="color:#aaa"> ('+dh_emi_sum.toFixed(0)+'kg)</span>';
 		*/
+		const LM = this.controller.master.modelRepo.get('LanguageModel');
+		const sel = LM.selected;
+		const legend_ene = LM['translation'][sel]['BUILDING_FLEXIBILITY_ENERGY'] + ' (kWh)';
+		const legend_pri = LM['translation'][sel]['BUILDING_FLEXIBILITY_PRICE'] + ' (€)'
+		const legend_emi = LM['translation'][sel]['BUILDING_FLEXIBILITY_EMISSIONS'] + ' (kg)';
 		
 		const base_ele = sums.base_ele;
 		const base_dh = sums.base_dh;
@@ -122,11 +127,11 @@ export default class FlexView extends View {//TimeRangeView {
 		
 		let title = '';
 		if (prop === 'energy') {
-			title = '<h5>Energy (kWh)</h5>';
+			title = '<h5>'+legend_ene+'</h5>';
 		} else if (prop === 'price') {
-			title = '<h5>Price (€)</h5>';
+			title = '<h5>'+legend_pri+'</h5>';
 		} else {
-			title = '<h5>Emissions (kg CO2)</h5>';
+			title = '<h5>'+legend_emi+'</h5>';
 		}
 		
 		const markup = title +
@@ -535,8 +540,8 @@ export default class FlexView extends View {//TimeRangeView {
 				
 				// Reset data arrays.
 				this.models['FlexResultModel'].reset();
-				
-				console.log('PeriodicTimeoutObserver timeout!');
+				const numberOfDays = this.models['FlexResultModel'].numberOfDays;
+				//console.log('PeriodicTimeoutObserver timeout!');
 				Object.keys(this.models).forEach(key => {
 					if (key === 'EntsoeEnergyPriceModel') {
 						console.log(['FETCH MODEL key=',key]);
@@ -548,8 +553,6 @@ export default class FlexView extends View {//TimeRangeView {
 						// Now lets have those params from function call:
 						// const body_period_start = moment.utc().subtract(bv, bu).format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
 						// const body_period_end = moment.utc().format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
-						
-						const numberOfDays = this.models['FlexResultModel'].numberOfDays;
 						const daysToFetch = numberOfDays+1;
 						const timerange = {begin:{value:daysToFetch,unit:'days'}};
 						this.models[key].fetch(timerange);
@@ -564,7 +567,6 @@ export default class FlexView extends View {//TimeRangeView {
 						//'OptimizationModel'
 						
 						// See if these params are enough?
-						const numberOfDays = this.models['FlexResultModel'].numberOfDays;
 						const daysToFetch = numberOfDays+1;
 						this.models[key].interval = 'PT60M';
 						this.models[key].timerange = {begin:{value:daysToFetch,unit:'days'},end:{value:0,unit:'days'}};
@@ -734,16 +736,14 @@ export default class FlexView extends View {//TimeRangeView {
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		
-		const tooltip_ele_ene = 'Energy';//LM['translation'][sel]['BUILDING_POWER'];
-		const tooltip_ele_pri = 'Price';//LM['translation'][sel]['BUILDING_POWER'];
-		const tooltip_ele_emi = 'Emissions';//LM['translation'][sel]['BUILDING_POWER'];
-		const tooltip_ele_opt = 'Optimization';
+		const tooltip_ene = LM['translation'][sel]['BUILDING_FLEXIBILITY_ENERGY'];
+		const tooltip_pri = LM['translation'][sel]['BUILDING_FLEXIBILITY_PRICE'];
+		const tooltip_emi = LM['translation'][sel]['BUILDING_FLEXIBILITY_EMISSIONS'];
 		
 		const localized_string_power_axis = ''; //LM['translation'][sel]['BUILDING_POWER_AXIS_LABEL'];
-		const legend_ele_ene = 'Energy (kWh)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
-		const legend_ele_pri = 'Price (€)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
-		const legend_ele_emi = 'Emissions (kg)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
-		const legend_ele_opt = 'Optimization';
+		const legend_ene = LM['translation'][sel]['BUILDING_FLEXIBILITY_ENERGY'] + ' (kWh)';
+		const legend_pri = LM['translation'][sel]['BUILDING_FLEXIBILITY_PRICE'] + ' (€)'
+		const legend_emi = LM['translation'][sel]['BUILDING_FLEXIBILITY_EMISSIONS'] + ' (kg)';
 		/*
 			const ele_ene = this.models['FlexResultModel'].dailyBaskets[key].ele_energy;
 			const ele_pri = this.models['FlexResultModel'].dailyBaskets[key].ele_price;
@@ -753,7 +753,6 @@ export default class FlexView extends View {//TimeRangeView {
 			const dh_pri = this.models['FlexResultModel'].dailyBaskets[key].dh_price;
 			const dh_emi = this.models['FlexResultModel'].dailyBaskets[key].dh_emissions;
 		*/
-		
 		am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_dark);
@@ -847,11 +846,11 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			seri.data = self.valuesELE;
 			seri.dataFields.dateX = "timestamp";
 			seri.dataFields.valueY = "ene";
-			seri.tooltipText = tooltip_ele_ene + ": [bold]{valueY}[/] kWh";
+			seri.tooltipText = tooltip_ene + ": [bold]{valueY}[/] kWh";
 			//seri.tooltipText = "el energy: [bold]{valueY}[/] kWh";
 			seri.fillOpacity = 0.2;
 			seri.name = 'ELENERGY';
-			seri.customname = legend_ele_ene;
+			seri.customname = legend_ene;
 			seri.stroke = am4core.color("#0ff");
 			seri.fill = "#0ff";
 			seri.legendSettings.labelText = "{customname}";
@@ -861,10 +860,10 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			seri2.dataFields.dateX = "timestamp";
 			seri2.dataFields.valueY = "pri";
 			//seri2.tooltipText = localized_string_price + ": [bold]{valueY}[/] cent/kWh";
-			seri2.tooltipText = tooltip_ele_pri + ": [bold]{valueY}[/] €";
+			seri2.tooltipText = tooltip_pri + ": [bold]{valueY}[/] €";
 			seri2.fillOpacity = 0.2;
 			seri2.name = 'ELPRICE';
-			seri2.customname = legend_ele_pri;
+			seri2.customname = legend_pri;
 			seri2.stroke = am4core.color("#ff0");
 			seri2.fill = "#ff0";
 			seri2.legendSettings.labelText = "{customname}";
@@ -873,10 +872,10 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			seri3.data = self.valuesELE;
 			seri3.dataFields.dateX = "timestamp";
 			seri3.dataFields.valueY = "emi";
-			seri3.tooltipText = tooltip_ele_emi + ": [bold]{valueY}[/] kg";
+			seri3.tooltipText = tooltip_emi + ": [bold]{valueY}[/] kg";
 			seri3.fillOpacity = 0.2;
 			seri3.name = 'ELEMISSIONS';
-			seri3.customname = legend_ele_emi;
+			seri3.customname = legend_emi;
 			seri3.stroke = am4core.color("#0f0");
 			seri3.fill = "#0f0";
 			seri3.legendSettings.labelText = "{customname}";
@@ -908,16 +907,14 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 		const LM = this.controller.master.modelRepo.get('LanguageModel');
 		const sel = LM.selected;
 		
-		const tooltip_ele_ene = 'Energy';//LM['translation'][sel]['BUILDING_POWER'];
-		const tooltip_ele_pri = 'Price';//LM['translation'][sel]['BUILDING_POWER'];
-		const tooltip_ele_emi = 'Emissions';//LM['translation'][sel]['BUILDING_POWER'];
-		const tooltip_ele_opt = 'Optimization';
+		const tooltip_ene = LM['translation'][sel]['BUILDING_FLEXIBILITY_ENERGY'];
+		const tooltip_pri = LM['translation'][sel]['BUILDING_FLEXIBILITY_PRICE'];
+		const tooltip_emi = LM['translation'][sel]['BUILDING_FLEXIBILITY_EMISSIONS'];
 		
 		const localized_string_power_axis = ''; //LM['translation'][sel]['BUILDING_POWER_AXIS_LABEL'];
-		const legend_ele_ene = 'Energy (kWh)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
-		const legend_ele_pri = 'Price (€)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
-		const legend_ele_emi = 'Emissions (kg)';//LM['translation'][sel]['BUILDING_POWER_LEGEND']; // Instantaneous power
-		const legend_ele_opt = 'Optimization';
+		const legend_ene = LM['translation'][sel]['BUILDING_FLEXIBILITY_ENERGY'] + ' (kWh)';
+		const legend_pri = LM['translation'][sel]['BUILDING_FLEXIBILITY_PRICE'] + ' (€)'
+		const legend_emi = LM['translation'][sel]['BUILDING_FLEXIBILITY_EMISSIONS'] + ' (kg)';
 		/*
 			const ele_ene = this.models['FlexResultModel'].dailyBaskets[key].ele_energy;
 			const ele_pri = this.models['FlexResultModel'].dailyBaskets[key].ele_price;
@@ -1000,11 +997,11 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			seri.data = self.valuesDH;
 			seri.dataFields.dateX = "timestamp";
 			seri.dataFields.valueY = "ene";
-			seri.tooltipText = tooltip_ele_ene + ": [bold]{valueY}[/] kWh";
+			seri.tooltipText = tooltip_ene + ": [bold]{valueY}[/] kWh";
 			//seri.tooltipText = "el energy: [bold]{valueY}[/] kWh";
 			seri.fillOpacity = 0.2;
 			seri.name = 'DHENERGY';
-			seri.customname = legend_ele_ene;
+			seri.customname = legend_ene;
 			seri.stroke = am4core.color("#0ff");
 			seri.fill = "#0ff";
 			seri.legendSettings.labelText = "{customname}";
@@ -1014,10 +1011,10 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			seri2.dataFields.dateX = "timestamp";
 			seri2.dataFields.valueY = "pri";
 			//seri2.tooltipText = localized_string_price + ": [bold]{valueY}[/] cent/kWh";
-			seri2.tooltipText = tooltip_ele_pri + ": [bold]{valueY}[/] €";
+			seri2.tooltipText = tooltip_pri + ": [bold]{valueY}[/] €";
 			seri2.fillOpacity = 0.2;
 			seri2.name = 'DHPRICE';
-			seri2.customname = legend_ele_pri;
+			seri2.customname = legend_pri;
 			seri2.stroke = am4core.color("#ff0");
 			seri2.fill = "#ff0";
 			seri2.legendSettings.labelText = "{customname}";
@@ -1026,10 +1023,10 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			seri3.data = self.valuesDH;
 			seri3.dataFields.dateX = "timestamp";
 			seri3.dataFields.valueY = "emi";
-			seri3.tooltipText = tooltip_ele_emi + ": [bold]{valueY}[/] kg";
+			seri3.tooltipText = tooltip_emi + ": [bold]{valueY}[/] kg";
 			seri3.fillOpacity = 0.2;
 			seri3.name = 'DHEMISSIONS';
-			seri3.customname = legend_ele_emi;
+			seri3.customname = legend_emi;
 			seri3.stroke = am4core.color("#0f0");
 			seri3.fill = "#0f0";
 			seri3.legendSettings.labelText = "{customname}";
@@ -1068,7 +1065,6 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 		const ele_descr = LM['translation'][sel]['BUILDING_FLEXIBILITY_ELE_DESCRIPTION'];
 		const dh_descr = LM['translation'][sel]['BUILDING_FLEXIBILITY_DH_DESCRIPTION'];
 		const localized_string_back = LM['translation'][sel]['BACK'];
-		
 		
 		const numberOfDays = this.models['FlexResultModel'].numberOfDays;
 		const html =
@@ -1112,7 +1108,7 @@ chart.dateFormatter.dateFormat = "yyyy-MM-dd";
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12 center">'+
-					'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
+					'<button class="btn waves-effect waves-light iflex-button" id="back">'+localized_string_back+
 						'<i class="material-icons left">arrow_back</i>'+
 					'</button>'+
 				'</div>'+

@@ -251,3 +251,10 @@ html, body {
 		margin-bottom: 0;
 	}
 }
+/*
+'BACK', 'OK', 'CANCEL', 'SAVE', 'UPDATE' 
+buttons should have a "standard" width.
+*/
+.iflex-button {
+	width: 160px;
+}

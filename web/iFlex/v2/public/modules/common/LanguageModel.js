@@ -61,10 +61,10 @@ export default class LanguageModel {
 				'ADMIN_EDIT_OBIXCODE_TITLE':'Obix code',
 				'ADMIN_EDIT_OBIXCODE_DESCRIPTION':'You can modify Users Obix code',
 				'ADMIN_EDIT_OBIXCODE_LABEL':'Obix code',
-				'BACK':'&nbsp;BACK&nbsp;',
-				'OK':'&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;',
+				'BACK':'BACK',
+				'OK':'OK',
 				'CANCEL':'CANCEL',
-				'SAVE':'&nbsp;SAVE&nbsp;',
+				'SAVE':'SAVE',
 				'UPDATE':'UPDATE',
 				'VALIDATOR_NOT_VALID':' not valid',
 				'VALIDATOR_MISSING':' missing',
@@ -119,6 +119,9 @@ export default class LanguageModel {
 				'BUILDING_FLEXIBILITY_DESCRIPTION_2':'Days when flexibility control is utilized are marked with green color.',
 				'BUILDING_FLEXIBILITY_ELE_DESCRIPTION':'Electricity share for the last',
 				'BUILDING_FLEXIBILITY_DH_DESCRIPTION':'District heating share for the last',
+				'BUILDING_FLEXIBILITY_ENERGY':'Energy',
+				'BUILDING_FLEXIBILITY_PRICE':'Price',
+				'BUILDING_FLEXIBILITY_EMISSIONS':'Emissions',
 				'BUILDING_SAVINGS':'Savings',
 				'BUILDING_SAVINGS_DAYS':'days',
 				'BUILDING_ENERGY_COST':'Energy cost:',
@@ -136,6 +139,8 @@ export default class LanguageModel {
 				'APARTMENT_HUMIDITY_TOOLTIP':'Humidity',
 				'APARTMENT_HUMIDITY_AXIS_LABEL':'Humidity',
 				'APARTMENT_HUMIDITY_LEGEND':'Humidity',
+				'FLEXIBILITY_OPTIONS_TITLE':'Savings calculation',
+				'FLEXIBILITY_OPTIONS_DESCRIPTION':'The savings of energy, price and emissions are calculated over specified timerange. Here you can select the timerange:',
 				'CONSENT_TITLE':'SUOSTUMUS',
 				'CONSENT_TEXT_A':'Vahvistan lukeneeni ja ymmärtäneeni tutkimustiedotteen ja sen liitteenä olleen tietosuojailmoituksen. Vahvistan, että tiedossani ei ole tutkimustiedotteessa esitettyä poissulkukriteeriä ja/tai täytän valintakriteerit. Minulla on ollut mahdollisuus harkita saamaani tietoa, esittää kysymyksiä ja olen saanut kysymyksiini riittävän vastauksen.',
 				'CONSENT_CHECK_A':'Annan suostumukseni <b>tutkimukseen osallistumiseen</b>. Minulla on oikeus keskeyttää osallistuminen väliaikaisesti tai toistaiseksi (jättäytyä tutkimuksen vaiheen ulkopuolelle) tai peruuttaa suostumus, milloin tahansa ilman erityistä syytä ja syytä kertomatta.',
@@ -269,7 +274,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 23.01.17'
+				'MENU_VERSION':'v 23.01.18'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -330,8 +335,8 @@ export default class LanguageModel {
 				'ADMIN_EDIT_OBIXCODE_DESCRIPTION':'Voit muuttaa käyttäjän Obix-koodia',
 				'ADMIN_EDIT_OBIXCODE_LABEL':'Obix-koodi',
 				'BACK':'TAKAISIN',
-				'OK':'&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;',
-				'CANCEL':'&nbsp;PERU&nbsp;',
+				'OK':'OK',
+				'CANCEL':'PERU',
 				'SAVE':'TALLETA',
 				'UPDATE':'PÄIVITÄ',
 				'VALIDATOR_NOT_VALID':' ei kelpaa',
@@ -387,6 +392,9 @@ export default class LanguageModel {
 				'BUILDING_FLEXIBILITY_DESCRIPTION_2':'Päivät jolloin jousto on ollut päällä, on merkitty vihreällä.',
 				'BUILDING_FLEXIBILITY_ELE_DESCRIPTION':'Sähkön osuus, viimeiset',
 				'BUILDING_FLEXIBILITY_DH_DESCRIPTION':'Kaukolämmön osuus, viimeiset',
+				'BUILDING_FLEXIBILITY_ENERGY':'Energia',
+				'BUILDING_FLEXIBILITY_PRICE':'Hinta',
+				'BUILDING_FLEXIBILITY_EMISSIONS':'Päästöt',
 				'BUILDING_SAVINGS':'Säästöt',
 				'BUILDING_SAVINGS_DAYS':'päivää',
 				'BUILDING_ENERGY_COST':'Energian hinta:',
@@ -404,6 +412,8 @@ export default class LanguageModel {
 				'APARTMENT_HUMIDITY_TOOLTIP':'Kosteus',
 				'APARTMENT_HUMIDITY_AXIS_LABEL':'Kosteus',
 				'APARTMENT_HUMIDITY_LEGEND':'Kosteus',
+				'FLEXIBILITY_OPTIONS_TITLE':'Säästöjen laskenta',
+				'FLEXIBILITY_OPTIONS_DESCRIPTION':'Säästöjen laskennassa käytetyn ajanjakson pituus:',
 				'CONSENT_TITLE':'SUOSTUMUS',
 				'CONSENT_TEXT_A':'Vahvistan lukeneeni ja ymmärtäneeni tutkimustiedotteen ja sen liitteenä olleen tietosuojailmoituksen. Vahvistan, että tiedossani ei ole tutkimustiedotteessa esitettyä poissulkukriteeriä ja/tai täytän valintakriteerit. Minulla on ollut mahdollisuus harkita saamaani tietoa, esittää kysymyksiä ja olen saanut kysymyksiini riittävän vastauksen.',
 				'CONSENT_CHECK_A':'Annan suostumukseni <b>tutkimukseen osallistumiseen</b>. Minulla on oikeus keskeyttää osallistuminen väliaikaisesti tai toistaiseksi (jättäytyä tutkimuksen vaiheen ulkopuolelle) tai peruuttaa suostumus, milloin tahansa ilman erityistä syytä ja syytä kertomatta.',
@@ -537,7 +547,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 23.01.17'
+				'MENU_VERSION':'v 23.01.18'
 			}
 		}
 	}

@@ -21,12 +21,7 @@ export default class FlexResultModel extends Model {
 		
 		this.ready = true;
 		this.status = 200;
-		
-		if (typeof options.numberOfDays !== 'undefined') {
-			this.numberOfDays = options.numberOfDays;
-		} else {
-			this.numberOfDays = 30;
-		}
+		this.numberOfDays = 30;
 		
 		if (typeof options.dhEmissionsFactor !== 'undefined') {
 			this.dhEmissionsFactor = options.dhEmissionsFactor;
@@ -135,6 +130,10 @@ export default class FlexResultModel extends Model {
 		this.indicatorStatus.optimization = false;
 		
 		// 24 x 30 = 720
+		// 24 x 40 = 960
+		// 24 x 50 = 1200
+		// 24 x 60 = 1440
+		this.dailyBaskets = {};
 		
 		for (let i=this.numberOfDays; i>0; i--) {
 			const s_date = moment().subtract(i,'days').format('YYYY-MM-DD');

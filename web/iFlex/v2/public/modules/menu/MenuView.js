@@ -949,7 +949,7 @@ export default class MenuView extends View {
 	*/
 	
 	updateSavingsTitle() {
-		const numberOfDays = this.controller.numberOfDays;
+		const numberOfDays = this.models['FlexResultModel'].numberOfDays;
 		
 		const sel = this.LANGUAGE_MODEL.selected;
 		const s_title = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_SAVINGS'];
@@ -1015,56 +1015,96 @@ export default class MenuView extends View {
 			this.updateSavingsTextLine('savings-txt-emissions-b', 0, 12.3*fontsize, 2*wunit, fontsize, fontsize_s, sub_color, opt+'kg  ('+base+'kg)');
 		}
 		
-		
 		// Everytime savings text is updated, update also the surface, because it MUST BE the topmost layer.
 		this.updateSavingsBoxSurface();
-		
 	}
 	
 	updateSavingsBoxSurface() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const WHITE = '#fff';
+		const GREEN = '#0f0';
 		let r = this.sunRadius();
 		
 		const id = 'savings-box-surface';
 		$('#'+id).remove(); // First remove old rect from space.
-		
+		/*
 		const wunit = r+r*0.25;
 		const rounding = wunit*0.15; // 10% rounded corners.
+		*/
+		const wunit = r+r*0.25;
+		//const wunit_i = wunit-wunit*0.075; // inner rectange is 10% smaller
+		const rounding = wunit*0.15; // 10% rounded corners.
+		//const rounding_i = wunit_i*0.15; // 10% rounded corners.
 		
-		const rect = document.createElementNS(svgNS, 'rect');
-		rect.setAttribute('x',1);
-		rect.setAttribute('y',1);
-		rect.setAttribute('width',wunit*2-2);
-		rect.setAttribute('height',wunit*2-2);
-		rect.setAttribute('rx',rounding);
-		rect.style.fill = '#f0f0f0';
-		rect.style.fillOpacity = 0;
-		rect.style.strokeOpacity = 0;
-		rect.style.stroke = DARK_BLUE;
-		rect.style.strokeWidth = 1;
-		rect.style.cursor = 'pointer';
-		rect.id = id;
+		//const group = document.createElementNS(svgNS, "g");
+		//group.id = id;
+		/*
+		const border = document.createElementNS(svgNS, "rect");
+		border.setAttribute('x',1);
+		border.setAttribute('y',1);
+		border.setAttribute('width',wunit*2-2);
+		border.setAttribute('height',wunit*2-2);
+		border.setAttribute('rx',rounding);
+		border.style.fill = WHITE;
+		border.style.fillOpacity = 0;
+		border.style.stroke = DARK_BLUE;
+		border.style.strokeWidth = 2;
+		group.appendChild(border);
+		*/
+		/*
+		const rect_i = document.createElementNS(svgNS, 'rect');
+		rect_i.setAttribute('x',wunit*0.075);
+		rect_i.setAttribute('y',wunit*0.075);
+		rect_i.setAttribute('width',wunit*2-wunit*0.15);
+		rect_i.setAttribute('height',wunit*2-wunit*0.15);
+		rect_i.setAttribute('rx',rounding_i);
+		rect_i.style.fill = '#333';
+		rect_i.style.fillOpacity = 1;//0.75;
+		rect_i.style.strokeOpacity = 1;
+		rect_i.style.stroke = DARK_BLUE;
+		rect_i.style.strokeWidth = 1;
+		group.appendChild(rect_i);
+		*/
 		
-		rect.addEventListener("click", function(){
-			
-			//console.log('SAVINGS BOX CLICKED!');
-			
-			self.models['MenuModel'].setSelected('FLEXOPTIONS');
-			
+		const surface = document.createElementNS(svgNS, 'rect');
+		surface.setAttribute('x',1);
+		surface.setAttribute('y',1);
+		surface.setAttribute('width',wunit*2-2);
+		surface.setAttribute('height',wunit*2-2);
+		surface.setAttribute('rx',rounding);
+		surface.style.fill = '#f0f0f0';
+		surface.style.fillOpacity = 0;
+		surface.style.strokeOpacity = 0;
+		surface.style.stroke = DARK_BLUE;
+		surface.style.strokeWidth = 1;
+		surface.style.cursor = 'pointer';
+		surface.id = id;
+		
+		//group.appendChild(surface);
+		/*
+		surface.addEventListener("mouseover", function(event){
+			border.style.strokeWidth = 12;
+			border.style.fill = GREEN;
 		}, false);
-		$('#savings-box').append(rect);
+		surface.addEventListener("mouseout", function(event){
+			border.style.strokeWidth = 2;
+			border.style.fill = WHITE;
+		}, false);*/
+		
+		surface.addEventListener("click", function(){
+			console.log('SAVINGS BOX CLICKED!');
+			self.models['MenuModel'].setSelected('FLEXOPTIONS');
+		}, false);
+		$('#savings-box').append(surface);
 	}
 	
 	appendSavingsBox() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
-		
-		const WHITE = '#fff';
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
-		const GREEN = '#0f0';
 		
 		/*
 		let w = r;
@@ -1077,21 +1117,16 @@ export default class MenuView extends View {
 		const wunit_i = wunit-wunit*0.075; // inner rectange is 10% smaller
 		const rounding = wunit*0.15; // 10% rounded corners.
 		const rounding_i = wunit_i*0.15; // 10% rounded corners.
-		const tx = 0;
-		const ty = r; // 'transform' => 'translate('+tx+','+ty+')'
 		const vb = '0 0 '+wunit*2+' '+wunit*2;
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-wunit);
-		
-		//svg.setAttribute('y',1.125*wunit);
 		svg.setAttribute('y',wunit*0.75);
 		
 		svg.setAttributeNS(null,'width',wunit*2);
 		svg.setAttributeNS(null,'height',wunit*2);
 		svg.setAttributeNS(null,'viewBox',vb);
 		svg.id = 'savings-box';
-		//svg.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#space').append(svg);
 		
 		const group = document.createElementNS(svgNS, "g");
@@ -1122,9 +1157,7 @@ export default class MenuView extends View {
 		rect_i.style.strokeWidth = 1;
 		group.appendChild(rect_i);
 		
-		//group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#savings-box').append(group);
-		//$('#space').append(group);
 	}
 	
 	setSelectedLanguage(lang) {
@@ -1438,9 +1471,8 @@ export default class MenuView extends View {
 				// Do something with each TICK!
 				// TESTING...
 				this.models['FlexResultModel'].reset();
-				
-				console.log('PeriodicTimeoutObserver timeout!');
-				const numberOfDays = this.controller.numberOfDays;
+				//console.log('PeriodicTimeoutObserver timeout!');
+				const numberOfDays = this.models['FlexResultModel'].numberOfDays;
 				
 				Object.keys(this.models).forEach(key => {
 					// MenuModel + ProxesCleanerModel + FlexResultModel + 7 models as listed below:
@@ -1653,7 +1685,6 @@ export default class MenuView extends View {
 		this.appendSavingsBox();
 		this.updateSavingsTitle();
 		
-		//this.appendChangeTimerangeButton();
 		this.appendLanguageSelections();
 	}
 	

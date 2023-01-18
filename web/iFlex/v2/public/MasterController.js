@@ -78,13 +78,7 @@ class MasterController {
 		}
 	}
 	
-	setNumberOfDays(days) {
-		this.controllers['menu'].numberOfDays = days;
-	}
-	
 	init() {
-		console.log('MasterController init 2022.02.16!');
-		
 		const CONFIG_MODEL = new ConfigModel({name:'ConfigModel',src:''});
 		CONFIG_MODEL.subscribe(this);
 		this.modelRepo.add('ConfigModel',CONFIG_MODEL);

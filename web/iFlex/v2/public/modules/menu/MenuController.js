@@ -64,8 +64,6 @@ export default class MenuController extends Controller {
 		// Interval for fetching ENTSOE Electricity day-ahead price and 
 		// fetching building electricity consumption with "PT60M".
 		this.fetching_interval_in_seconds = 1800; // 1800   (30 x 60) Twice per hour 
-		// This is the only place where numberOfDays is originally defined and stored.
-		this.numberOfDays = 30;
 		
 		// These are the models that are created in this Controller:
 		
@@ -112,7 +110,6 @@ export default class MenuController extends Controller {
 		const model3 = new FlexResultModel({
 			name:'FlexResultModel',
 			src:'',
-			numberOfDays:this.numberOfDays,
 			dhEmissionsFactor: 182,
 			dhPrice: 0.1135 // in e/kWh
 		});

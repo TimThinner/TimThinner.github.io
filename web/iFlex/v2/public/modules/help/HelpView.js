@@ -81,8 +81,8 @@ export default class HelpView extends View {
 			'</div>'+
 			'<div class="row">'+
 				'<div class="col s12">'+
-					'<div class="col s12 center" style="margin-top:16px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+help_ok+'</button>'+
+					'<div class="col s12 center" style="padding-bottom:32px">'+
+						'<button class="btn waves-effect waves-light iflex-button" id="ok">'+help_ok+'</button>'+
 					'</div>'+
 				'</div>'+
 			'</div>';
@@ -90,7 +90,7 @@ export default class HelpView extends View {
 		
 		this.rendered = true;
 		
-		$("#back").on('click', function() {
+		$("#ok").on('click', function() {
 			// Safe to reset HelpModel caller => This is set to 'signup' in signup -phase.
 			HM.caller = undefined;
 			self.controller.models['MenuModel'].setSelected('menu');

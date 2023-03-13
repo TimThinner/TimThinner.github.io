@@ -300,7 +300,7 @@ export default class AnalysisView extends View {
 		let radialScale = d3.scaleLinear().domain([0, 1]).range([0, range]);
 		//let ticks = [0.2, 0.4, 0.6, 0.8, 1];
 		const ticks = [1, 0.8, 0.6, 0.4, 0.2];
-		const circle_colors = ['#0c0','#cfc','#ff0','#f80','#c00'];
+		const circle_colors = ['#afa','#cfc','#ffa','#fc8','#faa'];
 		//draw grid lines (circles)
 		ticks.forEach((t,i) =>
 			svg.append("circle")
@@ -400,7 +400,7 @@ export default class AnalysisView extends View {
 				svg.append("path")
 					.datum(coordinates)
 					.attr("d", line)
-					.attr("stroke-width", 2)
+					.attr("stroke-width", 3)
 					.attr("stroke", color)
 					.attr("fill", "none")//color)
 					.attr("stroke-opacity", 1)
@@ -414,7 +414,7 @@ export default class AnalysisView extends View {
 				svg.append("path")
 					.datum(coordinates)
 					.attr("d", line)
-					.attr("stroke-width", 2)
+					.attr("stroke-width", 3)
 					.attr("stroke", color)
 					.attr("fill", "none")//color)
 					.attr("stroke-opacity", 1)

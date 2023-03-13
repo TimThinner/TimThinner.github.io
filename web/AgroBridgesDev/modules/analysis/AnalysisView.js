@@ -299,15 +299,16 @@ export default class AnalysisView extends View {
 		//let radialScale = d3.scaleLinear().domain([0, 10]).range([0, 250]);
 		let radialScale = d3.scaleLinear().domain([0, 1]).range([0, range]);
 		//let ticks = [0.2, 0.4, 0.6, 0.8, 1];
-		let ticks = [1, 0.8, 0.6, 0.4, 0.2];
+		const ticks = [1, 0.8, 0.6, 0.4, 0.2];
+		const circle_colors = ['#0c0','#cfc','#ff0','#f80','#c00'];
 		//draw grid lines (circles)
-		ticks.forEach(t =>
+		ticks.forEach((t,i) =>
 			svg.append("circle")
 				//.attr("cx", 300)
 				//.attr("cy", 300)
 				.attr("cx", horiz_center) // min_dim)
 				.attr("cy", verti_center) // min_dim)
-				.attr("fill", '#fff')//"#e5ecf6") // "none"
+				.attr("fill", circle_colors[i]) //'#fff')//"#e5ecf6") // "none"
 				.attr("stroke", this.colors.GREY)
 				.attr("r", radialScale(t))
 		);

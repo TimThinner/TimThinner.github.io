@@ -68,6 +68,11 @@ export default class UserHeatingController extends Controller {
 		//const UM = this.master.modelRepo.get('UserModel');
 		//console.log(['UM.obix_code=',UM.obix_code]);
 		
+		// NOTE: host: 'ba.vtt.fi' is added at the backend
+		//src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_TE15', // add obix_code + '/' at fetch phase (ObixModel).
+		//src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_ME15', // add obix_code + '/' at fetch phase (ObixModel).
+		//src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_QE15', // add obix_code + '/' at fetch phase (ObixModel).
+		
 		const UTM = new UserTemperatureModel({
 			name:'UserTemperatureModel',
 			// NOTE: host: 'ba.vtt.fi' is added at the backend

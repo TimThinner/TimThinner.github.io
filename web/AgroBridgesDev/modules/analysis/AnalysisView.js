@@ -737,10 +737,10 @@ export default class AnalysisView extends View {
 		const nbspx2 = '&nbsp;&nbsp;';
 		const nbspx4 = '&nbsp;&nbsp;&nbsp;&nbsp;';
 		const legend = '<p><img src="./svg/best-box.svg" width="16" />' + nbspx2 + ll_best + 
-			nbspx4 +'<img src="./svg/good-box.svg" width="16" />' + nbspx2 + ll_good +
-			nbspx4 +'<img src="./svg/moderate-box.svg" width="16" />' + nbspx2 + ll_moderate +
-			nbspx4 +'<img src="./svg/limited-box.svg" width="16" />' + nbspx2 + ll_limited + 
-			nbspx4 +'<img src="./svg/very-limited-box.svg" width="16" />' + nbspx2 + ll_very_limited + '</p>';
+			nbspx4 +' <img src="./svg/good-box.svg" width="16" />' + nbspx2 + ll_good +
+			nbspx4 +' <img src="./svg/moderate-box.svg" width="16" />' + nbspx2 + ll_moderate +
+			nbspx4 +' <img src="./svg/limited-box.svg" width="16" />' + nbspx2 + ll_limited + 
+			nbspx4 +' <img src="./svg/very-limited-box.svg" width="16" />' + nbspx2 + ll_very_limited + '</p>';
 		/*'<ul style="padding-left:16px;">'+
 			'<li><img src="./svg/best-box.svg" width="16" />&nbsp;&nbsp;Best</li>'+
 			'<li><img src="./svg/good-box.svg" width="16" />&nbsp;&nbsp;Good</li>'+
@@ -1068,12 +1068,12 @@ export default class AnalysisView extends View {
 							'<div class="col s12 m5" id="recommendations-list-wrapper">'+
 							'</div>'+
 							'<div class="col s12 m7" id="recommendations-spider-wrapper">'+
-								'<div class="row">'+
+								'<div class="row" style="margin-bottom:0;">'+
 									'<div class="col s12" id="recommendations-spider-chart">'+
 									'</div>'+
 								'</div>'+
 								'<div class="row">'+
-									'<div class="col s12" id="recommendations-spider-legend">'+
+									'<div class="col s12 center" id="recommendations-spider-legend">'+
 									'</div>'+
 								'</div>'+
 							'</div>'+

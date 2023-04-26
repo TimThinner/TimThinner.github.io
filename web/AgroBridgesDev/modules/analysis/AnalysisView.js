@@ -360,9 +360,9 @@ export default class AnalysisView extends View {
 			so that they wouldn't overlap (in different language versions.
 			*/
 			if (ft_name === 'Labor_Produce') {
-				label_coordinate.x -= fontsize*7;
+				label_coordinate.x -= fontsize*4;
 			} else if (ft_name === 'Carbon_Footprint') {
-				label_coordinate.x += fontsize*7;
+				label_coordinate.x += fontsize*4;
 			} else {
 				// do nothing
 			}

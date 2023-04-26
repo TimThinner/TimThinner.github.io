@@ -722,25 +722,32 @@ export default class AnalysisView extends View {
 		"spider_color4_label": "Limited",
 		"spider_color5_label": "Very limited"
 		*/
-		let ll_best = 'Best';
-		let ll_good = 'Good';
-		let ll_moderate = 'Moderate';
-		let ll_limited = 'Limited';
-		let ll_very_limited = 'Very limited';
+		let ll_legends = ['Best', 'Good', 'Moderate', 'Limited', 'Very limited'];
 		if (this.USER_MODEL.analysisResult.result_text) {
-			ll_best = this.USER_MODEL.analysisResult.result_text.spider_color1_label;
-			ll_good = this.USER_MODEL.analysisResult.result_text.spider_color2_label;
-			ll_moderate = this.USER_MODEL.analysisResult.result_text.spider_color3_label;
-			ll_limited = this.USER_MODEL.analysisResult.result_text.spider_color4_label;
-			ll_very_limited = this.USER_MODEL.analysisResult.result_text.spider_color5_label;
+			ll_legends[0] = this.USER_MODEL.analysisResult.result_text.spider_color1_label;
+			ll_legends[1] = this.USER_MODEL.analysisResult.result_text.spider_color2_label;
+			ll_legends[2] = this.USER_MODEL.analysisResult.result_text.spider_color3_label;
+			ll_legends[3] = this.USER_MODEL.analysisResult.result_text.spider_color4_label;
+			ll_legends[4] = this.USER_MODEL.analysisResult.result_text.spider_color5_label;
 		}
+		// lets convert every white space character into "nbsp;" so that legend text for any color
+		// will NOT wrap to another line.
+		ll_legends.forEach(leg=>{
+			leg.replaceAll(' ', '&nbsp;'));
+		});
+		
+		onsole.log(words[3]);
+// Expected output: "fox"
+		
 		const nbspx2 = '&nbsp;&nbsp;';
 		const nbspx4 = '&nbsp;&nbsp;&nbsp;&nbsp;';
-		const legend = '<p><img src="./svg/best-box.svg" width="16" />' + nbspx2 + ll_best + 
-			nbspx4 +' <img src="./svg/good-box.svg" width="16" />' + nbspx2 + ll_good +
-			nbspx4 +' <img src="./svg/moderate-box.svg" width="16" />' + nbspx2 + ll_moderate +
-			nbspx4 +' <img src="./svg/limited-box.svg" width="16" />' + nbspx2 + ll_limited + 
-			nbspx4 +' <img src="./svg/very-limited-box.svg" width="16" />' + nbspx2 + ll_very_limited + '</p>';
+		const whitespace = '<span style="white-space: pre;"> </span>';
+		
+		const legend = '<p><img src="./svg/best-box.svg" width="16" />' + nbspx2 + ll_legends[0] + 
+			nbspx4 + whitespace + '<img src="./svg/good-box.svg" width="16" />' + nbspx2 + ll_legends[1] +
+			nbspx4 + whitespace + '<img src="./svg/moderate-box.svg" width="16" />' + nbspx2 + ll_legends[2] +
+			nbspx4 + whitespace + '<img src="./svg/limited-box.svg" width="16" />' + nbspx2 + ll_legends[3] + 
+			nbspx4 + whitespace + '<img src="./svg/very-limited-box.svg" width="16" />' + nbspx2 + ll_legends[4] + '</p>';
 		/*'<ul style="padding-left:16px;">'+
 			'<li><img src="./svg/best-box.svg" width="16" />&nbsp;&nbsp;Best</li>'+
 			'<li><img src="./svg/good-box.svg" width="16" />&nbsp;&nbsp;Good</li>'+

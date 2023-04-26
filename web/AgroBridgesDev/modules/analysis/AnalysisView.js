@@ -699,7 +699,8 @@ export default class AnalysisView extends View {
 	}
 	
 	renderRecommendationsSpider() {
-		$('#recommendations-spider-wrapper').empty();
+		$('#recommendations-spider-chart').empty();
+		$('#recommendations-spider-legend').empty();
 		
 		let w = this.REO.width;
 		if (w > 1600) { w = 1600; }

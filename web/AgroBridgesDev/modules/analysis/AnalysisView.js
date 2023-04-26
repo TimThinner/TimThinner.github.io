@@ -713,12 +713,17 @@ export default class AnalysisView extends View {
 			height = this.REO.height*0.5;	// 50% of height
 		}
 		
-		const html = '<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>';
-		$(html).appendTo('#recommendations-spider-chart');
-		
+		const svg = '<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>';
+		$(svg).appendTo('#recommendations-spider-chart');
 		this.drawSpider('peterparker', 'spider-r', width, height);
 		
-		const legend = '<p>NOTE: Render Legend HERE!</p>';
+		const legend = '<ul style="padding-left:16px;">'+
+			'<li><img src="./svg/best-box.svg" width="16" />&nbsp;&nbsp;Best</li>'+
+			'<li><img src="./svg/good-box.svg" width="16" />&nbsp;&nbsp;Good</li>'+
+			'<li><img src="./svg/moderate-box.svg" width="16" />&nbsp;&nbsp;Moderate</li>'+
+			'<li><img src="./svg/limited-box.svg" width="16" />&nbsp;&nbsp;Limited</li>'+
+			'<li><img src="./svg/very-limited-box.svg" width="16" />&nbsp;&nbsp;Very limited</li>'+
+			'</ul>';
 		$(legend).appendTo('#recommendations-spider-legend');
 		
 	}

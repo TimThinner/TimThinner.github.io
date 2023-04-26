@@ -713,9 +713,13 @@ export default class AnalysisView extends View {
 		}
 		
 		const html = '<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>';
-		$(html).appendTo('#recommendations-spider-wrapper');
+		$(html).appendTo('#recommendations-spider-chart');
 		
 		this.drawSpider('peterparker', 'spider-r', width, height);
+		
+		const legend = '<p>NOTE: Render Legend HERE!</p>';
+		$(legend).appendTo('#recommendations-spider-legend');
+		
 	}
 	
 	// CHAPTER 3: Improved logistics is also an option for all farmers
@@ -1035,6 +1039,14 @@ export default class AnalysisView extends View {
 							'<div class="col s12 m5" id="recommendations-list-wrapper">'+
 							'</div>'+
 							'<div class="col s12 m7" id="recommendations-spider-wrapper">'+
+								'<div class="row">'+
+									'<div class="col s12" id="recommendations-spider-chart">'+
+									'</div>'+
+								'</div>'+
+								'<div class="row">'+
+									'<div class="col s12" id="recommendations-spider-legend">'+
+									'</div>'+
+								'</div>'+
 							'</div>'+
 						'</div>'+
 					'</div>'+

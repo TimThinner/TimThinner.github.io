@@ -330,6 +330,17 @@ export default class AnalysisView extends View {
 			//return { "x": 300 + x, "y": 300 - y };
 			return { "x": horiz_center + x, "y": verti_center - y };
 		}
+		/*
+		this.featurez = [
+			"Volume",
+			"Consumer_Contact",
+			"Gender_Equality",
+			"Labor_Produce",
+			"Carbon_Footprint",
+			"Chain_Added_Value",
+			"Price_Premium"
+		];
+		*/
 		for (var i = 0; i < this.featurez.length; i++) {
 			let ft_name = this.featurez[i];
 			let angle = (Math.PI / 2) + (2 * Math.PI * i / this.featurez.length);
@@ -341,6 +352,20 @@ export default class AnalysisView extends View {
 			// Label is always mapped to this.labelz[ft_name]
 			const cc = this.labelz[ft_name].length;
 			label_coordinate.x -= fontsize*cc/4;
+			
+			/*
+			2023.04.26 Edit: 
+				- Move "Labor_Produce" -text a little bit to the left.
+				- Move "Carbon_Footprint" -text a little bit to the right.
+			so that they wouldn't overlap (in different language versions.
+			*/
+			if (ft_name === 'Labor_Produce') {
+				label_coordinate.x -= fontsize*7;
+			} else if (ft_name === 'Carbon_Footprint') {
+				label_coordinate.x += fontsize*7;
+			} else {
+				// do nothing
+			}
 			/*
 			if (ft_name === 'Volume') {
 				label_coordinate.x -= fontsize*3; // 6 characters
@@ -585,6 +610,7 @@ export default class AnalysisView extends View {
 		
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_intro = this.USER_MODEL.analysisResult.result_text.Result1_Models_Considered;
+			const ll_resu_model_info = this.USER_MODEL.analysisResult.result_text.Result_model_analysis_info;
 			const ll_resu = this.USER_MODEL.analysisResult.result_text.rank_intro1_id; // "Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first.",
 			const ll_add_info = this.USER_MODEL.analysisResult.result_text.Result1_add_info; // - The graphics show to which extent the SFSC sales channels meet the different criteria.
 			
@@ -594,7 +620,7 @@ export default class AnalysisView extends View {
 			
 			//const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
 			
-			const html = '<p>'+ll_intro+' '+ll_resu+' '+ll_add_info+'</p>';
+			const html = '<p>'+ll_intro+' '+ll_resu_model_info+' '+ll_resu+' '+ll_add_info+'</p>';
 			/*let html;
 			
 			if (numberOfResults === 0) {
@@ -766,30 +792,42 @@ export default class AnalysisView extends View {
 	
 	
 	renderImprovedLogistics() {
-		
 		if (this.USER_MODEL.analysisResult.result_text) {
-			
-			//const ll_r2_no_suitable = this.USER_MODEL.analysisResult.result_text.Results2_farm_no_suitable_Channels;
-			//const ll_r2_only_1_suitable = this.USER_MODEL.analysisResult.result_text.Results2_only_one_channel;
-			//const ll_r2_more_than_2_suitable = this.USER_MODEL.analysisResult.result_text.Results2_Farm_more_2_suitable;
-			
 			const title = this.USER_MODEL.analysisResult.result_text.Improved_Logistics_title;
 			const resu = this.USER_MODEL.analysisResult.result_text.rank_intro2_id;
+			const info = this.USER_MODEL.analysisResult.result_text.improved_logistics_add_info;
 			
-			//const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
-			/*
-			let html;
+			let link_1_url = undefined;
+			let link_1_title = undefined;
+			let link_2_url = undefined;
+			let link_2_title = undefined;
 			
-			if (numberOfResults === 0) {
-				html = '<p>'+ll_r2_no_suitable+'</p>';
-				
-			} else if(numberOfResults === 1) {
-				html = '<p>'+ll_r2_only_1_suitable+'</p>';
-				
-			} else { // Two or more...
-				html = '<p>'+ll_r2_more_than_2_suitable+'</p>';
-			}*/
-			const html = '<h5 style="text-align:center">'+title+'</h5><p>'+resu+'</p>';
+			this.USER_MODEL.analysisResult.links.forEach(l=>{
+				if (l.var_name === 'improved_logistics_link1') {
+					link_1_url = l.url;
+					link_1_title = l.link_title;
+				} else if (l.var_name === 'improved_logistics_link2') {
+					link_2_url = l.url;
+					link_2_title = l.link_title;
+				}
+			});
+			
+			let link_1_markup = '';
+			if (typeof link_1_url !== 'undefined' && typeof link_1_title !== 'undefined') {
+				link_1_markup = '<a href="'+link_1_url+'" target="_blank">'+link_1_title+'</a>';
+			}
+			let link_2_markup = '';
+			if (typeof link_2_url !== 'undefined' && typeof link_2_title !== 'undefined') {
+				link_2_markup = '<a href="'+link_2_url+'" target="_blank">'+link_2_title+'</a>';
+			}
+			let html = '<h5 style="text-align:center">'+title+'</h5><p>'+resu;
+			if (link_1_markup.length > 0) {
+				html += ' '+info+' '+link_1_markup;
+			}
+			if (link_2_markup.length > 0) {
+				html += ', '+link_2_markup;
+			}
+			html += '</p>';
 			$("#improved-logistics-wrapper").empty().append(html);
 		}
 	}

@@ -712,20 +712,43 @@ export default class AnalysisView extends View {
 			width = w*0.9;					// 90% of width
 			height = this.REO.height*0.5;	// 50% of height
 		}
-		
 		const svg = '<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>';
 		$(svg).appendTo('#recommendations-spider-chart');
 		this.drawSpider('peterparker', 'spider-r', width, height);
-		
-		const legend = '<ul style="padding-left:16px;">'+
+		/*
+		"spider_color1_label": "Best",
+		"spider_color2_label": "Good",
+		"spider_color3_label": "Moderate",
+		"spider_color4_label": "Limited",
+		"spider_color5_label": "Very limited"
+		*/
+		let ll_best = 'Best';
+		let ll_good = 'Good';
+		let ll_moderate = 'Moderate';
+		let ll_limited = 'Limited';
+		let ll_very_limited = 'Very limited';
+		if (this.USER_MODEL.analysisResult.result_text) {
+			ll_best = this.USER_MODEL.analysisResult.result_text.spider_color1_label;
+			ll_good = this.USER_MODEL.analysisResult.result_text.spider_color2_label;
+			ll_moderate = this.USER_MODEL.analysisResult.result_text.spider_color3_label;
+			ll_limited = this.USER_MODEL.analysisResult.result_text.spider_color4_label;
+			ll_very_limited = this.USER_MODEL.analysisResult.result_text.spider_color5_label;
+		}
+		const nbspx2 = '&nbsp;&nbsp;';
+		const nbspx4 = '&nbsp;&nbsp;&nbsp;&nbsp;';
+		const legend = '<p><img src="./svg/best-box.svg" width="16" />' + nbspx2 + ll_best + 
+			nbspx4 +'<img src="./svg/good-box.svg" width="16" />' + nbspx2 + ll_good +
+			nbspx4 +'<img src="./svg/moderate-box.svg" width="16" />' + nbspx2 + ll_moderate +
+			nbspx4 +'<img src="./svg/limited-box.svg" width="16" />' + nbspx2 + ll_limited + 
+			nbspx4 +'<img src="./svg/very-limited-box.svg" width="16" />' + nbspx2 + ll_very_limited + '</p>';
+		/*'<ul style="padding-left:16px;">'+
 			'<li><img src="./svg/best-box.svg" width="16" />&nbsp;&nbsp;Best</li>'+
 			'<li><img src="./svg/good-box.svg" width="16" />&nbsp;&nbsp;Good</li>'+
 			'<li><img src="./svg/moderate-box.svg" width="16" />&nbsp;&nbsp;Moderate</li>'+
 			'<li><img src="./svg/limited-box.svg" width="16" />&nbsp;&nbsp;Limited</li>'+
 			'<li><img src="./svg/very-limited-box.svg" width="16" />&nbsp;&nbsp;Very limited</li>'+
-			'</ul>';
+			'</ul>';*/
 		$(legend).appendTo('#recommendations-spider-legend');
-		
 	}
 	
 	// CHAPTER 3: Improved logistics is also an option for all farmers

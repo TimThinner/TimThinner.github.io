@@ -284,7 +284,6 @@ export default class UserModel extends Model {
         }
     ],
     "result_text": {
-		
         "Definition_CSA": "Producers and consumers have a pre-existing agreement were consumers pay an agreed membership fee or offer labour services (or both), in exchange for produce. Two sales channels of the business model are considered in the analysis: A) CSA - Trading working hours for a share of the harvest, B) CSA - Subscription - payment of an annual fee for a share of the harvest. The products are delivered by the farmer.",
         "Definition_Criteria": "Would you like to know how the criteria are defined?",
         "Definition_Face_2_Face": "Consumer purchases a product directly from the producer/processor on a Face-to-Face basis. Three sales channels of the business model are considered in the analysis: A) Farm shops, B) Farmers' markets, C) Pick-Your-Own",
@@ -320,11 +319,16 @@ export default class UserModel extends Model {
         "rec_table_bm_title": "Business Model",
         "rec_table_checkbox_title": "Show",
         "rec_table_sc_title": "Sales Channel",
-        "recommendation_title": "Recommendations for Short Food Supply Chain"
-    }
-		};
+        "recommendation_title": "Recommendations for Short Food Supply Chain",
+        "spider_color1_label": "Best",
+        "spider_color2_label": "Good",
+        "spider_color3_label": "Moderate",
+        "spider_color4_label": "Limited",
+        "spider_color5_label": "Very limited"
+    } // end of result_text
+		}; // analysis_simulation_backup
 		this.analysisReady = false;
-	}
+	} // end of constructor
 	
 	/*
 		- how many questions are there?

@@ -528,36 +528,84 @@ export default class AnalysisView extends View {
 			
 			const ll_title = this.USER_MODEL.analysisResult.result_text.Intro_Definition_Business_Models_title;
 			
+			
+			
+			/* New: Add links at the end of each Business model description
+    "links": [
+        {
+            "link_title": "Improved Logistics",
+            "url": "https://agrobridges-toolbox.eu/decisionsupporttool/",
+            "var_name": "Business_Model_Improved_Logistics_link"
+        },
+        {
+            "link_title": "Face-to-Face",
+            "url": "https://agrobridges-toolbox.eu/decisionsupporttool/",
+            "var_name": "Business_Model_Face_2_Face_link"
+        },
+        {
+            "link_title": "Online Trade",
+            "url": "https://agrobridges-toolbox.eu/decisionsupporttool/",
+            "var_name": "Business_Model_Online_Trade_link"
+        },
+        {
+            "link_title": "Retail Trade",
+            "url": "https://agrobridges-toolbox.eu/decisionsupporttool/",
+            "var_name": "Business_Model_Retail_Trade_link"
+        },
+        {
+            "link_title": "Community Supported Agriculture",
+            "url": "https://agrobridges-toolbox.eu/decisionsupporttool/",
+            "var_name": "Business_Model_CSA_link"
+        }
+    ],
+			*/
+			const business_model_def_links = [
+				{ var_name:"Business_Model_CSA_link", markup:'' },
+				{ var_name:"Business_Model_Face_2_Face_link", markup:'' },
+				{ var_name:"Business_Model_Online_Trade_link", markup:'' },
+				{ var_name:"Business_Model_Retail_Trade_link", markup:'' },
+				{ var_name:"Business_Model_Improved_Logistics_link", markup:'' }
+			];
+			// Fill in the link data from analysisResult:
+			business_model_def_links.forEach(mdl=>{
+				this.USER_MODEL.analysisResult.links.every(lnk=>{
+					if (mdl.var_name === lnk.var_name) {
+						mdl.markup = '<a href="'+lnk.url+'" target="_blank">'+lnk.link_title+'</a>';
+						return false; // break out from the every-loop.
+					}
+					return true; // continue with next link
+				});
+			});
+			
 			const html = '<ul class="collapsible">'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_a+'</div>'+
-					'<div class="collapsible-body">'+ll_def_a+'</div>'+
+					'<div class="collapsible-body">'+ll_def_a+' '+business_model_def_links[0].markup+'</div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_b+'</div>'+
-					'<div class="collapsible-body">'+ll_def_b+'</div>'+
+					'<div class="collapsible-body">'+ll_def_b+' '+business_model_def_links[1].markup+'</div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_c+'</div>'+
-					'<div class="collapsible-body">'+ll_def_c+'</div>'+
+					'<div class="collapsible-body">'+ll_def_c+' '+business_model_def_links[2].markup+'</div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_d+'</div>'+
-					'<div class="collapsible-body">'+ll_def_d+'</span></div>'+
+					'<div class="collapsible-body">'+ll_def_d+' '+business_model_def_links[3].markup+'</div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_e+'</div>'+
-					'<div class="collapsible-body">'+ll_def_e+'</span></div>'+
+					'<div class="collapsible-body">'+ll_def_e+' '+business_model_def_links[4].markup+'</div>'+
 				'</li>'+
 			'</ul>';
 			$('#business-models-intro-title').empty().append('<h5 style="text-align:center">'+ll_title+'</h5>');
 			$('#business-models-intro-wrapper').empty().append(ll_intro);
 			$('#business-models-collapsible-wrapper').empty().append(html);
 			
-			
 			/*
 			TODO
-			Add link to the end of this chapter!
+			Add link to the end of this chapter! (Definitions of business models for Short food Supply chain)
 			"links": [
 			{
             "link_title": "Link",
@@ -565,6 +613,8 @@ export default class AnalysisView extends View {
             "var_name": "More_Info_Business_Models_link"
 			}
 			],*/
+			
+			/*
 			let link_url = undefined;
 			let link_title = undefined;
 			this.USER_MODEL.analysisResult.links.forEach(l=>{
@@ -581,6 +631,7 @@ export default class AnalysisView extends View {
 				ll_more_info += '</p>';
 			}
 			$("#business-models-more-info-wrapper").empty().append(ll_more_info);
+			*/
 		}
 	}
 	

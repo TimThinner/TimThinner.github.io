@@ -120,7 +120,7 @@ export default class LanguageModel {
 				'BUILDING_FLEXIBILITY_ELE_DESCRIPTION':'Electricity share for the last',
 				'BUILDING_FLEXIBILITY_DH_DESCRIPTION':'District heating share for the last',
 				'BUILDING_FLEXIBILITY_ENERGY':'Energy',
-				'BUILDING_FLEXIBILITY_PRICE':'Price',
+				'BUILDING_FLEXIBILITY_PRICE':'Cost',
 				'BUILDING_FLEXIBILITY_EMISSIONS':'Emissions',
 				'BUILDING_SAVINGS':'Savings',
 				'BUILDING_SAVINGS_DAYS':'days',
@@ -140,7 +140,7 @@ export default class LanguageModel {
 				'APARTMENT_HUMIDITY_AXIS_LABEL':'Humidity',
 				'APARTMENT_HUMIDITY_LEGEND':'Humidity',
 				'FLEXIBILITY_OPTIONS_TITLE':'Savings calculation',
-				'FLEXIBILITY_OPTIONS_DESCRIPTION':'The savings of energy, price and emissions are calculated over specified timerange. Here you can select the timerange:',
+				'FLEXIBILITY_OPTIONS_DESCRIPTION':'The savings are calculated over specified timerange. Here you can select the timerange:',
 				'CONSENT_TITLE':'SUOSTUMUS',
 				'CONSENT_TEXT_A':'Vahvistan lukeneeni ja ymmärtäneeni tutkimustiedotteen ja sen liitteenä olleen tietosuojailmoituksen. Vahvistan, että tiedossani ei ole tutkimustiedotteessa esitettyä poissulkukriteeriä ja/tai täytän valintakriteerit. Minulla on ollut mahdollisuus harkita saamaani tietoa, esittää kysymyksiä ja olen saanut kysymyksiini riittävän vastauksen.',
 				'CONSENT_CHECK_A':'Annan suostumukseni <b>tutkimukseen osallistumiseen</b>. Minulla on oikeus keskeyttää osallistuminen väliaikaisesti tai toistaiseksi (jättäytyä tutkimuksen vaiheen ulkopuolelle) tai peruuttaa suostumus, milloin tahansa ilman erityistä syytä ja syytä kertomatta.',
@@ -274,7 +274,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Session has expired... logging out in 3 seconds!',
-				'MENU_VERSION':'v 23.01.18'
+				'MENU_VERSION':'v 23.01.24'
 			},
 			'fi':{
 				'USER_LOGIN_TITLE':'Kirjautuminen',
@@ -387,17 +387,17 @@ export default class LanguageModel {
 				'BUILDING_EMISSION_USER_LEGEND':'Asukas',
 				'BUILDING_EMISSION_AVERAGE':'KA',
 				'BUILDING_EMISSION_AVERAGE_LEGEND':'KA',
-				'BUILDING_FLEXIBILITY_TITLE':'Rakennuksen joustot',
+				'BUILDING_FLEXIBILITY_TITLE':'Rakennuksen kulutusjousto',
 				'BUILDING_FLEXIBILITY_DESCRIPTION_1':'Rakennuksen kulutus, päästöt ja joustot',
 				'BUILDING_FLEXIBILITY_DESCRIPTION_2':'Päivät jolloin jousto on ollut päällä, on merkitty vihreällä.',
 				'BUILDING_FLEXIBILITY_ELE_DESCRIPTION':'Sähkön osuus, viimeiset',
 				'BUILDING_FLEXIBILITY_DH_DESCRIPTION':'Kaukolämmön osuus, viimeiset',
 				'BUILDING_FLEXIBILITY_ENERGY':'Energia',
-				'BUILDING_FLEXIBILITY_PRICE':'Hinta',
+				'BUILDING_FLEXIBILITY_PRICE':'Kustannus',
 				'BUILDING_FLEXIBILITY_EMISSIONS':'Päästöt',
 				'BUILDING_SAVINGS':'Säästöt',
 				'BUILDING_SAVINGS_DAYS':'päivää',
-				'BUILDING_ENERGY_COST':'Energian hinta:',
+				'BUILDING_ENERGY_COST':'Energiakustannukset:',
 				'BUILDING_ENERGY_CONSUMPTION':'Energian kulutus:',
 				'BUILDING_CO2_EMISSIONS':'CO2 päästöt:',
 				'BUILDING_OPTIMIZATION_DECREASE':'vähennys',
@@ -547,7 +547,7 @@ export default class LanguageModel {
 				'GDPR_CHAPTER_12IA':'Rekisteröidyllä on oikeus tehdä valitus valvontaviranomaisille, jos rekisteröity katsoo, että hänen oikeuksiaan on EU:n tietosuoja-asetuksen valossa loukattu. Tietosuojavaltuutetun yhteystiedot: <a href="https://tietosuoja.fi/yhteystiedot" target="_blank">https://tietosuoja.fi/yhteystiedot</a>',
 				'GDPR_CHAPTER_12J':'<b>Rekisteröity voi toteuttaa yllämainitut oikeutensa ottamalla rekisterinpitäjään yhteyttä kohdassa 2 määriteltyjen yhteystietojen avulla, mieluiten sähköpostitse.</b>',
 				'SESSION_EXPIRED':'Kirjautuminen on vanhentunut... automaattinen uloskirjaus 3 sekunnissa!',
-				'MENU_VERSION':'v 23.01.18'
+				'MENU_VERSION':'v 23.01.24'
 			}
 		}
 	}

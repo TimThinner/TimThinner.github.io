@@ -830,7 +830,7 @@ export default class MenuView extends View {
 			// For all consumption timestamps, check if price exist.
 			this.elecons.forEach(e=>{
 				const ds = moment(e.timestamp).format(); // timestamp is a Date object => convert to string.
-				console.log(['ELECONS ds=',ds]);
+				//console.log(['ELECONS ds=',ds]);
 				bucket[ds] = {};
 				bucket[ds]['elecons'] = e.value;
 			});
@@ -840,7 +840,7 @@ export default class MenuView extends View {
 					bucket[ds]['price'] = p.price;
 				} else {
 					// DISCARD THIS!
-					console.log(['DISCARD PRICE ds=',ds]);
+					//console.log(['DISCARD PRICE ds=',ds]);
 				}
 			});
 			// How many entries?

@@ -345,7 +345,7 @@ export default class EntsoeModel extends Model {
 		}
 	}
 	
-	fetch() {
+	fetch(timerange) {
 		const self = this;
 		if (this.fetching) {
 			console.log('MODEL '+this.name+' FETCHING ALREADY IN PROCESS!');
@@ -363,11 +363,26 @@ export default class EntsoeModel extends Model {
 		const url = this.mongoBackend + '/proxes/entsoe';
 		const body_url = this.src; // URL will be appended in backend.
 		
+		//const timerange = {begin:{value:15,unit:'days'}};
+		let begin_value = 192;
+		let begin_unit = 'hours';
+		let end_value = 1;
+		let end_unit = 'hours';
+		if (typeof timerange !== 'undefined') {
+			if (typeof timerange.begin !== 'undefined') {
+				begin_value = timerange.begin.value;
+				begin_unit = timerange.begin.unit;
+			}
+			if (typeof timerange.end !== 'undefined') {
+				end_value = timerange.end.value;
+				end_unit = timerange.end.unit;
+			}
+		}
 		// NOTE: Times are given always in UTC time!!!
 		//const body_period_start = moment.utc().subtract(120, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
 		//const body_period_end = moment.utc().add(36,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
-		const body_period_start = moment.utc().subtract(192, 'hours').format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
-		const body_period_end = moment.utc().add(1,'hours').format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
+		const body_period_start = moment.utc().subtract(begin_value, begin_unit).format('YYYYMMDDHH') + '00'; // yyyyMMddHHmm
+		const body_period_end = moment.utc().add(end_value,end_unit).format('YYYYMMDDHH') + '00';   // yyyyMMddHHmm
 		
 		console.log(['ENTSOE body_period_start=',body_period_start,' body_period_end=',body_period_end]);
 		

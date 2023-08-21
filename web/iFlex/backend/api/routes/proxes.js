@@ -274,6 +274,7 @@ const Proxe_HTTPS_Fetch = (po, res) => {
 		res.status(500).json({error: e});
 	});
 	// Write data to request body (XML)
+	console.log(['request xml=',xml]);
 	req2.write(xml);
 	req2.end();
 };
@@ -442,6 +443,8 @@ router.post('/obix', (req,res,next)=>{
 	const expiration = req.body.expiration_in_seconds;
 	//const start = req.body.start;
 	//const end = req.body.end;
+	console.log(['obix url=',url]);
+	console.log(['obix hash=',hash]);
 	
 	// base64.encode() is in Browser btoa()
 	const base64string = base64.encode(process.env.OBIX_USER+':'+process.env.OBIX_PASS);
@@ -519,7 +522,6 @@ router.post('/entsoe', (req,res,next)=>{
 	url += '&out_Domain=' + req.body.domain;
 	url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm
 	url += '&periodEnd=' + req.body.period_end;       // yyyyMMddHHmm
-	console.log(['entsoe url=',url]);
 	console.log(['entsoe url=',url]);
 	const options = {};
 	

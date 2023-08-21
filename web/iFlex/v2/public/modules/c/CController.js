@@ -1,0 +1,124 @@
+import Controller from '../common/Controller.js';
+import ObixModel from  '../common/ObixModel.js';
+import CView from './CView.js';
+
+export default class CController extends Controller {
+	
+	constructor(options) {
+		super(options);
+		this.fetching_interval_in_seconds = 60;
+		
+		// These are the models that are created in this Controller.
+		this.modelnames = [
+			'BuildingEmissionFactorForElectricityConsumedInFinlandModel',
+			'CControllerBuildingElectricityPL1Model',
+			'CControllerBuildingElectricityPL2Model',
+			'CControllerBuildingElectricityPL3Model',
+			'CControllerBuildingHeatingQE01Model'
+		];
+	}
+	
+	remove() {
+		super.remove();
+		// We must remove all models that were created here at the initialize-method.
+		Object.keys(this.models).forEach(key => {
+			if (this.modelnames.includes(key)) {
+				console.log(['remove ',key,' from the REPO']);
+				this.master.modelRepo.remove(key);
+			}
+		});
+		this.models = {};
+	}
+/*
+PT30S (30 seconds)
+PT5M (5 minutes)
+PT1H (1 hour)
+PT24H (24 hours)
+
+INTERVAL	TIMERANGE		NUMBER OF SAMPLES
+1 MIN		1 day (24H)		1440 (24 x 60)
+10 MINS		1 week			1008 (7 x 24 x 6)
+30 MINS 	1 month			1440 (30 x 48)
+4 HOURS		6 months		1080 (30 x 6 x 6)
+6 HOURS		1 year			1460 (4 x 365)
+*/
+/*
+	refreshTimerange() {
+		this.restartPollingInterval('CView');
+	}
+	*/
+	clean() {
+		console.log('CController is now REALLY cleaned!');
+		this.remove();
+		/* IN Controller:
+		Object.keys(this.models).forEach(key => {
+			this.models[key].unsubscribe(this);
+		});
+		if (this.view) {
+			this.view.remove();
+			this.view = undefined;
+		}
+		*/
+		this.init();
+	}
+	
+	init() {
+		const model_1 = new ObixModel({
+			name: this.modelnames[0],
+			src:'/obixStore/store/Fingrid/emissionFactorForElectricityConsumedInFinland/',
+			access:'PUBLIC'
+		});
+		model_1.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add(this.modelnames[0], model_1);
+		this.models[this.modelnames[0]] = model_1;
+		
+		// NOTE: do not use same model instances created in A or B controller. 
+		// Create new instances here:
+		
+		// NOTE: host: 'ba.vtt.fi' is added at the backend
+		// We can select dynamically whether data fetcher uses "QUERY" or "ROLLUP" API:
+		// "query/" or "rollup/" is added at ObixModel depending on if "interval" is defined or not.
+		
+		const model_2 = new ObixModel({
+			name: this.modelnames[1],
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L1/', // FI_H_H160_WM40_P_L1 = Power phase L1
+			access:'PUBLIC'
+		});
+		model_2.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add(this.modelnames[1], model_2);
+		this.models[this.modelnames[1]] = model_2;
+		
+		const model_3 = new ObixModel({
+			name: this.modelnames[2],
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L2/', // FI_H_H160_WM40_P_L2 = Power phase L2
+			access:'PUBLIC'
+		});
+		model_3.subscribe(this); // Now we will receive notifications from the UserModel.
+		this.master.modelRepo.add(this.modelnames[2], model_3);
+		this.models[this.modelnames[2]] = model_3;
+		
+		const model_4 = new ObixModel({
+			name: this.modelnames[3],
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_WM40_P_L3/', // FI_H_H160_WM40_P_L3 = Power phase L3
+			access:'PUBLIC'
+		});
+		model_4.subscribe(this);
+		this.master.modelRepo.add(this.modelnames[3], model_4);
+		this.models[this.modelnames[3]] = model_4;
+		
+		const model_5 = new ObixModel({
+			name: this.modelnames[4],
+			src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_DH_QE01/', // FI_H_H160_DH_QE01 = District heating Instantaneous power
+			access:'PUBLIC'
+		});
+		model_5.subscribe(this);
+		this.master.modelRepo.add(this.modelnames[4], model_5);
+		this.models[this.modelnames[4]] = model_5;
+		
+		// These two lines MUST BE in every Controller.
+		this.models['MenuModel'] = this.master.modelRepo.get('MenuModel');
+		this.models['MenuModel'].subscribe(this);
+		
+		this.view = new CView(this);
+	}
+}

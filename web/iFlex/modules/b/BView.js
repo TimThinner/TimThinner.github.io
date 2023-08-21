@@ -146,7 +146,7 @@ export default class BView extends TimeRangeView {
 			series2.data = self.models['BuildingHeatingQE01Model'].values;
 			series2.dataFields.dateX = "timestamp"; // "date";
 			series2.dataFields.valueY = "value"; // "visits";
-			series2.tooltipText = localized_string_power + ": [bold]{valueY}[/] kW"; // NOTE: [/] is a closing bracket for [bold]
+			series2.tooltipText = localized_string_power + ": [bold]{valueY.formatNumber('#.##')}[/] kW"; // NOTE: [/] is a closing bracket for [bold]
 			series2.fillOpacity = 0.25;
 			series2.name = 'QE';
 			series2.customname = localized_string_power_legend;

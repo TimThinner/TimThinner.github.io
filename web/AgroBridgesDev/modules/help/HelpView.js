@@ -50,6 +50,16 @@ export default class HelpView extends View {
 		const ll_main_instruction_3 = LM['translation'][sel]['main_instruction_3'];
 		const ll_main_instruction_4 = LM['translation'][sel]['main_instruction_4'];
 		
+		/* New: Add links at the end this page. */
+		const more_info = LM['translation'][sel]['more_info']; // "More information:"
+		const user_guide_title = LM['translation'][sel]['user_guide']; // "User guide"
+		const user_guide_link = LM['translation'][sel]['user_guide_link']; // "https://agrobridges-toolbox.eu/decisionsupporttool/"
+		const video_title = LM['translation'][sel]['video']; //"Video"
+		const video_link = LM['translation'][sel]['video_link']; // "https://www.youtube.com/watch?v=lRf8OdKtjYs"
+		const more_info_markup = more_info + ' ' +
+			'<a href="'+user_guide_link+'" target="_blank">'+user_guide_title+'</a>, '+
+			'<a href="'+video_link+'" target="_blank">'+video_title+'</a>';
+		
 		const color = this.colors.DARK_GREEN; // DARK_GREEN:'#0B7938',
 		const html = 
 			'<div class="row">'+
@@ -71,6 +81,7 @@ export default class HelpView extends View {
 						'<p>'+ll_main_instruction_2+'</p>'+
 						'<p>'+ll_main_instruction_3+'</p>'+
 						'<p>'+ll_main_instruction_4+'</p>'+
+						'<p>'+more_info_markup+'</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -85,7 +96,7 @@ export default class HelpView extends View {
 					'<div class="col s12 center">'+
 						'<button class="btn waves-effect waves-light" id="help-ok" style="width:120px">OK</button>'+
 						'<p>&nbsp;</p>'+
-						'<p style="font-size:14px;color:#bbb">v 22.10.11</p>'+
+						'<p style="font-size:14px;color:#bbb">v 23.06.30</p>'+
 					'</div>'+
 				'</div>'+
 			'</div>';

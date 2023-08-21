@@ -18,7 +18,8 @@ const proxeRoutes = require('./api/routes/proxes');
 //const csvRoutes = require('./api/routes/csvs');
 //const xlsxRoutes = require('./api/routes/xlsxs');
 
-mongoose.connect('mongodb://localhost:27017/makingcity', {
+//mongoose.connect('mongodb://localhost:27017/makingcity', {
+mongoose.connect('mongodb://127.0.0.1:27017/makingcity', {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useUnifiedTopology: true

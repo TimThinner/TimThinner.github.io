@@ -384,10 +384,10 @@ export default class UserSignupApaView extends UserView {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+localized_string_cancel+'</button>'+
+						'<button class="btn waves-effect waves-light grey lighten-2 iflex-button" style="color:#000" id="cancel">'+localized_string_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6 center">'+
-						'<button class="btn waves-effect waves-light" type="submit" id="signup-submit">'+localized_string_signup_button_text+'</button>'+
+						'<button class="btn waves-effect waves-light iflex-button" type="submit" id="signup-submit">'+localized_string_signup_button_text+'</button>'+
 					'</div>'+
 				'</div>'+
 			'</div>';

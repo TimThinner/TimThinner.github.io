@@ -100,7 +100,7 @@ export default class UserChangePswView extends View {
 						'<button class="btn grey lighten-2" style="color:#000" id="password-cancel">'+localized_string_cancel+'</button>'+
 					'</div>'+
 					'<div class="col s6 center" style="margin-top:16px;">'+
-						'<button class="btn waves-effect waves-light" id="password-submit">'+localized_string_save+
+						'<button class="btn waves-effect waves-light iflex-button" id="password-submit">'+localized_string_save+
 							'<i class="material-icons right">send</i>'+
 						'</button>'+
 					'</div>'+

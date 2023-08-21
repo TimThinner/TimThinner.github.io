@@ -5,7 +5,7 @@ iFLEX Dark blue   #1a488b ( 26,  72, 139)
 iFLEX Dark green  #008245 (  0, 130,  69)
 iFLEX Light green #78c51b (120, 197,  27)
 
-MONTHLY SAVINGS:
+SAVINGS:
 
 (1)
 Energy Cost:
@@ -68,8 +68,6 @@ export default class MenuView extends View {
 		
 		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
 		this.PTO.subscribe(this);
-		
-		this.numberOfDays = this.controller.numberOfDays;
 	}
 	
 	show() {
@@ -935,7 +933,7 @@ export default class MenuView extends View {
 	}
 	
 	/*
-	MONTHLY SAVINGS:
+	SAVINGS:
 
 	Energy Cost:
 	10 €
@@ -951,11 +949,16 @@ export default class MenuView extends View {
 	*/
 	
 	updateSavingsTitle() {
+		const numberOfDays = this.models['FlexResultModel'].numberOfDays;
+		
 		const sel = this.LANGUAGE_MODEL.selected;
-		const string_title = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_MONTHLY_SAVINGS'];
+		const s_title = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_SAVINGS'];
+		const s_days = this.LANGUAGE_MODEL['translation'][sel]['BUILDING_SAVINGS_DAYS'];
+		const string_title = s_title + ' ('+ numberOfDays + ' ' + s_days + ')';
+		
 		const r = this.sunRadius();
 		const wunit = r+r*0.25;
-		const fontsize = r*0.175;
+		const fontsize = r*0.2;
 		const title_color = '#a5c5f1';
 		this.updateSavingsTextLine('savings-title', 0, fontsize, 2*wunit, fontsize, fontsize, title_color, string_title);
 	}
@@ -972,48 +975,136 @@ export default class MenuView extends View {
 		const r = this.sunRadius();
 		const wunit = r+r*0.25;
 		const fontsize = r*0.175;
-		const sub_title_color = '#aaa';
+		const fontsize_m = r*0.15;
+		const fontsize_s = r*0.125;
+		const sub_title_color = '#ccc';
 		const text_color = '#fff';
+		const sub_color = '#888';
 		
 		const opt = sums.opt.toFixed(0);
 		const base = sums.base.toFixed(0);
 		let percentage = 0;
 		let percentage_text = '';
-		if (sums.base > sums.opt) { // decrease
-			const d = sums.base - sums.opt;
-			percentage = d*100/sums.base;
-			percentage_text = percentage.toFixed(0) + '% '+string_decrease;
-			
-		} else {
-			// increase
-			const d = sums.opt - sums.base;
-			percentage = d*100/sums.base;
-			percentage_text = percentage.toFixed(0) + '% '+string_increase;
+		if (sums.base > 0) {
+			if (sums.base > sums.opt) { // decrease
+				const d = sums.base - sums.opt;
+				percentage = d*100/sums.base;
+				percentage_text = percentage.toFixed(0) + '% '+string_decrease;
+				
+			} else {
+				// increase
+				const d = sums.opt - sums.base;
+				percentage = d*100/sums.base;
+				percentage_text = percentage.toFixed(0) + '% '+string_increase;
+			}
 		}
 		
-		if (prop === 'energy') {
-			this.updateSavingsTextLine('savings-txt-energy-a',   0, 6.4*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_energy_consumption);
-			this.updateSavingsTextLine('savings-txt-energy-b', 0, 7.4*fontsize, 2*wunit, fontsize, fontsize, text_color, opt+'kWh  ('+base+')');
-			this.updateSavingsTextLine('savings-txt-energy-c', 0, 8.4*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
-		} else if (prop === 'price') {
-			this.updateSavingsTextLine('savings-txt-price-a',   0, 2.5*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_energy_cost);
-			this.updateSavingsTextLine('savings-txt-price-b', 0, 3.5*fontsize, 2*wunit, fontsize, fontsize, text_color, opt+'€  ('+base+')');
-			this.updateSavingsTextLine('savings-txt-price-c', 0, 4.5*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+		if (prop === 'price') {
+			this.updateSavingsTextLine('savings-txt-price-a', 0, 2.5*fontsize, 2*wunit, fontsize, fontsize_m, sub_title_color, string_energy_cost);
+			this.updateSavingsTextLine('savings-txt-price-c', 0, 3.5*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+			this.updateSavingsTextLine('savings-txt-price-b', 0, 4.5*fontsize, 2*wunit, fontsize, fontsize_s, sub_color, opt+'€  ('+base+'€)');
+			
+		} else if (prop === 'energy') {
+			this.updateSavingsTextLine('savings-txt-energy-a', 0, 6.4*fontsize, 2*wunit, fontsize, fontsize_m, sub_title_color, string_energy_consumption);
+			this.updateSavingsTextLine('savings-txt-energy-c', 0, 7.4*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+			this.updateSavingsTextLine('savings-txt-energy-b', 0, 8.4*fontsize, 2*wunit, fontsize, fontsize_s, sub_color, opt+'kWh  ('+base+'kWh)');
+			
 		} else { // 'emissions'
-			this.updateSavingsTextLine('savings-txt-emissions-a',   0, 10.3*fontsize, 2*wunit, fontsize, fontsize, sub_title_color, string_co2_emissions);
-			this.updateSavingsTextLine('savings-txt-emissions-b', 0, 11.3*fontsize, 2*wunit, fontsize, fontsize, text_color, opt+'kg  ('+base+')');
-			this.updateSavingsTextLine('savings-txt-emissions-c', 0, 12.3*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+			this.updateSavingsTextLine('savings-txt-emissions-a', 0, 10.3*fontsize, 2*wunit, fontsize, fontsize_m, sub_title_color, string_co2_emissions);
+			this.updateSavingsTextLine('savings-txt-emissions-c', 0, 11.3*fontsize, 2*wunit, fontsize, fontsize, text_color, percentage_text);
+			this.updateSavingsTextLine('savings-txt-emissions-b', 0, 12.3*fontsize, 2*wunit, fontsize, fontsize_s, sub_color, opt+'kg  ('+base+'kg)');
 		}
+		
+		// Everytime savings text is updated, update also the surface, because it MUST BE the topmost layer.
+		this.updateSavingsBoxSurface();
+	}
+	
+	updateSavingsBoxSurface() {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
+		const WHITE = '#fff';
+		const GREEN = '#0f0';
+		let r = this.sunRadius();
+		
+		const id = 'savings-box-surface';
+		$('#'+id).remove(); // First remove old rect from space.
+		/*
+		const wunit = r+r*0.25;
+		const rounding = wunit*0.15; // 10% rounded corners.
+		*/
+		const wunit = r+r*0.25;
+		//const wunit_i = wunit-wunit*0.075; // inner rectange is 10% smaller
+		const rounding = wunit*0.15; // 10% rounded corners.
+		//const rounding_i = wunit_i*0.15; // 10% rounded corners.
+		
+		//const group = document.createElementNS(svgNS, "g");
+		//group.id = id;
+		/*
+		const border = document.createElementNS(svgNS, "rect");
+		border.setAttribute('x',1);
+		border.setAttribute('y',1);
+		border.setAttribute('width',wunit*2-2);
+		border.setAttribute('height',wunit*2-2);
+		border.setAttribute('rx',rounding);
+		border.style.fill = WHITE;
+		border.style.fillOpacity = 0;
+		border.style.stroke = DARK_BLUE;
+		border.style.strokeWidth = 2;
+		group.appendChild(border);
+		*/
+		/*
+		const rect_i = document.createElementNS(svgNS, 'rect');
+		rect_i.setAttribute('x',wunit*0.075);
+		rect_i.setAttribute('y',wunit*0.075);
+		rect_i.setAttribute('width',wunit*2-wunit*0.15);
+		rect_i.setAttribute('height',wunit*2-wunit*0.15);
+		rect_i.setAttribute('rx',rounding_i);
+		rect_i.style.fill = '#333';
+		rect_i.style.fillOpacity = 1;//0.75;
+		rect_i.style.strokeOpacity = 1;
+		rect_i.style.stroke = DARK_BLUE;
+		rect_i.style.strokeWidth = 1;
+		group.appendChild(rect_i);
+		*/
+		
+		const surface = document.createElementNS(svgNS, 'rect');
+		surface.setAttribute('x',1);
+		surface.setAttribute('y',1);
+		surface.setAttribute('width',wunit*2-2);
+		surface.setAttribute('height',wunit*2-2);
+		surface.setAttribute('rx',rounding);
+		surface.style.fill = '#f0f0f0';
+		surface.style.fillOpacity = 0;
+		surface.style.strokeOpacity = 0;
+		surface.style.stroke = DARK_BLUE;
+		surface.style.strokeWidth = 1;
+		surface.style.cursor = 'pointer';
+		surface.id = id;
+		
+		//group.appendChild(surface);
+		/*
+		surface.addEventListener("mouseover", function(event){
+			border.style.strokeWidth = 12;
+			border.style.fill = GREEN;
+		}, false);
+		surface.addEventListener("mouseout", function(event){
+			border.style.strokeWidth = 2;
+			border.style.fill = WHITE;
+		}, false);*/
+		
+		surface.addEventListener("click", function(){
+			console.log('SAVINGS BOX CLICKED!');
+			self.models['MenuModel'].setSelected('FLEXOPTIONS');
+		}, false);
+		$('#savings-box').append(surface);
 	}
 	
 	appendSavingsBox() {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
 		let r = this.sunRadius();
-		
-		const WHITE = '#fff';
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
-		const GREEN = '#0f0';
 		
 		/*
 		let w = r;
@@ -1026,22 +1117,16 @@ export default class MenuView extends View {
 		const wunit_i = wunit-wunit*0.075; // inner rectange is 10% smaller
 		const rounding = wunit*0.15; // 10% rounded corners.
 		const rounding_i = wunit_i*0.15; // 10% rounded corners.
-		const tx = 0;
-		const ty = r; // 'transform' => 'translate('+tx+','+ty+')'
 		const vb = '0 0 '+wunit*2+' '+wunit*2;
 		
 		const svg = document.createElementNS(svgNS, "svg");
 		svg.setAttribute('x',-wunit);
-		
-		
-		//svg.setAttribute('y',1.125*wunit);
 		svg.setAttribute('y',wunit*0.75);
 		
 		svg.setAttributeNS(null,'width',wunit*2);
 		svg.setAttributeNS(null,'height',wunit*2);
 		svg.setAttributeNS(null,'viewBox',vb);
 		svg.id = 'savings-box';
-		//svg.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#space').append(svg);
 		
 		const group = document.createElementNS(svgNS, "g");
@@ -1072,9 +1157,7 @@ export default class MenuView extends View {
 		rect_i.style.strokeWidth = 1;
 		group.appendChild(rect_i);
 		
-		//group.setAttribute('transform', 'translate('+tx+','+ty+')');
 		$('#savings-box').append(group);
-		//$('#space').append(group);
 	}
 	
 	setSelectedLanguage(lang) {
@@ -1154,7 +1237,39 @@ export default class MenuView extends View {
 		svg.appendChild(rect_fg);
 		$('#space').append(svg);
 	}
-	
+	/*
+	appendChangeTimerangeButton() {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		const DARK_BLUE = '#1a488b';
+		let r = this.sunRadius();
+		
+		const bx = -1.1*r;
+		const by = 3.42*r;
+		const bw = 2.2*r;
+		const bh = bw*0.25;
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',bx);
+		svg.setAttribute('y',by);
+		svg.setAttributeNS(null,'width',bw);
+		svg.setAttributeNS(null,'height',bh);
+		
+		//const rounding = bw*0.05; // 10% rounded corners.
+		const rect_bg = document.createElementNS(svgNS, 'rect');
+		rect_bg.setAttribute('x',1);
+		rect_bg.setAttribute('y',1);
+		rect_bg.setAttribute('width',bw-2);
+		rect_bg.setAttribute('height',bh-2);
+		//rect_bg.setAttribute('rx',rounding);
+		rect_bg.style.stroke = DARK_BLUE;
+		rect_bg.style.strokeWidth = 1;
+		rect_bg.style.fill = '#eee';
+		svg.appendChild(rect_bg);
+		
+		$('#space').append(svg);
+	}
+	*/
 	appendLanguageSelections() {
 		const lang_array = this.LANGUAGE_MODEL.languages;
 		const sel = this.LANGUAGE_MODEL.selected;
@@ -1356,8 +1471,9 @@ export default class MenuView extends View {
 				// Do something with each TICK!
 				// TESTING...
 				this.models['FlexResultModel'].reset();
+				//console.log('PeriodicTimeoutObserver timeout!');
+				const numberOfDays = this.models['FlexResultModel'].numberOfDays;
 				
-				console.log('PeriodicTimeoutObserver timeout!');
 				Object.keys(this.models).forEach(key => {
 					// MenuModel + ProxesCleanerModel + FlexResultModel + 7 models as listed below:
 					//this.modelnames = [
@@ -1373,7 +1489,7 @@ export default class MenuView extends View {
 						// do nothing...
 						
 					} else if (key === 'EntsoeEnergyPriceModel') {
-						const daysToFetch = this.numberOfDays+1;
+						const daysToFetch = numberOfDays+1;
 						const timerange = {begin:{value:daysToFetch,unit:'days'}};
 						this.models[key].fetch(timerange);
 						//this.models[key].fetch(); // The default timerange is 192 hours ( = 8 days)
@@ -1385,7 +1501,7 @@ export default class MenuView extends View {
 						//'MenuEmissionFactorForElectricityConsumedInFinlandModel',
 						//'MenuBuildingHeatingQE01Model',
 						//'OptimizationModel'
-						const daysToFetch = this.numberOfDays+1;
+						const daysToFetch = numberOfDays+1;
 						this.models[key].interval = 'PT60M';
 						this.models[key].timerange = {begin:{value:daysToFetch,unit:'days'},end:{value:0,unit:'days'}};
 						// See: adjustSyncMinute() and adjustSyncHour() at TimeRangeView.js
@@ -1409,8 +1525,9 @@ export default class MenuView extends View {
 					this.models['FlexResultModel'].update('ele_price', priceArray);
 					
 					const sumB = this.models['FlexResultModel'].calculate('price');
-					this.updateSavingsText('price', sumB);
-					
+					if (sumB.base > 0 && sumB.opt > 0) {
+						this.updateSavingsText('price', sumB);
+					}
 					
 				} else { // Error in fetching.
 					console.log('ERROR in fetching '+options.model+'.');
@@ -1459,8 +1576,9 @@ export default class MenuView extends View {
 							this.models['FlexResultModel'].update('ele_emissions', emisArray);
 							
 							const sumC = this.models['FlexResultModel'].calculate('emissions');
-							
-							this.updateSavingsText('emissions', sumC);
+							if (sumC.base > 0 && sumC.opt > 0) {
+								this.updateSavingsText('emissions', sumC);
+							}
 							
 						}
 						// Todo: Show CO2 for ele. Merge with this.ele_cons

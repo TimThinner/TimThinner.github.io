@@ -174,7 +174,8 @@ export default class MenuController extends Controller {
 		
 		const m6 = new EntsoeModel({
 			name: this.modelnames[5],
-			src:'https://transparency.entsoe.eu/api',
+			//src:'https://transparency.entsoe.eu/api',
+			src:'https://web-api.tp.entsoe.eu/api',
 			document_type:'A44',
 			area_name:'Finland',
 			cache_expiration_in_seconds:1800 // 30 minutes

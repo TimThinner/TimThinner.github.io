@@ -139,6 +139,14 @@ class MapListModel extends EventObserver {
 			startDate: '27.12.2019',
 			endDate:  '03.01.2020'
 		});
+		self.mapdata["2023 Budapest, Hungary"] = new MapModel({
+			title: "Vagabond Grand'Or",
+			picture: 'img/vagabond-d-or.jpg',
+			latitude:  47.49742,
+			longitude: 19.06490,
+			startDate: '03.07.2023',
+			endDate:  '07.07.2023'
+		});
 		/*
 		self.mapdata["2020 Budapest, Hungary"] = new MapModel({
 			title: 'Corvin Center Suites',

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="400" height="420" viewBox="-200 -210 400 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
+
+<!-- Building -->
+<path d="M-150,150 L-150,-150 L0,-200 L150,-150 L150,150 Z" stroke="#1a488b" stroke-width="12" fill="#1a488b" fill-opacity="0.25" opacity="0.75" />
+
+<!-- Door -->
+<path d="M-25,150 L-25,75 L25,75 L25,150" stroke="#1a488b" stroke-width="8" fill="none" opacity="0.75" />
+
+<!-- Windows -->
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.75" transform="translate(-100,100)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.75" transform="translate(100,100)" />
+
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.75" transform="translate(-100,0)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.75" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.75" transform="translate(100,0)" />
+
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.75" transform="translate(-100,-100)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.75" transform="translate(0,-100)" />
+<path d="M-25,25 L-25,-25 L25,-25 L25,25 Z" stroke="#1a488b" stroke-width="8" fill="#fff" opacity="0.75" transform="translate(100,-100)" />
+
+</svg>

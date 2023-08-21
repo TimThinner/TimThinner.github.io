@@ -1,4 +1,5 @@
 import View from '../common/View.js';
+import PeriodicTimeoutObserver from '../common/PeriodicTimeoutObserver.js'
 /*
 iFLEX Dark blue   #1a488b ( 26,  72, 139)
 iFLEX Dark green  #008245 (  0, 130,  69)
@@ -8,6 +9,7 @@ export default class MenuView extends View {
 	
 	constructor(controller) {
 		super(controller);
+		
 		Object.keys(this.controller.models).forEach(key => {
 			this.models[key] = this.controller.models[key];
 			this.models[key].subscribe(this);
@@ -16,11 +18,17 @@ export default class MenuView extends View {
 		this.REO.subscribe(this);
 		this.LANGUAGE_MODEL = this.controller.master.modelRepo.get('LanguageModel');
 		this.USER_MODEL = this.controller.master.modelRepo.get('UserModel');
-		this.rendered = false;
+		
+		this.PTO = new PeriodicTimeoutObserver({interval:this.controller.fetching_interval_in_seconds*1000});
+		this.PTO.subscribe(this);
+		
+		this.elecons = []; // array of {timestamp, value} pairs. Value contains electricity consumption sum from PL1,PL2,PL3.
+		this.prices = []; // array of {timestamp, value} pairs. 
 	}
 	
 	show() {
 		console.log('MenuView show()');
+		this.PTO.restart();
 		this.render();
 		if (typeof this.models['ProxesCleanerModel'] !== 'undefined') {
 			this.models['ProxesCleanerModel'].clean();
@@ -29,12 +37,16 @@ export default class MenuView extends View {
 	
 	hide() {
 		console.log('MenuView hide()');
+		this.PTO.stop();
 		this.rendered = false;
 		$(this.el).empty();
 	}
 	
 	remove() {
 		console.log('MenuView remove()');
+		this.PTO.stop();
+		this.PTO.unsubscribe(this);
+		
 		Object.keys(this.models).forEach(key => {
 			this.models[key].unsubscribe(this);
 		});
@@ -198,16 +210,104 @@ export default class MenuView extends View {
 		$('#space').append(c);
 	}
 	
-	appendWindow(d, tx, ty) {
+	appendText(wunit,tx,ty,fontsize,color,str) {
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const path = document.createElementNS(svgNS, "path");
-		path.setAttributeNS(null, 'd', d);
-		path.style.stroke = '#1a488b';
-		path.style.strokeWidth = 5;
-		path.style.opacity = 0.5;
-		path.style.fill = '#fff';
-		path.setAttribute('transform', 'translate('+tx+','+ty+')');
-		$('#space').append(path);
+		/*
+		<svg x="-100" y="410" width="200px" height="32px">
+			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="version" class="version-info"></text>
+		</svg>
+		*/
+		const x = -wunit;
+		const y = -wunit;
+		const w = 2*wunit;
+		const h = wunit;
+		
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute('x',x);
+		svg.setAttribute('y',y);
+		svg.setAttributeNS(null,'width',w);
+		svg.setAttributeNS(null,'height',h);
+		svg.setAttribute('transform', 'translate('+tx+','+ty+')');
+		
+		const txt = document.createElementNS(svgNS, 'text');
+		txt.setAttribute('x','50%');
+		txt.setAttribute('y','50%');
+		txt.setAttribute('font-family','Arial, Helvetica, sans-serif');
+		txt.setAttribute('font-size',fontsize);
+		txt.setAttribute('dominant-baseline','middle');
+		txt.setAttribute('text-anchor','middle');
+		txt.setAttribute('fill',color);
+		const text_node = document.createTextNode(str);
+		txt.appendChild(text_node);
+		svg.appendChild(txt);
+		$('#space').append(svg);
+	}
+	
+	/*
+	NOTE: 
+	Window-SURFACE will be added AFTER flexibility values are fetched and displayed 
+	
+	#85bc25 = rgb(133,188,37)
+	*/
+	
+	appendWindow(wunit, tx, ty, isSurface) {
+		const self = this;
+		const svgNS = 'http://www.w3.org/2000/svg';
+		if (isSurface) {
+			const i_rect = document.createElementNS(svgNS, 'rect');
+			i_rect.setAttribute('x',-wunit);
+			i_rect.setAttribute('y',-wunit);
+			i_rect.setAttribute('width',wunit*2);
+			i_rect.setAttribute('height',wunit*2);
+			i_rect.style.cursor = 'pointer';
+			i_rect.style.fill = '#ff0';
+			i_rect.style.fillOpacity = 0.1;
+			i_rect.style.strokeOpacity = 1;
+			i_rect.style.stroke = '#1a488b';
+			i_rect.style.strokeWidth = 1;
+			i_rect.setAttribute('transform', 'translate('+tx+','+ty+')');
+			
+			const border = document.createElementNS(svgNS, 'rect');
+			border.setAttribute('x',-wunit-3);
+			border.setAttribute('y',-wunit-3);
+			border.setAttribute('width',wunit*2+6);
+			border.setAttribute('height',wunit*2+6);
+			border.style.fill = '#000'; // not visible, but must be something other than "none"!
+			border.style.fillOpacity = 0;
+			border.style.strokeOpacity = 0;
+			border.style.strokeWidth = 6;
+			border.style.stroke = '#0f0';
+			border.setAttribute('transform', 'translate('+tx+','+ty+')');
+			
+			i_rect.addEventListener("click", function(){
+				self.models['MenuModel'].setSelected('FLEX');
+			}, false);
+			
+			i_rect.addEventListener("mouseover", function(event){
+				border.style.strokeOpacity = 1;
+			}, false);
+			
+			i_rect.addEventListener("mouseout", function(event){
+				border.style.strokeOpacity = 0;
+			}, false);
+			
+			$('#space').append(border);
+			$('#space').append(i_rect);
+			
+		} else {
+			const o_rect = document.createElementNS(svgNS, 'rect');
+			o_rect.setAttribute('x',-wunit-6);
+			o_rect.setAttribute('y',-wunit-6);
+			o_rect.setAttribute('width',wunit*2+12);
+			o_rect.setAttribute('height',wunit*2+12);
+			o_rect.style.fill = '#fff';
+			o_rect.style.fillOpacity = 1;
+			o_rect.style.strokeOpacity = 1;
+			o_rect.style.stroke = '#1a488b';
+			o_rect.style.strokeWidth = 2;
+			o_rect.setAttribute('transform', 'translate('+tx+','+ty+')');
+			$('#space').append(o_rect);
+		}
 	}
 	/*
 	The radius of circle is 12,5% of H or W (smaller dimension).
@@ -239,18 +339,18 @@ export default class MenuView extends View {
 		
 		// Windows:
 		const wunit = 14*r/60;
-		const wd = 'M-'+wunit+','+wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+wunit+' Z';
+		//const wd = 'M-'+wunit+','+wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+wunit+' Z';
 		// Upper row:
-		this.appendWindow(wd, -4*wunit, -4*wunit);
-		this.appendWindow(wd, 0, -4*wunit);
-		this.appendWindow(wd, 4*wunit, -4*wunit);
+		this.appendWindow(wunit, -4*wunit, -4*wunit, false);
+		this.appendWindow(wunit, 0, -4*wunit, false);
+		this.appendWindow(wunit, 4*wunit, -4*wunit, false);
 		// Center row:
-		this.appendWindow(wd, -4*wunit, 0);
-		this.appendWindow(wd, 0, 0);
-		this.appendWindow(wd, 4*wunit, 0);
+		this.appendWindow(wunit, -4*wunit, 0, false);
+		//this.appendWindow(wunit, 0, 0, false);
+		this.appendWindow(wunit, 4*wunit, 0, false);
 		// Bottom row:
-		this.appendWindow(wd, -4*wunit, 4*wunit);
-		this.appendWindow(wd, 4*wunit, 4*wunit);
+		this.appendWindow(wunit, -4*wunit, 4*wunit, false);
+		this.appendWindow(wunit, 4*wunit, 4*wunit, false);
 		
 		// DOOR:
 		const dd = 'M-'+wunit+','+2*wunit+' L-'+wunit+',-'+wunit+' L'+wunit+',-'+wunit+' L'+wunit+','+2*wunit+' Z';
@@ -283,21 +383,31 @@ export default class MenuView extends View {
 	appendSun(type) {
 		const self = this;
 		const svgNS = 'http://www.w3.org/2000/svg';
-		const r = this.sunRadius();
+		let r = this.sunRadius();
 		
 		const WHITE = '#fff';
 		const DARK_BLUE = '#1a488b'; // ( 26,  72, 139)
 		const GREEN = '#0f0';
 		
-		const r2 = r-r*0.1;
-		const r3 = r-r*0.3;
-		const w = r;
-		const wper2 = w*0.5;
-		const h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
-		const hper2 = h*0.5;
+		let r2 = r-r*0.1;
+		let r3 = r-r*0.3;
+		let w = r;
+		let wper2 = w*0.5;
+		let h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+		let hper2 = h*0.5;
 		
 		let tx = 0, ty = 0; // 'transform' => 'translate('+tx+','+ty+')'
-		if (type === 'ELECTRICITY') {
+		// Make CENTER CIRCLE (USER) smaller than others.
+		if (type === 'USER') {
+			r = r*0.6;
+			r2 = r-r*0.1;
+			r3 = r-r*0.3;
+			w = r;
+			wper2 = w*0.5;
+			h = r*0.75; // All SVG images are 400 x 300 => w=r, h=r*0.75
+			hper2 = h*0.5;
+			
+		} else if (type === 'ELECTRICITY') {
 			tx = ty = -12*r/5;
 		} else if (type === 'HEATING') {
 			tx = 12*r/5;
@@ -653,13 +763,294 @@ export default class MenuView extends View {
 		this.appendLanguageSelections();
 	}
 	
+	renderCalendarWindows(sum_bucket) {
+		const w = this.REO.width-18; // We don't want scroll bars to the right or bottom of view.
+		let fontsize;
+		if (w <= 600) {
+			console.log('Mobile Device.');
+			fontsize = 10;
+		} else if (w > 600 && w <= 992) {
+			console.log('Tablet Device.');
+			fontsize = 12;
+		} else if (w > 992 && w <= 1200) {
+			console.log('Desktop Device.');
+			fontsize = 14;
+		} else {
+			console.log('Large Desktop Device.');
+			fontsize = 16;
+		}
+		// bx,by,bw,bh,fontsize,color,str 
+		//this.appendText(-150,-1.4*r,bw,bh,s_fontsize,'#ccc','2.12.');
+		//this.appendText(-150,-1.4*r+22,bw,bh,m_fontsize,'#000','112€');
+		
+		const r = this.sunRadius();
+		const wunit = 14*r/60;
+		console.log(['wunit=',wunit]);
+		
+		const gutter = fontsize+fontsize/4;
+		const calendar = [];
+		Object.keys(sum_bucket).forEach(key=>{
+			const dd = key.slice(-2);
+			const mm = key.slice(5,7);
+			const sum = sum_bucket[key].sum;
+			calendar.push({ddmm:dd+'.'+mm+'.', sum:sum});
+			// date= "2022-12-03"  sum= 119.34543343
+		});
+		/* NOTE: co_effis has reversed order of these coefficients also.
+			-4,-4	0,-4	4,-4
+			-4,0			4,0
+			-4,4			4,4
+		*/
+		const co_effis = [{x:4,y:4}, {x:-4,y:4},
+			{x:4,y:0}, {x:-4,y:0},
+			{x:4,y:-4}, {x:0,y:-4}, {x:-4,y:-4}];
+		calendar.reverse();
+		// We start to fill view with latest date first (=lower-right corner).
+		calendar.every((e,i) => {
+			if (i > 6) {
+				return false;
+			}
+			const x = co_effis[i].x;
+			const y = co_effis[i].y;
+			const ddmm = e.ddmm;
+			const sum = e.sum.toFixed(0);
+			this.appendText(wunit, x*wunit, y*wunit, fontsize, '#aaa', ddmm);
+			this.appendText(wunit, x*wunit, y*wunit+gutter, fontsize+2, '#444', sum+'€');
+			this.appendWindow(wunit, x*wunit, y*wunit, true);
+			// Make sure you return true. If you don't return a value, `every()` will stop.
+			return true;
+		});
+	}
+	
+	merge() {
+		const sum_bucket = {};
+		if (this.elecons.length > 0 && this.prices.length > 0) {
+			console.log('======== MERGE! =========');
+			const bucket = {};
+			// For all consumption timestamps, check if price exist.
+			this.elecons.forEach(e=>{
+				const ds = moment(e.timestamp).format(); // timestamp is a Date object => convert to string.
+				//console.log(['ELECONS ds=',ds]);
+				bucket[ds] = {};
+				bucket[ds]['elecons'] = e.value;
+			});
+			this.prices.forEach(p=>{
+				const ds = moment(p.date).format(); // timestamp is a Date object => convert to string.
+				if (bucket.hasOwnProperty(ds)) {
+					bucket[ds]['price'] = p.price;
+				} else {
+					// DISCARD THIS!
+					//console.log(['DISCARD PRICE ds=',ds]);
+				}
+			});
+			// How many entries?
+			const len = Object.keys(bucket).length;
+			console.log(['AFTER MERGE bucket=',bucket,' length=',len]);
+			// Calculate sums starting from today-7 days to today-1 day (7 days data)
+			for (let i=7; i>0; i--) {
+				const m_date = moment().subtract(i,'days').format('YYYY-MM-DD');
+				console.log(['initializing sum_bucket m_date=',m_date]);
+				sum_bucket[m_date] = {sum:0};
+			}
+			Object.keys(bucket).forEach(key=>{
+				const yyyymmdd = key.slice(0,10);
+				if (sum_bucket.hasOwnProperty(yyyymmdd)) {
+					sum_bucket[yyyymmdd].sum += bucket[key].elecons*bucket[key].price;
+				}
+			});
+		} else {
+			console.log('======== NOT READY TO MERGE YET! =========');
+		}
+		console.log(['sum_bucket=',sum_bucket]);
+		return sum_bucket;
+	}
+	
+	calculateSum() {
+		// CALL THIS FOR EVERY MODEL, BUT NOTE THAT SUM IS CALCULATED ONLY WHEN ALL 3 MODELS ARE READY AND FILLED WITH VALUES!
+		const val_array = [];
+		if (this.models['MenuBuildingElectricityPL1Model'].values.length > 0 && 
+			this.models['MenuBuildingElectricityPL2Model'].values.length > 0 &&
+			this.models['MenuBuildingElectricityPL3Model'].values.length > 0) {
+			
+			// Calculate the sum of models like before.
+			// and assign that to self.values array {timestamp => value}
+			const sumbucket = {};
+			
+			this.models['MenuBuildingElectricityPL1Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				let val = +v.value; // Converts string to number.
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['PL1'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['PL1'] = val; // update
+				}
+			});
+			
+			this.models['MenuBuildingElectricityPL2Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				let val = +v.value; // Converts string to number.
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['PL2'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['PL2'] = val; // update
+				}
+			});
+			
+			this.models['MenuBuildingElectricityPL3Model'].values.forEach(v=>{
+				const ds = moment(v.timestamp).format();
+				let val = +v.value; // Converts string to number.
+				if (sumbucket.hasOwnProperty(ds)) {
+					sumbucket[ds]['PL3'] = val; // update
+				} else {
+					sumbucket[ds] = {}; // create new entry
+					sumbucket[ds]['PL3'] = val; // update
+				}
+			});
+			
+			Object.keys(sumbucket).forEach(key => {
+				let sum = 0;
+				Object.keys(sumbucket[key]).forEach(m => {
+					sum += sumbucket[key][m];
+				});
+				val_array.push({timestamp: moment(key).toDate(), value:sum});
+			});
+			// NEW: Sort values by the timestamp Date: oldest first.
+			// sort by string (created is a string, for example: "2021-04-21T07:40:50.965Z")
+			val_array.sort(function(a, b) {
+				if (a.timestamp < b.timestamp) {
+					return -1;
+				}
+				if (a.timestamp > b.timestamp) {
+					return 1;
+				}
+				return 0; // dates must be equal
+			});
+		} else {
+			console.log('NOT ALL ELECTRICITY MODELS ARE READY... WAIT!');
+		}
+		console.log(['val_array=',val_array]);
+		return val_array;
+	}
+	
+	/*
+		p.timeInterval object with two arrays: start "2021-12-01T23:00Z" and end "2021-12-02T23:00Z"
+		p.resolution array with one item "PT60M"
+		
+		p.Point array with 24 items
+		position "1"
+		price "99.12"
+	*/
+	convertPriceData() {
+		// array of {date:..., price: ... } objects.
+		const ts = this.models['EntsoeEnergyPriceModel'].timeseries;
+		
+		// At ENTSOE price_unit is 'MWH' and currency is 'EUR', we want to convert this to snt/kWh (c/kWh)
+		// 'EUR' => 'snt' and 'MWH' => 'kWh' multiply with 100 and divide by 1000 => MULTIPLY BY 0.1!
+		let currency = 'EUR';
+		if (this.models['EntsoeEnergyPriceModel'].currency !== 'undefined') {
+			currency = this.models['EntsoeEnergyPriceModel'].currency;
+		}
+		let price_unit = 'MWH';
+		if (this.models['EntsoeEnergyPriceModel'].price_unit !== 'undefined') {
+			price_unit = this.models['EntsoeEnergyPriceModel'].price_unit;
+		}
+		let factor = 1;
+		if (price_unit === 'MWH') {
+			// Convert values to EUR/kWh, we have to divide by 1000 (multiply by 1/1000).
+			factor = 0.001; // 300 EUR/MWH => 30 EUR/kWh
+		}
+		console.log(['currency=',currency,' price_unit=',price_unit,' factor=',factor]);
+		const newdata = [];
+		ts.forEach(t=>{
+			let timestamp = moment(t.timeInterval.start);
+			const reso = moment.duration(t.resolution);
+			t.Point.forEach(p=>{
+				const price = p.price*factor;
+				newdata.push({date: timestamp.toDate(), price: price});
+				// Do we need to handle the +p.position when stepping from start to end?
+				timestamp.add(reso);
+			});
+		});
+		return newdata;
+	}
+	
 	notify(options) {
 		if (this.controller.visible) {
 			if (options.model==='ResizeEventObserver' && options.method==='resize') {
 				this.show();
+				
 			} else if (options.model==='ProxesCleanerModel' && options.method==='clean') {
+				
 				if (options.status === 200) {
 					console.log('PROXES CLEAN OK!');
+				}
+				
+			} else if (options.model==='PeriodicTimeoutObserver' && options.method==='timeout') {
+				// Do something with each TICK!
+				
+				// Reset data arrays.
+				this.elecons = [];
+				this.prices = [];
+				
+				console.log('PeriodicTimeoutObserver timeout!');
+				Object.keys(this.models).forEach(key => {
+					if (key === 'EntsoeEnergyPriceModel') {
+						console.log(['FETCH MODEL key=',key]);
+						this.models[key].fetch();
+					} else if (key.indexOf('MenuBuildingElectricityPL') === 0) {
+						//key === 'MenuBuildingElectricityPL1Model' || key === 'MenuBuildingElectricityPL2Model' || key === 'MenuBuildingElectricityPL3Model') {
+						// See if these params are enough?
+						this.models[key].interval = 'PT60M';
+						this.models[key].timerange = {begin:{value:8,unit:'days'},end:{value:0,unit:'days'}};
+						// Add empty object as dummy parameter.
+						
+						// See: adjustSyncMinute() and adjustSyncHour() at TimeRangeView.js
+						const sync_minute = 0;
+						const sync_hour = moment().hour();
+						console.log(['FETCH key=',key,' sync_minute=',sync_minute,' sync_hour=',sync_hour]);
+						this.models[key].fetch({}, sync_minute, sync_hour);
+					}
+				});
+			} else if (options.model==='EntsoeEnergyPriceModel' && options.method==='fetched') {
+				if (options.status === 200) {
+					
+					this.prices = this.convertPriceData();
+					
+					console.log('==================================');
+					console.log(['this.prices=',this.prices]);
+					console.log('==================================');
+					// If both datasets are fetched and ready, merge returns an object with data.
+					const resu = this.merge();
+					if (Object.keys(resu).length > 0) {
+						this.renderCalendarWindows(resu);
+					}
+					
+				} else { // Error in fetching.
+					console.log('ERROR in fetching '+options.model+'.');
+				}
+				
+			} else if (options.model.indexOf('MenuBuildingElectricityPL') === 0 && options.method==='fetched') {
+				console.log('NOTIFY '+options.model+' fetched!');
+				console.log(['options.status=',options.status]);
+				if (options.status === 200 || options.status === '200') {
+					if (this.models[options.model].values.length > 0) {
+						
+						console.log(['values=',this.models[options.model].values]);
+						this.elecons = this.calculateSum();
+						if (this.elecons.length > 0) {
+							// If both datasets are fetched and ready, merge returns an object with data.
+							const resu = this.merge();
+							if (Object.keys(resu).length > 0) {
+								this.renderCalendarWindows(resu);
+							}
+						}
+					} else {
+						console.log('NO values!!!');
+					}
+				} else { // Error in fetching.
+					console.log('ERROR in fetching '+options.model+'.');
 				}
 			}
 		}

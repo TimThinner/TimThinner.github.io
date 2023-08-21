@@ -2,6 +2,7 @@
 	"env":{
 		"PORT":3000,
 		"JWT_KEY":"dpm58ekf0922jkl",
+		"ENTSOE_API_KEY": "9f2496b9-6f5e-4396-a1af-263ffccd597a",
 		"OBIX_USER":"timokinnunen",
 		"OBIX_PASS":"tuaxiMun0wx6ff!sBaq"
 	}

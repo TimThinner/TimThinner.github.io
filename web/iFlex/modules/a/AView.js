@@ -144,7 +144,7 @@ export default class AView extends TimeRangeView {
 				}
 				this.render();
 				
-			} else if (options.model.indexOf('BuildingElectricityPL' === 0) && options.method==='fetched') {
+			} else if (options.model.indexOf('BuildingElectricityPL') === 0 && options.method==='fetched') {
 				console.log('NOTIFY '+options.model+' fetched!');
 				console.log(['options.status=',options.status]);
 				if (this.rendered) {
@@ -223,7 +223,7 @@ export default class AView extends TimeRangeView {
 			seri.data = self.values;
 			seri.dataFields.dateX = "timestamp"; // "date";
 			seri.dataFields.valueY = "value"; // "visits";
-			seri.tooltipText = localized_string_power + ": [bold]{valueY}[/] kW";
+			seri.tooltipText = localized_string_power + ": [bold]{valueY.formatNumber('#.##')}[/] kW";
 			seri.fillOpacity = 0.2;
 			seri.name = 'SUM';
 			seri.customname = localized_string_power_legend;

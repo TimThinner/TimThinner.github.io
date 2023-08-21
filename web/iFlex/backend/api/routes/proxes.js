@@ -54,6 +54,14 @@ const Proxe_Save = (po, res)
 const Proxe_Update = (po, res)
 const Proxe_HTTPS_Fetch = (po, res)
 const Proxe_Clean = (res)
+
+
+November 28 2022 Added API-calls to FETCH ENTSOE Day-ahead prices.
+
+const Proxe_HTTPS_GET = (po, res) => {
+const Proxe_ENTSOE_Find = (po, res) => {
+router.post('/entsoe', (req,res,next)=>{
+	
 */
 const Proxe_Save = (po, res) => {
 	const hash = po.hash;
@@ -104,6 +112,95 @@ const Proxe_Update = (po, res) => {
 			res.status(500).json({error: msg});
 		});
 };
+
+const Proxe_HTTPS_GET = (po, res) => {
+	/*
+	po.hash
+	po.url
+	po.expiration
+	po.options			// 
+	po.response_type	// 'json' or 'xml'
+	
+	OR
+	
+	po.hash
+	po.url
+	po.id
+	po.options			// 
+	po.response_type	// 'json' or 'xml'
+	
+	application/xml or text/xml
+	application/json
+	*/
+	const hash = po.hash;
+	const url = po.url;
+	const id = po.id;
+	const expiration = po.expiration;
+	const options = po.options;
+	const response_type = po.response_type;
+	
+	https.get(url, options, (res2) => {
+		
+		const { statusCode } = res2;
+		const contentType = res2.headers['content-type'];
+		
+		let ctype = 'json';
+		if (response_type === 'xml') {
+			 ctype = 'xml';
+		}
+		let error;
+		if (statusCode !== 200) {
+			error = new Error('Request Failed. Status Code: ' + statusCode);
+		} else if (contentType.indexOf(ctype) === -1) {
+			error = new Error('Invalid content-type. Expected ' + ctype + ' but received '+contentType);
+		}
+		if (error) {
+			// Consume response data to free up memory
+			res2.resume();
+			return res.status(500).json({error: error});
+		}
+		res2.setEncoding('utf8');
+		let rawData = '';
+		res2.on('data', (chunk) => { rawData += chunk; });
+		res2.on('end', () => {
+			try {
+				if (ctype === 'json') {
+					// rawData is a JSON string.
+					if (typeof id !== 'undefined') {
+						// Update
+						Proxe_Update({id:id, json:rawData}, res);
+					} else {
+						// Save
+						Proxe_Save({hash:hash, url:url, json:rawData, expiration:expiration}, res);
+					}
+				} else { // xml
+					const parser = new xml2js.Parser();
+					parser.parseStringPromise(rawData).then(function (result) {
+						//console.log(['result=',result]);
+						const json = JSON.stringify(result);
+						//console.log(['json=',json]);
+						if (typeof id !== 'undefined') {
+							// Update
+							Proxe_Update({id:id, json:json}, res);
+						} else {
+							// Save
+							Proxe_Save({hash:hash, url:url, json:json, expiration:expiration}, res);
+						}
+					});
+				}
+			} catch(e) {
+				console.log(['error message=',e.message]);
+				console.log(['rawData=',rawData]);
+				res.status(500).json({error: e});
+			}
+		});
+	}).on('error', (e) => {
+		console.log(['error message=',e.message]);
+		res.status(500).json({error: e});
+	});
+};
+
+
 
 const Proxe_HTTPS_Fetch = (po, res) => {
 	/*
@@ -177,6 +274,7 @@ const Proxe_HTTPS_Fetch = (po, res) => {
 		res.status(500).json({error: e});
 	});
 	// Write data to request body (XML)
+	console.log(['request xml=',xml]);
 	req2.write(xml);
 	req2.end();
 };
@@ -236,6 +334,67 @@ const Proxe_Clean = (res) => {
 		});
 };
 
+/*
+Proxe_Find
+	Find proxe entry.
+Params:
+	po:
+		hash
+		url
+		expiration
+		type
+		useHttps
+	res:
+		response object.
+*/
+const Proxe_ENTSOE_Find = (po, res) => {
+	// First check if this hash is already in database.
+	const hash = po.hash;
+	//const useHttps = po.useHttps;
+	
+	Proxe.find({hash:hash})
+		.exec()
+		.then(proxe=>{
+			if (proxe.length >= 1) {
+				// FOUND! Check if it is expired.
+				const upd = proxe[0].updated; // Date object
+				const exp_ms = proxe[0].expiration*1000; // expiration time in milliseconds
+				const now = new Date();
+				const elapsed = now.getTime() - upd.getTime(); // elapsed time in milliseconds
+				//console.log(['elapsed=',elapsed,' exp_ms=',exp_ms]);
+				if (elapsed < exp_ms) {
+					// Use CACHED version of RESPONSE
+					console.log('USE CACHED response!');
+					res.status(200).json(proxe[0].response);
+				} else {
+					console.log('Expired => FETCH a FRESH copy!');
+					// FETCH a FRESH copy from SOURCE and Update existing Proxe Entry
+					const po_with_id = po;
+					po_with_id.id = proxe[0]._id;
+					Proxe_HTTPS_GET(po_with_id, res);
+					/*if (useHttps) {
+						Proxe_HTTPS_GET(po_with_id, res);
+					} else {
+						Proxe_HTTP_GET(po_with_id, res);
+					}*/
+				}
+			} else {
+				// Not cached yet => FETCH a FRESH copy from SOURCE and SAVE it as a new Entry.
+				console.log(['Not cached yet => FETCH a FRESH copy! hash=',hash]);
+				Proxe_HTTPS_GET(po, res);
+				/*if (useHttps) {
+					Proxe_HTTPS_GET(po, res);
+				} else {
+					Proxe_HTTP_GET(po, res);
+				}*/
+			}
+		})
+		.catch(err=>{
+			console.log(['err=',err]);
+			res.status(500).json({error:err});
+		});
+};
+
 const Proxe_Find = (type, auth, xml, hash, url, expiration, res) => {
 	// First check if this url is already in database.
 	Proxe.find({hash:hash})
@@ -284,6 +443,8 @@ router.post('/obix', (req,res,next)=>{
 	const expiration = req.body.expiration_in_seconds;
 	//const start = req.body.start;
 	//const end = req.body.end;
+	console.log(['obix url=',url]);
+	console.log(['obix hash=',hash]);
 	
 	// base64.encode() is in Browser btoa()
 	const base64string = base64.encode(process.env.OBIX_USER+':'+process.env.OBIX_PASS);
@@ -326,6 +487,53 @@ router.post('/obix', (req,res,next)=>{
 		//console.log('WITHOUT READKEY');
 		Proxe_Find(type, auth, xml, hash, url, expiration, res);
 	}
+});
+
+/*
+url = ['https://transparency.entsoe.eu/api?securityToken=' securityToken ...
+       '&documentType=' documentType ...
+       '&' domainzone '=' in_Domain ...
+       '&out_Domain=' in_Domain ...
+       '&periodStart=' periodStart ...
+       '&periodEnd=' periodEnd] ;
+
+
+[ 'entsoe url=',
+  'https://transparency.entsoe.eu/api?securityToken=9f2496b9-6f5e-4396-a1af-263ffccd597a&documentType=A44&in_Domain=10YFI-1--------U&periodStart=202112011300&periodEnd=202112021300' ]
+*/
+
+router.post('/entsoe', (req,res,next)=>{
+	// 'https://transparency.entsoe.eu/api
+	let url = req.body.url + '?securityToken=' + process.env.ENTSOE_API_KEY;
+	// req.body.url
+	// req.body.document_type
+	// req.body.domain
+	// req.body.period_start
+	// req.body.period_end
+	// req.body.expiration_in_seconds  We are using a cache now!
+	
+	// documentType = 'A75' Actual generation per type	domainzone = 'In_Domain'
+	// documentType = 'A65' System total load			domainzone = ‘outBiddingZone_Domain’
+	
+	// GET /api?documentType=A44&in_Domain=10YCZ-CEPS-----N&out_Domain=10YCZ-CEPS-----N&periodStart=201512312300&periodEnd=201612312300
+	// Here we are fetching Day-ahead prices => document_type === A44
+	url += '&documentType=' + req.body.document_type; // A44
+	url += '&in_Domain=' + req.body.domain;
+	url += '&out_Domain=' + req.body.domain;
+	url += '&periodStart=' + req.body.period_start;   // yyyyMMddHHmm
+	url += '&periodEnd=' + req.body.period_end;       // yyyyMMddHHmm
+	console.log(['entsoe url=',url]);
+	const options = {};
+	
+	const po = {
+		hash: url,
+		//useHttps: true,
+		url: url,
+		options: options,
+		expiration: req.body.expiration_in_seconds,
+		response_type: 'xml'
+	};
+	Proxe_ENTSOE_Find(po, res);
 });
 
 router.get('/clean', (req,res,next)=>{

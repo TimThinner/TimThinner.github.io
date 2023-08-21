@@ -218,6 +218,16 @@ export default class UserModel extends Model {
             "link_title": "Link",
             "url": "https://www.mdpi.com/2071-1050/11/15/4004/htm",
             "var_name": "How_calculated_link"
+        },
+        {
+            "link_title": "Rechtstreex",
+            "url": "https://www.agrobridges.eu/project/quality-low-input-food/",
+            "var_name": "improved_logistics_link1"
+        },
+        {
+            "link_title": "La Ruche qui dit Oui!",
+            "url": "https://www.agrobridges.eu/project/la-osa-coop-2/",
+            "var_name": "improved_logistics_link2"
         }
     ],
     "rec_additional_text": {
@@ -284,7 +294,6 @@ export default class UserModel extends Model {
         }
     ],
     "result_text": {
-		
         "Definition_CSA": "Producers and consumers have a pre-existing agreement were consumers pay an agreed membership fee or offer labour services (or both), in exchange for produce. Two sales channels of the business model are considered in the analysis: A) CSA - Trading working hours for a share of the harvest, B) CSA - Subscription - payment of an annual fee for a share of the harvest. The products are delivered by the farmer.",
         "Definition_Criteria": "Would you like to know how the criteria are defined?",
         "Definition_Face_2_Face": "Consumer purchases a product directly from the producer/processor on a Face-to-Face basis. Three sales channels of the business model are considered in the analysis: A) Farm shops, B) Farmers' markets, C) Pick-Your-Own",
@@ -300,6 +309,7 @@ export default class UserModel extends Model {
         "How_calculated_link": "Link",
         "How_calculated_title": "How were the results calculated?",
         "Improved_Logistics_title": "Improved logistics as an option for all farmers",
+        "improved_logistics_add_info": "Additional information on good practises:",
         "Intro_Definition_Business_Models": "Five business models can be differentiated for Short Food Supply Chains. These are Community Supported Agriculture (CSA), Face-to-Face Sales, Retail Trade, Online Trade, and Improved Logistics. They can be defined as follows:",
         "Intro_Definition_Business_Models_title": "Definitions of business models for Short food Supply chain",
         "Intro_not_all_sales_channels_con": "Not all sales channels were considered. Why?' Some business models were excluded, because they were considered to be less suitable for your farm or region because of certain farm or regional characteristics (e.g., how attractive your region is for sales).",
@@ -308,6 +318,7 @@ export default class UserModel extends Model {
         "Relative_Attractiveness": "The attractiveness of your region for sales was considered to be:",
         "Result1_Models_Considered": "The following business models and sales channels were considered in your analysis.",
         "Result1_add_info": "The graphic shows to which extent the SFSC sales channels meet the different criteria.",
+        "Result_model_analysis_info": "The business models included is depent on your farm characteristics, the ranking is based on secondary data about sustainability. Sales channels that you already have are not considered in the analysis.",
         "Result_model_considered_add_info": "First, the most suitable business models and sales channels for the farm are selected based on your farm and regional characteristics and then they are ranked based on a set of sustainabillity criteria.",
         "Suitability_farm_Characteristics_info": "If you would like to learn more about farms or regional characteristics, and how these affect the suitability of the business models, please follow this",
         "Suitability_farm_Characteristics_info_link": "Link",
@@ -320,11 +331,16 @@ export default class UserModel extends Model {
         "rec_table_bm_title": "Business Model",
         "rec_table_checkbox_title": "Show",
         "rec_table_sc_title": "Sales Channel",
-        "recommendation_title": "Recommendations for Short Food Supply Chain"
-    }
-		};
+        "recommendation_title": "Recommendations for Short Food Supply Chain",
+        "spider_color1_label": "Best",
+        "spider_color2_label": "Good",
+        "spider_color3_label": "Moderate",
+        "spider_color4_label": "Limited",
+        "spider_color5_label": "Very limited"
+    } // end of result_text
+		}; // analysis_simulation_backup
 		this.analysisReady = false;
-	}
+	} // end of constructor
 	
 	/*
 		- how many questions are there?

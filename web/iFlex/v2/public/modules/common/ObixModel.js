@@ -284,15 +284,30 @@ export default class ObixModel extends Model {
 			// "query/" or "rollup/" is added at ObixModel depending on if "interval" is defined or not.
 			let source = this.src;
 			
+			// NOTE: WE have to be able to perform TWO TYPES of sensor mappings:
+			// 1) src:'/obixStore/store/VainoAuerinKatu13/SmartView/', // add obix_code at fetch phase (ObixModel).
+			// 2) src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_TE15', // Temp add obix_code + '/' at fetch phase (ObixModel).
+				//src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_ME15', // Humi add obix_code + '/' at fetch phase (ObixModel).
+				//src:'/obixStore/store/VainoAuerinKatu13/FI_H_H160_PV1_QE15', // CO2  add obix_code + '/' at fetch phase (ObixModel).
+			
 			// Also here we append obix_code if it is defined.
 			if (typeof my_obix_code !== 'undefined') {
-				source =  this.src + my_obix_code + '/';
+				// ALL OLD sensors (reading from JACE) use different Obix mapping:
+				
+				if (my_obix_code.indexOf('FI_H_H160_PV1') === 0) {
+					const smi = this.src.indexOf('SmartView');
+					if (smi >= 0) {
+						source = this.src.substring(0,smi) + my_obix_code + '/';
+					}
+				} else {
+					source = this.src + my_obix_code + '/';
+				}
 			}
 			//console.log('===========================');
 			//console.log(['fetch token=',token]);
 			//console.log(['fetch my_readkey=',my_readkey]);
 			//console.log(['fetch my_obix_code=',my_obix_code]);
-			//console.log(['fetch source=',source]);
+			console.log(['fetch source=',source]);
 			//console.log('===========================');
 			
 			let reqXML = '';

@@ -24,6 +24,7 @@ import BController from './modules/b/BController.js';
 import CController from './modules/c/CController.js';
 import DController from './modules/d/DController.js';
 import FlexController from './modules/flex/FlexController.js';
+import FlexOptionsController from './modules/flex/FlexOptionsController.js';
 
 // ADMIN stuff:
 import RegCodeController from './modules/admin/regcodes/RegCodeController.js';
@@ -32,8 +33,6 @@ import RegCodeEditController from './modules/admin/regcodes/RegCodeEditControlle
 import ReadKeyController from './modules/admin/readkeys/ReadKeyController.js';
 import ReadKeyEditController from './modules/admin/readkeys/ReadKeyEditController.js';
 import ObixCodeEditController from './modules/admin/users/ObixCodeEditController.js';
-//import ObixCodeBEditController from './modules/admin/users/ObixCodeBEditController.js';
-//import ObixCodeCEditController from './modules/admin/users/ObixCodeCEditController.js';
 import UsersController from './modules/admin/users/UsersController.js';
 import ConfigsController from './modules/admin/configs/ConfigsController.js';
 import FeedbacksController from './modules/admin/feedbacks/FeedbacksController.js';
@@ -43,8 +42,6 @@ class MasterController {
 	constructor() {
 		this.controllers = {};
 		this.modelRepo = new ModelRepo();
-		
-		
 	}
 	
 	notify(options) {
@@ -82,8 +79,6 @@ class MasterController {
 	}
 	
 	init() {
-		console.log('MasterController init 2022.02.16!');
-		
 		const CONFIG_MODEL = new ConfigModel({name:'ConfigModel',src:''});
 		CONFIG_MODEL.subscribe(this);
 		this.modelRepo.add('ConfigModel',CONFIG_MODEL);
@@ -146,6 +141,8 @@ class MasterController {
 		this.controllers['D'].init();
 		this.controllers['FLEX'] = new FlexController({name:'FLEX', master:this, el:'#content', visible:false});
 		this.controllers['FLEX'].init();
+		this.controllers['FLEXOPTIONS'] = new FlexOptionsController({name:'FLEXOPTIONS', master:this, el:'#content', visible:false});
+		this.controllers['FLEXOPTIONS'].init();
 		
 		// Admin stuff start ------>
 		this.controllers['REGCODES'] = new RegCodeController({name:'REGCODES', master:this, el:'#content', visible:false});
@@ -164,10 +161,6 @@ class MasterController {
 		this.controllers['USERS'].init();
 		this.controllers['OBIXCODEEDIT'] = new ObixCodeEditController({name:'OBIXCODEEDIT', master:this, el:'#content', visible:false});
 		this.controllers['OBIXCODEEDIT'].init();
-		//this.controllers['OBIXCODEBEDIT'] = new ObixCodeBEditController({name:'OBIXCODEBEDIT', master:this, el:'#content', visible:false});
-		//this.controllers['OBIXCODEBEDIT'].init();
-		//this.controllers['OBIXCODECEDIT'] = new ObixCodeCEditController({name:'OBIXCODECEDIT', master:this, el:'#content', visible:false});
-		//this.controllers['OBIXCODECEDIT'].init();
 		
 		this.controllers['CONFIGS'] = new ConfigsController({name:'CONFIGS', master:this, el:'#content', visible:false});
 		this.controllers['CONFIGS'].init();

@@ -193,10 +193,10 @@ export default class DView extends View {
 					'</div>'+
 				'</div>'+
 				'<div class="col s6 center" style="margin-top:16px;margin-bottom:16px;">'+
-					'<button class="btn waves-effect waves-light grey lighten-2" style="color:#000" id="cancel">'+cancel+'</button>'+
+					'<button class="btn waves-effect waves-light grey lighten-2 iflex-button" style="color:#000" id="cancel">'+cancel+'</button>'+
 				'</div>'+
 				'<div class="col s6 center" style="margin-top:16px;margin-bottom:16px;">'+
-					'<button class="btn waves-effect waves-light disabled" id="submit-feedback">'+send_feedback+
+					'<button class="btn waves-effect waves-light iflex-button disabled" id="submit-feedback">'+send_feedback+
 						//'<i class="material-icons">send</i>'+
 					'</button>'+
 				'</div>'+

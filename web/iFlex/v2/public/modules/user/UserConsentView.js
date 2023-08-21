@@ -114,7 +114,7 @@ export default class UserConsentView extends View {
 				'</div>'+
 				'<div class="col s12">'+
 					'<div class="col s12 center" style="margin-top:16px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_ok+
+						'<button class="btn waves-effect waves-light iflex-button" id="ok">'+localized_string_ok+
 							//'<i class="material-icons left">arrow_back</i>'+
 						'</button>'+
 					'</div>'+
@@ -175,7 +175,7 @@ export default class UserConsentView extends View {
 		}
 		
 		// OK Button pressed.
-		$("#back").on('click', function() {
+		$("#ok").on('click', function() {
 			if (display_only) {
 				self.controller.models['MenuModel'].setSelected('USERPROPS');
 			} else {

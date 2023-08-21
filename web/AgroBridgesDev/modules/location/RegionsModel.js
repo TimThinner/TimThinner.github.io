@@ -714,12 +714,15 @@ export default class RegionsModel extends Model {
 	
 	fillSimulated(code) {
 		console.log(['FILL SIMULATED code=',code]);
-		
 		const cc = this.simulation_backup[code];
 		Object.keys(cc).forEach(key => {
 			this.regions.push({
 				id: key,
 				name: cc[key]
+			});
+			// sort alphabetically (by name):
+			this.regions.sort(function(a, b) {
+				return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
 			});
 		});
 	}
@@ -766,6 +769,10 @@ export default class RegionsModel extends Model {
 						self.regions.push({
 							id: key,
 							name: cc[key]
+						});
+						// sort alphabetically (by name):
+						self.regions.sort(function(a, b) {
+							return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
 						});
 					});
 					self.fetching = false;

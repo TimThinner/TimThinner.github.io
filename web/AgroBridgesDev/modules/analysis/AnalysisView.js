@@ -299,15 +299,16 @@ export default class AnalysisView extends View {
 		//let radialScale = d3.scaleLinear().domain([0, 10]).range([0, 250]);
 		let radialScale = d3.scaleLinear().domain([0, 1]).range([0, range]);
 		//let ticks = [0.2, 0.4, 0.6, 0.8, 1];
-		let ticks = [1, 0.8, 0.6, 0.4, 0.2];
+		const ticks = [1, 0.8, 0.6, 0.4, 0.2];
+		const circle_colors = ['#afa','#cfc','#ffa','#fc8','#faa'];
 		//draw grid lines (circles)
-		ticks.forEach(t =>
+		ticks.forEach((t,i) =>
 			svg.append("circle")
 				//.attr("cx", 300)
 				//.attr("cy", 300)
 				.attr("cx", horiz_center) // min_dim)
 				.attr("cy", verti_center) // min_dim)
-				.attr("fill", '#fff')//"#e5ecf6") // "none"
+				.attr("fill", circle_colors[i]) //'#fff')//"#e5ecf6") // "none"
 				.attr("stroke", this.colors.GREY)
 				.attr("r", radialScale(t))
 		);
@@ -329,6 +330,17 @@ export default class AnalysisView extends View {
 			//return { "x": 300 + x, "y": 300 - y };
 			return { "x": horiz_center + x, "y": verti_center - y };
 		}
+		/*
+		this.featurez = [
+			"Volume",
+			"Consumer_Contact",
+			"Gender_Equality",
+			"Labor_Produce",
+			"Carbon_Footprint",
+			"Chain_Added_Value",
+			"Price_Premium"
+		];
+		*/
 		for (var i = 0; i < this.featurez.length; i++) {
 			let ft_name = this.featurez[i];
 			let angle = (Math.PI / 2) + (2 * Math.PI * i / this.featurez.length);
@@ -340,6 +352,20 @@ export default class AnalysisView extends View {
 			// Label is always mapped to this.labelz[ft_name]
 			const cc = this.labelz[ft_name].length;
 			label_coordinate.x -= fontsize*cc/4;
+			
+			/*
+			2023.04.26 Edit: 
+				- Move "Labor_Produce" -text a little bit to the left.
+				- Move "Carbon_Footprint" -text a little bit to the right.
+			so that they wouldn't overlap (in different language versions.
+			*/
+			if (ft_name === 'Labor_Produce') {
+				label_coordinate.x -= fontsize*4;
+			} else if (ft_name === 'Carbon_Footprint') {
+				label_coordinate.x += fontsize*4;
+			} else {
+				// do nothing
+			}
 			/*
 			if (ft_name === 'Volume') {
 				label_coordinate.x -= fontsize*3; // 6 characters
@@ -399,7 +425,7 @@ export default class AnalysisView extends View {
 				svg.append("path")
 					.datum(coordinates)
 					.attr("d", line)
-					.attr("stroke-width", 2)
+					.attr("stroke-width", 3)
 					.attr("stroke", color)
 					.attr("fill", "none")//color)
 					.attr("stroke-opacity", 1)
@@ -413,7 +439,7 @@ export default class AnalysisView extends View {
 				svg.append("path")
 					.datum(coordinates)
 					.attr("d", line)
-					.attr("stroke-width", 2)
+					.attr("stroke-width", 3)
 					.attr("stroke", color)
 					.attr("fill", "none")//color)
 					.attr("stroke-opacity", 1)
@@ -502,36 +528,84 @@ export default class AnalysisView extends View {
 			
 			const ll_title = this.USER_MODEL.analysisResult.result_text.Intro_Definition_Business_Models_title;
 			
+			
+			
+			/* New: Add links at the end of each Business model description
+    "links": [
+        {
+            "link_title": "Improved Logistics",
+            "url": "https://agrobridges-toolbox.eu/decisionsupporttool/",
+            "var_name": "Business_Model_Improved_Logistics_link"
+        },
+        {
+            "link_title": "Face-to-Face",
+            "url": "https://agrobridges-toolbox.eu/decisionsupporttool/",
+            "var_name": "Business_Model_Face_2_Face_link"
+        },
+        {
+            "link_title": "Online Trade",
+            "url": "https://agrobridges-toolbox.eu/decisionsupporttool/",
+            "var_name": "Business_Model_Online_Trade_link"
+        },
+        {
+            "link_title": "Retail Trade",
+            "url": "https://agrobridges-toolbox.eu/decisionsupporttool/",
+            "var_name": "Business_Model_Retail_Trade_link"
+        },
+        {
+            "link_title": "Community Supported Agriculture",
+            "url": "https://agrobridges-toolbox.eu/decisionsupporttool/",
+            "var_name": "Business_Model_CSA_link"
+        }
+    ],
+			*/
+			const business_model_def_links = [
+				{ var_name:"Business_Model_CSA_link", markup:'' },
+				{ var_name:"Business_Model_Face_2_Face_link", markup:'' },
+				{ var_name:"Business_Model_Online_Trade_link", markup:'' },
+				{ var_name:"Business_Model_Retail_Trade_link", markup:'' },
+				{ var_name:"Business_Model_Improved_Logistics_link", markup:'' }
+			];
+			// Fill in the link data from analysisResult:
+			business_model_def_links.forEach(mdl=>{
+				this.USER_MODEL.analysisResult.links.every(lnk=>{
+					if (mdl.var_name === lnk.var_name) {
+						mdl.markup = '<a href="'+lnk.url+'" target="_blank">'+lnk.link_title+'</a>';
+						return false; // break out from the every-loop.
+					}
+					return true; // continue with next link
+				});
+			});
+			
 			const html = '<ul class="collapsible">'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_a+'</div>'+
-					'<div class="collapsible-body">'+ll_def_a+'</div>'+
+					'<div class="collapsible-body">'+ll_def_a+' '+business_model_def_links[0].markup+'</div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_b+'</div>'+
-					'<div class="collapsible-body">'+ll_def_b+'</div>'+
+					'<div class="collapsible-body">'+ll_def_b+' '+business_model_def_links[1].markup+'</div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_c+'</div>'+
-					'<div class="collapsible-body">'+ll_def_c+'</div>'+
+					'<div class="collapsible-body">'+ll_def_c+' '+business_model_def_links[2].markup+'</div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_d+'</div>'+
-					'<div class="collapsible-body">'+ll_def_d+'</span></div>'+
+					'<div class="collapsible-body">'+ll_def_d+' '+business_model_def_links[3].markup+'</div>'+
 				'</li>'+
 				'<li>'+
 					'<div class="collapsible-header"><i class="material-icons">info_outline</i>'+ll_title_e+'</div>'+
-					'<div class="collapsible-body">'+ll_def_e+'</span></div>'+
+					'<div class="collapsible-body">'+ll_def_e+' '+business_model_def_links[4].markup+'</div>'+
 				'</li>'+
 			'</ul>';
 			$('#business-models-intro-title').empty().append('<h5 style="text-align:center">'+ll_title+'</h5>');
 			$('#business-models-intro-wrapper').empty().append(ll_intro);
 			$('#business-models-collapsible-wrapper').empty().append(html);
 			
-			
 			/*
 			TODO
-			Add link to the end of this chapter!
+			Add link to the end of this chapter! (Definitions of business models for Short food Supply chain)
 			"links": [
 			{
             "link_title": "Link",
@@ -539,6 +613,8 @@ export default class AnalysisView extends View {
             "var_name": "More_Info_Business_Models_link"
 			}
 			],*/
+			
+			/*
 			let link_url = undefined;
 			let link_title = undefined;
 			this.USER_MODEL.analysisResult.links.forEach(l=>{
@@ -555,6 +631,7 @@ export default class AnalysisView extends View {
 				ll_more_info += '</p>';
 			}
 			$("#business-models-more-info-wrapper").empty().append(ll_more_info);
+			*/
 		}
 	}
 	
@@ -584,6 +661,7 @@ export default class AnalysisView extends View {
 		
 		if (this.USER_MODEL.analysisResult.result_text) {
 			const ll_intro = this.USER_MODEL.analysisResult.result_text.Result1_Models_Considered;
+			const ll_resu_model_info = this.USER_MODEL.analysisResult.result_text.Result_model_analysis_info;
 			const ll_resu = this.USER_MODEL.analysisResult.result_text.rank_intro1_id; // "Our analysis shows that the sales channels can be ranked as follows. The most suitable channel is ranked first.",
 			const ll_add_info = this.USER_MODEL.analysisResult.result_text.Result1_add_info; // - The graphics show to which extent the SFSC sales channels meet the different criteria.
 			
@@ -593,7 +671,7 @@ export default class AnalysisView extends View {
 			
 			//const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
 			
-			const html = '<p>'+ll_intro+' '+ll_resu+' '+ll_add_info+'</p>';
+			const html = '<p>'+ll_intro+' '+ll_resu_model_info+' '+ll_resu+' '+ll_add_info+'</p>';
 			/*let html;
 			
 			if (numberOfResults === 0) {
@@ -698,7 +776,8 @@ export default class AnalysisView extends View {
 	}
 	
 	renderRecommendationsSpider() {
-		$('#recommendations-spider-wrapper').empty();
+		$('#recommendations-spider-chart').empty();
+		$('#recommendations-spider-legend').empty();
 		
 		let w = this.REO.width;
 		if (w > 1600) { w = 1600; }
@@ -710,11 +789,48 @@ export default class AnalysisView extends View {
 			width = w*0.9;					// 90% of width
 			height = this.REO.height*0.5;	// 50% of height
 		}
-		
-		const html = '<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>';
-		$(html).appendTo('#recommendations-spider-wrapper');
-		
+		const svg = '<svg id="spider-r" width="'+width+'" height="'+height+'"></svg>';
+		$(svg).appendTo('#recommendations-spider-chart');
 		this.drawSpider('peterparker', 'spider-r', width, height);
+		/*
+		"spider_color1_label": "Best",
+		"spider_color2_label": "Good",
+		"spider_color3_label": "Moderate",
+		"spider_color4_label": "Limited",
+		"spider_color5_label": "Very limited"
+		*/
+		const ll_legends = ['Best', 'Good', 'Moderate', 'Limited', 'Very limited'];
+		const ll_legs = ['','','','',''];
+		if (this.USER_MODEL.analysisResult.result_text) {
+			ll_legends[0] = this.USER_MODEL.analysisResult.result_text.spider_color1_label;
+			ll_legends[1] = this.USER_MODEL.analysisResult.result_text.spider_color2_label;
+			ll_legends[2] = this.USER_MODEL.analysisResult.result_text.spider_color3_label;
+			ll_legends[3] = this.USER_MODEL.analysisResult.result_text.spider_color4_label;
+			ll_legends[4] = this.USER_MODEL.analysisResult.result_text.spider_color5_label;
+		}
+		// lets convert every white space character into "nbsp;" so that legend text for any color
+		// will NOT wrap to another line.
+		ll_legends.forEach((leg,i)=>{
+			ll_legs[i] = leg.replaceAll(' ', '&nbsp;');
+		});
+		
+		const nbspx2 = '&nbsp;&nbsp;';
+		const nbspx4 = '&nbsp;&nbsp;&nbsp;&nbsp;';
+		const whitespace = '<span style="white-space: pre;"> </span>';
+		
+		const legend = '<p><img src="./svg/best-box.svg" width="16" />' + nbspx2 + ll_legs[0] + 
+			nbspx4 + whitespace + '<img src="./svg/good-box.svg" width="16" />' + nbspx2 + ll_legs[1] +
+			nbspx4 + whitespace + '<img src="./svg/moderate-box.svg" width="16" />' + nbspx2 + ll_legs[2] +
+			nbspx4 + whitespace + '<img src="./svg/limited-box.svg" width="16" />' + nbspx2 + ll_legs[3] + 
+			nbspx4 + whitespace + '<img src="./svg/very-limited-box.svg" width="16" />' + nbspx2 + ll_legs[4] + '</p>';
+		/*'<ul style="padding-left:16px;">'+
+			'<li><img src="./svg/best-box.svg" width="16" />&nbsp;&nbsp;Best</li>'+
+			'<li><img src="./svg/good-box.svg" width="16" />&nbsp;&nbsp;Good</li>'+
+			'<li><img src="./svg/moderate-box.svg" width="16" />&nbsp;&nbsp;Moderate</li>'+
+			'<li><img src="./svg/limited-box.svg" width="16" />&nbsp;&nbsp;Limited</li>'+
+			'<li><img src="./svg/very-limited-box.svg" width="16" />&nbsp;&nbsp;Very limited</li>'+
+			'</ul>';*/
+		$(legend).appendTo('#recommendations-spider-legend');
 	}
 	
 	// CHAPTER 3: Improved logistics is also an option for all farmers
@@ -727,30 +843,42 @@ export default class AnalysisView extends View {
 	
 	
 	renderImprovedLogistics() {
-		
 		if (this.USER_MODEL.analysisResult.result_text) {
-			
-			//const ll_r2_no_suitable = this.USER_MODEL.analysisResult.result_text.Results2_farm_no_suitable_Channels;
-			//const ll_r2_only_1_suitable = this.USER_MODEL.analysisResult.result_text.Results2_only_one_channel;
-			//const ll_r2_more_than_2_suitable = this.USER_MODEL.analysisResult.result_text.Results2_Farm_more_2_suitable;
-			
 			const title = this.USER_MODEL.analysisResult.result_text.Improved_Logistics_title;
 			const resu = this.USER_MODEL.analysisResult.result_text.rank_intro2_id;
+			const info = this.USER_MODEL.analysisResult.result_text.improved_logistics_add_info;
 			
-			//const numberOfResults = this.USER_MODEL.analysisResult.recommendation.length;
-			/*
-			let html;
+			let link_1_url = undefined;
+			let link_1_title = undefined;
+			let link_2_url = undefined;
+			let link_2_title = undefined;
 			
-			if (numberOfResults === 0) {
-				html = '<p>'+ll_r2_no_suitable+'</p>';
-				
-			} else if(numberOfResults === 1) {
-				html = '<p>'+ll_r2_only_1_suitable+'</p>';
-				
-			} else { // Two or more...
-				html = '<p>'+ll_r2_more_than_2_suitable+'</p>';
-			}*/
-			const html = '<h5 style="text-align:center">'+title+'</h5><p>'+resu+'</p>';
+			this.USER_MODEL.analysisResult.links.forEach(l=>{
+				if (l.var_name === 'improved_logistics_link1') {
+					link_1_url = l.url;
+					link_1_title = l.link_title;
+				} else if (l.var_name === 'improved_logistics_link2') {
+					link_2_url = l.url;
+					link_2_title = l.link_title;
+				}
+			});
+			
+			let link_1_markup = '';
+			if (typeof link_1_url !== 'undefined' && typeof link_1_title !== 'undefined') {
+				link_1_markup = '<a href="'+link_1_url+'" target="_blank">'+link_1_title+'</a>';
+			}
+			let link_2_markup = '';
+			if (typeof link_2_url !== 'undefined' && typeof link_2_title !== 'undefined') {
+				link_2_markup = '<a href="'+link_2_url+'" target="_blank">'+link_2_title+'</a>';
+			}
+			let html = '<h5 style="text-align:center">'+title+'</h5><p>'+resu;
+			if (link_1_markup.length > 0) {
+				html += ' '+info+' '+link_1_markup;
+			}
+			if (link_2_markup.length > 0) {
+				html += ', '+link_2_markup;
+			}
+			html += '</p>';
 			$("#improved-logistics-wrapper").empty().append(html);
 		}
 	}
@@ -1034,6 +1162,14 @@ export default class AnalysisView extends View {
 							'<div class="col s12 m5" id="recommendations-list-wrapper">'+
 							'</div>'+
 							'<div class="col s12 m7" id="recommendations-spider-wrapper">'+
+								'<div class="row" style="margin-bottom:0;">'+
+									'<div class="col s12" id="recommendations-spider-chart">'+
+									'</div>'+
+								'</div>'+
+								'<div class="row">'+
+									'<div class="col s12 center" id="recommendations-spider-legend">'+
+									'</div>'+
+								'</div>'+
 							'</div>'+
 						'</div>'+
 					'</div>'+

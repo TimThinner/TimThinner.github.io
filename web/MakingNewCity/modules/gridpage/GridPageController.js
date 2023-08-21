@@ -126,7 +126,10 @@ export default class GridPageController extends Controller {
 			this.models[model_name] = m;
 		});
 		
-		const entsoe_model = new EntsoeModel({name:'EntsoeEnergyPriceModel',src:'https://transparency.entsoe.eu/api', document_type:'A44', area_name:'Finland'});
+		// old: 'https://transparency.entsoe.eu/api'  ja 
+		// new: 'https://web-api.tp.entsoe.eu/api'
+		
+		const entsoe_model = new EntsoeModel({name:'EntsoeEnergyPriceModel',src:'https://web-api.tp.entsoe.eu/api', document_type:'A44', area_name:'Finland'});
 		entsoe_model.subscribe(this);
 		this.master.modelRepo.add('EntsoeEnergyPriceModel',entsoe_model);
 		this.models['EntsoeEnergyPriceModel'] = entsoe_model;

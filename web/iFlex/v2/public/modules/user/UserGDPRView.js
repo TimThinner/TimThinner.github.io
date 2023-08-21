@@ -406,7 +406,7 @@ export default class UserGDPRView extends View {
 			'<div class="row">'+
 				'<div class="col s12">'+
 					'<div class="col s12 center" style="margin-top:16px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_ok+
+						'<button class="btn waves-effect waves-light iflex-button" id="ok">'+localized_string_ok+
 							//'<i class="material-icons left">arrow_back</i>'+
 						'</button>'+
 					'</div>'+
@@ -416,7 +416,7 @@ export default class UserGDPRView extends View {
 		
 		this.rendered = true;
 		
-		$("#back").on('click', function() {
+		$("#ok").on('click', function() {
 			const caller = self.controller.models['UserGDPRModel'].caller;
 			if (typeof caller !== 'undefined') {
 				self.controller.models['MenuModel'].setSelected(caller);

@@ -128,17 +128,17 @@ export default class UserPropsView extends View {
 								'<div class="col s12 center">'+
 									'<p>'+localized_string_admin_description+'</p>'+
 								'</div>'+
-								'<div class="col s3 center">'+
-									'<button class="btn waves-effect waves-light" id="regcodes">'+localized_string_admin_regcodes+'</button>'+
+								'<div class="col s12 m6 l3 center">'+
+									'<button class="btn waves-effect waves-light iflex-button" id="regcodes">'+localized_string_admin_regcodes+'</button>'+
 								'</div>'+
-								'<div class="col s3 center">'+
-									'<button class="btn waves-effect waves-light" id="users">'+localized_string_admin_users+'</button>'+
+								'<div class="col s12 m6 l3 center">'+
+									'<button class="btn waves-effect waves-light iflex-button" id="users">'+localized_string_admin_users+'</button>'+
 								'</div>'+
-								'<div class="col s3 center">'+
-									'<button class="btn waves-effect waves-light" id="configs">'+localized_string_admin_configs+'</button>'+
+								'<div class="col s12 m6 l3 center">'+
+									'<button class="btn waves-effect waves-light iflex-button" id="configs">'+localized_string_admin_configs+'</button>'+
 								'</div>'+
-								'<div class="col s3 center">'+
-									'<button class="btn waves-effect waves-light" id="feedbacks">'+localized_string_admin_feedbacks+'</button>'+
+								'<div class="col s12 m6 l3 center">'+
+									'<button class="btn waves-effect waves-light iflex-button" id="feedbacks">'+localized_string_admin_feedbacks+'</button>'+
 								'</div>'+
 							'</div>'+
 						'</div>'+
@@ -156,13 +156,12 @@ export default class UserPropsView extends View {
 						'<p>Email: '+UM.email+'</p>'+
 						'<p>'+consent_text+'<a href="javascript:void(0);" id="consent-text">'+consent_link_text+'</a></p>'+
 						'<p>'+gdpr_text+'<a href="javascript:void(0);" id="gdpr-text">'+gdpr_link_text+'</a></p>'+
-						//'<button class="btn waves-effect waves-light" id="changepsw">'+localized_string_change_password_btn_txt+'</button>'+
 						'<p><a href="javascript:void(0);" id="changepsw">'+localized_string_change_password_btn_txt+'</a></p>'+
 					'</div>'+
 				'</div>'+ 
 				'<div class="row">'+
 					'<div class="col s12 center" style="margin-top:32px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
+						'<button class="btn waves-effect waves-light iflex-button" id="back">'+localized_string_back+
 							'<i class="material-icons left">arrow_back</i>'+
 						'</button>'+
 					'</div>'+

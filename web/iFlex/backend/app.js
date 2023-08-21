@@ -17,7 +17,7 @@ mongoose.connect('mongodb://192.168.122.134:27017/iflex', {
 	useCreateIndex: true,
 	useUnifiedTopology: true
 });*/
-mongoose.connect('mongodb://localhost:27017/iflex', {
+mongoose.connect('mongodb://127.0.0.1:27017/iflex', {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useUnifiedTopology: true

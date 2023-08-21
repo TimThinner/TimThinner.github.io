@@ -183,7 +183,7 @@ export default class FeedbacksView extends View {
 						'</table>'+
 					'</div>'+
 					'<div class="col s12 center" style="margin-top:16px;">'+
-						'<button class="btn waves-effect waves-light" id="back">'+localized_string_back+
+						'<button class="btn waves-effect waves-light iflex-button" id="back">'+localized_string_back+
 							'<i class="material-icons left">arrow_back</i>'+
 						'</button>'+
 					'</div>'+

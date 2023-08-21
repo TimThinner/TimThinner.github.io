@@ -241,3 +241,20 @@ html, body {
 	font-size: 24px;
 	color: #000;
 }
+.flex-totals-box {
+	padding: 12px 0;
+	margin-bottom: 8px;
+	border: 1px solid #ccc;
+}
+@media only screen and (min-width: 993px) {
+	.flex-totals-box {
+		margin-bottom: 0;
+	}
+}
+/*
+'BACK', 'OK', 'CANCEL', 'SAVE', 'UPDATE' 
+buttons should have a "standard" width.
+*/
+.iflex-button {
+	width: 160px;
+}

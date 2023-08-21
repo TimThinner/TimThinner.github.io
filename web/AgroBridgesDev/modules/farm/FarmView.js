@@ -407,9 +407,9 @@ export default class FarmView extends View {
 		}
 		
 		const svg = document.createElementNS(svgNS, "svg");
-		svg.setAttribute('x',-3*r);
+		svg.setAttribute('x',-4*r);
 		svg.setAttribute('y',coeff*r);
-		svg.setAttributeNS(null,'width',6*r);
+		svg.setAttributeNS(null,'width',8*r);
 		svg.setAttributeNS(null,'height',fontsize);
 		
 		/*

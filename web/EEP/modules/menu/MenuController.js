@@ -10,13 +10,16 @@ export default class MenuController extends Controller {
 		super(options);
 	}
 	
+	
+	// old: 'https://transparency.entsoe.eu/api'  ja 
+	// new: 'https://web-api.tp.entsoe.eu/api'
 	init() {
 		const model = new MenuModel({name:'MenuModel',src:''});
 		model.subscribe(this);
 		this.master.modelRepo.add('MenuModel',model);
 		this.models['MenuModel'] = model;
 		
-		const entsoe_model = new EntsoeModel({name:'EntsoeEnergyPriceModel',src:'https://transparency.entsoe.eu/api', document_type:'A44', area_name:'Finland'});
+		const entsoe_model = new EntsoeModel({name:'EntsoeEnergyPriceModel',src:'https://web-api.tp.entsoe.eu/api', document_type:'A44', area_name:'Finland'});
 		entsoe_model.subscribe(this);
 		this.master.modelRepo.add('EntsoeEnergyPriceModel',entsoe_model);
 		this.models['EntsoeEnergyPriceModel'] = entsoe_model;

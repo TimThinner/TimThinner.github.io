@@ -156,7 +156,20 @@ class MasterController {
 		// class Model this.MOCKUP = true; NOTE: effects UM, LM
 		// MasterController this.MOCKUP = true; NOTE: effects CM, RM (Location)
 		// LM.selected = 'en';
-		
+		const language_to_county_map = {
+			'en':'IE',
+			'da':'DK',
+			'el':'EL',
+			'es':'ES',
+			'fr':'FR',
+			'it':'IT',
+			'lv':'LV',
+			'lt':'LT',
+			'nl':'NL',
+			'pl':'PL',
+			'fi':'FI',
+			'tr':'TR'
+		};
 		const url_params = {};
 		//	const query_string = '?userid='+uid+'&country=IE&language=en&MOCKUP='+mockup;
 		const params = new URLSearchParams(window.location.search);
@@ -207,12 +220,19 @@ class MasterController {
 				UM.id = url_params['userid'];
 			}
 			
-			if (typeof url_params['country'] !== 'undefined') {
+			if (typeof url_params['country'] !== 'undefined' && url_params['country'].length > 0) {
 				UM.profile['Country'] = url_params['country'];
-				
 			} else {
 				UM.profile['Country'] = 'IE';
 			}
+			console.log('Now load the language Translation!');
+			if (typeof url_params['language'] !== 'undefined' && url_params['language'].length > 0) {
+				LM.selected = url_params['language'];
+				UM.profile['Country'] = language_to_county_map[LM.selected];
+			} else {
+				LM.selected = 'en';
+			}
+			
 			if (typeof url_params['MOCKUP'] !== 'undefined') {
 				if (url_params['MOCKUP'] === 'true') {
 					this.MOCKUP = true;
@@ -227,12 +247,6 @@ class MasterController {
 				LM.MOCKUP = this.MOCKUP;
 			}
 			
-			console.log('Now load the language Translation!');
-			if (typeof url_params['language'] !== 'undefined') {
-				LM.selected = url_params['language'];
-			} else {
-				LM.selected = 'en';
-			}
 			// Clear all search strings ('?foo=bar') and hash anchors ('#mood') from URL WITHOUT RELOADING THE PAGE!
 			window.history.pushState({}, "", "index.html");
 			LM.loadTranslation();

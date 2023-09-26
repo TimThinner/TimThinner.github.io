@@ -1051,12 +1051,33 @@ export default class AnalysisView extends View {
 			$("#how-calculated-wrapper").empty().append(html);
 		}
 	}
-	
+	/*
+	NEW: A link is added to DISCLAIMER
+        {
+            "link_title": "investment calculations",
+            "url": "https://agrobridges.vtt.fi/practise_abstracts/Extended_practice_Abstract_Agrobridges_finished.pdf",
+            "var_name": "SFSC_profitability_link"
+        },
+	*/
 	renderDisclaimer() {
 		if (this.USER_MODEL.analysisResult.result_text) {
+			
 			const ll_d_title = this.USER_MODEL.analysisResult.result_text.Disclaimer_Header;
 			const ll_d_text = this.USER_MODEL.analysisResult.result_text.Disclaimer;
-			const html = '<h6>'+ll_d_title+'</h6><p>'+ll_d_text+'</p>';
+			
+			let link_url = undefined;
+			let link_title = undefined;
+			this.USER_MODEL.analysisResult.links.forEach(l=>{
+				if (l.var_name === 'SFSC_profitability_link') {
+					link_url = l.url;
+					link_title = l.link_title;
+				}
+			});
+			let ic_link = '';
+			if (typeof link_url !== 'undefined' && typeof link_title !== 'undefined') {
+				ic_link = '<a href="'+link_url+'" target="_blank">'+link_title+'</a>';
+			}
+			const html = '<h6>'+ll_d_title+'</h6><p>'+ll_d_text+' '+ic_link+'</p>';
 			$("#disclaimer-text-wrapper").empty().append(html);
 		}
 	}

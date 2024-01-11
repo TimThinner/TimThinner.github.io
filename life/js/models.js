@@ -147,6 +147,14 @@ class MapListModel extends EventObserver {
 			startDate: '03.07.2023',
 			endDate:  '07.07.2023'
 		});
+		self.mapdata["2023 Funchal, Madeira"] = new MapModel({
+			title: 'Alto Lido',
+			picture: 'img/altolido.jpg',
+			latitude:  32.6384,
+			longitude: -16.9360,
+			startDate: '25.12.2023',
+			endDate:  '1.1.2024'
+		});
 		/*
 		self.mapdata["2020 Budapest, Hungary"] = new MapModel({
 			title: 'Corvin Center Suites',

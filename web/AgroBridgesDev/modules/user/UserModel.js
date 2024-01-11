@@ -387,14 +387,14 @@ export default class UserModel extends Model {
 		// Harv_farmers_org: false,
 		// Harv_Clean_Sort_Ref: true,
 		
+		
 		if (this.profile.Hectare_farm > 0) {
 			retval.filled++;
 		}
-		if (this.profile.Delivery_month_total > 0) {
+		if (this.profile.Delivery_month_total >= 0) {
 			retval.filled++;
 		}
-		
-		if (this.profile.Hectare_farm > 0 && this.profile.Delivery_month_total > 0) {
+		if (this.profile.Hectare_farm > 0 && this.profile.Delivery_month_total >= 0) {
 			retval.ready = true;
 		}
 		return retval;
@@ -811,15 +811,19 @@ export default class UserModel extends Model {
 	}
 	
 	fillFarmInfo(myJson) {
-		if (myJson.Hectare_farm) { // not null or 0
-			this.profile.Hectare_farm = myJson.Hectare_farm;
-		} else {
-			this.profile.Hectare_farm = 0;
+		if (myJson.Hectare_farm !== null) {
+			if (myJson.Hectare_farm) { // not null or 0
+				this.profile.Hectare_farm = myJson.Hectare_farm;
+			} else {
+				this.profile.Hectare_farm = 0;
+			}
 		}
-		if (myJson.Delivery_month_total) { // not null or 0
-			this.profile.Delivery_month_total = myJson.Delivery_month_total;
-		} else {
-			this.profile.Delivery_month_total = 0;
+		if (myJson.Delivery_month_total !== null) {
+			if (myJson.Delivery_month_total) { // not null or 0
+				this.profile.Delivery_month_total = myJson.Delivery_month_total;
+			} else {
+				this.profile.Delivery_month_total = 0;
+			}
 		}
 		// Fill ONLY if value is NOT null.
 		if (myJson.Dummy_organic !== null) {

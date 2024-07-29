@@ -153,8 +153,27 @@ class MapListModel extends EventObserver {
 			latitude:  32.6384,
 			longitude: -16.9360,
 			startDate: '25.12.2023',
-			endDate:  '1.1.2024'
+			endDate:  '01.01.2024'
 		});
+		self.mapdata["2024 Riga, Latvia"] = new MapModel({
+			title: 'Grand Poet by Semarah',
+			picture: 'img/GrandPoet.jpg',
+			latitude:  56.95370,
+			longitude: 24.11048,
+			startDate: '03.05.2024',
+			endDate:  '05.05.2024'
+		});
+		
+		self.mapdata["2024 Lisbon, Portugal"] = new MapModel({
+			title: 'Rua Maria Pia',
+			picture: 'img/RuaMariaPia.jpg',
+			latitude:  38.70824,
+			longitude: -9.17201,
+			startDate: '08.07.2024',
+			endDate:  '15.07.2024'
+		});
+		
+		
 		/*
 		self.mapdata["2020 Budapest, Hungary"] = new MapModel({
 			title: 'Corvin Center Suites',

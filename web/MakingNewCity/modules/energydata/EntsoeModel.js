@@ -101,9 +101,13 @@ https://transparency.entsoe.eu/content/static_content/Static%20content/web%20api
 https://transparency.entsoe.eu/content/static_content/Static%20content/web%20api/Guide.html#_transmission_domain
 
 
+https://transparency.entsoe.eu/content/static_content/Static%20content/web%20api/Guide.html#_day_ahead_prices_12_1_d
 
 4.2.10. Day Ahead Prices [12.1.D]
 ...
+
+
+
 
 
 

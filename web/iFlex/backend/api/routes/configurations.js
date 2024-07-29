@@ -19,6 +19,7 @@ router.get('/', (req,res,next)=>{
 	Configuration.find()
 		.exec()
 		.then(docs=>{
+			console.log(['docs=',docs]);
 			res.status(200).json({
 				count: docs.length,
 				configurations: docs.map(doc=>{

@@ -17,10 +17,31 @@ mongoose.connect('mongodb://192.168.122.134:27017/iflex', {
 	useCreateIndex: true,
 	useUnifiedTopology: true
 });*/
+/*mongoose.connect('mongodb://127.0.0.1:27017/iflex', {
+	useNewUrlParser: true,
+	useCreateIndex: true,
+	useUnifiedTopology: true
+});
+*/
+
+async function run() {
+    var admin = new mongoose.mongo.Admin(mongoose.connection.db);
+    admin.buildInfo(function (err, info) {
+       console.log(`mongodb: ${info.version}`);
+       console.log(`mongoose: ${mongoose.version}`);
+    });
+}
 mongoose.connect('mongodb://127.0.0.1:27017/iflex', {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useUnifiedTopology: true
+})
+.then(() => {
+	console.log('MongoDB connected');
+	run();
+})
+.catch(error => {
+	console.log(error);
 });
 
 // Before the routes add this to fix CORS errors.

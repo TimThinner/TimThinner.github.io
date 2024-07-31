@@ -183,7 +183,6 @@ figcaption {
 table tr td, table tr th {
 	padding-left: 12px;
 }
-
 /* Overwrite MaterializeCSS Table striped color: */
 table.striped > tbody > tr:nth-child(odd) {
 	/*background-color: rgba(242, 242, 242, 0.5);*/
@@ -194,9 +193,16 @@ table.striped > tbody > tr:nth-child(odd) {
 td, th {
 	padding: 5px 2px;
 }
+
 td:nth-child( 2n ) {
 	width: 75%;
 } 
 td:nth-child( 2n+1 ) {
 	width: 25%;
+}
+.flag-primary {
+	height:20px;
+}
+.flag-secondary {
+	height:16px;
 }

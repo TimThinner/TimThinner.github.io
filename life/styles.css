@@ -206,3 +206,42 @@ td:nth-child( 2n+1 ) {
 .flag-secondary {
 	height:16px;
 }
+.finland {
+	color: #aaa;
+}
+/*background-color: #fff;*/
+
+/* Flex stuff */
+.image-grid {
+	display: flex;
+	width: 100%;
+	margin: 0 auto;
+	flex-wrap: wrap;
+}
+/* See: https://www.youtube.com/watch?v=leoG0qRaFDI */
+.grid-image {
+	display: block;
+	flex-basis: 100%;
+	padding: 10px;
+	box-sizing: border-box; /* see: https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing */
+}
+@media only screen and (min-width: 640px) {
+	.grid-image {
+		display: block;
+		flex-basis: 50%;
+	}
+}
+@media only screen and (min-width: 960px) {
+	.grid-image {
+		display: block;
+		flex-basis: 33.333%;
+	}
+}
+@media only screen and (min-width: 1280px) {
+	.grid-image {
+		display: block;
+		flex-basis: 25%;
+	}
+}
+
+

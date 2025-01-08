@@ -85,8 +85,8 @@ class MapListModel extends EventObserver {
 		self.mapdata["2017 Playa del Ingles, Gran Canaria"] = new MapModel({
 			title: 'Palm Oasis',
 			picture: 'img/PalmOasis.jpg',
-			latitude:  27.7646,
-			longitude: -15.5990,
+			latitude:  27.76405,
+			longitude: -15.5995,
 			startDate: '22.12.2017',
 			endDate:  '29.12.2017'
 		});
@@ -163,7 +163,6 @@ class MapListModel extends EventObserver {
 			startDate: '03.05.2024',
 			endDate:  '05.05.2024'
 		});
-		
 		self.mapdata["2024 Lisbon, Portugal"] = new MapModel({
 			title: 'Rua Maria Pia',
 			picture: 'img/RuaMariaPia.jpg',
@@ -172,8 +171,14 @@ class MapListModel extends EventObserver {
 			startDate: '08.07.2024',
 			endDate:  '15.07.2024'
 		});
-		
-		
+		self.mapdata["2024 Playa del Ingles, Gran Canaria"] = new MapModel({
+			title: 'Palm Oasis',
+			picture: 'img/PalmOasis.jpg',
+			latitude:  27.7643,//27.7646,
+			longitude: -15.5997,//-15.5990,
+			startDate: '28.12.2024',
+			endDate:  '04.01.2025'
+		});
 		/*
 		self.mapdata["2020 Budapest, Hungary"] = new MapModel({
 			title: 'Corvin Center Suites',

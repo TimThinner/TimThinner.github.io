@@ -171,6 +171,14 @@ class MapListModel extends EventObserver {
 			startDate: '08.07.2024',
 			endDate:  '15.07.2024'
 		});
+		self.mapdata["2024 Edinburgh, Scotland"] = new MapModel({
+			title: 'The Haymarket Hotel', //55°56'46"N 3°13'18"W
+			picture: 'img/EdinburghHaymarketHotel.jpg',
+			latitude:  55.9462, // 55 + 56/60 + 46/3600 = 55 + 0,9333 + 0,012777
+			longitude: -3.2217, // 3 + 13/60 + 18/3600 = 3 + 0,216666  + 0,005
+			startDate: '12.12.2024',
+			endDate:  '15.12.2024'
+		});
 		self.mapdata["2024 Playa del Ingles, Gran Canaria"] = new MapModel({
 			title: 'Palm Oasis',
 			picture: 'img/PalmOasis.jpg',

@@ -187,6 +187,20 @@ class MapListModel extends EventObserver {
 			startDate: '28.12.2024',
 			endDate:  '04.01.2025'
 		});
+		
+		self.mapdata["2025 Barcelona, Spain"] = new MapModel({
+			title: 'Hotel Catalonia Born',
+			picture: 'img/HotelCataloniaBorn.jpg',
+			latitude:  41.3898,
+			longitude: 2.1800,
+			startDate: '19.03.2025',
+			endDate:  '22.03.2025'
+		});
+		
+		
+		
+		
+		
 		/*
 		self.mapdata["2020 Budapest, Hungary"] = new MapModel({
 			title: 'Corvin Center Suites',

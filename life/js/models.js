@@ -1,3 +1,12 @@
+// Test this:
+
+
+
+
+
+
+
+
 
 class EventObserver {
 	constructor() {
@@ -31,7 +40,64 @@ class MapListModel extends EventObserver {
 		super();
 		this.mapdata = {};
 	}
-	
+	/*
+	addSubscriptionHeader(headers, config) {
+		const updatedHeaders = headers || {};
+		if (config.hasAPISubscriptionHeader) {
+			updatedHeaders[config.API_SUBSCRIPTION_HEADER_NAME] =
+			config.API_SUBSCRIPTION_TOKEN;
+		}
+		return updatedHeaders;
+	}*/
+	// Tries to fetch 1 + retryCount times until 200 is returned.
+	// Uses retryDelay (ms) between requests. url and options are normal fetch parameters
+	/*
+	retryFetch(URL,retryCount,retryDelay,options = {},config = {}) {
+		return new Promise((resolve, reject) => {
+			const retry = retriesLeft => {
+				fetch(URL, {
+					...options,
+					headers: this.addSubscriptionHeader(options.headers, config),
+				}).then(res => {
+					if (res.ok) {
+						resolve(res);
+						// Don't retry if user is not logged in
+					} else if (res.status === 401) {
+						throw res.status;
+					} else {
+						// eslint-disable-next-line no-throw-literal
+						throw `${URL}: ${res.statusText}`;
+					}
+				}).catch(async err => {
+					if (retriesLeft > 0 && err !== 401) {
+						await delay(retryDelay);
+						retry(retriesLeft - 1);
+					} else {
+						reject(err);
+					}
+				});
+			};
+			retry(retryCount);
+		});
+	}*/
+	/*
+	getXTPPhotoLinks(baseURL) {
+		return this.retryFetch(
+			//`${baseURL}&latlon=${lat},${lon}&starttime=${searchTime}&endtime=${searchTime}`,
+			`${baseURL}`,
+			2,
+			200,
+		)
+		.then(res => res.json())
+		.then(json => {
+			console.log(['json=',json]);
+			return json;
+		})
+		.catch(err => {
+			throw new Error(`Error fetching XTP photo links: ${err}`);
+		});
+	}
+	*/
 	getMapData() {
 		return this.mapdata;
 	}
@@ -41,6 +107,9 @@ class MapListModel extends EventObserver {
 		var status = 200;
 		var message = 'OK';
 		self.mapdata = {};
+		
+		//var url = 'https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=perl&site=stackoverflow';
+		//self.getXTPPhotoLinks(url);
 		
 		self.mapdata["2013 Faliraki, Rhodes"] = new MapModel({
 			title: 'Epsilon',
@@ -187,7 +256,6 @@ class MapListModel extends EventObserver {
 			startDate: '28.12.2024',
 			endDate:  '04.01.2025'
 		});
-		
 		self.mapdata["2025 Barcelona, Spain"] = new MapModel({
 			title: 'Hotel Catalonia Born',
 			picture: 'img/HotelCataloniaBorn.jpg',
@@ -196,11 +264,14 @@ class MapListModel extends EventObserver {
 			startDate: '19.03.2025',
 			endDate:  '22.03.2025'
 		});
-		
-		
-		
-		
-		
+		self.mapdata["2025 Ljubljana, Slovenia"] = new MapModel({
+			title: 'Tivoli Boutique Inn',
+			picture: 'img/TivoliBoutiqueInn.jpg',
+			latitude: 46.06256,
+			longitude: 14.49806,
+			startDate: '01.05.2025',
+			endDate:  '04.05.2025'
+		});
 		/*
 		self.mapdata["2020 Budapest, Hungary"] = new MapModel({
 			title: 'Corvin Center Suites',

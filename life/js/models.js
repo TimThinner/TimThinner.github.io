@@ -272,6 +272,14 @@ class MapListModel extends EventObserver {
 			startDate: '01.05.2025',
 			endDate:  '04.05.2025'
 		});
+		self.mapdata["2025 Nice, France"] = new MapModel({
+			title: '154 Rue de France', // 43°41'33"N      7°14'51"E
+			picture: 'img/RuedeFrance.jpg',
+			latitude: 43.6925,  // 43 + 41/60 + 33/3600
+			longitude: 7.2475, // 7 + 14/60 + 51/3600
+			startDate: '13.07.2025',
+			endDate:  '20.07.2025'
+		});
 		/*
 		self.mapdata["2020 Budapest, Hungary"] = new MapModel({
 			title: 'Corvin Center Suites',

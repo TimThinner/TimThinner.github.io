@@ -280,6 +280,15 @@ class MapListModel extends EventObserver {
 			startDate: '13.07.2025',
 			endDate:  '20.07.2025'
 		});
+		
+		self.mapdata["2025 Paris, France"] = new MapModel({
+			title: '153 Rue Marcadet', // 48°53'28"N         2°20'17"E
+			picture: 'img/RueMarcadet.jpg',
+			latitude: 48.8913, // 48 + 53/60 + 28/3600 = 48,89111
+			longitude: 2.3383, // 2 + 20/60 + 17/3600 = 
+			startDate: '25.12.2025',
+			endDate:  '02.01.2026'
+		});
 		/*
 		self.mapdata["2020 Budapest, Hungary"] = new MapModel({
 			title: 'Corvin Center Suites',

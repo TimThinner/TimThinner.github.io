@@ -1,13 +1,20 @@
-// Test this:
+/*
 
+https://wiki.openstreetmap.org/wiki/Blocked_tiles
 
+If the tile mentions "Referer is required" then you were automatically blocked because your application/website 
+is not sending HTTP Referer headers, but doing so is required by the tile usage policy. 
+This block will resolve itself once you make the necessary changes to your application, without further intervention necessary.
 
-
-
-
-
-
-
+For websites/web applications, this can be fixed by setting your 
+Referrer-Policy header to any of 
+	no-referrer-when-downgrade, 
+	origin, 
+	origin-when-cross-origin, 
+	strict-origin, 
+	or strict-origin-when-cross-origin.
+For more information, see the Referer article. 
+*/
 class EventObserver {
 	constructor() {
 		this.observers = [];
@@ -288,6 +295,15 @@ class MapListModel extends EventObserver {
 			longitude: 2.3383, // 2 + 20/60 + 17/3600 = 
 			startDate: '25.12.2025',
 			endDate:  '02.01.2026'
+		});
+		
+		self.mapdata["2026 Vienna, Austria"] = new MapModel({
+			title: 'Praterstrasse 72', // 48°13'01.68"N 16°23'22.39"E
+			picture: 'img/RueMarcadet.jpg',
+			latitude: 48.216945, // 48 + 13/60 + 01/3600 = 
+			longitude: 16.389444, // 16 + 23/60 + 22/3600 = 
+			startDate: '09.04.2026',
+			endDate:  '12.04.2026'
 		});
 		/*
 		self.mapdata["2020 Budapest, Hungary"] = new MapModel({

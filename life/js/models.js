@@ -298,7 +298,7 @@ class MapListModel extends EventObserver {
 		});
 		
 		self.mapdata["2026 Vienna, Austria"] = new MapModel({
-			title: 'Praterstraße 72', // 48°13'01.68"N 16°23'22.39"E
+			title: 'Classic Hotel Wien', // 48°13'01.68"N 16°23'22.39"E
 			picture: 'img/HotelWien.jpg',
 			latitude: 48.216945, // 48 + 13/60 + 01/3600 = 
 			longitude: 16.389444, // 16 + 23/60 + 22/3600 = 

@@ -159,7 +159,9 @@ class MapView {
 		// create the tile layer with correct attribution
 		var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 		var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-		L.tileLayer(osmUrl, {minZoom: 1, maxZoom: 18, attribution: osmAttrib}).addTo(this.mymap);
+		L.tileLayer(osmUrl, {minZoom: 1, maxZoom: 18, 
+			referrerPolicy: true, // new 
+			attribution: osmAttrib}).addTo(this.mymap);
 		
 		setTimeout(() => this.fetchMapData(), 100);
 		

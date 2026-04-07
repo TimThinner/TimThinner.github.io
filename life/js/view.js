@@ -132,8 +132,6 @@ class MapView {
 	renderMap() {
 		var self = this;
 		$(this.el).empty();
-		//var token = 'pk.eyJ1IjoidGltb2tpbm51bmVuIiwiYSI6ImNqbTZhNjNycjA2cDIza282Zm1ybWEzeWgifQ.GS5Z5VxxA9UlGFsmeISrSg';
-		//this.mymap = L.map('mapid',{scrollWheelZoom:false}).setView([45.0, 10.0], 3);
 		
 		// See: https://github.com/elmarquis/Leaflet.GestureHandling
 		this.mymap = L.map('mapid',{gestureHandling: true}).setView([45.0, 10.0], 3);

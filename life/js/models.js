@@ -305,6 +305,16 @@ class MapListModel extends EventObserver {
 			startDate: '09.04.2026',
 			endDate:  '12.04.2026'
 		});
+		
+		self.mapdata["2026 Prague, Czech"] = new MapModel({
+			title: 'The Manes Hotel',
+			picture: 'img/TheManes.jpg',
+			latitude: 50.0777, // 50 + 04/60 + 40/3600
+			longitude: 14.4175,    // 14 + 25/60 + 3/3600
+			startDate: '30.04.2026',
+			endDate:  '03.05.2026'
+		});
+		
 		/*
 		self.mapdata["2020 Budapest, Hungary"] = new MapModel({
 			title: 'Corvin Center Suites',

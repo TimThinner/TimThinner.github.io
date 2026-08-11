@@ -314,7 +314,26 @@ class MapListModel extends EventObserver {
 			startDate: '30.04.2026',
 			endDate:  '03.05.2026'
 		});
-		
+		/* In der Ulle Innsbruck 47°13'49.20"N 11°24'47.62"E*/
+		self.mapdata["2026 Innsbruck, Austria"] = new MapModel({
+			title: 'AirBnB',
+			picture: 'img/TheManes.jpg',
+			latitude: 47.2303, // 47 + 13/60 + 49/3600
+			longitude: 11.4133,    // 11 + 24/60 + 48/3600
+			startDate: '09.07.2026',
+			endDate:  '17.07.2026'
+		});
+		self.mapdata["2026 Munich, Germany"] = new MapModel({
+			title: 'Hotel Obermaier',
+			picture: 'img/TheManes.jpg',
+			latitude: 48.1211, // 48 + 07/60 + 16/3600
+			longitude: 11.6697,    // 11 + 40/60 + 11/3600
+			startDate: '12.07.2026',
+			endDate:  '13.07.2026'
+		});
+		/*
+		Hotel Obermaier 48°07'16.31"N 11°40'11.36"E
+		*/
 		/*
 		self.mapdata["2020 Budapest, Hungary"] = new MapModel({
 			title: 'Corvin Center Suites',

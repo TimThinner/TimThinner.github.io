@@ -209,6 +209,11 @@ td:nth-child( 2n+1 ) {
 .finland {
 	color: #aaa;
 }
+.subtrip {
+	font-size: 90%;
+	padding-left: 32px;
+}
+
 /*background-color: #fff;*/
 
 /* Flex stuff */

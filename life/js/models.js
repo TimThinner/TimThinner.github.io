@@ -317,7 +317,7 @@ class MapListModel extends EventObserver {
 		/* In der Ulle Innsbruck 47°13'49.20"N 11°24'47.62"E*/
 		self.mapdata["2026 Innsbruck, Austria"] = new MapModel({
 			title: 'AirBnB',
-			picture: 'img/Zitadella.jpg',
+			picture: 'img/zitadelle.jpg',
 			latitude: 47.2306, // 47 + 13/60 + 49/3600
 			longitude: 11.4128,    // 11 + 24/60 + 48/3600
 			startDate: '09.07.2026',

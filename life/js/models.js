@@ -319,7 +319,7 @@ class MapListModel extends EventObserver {
 			title: 'AirBnB',
 			picture: 'img/TheManes.jpg',
 			latitude: 47.2306, // 47 + 13/60 + 49/3600
-			longitude: 11.4130,    // 11 + 24/60 + 48/3600
+			longitude: 11.4128,    // 11 + 24/60 + 48/3600
 			startDate: '09.07.2026',
 			endDate:  '17.07.2026'
 		});
